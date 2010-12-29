@@ -1,0 +1,10 @@
+1286072557248	Delete element
+1286076164169	Rename type 'ErrorHandler'
+1286076180153	Rename method 'handle'
+1286124453357	Delete element
+1286126392374	Rename local variable 'serviceThreadHandler'
+1286134445589	Rename field '_pwExists'
+1286146199669	Rename type 'Location'
+1286238075700	Rename field 'MESSAGE_INVALID_AUTH'
+1286238753941	Rename local variable 'paramMessageObject'
+1286335534930	Rename field 'MESSAGE_FROM_IDLE_THREAD'

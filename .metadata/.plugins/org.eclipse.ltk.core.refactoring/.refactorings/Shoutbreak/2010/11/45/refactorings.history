@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename resource &apos;Shoutbreak/res/layout/inboxItem.xml&apos; to &apos;inbox_item.xml&apos;" description="Rename resource &apos;inboxItem.xml&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="res/layout/inboxItem.xml" name="inbox_item.xml" stamp="1289073948332" updateReferences="true"/>
+</session>

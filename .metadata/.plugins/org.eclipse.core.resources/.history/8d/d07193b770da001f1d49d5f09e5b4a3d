@@ -1,0 +1,169 @@
+package com.shoutbreak.ui;
+
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.Path;
+import android.graphics.Point;
+import android.graphics.Paint.Style;
+import android.graphics.Path.Direction;
+import android.location.Location;
+import android.util.Log;
+
+import com.google.android.maps.GeoPoint;
+import com.google.android.maps.MapView;
+import com.google.android.maps.MyLocationOverlay;
+import com.shoutbreak.R;
+import com.shoutbreak.service.User;
+import com.shoutbreak.service.Vars;
+
+// http://stackoverflow.com/questions/753793/how-can-i-use-a-custom-bitmap-for-the-you-are-here-point-in-a-mylocationoverlay
+// http://www.gitorious.net/android-maps-api/android-maps-api/blobs/42614538ffda1a6985c398933a85fcd9afc752ee/src/com/google/android/maps/MyLocationOverlay.java
+public class UserLocationOverlay extends MyLocationOverlay {
+
+	private Context _context;
+	private CustomMapView _mapView;
+    private Paint _circleFillPaint;
+    private Paint _circleBorderPaint;
+    private final float SQRT2 = (float) 1.4142;
+    
+    private Point _userLocationPx;
+    private float _radiusPx;
+    private float _radiusMeters;
+    
+    private Bitmap _resizeIcon;
+    private Point _resizeIconSize;
+    private Point _resizeIconLocation;
+    private int _mapSizeConstraint;
+    
+    private int _zoomLevel;
+    private boolean _zoomLevelNeedsAdjusting; 
+    
+    private int _resizeAdjustmentPx;
+    
+    public UserLocationOverlay(Context context, MapView mapView) {
+        super(context, mapView);
+        _context = context;
+        
+        _radiusMeters = 0;
+        _zoomLevel = Vars.DEFAULT_ZOOM_LEVEL;
+        _zoomLevelNeedsAdjusting = false;
+        _mapSizeConstraint = -1;
+        _resizeAdjustmentPx = 0;
+        
+		_circleFillPaint = new Paint();
+		_circleFillPaint.setARGB(50, 108, 10, 171);
+		_circleFillPaint.setAntiAlias(true);
+		
+        _circleBorderPaint = new Paint();
+        _circleBorderPaint.setAntiAlias(true);
+        _circleBorderPaint.setARGB(120, 69, 3, 111);
+        _circleBorderPaint.setStyle(Style.STROKE);
+        _circleBorderPaint.setStrokeWidth(4);
+        
+        // create a rotated copy of the marker
+        Bitmap resizeBitmap = BitmapFactory.decodeResource(_context.getResources(), R.drawable.icon);
+        _resizeIconSize = new Point(resizeBitmap.getWidth(), resizeBitmap.getHeight());
+        _resizeIconLocation = new Point();
+        _resizeIcon = Bitmap.createBitmap(resizeBitmap, 0, 0, _resizeIconSize.x, _resizeIconSize.y);
+        
+    }
+
+    @Override 
+    protected void drawMyLocation(Canvas canvas, MapView mapView, Location lastFix, GeoPoint myLocation, long when) {
+    	// translate the GeoPoint to screen pixels
+        _userLocationPx = mapView.getProjection().toPixels(myLocation, null);
+        // TODO: this is probably really inaccurate...
+        _radiusPx = mapView.getProjection().metersToEquatorPixels(_radiusMeters) + _resizeAdjustmentPx;
+        
+//        GeoPoint radiusEdge = mapView.getProjection().fromPixels((int)(_userLocationPx.x + _radiusPx), _userLocationPx.y);
+//        float results[] = new float[5];
+//        Location.distanceBetween(myLocation.getLatitudeE6(), myLocation.getLongitudeE6(), radiusEdge.getLatitudeE6(), radiusEdge.getLongitudeE6(), results);
+
+//        Location l2 = new Location(lastFix);
+//        l2.setLatitude(radiusEdge.getLatitudeE6() / 1000000);
+//        l2.setLongitude(radiusEdge.getLongitudeE6() / 1000000);
+//        float f1 = lastFix.distanceTo(l2);
+//        
+//        Location l3 = new Location(lastFix);
+//        l2.setLatitude(myLocation.getLatitudeE6() / 1000000);
+//        l2.setLongitude(myLocation.getLongitudeE6() / 1000000);
+//        float f2 = lastFix.distanceTo(l3);
+        
+//        int R = 6371;
+//        double dLat = Math.toRadians((myLocation.getLatitudeE6()- radiusEdge.getLatitudeE6()) / 1000000);
+//        double dLon = Math.toRadians((myLocation.getLongitudeE6()- radiusEdge.getLongitudeE6()) / 1000000); 
+//        double a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+//                Math.cos( Math.toRadians(myLocation.getLatitudeE6() / 1000) ) * Math.cos( Math.toRadians(radiusEdge.getLatitudeE6() / 1000)) * 
+//                Math.sin(dLon/2) * Math.sin(dLon/2); 
+//                double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+//                double d = R * c;
+        
+//        int latSpanWindow = mapView.getLatitudeSpan();
+//        int latSpanCircle = (int) (((_radiusPx + _radiusPx) / mapView.getWidth()) * latSpanWindow);
+
+        float iconXYOffset = _radiusPx / SQRT2;
+        
+        Path path = new Path();
+        path.addCircle(_userLocationPx.x, _userLocationPx.y, _radiusPx, Direction.CW);
+        canvas.drawCircle(_userLocationPx.x, _userLocationPx.y, _radiusPx, _circleFillPaint);
+        canvas.drawPath(path, _circleBorderPaint);
+        
+        _resizeIconLocation.x = (int) (_userLocationPx.x - iconXYOffset - (_resizeIconSize.x / 2));
+        _resizeIconLocation.y = (int) (_userLocationPx.y + iconXYOffset - (_resizeIconSize.y / 2));
+        
+        // add the rotated marker to the canvas
+        canvas.drawBitmap(
+            _resizeIcon,
+            _resizeIconLocation.x,
+            _resizeIconLocation.y, 
+            null
+        );
+
+        if (_zoomLevelNeedsAdjusting) {
+            adjustZoomLevelToShowCircle();
+        }
+        
+    }
+        
+    public void resize(int radiusChangePx) {
+    	_resizeAdjustmentPx += radiusChangePx;
+    	Log.d("RADIUS CHANGE", _resizeAdjustmentPx + " ");
+    }
+    
+    public void handleZoomLevelChange() {
+    	// TODO: it would be nice to maintain this value... but it's very heavy to calculate   	
+    	_resizeAdjustmentPx = 0;
+    }
+    
+    public void setPopulationDensity(float density) {
+    	// TODO: don't hardcode level
+    	_radiusMeters = User.calculateRadius(10, density);
+    	_zoomLevelNeedsAdjusting = true;
+    }
+    
+    public Point getResizeIconLocation() {
+    	return _resizeIconLocation;
+    }
+    
+    public void setMapView(CustomMapView mapView) {
+    	_mapView = mapView;
+    }
+    
+    // http://groups.google.com/group/google-maps-api/browse_thread/thread/6ff83431273c6adb/0f83700b2a7b4144
+    public void adjustZoomLevelToShowCircle() {
+    	if (_mapSizeConstraint == -1) {
+    		_mapSizeConstraint = (_mapView.getWidth() >= _mapView.getHeight()) ? _mapView.getHeight() : _mapView.getWidth();
+    	}
+    	float diameter = _radiusPx + _radiusPx;
+    	float factor = _mapSizeConstraint / diameter;
+    	// each zoom level shows half as much as the previous
+    	double zoomChange = Math.log(factor) / Math.log(2); // = log2(factor)
+    	_zoomLevel += Math.floor(zoomChange);
+    	_mapView.getController().setZoom(_zoomLevel);
+    	_zoomLevelNeedsAdjusting = false;
+    }
+
+}

@@ -1,0 +1,313 @@
+package com.shoutbreak;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+import com.google.android.maps.GeoPoint;
+import com.google.android.maps.MapActivity;
+import com.google.android.maps.MapController;
+import com.shoutbreak.service.ErrorManager;
+import com.shoutbreak.service.User;
+import com.shoutbreak.service.Vars;
+import com.shoutbreak.ui.CustomMapView;
+import com.shoutbreak.ui.UserLocationOverlay;
+
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
+import android.os.Bundle;
+import android.os.IBinder;
+import android.os.RemoteException;
+import android.util.DisplayMetrics;
+import android.util.Log;
+import android.view.Display;
+import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.view.View.OnClickListener;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+public class ShoutbreakUI extends MapActivity {
+
+	private Context _context;
+	private Intent _serviceIntent;
+	private IShoutbreakService _service;
+	private ShoutbreakServiceConnection _serviceConn;	
+	private InputMethodManager _inputMM;
+
+	// UI controls
+	private Button _cShoutsButton;
+	private Button _cInboxButton;
+	private Button _cSettingsButton;
+	private Button _cOnButton;
+	private Button _cOffButton;
+	private Button _cShoutButton;
+	private CustomMapView _cMapView;
+	private EditText _cShoutText;
+	private TextView _cStatusText;
+	private LinearLayout _cRow1;
+	private LinearLayout _cRow2;
+	private LinearLayout _cRow3;
+	private LinearLayout _cRow4;
+	private LinearLayout _cRow6;
+
+	private UserLocationOverlay _userLocationOverlay;
+	private MapController _mapController;	
+	
+	@Override
+	protected boolean isRouteDisplayed() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	/** Called when the activity is first created. */
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.main);
+
+		_context = getApplicationContext();
+		_serviceIntent = new Intent();
+		_serviceIntent.setClassName("com.shoutbreak", "com.shoutbreak.ShoutbreakService");
+		_inputMM = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+		
+		Display display = ((WindowManager) getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
+		DisplayMetrics metrics = new DisplayMetrics();
+		display.getMetrics(metrics);
+		int h = metrics.heightPixels;
+		int w = metrics.widthPixels;
+		int h16 = (int)h/16;
+		int h8 = 2 * h16;
+		
+		_cShoutsButton = (Button) findViewById(R.id.shoutsButton);
+		_cInboxButton = (Button) findViewById(R.id.inboxButton);
+		_cSettingsButton = (Button) findViewById(R.id.settingsButton);
+		_cOnButton = (Button) findViewById(R.id.onButton);
+		_cOffButton = (Button) findViewById(R.id.offButton);
+		_cShoutButton = (Button) findViewById(R.id.shoutButton);
+		_cMapView = (CustomMapView)findViewById(R.id.map);
+		_cShoutText = (EditText) findViewById(R.id.shoutText);
+		_cStatusText = (TextView) findViewById(R.id.statusText);
+		
+		_cRow1 = (LinearLayout) findViewById(R.id.row1);
+		_cRow2 = (LinearLayout) findViewById(R.id.row2);
+		_cRow3 = (LinearLayout) findViewById(R.id.row3);
+		_cRow4 = (LinearLayout) findViewById(R.id.row4);
+		_cRow6 = (LinearLayout) findViewById(R.id.row6);
+		
+		int tabWidth = (int)w / 3;
+		_cOnButton.setHeight(h16);
+		_cOffButton.setHeight(h16);
+		_cShoutText.setHeight(h8);
+		_cShoutButton.setHeight(h8);
+		_cShoutsButton.setWidth(tabWidth);
+		_cInboxButton.setWidth(tabWidth);
+		_cSettingsButton.setWidth(tabWidth);
+		_cShoutsButton.setHeight(h8);
+		_cInboxButton.setHeight(h8);
+		_cSettingsButton.setHeight(h8);
+		
+		_mapController = _cMapView.getController();
+		
+		_cShoutsButton.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				
+				_cRow1.setVisibility(View.VISIBLE);
+				_cRow2.setVisibility(View.VISIBLE);
+				_cRow3.setVisibility(View.VISIBLE);
+				_cRow4.setVisibility(View.VISIBLE);
+				_cRow6.setVisibility(View.GONE);
+				
+			}
+		});
+		
+		_cInboxButton.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				
+				_cRow1.setVisibility(View.GONE);
+				_cRow2.setVisibility(View.GONE);
+				_cRow3.setVisibility(View.GONE);
+				_cRow4.setVisibility(View.GONE);
+				_cRow6.setVisibility(View.VISIBLE);
+	
+				
+			}
+		});
+		
+		_cSettingsButton.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				
+				_cRow1.setVisibility(View.GONE);
+				_cRow2.setVisibility(View.GONE);
+				_cRow3.setVisibility(View.GONE);
+				_cRow4.setVisibility(View.GONE);
+				_cRow6.setVisibility(View.GONE);
+
+			}
+		});
+		
+		_cShoutButton.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				String text = _cShoutText.getText().toString().trim();
+				try {
+					_service.shout(text);
+				} catch (RemoteException ex) {
+					ErrorManager.manage(ex);
+				}
+				hideKeyboard();
+			}
+		});
+
+		_cOnButton.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				turnServiceOn();
+			}
+		});
+
+		_cOffButton.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				turnServiceOff();
+			}
+		});
+
+		initMap();
+
+		// this should go last.. let ui render
+		linkToService();
+
+	}
+	
+	public void hideKeyboard() {
+		_inputMM.hideSoftInputFromWindow(_cShoutText.getWindowToken(), 0);
+	}
+
+	private void initMap() {
+		
+		_mapController.setZoom(Vars.DEFAULT_ZOOM_LEVEL);
+		_mapController.setCenter(new GeoPoint(-40770000, 73980000));
+		_cMapView.setClickable(true);
+		_cMapView.setEnabled(true);
+		_cMapView.setUI(this);
+		_userLocationOverlay = new UserLocationOverlay(this, _cMapView);
+		_cMapView.setUserLocationOverlay(_userLocationOverlay);
+		_cMapView.getOverlays().add(_userLocationOverlay);
+		_userLocationOverlay.enableMyLocation();
+		_userLocationOverlay.runOnFirstFix(new Runnable() {
+			public void run() {
+				_mapController.animateTo(_userLocationOverlay.getMyLocation());
+			}
+		});
+		
+	} 
+
+	private void linkToService() {
+		if (_serviceConn == null) {
+			startService(_serviceIntent);
+			updateServiceStatus();
+			_serviceConn = new ShoutbreakServiceConnection();
+			bindService(_serviceIntent, _serviceConn, Context.BIND_AUTO_CREATE);
+			updateServiceStatus();
+			Log.d(getClass().getSimpleName(), "linkToService");
+		}
+	}
+
+	private void releaseService() {
+		if (_serviceConn != null) {
+			unbindService(_serviceConn);
+			_serviceConn = null;
+
+			updateServiceStatus();
+			Log.d(getClass().getSimpleName(), "releaseService");
+		} else {
+			// cannot unbind - serivce not bound
+		}
+	}
+
+	private void turnServiceOn() {
+		startService(_serviceIntent);
+		User.setBooleanPreference(_context, Vars.PREF_APP_ON_OFF_STATUS, true);
+		updateServiceStatus();
+		Log.d(getClass().getSimpleName(), "turnServiceOn");
+	}
+
+	private void turnServiceOff() {
+		_serviceIntent.setClassName("com.shoutbreak", "com.shoutbreak.ShoutbreakService");
+		stopService(_serviceIntent);
+		User.setBooleanPreference(_context, Vars.PREF_APP_ON_OFF_STATUS, false);
+		updateServiceStatus();
+		Log.d(getClass().getSimpleName(), "turnServiceOff");
+	}
+
+	private void updateServiceStatus() {
+		String bindStatus = _serviceConn == null ? "unbound" : "bound";
+		String statusText = "Service status: " + bindStatus;
+		_cStatusText.setText(statusText);
+	}
+
+	protected void onDestroy() {
+		super.onDestroy();
+		releaseService();
+		Log.d(getClass().getSimpleName(), "onDestroy");
+	}
+
+	/**
+	 * This implementation is used to receive callbacks from the remote service.
+	 */
+	private IShoutbreakServiceCallback _shoutbreakServiceCallback = new IShoutbreakServiceCallback.Stub() {
+		/**
+		 * This is called by the remote service regularly to tell us about new
+		 * values. Note that IPC calls are dispatched through a thread pool
+		 * running in each process, so the code executing here will NOT be
+		 * running in our main thread like most other things -- so, to update
+		 * the UI, we need to use a Handler to hop over there.
+		 */		
+		public void receiveShouts(Map packetIn) {
+			
+			HashMap<String, ArrayList<String>> packet = (HashMap<String, ArrayList<String>>) packetIn;
+			if (packet.containsKey(Vars.JSON_DENSITY)) {
+				ArrayList<String> al = packet.get(Vars.JSON_DENSITY);
+				float rho = Float.parseFloat(al.get(0));			
+				_cStatusText.setText("User Density: " + rho);
+				_userLocationOverlay.setPopulationDensity(rho);
+			}
+		}
+		
+	};
+
+	class ShoutbreakServiceConnection implements ServiceConnection {
+
+		public void onServiceConnected(ComponentName className, IBinder boundService) {
+			_service = IShoutbreakService.Stub.asInterface((IBinder) boundService);
+
+			// We want to monitor the service for as long as we are
+			// connected to it.
+			try {
+				_service.registerCallback(_shoutbreakServiceCallback);
+			} catch (RemoteException e) {
+				// In this case the service has crashed before we could even
+				// do anything with it; we can count on soon being
+				// disconnected (and then reconnected if it can be restarted)
+				// so there is no need to do anything here.
+			}
+
+			Log.d(getClass().getSimpleName(), "onServiceConnected()");
+		}
+
+		public void onServiceDisconnected(ComponentName className) {
+			_service = null;
+
+			updateServiceStatus();
+			Log.d(getClass().getSimpleName(), "onServiceDisconnected");
+		}
+
+	}
+
+}
