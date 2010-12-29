@@ -1,1 +1,1 @@
-Place all documentation here.
+Place client project here.
