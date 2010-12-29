@@ -39,14 +39,13 @@ public class Inbox {
 			public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
 				// TODO Auto-generated method stub
 				InboxViewHolder holder = (InboxViewHolder) view.getTag();
-				Shout entry = _shouts.get(position);
-				if (!entry.isExpandedInInbox) {
-					holder.collapsed.setVisibility(View.GONE);
-					holder.expanded.setVisibility(View.VISIBLE);
-					entry.isExpandedInInbox = true;
-				}
+				String shoutID = holder.shoutID;
+				holder.collapsed.setVisibility(View.GONE);
+		        holder.expanded.setVisibility(View.VISIBLE);
+		        _adapter.getExpandStateTracker().put(shoutID, true);
 			}
-	    });
+        });
+        
 	}
 	
 	public void refresh() {

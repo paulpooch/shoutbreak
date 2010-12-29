@@ -21,8 +21,6 @@ public class Shout {
 	public int state_flag;
 	public int score;
 	
-	public boolean isExpandedInInbox;
-	
 	public Shout() {
 		this("", "", "");
 	}
@@ -44,7 +42,6 @@ public class Shout {
 		this.approval = 0;
 		this.state_flag = Vars.SHOUT_STATE_NEW;		
 		this.score = -1;
-		this.isExpandedInInbox = false;
 	}
 	
 	public void calculateScore() {
