@@ -276,6 +276,22 @@ public class Database {
     	}
     	return null;
     }
+    
+    public boolean deleteShout(String shoutID) {
+    	SQLiteStatement update;
+    	String sql = "DELETE " + Vars.DB_TABLE_SHOUTS + " WHERE shout_id = ?";
+    	update = this._db.compileStatement(sql);
+    	update.bindString(1, shoutID);
+    	try {
+    		update.execute();
+    		result = true;
+    	} catch (Exception ex) {
+    		ErrorManager.manage(ex);
+    	} finally {
+    		update.close();	
+    	}
+       	return result;
+    }
         
     private static class OpenHelper extends SQLiteOpenHelper {
     	
