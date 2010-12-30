@@ -151,10 +151,6 @@ public class Database {
     	return 0l;
     }
     
-    public boolean deleteShout(String shoutID) {
-    	return false;
-    }
-    
     public boolean reflectVote(String shoutID, int vote) {
     	boolean result = false;
     	String sql = "UPDATE " + Vars.DB_TABLE_SHOUTS + " SET ups = ups + 1, vote = ? WHERE shout_id = ?";
@@ -282,8 +278,9 @@ public class Database {
     }
     
     public boolean deleteShout(String shoutID) {
+    	boolean result = false;
     	SQLiteStatement update;
-    	String sql = "DELETE " + Vars.DB_TABLE_SHOUTS + " WHERE shout_id = ?";
+    	String sql = "DELETE FROM " + Vars.DB_TABLE_SHOUTS + " WHERE shout_id = ?";
     	update = this._db.compileStatement(sql);
     	update.bindString(1, shoutID);
     	try {
