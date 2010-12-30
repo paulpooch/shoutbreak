@@ -151,6 +151,10 @@ public class Database {
     	return 0l;
     }
     
+    public boolean deleteShout(String shoutID) {
+    	return false;
+    }
+    
     public boolean reflectVote(String shoutID, int vote) {
     	boolean result = false;
     	String sql = "UPDATE " + Vars.DB_TABLE_SHOUTS + " SET ups = ups + 1, vote = ? WHERE shout_id = ?";

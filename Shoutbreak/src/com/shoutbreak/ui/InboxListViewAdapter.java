@@ -103,12 +103,8 @@ public class InboxListViewAdapter extends BaseAdapter {
         onDeleteClickListener = new OnClickListener() {
         	public void onClick(View view) {
         		InboxViewHolder holder = (InboxViewHolder) view.getTag();
-            	try {
-					_ui.getService().deleteShout(holder.shoutID);
-				} catch (RemoteException ex) {
-					ErrorManager.manage(ex);
-				}
-        	}
+				_ui.getUser().getInbox().deleteShout(holder.shoutID);
+			}
         };
         
     }

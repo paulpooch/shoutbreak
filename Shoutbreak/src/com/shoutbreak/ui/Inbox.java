@@ -111,4 +111,14 @@ public class Inbox {
 		refreshShout(shoutID);
 	}
 	
+	public synchronized void deleteShout(String shoutID) {
+		_db.deleteShout(shoutID);
+		for (Shout shout : _shouts) {
+			if (shout.id.equals(shoutID)) {
+				_shouts.remove(shout);
+			}
+		}
+		_adapter.updateDisplay(_shouts);
+	}
+	
 }

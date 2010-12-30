@@ -248,6 +248,10 @@ public class ShoutbreakUI extends MapActivity {
 		return false;
 	}	
 	
+	public User getUser() {
+		return _user;
+	}
+	
 	public void giveNotice(String noticeText) {
 		_cNoticeText.setText(noticeText);
 		_cNoticeBox.startAnimation(_animNoticeExpand);
