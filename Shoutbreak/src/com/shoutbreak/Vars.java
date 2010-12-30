@@ -3,7 +3,7 @@ package com.shoutbreak;
 public class Vars {
 
 	public static final String SERVER_ADDRESS = "http://app.shoutbreak.co";
-	public static final long IDLE_THREAD_LOOP_INTERVAL = 10000; // milliseconds
+	public static final long IDLE_THREAD_LOOP_INTERVAL = 20000; // milliseconds
 	
 	public static final int GPS_MIN_UPDATE_MILLISECS = 10000;
 	public static final int GPS_MIN_UPDATE_METERS = 100;
@@ -37,7 +37,7 @@ public class Vars {
 	public static final int NULL_PTS = 0;
 	public static final int NULL_SCORE = 0;
 	public static final int NULL_UPS = 0;
-	public static final int NULL_VOTE = -1;
+	public static final int NULL_VOTE = 0;
 	
 	// PREFERENCES ////////////////////////////////////////////////////////////
 	
@@ -65,6 +65,7 @@ public class Vars {
 	// from UIThread & ServiceThread
 	public static final int MESSAGE_IDLE_EXIT = 3;
 	public static final int MESSAGE_REPOST_IDLE_DELAYED = 14;
+	public static final int MESSAGE_STATE_DELETE_SHOUT = 15;
 	public static final int MESSAGE_STATE_INIT = 4;
 	public static final int MESSAGE_STATE_IDLE = 5;
 	public static final int MESSAGE_STATE_NEW_USER = 6;

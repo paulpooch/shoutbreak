@@ -55,7 +55,7 @@
 
 		<TextView android:id="@+id/tvTimeAgoE" android:layout_width="wrap_content"
 			android:layout_height="wrap_content" android:layout_below="@id/llScoreE"
-			android:layout_alignParentRight="true" android:textColor="#e155f0"
+			android:layout_alignParentRight="true" android:textColor="#e155f0" android:gravity="right"
 			android:textSize="10dp" android:layout_marginRight="5dp" />
 		<RelativeLayout android:layout_width="wrap_content"
 			android:id="@+id/rlVoteBox" android:background="@drawable/inbox_button_border"

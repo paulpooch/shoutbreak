@@ -20,4 +20,5 @@ interface IShoutbreakService {
 	
 	void vote(String shoutID, int vote);
 	
+	void deleteShout(String shoutID);
 }

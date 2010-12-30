@@ -145,6 +145,15 @@ public class ShoutbreakService extends Service {
 			runOnServiceThread(message);
 		}
 		
+		public void deleteShout(String shoutID) {
+			MessageObject messageObject = new MessageObject();
+			messageObject.args = new String[] { shoutID };
+			Message message = new Message();
+			message.what = Vars.MESSAGE_STATE_DELETE_SHOUT;
+			message.obj = messageObject;
+			runOnServiceThread(message);
+		}
+		
 		public void registerCallback(IShoutbreakServiceCallback cb) {
 			if (cb != null)
 				_uiCallbacks.register(cb);

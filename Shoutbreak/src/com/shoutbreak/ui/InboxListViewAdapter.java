@@ -31,9 +31,11 @@ public class InboxListViewAdapter extends BaseAdapter {
     public OnClickListener onCollapseClickListener;
     public OnClickListener onVoteUpClickListener;
     public OnClickListener onVoteDownClickListener;
+    public OnClickListener onDeleteClickListener;
     private ShoutbreakUI _ui;
-    private HashMap<String, Boolean> _expandStateTracker;
-    private HashMap<String, String> _prettyTimeAgoCache;
+    private HashMap<String, Boolean> _cacheExpandState;
+    private HashMap<String, String> _cachePrettyTimeAgo;
+    private HashMap<String, Integer> _cacheVoteTemporary;
     
     static class InboxViewHolder {
     	String shoutID;
@@ -43,14 +45,16 @@ public class InboxListViewAdapter extends BaseAdapter {
     	TextView timeAgoE;
     	TextView scoreC;
     	TextView scoreE;
+    	TextView voteLabelE;
     	RelativeLayout collapsed;
     	RelativeLayout expanded;
     	ImageButton btnVoteUp;
     	ImageButton btnVoteDown;
+    	ImageButton btnDelete;
     }
     
-    public HashMap<String, Boolean> getExpandStateTracker() {
-    	return _expandStateTracker;
+    public HashMap<String, Boolean> getCacheExpandState() {
+    	return _cacheExpandState;
     }
     
     public InboxListViewAdapter(Context context, ShoutbreakUI ui, List<Shout> displayedShouts) {
@@ -59,23 +63,25 @@ public class InboxListViewAdapter extends BaseAdapter {
         _displayedShouts = displayedShouts;
         _prettyTime = new PrettyTime();
         _inflater = (LayoutInflater) _context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        _expandStateTracker = new HashMap<String, Boolean>();
-        _prettyTimeAgoCache = new HashMap<String, String>();
+        _cacheExpandState = new HashMap<String, Boolean>();
+        _cachePrettyTimeAgo = new HashMap<String, String>();
+        _cacheVoteTemporary = new HashMap<String, Integer>();
         
         onCollapseClickListener = new OnClickListener() {
         	public void onClick(View view) {
         		InboxViewHolder holder = (InboxViewHolder) view.getTag();
         		holder.collapsed.setVisibility(View.VISIBLE);
 		        holder.expanded.setVisibility(View.GONE);
-		        _expandStateTracker.put(holder.shoutID, false);
+		        _cacheExpandState.put(holder.shoutID, false);
             }        	
         };
         
         onVoteUpClickListener = new OnClickListener() {
         	public void onClick(View view) {
-        		String shoutID = (String) view.getTag();
+        		InboxViewHolder holder = (InboxViewHolder) view.getTag();
+        		_cacheVoteTemporary.put(holder.shoutID, Vars.SHOUT_VOTE_UP);
             	try {
-					_ui.getService().vote(shoutID, Vars.SHOUT_VOTE_UP);
+					_ui.getService().vote(holder.shoutID, Vars.SHOUT_VOTE_UP);
 				} catch (RemoteException ex) {
 					ErrorManager.manage(ex);
 				}
@@ -84,9 +90,21 @@ public class InboxListViewAdapter extends BaseAdapter {
         
         onVoteDownClickListener = new OnClickListener() {
         	public void onClick(View view) {
-        		String shoutID = (String) view.getTag();
+        		InboxViewHolder holder = (InboxViewHolder) view.getTag();
+        		_cacheVoteTemporary.put(holder.shoutID, Vars.SHOUT_VOTE_DOWN);
             	try {
-					_ui.getService().vote(shoutID, Vars.SHOUT_VOTE_DOWN);
+					_ui.getService().vote(holder.shoutID, Vars.SHOUT_VOTE_DOWN);
+				} catch (RemoteException ex) {
+					ErrorManager.manage(ex);
+				}
+        	}
+        };
+        
+        onDeleteClickListener = new OnClickListener() {
+        	public void onClick(View view) {
+        		InboxViewHolder holder = (InboxViewHolder) view.getTag();
+            	try {
+					_ui.getService().deleteShout(holder.shoutID);
 				} catch (RemoteException ex) {
 					ErrorManager.manage(ex);
 				}
@@ -128,38 +146,24 @@ public class InboxListViewAdapter extends BaseAdapter {
         	holder.scoreE = (TextView) convertView.findViewById(R.id.tvScoreE);
         	holder.collapsed = (RelativeLayout) convertView.findViewById(R.id.rlCollapsed);
         	holder.expanded = (RelativeLayout) convertView.findViewById(R.id.rlExpanded);
+        	holder.voteLabelE= (TextView) convertView.findViewById(R.id.tvVoteLabel);
         	holder.btnVoteUp = (ImageButton) convertView.findViewById(R.id.btnVoteUp);
         	holder.btnVoteUp.setOnClickListener(onVoteUpClickListener);
         	holder.btnVoteDown = (ImageButton) convertView.findViewById(R.id.btnVoteDown);
         	holder.btnVoteDown.setOnClickListener(onVoteDownClickListener);
+        	holder.btnDelete = (ImageButton) convertView.findViewById(R.id.btnDelete);
+        	holder.btnDelete.setOnClickListener(onDeleteClickListener);
         	holder.expanded.setOnClickListener(onCollapseClickListener);
         	holder.expanded.setTag(holder);
         	convertView.setTag(holder);
         } else {
         	holder = (InboxViewHolder) convertView.getTag();
         }
-                
-        holder.textC.setText(entry.text);
-        holder.textE.setText(entry.text);
-        holder.scoreC.setText(entry.score + "");
-        holder.scoreE.setText(entry.score + "");
-        holder.shoutID = entry.id;
-        
-        // Can shout be voted on?
-        if (entry.open) {
-        	holder.btnVoteUp.setEnabled(true);
-        	holder.btnVoteUp.setTag(entry.id);
-        	holder.btnVoteDown.setEnabled(true);
-        	holder.btnVoteDown.setTag(entry.id);
-        } else {
-        	holder.btnVoteUp.setEnabled(false);
-        	holder.btnVoteDown.setEnabled(false);
-        }
         
         // Is shout expanded?
         boolean isExpanded = false;
-        if (_expandStateTracker.containsKey(entry.id)) {
-        	isExpanded = _expandStateTracker.get(entry.id);
+        if (_cacheExpandState.containsKey(entry.id)) {
+        	isExpanded = _cacheExpandState.get(entry.id);
         }
         if (isExpanded) {
         	holder.collapsed.setVisibility(View.GONE);
@@ -170,20 +174,61 @@ public class InboxListViewAdapter extends BaseAdapter {
         }
         
         // How long ago was shout sent?
+        // TODO: this caching can become inaccurate
         String timeAgo = "";
-        if (_prettyTimeAgoCache.containsKey(entry.id)) {
-        	timeAgo = _prettyTimeAgoCache.get(entry.id);
+        if (_cachePrettyTimeAgo.containsKey(entry.id)) {
+        	timeAgo = _cachePrettyTimeAgo.get(entry.id);
         } else {
         	try {
        			timeAgo = _prettyTime.format(ISO8601DateParser.parse(entry.timestamp));
-       			_prettyTimeAgoCache.put(entry.id, timeAgo);
+       			_cachePrettyTimeAgo.put(entry.id, timeAgo);
        		} catch (ParseException ex) {
        			ErrorManager.manage(ex);
        		}
         }
-		holder.timeAgoC.setText(timeAgo);
+
+        // Can shout be voted on?
+        boolean isVotingAllowed = true;
+        if (entry.open) {
+        	int vote = entry.vote;
+        	if (_cacheVoteTemporary.containsKey(entry.id)) {
+        		vote |= _cacheVoteTemporary.get(entry.id);
+        	}
+        	if (vote != Vars.NULL_VOTE) {
+    	      	holder.voteLabelE.setText("ALREADY VOTED" + entry.open +" | "+vote);
+    	      	isVotingAllowed = false;
+        	} else {
+        		holder.voteLabelE.setText("VOTE" + entry.open +" | "+vote);
+    	      	isVotingAllowed = true;
+        	}
+        } else {
+        	holder.voteLabelE.setText("VOTING CLOSED");
+        	isVotingAllowed = false;
+        }
+        if (isVotingAllowed) {
+        	holder.btnVoteUp.setEnabled(true);
+        	holder.btnVoteUp.setTag(holder);
+        	holder.btnVoteDown.setEnabled(true);
+        	holder.btnVoteDown.setTag(holder);
+        } else {
+        	holder.btnVoteUp.setEnabled(false);
+        	holder.btnVoteDown.setEnabled(false);
+        }
+        
+        // Is there a score?
+        String score = Integer.toString(entry.score);
+        if (entry.score == Vars.NULL_APPROVAL || entry.score == Vars.NULL_SCORE) {
+        	score = "?";
+        }
+        
+        holder.textC.setText(entry.text);
+        holder.textE.setText(entry.text);
+        holder.scoreC.setText(score);
+        holder.scoreE.setText(score);
+        holder.shoutID = entry.id;
+        holder.timeAgoC.setText(timeAgo);
 		holder.timeAgoE.setText(timeAgo);
-		  
+		
 		return convertView;
     }
     

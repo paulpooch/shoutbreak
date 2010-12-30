@@ -1,6 +1,6 @@
 /*
  * This file is auto-generated.  DO NOT MODIFY.
- * Original file: D:\\work\\shoutbreak_client\\001\\Shoutbreak\\src\\com\\shoutbreak\\IShoutbreakServiceCallback.aidl
+ * Original file: D:\\work\\shoutbreak_git\\client\\Shoutbreak\\src\\com\\shoutbreak\\IShoutbreakServiceCallback.aidl
  */
 package com.shoutbreak;
 /**

@@ -1,6 +1,6 @@
 /*
  * This file is auto-generated.  DO NOT MODIFY.
- * Original file: D:\\work\\shoutbreak_client\\001\\Shoutbreak\\src\\com\\shoutbreak\\IShoutbreakService.aidl
+ * Original file: D:\\work\\shoutbreak_git\\client\\Shoutbreak\\src\\com\\shoutbreak\\IShoutbreakService.aidl
  */
 package com.shoutbreak;
 public interface IShoutbreakService extends android.os.IInterface
@@ -77,6 +77,15 @@ _arg0 = data.readString();
 int _arg1;
 _arg1 = data.readInt();
 this.vote(_arg0, _arg1);
+reply.writeNoException();
+return true;
+}
+case TRANSACTION_deleteShout:
+{
+data.enforceInterface(DESCRIPTOR);
+java.lang.String _arg0;
+_arg0 = data.readString();
+this.deleteShout(_arg0);
 reply.writeNoException();
 return true;
 }
@@ -167,11 +176,27 @@ _reply.recycle();
 _data.recycle();
 }
 }
+public void deleteShout(java.lang.String shoutID) throws android.os.RemoteException
+{
+android.os.Parcel _data = android.os.Parcel.obtain();
+android.os.Parcel _reply = android.os.Parcel.obtain();
+try {
+_data.writeInterfaceToken(DESCRIPTOR);
+_data.writeString(shoutID);
+mRemote.transact(Stub.TRANSACTION_deleteShout, _data, _reply, 0);
+_reply.readException();
+}
+finally {
+_reply.recycle();
+_data.recycle();
+}
+}
 }
 static final int TRANSACTION_registerCallback = (android.os.IBinder.FIRST_CALL_TRANSACTION + 0);
 static final int TRANSACTION_unregisterCallback = (android.os.IBinder.FIRST_CALL_TRANSACTION + 1);
 static final int TRANSACTION_shout = (android.os.IBinder.FIRST_CALL_TRANSACTION + 2);
 static final int TRANSACTION_vote = (android.os.IBinder.FIRST_CALL_TRANSACTION + 3);
+static final int TRANSACTION_deleteShout = (android.os.IBinder.FIRST_CALL_TRANSACTION + 4);
 }
 /**
      * Often you want to allow a service to call back to its clients.
@@ -185,4 +210,5 @@ public void registerCallback(com.shoutbreak.IShoutbreakServiceCallback cb) throw
 public void unregisterCallback(com.shoutbreak.IShoutbreakServiceCallback cb) throws android.os.RemoteException;
 public void shout(java.lang.String shoutText) throws android.os.RemoteException;
 public void vote(java.lang.String shoutID, int vote) throws android.os.RemoteException;
+public void deleteShout(java.lang.String shoutID) throws android.os.RemoteException;
 }

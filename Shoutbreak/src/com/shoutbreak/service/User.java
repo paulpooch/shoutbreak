@@ -47,6 +47,7 @@ public class User {
 	private CellDensity _cellDensity;
 	private LocationTracker _locationTracker;
 	protected Inbox _inbox;
+	private int _shoutsJustReceived;
 
 	public User(Context c) {
 		_context = c;
@@ -58,6 +59,7 @@ public class User {
 
 	public void initializeUser() {
 		_passwordExists = false;
+		_shoutsJustReceived = 0;
 		_auth = "default"; // we don't have auth yet... just give us nonce
 		HashMap<String, String> userSettings = _db.getUserSettings();
 		if (userSettings.containsKey(Vars.KEY_USER_PW)) {
@@ -68,6 +70,14 @@ public class User {
 		}
 		_cellDensity = new CellDensity();
 		_cellDensity.isSet = false;
+	}
+	
+	public void setShoutsJustReceived(int i) {
+		_shoutsJustReceived = i;
+	}
+	
+	public int getShoutsJustReceived() {
+		return _shoutsJustReceived;
 	}
 	
 	public double getLatitude() {

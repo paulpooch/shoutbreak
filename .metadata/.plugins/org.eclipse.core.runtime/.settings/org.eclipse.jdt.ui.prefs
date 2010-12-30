@@ -1,4 +1,4 @@
-#Thu Oct 14 23:22:36 EDT 2010
+#Wed Dec 29 04:58:50 EST 2010
 content_assist_proposals_foreground=0,0,0
 spelling_locale_initialized=true
 spelling_ignore_urls=true
@@ -29,6 +29,6 @@ org.eclipse.jdt.ui.formatterprofiles=<?xml version\="1.0" encoding\="UTF-8" stan
 useQuickDiffPrefPage=true
 org.eclipse.jdt.ui.text.custom_templates=<?xml version\="1.0" encoding\="UTF-8" standalone\="no"?><templates/>
 formatter_settings_version=11
-content_assist_lru_history=<?xml version\="1.0" encoding\="UTF-8" standalone\="no"?><history maxLHS\="100" maxRHS\="10"><lhs name\="java.lang.Enum"><rhs name\="android.graphics.Path$Direction"/></lhs></history>
+content_assist_lru_history=<?xml version\="1.0" encoding\="UTF-8" standalone\="no"?><history maxLHS\="100" maxRHS\="10"><lhs name\="java.lang.Enum"><rhs name\="android.graphics.Path$Direction"/></lhs><lhs name\="java.lang.Cloneable"><rhs name\="java.util.HashMap"/></lhs><lhs name\="java.util.AbstractMap"><rhs name\="java.util.HashMap"/></lhs><lhs name\="java.util.Map"><rhs name\="java.util.HashMap"/></lhs><lhs name\="java.util.HashMap"><rhs name\="java.util.HashMap"/></lhs></history>
 spelling_ignore_sentence=true
 org.eclipse.jdt.ui.text.code_templates_migrated=true

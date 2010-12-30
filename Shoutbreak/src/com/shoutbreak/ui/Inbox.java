@@ -42,7 +42,7 @@ public class Inbox {
 				String shoutID = holder.shoutID;
 				holder.collapsed.setVisibility(View.GONE);
 		        holder.expanded.setVisibility(View.VISIBLE);
-		        _adapter.getExpandStateTracker().put(shoutID, true);
+		        _adapter.getCacheExpandState().put(shoutID, true);
 			}
         });
         

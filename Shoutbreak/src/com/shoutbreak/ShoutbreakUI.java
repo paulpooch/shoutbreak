@@ -335,10 +335,17 @@ public class ShoutbreakUI extends MapActivity {
 				case Vars.SEC_RECEIVE_SHOUTS: {
 					CellDensity cellDensity = _user.getCellDensity();
 					_userLocationOverlay.setPopulationDensity(cellDensity.density);
-					_user.getInbox().refresh();
+					int newShouts = _user.getShoutsJustReceived();
+					if (newShouts > 0) {
+						String notice = "Just heard " + newShouts + " new Shout";
+						if (newShouts > 1) {
+							notice += "s"; // plural is dumb
+						}
+						giveNotice(notice);
+					}
 				}
 				case Vars.SEC_VOTE_COMPLETED: {
-
+					_user.getInbox().refresh();
 				}
 			}
 		}

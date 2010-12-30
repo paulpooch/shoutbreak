@@ -153,12 +153,13 @@ public class Database {
     
     public boolean reflectVote(String shoutID, int vote) {
     	boolean result = false;
-    	String sql = "UPDATE " + Vars.DB_TABLE_SHOUTS + " SET ups = ups + 1 WHERE shout_id = ?";
+    	String sql = "UPDATE " + Vars.DB_TABLE_SHOUTS + " SET ups = ups + 1, vote = ? WHERE shout_id = ?";
     	if (vote < 0) {
-    		sql = "UPDATE " + Vars.DB_TABLE_SHOUTS + " SET downs = downs + 1 WHERE shout_id = ?";
+    		sql = "UPDATE " + Vars.DB_TABLE_SHOUTS + " SET downs = downs + 1, vote = ? WHERE shout_id = ?";
     	}
         SQLiteStatement update = this._db.compileStatement(sql);
-    	update.bindString(1, shoutID);
+        update.bindLong(1, vote);
+        update.bindString(2, shoutID);
     	try {
     		update.execute();
     		result = true;
