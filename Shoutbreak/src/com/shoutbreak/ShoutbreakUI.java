@@ -61,9 +61,11 @@ public class ShoutbreakUI extends MapActivity {
 	protected LinearLayout _cRow2;
 	protected RelativeLayout _cRow3;
 	protected RelativeLayout _cRow4;
-	protected LinearLayout _cRow6;
+	protected RelativeLayout _cRow6;
 	protected RelativeLayout _cNoticeBox;
+	protected RelativeLayout _cNoticeBoxInbox;
 	protected TextView _cNoticeText;
+	protected TextView _cNoticeTextInbox;
 	protected Animation _animNoticeExpand;
 	protected Animation _animNoticeShowText;
 	
@@ -110,13 +112,15 @@ public class ShoutbreakUI extends MapActivity {
 		_cStatusText = (TextView) findViewById(R.id.tvStatus);		
 		_cNoticeBox = (RelativeLayout) findViewById(R.id.rlNotice);
 		_cNoticeText = (TextView) findViewById(R.id.tvNotice);
+		_cNoticeBoxInbox = (RelativeLayout) findViewById(R.id.r6Notice);
+		_cNoticeTextInbox = (TextView) findViewById(R.id.tvNoticeInbox);
 		_cInboxListView = (ListView)findViewById(R.id.lvInbox);
 		
 		_cRow1 = (LinearLayout) findViewById(R.id.llRow1);
 		_cRow2 = (LinearLayout) findViewById(R.id.llRow2);
 		_cRow3 = (RelativeLayout) findViewById(R.id.rlRow3);
 		_cRow4 = (RelativeLayout) findViewById(R.id.rlRow4);
-		_cRow6 = (LinearLayout) findViewById(R.id.llRow6);
+		_cRow6 = (RelativeLayout) findViewById(R.id.llRow6);
 		
 		_cOnButton.setHeight(h16);
 		_cOffButton.setHeight(h16);
@@ -253,11 +257,16 @@ public class ShoutbreakUI extends MapActivity {
 	}
 	
 	public void giveNotice(String noticeText) {
+		// map notice
 		_cNoticeText.setText(noticeText);
 		_cNoticeBox.startAnimation(_animNoticeExpand);
 		_cNoticeText.setTextColor(Color.WHITE);
 		_cNoticeText.startAnimation(_animNoticeShowText);
-
+		// inbox notice
+		_cNoticeTextInbox.setText(noticeText);
+		_cNoticeBoxInbox.startAnimation(_animNoticeExpand);
+		_cNoticeTextInbox.setTextColor(Color.WHITE);
+		_cNoticeTextInbox.startAnimation(_animNoticeShowText);
 	}
 	
 	public IShoutbreakService getService() {
@@ -269,7 +278,7 @@ public class ShoutbreakUI extends MapActivity {
 	}
 	
 	protected void initMap() {
-		
+
 		_userLocationOverlay = new UserLocationOverlay(this, _cMapView);
 		_mapController.setZoom(Vars.DEFAULT_ZOOM_LEVEL);
 		_cMapView.setClickable(true);
@@ -332,7 +341,7 @@ public class ShoutbreakUI extends MapActivity {
 		public void serviceEventComplete(int serviceEventCode) {
 			switch (serviceEventCode) {
 				case Vars.SEC_SHOUT_SENT: {
-					giveNotice("Shout successful");
+					giveNotice("shout successful");
 					_cShoutText.setText("");
 					break;
 				}
@@ -341,7 +350,7 @@ public class ShoutbreakUI extends MapActivity {
 					_userLocationOverlay.setPopulationDensity(cellDensity.density);
 					int newShouts = _user.getShoutsJustReceived();
 					if (newShouts > 0) {
-						String notice = "Just heard " + newShouts + " new Shout";
+						String notice = "just heard " + newShouts + " new Shout";
 						if (newShouts > 1) {
 							notice += "s"; // plural is dumb
 						}

@@ -102,7 +102,7 @@ public class InboxListViewAdapter extends BaseAdapter {
         
         onDeleteClickListener = new OnClickListener() {
         	public void onClick(View view) {
-        		InboxViewHolder holder = (InboxViewHolder) view.getTag();
+        		InboxViewHolder holder = (InboxViewHolder) view.getTag();        		
 				_ui.getUser().getInbox().deleteShout(holder.shoutID);
 			}
         };
@@ -224,6 +224,7 @@ public class InboxListViewAdapter extends BaseAdapter {
         holder.shoutID = entry.id;
         holder.timeAgoC.setText(timeAgo);
 		holder.timeAgoE.setText(timeAgo);
+		holder.btnDelete.setTag(holder);
 		
 		return convertView;
     }

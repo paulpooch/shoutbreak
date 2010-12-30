@@ -2,7 +2,6 @@ package com.shoutbreak;
 
 import java.util.Date;
 
-
 public class Shout {
 
 	public String id;

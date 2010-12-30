@@ -30,13 +30,13 @@ public final class R {
     }
     public static final class id {
         public static final int btnDelete=0x7f060011;
-        public static final int btnInbox=0x7f060022;
+        public static final int btnInbox=0x7f060024;
         public static final int btnOff=0x7f060015;
         public static final int btnOn=0x7f060014;
-        public static final int btnSettings=0x7f060023;
+        public static final int btnSettings=0x7f060025;
         public static final int btnShout=0x7f06001d;
         public static final int btnShoutBack=0x7f06000f;
-        public static final int btnShouts=0x7f060021;
+        public static final int btnShouts=0x7f060023;
         public static final int btnVoteDown=0x7f06000d;
         public static final int btnVoteUp=0x7f06000c;
         public static final int cmvMap=0x7f060019;
@@ -48,6 +48,7 @@ public final class R {
         public static final int llScoreC=0x7f060001;
         public static final int llScoreE=0x7f060006;
         public static final int lvInbox=0x7f060020;
+        public static final int r6Notice=0x7f060021;
         public static final int rlCollapsed=0x7f060000;
         public static final int rlExpanded=0x7f060005;
         public static final int rlNotice=0x7f06001a;
@@ -56,6 +57,7 @@ public final class R {
         public static final int rlVoteBox=0x7f06000a;
         public static final int tvDeleteLabel=0x7f060010;
         public static final int tvNotice=0x7f06001b;
+        public static final int tvNoticeInbox=0x7f060022;
         public static final int tvReplyLabel=0x7f06000e;
         public static final int tvScoreC=0x7f060002;
         public static final int tvScoreE=0x7f060007;

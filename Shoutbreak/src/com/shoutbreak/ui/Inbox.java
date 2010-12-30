@@ -104,7 +104,6 @@ public class Inbox {
 		shout.open = jsonScore.optInt(Vars.JSON_SHOUT_OPEN, 0) == 1 ? true : Vars.NULL_OPEN;
 		_db.updateScore(shout);
 	}
-
 	
 	public synchronized void reflectVote(String shoutID, int vote) {
 		_db.reflectVote(shoutID, vote);
@@ -118,6 +117,7 @@ public class Inbox {
 				_shouts.remove(shout);
 			}
 		}
+		_ui.giveNotice("shout deleted");
 		_adapter.updateDisplay(_shouts);
 	}
 	
