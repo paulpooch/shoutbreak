@@ -91,6 +91,7 @@ public class Inbox {
 		shout.state_flag = Vars.SHOUT_STATE_NEW;
 		shout.score = Vars.NULL_SCORE;		
 		_db.addShoutToInbox(shout);
+		_ui.tempNotify("shout received", "Shoutbreak", "received # new shouts");
 	}
 	
 	public synchronized void updateScore(JSONObject jsonScore) {

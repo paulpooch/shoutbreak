@@ -28,6 +28,8 @@ public class Vars {
 	public static final int SHOUT_VOTE_UP = 1;
 	public static final int SHOUT_VOTE_DOWN = -1;	
 	
+	public static final int APP_NOTIFICATION_ID = 0;
+	
 	// JSON FALLBACKS 
 	// what we assume if value not returned by server	
 	public static final int NULL_APPROVAL = -1;

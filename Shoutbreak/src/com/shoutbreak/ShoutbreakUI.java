@@ -8,6 +8,9 @@ import com.shoutbreak.service.User;
 import com.shoutbreak.ui.CustomMapView;
 import com.shoutbreak.ui.UserLocationOverlay;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -70,7 +73,9 @@ public class ShoutbreakUI extends MapActivity {
 	protected Animation _animNoticeShowText;
 	
 	protected UserLocationOverlay _userLocationOverlay;
-	protected MapController _mapController;	
+	protected MapController _mapController;
+	
+	protected NotificationManager _notificationManager;
 	
 	///////////////////////////////////////////////////////////////////////////
 	// LIFECYCLE METHODS
@@ -135,9 +140,12 @@ public class ShoutbreakUI extends MapActivity {
 		
 		_mapController = _cMapView.getController();
 		
+		_notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+		
 		// Setup User
 		ShoutbreakApplication app = (ShoutbreakApplication)this.getApplication();
-		if (app.getUser() == null) {
+		_user = app.getUser();
+		if (_user == null) {
 			_user = app.createUser(_context);
 			_user.initializeInbox(this, _cInboxListView);
 		}
@@ -254,6 +262,14 @@ public class ShoutbreakUI extends MapActivity {
 	
 	public User getUser() {
 		return _user;
+	}
+	
+	public void tempNotify(String alert, String title, String message) {
+		Intent intent = new Intent(this, ShoutbreakUI.class);
+	    Notification notification = new Notification(R.drawable.icon, alert, System.currentTimeMillis());
+	    notification.setLatestEventInfo(this, title, message,
+	    		PendingIntent.getActivity(this.getBaseContext(), 0, intent, PendingIntent.FLAG_CANCEL_CURRENT));
+	    _notificationManager.notify(Vars.APP_NOTIFICATION_ID, notification);
 	}
 	
 	public void giveNotice(String noticeText) {
