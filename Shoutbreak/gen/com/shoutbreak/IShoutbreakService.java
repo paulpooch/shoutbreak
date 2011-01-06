@@ -1,6 +1,6 @@
 /*
  * This file is auto-generated.  DO NOT MODIFY.
- * Original file: D:\\work\\shoutbreak_git\\client\\Shoutbreak\\src\\com\\shoutbreak\\IShoutbreakService.aidl
+ * Original file: C:\\Users\\John\\Desktop\\Android\\shoutbreak\\Shoutbreak\\src\\com\\shoutbreak\\IShoutbreakService.aidl
  */
 package com.shoutbreak;
 public interface IShoutbreakService extends android.os.IInterface

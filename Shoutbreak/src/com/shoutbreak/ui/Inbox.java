@@ -42,6 +42,11 @@ public class Inbox {
 				String shoutID = holder.shoutID;
 				holder.collapsed.setVisibility(View.GONE);
 		        holder.expanded.setVisibility(View.VISIBLE);
+				// Mark shout as read/unread
+		        if (_shouts.get(position).state_flag == Vars.SHOUT_STATE_NEW) {
+		        	markShoutAsRead(shoutID);
+		        	refresh();
+		    	}
 		        _adapter.getCacheExpandState().put(shoutID, true);
 			}
         });
@@ -72,6 +77,16 @@ public class Inbox {
 		return result;
 	}
 	
+	public ArrayList<String> getNewShoutIDs() {
+		ArrayList<String> result = new ArrayList<String>();
+		for (Shout shout : _shouts) {
+			if (shout.state_flag == Vars.SHOUT_STATE_NEW) {
+				result.add(shout.id);
+			}
+		}
+		return result;
+	}
+	
 	public synchronized void addShout(JSONObject jsonShout) {
 		Shout shout = new Shout();
 		shout.id = jsonShout.optString(Vars.JSON_SHOUT_ID);
@@ -91,7 +106,8 @@ public class Inbox {
 		shout.state_flag = Vars.SHOUT_STATE_NEW;
 		shout.score = Vars.NULL_SCORE;		
 		_db.addShoutToInbox(shout);
-		_ui.tempNotify("shout received", "Shoutbreak", "received # new shouts");
+		int numNew = getNewShoutIDs().size() + 1;
+		_ui.tempNotify("shout received", "Shoutbreak", "you have " + numNew + " new shout" + (numNew > 1 ? "s" : ""));
 	}
 	
 	public synchronized void updateScore(JSONObject jsonScore) {
@@ -109,6 +125,12 @@ public class Inbox {
 	public synchronized void reflectVote(String shoutID, int vote) {
 		_db.reflectVote(shoutID, vote);
 		refreshShout(shoutID);
+	}
+	
+	public synchronized void markShoutAsRead(String shoutID) {
+		_db.markShoutAsRead(shoutID);
+		refreshShout(shoutID);
+		_adapter.updateDisplay(_shouts);
 	}
 	
 	public synchronized void deleteShout(String shoutID) {

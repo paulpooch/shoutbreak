@@ -12,6 +12,7 @@ import com.shoutbreak.Vars;
 import com.shoutbreak.service.ErrorManager;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.os.RemoteException;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -103,7 +104,7 @@ public class InboxListViewAdapter extends BaseAdapter {
         onDeleteClickListener = new OnClickListener() {
         	public void onClick(View view) {
         		InboxViewHolder holder = (InboxViewHolder) view.getTag();        		
-				_ui.getUser().getInbox().deleteShout(holder.shoutID);
+        		_ui.getUser().getInbox().deleteShout(holder.shoutID);
 			}
         };
         
@@ -216,6 +217,13 @@ public class InboxListViewAdapter extends BaseAdapter {
         if (entry.score == Vars.NULL_APPROVAL || entry.score == Vars.NULL_SCORE) {
         	score = "?";
         }
+        
+        // Mark shout as read/unread
+        if (entry.state_flag == Vars.SHOUT_STATE_NEW) {
+    		holder.textC.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+    	} else {
+    		holder.textC.setTypeface(Typeface.DEFAULT, Typeface.NORMAL);
+    	}
         
         holder.textC.setText(entry.text);
         holder.textE.setText(entry.text);

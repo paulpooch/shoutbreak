@@ -277,6 +277,24 @@ public class Database {
     	return null;
     }
     
+    public boolean markShoutAsRead(String shoutID) {
+    	boolean result = false;
+    	SQLiteStatement update;
+    	String sql = "UPDATE " + Vars.DB_TABLE_SHOUTS + " SET state_flag = ? WHERE shout_id = ?";
+    	update = this._db.compileStatement(sql);
+    	update.bindString(1, Vars.SHOUT_STATE_READ + "");
+    	update.bindString(2, shoutID);
+    	try {
+    		update.execute();
+    		result = true;
+    	} catch (Exception ex) {
+    		ErrorManager.manage(ex);
+    	} finally {
+    		update.close();	
+    	}
+       	return result;  	
+    }
+    
     public boolean deleteShout(String shoutID) {
     	boolean result = false;
     	SQLiteStatement update;
