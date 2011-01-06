@@ -8,11 +8,14 @@ import com.shoutbreak.service.User;
 public class ShoutbreakApplication extends Application {
 
 	private User _user = null;
-
-	public User createUser(Context context) {
-		_user = new User(context);
+	
+	public User getUser(Context context) {
+		if (_user == null) {
+			_user = new User(context);
+		}
 		return _user;
 	}
+	
 	
 	public User getUser() {
 		return _user;

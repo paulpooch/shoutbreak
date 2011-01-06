@@ -62,15 +62,10 @@
 <part id="24"/>
 <part id="25"/>
 <part id="26"/>
-<part id="27"/>
 </presentation>
 </folder>
 </info>
 </editorArea>
-<editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="InboxListViewAdapter.java" partName="InboxListViewAdapter.java" path="D:/work/shoutbreak_git/client/Shoutbreak/src/com/shoutbreak/ui/InboxListViewAdapter.java" title="InboxListViewAdapter.java" tooltip="Shoutbreak/src/com/shoutbreak/ui/InboxListViewAdapter.java" workbook="DefaultEditorWorkbook">
-<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/Shoutbreak/src/com/shoutbreak/ui/InboxListViewAdapter.java"/>
-<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="3983" selectionTopPixel="1411"/>
-</editor>
 <editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="Inbox.java" partName="Inbox.java" path="D:/work/shoutbreak_git/client/Shoutbreak/src/com/shoutbreak/ui/Inbox.java" title="Inbox.java" tooltip="Shoutbreak/src/com/shoutbreak/ui/Inbox.java" workbook="DefaultEditorWorkbook">
 <input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/Shoutbreak/src/com/shoutbreak/ui/Inbox.java"/>
 <editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="3868" selectionTopPixel="1151"/>
@@ -527,10 +522,8 @@
 <editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/Shoutbreak/src/com/shoutbreak/ui/UserLocationOverlay.java"/>
 <editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/Shoutbreak/src/com/shoutbreak/ui/CustomMapView.java"/>
 <editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/Shoutbreak/src/com/shoutbreak/ui/CustomItemizedOverlay.java"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/Shoutbreak/src/com/shoutbreak/ui/InboxListViewAdapter.java"/>
 </editors>
-<item historyLabel="InboxListViewAdapter.java" index="0">
-<position info="not_deleted" x="1186" y="0"/>
-</item>
 <item historyLabel="Inbox.java" index="1">
 <position info="not_deleted" x="3703" y="7"/>
 </item>
@@ -675,9 +668,10 @@
 <item historyLabel="CustomItemizedOverlay.java" index="14">
 <position info="not_deleted" x="889" y="0"/>
 </item>
-<item active="true" historyLabel="Database.java" index="11">
+<item historyLabel="Database.java" index="11">
 <position info="not_deleted" x="5764" y="0"/>
 </item>
+<item active="true" historyLabel="InboxListViewAdapter.java" index="15"/>
 </navigationHistory>
 <input factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/" type="8"/>
 </page>

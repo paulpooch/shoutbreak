@@ -90,6 +90,7 @@ public class ShoutbreakUI extends MapActivity {
 		setContentView(R.layout.main);
 
 		_ui = this;
+		_user = null;
 		_context = getApplicationContext();
 		_serviceIntent = new Intent();
 		_serviceIntent.setClassName("com.shoutbreak", "com.shoutbreak.ShoutbreakService");
@@ -144,11 +145,10 @@ public class ShoutbreakUI extends MapActivity {
 		
 		// Setup User
 		ShoutbreakApplication app = (ShoutbreakApplication)this.getApplication();
-		//_user = app.getUser();
-		//if (_user == null) {
-			_user = app.createUser(_context);
+		if (_user == null) {
+			_user = app.getUser(_context);
 			_user.initializeInbox(this, _cInboxListView);
-		//}
+		}
 		
 		//Log.e("USER", "USER: " + _user.getAuth());
 		
