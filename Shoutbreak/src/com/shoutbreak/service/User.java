@@ -48,7 +48,10 @@ public class User {
 	private LocationTracker _locationTracker;
 	protected Inbox _inbox;
 	private int _shoutsJustReceived;
-
+	private String _uid;
+	private String _auth;
+	private boolean _passwordExists; // no reason to put actual pw into memory
+	
 	public User(Context c) {
 		_context = c;
 		_tm = (TelephonyManager) _context.getSystemService(Context.TELEPHONY_SERVICE);
@@ -95,11 +98,6 @@ public class User {
 	public Inbox getInbox() {
 		return _inbox;
 	}
-	
-	// actual user fields
-	private String _uid;
-	private String _auth;
-	private boolean _passwordExists; // no reason to put actual pw into memory
 
 	public synchronized CellDensity getCellDensity() {
 

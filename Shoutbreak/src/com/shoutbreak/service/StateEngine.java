@@ -24,7 +24,6 @@ public class StateEngine {
 	}
 
 	public void goToState(Message msg) {
-		Log.e("SERVICE", "Service is still running...");
 		MessageObject obj = (MessageObject)msg.obj;
 		switch(msg.what) {
 			
