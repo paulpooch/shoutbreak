@@ -3,7 +3,7 @@ package com.shoutbreak;
 public class Vars {
 
 	public static final String SERVER_ADDRESS = "http://app.shoutbreak.co";
-	public static final long IDLE_THREAD_LOOP_INTERVAL = 20000; // milliseconds
+	public static final long IDLE_THREAD_LOOP_INTERVAL = 60000; //20000; // milliseconds
 	
 	public static final int GPS_MIN_UPDATE_MILLISECS = 10000;
 	public static final int GPS_MIN_UPDATE_METERS = 100;

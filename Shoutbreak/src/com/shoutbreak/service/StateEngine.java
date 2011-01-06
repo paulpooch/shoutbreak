@@ -9,6 +9,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 
 // this is the code run in ServiceThread
 // all messages to ServiceThread are forwarded to goToState(Message msg)
@@ -23,6 +24,7 @@ public class StateEngine {
 	}
 
 	public void goToState(Message msg) {
+		Log.e("SERVICE", "Service is still running...");
 		MessageObject obj = (MessageObject)msg.obj;
 		switch(msg.what) {
 			

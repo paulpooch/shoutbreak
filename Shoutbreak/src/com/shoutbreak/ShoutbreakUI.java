@@ -144,11 +144,13 @@ public class ShoutbreakUI extends MapActivity {
 		
 		// Setup User
 		ShoutbreakApplication app = (ShoutbreakApplication)this.getApplication();
-		_user = app.getUser();
-		if (_user == null) {
+		//_user = app.getUser();
+		//if (_user == null) {
 			_user = app.createUser(_context);
 			_user.initializeInbox(this, _cInboxListView);
-		}
+		//}
+		
+		//Log.e("USER", "USER: " + _user.getAuth());
 		
 		_cShoutsButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
