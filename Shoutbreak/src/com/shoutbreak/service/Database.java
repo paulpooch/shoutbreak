@@ -16,6 +16,7 @@ import android.util.Log;
 public class Database {
 
     private HashMap<String, String> _userSettings;
+    private boolean _userSettingsAreStale;
     private Context _context;
     private SQLiteDatabase _db;
     private OpenHelper _openHelper;
@@ -23,6 +24,7 @@ public class Database {
     
     public Database(Context context) {
     	_context = context;
+    	_userSettingsAreStale = true;
     	_openHelper = new OpenHelper(_context);
 		open();
     }
@@ -89,7 +91,7 @@ public class Database {
     }    
     
     public HashMap<String, String> getUserSettings() {
-    	if (_userSettings == null) {
+    	if (_userSettingsAreStale) {
     		_userSettings = new HashMap<String, String>();
     		Cursor cursor = null;
     		try {
@@ -97,6 +99,7 @@ public class Database {
 	    		while (cursor.moveToNext()) {
 	    			_userSettings.put(cursor.getString(0), cursor.getString(1));
 	    		}
+	    		_userSettingsAreStale = false;
 	    	} catch (Exception ex) {
 	    		Log.e(getClass().getSimpleName(), "getUserSettings"); 		
 	    	} finally {
@@ -109,6 +112,7 @@ public class Database {
     }
     
     public Long saveUserSetting(String key, String value) {
+    	_userSettingsAreStale = true;
     	String sql = "INSERT INTO " + Vars.DB_TABLE_USER_SETTINGS + " (setting_key, setting_value) VALUES (?, ?)";
     	SQLiteStatement insert = this._db.compileStatement(sql);
     	insert.bindString(1, key); // 1-indexed
