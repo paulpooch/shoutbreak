@@ -2,7 +2,6 @@ package com.shoutbreak;
 
 import android.app.Application;
 import android.content.Context;
-
 import com.shoutbreak.service.User;
 
 public class ShoutbreakApplication extends Application {

@@ -18,6 +18,7 @@ import com.shoutbreak.R;
 import com.shoutbreak.Vars;
 import com.shoutbreak.service.User;
 
+// If this crashes DroidX, use FixedMyLocationOverlay
 // http://stackoverflow.com/questions/753793/how-can-i-use-a-custom-bitmap-for-the-you-are-here-point-in-a-mylocationoverlay
 // http://www.gitorious.net/android-maps-api/android-maps-api/blobs/42614538ffda1a6985c398933a85fcd9afc752ee/src/com/google/android/maps/MyLocationOverlay.java
 public class UserLocationOverlay extends MyLocationOverlay {
@@ -51,9 +52,9 @@ public class UserLocationOverlay extends MyLocationOverlay {
     private int _mapSizeConstraint; // min(map width, map height)
     
     public UserLocationOverlay(Context context, MapView mapView) {
-        super(context, mapView);
+    	super(context, mapView);
         _context = context;
-        
+    	
         _baseRadiusPx = -1;
         _baseRadiusMeters = Vars.MIN_RADIUS_METERS;
         _zoomLevel = Vars.DEFAULT_ZOOM_LEVEL;
@@ -77,12 +78,14 @@ public class UserLocationOverlay extends MyLocationOverlay {
         _resizeIconLocation = new Point();
         _resizeIcon = Bitmap.createBitmap(resizeBitmap, 0, 0, _resizeIconSize.x, _resizeIconSize.y);
         
+        this.getMyLocation();
+        
     }
-    
+        
     // called every time map is redrawn....   don't do anything heavy here
     @Override 
     protected void drawMyLocation(Canvas canvas, MapView mapView, Location lastFix, GeoPoint myLocation, long when) {
-    	
+    	 	
     	_lastUserLocationGeoPoint = myLocation;
     	_userLocationPx = mapView.getProjection().toPixels(_lastUserLocationGeoPoint, null);
     	
@@ -149,7 +152,6 @@ public class UserLocationOverlay extends MyLocationOverlay {
     	if (_baseRadiusPx + _resizeAdjustmentPx < Vars.MIN_RADIUS_PX) {
     		_resizeAdjustmentPx = (int) (Vars.MIN_RADIUS_PX - _baseRadiusPx);
     	}
-    	
     	calculateCurrentRadius();
     }
    
@@ -189,6 +191,10 @@ public class UserLocationOverlay extends MyLocationOverlay {
     	// each zoom level shows half as much as the previous
     	double zoomChange = Math.log(factor) / Math.log(2); // = log2(factor)
     	_zoomLevel += Math.floor(zoomChange);
+    	
+    	// TODO: fancy smooth zooming
+    	// TODO: can we use zoom to show a given lat/long span
+    	
     	_mapView.getController().setZoom(_zoomLevel);
     	_calibrateZoomLevelForRadiusSize = false;
     	_baseRadiusPxIsWrong = true;

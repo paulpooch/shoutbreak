@@ -76,7 +76,7 @@ public class ShoutbreakUI extends MapActivity {
 	protected MapController _mapController;
 	
 	protected NotificationManager _notificationManager;
-	
+
 	///////////////////////////////////////////////////////////////////////////
 	// LIFECYCLE METHODS
 	///////////////////////////////////////////////////////////////////////////
@@ -223,12 +223,13 @@ public class ShoutbreakUI extends MapActivity {
 	
 	@Override
 	protected void onResume() {
-		super.onResume();
+		super.onResume();		
 		
+		// we disable/enable to be nice to user battery
 		_userLocationOverlay.enableMyLocation();
+		_user.getLocationTracker().startListeningToLocation();
 		
-		_user.getInbox().refresh();
-		
+		_user.getInbox().refresh();		
 		// this should go last.. let ui render
 		linkToService();
 	}
@@ -236,7 +237,11 @@ public class ShoutbreakUI extends MapActivity {
 	@Override
 	protected void onPause() {
 		super.onPause();
+		
+		// we disable/enable to be nice to user battery
 		_userLocationOverlay.disableMyLocation();
+		_user.getLocationTracker().stopListeningToLocation();
+		
 	}
 	
 	
@@ -255,6 +260,22 @@ public class ShoutbreakUI extends MapActivity {
 	///////////////////////////////////////////////////////////////////////////
 	// END LIFECYCLE METHODS
 	///////////////////////////////////////////////////////////////////////////
+	
+	protected void initMap() {
+		_userLocationOverlay = new UserLocationOverlay(this, _cMapView);
+		_mapController.setZoom(Vars.DEFAULT_ZOOM_LEVEL);
+		_cMapView.setClickable(true);
+		_cMapView.setEnabled(true);
+		_cMapView.setUI(this);
+		_cMapView.setUserLocationOverlay(_userLocationOverlay);
+		_cMapView.getOverlays().add(_userLocationOverlay);
+		_cMapView.postInvalidate();
+		_userLocationOverlay.runOnFirstFix(new Runnable() {
+			public void run() {
+				_mapController.animateTo(_userLocationOverlay.getMyLocation());
+			}
+		});
+	}
 	
 	@Override
 	protected boolean isRouteDisplayed() {
@@ -295,31 +316,13 @@ public class ShoutbreakUI extends MapActivity {
 		_inputMM.hideSoftInputFromWindow(_cShoutText.getWindowToken(), 0);
 	}
 	
-	protected void initMap() {
-
-		_userLocationOverlay = new UserLocationOverlay(this, _cMapView);
-		_mapController.setZoom(Vars.DEFAULT_ZOOM_LEVEL);
-		_cMapView.setClickable(true);
-		_cMapView.setEnabled(true);
-		_cMapView.setUI(this);
-		_cMapView.setUserLocationOverlay(_userLocationOverlay);
-		_cMapView.getOverlays().add(_userLocationOverlay);
-		
-		_userLocationOverlay.runOnFirstFix(new Runnable() {
-			public void run() {
-				_mapController.animateTo(_userLocationOverlay.getMyLocation());
-			}
-		});
-		
-	} 
-
 	protected void linkToService() {
 		if (_serviceConn == null) {
 			startService(_serviceIntent);
 			_serviceConn = new ShoutbreakServiceConnection();
 			bindService(_serviceIntent, _serviceConn, Context.BIND_AUTO_CREATE);
 			Log.d(getClass().getSimpleName(), "linkToService");
-		}
+		}		
 	}
 
 	protected void releaseService() {
@@ -358,6 +361,11 @@ public class ShoutbreakUI extends MapActivity {
 		 */		
 		public void serviceEventComplete(int serviceEventCode) {
 			switch (serviceEventCode) {
+				case Vars.SEC_UI_RECONNECT_COMPLETE: {
+					// we can do stuff here if we want
+					// only called if UI is launched when service was already running
+					break;
+				}
 				case Vars.SEC_SHOUT_SENT: {
 					giveNotice("shout successful");
 					_cShoutText.setText("");
@@ -374,10 +382,12 @@ public class ShoutbreakUI extends MapActivity {
 						}
 						giveNotice(notice);
 					}
+					break;
 				}
 				case Vars.SEC_VOTE_COMPLETED: {
 					_user.getInbox().refresh();
-				}
+					break;
+				}				
 			}
 		}
 	};

@@ -10,20 +10,18 @@ import android.location.Location;
 import android.os.Bundle;
 
 public class LocationTracker {
-
+	// http://stackoverflow.com/questions/1389811/gps-not-update-location-after-close-and-reopen-app-on-android
+		
 	private Context _context;
 	private LocationManager _locationManager;
 	private Location _location;
-
+	private LocationListener _locationListener;
+	private String _provider;
+	
 	public LocationTracker(Context context) {
-
 		_context = context;
 		_locationManager = (LocationManager) _context.getSystemService(Context.LOCATION_SERVICE);
-		initializeLocation();
-		
-	}
-	
-	public void initializeLocation() {
+		_locationListener = new CustomLocationListener();
 		Criteria criteria = new Criteria();
 		criteria.setAccuracy(Criteria.ACCURACY_FINE);
 		criteria.setAltitudeRequired(false);
@@ -31,36 +29,21 @@ public class LocationTracker {
 		criteria.setSpeedRequired(false);
 		criteria.setCostAllowed(true);
 		criteria.setPowerRequirement(Criteria.NO_REQUIREMENT);
-
-		String provider = _locationManager.getBestProvider(criteria, true);
-		_locationManager.requestLocationUpdates(provider, Vars.GPS_MIN_UPDATE_MILLISECS, Vars.GPS_MIN_UPDATE_METERS, _locationListener);
-
-		_location = _locationManager.getLastKnownLocation(provider);
+		_provider = _locationManager.getBestProvider(criteria, true);
+		_location = _locationManager.getLastKnownLocation(_provider);
 	}
-
+	
+	public void startListeningToLocation() {
+		_locationManager.requestLocationUpdates(_provider, Vars.GPS_MIN_UPDATE_MILLISECS, Vars.GPS_MIN_UPDATE_METERS, _locationListener);
+	}
+	
+	public void stopListeningToLocation() {
+		_locationManager.removeUpdates(_locationListener);
+	}
+	
 	public Location getLocation() {
 		return _location;
 	}
-	
-	private LocationListener _locationListener = new LocationListener() {
-
-		public void onLocationChanged(Location location) {
-			_location = location;
-		}
-
-		public void onProviderDisabled(String provider) {
-
-		}
-
-		public void onProviderEnabled(String provider) {
-
-		}
-
-		public void onStatusChanged(String provider, int status, Bundle extras) {
-
-		}
-
-	};
 	
 	public double getLatitude() {
 		return _location.getLatitude();
@@ -94,4 +77,24 @@ public class LocationTracker {
 		return cellDensity;
 	}
 	
+	 private class CustomLocationListener implements LocationListener {
+	        
+		 public void onLocationChanged(Location location) {
+        	_location = location;
+        }
+
+        public void onProviderDisabled(String provider) {
+        	
+        }
+
+        public void onProviderEnabled(String provider) {
+
+        }
+
+        public void onStatusChanged(String provider, int status, Bundle extras) {
+
+        }
+    
+	}        
+		
 }

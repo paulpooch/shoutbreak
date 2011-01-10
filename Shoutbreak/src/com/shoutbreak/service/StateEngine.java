@@ -9,7 +9,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 
 // this is the code run in ServiceThread
 // all messages to ServiceThread are forwarded to goToState(Message msg)
@@ -51,7 +50,21 @@ public class StateEngine {
 				break;
 			}
 			
+			case Vars.MESSAGE_STATE_INIT: {
+				if (_user.hasAccount()) {
+					msg.what = Vars.MESSAGE_STATE_IDLE;
+					goToState(msg);		
+				} else {
+					msg.what = Vars.MESSAGE_STATE_NEW_USER;
+					goToState(msg);
+				}				
+				break;
+			}
+			
 			case Vars.MESSAGE_STATE_UI_RECONNECT: {
+				MessageObject messageObject = new MessageObject();
+				messageObject.serviceEventCode = Vars.SEC_UI_RECONNECT_COMPLETE;
+				_uiThreadHandler.sendMessage(Message.obtain(_uiThreadHandler, Vars.CALLBACK_SERVICE_EVENT_COMPLETE, messageObject));				
 				msg.what = Vars.MESSAGE_STATE_INIT;
 				goToState(msg);
 				break;				
@@ -168,18 +181,7 @@ public class StateEngine {
 					ErrorManager.manage(ex);
 				}				
 				break;
-			}
-			
-			case Vars.MESSAGE_STATE_INIT: {
-				if (_user.hasAccount()) {
-					msg.what = Vars.MESSAGE_STATE_IDLE;
-					goToState(msg);		
-				} else {
-					msg.what = Vars.MESSAGE_STATE_NEW_USER;
-					goToState(msg);
-				}				
-				break;
-			}
+			}		
 				
 			case Vars.MESSAGE_STATE_IDLE: {			
 

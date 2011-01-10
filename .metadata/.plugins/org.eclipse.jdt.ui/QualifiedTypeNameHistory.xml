@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-<fullyQualifiedTypeName name="android.widget.TableLayout"/>
-<fullyQualifiedTypeName name="android.opengl.Visibility"/>
-<fullyQualifiedTypeName name="android.view.Display"/>
 <fullyQualifiedTypeName name="android.view.WindowManager"/>
 <fullyQualifiedTypeName name="android.util.DisplayMetrics"/>
 <fullyQualifiedTypeName name="java.util.Map"/>
@@ -24,8 +21,6 @@
 <fullyQualifiedTypeName name="android.view.LayoutInflater"/>
 <fullyQualifiedTypeName name="com.shoutbreak.R.layout"/>
 <fullyQualifiedTypeName name="com.shoutbreak.Shout"/>
-<fullyQualifiedTypeName name="com.shoutbreak.R"/>
-<fullyQualifiedTypeName name="java.util.List"/>
 <fullyQualifiedTypeName name="com.shoutbreak.ui.InboxListViewAdapter"/>
 <fullyQualifiedTypeName name="java.util.ArrayList"/>
 <fullyQualifiedTypeName name="com.ocpsoft.pretty.time.PrettyTime"/>
@@ -60,4 +55,9 @@
 <fullyQualifiedTypeName name="com.shoutbreak.Vars"/>
 <fullyQualifiedTypeName name="java.util.HashMap"/>
 <fullyQualifiedTypeName name="com.shoutbreak.R.id"/>
+<fullyQualifiedTypeName name="com.google.android.maps.GeoPoint"/>
+<fullyQualifiedTypeName name="com.shoutbreak.R"/>
+<fullyQualifiedTypeName name="java.util.List"/>
+<fullyQualifiedTypeName name="com.google.android.maps.Overlay"/>
+<fullyQualifiedTypeName name="java.lang.Appendable"/>
 </qualifiedTypeNameHistroy>

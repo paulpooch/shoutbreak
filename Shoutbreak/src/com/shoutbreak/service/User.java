@@ -75,6 +75,10 @@ public class User {
 		_cellDensity.isSet = false;
 	}
 	
+	public LocationTracker getLocationTracker() {
+		return _locationTracker;
+	}
+	
 	public void setShoutsJustReceived(int i) {
 		_shoutsJustReceived = i;
 	}
