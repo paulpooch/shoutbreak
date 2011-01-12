@@ -25,12 +25,17 @@ public final class R {
         public static final int inbox_score=0x7f020007;
         public static final int reply=0x7f020008;
         public static final int resize_icon=0x7f020009;
-        public static final int tab_bg=0x7f02000a;
-        public static final int tab_button_states=0x7f02000b;
-        public static final int tab_off=0x7f02000c;
-        public static final int tab_on=0x7f02000d;
-        public static final int vote_down=0x7f02000e;
-        public static final int vote_up=0x7f02000f;
+        public static final int shout_input_bg=0x7f02000a;
+        public static final int shout_input_bg_x=0x7f02000b;
+        public static final int shout_input_button=0x7f02000c;
+        public static final int shout_input_text=0x7f02000d;
+        public static final int tab_bg=0x7f02000e;
+        public static final int tab_bg_x=0x7f02000f;
+        public static final int tab_button_states=0x7f020010;
+        public static final int tab_off=0x7f020011;
+        public static final int tab_on=0x7f020012;
+        public static final int vote_down=0x7f020013;
+        public static final int vote_up=0x7f020014;
     }
     public static final class id {
         public static final int btnDelete=0x7f060011;

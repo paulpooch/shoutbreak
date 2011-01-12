@@ -13,7 +13,6 @@
 <fullyQualifiedTypeName name="android.app.Application"/>
 <fullyQualifiedTypeName name="com.shoutbreak.ShoutParcel"/>
 <fullyQualifiedTypeName name="com.shoutbreak.service.User"/>
-<fullyQualifiedTypeName name="com.shoutbreak.R.drawable"/>
 <fullyQualifiedTypeName name="android.widget.TextView"/>
 <fullyQualifiedTypeName name="android.widget.ScrollView"/>
 <fullyQualifiedTypeName name="android.widget.LinearLayout"/>
@@ -33,9 +32,7 @@
 <fullyQualifiedTypeName name="android.view.View"/>
 <fullyQualifiedTypeName name="com.google.android.maps.MapController"/>
 <fullyQualifiedTypeName name="android.widget.RelativeLayout"/>
-<fullyQualifiedTypeName name="android.view.ViewGroup.LayoutParams"/>
 <fullyQualifiedTypeName name="com.shoutbreak.ui.Inbox"/>
-<fullyQualifiedTypeName name="android.widget.ImageButton"/>
 <fullyQualifiedTypeName name="android.view.View.OnClickListener"/>
 <fullyQualifiedTypeName name="com.shoutbreak.service.Vars"/>
 <fullyQualifiedTypeName name="android.view.animation.AnimationUtils"/>
@@ -45,7 +42,6 @@
 <fullyQualifiedTypeName name="com.shoutbreak.R.string"/>
 <fullyQualifiedTypeName name="com.shoutbreak.R.color"/>
 <fullyQualifiedTypeName name="android.graphics.Color"/>
-<fullyQualifiedTypeName name="com.shoutbreak.ShoutbreakUI"/>
 <fullyQualifiedTypeName name="android.widget.ListView"/>
 <fullyQualifiedTypeName name="com.shoutbreak.ShoutbreakApplication"/>
 <fullyQualifiedTypeName name="com.shoutbreak.service.CellDensity"/>
@@ -53,11 +49,15 @@
 <fullyQualifiedTypeName name="java.util.Date"/>
 <fullyQualifiedTypeName name="com.shoutbreak.Vars"/>
 <fullyQualifiedTypeName name="java.util.HashMap"/>
-<fullyQualifiedTypeName name="com.shoutbreak.R.id"/>
 <fullyQualifiedTypeName name="com.google.android.maps.GeoPoint"/>
 <fullyQualifiedTypeName name="com.shoutbreak.R"/>
 <fullyQualifiedTypeName name="java.util.List"/>
 <fullyQualifiedTypeName name="com.google.android.maps.Overlay"/>
 <fullyQualifiedTypeName name="java.lang.Appendable"/>
 <fullyQualifiedTypeName name="com.shoutbreak.service.LocationTracker.MyLocationListener"/>
+<fullyQualifiedTypeName name="android.widget.ImageButton"/>
+<fullyQualifiedTypeName name="com.shoutbreak.R.id"/>
+<fullyQualifiedTypeName name="com.shoutbreak.R.drawable"/>
+<fullyQualifiedTypeName name="com.shoutbreak.ShoutbreakUI"/>
+<fullyQualifiedTypeName name="android.view.ViewGroup.LayoutParams"/>
 </qualifiedTypeNameHistroy>

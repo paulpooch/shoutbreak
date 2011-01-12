@@ -57,7 +57,7 @@ public class ShoutbreakUI extends MapActivity {
 	protected ImageButton _cSettingsButton;
 	protected Button _cOnButton;
 	protected Button _cOffButton;
-	protected Button _cShoutButton;
+	protected ImageButton _cShoutButton;
 	protected CustomMapView _cMapView;
 	protected EditText _cShoutText;
 	protected TextView _cStatusText;
@@ -116,7 +116,7 @@ public class ShoutbreakUI extends MapActivity {
 		_cSettingsButton = (ImageButton) findViewById(R.id.btnSettings);
 		_cOnButton = (Button) findViewById(R.id.btnOn);
 		_cOffButton = (Button) findViewById(R.id.btnOff);
-		_cShoutButton = (Button) findViewById(R.id.btnShout);
+		_cShoutButton = (ImageButton) findViewById(R.id.btnShout);
 		_cMapView = (CustomMapView)findViewById(R.id.cmvMap);
 		_cShoutText = (EditText) findViewById(R.id.etShoutText);
 		_cStatusText = (TextView) findViewById(R.id.tvStatus);		
@@ -134,8 +134,6 @@ public class ShoutbreakUI extends MapActivity {
 		
 		_cOnButton.setHeight(h16);
 		_cOffButton.setHeight(h16);
-		_cShoutText.setHeight(h8);
-		_cShoutButton.setHeight(h8);
 		
 		_mapController = _cMapView.getController();
 		_notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);

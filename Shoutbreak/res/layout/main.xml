@@ -57,14 +57,19 @@
 
 	<!--  ROW 4 (2/16) -->
 	<RelativeLayout android:id="@+id/rlRow4"
-		android:layout_width="fill_parent" android:layout_height="wrap_content"
-		android:layout_weight="0">
-		<Button android:id="@+id/btnShout" android:text="shout"
+		android:background="@drawable/shout_input_bg_x" android:layout_width="fill_parent"
+		android:layout_height="wrap_content" android:layout_weight="0">
+		<ImageButton android:id="@+id/btnShout" android:text="shout"
+			android:layout_centerVertical="true" android:background="#00000000"
+			android:height="99px" android:width="99px"
 			android:layout_alignParentRight="true" android:layout_width="wrap_content"
+			android:layout_marginRight="10px" android:src="@drawable/shout_input_button"
 			android:layout_height="wrap_content" />
 		<EditText android:id="@+id/etShoutText" android:layout_width="fill_parent"
+			android:layout_marginRight="10px" android:layout_marginLeft="10px"
 			android:layout_toLeftOf="@id/btnShout" android:layout_height="wrap_content"
-			android:background="@android:drawable/editbox_background"
+			android:background="@drawable/shout_input_text" android:height="96px"
+			android:layout_centerVertical="true" android:width="351px"
 			android:imeOptions="actionSend" android:inputType="textLongMessage|textMultiLine" />
 	</RelativeLayout>
 
@@ -95,7 +100,7 @@
 
 	<!--  ROW 5 (2/16) -->
 	<RelativeLayout android:layout_width="fill_parent"
-		android:background="@drawable/tab_bg" android:layout_height="wrap_content"
+		android:background="@drawable/tab_bg_x" android:layout_height="wrap_content"
 		android:layout_weight="0">
 		<ImageButton android:layout_centerInParent="true"
 			android:layout_width="147px" android:layout_height="97px" android:id="@+id/btnInbox"
