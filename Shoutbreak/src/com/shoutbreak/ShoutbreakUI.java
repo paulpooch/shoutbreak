@@ -26,6 +26,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup.LayoutParams;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
@@ -87,6 +88,10 @@ public class ShoutbreakUI extends MapActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		
+		// this fixes the "android title bar bug"
+		getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 
@@ -133,10 +138,8 @@ public class ShoutbreakUI extends MapActivity {
 		_cShoutButton.setHeight(h8);
 		
 		_mapController = _cMapView.getController();
-		
 		_notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-		
-		_cShoutsButton.setImageResource(R.drawable.tab_on);
+		_cShoutsButton.setImageResource(R.drawable.tab_on); // start in shouts tab
 		
 		// Setup User
 		ShoutbreakApplication app = (ShoutbreakApplication)this.getApplication();
@@ -228,7 +231,7 @@ public class ShoutbreakUI extends MapActivity {
 	
 	@Override
 	protected void onResume() {
-		super.onResume();		
+		super.onResume();
 		
 		// we disable/enable to be nice to user battery
 		_userLocationOverlay.enableMyLocation();

@@ -138,6 +138,7 @@ public class Inbox {
 		for (Shout shout : _shouts) {
 			if (shout.id.equals(shoutID)) {
 				_shouts.remove(shout);
+				break;
 			}
 		}
 		_ui.giveNotice("shout deleted");

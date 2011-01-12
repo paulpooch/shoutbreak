@@ -5,11 +5,8 @@ public class Vars {
 	public static final String SERVER_ADDRESS = "http://app.shoutbreak.co";
 	public static final long IDLE_THREAD_LOOP_INTERVAL = 20000; // milliseconds
 	
-	//public static final int GPS_MIN_UPDATE_MILLISECS = 10000;
-	//public static final int GPS_MIN_UPDATE_METERS = 100;
-	
-	public static final int GPS_MIN_UPDATE_MILLISECS = 0;
-	public static final int GPS_MIN_UPDATE_METERS = 0;
+	public static final int GPS_MIN_UPDATE_MILLISECS = 20000; // 0 gives most frequent
+	public static final int GPS_MIN_UPDATE_METERS = 100; // 0 gives smallest interval
 	
 	public static final int DENSITY_GRID_X_GRANULARITY = 129600; // 10 second cells
 	public static final int DENSITY_GRID_Y_GRANULARITY = 64800; // 10 second cells
