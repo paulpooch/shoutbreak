@@ -1,0 +1,97 @@
+package com.shoutbreak;
+
+import com.google.android.maps.MapActivity;
+import com.google.android.maps.MapController;
+import com.google.android.maps.MapView;
+import com.google.android.maps.MyLocationOverlay;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.ServiceConnection;
+import android.os.Bundle;
+import android.os.IBinder;
+import android.util.Log;
+import android.view.Window;
+
+
+public class ShoutbreakUI extends MapActivity {
+	// TODO: bundle saved instance... restore state from that
+	protected ShoutbreakUI _ui;
+	protected Context _context;
+	
+	// UI controls
+	protected MapView _cMapView;
+	protected MyLocationOverlay _userLocationOverlay;
+	protected MapController _mapController;
+
+	///////////////////////////////////////////////////////////////////////////
+	// LIFECYCLE METHODS
+	///////////////////////////////////////////////////////////////////////////
+	
+	/** Called when the activity is first created. */
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.main);
+
+		_ui = this;
+		_context = getApplicationContext();
+		_cMapView = (MapView)findViewById(R.id.cmvMap);
+		_mapController = _cMapView.getController();
+		_userLocationOverlay = new MyLocationOverlay(this, _cMapView);
+		_mapController.setZoom(Vars.DEFAULT_ZOOM_LEVEL);
+		_cMapView.setClickable(true);
+		_cMapView.setEnabled(true);
+		_cMapView.getOverlays().add(_userLocationOverlay);
+		_cMapView.postInvalidate();
+		
+
+	}
+	
+	@Override
+	protected void onStart() {
+		super.onStart();
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();		
+		// we disable/enable to be nice to user battery
+		_userLocationOverlay.enableMyLocation();
+
+
+	}
+	
+	@Override
+	protected void onPause() {
+		super.onPause();
+		// we disable/enable to be nice to user battery
+		_userLocationOverlay.disableMyLocation();
+	}
+	
+	
+	@Override
+	protected void onStop() {
+		super.onStop();
+	}
+	
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		Log.d(getClass().getSimpleName(), "onDestroy");
+	}
+	
+	///////////////////////////////////////////////////////////////////////////
+	// END LIFECYCLE METHODS
+	///////////////////////////////////////////////////////////////////////////
+	
+	
+	
+	@Override
+	protected boolean isRouteDisplayed() {
+		// TODO Auto-generated method stub
+		return false;
+	}	
+
+}

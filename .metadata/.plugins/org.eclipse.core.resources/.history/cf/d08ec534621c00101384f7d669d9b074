@@ -1,0 +1,214 @@
+package com.shoutbreak.ui;
+
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.Path;
+import android.graphics.Point;
+import android.graphics.Paint.Style;
+import android.graphics.Path.Direction;
+import android.location.Location;
+
+import com.google.android.maps.GeoPoint;
+import com.google.android.maps.MapView;
+import com.google.android.maps.MyLocationOverlay;
+import com.shoutbreak.R;
+import com.shoutbreak.Vars;
+import com.shoutbreak.service.User;
+
+// If this crashes DroidX, use FixedMyLocationOverlay
+// http://stackoverflow.com/questions/753793/how-can-i-use-a-custom-bitmap-for-the-you-are-here-point-in-a-mylocationoverlay
+// http://www.gitorious.net/android-maps-api/android-maps-api/blobs/42614538ffda1a6985c398933a85fcd9afc752ee/src/com/google/android/maps/MyLocationOverlay.java
+public class UserLocationOverlay extends MyLocationOverlay {
+
+	private Context _context;
+	private Canvas _canvas;
+	private MapView _mapView;
+	private Paint _circleFillPaint;
+    private Paint _circleBorderPaint;
+    private Bitmap _resizeIcon;
+     
+    private boolean _baseRadiusPxIsWrong;				// is the radius calculation based on the current zoom level? or is the pixel value wrong?
+    private boolean _calibrateZoomLevelForRadiusSize;	// have we calibrated for the best zoom level yet?
+    
+    private Point _resizeIconSize;		// icon dimensions in pixels
+    private Point _resizeIconLocation;	// icon location in pixels
+    private Point _userLocationPx;		// user location in pixels
+    
+    private GeoPoint _lastUserLocationGeoPoint; // the last user coordinates
+    private GeoPoint _lastTopRadiusGeoPoint; 	// the coordinates of the top of the current radius
+    
+    private final float SQRT2 = (float) 1.4142;	// square root of 2, for hypotenuse of 45, 45, 90 triangle, for resize icon location
+    private float _baseRadiusMeters;// radius length in meters of baseRadius (baseRadius is radius length with no user resizing)
+    private float _baseRadiusPx; 	// baseRadius in pixels
+    private float _currentRadiusPx; // currently displayed radius (baseRadius + resizeAdjustment)
+    
+    private double _baseTopRadiusAbsoluteMeters;	// how many meters north of equator is the top of baseRadius
+    
+    private int _resizeAdjustmentPx;// user circle resize, in pixels
+    private int _zoomLevel;			// current zoom level of map
+    private int _mapSizeConstraint; // min(map width, map height)
+    
+    public UserLocationOverlay(Context context, MapView mapView) {
+    	super(context, mapView);
+        _context = context;
+    	_mapView = mapView;
+        _baseRadiusPx = -1;
+        _baseRadiusMeters = Vars.MIN_RADIUS_METERS;
+        _zoomLevel = Vars.DEFAULT_ZOOM_LEVEL;
+        _baseRadiusPxIsWrong = true;
+    	_calibrateZoomLevelForRadiusSize = false;
+        _mapSizeConstraint = -1;
+        _resizeAdjustmentPx = 0;
+        
+		_circleFillPaint = new Paint();
+		_circleFillPaint.setARGB(50, 108, 10, 171);
+		_circleFillPaint.setAntiAlias(true);
+		
+        _circleBorderPaint = new Paint();
+        _circleBorderPaint.setAntiAlias(true);
+        _circleBorderPaint.setARGB(120, 69, 3, 111);
+        _circleBorderPaint.setStyle(Style.STROKE);
+        _circleBorderPaint.setStrokeWidth(4);
+        
+        Bitmap resizeBitmap = BitmapFactory.decodeResource(_context.getResources(), R.drawable.resize_icon);
+        _resizeIconSize = new Point(resizeBitmap.getWidth(), resizeBitmap.getHeight());
+        _resizeIconLocation = new Point();
+        _resizeIcon = Bitmap.createBitmap(resizeBitmap, 0, 0, _resizeIconSize.x, _resizeIconSize.y);
+        
+        this.getMyLocation();
+        
+    }
+        
+    // called every time map is redrawn....   don't do anything heavy here
+    @Override 
+    protected void drawMyLocation(Canvas canvas, MapView mapView, Location lastFix, GeoPoint myLocation, long when) {
+    	 	
+    	_lastUserLocationGeoPoint = myLocation;
+    	_userLocationPx = mapView.getProjection().toPixels(_lastUserLocationGeoPoint, null);
+    	
+    	if (_baseRadiusPxIsWrong) {
+    		_baseRadiusPx = calculateRadiusPixelsAtCurrentZoomLevel();
+    		_baseRadiusPxIsWrong = false;
+    		calculateCurrentRadius();
+    	}
+    	    	
+        // draw circle
+        Path path = new Path();
+        path.addCircle(_userLocationPx.x, _userLocationPx.y, _currentRadiusPx, Direction.CW);
+        canvas.drawCircle(_userLocationPx.x, _userLocationPx.y, _currentRadiusPx, _circleFillPaint);
+        canvas.drawPath(path, _circleBorderPaint);
+        
+        // draw icon
+        float iconXYOffset = _currentRadiusPx / SQRT2;
+        _resizeIconLocation.x = (int) (_userLocationPx.x - iconXYOffset - (_resizeIconSize.x / 2));
+        _resizeIconLocation.y = (int) (_userLocationPx.y + iconXYOffset - (_resizeIconSize.y / 2));
+        canvas.drawBitmap(
+            _resizeIcon,
+            _resizeIconLocation.x,
+            _resizeIconLocation.y, 
+            null
+        );
+        
+        if (_calibrateZoomLevelForRadiusSize) {
+            calibrateZoomLevelToShowCircle();
+        }
+    	
+    	if (_canvas == null) {
+    		_canvas = canvas;
+    	}
+    }
+    
+    // initializes pixel values based on radiusMeters
+    private float calculateRadiusPixelsAtCurrentZoomLevel() {
+    	// converts lat/long & meters to pixels
+    	// this is probably a little inaccurate, so only do when radiusMeters is initialized    	
+    	double topRadiusLat = _lastUserLocationGeoPoint.getLatitudeE6() / 1E6;	// get latitude of user location
+        _baseTopRadiusAbsoluteMeters = topRadiusLat * Vars.DEGREE_LAT_IN_METERS; 		// convert that to meters
+        _baseTopRadiusAbsoluteMeters += _baseRadiusMeters; 										// add the radius to it
+        topRadiusLat = _baseTopRadiusAbsoluteMeters / Vars.DEGREE_LAT_IN_METERS; 			// convert back to degrees lat 
+        GeoPoint topRadiusGeoPoint = new GeoPoint((int) (topRadiusLat * 1E6), _lastUserLocationGeoPoint.getLongitudeE6());
+    	Point topRadiusPx = _mapView.getProjection().toPixels(topRadiusGeoPoint, null);
+        return _userLocationPx.y - topRadiusPx.y; // downward y axis
+    }
+    
+    // called after zoom occurs
+    public void handleZoomLevelChange() {
+    	if (_lastTopRadiusGeoPoint != null) {	
+	    	Point topRadiusPx = _mapView.getProjection().toPixels(_lastTopRadiusGeoPoint, null);
+	    	_baseRadiusPx = _userLocationPx.y - topRadiusPx.y; // downward y axis
+	    	_resizeAdjustmentPx = 0;
+	    	calculateCurrentRadius();
+    	}
+    }
+    
+    // called when user drags resize icon
+    public void resize(int radiusChangePx) {
+    	_resizeAdjustmentPx += radiusChangePx;
+    	
+    	// force minimum radius size
+    	if (_baseRadiusPx + _resizeAdjustmentPx < Vars.MIN_RADIUS_PX) {
+    		_resizeAdjustmentPx = (int) (Vars.MIN_RADIUS_PX - _baseRadiusPx);
+    	}
+    	calculateCurrentRadius();
+    }
+   
+    public void calculateCurrentRadius() {    	
+        _currentRadiusPx = _baseRadiusPx + _resizeAdjustmentPx;
+        _lastTopRadiusGeoPoint = _mapView.getProjection().fromPixels(_userLocationPx.x, (int) (_userLocationPx.y - _currentRadiusPx));
+    }
+    
+    public void setPopulationDensity(float density) {
+    	// TODO: don't hardcode level
+    	// TODO: do we keep track of resize if density changes?  or just say fuck it?    	
+    	_baseRadiusMeters = User.calculateRadius(10, density);
+    	_calibrateZoomLevelForRadiusSize = true;
+    	_baseRadiusPxIsWrong = true;
+    	// this calls draw() immediately rather than wait for next interval
+    	if (_canvas != null) {
+    		_mapView.draw(_canvas);
+    	}
+    }
+    
+    public Point getResizeIconLocation() {
+    	return _resizeIconLocation;
+    }
+    
+    public void setMapView(MapView mapView) {
+    	_mapView = mapView;
+    }
+    
+    // finds a zoom level that displays the circle nicely
+    // http://groups.google.com/group/google-maps-api/browse_thread/thread/6ff83431273c6adb/0f83700b2a7b4144
+    public void calibrateZoomLevelToShowCircle() {
+    	if (_mapSizeConstraint == -1) {
+    		_mapSizeConstraint = (_mapView.getWidth() >= _mapView.getHeight()) ? _mapView.getHeight() : _mapView.getWidth();
+    	}
+    	float diameter = _currentRadiusPx + _currentRadiusPx;
+    	float factor = _mapSizeConstraint / diameter;
+    	// each zoom level shows half as much as the previous
+    	double zoomChange = Math.log(factor) / Math.log(2); // = log2(factor)
+    	_zoomLevel += Math.floor(zoomChange);
+    	
+    	// TODO: fancy smooth zooming
+    	// TODO: can we use zoom to show a given lat/long span
+    	
+    	_mapView.getController().setZoom(_zoomLevel);
+    	_calibrateZoomLevelForRadiusSize = false;
+    	_baseRadiusPxIsWrong = true;
+    }
+
+    
+	// distance math if we need it
+	//GeoPoint radiusEdge = _mapView.getProjection().fromPixels((int)(_userLocationPx.x + _radiusPx), _userLocationPx.y);
+    //Location location1 = new Location("gps");
+	//location1.setLatitude(radiusEdge.getLatitudeE6() / 1E6);
+	//location1.setLongitude(radiusEdge.getLongitudeE6() / 1E6);
+	//Location location2 = new Location("gps");
+	//location2.setLatitude(_lastUserLocation.getLatitudeE6() / 1E6);
+	//location2.setLongitude(_lastUserLocation.getLongitudeE6() / 1E6);
+	//_radiusMeters = location2.distanceTo(location1);
+
+}

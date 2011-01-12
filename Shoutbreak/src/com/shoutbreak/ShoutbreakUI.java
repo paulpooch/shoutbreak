@@ -101,10 +101,8 @@ public class ShoutbreakUI extends MapActivity {
 		DisplayMetrics metrics = new DisplayMetrics();
 		display.getMetrics(metrics);
 		int h = metrics.heightPixels;
-		int w = metrics.widthPixels;
 		int h16 = (int)h/16;
 		int h8 = 2 * h16;
-		int tabWidth = (int)w / 3;
 		
 		_animNoticeExpand = AnimationUtils.loadAnimation(_context, R.anim.notice_expand);
 		_animNoticeShowText = AnimationUtils.loadAnimation(_context, R.anim.notice_show_text);
@@ -133,16 +131,12 @@ public class ShoutbreakUI extends MapActivity {
 		_cOffButton.setHeight(h16);
 		_cShoutText.setHeight(h8);
 		_cShoutButton.setHeight(h8);
-		//_cShoutsButton.setWidth(tabWidth);
-		//_cInboxButton.setWidth(tabWidth);
-		//_cSettingsButton.setWidth(tabWidth);
-		//_cShoutsButton.setHeight(h8);
-		//_cInboxButton.setHeight(h8);
-		//_cSettingsButton.setHeight(h8);
 		
 		_mapController = _cMapView.getController();
 		
 		_notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+		
+		_cShoutsButton.setImageResource(R.drawable.tab_on);
 		
 		// Setup User
 		ShoutbreakApplication app = (ShoutbreakApplication)this.getApplication();
@@ -156,17 +150,24 @@ public class ShoutbreakUI extends MapActivity {
 		_cShoutsButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				
+				_cShoutsButton.setImageResource(R.drawable.tab_on);
+				_cInboxButton.setImageResource(R.drawable.tab_button_states);
+				_cSettingsButton.setImageResource(R.drawable.tab_button_states);
 				_cRow1.setVisibility(View.VISIBLE);
 				_cRow2.setVisibility(View.VISIBLE);
 				_cRow3.setVisibility(View.VISIBLE);
 				_cRow4.setVisibility(View.VISIBLE);
 				_cRow6.setVisibility(View.GONE);
+
 			}
 		});
 		
 		_cInboxButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				
+				_cInboxButton.setImageResource(R.drawable.tab_on);
+				_cShoutsButton.setImageResource(R.drawable.tab_button_states);
+				_cSettingsButton.setImageResource(R.drawable.tab_button_states);
 				_cRow1.setVisibility(View.GONE);
 				_cRow2.setVisibility(View.GONE);
 				_cRow3.setVisibility(View.GONE);
@@ -179,6 +180,9 @@ public class ShoutbreakUI extends MapActivity {
 		_cSettingsButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 
+				_cSettingsButton.setImageResource(R.drawable.tab_on);
+				_cShoutsButton.setImageResource(R.drawable.tab_button_states);
+				_cInboxButton.setImageResource(R.drawable.tab_button_states);
 				giveNotice("TEST Test Tdada!");
 //				_cRow1.setVisibility(View.GONE);
 //				_cRow2.setVisibility(View.GONE);

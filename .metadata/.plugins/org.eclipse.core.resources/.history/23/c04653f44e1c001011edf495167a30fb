@@ -1,0 +1,35 @@
+package com.shoutbreak;
+
+import android.app.Application;
+import android.content.Context;
+import android.graphics.Canvas;
+import android.location.Location;
+
+import com.google.android.maps.GeoPoint;
+import com.google.android.maps.MapView;
+import com.shoutbreak.service.User;
+
+public class ShoutbreakApplication extends Application {
+
+	private User _user = null;
+	
+	public Canvas acanvas;
+	public MapView amapView;
+	public Location alastFix;
+	public GeoPoint amyLocation;
+	public long awhen;
+	
+	
+	public User getUser(Context context) {
+		if (_user == null) {
+			_user = new User(context);
+		}
+		return _user;
+	}
+	
+	
+	public User getUser() {
+		return _user;
+	}
+	
+}
