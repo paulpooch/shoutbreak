@@ -31,6 +31,7 @@ import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -50,9 +51,9 @@ public class ShoutbreakUI extends MapActivity {
 	protected InputMethodManager _inputMM;
 	
 	// UI controls
-	protected Button _cShoutsButton;
-	protected Button _cInboxButton;
-	protected Button _cSettingsButton;
+	protected ImageButton _cShoutsButton;
+	protected ImageButton _cInboxButton;
+	protected ImageButton _cSettingsButton;
 	protected Button _cOnButton;
 	protected Button _cOffButton;
 	protected Button _cShoutButton;
@@ -107,9 +108,9 @@ public class ShoutbreakUI extends MapActivity {
 		
 		_animNoticeExpand = AnimationUtils.loadAnimation(_context, R.anim.notice_expand);
 		_animNoticeShowText = AnimationUtils.loadAnimation(_context, R.anim.notice_show_text);
-		_cShoutsButton = (Button) findViewById(R.id.btnShouts);
-		_cInboxButton = (Button) findViewById(R.id.btnInbox);
-		_cSettingsButton = (Button) findViewById(R.id.btnSettings);
+		_cShoutsButton = (ImageButton) findViewById(R.id.btnShouts);
+		_cInboxButton = (ImageButton) findViewById(R.id.btnInbox);
+		_cSettingsButton = (ImageButton) findViewById(R.id.btnSettings);
 		_cOnButton = (Button) findViewById(R.id.btnOn);
 		_cOffButton = (Button) findViewById(R.id.btnOff);
 		_cShoutButton = (Button) findViewById(R.id.btnShout);
@@ -132,12 +133,12 @@ public class ShoutbreakUI extends MapActivity {
 		_cOffButton.setHeight(h16);
 		_cShoutText.setHeight(h8);
 		_cShoutButton.setHeight(h8);
-		_cShoutsButton.setWidth(tabWidth);
-		_cInboxButton.setWidth(tabWidth);
-		_cSettingsButton.setWidth(tabWidth);
-		_cShoutsButton.setHeight(h8);
-		_cInboxButton.setHeight(h8);
-		_cSettingsButton.setHeight(h8);
+		//_cShoutsButton.setWidth(tabWidth);
+		//_cInboxButton.setWidth(tabWidth);
+		//_cSettingsButton.setWidth(tabWidth);
+		//_cShoutsButton.setHeight(h8);
+		//_cInboxButton.setHeight(h8);
+		//_cSettingsButton.setHeight(h8);
 		
 		_mapController = _cMapView.getController();
 		
