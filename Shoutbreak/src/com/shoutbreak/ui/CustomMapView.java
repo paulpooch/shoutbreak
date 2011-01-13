@@ -63,10 +63,15 @@ public class CustomMapView extends MapView {
             		// in canvas down is positive y
             		int direction = 1;
             		if (yChange > xChange) {
-            			direction = (yChange <= 0) ? 1 : -1;
+            			direction = (dy <= 0) ? 1 : -1;
             		} else {
-            			direction = (xChange <= 0) ? -1 : 1;
+            			direction = (dx <= 0) ? -1 : 1;
             		}
+//            		if (yChange > xChange) {
+//            			direction = (yChange <= 0) ? 1 : -1;
+//            		} else {
+//            			direction = (xChange <= 0) ? -1 : 1;
+//            		}
             		int length = (int) Math.sqrt( Math.pow(xChange, 2) + Math.pow(yChange, 2)  );
             		int diff = length - _lastLength;
             		_lastLength = length;
