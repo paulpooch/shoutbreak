@@ -19,14 +19,11 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.RemoteException;
-import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.Display;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup.LayoutParams;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
@@ -100,15 +97,7 @@ public class ShoutbreakUI extends MapActivity {
 		_context = getApplicationContext();
 		_serviceIntent = new Intent();
 		_serviceIntent.setClassName("com.shoutbreak", "com.shoutbreak.ShoutbreakService");
-		_inputMM = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-		
-		Display display = ((WindowManager) getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
-		DisplayMetrics metrics = new DisplayMetrics();
-		display.getMetrics(metrics);
-		int h = metrics.heightPixels;
-		int h16 = (int)h/16;
-		int h8 = 2 * h16;
-		
+		_inputMM = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);		
 		_animNoticeExpand = AnimationUtils.loadAnimation(_context, R.anim.notice_expand);
 		_animNoticeShowText = AnimationUtils.loadAnimation(_context, R.anim.notice_show_text);
 		_cShoutsButton = (ImageButton) findViewById(R.id.btnShouts);
@@ -125,15 +114,12 @@ public class ShoutbreakUI extends MapActivity {
 		_cNoticeBoxInbox = (RelativeLayout) findViewById(R.id.r6Notice);
 		_cNoticeTextInbox = (TextView) findViewById(R.id.tvNoticeInbox);
 		_cInboxListView = (ListView)findViewById(R.id.lvInbox);
-		
+	
 		_cRow1 = (LinearLayout) findViewById(R.id.llRow1);
 		_cRow2 = (LinearLayout) findViewById(R.id.llRow2);
 		_cRow3 = (RelativeLayout) findViewById(R.id.rlRow3);
 		_cRow4 = (RelativeLayout) findViewById(R.id.rlRow4);
 		_cRow6 = (RelativeLayout) findViewById(R.id.llRow6);
-		
-		_cOnButton.setHeight(h16);
-		_cOffButton.setHeight(h16);
 		
 		_mapController = _cMapView.getController();
 		_notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
@@ -145,9 +131,9 @@ public class ShoutbreakUI extends MapActivity {
 			_user = app.getUser(_context);
 			_user.initializeInbox(this, _cInboxListView);
 		}
-		
-		//Log.e("USER", "USER: " + _user.getAuth());
-		
+	
+	//Log.e("USER", "USER: " + _user.getAuth());
+	
 		_cShoutsButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				
@@ -202,10 +188,17 @@ public class ShoutbreakUI extends MapActivity {
 				} catch (RemoteException ex) {
 					ErrorManager.manage(ex);
 				}
-				hideKeyboard();
 			}
 		});
 
+		_cStatusText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+		    public void onFocusChange(View v, boolean hasFocus) {
+		        if (!hasFocus) {
+		            hideKeyboard();
+		        }
+		    }
+		});
+		
 		_cOnButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				turnServiceOn();
@@ -249,7 +242,6 @@ public class ShoutbreakUI extends MapActivity {
 		_user.getLocationTracker().stopListeningToLocation();
 		
 	}
-	
 	
 	@Override
 	protected void onStop() {

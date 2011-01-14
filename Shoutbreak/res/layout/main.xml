@@ -69,8 +69,8 @@
 			android:layout_marginRight="10px" android:layout_marginLeft="10px"
 			android:layout_toLeftOf="@id/btnShout" android:layout_height="wrap_content"
 			android:background="@drawable/shout_input_text" android:height="91px"
-			android:layout_centerVertical="true" android:width="366px"
-			android:imeOptions="actionSend" android:inputType="textLongMessage|textMultiLine" />
+			android:layout_centerVertical="true" android:imeOptions="actionSend"
+			android:inputType="textLongMessage|textMultiLine" />
 	</RelativeLayout>
 
 	<!-- ///////////////////////////////////////////////////////////// -->

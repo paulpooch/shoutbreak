@@ -10304,3 +10304,245 @@ org.eclipse.core.runtime.CoreException: Error in an XML file: aborting build.
 !MESSAGE Error in an XML file: aborting build.
 !SUBENTRY 1 com.android.ide.eclipse.adt 8 0 2011-01-13 23:23:08.373
 !MESSAGE Error in an XML file: aborting build.
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-01-13 23:41:52.875
+!MESSAGE AndroidManifest: Ignoring unknown 'S' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-01-13 23:41:53.306
+!MESSAGE AndroidManifest: Ignoring unknown 'Scr' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-01-13 23:41:53.552
+!MESSAGE AndroidManifest: Ignoring unknown 'Scrol' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-01-13 23:41:53.805
+!MESSAGE AndroidManifest: Ignoring unknown 'ScrollV' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-01-13 23:41:54.016
+!MESSAGE AndroidManifest: Ignoring unknown 'ScrollVie' XML element
+
+!ENTRY org.eclipse.core.resources 8 2 2011-01-13 23:41:55.447
+!MESSAGE Problems occurred when invoking code from plug-in: "org.eclipse.core.resources".
+!STACK 1
+org.eclipse.core.runtime.CoreException: Error in an XML file: aborting build.
+	at com.android.ide.eclipse.adt.internal.build.BaseBuilder.stopBuild(Unknown Source)
+	at com.android.ide.eclipse.adt.internal.build.PreCompilerBuilder.build(Unknown Source)
+	at org.eclipse.core.internal.events.BuildManager$2.run(BuildManager.java:627)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:170)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:201)
+	at org.eclipse.core.internal.events.BuildManager$1.run(BuildManager.java:253)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:256)
+	at org.eclipse.core.internal.events.BuildManager.basicBuildLoop(BuildManager.java:309)
+	at org.eclipse.core.internal.events.BuildManager.build(BuildManager.java:341)
+	at org.eclipse.core.internal.events.AutoBuildJob.doBuild(AutoBuildJob.java:140)
+	at org.eclipse.core.internal.events.AutoBuildJob.run(AutoBuildJob.java:238)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:55)
+!SUBENTRY 1 com.android.ide.eclipse.adt 8 0 2011-01-13 23:41:55.447
+!MESSAGE Error in an XML file: aborting build.
+!SUBENTRY 1 com.android.ide.eclipse.adt 8 0 2011-01-13 23:41:55.447
+!MESSAGE Error in an XML file: aborting build.
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-01-13 23:41:57.073
+!MESSAGE AndroidManifest: Ignoring unknown 'S' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-01-13 23:41:58.895
+!MESSAGE AndroidManifest: Ignoring unknown 'S' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-01-13 23:42:39.899
+!MESSAGE AndroidManifest: Ignoring unknown 'S' XML element
+
+!ENTRY org.eclipse.core.resources 8 2 2011-01-14 00:01:23.864
+!MESSAGE Problems occurred when invoking code from plug-in: "org.eclipse.core.resources".
+!STACK 1
+org.eclipse.core.runtime.CoreException: 'aapt' error. Pre Compiler Build aborted.
+	at com.android.ide.eclipse.adt.internal.build.BaseBuilder.stopBuild(Unknown Source)
+	at com.android.ide.eclipse.adt.internal.build.PreCompilerBuilder.execAapt(Unknown Source)
+	at com.android.ide.eclipse.adt.internal.build.PreCompilerBuilder.handleResources(Unknown Source)
+	at com.android.ide.eclipse.adt.internal.build.PreCompilerBuilder.build(Unknown Source)
+	at org.eclipse.core.internal.events.BuildManager$2.run(BuildManager.java:627)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:170)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:201)
+	at org.eclipse.core.internal.events.BuildManager$1.run(BuildManager.java:253)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:256)
+	at org.eclipse.core.internal.events.BuildManager.basicBuildLoop(BuildManager.java:309)
+	at org.eclipse.core.internal.events.BuildManager.build(BuildManager.java:341)
+	at org.eclipse.core.internal.events.AutoBuildJob.doBuild(AutoBuildJob.java:140)
+	at org.eclipse.core.internal.events.AutoBuildJob.run(AutoBuildJob.java:238)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:55)
+!SUBENTRY 1 com.android.ide.eclipse.adt 8 0 2011-01-14 00:01:23.865
+!MESSAGE 'aapt' error. Pre Compiler Build aborted.
+!SUBENTRY 1 com.android.ide.eclipse.adt 8 0 2011-01-14 00:01:23.865
+!MESSAGE 'aapt' error. Pre Compiler Build aborted.
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-01-14 00:07:05.164
+!MESSAGE AndroidManifest: Ignoring unknown 'RLayout' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-01-14 00:07:06.183
+!MESSAGE AndroidManifest: Ignoring unknown 'RelLayout' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-01-14 00:07:06.555
+!MESSAGE AndroidManifest: Ignoring unknown 'RelatLayout' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-01-14 00:07:06.793
+!MESSAGE AndroidManifest: Ignoring unknown 'RelativLayout' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-01-14 00:07:11.642
+!MESSAGE AndroidManifest: Ignoring unknown 'RelativeLayoutrLayout' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-01-14 00:07:13.005
+!MESSAGE AndroidManifest: Ignoring unknown 'RelativeLayoutayout' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-01-14 00:07:13.310
+!MESSAGE AndroidManifest: Ignoring unknown 'RelativeLayoutout' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-01-14 00:07:13.629
+!MESSAGE AndroidManifest: Ignoring unknown 'RelativeLayoutt' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-01-14 00:08:33.545
+!MESSAGE AndroidManifest: Ignoring unknown 'RelativeLayoutut' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-01-14 00:08:34.187
+!MESSAGE AndroidManifest: Ignoring unknown 'RelativeLayoutyout' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-01-14 00:08:34.694
+!MESSAGE AndroidManifest: Ignoring unknown 'RelativeLayoutLayout' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-01-14 00:08:40.690
+!MESSAGE AndroidManifest: Ignoring unknown 'RLayout' XML element
+
+!ENTRY org.eclipse.core.resources 8 2 2011-01-14 00:10:39.385
+!MESSAGE Problems occurred when invoking code from plug-in: "org.eclipse.core.resources".
+!STACK 1
+org.eclipse.core.runtime.CoreException: Error in an XML file: aborting build.
+	at com.android.ide.eclipse.adt.internal.build.BaseBuilder.stopBuild(Unknown Source)
+	at com.android.ide.eclipse.adt.internal.build.PreCompilerBuilder.build(Unknown Source)
+	at org.eclipse.core.internal.events.BuildManager$2.run(BuildManager.java:627)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:170)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:201)
+	at org.eclipse.core.internal.events.BuildManager$1.run(BuildManager.java:253)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:256)
+	at org.eclipse.core.internal.events.BuildManager.basicBuildLoop(BuildManager.java:309)
+	at org.eclipse.core.internal.events.BuildManager.build(BuildManager.java:341)
+	at org.eclipse.core.internal.events.AutoBuildJob.doBuild(AutoBuildJob.java:140)
+	at org.eclipse.core.internal.events.AutoBuildJob.run(AutoBuildJob.java:238)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:55)
+!SUBENTRY 1 com.android.ide.eclipse.adt 8 0 2011-01-14 00:10:39.385
+!MESSAGE Error in an XML file: aborting build.
+!SUBENTRY 1 com.android.ide.eclipse.adt 8 0 2011-01-14 00:10:39.385
+!MESSAGE Error in an XML file: aborting build.
+
+!ENTRY org.eclipse.core.resources 8 2 2011-01-14 00:10:50.139
+!MESSAGE Problems occurred when invoking code from plug-in: "org.eclipse.core.resources".
+!STACK 1
+org.eclipse.core.runtime.CoreException: Error in an XML file: aborting build.
+	at com.android.ide.eclipse.adt.internal.build.BaseBuilder.stopBuild(Unknown Source)
+	at com.android.ide.eclipse.adt.internal.build.PreCompilerBuilder.build(Unknown Source)
+	at org.eclipse.core.internal.events.BuildManager$2.run(BuildManager.java:627)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:170)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:201)
+	at org.eclipse.core.internal.events.BuildManager$1.run(BuildManager.java:253)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:256)
+	at org.eclipse.core.internal.events.BuildManager.basicBuildLoop(BuildManager.java:309)
+	at org.eclipse.core.internal.events.BuildManager.build(BuildManager.java:341)
+	at org.eclipse.core.internal.events.AutoBuildJob.doBuild(AutoBuildJob.java:140)
+	at org.eclipse.core.internal.events.AutoBuildJob.run(AutoBuildJob.java:238)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:55)
+!SUBENTRY 1 com.android.ide.eclipse.adt 8 0 2011-01-14 00:10:50.139
+!MESSAGE Error in an XML file: aborting build.
+!SUBENTRY 1 com.android.ide.eclipse.adt 8 0 2011-01-14 00:10:50.139
+!MESSAGE Error in an XML file: aborting build.
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-01-14 00:17:44.548
+!MESSAGE AndroidManifest: Ignoring unknown 'S' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-01-14 00:17:44.795
+!MESSAGE AndroidManifest: Ignoring unknown 'Sc' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-01-14 00:17:44.999
+!MESSAGE AndroidManifest: Ignoring unknown 'Scr' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-01-14 00:17:45.069
+!MESSAGE AndroidManifest: Ignoring unknown 'Scro' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-01-14 00:17:45.316
+!MESSAGE AndroidManifest: Ignoring unknown 'Scrol' XML element
+
+!ENTRY org.eclipse.core.resources 8 2 2011-01-14 00:18:17.094
+!MESSAGE Problems occurred when invoking code from plug-in: "org.eclipse.core.resources".
+!STACK 1
+org.eclipse.core.runtime.CoreException: Error in an XML file: aborting build.
+	at com.android.ide.eclipse.adt.internal.build.BaseBuilder.stopBuild(Unknown Source)
+	at com.android.ide.eclipse.adt.internal.build.PreCompilerBuilder.build(Unknown Source)
+	at org.eclipse.core.internal.events.BuildManager$2.run(BuildManager.java:627)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:170)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:201)
+	at org.eclipse.core.internal.events.BuildManager$1.run(BuildManager.java:253)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:256)
+	at org.eclipse.core.internal.events.BuildManager.basicBuildLoop(BuildManager.java:309)
+	at org.eclipse.core.internal.events.BuildManager.build(BuildManager.java:341)
+	at org.eclipse.core.internal.events.AutoBuildJob.doBuild(AutoBuildJob.java:140)
+	at org.eclipse.core.internal.events.AutoBuildJob.run(AutoBuildJob.java:238)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:55)
+!SUBENTRY 1 com.android.ide.eclipse.adt 8 0 2011-01-14 00:18:17.095
+!MESSAGE Error in an XML file: aborting build.
+!SUBENTRY 1 com.android.ide.eclipse.adt 8 0 2011-01-14 00:18:17.095
+!MESSAGE Error in an XML file: aborting build.
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2011-01-14 00:26:18.244
+!MESSAGE Parser exception for D:\work\shoutbreak_git\client\Shoutbreak\AndroidManifest.xml: Element type "activity" must be followed by either attribute specifications, ">" or "/>".
+!STACK 0
+org.xml.sax.SAXParseException: Element type "activity" must be followed by either attribute specifications, ">" or "/>".
+	at org.apache.xerces.parsers.AbstractSAXParser.parse(Unknown Source)
+	at org.apache.xerces.jaxp.SAXParserImpl$JAXPSAXParser.parse(Unknown Source)
+	at org.apache.xerces.jaxp.SAXParserImpl.parse(Unknown Source)
+	at com.android.sdklib.xml.AndroidManifestParser.parse(AndroidManifestParser.java:608)
+	at com.android.ide.eclipse.adt.internal.project.AndroidManifestHelper.parse(Unknown Source)
+	at com.android.ide.eclipse.adt.internal.build.PreCompilerDeltaVisitor.visit(Unknown Source)
+	at org.eclipse.core.internal.events.ResourceDelta.accept(ResourceDelta.java:68)
+	at org.eclipse.core.internal.events.ResourceDelta.accept(ResourceDelta.java:79)
+	at org.eclipse.core.internal.events.ResourceDelta.accept(ResourceDelta.java:48)
+	at com.android.ide.eclipse.adt.internal.build.PreCompilerBuilder.build(Unknown Source)
+	at org.eclipse.core.internal.events.BuildManager$2.run(BuildManager.java:627)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:170)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:201)
+	at org.eclipse.core.internal.events.BuildManager$1.run(BuildManager.java:253)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:256)
+	at org.eclipse.core.internal.events.BuildManager.basicBuildLoop(BuildManager.java:309)
+	at org.eclipse.core.internal.events.BuildManager.build(BuildManager.java:341)
+	at org.eclipse.core.internal.events.AutoBuildJob.doBuild(AutoBuildJob.java:140)
+	at org.eclipse.core.internal.events.AutoBuildJob.run(AutoBuildJob.java:238)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:55)
+
+!ENTRY org.eclipse.core.resources 8 2 2011-01-14 00:26:18.247
+!MESSAGE Problems occurred when invoking code from plug-in: "org.eclipse.core.resources".
+!STACK 1
+org.eclipse.core.runtime.CoreException: Error in an XML file: aborting build.
+	at com.android.ide.eclipse.adt.internal.build.BaseBuilder.stopBuild(Unknown Source)
+	at com.android.ide.eclipse.adt.internal.build.PreCompilerBuilder.build(Unknown Source)
+	at org.eclipse.core.internal.events.BuildManager$2.run(BuildManager.java:627)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:170)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:201)
+	at org.eclipse.core.internal.events.BuildManager$1.run(BuildManager.java:253)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:256)
+	at org.eclipse.core.internal.events.BuildManager.basicBuildLoop(BuildManager.java:309)
+	at org.eclipse.core.internal.events.BuildManager.build(BuildManager.java:341)
+	at org.eclipse.core.internal.events.AutoBuildJob.doBuild(AutoBuildJob.java:140)
+	at org.eclipse.core.internal.events.AutoBuildJob.run(AutoBuildJob.java:238)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:55)
+!SUBENTRY 1 com.android.ide.eclipse.adt 8 0 2011-01-14 00:26:18.247
+!MESSAGE Error in an XML file: aborting build.
+!SUBENTRY 1 com.android.ide.eclipse.adt 8 0 2011-01-14 00:26:18.247
+!MESSAGE Error in an XML file: aborting build.
