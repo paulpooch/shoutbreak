@@ -4,8 +4,13 @@ import com.shoutbreak.service.ErrorManager;
 import com.shoutbreak.service.MessageObject;
 import com.shoutbreak.service.ServiceThread;
 import com.shoutbreak.service.StateEngine;
+import com.shoutbreak.service.User;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.IBinder;
@@ -26,6 +31,17 @@ public class ShoutbreakService extends Service {
 	private Handler _uiThreadHandler;
 	private StateEngine _stateEngine;
 	private boolean _uiHasConnectedOnce;
+	private NotificationManager _notificationManager;
+	private User _user; // don't assume this actually exists
+	
+	public void giveStatusBarNotification(String alert, String title, String message) {
+		Intent intent = new Intent(this, ShoutbreakUI.class);
+		intent.putExtra(Vars.EXTRA_REFERRED_FROM_NOTIFICATION, true);
+	    Notification notification = new Notification(R.drawable.icon, alert, System.currentTimeMillis());
+	    notification.setLatestEventInfo(this, title, message,
+	    		PendingIntent.getActivity(this.getBaseContext(), 0, intent, PendingIntent.FLAG_CANCEL_CURRENT));
+	    _notificationManager.notify(Vars.APP_NOTIFICATION_ID, notification);
+	}
 	
 	///////////////////////////////////////////////////////////////////////////
 	// LIFECYCLE METHODS
@@ -34,7 +50,9 @@ public class ShoutbreakService extends Service {
 	@Override
 	public void onCreate() {
 		super.onCreate();
+		
 		_uiHasConnectedOnce = false;
+		_notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 		
 		_uiThreadHandler = new Handler() {
 			public void handleMessage(Message msg) {
@@ -42,6 +60,16 @@ public class ShoutbreakService extends Service {
 				switch (msg.what) {
 					
 					case Vars.CALLBACK_SERVICE_EVENT_COMPLETE: {
+						
+						// do we give a status bar notification?
+						if (obj.serviceEventCode == Vars.SEC_RECEIVE_SHOUTS) {
+							int newShoutCount = Integer.parseInt(obj.args[0]);
+							if (newShoutCount > 0) {
+								String pluralShout = "shout" + (newShoutCount > 1 ? "s" : "");
+								giveStatusBarNotification(newShoutCount + " " + pluralShout + " received", "Shoutbreak", "you have " + newShoutCount + " new " + pluralShout);
+							}
+						}
+						
 						final int N = _uiCallbacks.beginBroadcast();
 						for (int i = 0; i < N; i++) {
 							try {
@@ -77,7 +105,8 @@ public class ShoutbreakService extends Service {
 		
 		// User should have been instantiated by UI already.
 		ShoutbreakApplication app = (ShoutbreakApplication)this.getApplication();
-		_stateEngine = new StateEngine(_uiThreadHandler, app.getUser());
+		_user = app.getUser();
+		_stateEngine = new StateEngine(_uiThreadHandler, _user);
 		Log.d(getClass().getSimpleName(), "onCreate()");
 	}
 

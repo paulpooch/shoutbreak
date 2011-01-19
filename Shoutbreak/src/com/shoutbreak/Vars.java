@@ -29,6 +29,7 @@ public class Vars {
 	public static final int SHOUT_VOTE_DOWN = -1;	
 	
 	public static final int APP_NOTIFICATION_ID = 0;
+	public static final String EXTRA_REFERRED_FROM_NOTIFICATION = "rfn";
 	
 	// JSON FALLBACKS 
 	// what we assume if value not returned by server	

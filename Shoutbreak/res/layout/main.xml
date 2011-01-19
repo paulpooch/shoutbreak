@@ -57,7 +57,7 @@
 
 	<!--  ROW 4 (2/16) -->
 	<RelativeLayout android:id="@+id/rlRow4"
-		android:background="@drawable/tab_bg_x" android:layout_width="fill_parent"
+		android:background="@drawable/shout_input_bg_x" android:layout_width="fill_parent"
 		android:layout_height="wrap_content" android:layout_weight="0">
 		<ImageButton android:id="@+id/btnShout" android:text="shout"
 			android:layout_centerVertical="true" android:background="#00000000"

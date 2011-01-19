@@ -2,13 +2,22 @@ package com.shoutbreak.service;
 
 import java.util.ArrayList;
 
+import com.shoutbreak.R;
+import com.shoutbreak.ShoutbreakService;
+import com.shoutbreak.ShoutbreakUI;
 import com.shoutbreak.Vars;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 
 // this is the code run in ServiceThread
 // all messages to ServiceThread are forwarded to goToState(Message msg)
@@ -21,8 +30,15 @@ public class StateEngine {
 		_uiThreadHandler = uiThreadHandler;
 		_user = user;
 	}
-
+	
 	public void goToState(Message msg) {
+		
+		if (_user == null || _uiThreadHandler == null) {
+			// this means the user task-killed us   :(
+			Log.e("TASK KILLED", "Task killed manually. StateEngine exists without ShoutbreakService");
+			return;
+		}
+		
 		MessageObject obj = (MessageObject)msg.obj;
 		switch(msg.what) {
 			
@@ -176,6 +192,7 @@ public class StateEngine {
 					}
 					MessageObject messageObject = new MessageObject();
 					messageObject.serviceEventCode = Vars.SEC_RECEIVE_SHOUTS;
+					messageObject.args = new String[] { Integer.toString(_user.getShoutsJustReceived()) };
 					_uiThreadHandler.sendMessage(Message.obtain(_uiThreadHandler, Vars.CALLBACK_SERVICE_EVENT_COMPLETE, messageObject));				
 				} catch (JSONException ex) {
 					ErrorManager.manage(ex);

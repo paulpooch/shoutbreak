@@ -8,9 +8,7 @@ import com.shoutbreak.service.User;
 import com.shoutbreak.ui.CustomMapView;
 import com.shoutbreak.ui.UserLocationOverlay;
 
-import android.app.Notification;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -73,8 +71,6 @@ public class ShoutbreakUI extends MapActivity {
 	
 	protected UserLocationOverlay _userLocationOverlay;
 	protected MapController _mapController;
-	
-	protected NotificationManager _notificationManager;
 
 	///////////////////////////////////////////////////////////////////////////
 	// LIFECYCLE METHODS
@@ -122,7 +118,6 @@ public class ShoutbreakUI extends MapActivity {
 		_cRow6 = (RelativeLayout) findViewById(R.id.llRow6);
 		
 		_mapController = _cMapView.getController();
-		_notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 		_cShoutsButton.setImageResource(R.drawable.tab_on); // start in shouts tab
 		
 		// Setup User
@@ -135,8 +130,7 @@ public class ShoutbreakUI extends MapActivity {
 	//Log.e("USER", "USER: " + _user.getAuth());
 	
 		_cShoutsButton.setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {
-				
+			public void onClick(View v) {	
 				_cShoutsButton.setImageResource(R.drawable.tab_on);
 				_cInboxButton.setImageResource(R.drawable.tab_button_states);
 				_cSettingsButton.setImageResource(R.drawable.tab_button_states);
@@ -145,28 +139,17 @@ public class ShoutbreakUI extends MapActivity {
 				_cRow3.setVisibility(View.VISIBLE);
 				_cRow4.setVisibility(View.VISIBLE);
 				_cRow6.setVisibility(View.GONE);
-
 			}
 		});
 		
 		_cInboxButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				
-				_cInboxButton.setImageResource(R.drawable.tab_on);
-				_cShoutsButton.setImageResource(R.drawable.tab_button_states);
-				_cSettingsButton.setImageResource(R.drawable.tab_button_states);
-				_cRow1.setVisibility(View.GONE);
-				_cRow2.setVisibility(View.GONE);
-				_cRow3.setVisibility(View.GONE);
-				_cRow4.setVisibility(View.GONE);
-				_cRow6.setVisibility(View.VISIBLE);
-				
+				goToInbox();				
 			}
 		});
 		
 		_cSettingsButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-
 				_cSettingsButton.setImageResource(R.drawable.tab_on);
 				_cShoutsButton.setImageResource(R.drawable.tab_button_states);
 				_cInboxButton.setImageResource(R.drawable.tab_button_states);
@@ -176,7 +159,6 @@ public class ShoutbreakUI extends MapActivity {
 //				_cRow3.setVisibility(View.GONE);
 //				_cRow4.setVisibility(View.GONE);
 //				_cRow6.setVisibility(View.GONE);
-
 			}
 		});
 		
@@ -210,6 +192,14 @@ public class ShoutbreakUI extends MapActivity {
 				turnServiceOff();
 			}
 		});
+
+		// are we coming from a status bar notification?
+		Bundle extras = getIntent().getExtras();
+		if (extras != null) {
+			if (extras.containsKey(Vars.EXTRA_REFERRED_FROM_NOTIFICATION) && extras.getBoolean(Vars.EXTRA_REFERRED_FROM_NOTIFICATION)) {
+				goToInbox();
+			}
+		}
 		
 		initMap();
 
@@ -259,6 +249,17 @@ public class ShoutbreakUI extends MapActivity {
 	// END LIFECYCLE METHODS
 	///////////////////////////////////////////////////////////////////////////
 	
+	protected void goToInbox() {
+		_cInboxButton.setImageResource(R.drawable.tab_on);
+		_cShoutsButton.setImageResource(R.drawable.tab_button_states);
+		_cSettingsButton.setImageResource(R.drawable.tab_button_states);
+		_cRow1.setVisibility(View.GONE);
+		_cRow2.setVisibility(View.GONE);
+		_cRow3.setVisibility(View.GONE);
+		_cRow4.setVisibility(View.GONE);
+		_cRow6.setVisibility(View.VISIBLE);
+	}
+	
 	protected void initMap() {
 		_userLocationOverlay = new UserLocationOverlay(this, _cMapView);
 		_mapController.setZoom(Vars.DEFAULT_ZOOM_LEVEL);
@@ -283,14 +284,6 @@ public class ShoutbreakUI extends MapActivity {
 	
 	public User getUser() {
 		return _user;
-	}
-	
-	public void tempNotify(String alert, String title, String message) {
-		Intent intent = new Intent(this, ShoutbreakUI.class);
-	    Notification notification = new Notification(R.drawable.icon, alert, System.currentTimeMillis());
-	    notification.setLatestEventInfo(this, title, message,
-	    		PendingIntent.getActivity(this.getBaseContext(), 0, intent, PendingIntent.FLAG_CANCEL_CURRENT));
-	    _notificationManager.notify(Vars.APP_NOTIFICATION_ID, notification);
 	}
 	
 	public void giveNotice(String noticeText) {
@@ -365,7 +358,7 @@ public class ShoutbreakUI extends MapActivity {
 					break;
 				}
 				case Vars.SEC_SHOUT_SENT: {
-					giveNotice("shout successful");
+					giveNotice("shout sent");
 					_cShoutText.setText("");
 					break;
 				}
@@ -374,11 +367,12 @@ public class ShoutbreakUI extends MapActivity {
 					_userLocationOverlay.setPopulationDensity(cellDensity.density);
 					int newShouts = _user.getShoutsJustReceived();
 					if (newShouts > 0) {
-						String notice = "just heard " + newShouts + " new Shout";
+						String notice = "just heard " + newShouts + " new shout";
 						if (newShouts > 1) {
 							notice += "s"; // plural is dumb
 						}
 						giveNotice(notice);
+						_user.getInbox().refresh();
 					}
 					break;
 				}
