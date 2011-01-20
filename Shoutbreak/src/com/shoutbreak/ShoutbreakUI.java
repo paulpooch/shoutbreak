@@ -1,14 +1,5 @@
 package com.shoutbreak;
 
-import com.google.android.maps.MapActivity;
-import com.google.android.maps.MapController;
-import com.shoutbreak.service.CellDensity;
-import com.shoutbreak.service.ErrorManager;
-import com.shoutbreak.service.User;
-import com.shoutbreak.ui.CustomMapView;
-import com.shoutbreak.ui.UserLocationOverlay;
-
-import android.app.NotificationManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -33,6 +24,14 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.android.maps.MapActivity;
+import com.google.android.maps.MapController;
+import com.shoutbreak.service.CellDensity;
+import com.shoutbreak.service.ErrorManager;
+import com.shoutbreak.service.User;
+import com.shoutbreak.ui.CustomMapView;
+import com.shoutbreak.ui.UserLocationOverlay;
+
 public class ShoutbreakUI extends MapActivity {
 	// TODO: bundle saved instance... restore state from that
 	
@@ -55,7 +54,6 @@ public class ShoutbreakUI extends MapActivity {
 	protected ImageButton _cShoutButton;
 	protected CustomMapView _cMapView;
 	protected EditText _cShoutText;
-	protected TextView _cStatusText;
 	protected ListView _cInboxListView;
 	protected LinearLayout _cRow1;
 	protected LinearLayout _cRow2;
@@ -82,7 +80,7 @@ public class ShoutbreakUI extends MapActivity {
 		
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		
-		// this fixes the "android title bar bug"
+		// this fixes the "android title bar bug" - it also CAUSES the keyboard not sliding up the editText bug
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
 		
 		super.onCreate(savedInstanceState);
@@ -103,14 +101,13 @@ public class ShoutbreakUI extends MapActivity {
 		_cOffButton = (Button) findViewById(R.id.btnOff);
 		_cShoutButton = (ImageButton) findViewById(R.id.btnShout);
 		_cMapView = (CustomMapView)findViewById(R.id.cmvMap);
-		_cShoutText = (EditText) findViewById(R.id.etShoutText);
-		_cStatusText = (TextView) findViewById(R.id.tvStatus);		
+		_cShoutText = (EditText) findViewById(R.id.etShoutText);	
 		_cNoticeBox = (RelativeLayout) findViewById(R.id.rlNotice);
 		_cNoticeText = (TextView) findViewById(R.id.tvNotice);
 		_cNoticeBoxInbox = (RelativeLayout) findViewById(R.id.r6Notice);
 		_cNoticeTextInbox = (TextView) findViewById(R.id.tvNoticeInbox);
 		_cInboxListView = (ListView)findViewById(R.id.lvInbox);
-	
+		
 		_cRow1 = (LinearLayout) findViewById(R.id.llRow1);
 		_cRow2 = (LinearLayout) findViewById(R.id.llRow2);
 		_cRow3 = (RelativeLayout) findViewById(R.id.rlRow3);
@@ -126,8 +123,6 @@ public class ShoutbreakUI extends MapActivity {
 			_user = app.getUser(_context);
 			_user.initializeInbox(this, _cInboxListView);
 		}
-	
-	//Log.e("USER", "USER: " + _user.getAuth());
 	
 		_cShoutsButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {	
@@ -172,13 +167,16 @@ public class ShoutbreakUI extends MapActivity {
 				}
 			}
 		});
-
-		_cStatusText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-		    public void onFocusChange(View v, boolean hasFocus) {
-		        if (!hasFocus) {
-		            hideKeyboard();
-		        }
-		    }
+		
+		_cShoutText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+			public void onFocusChange(View v, boolean hasFocus) {
+				if (hasFocus) {
+					getWindow().clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+				} else {
+					hideKeyboard();
+					getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+				}	
+			}
 		});
 		
 		_cOnButton.setOnClickListener(new OnClickListener() {
@@ -202,7 +200,6 @@ public class ShoutbreakUI extends MapActivity {
 		}
 		
 		initMap();
-
 	}
 	
 	@Override

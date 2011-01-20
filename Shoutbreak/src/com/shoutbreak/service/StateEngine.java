@@ -2,22 +2,15 @@ package com.shoutbreak.service;
 
 import java.util.ArrayList;
 
-import com.shoutbreak.R;
-import com.shoutbreak.ShoutbreakService;
-import com.shoutbreak.ShoutbreakUI;
-import com.shoutbreak.Vars;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+
+import com.shoutbreak.Vars;
 
 // this is the code run in ServiceThread
 // all messages to ServiceThread are forwarded to goToState(Message msg)
