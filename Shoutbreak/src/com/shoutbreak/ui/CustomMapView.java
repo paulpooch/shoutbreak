@@ -3,6 +3,7 @@ package com.shoutbreak.ui;
 import android.content.Context;
 import android.graphics.Point;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 
 import com.google.android.maps.MapView;

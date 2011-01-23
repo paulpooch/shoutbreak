@@ -18,10 +18,12 @@ public class StateEngine {
 
     private Handler _uiThreadHandler;
 	private User _user;
+	private boolean _isMasterThread;
 	
 	public StateEngine(Handler uiThreadHandler, User user) {
 		_uiThreadHandler = uiThreadHandler;
 		_user = user;
+		_isMasterThread = false;
 	}
 	
 	public void goToState(Message msg) {
@@ -33,6 +35,10 @@ public class StateEngine {
 		}
 		
 		MessageObject obj = (MessageObject)msg.obj;
+		if (obj != null) {
+			_isMasterThread = obj.isMasterThread;
+		}
+		
 		switch(msg.what) {
 			
 			case Vars.MESSAGE_IDLE_EXIT: {
@@ -72,33 +78,12 @@ public class StateEngine {
 			
 			case Vars.MESSAGE_STATE_UI_RECONNECT: {
 				MessageObject messageObject = new MessageObject();
+				messageObject.isMasterThread = _isMasterThread;
 				messageObject.serviceEventCode = Vars.SEC_UI_RECONNECT_COMPLETE;
 				_uiThreadHandler.sendMessage(Message.obtain(_uiThreadHandler, Vars.CALLBACK_SERVICE_EVENT_COMPLETE, messageObject));				
 				msg.what = Vars.MESSAGE_STATE_INIT;
 				goToState(msg);
-				break;				
-//				if (_user.hasAccount()) {
-//					// do we need to pull a density?
-//					CellDensity tempCellDensity = _user.getCellDensity(_locationTracker);
-//					if (!tempCellDensity.isSet) {	
-//						msg.what = Vars.MESSAGE_STATE_IDLE;
-//						goToState(msg);
-//					} else {
-//						try {
-//							MessageObject obj2 = new MessageObject();
-//							JSONObject fakeJSONObject = new JSONObject();
-//							fakeJSONObject.put(Vars.JSON_DENSITY, tempCellDensity.density);
-//							_uiThreadHandler.sendMessage(Message.obtain(_uiThreadHandler, Vars.CALLBACK_RECEIVE_SHOUTS, obj2));
-//							msg.what = Vars.MESSAGE_STATE_IDLE;
-//							goToState(msg);
-//						} catch (JSONException ex) {
-//							ErrorManager.manage(ex);
-//						}
-//					}
-//				} else {
-//					msg.what = Vars.MESSAGE_STATE_INIT;
-//					goToState(msg);
-//				}
+				break;
 			}
 			
 			case Vars.MESSAGE_STATE_SHOUT: {
@@ -112,6 +97,7 @@ public class StateEngine {
 						switch (message.what) {
 							case Vars.MESSAGE_HTTP_DID_SUCCEED: {
 								MessageObject messageObject = new MessageObject();
+								messageObject.isMasterThread = _isMasterThread;
 								messageObject.serviceEventCode = Vars.SEC_SHOUT_SENT;
 								_uiThreadHandler.sendMessage(Message.obtain(_uiThreadHandler, Vars.CALLBACK_SERVICE_EVENT_COMPLETE, messageObject));
 								break;
@@ -143,6 +129,7 @@ public class StateEngine {
 								int vote = Integer.parseInt(voteString);
 								_user.getInbox().reflectVote(shoutID, vote);
 								MessageObject messageObject = new MessageObject();
+								messageObject.isMasterThread = _isMasterThread;
 								messageObject.serviceEventCode = Vars.SEC_VOTE_COMPLETED;
 								_uiThreadHandler.sendMessage(Message.obtain(_uiThreadHandler, Vars.CALLBACK_SERVICE_EVENT_COMPLETE, messageObject));	
 								break;
@@ -186,6 +173,7 @@ public class StateEngine {
 						}				
 					}
 					MessageObject messageObject = new MessageObject();
+					messageObject.isMasterThread = _isMasterThread;
 					messageObject.serviceEventCode = Vars.SEC_RECEIVE_SHOUTS;
 					messageObject.args = new String[] { Integer.toString(_user.getShoutsJustReceived()) };
 					_uiThreadHandler.sendMessage(Message.obtain(_uiThreadHandler, Vars.CALLBACK_SERVICE_EVENT_COMPLETE, messageObject));				
@@ -203,6 +191,7 @@ public class StateEngine {
 						switch (message.what) {
 							case Vars.MESSAGE_HTTP_DID_SUCCEED: {
 								MessageObject messageObject = (MessageObject) message.obj;
+								messageObject.isMasterThread = _isMasterThread;
 								try {
 									String code = messageObject.json.getString(Vars.JSON_CODE);
 									if (code.equals(Vars.JSON_CODE_PING_OK)) {

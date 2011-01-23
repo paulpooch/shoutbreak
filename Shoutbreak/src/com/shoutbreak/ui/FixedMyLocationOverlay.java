@@ -14,6 +14,8 @@ import com.google.android.maps.MyLocationOverlay;
 import com.google.android.maps.Projection;
 //import com.shoutbreak.R;
 
+// Supposedly this fixes a Droid X issue.
+// If you decide to use it make sure it doesn't leak UI context = memory leak.
 public class FixedMyLocationOverlay extends MyLocationOverlay {
 	private boolean bugged = false;
 
@@ -40,7 +42,7 @@ public class FixedMyLocationOverlay extends MyLocationOverlay {
 
 		if (bugged) {
 			if (drawable == null) {
-				accuracyPaint = new Paint();
+				accuracyPaint = new Paint(); // paint should be allocated ahead of time
 				accuracyPaint.setAntiAlias(true);
 				accuracyPaint.setStrokeWidth(2.0f);
 				

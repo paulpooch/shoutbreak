@@ -14,4 +14,6 @@ public class MessageObject {
 	
 	public Exception exception;
 	
+	public boolean isMasterThread = false;
+	
 }

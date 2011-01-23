@@ -25,21 +25,8 @@ public class User {
 		return radius;
 	}
 
-	public static void setBooleanPreference(Context context, String key, boolean val) {
-		SharedPreferences settings = context.getSharedPreferences(Vars.PREFS_NAMESPACE, Context.MODE_PRIVATE);
-		SharedPreferences.Editor editor = settings.edit();
-		editor.putBoolean(key, val);
-		editor.commit();
-	}
-
-	public static boolean getBooleanPreference(Context context, String key, boolean defaultReturnVal) {
-		SharedPreferences settings = context.getSharedPreferences(Vars.PREFS_NAMESPACE, Context.MODE_PRIVATE);
-		boolean val = settings.getBoolean(key, defaultReturnVal);
-		return val;
-	}
-
 	// END STATICS ////////////////////////////////////////////////////////////
-
+	
 	private Context _context = null;
 	private TelephonyManager _tm = null;
 	private Database _db;
@@ -74,6 +61,19 @@ public class User {
 		}
 		_cellDensity = new CellDensity();
 		_cellDensity.isSet = false;
+	}
+	
+	public void setBooleanPreference(String key, boolean val) {
+		SharedPreferences settings = _context.getSharedPreferences(Vars.PREFS_NAMESPACE, Context.MODE_PRIVATE);
+		SharedPreferences.Editor editor = settings.edit();
+		editor.putBoolean(key, val);
+		editor.commit();
+	}
+
+	public boolean getBooleanPreference(String key, boolean defaultReturnVal) {
+		SharedPreferences settings = _context.getSharedPreferences(Vars.PREFS_NAMESPACE, Context.MODE_PRIVATE);
+		boolean val = settings.getBoolean(key, defaultReturnVal);
+		return val;
 	}
 	
 	public LocationTracker getLocationTracker() {

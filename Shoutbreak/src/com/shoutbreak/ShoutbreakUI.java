@@ -35,8 +35,6 @@ import com.shoutbreak.ui.UserLocationOverlay;
 public class ShoutbreakUI extends MapActivity {
 	// TODO: bundle saved instance... restore state from that
 	
-	protected ShoutbreakUI _ui;
-	protected Context _context;
 	protected User _user;
 	protected Intent _serviceIntent;
 	protected IShoutbreakService _service;
@@ -78,6 +76,8 @@ public class ShoutbreakUI extends MapActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		
+		Log.e("### UI ###", "UI constructor");
+		
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		
 		// this fixes the "android title bar bug" - it also CAUSES the keyboard not sliding up the editText bug
@@ -86,14 +86,11 @@ public class ShoutbreakUI extends MapActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 
-		_ui = this;
-		_user = null;
-		_context = getApplicationContext();
 		_serviceIntent = new Intent();
 		_serviceIntent.setClassName("com.shoutbreak", "com.shoutbreak.ShoutbreakService");
 		_inputMM = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);		
-		_animNoticeExpand = AnimationUtils.loadAnimation(_context, R.anim.notice_expand);
-		_animNoticeShowText = AnimationUtils.loadAnimation(_context, R.anim.notice_show_text);
+		_animNoticeExpand = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.notice_expand);
+		_animNoticeShowText = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.notice_show_text);
 		_cShoutsButton = (ImageButton) findViewById(R.id.btnShouts);
 		_cInboxButton = (ImageButton) findViewById(R.id.btnInbox);
 		_cSettingsButton = (ImageButton) findViewById(R.id.btnSettings);
@@ -119,10 +116,8 @@ public class ShoutbreakUI extends MapActivity {
 		
 		// Setup User
 		ShoutbreakApplication app = (ShoutbreakApplication)this.getApplication();
-		if (_user == null) {
-			_user = app.getUser(_context);
-			_user.initializeInbox(this, _cInboxListView);
-		}
+		_user = app.getUser();
+		_user.initializeInbox(this, _cInboxListView);
 	
 		_cShoutsButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {	
@@ -208,7 +203,7 @@ public class ShoutbreakUI extends MapActivity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		if (User.getBooleanPreference(_context, Vars.PREF_APP_ON_OFF_STATUS, true)) {
+		if (_user.getBooleanPreference(Vars.PREF_APP_ON_OFF_STATUS, true)) {
 			turnEverythingOn();
 		} else {
 			turnEverythingOff();
@@ -238,6 +233,7 @@ public class ShoutbreakUI extends MapActivity {
 		super.onDestroy();
 		releaseService();
 		Log.d(getClass().getSimpleName(), "onDestroy");
+		Log.e("### UI ###", "UI destroy");
 	}
 	
 	///////////////////////////////////////////////////////////////////////////
@@ -338,17 +334,17 @@ public class ShoutbreakUI extends MapActivity {
 	
 	protected void turnServiceOn() {
 		if (_serviceConn == null) {
+			startService(_serviceIntent);
 			_serviceConn = new ShoutbreakServiceConnection();
 			bindService(_serviceIntent, _serviceConn, Context.BIND_AUTO_CREATE);
 		}
-		startService(_serviceIntent);
-		User.setBooleanPreference(_context, Vars.PREF_APP_ON_OFF_STATUS, true);
+		_user.setBooleanPreference(Vars.PREF_APP_ON_OFF_STATUS, true);
 	}
 	
 	protected void turnServiceOff() {
 		releaseService();
 		stopService(_serviceIntent);
-		User.setBooleanPreference(_context, Vars.PREF_APP_ON_OFF_STATUS, false);	
+		_user.setBooleanPreference(Vars.PREF_APP_ON_OFF_STATUS, false);	
 	}
 
 	protected void releaseService() {

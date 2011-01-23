@@ -3,8 +3,6 @@ package com.shoutbreak;
 import com.shoutbreak.service.ErrorManager;
 import com.shoutbreak.service.MessageObject;
 import com.shoutbreak.service.ServiceThread;
-import com.shoutbreak.service.StateEngine;
-import com.shoutbreak.service.User;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -28,11 +26,10 @@ public class ShoutbreakService extends Service {
 
 	final RemoteCallbackList<IShoutbreakServiceCallback> _uiCallbacks = new RemoteCallbackList<IShoutbreakServiceCallback>();
 	
+	private ShoutbreakApplication _app;
 	private Handler _uiThreadHandler;
-	private StateEngine _stateEngine;
 	private boolean _isServiceRunning;
 	private NotificationManager _notificationManager;
-	private User _user; // don't assume this actually exists
 	
 	public void giveStatusBarNotification(String alert, String title, String message) {
 		Intent intent = new Intent(this, ShoutbreakUI.class);
@@ -51,6 +48,8 @@ public class ShoutbreakService extends Service {
 	@Override
 	public void onCreate() {
 		super.onCreate();
+		Log.e("### ShoutbreakService ###", "create");
+		_app = (ShoutbreakApplication)this.getApplication();
 		
 		_isServiceRunning = false;
 		_notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
@@ -83,15 +82,22 @@ public class ShoutbreakService extends Service {
 						_uiCallbacks.finishBroadcast();
 						
 						// back to idle
-						Message message = new Message();
-						message.what = Vars.MESSAGE_STATE_IDLE;
-						runOnServiceThreadDelayed(message, Vars.IDLE_THREAD_LOOP_INTERVAL);
+						if (obj.isMasterThread) {
+							Message message = new Message();
+							MessageObject messageObject = new MessageObject();
+							messageObject.isMasterThread = true;
+							message.obj = messageObject;
+							message.what = Vars.MESSAGE_STATE_IDLE;
+							runOnServiceThreadDelayed(message, Vars.IDLE_THREAD_LOOP_INTERVAL);
+						}
 						
 						break;						
 					}
 					
 					case Vars.MESSAGE_REPOST_IDLE_DELAYED: {
-						runOnServiceThreadDelayed(msg, Vars.IDLE_THREAD_LOOP_INTERVAL);
+						if (obj.isMasterThread) {
+							runOnServiceThreadDelayed(msg, Vars.IDLE_THREAD_LOOP_INTERVAL);
+						}
 						break;
 					}
 					
@@ -103,11 +109,7 @@ public class ShoutbreakService extends Service {
 				}
 			}
 		};
-		
-		// User should have been instantiated by UI already.
-		ShoutbreakApplication app = (ShoutbreakApplication)this.getApplication();
-		_user = app.getUser();
-		_stateEngine = new StateEngine(_uiThreadHandler, _user);
+			
 		Log.d(getClass().getSimpleName(), "onCreate()");
 	}
 
@@ -115,6 +117,9 @@ public class ShoutbreakService extends Service {
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		super.onStartCommand(intent, flags, startId);
 		Message message = new Message();
+		MessageObject messageObject = new MessageObject();
+		messageObject.isMasterThread = true;
+		message.obj = messageObject;
 		if (_isServiceRunning) {
 			emptyCallbacks();		
 			message.what = Vars.MESSAGE_STATE_UI_RECONNECT;
@@ -135,6 +140,7 @@ public class ShoutbreakService extends Service {
 		_uiThreadHandler = null;
 		_uiCallbacks.kill();
 		Log.d(getClass().getSimpleName(), "onDestroy()");
+		Log.e("### ShoutbreakService ###", "destroy");
 	}
 	
 	@Override
@@ -208,14 +214,14 @@ public class ShoutbreakService extends Service {
 	
 	
 	public void runOnServiceThread(Message message) {
-		ServiceThread tempServiceThread = new ServiceThread(_stateEngine, message);
+		ServiceThread tempServiceThread = new ServiceThread(_uiThreadHandler, _app.getUser(), message);
 		// launch serviceThread from uiThread
 		_uiThreadHandler.removeCallbacks(tempServiceThread); // ensure no rogue callbacks
 		_uiThreadHandler.post(tempServiceThread);
 	}
 	
 	public void runOnServiceThreadDelayed(Message message, long delay) {
-		ServiceThread tempServiceThread = new ServiceThread(_stateEngine, message);
+		ServiceThread tempServiceThread = new ServiceThread(_uiThreadHandler, _app.getUser(), message);
 		// launch serviceThread from uiThread
 		_uiThreadHandler.removeCallbacks(tempServiceThread); // ensure no rogue callbacks
 		_uiThreadHandler.postDelayed(tempServiceThread, delay);
