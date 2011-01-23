@@ -55,11 +55,11 @@ public class CustomMapView extends MapView {
         		float x = event.getX();
         		float y = event.getY();
         		float dx = Math.abs(y - _lastX);
-                float dy = Math.abs(x - _lastY);
+        		float dy = Math.abs(x - _lastY);
                 if (dx >= Vars.TOUCH_TOLERANCE || dy >= Vars.TOUCH_TOLERANCE) {
                 
                 	float xChange = _touchBegin.x - x;
-            		float yChange = _touchBegin.y - y; 
+                	float yChange = _touchBegin.y - y; 
             		// in canvas down is positive y
             		int direction = 1;
             		if (yChange > xChange) {

@@ -30,7 +30,7 @@ public class ShoutbreakService extends Service {
 	
 	private Handler _uiThreadHandler;
 	private StateEngine _stateEngine;
-	private boolean _uiHasConnectedOnce;
+	private boolean _isServiceRunning;
 	private NotificationManager _notificationManager;
 	private User _user; // don't assume this actually exists
 	
@@ -40,6 +40,7 @@ public class ShoutbreakService extends Service {
 	    Notification notification = new Notification(R.drawable.icon, alert, System.currentTimeMillis());
 	    notification.setLatestEventInfo(this, title, message,
 	    		PendingIntent.getActivity(this.getBaseContext(), 0, intent, PendingIntent.FLAG_CANCEL_CURRENT));
+	    notification.flags |= Notification.FLAG_AUTO_CANCEL;
 	    _notificationManager.notify(Vars.APP_NOTIFICATION_ID, notification);
 	}
 	
@@ -51,7 +52,7 @@ public class ShoutbreakService extends Service {
 	public void onCreate() {
 		super.onCreate();
 		
-		_uiHasConnectedOnce = false;
+		_isServiceRunning = false;
 		_notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 		
 		_uiThreadHandler = new Handler() {
@@ -111,20 +112,22 @@ public class ShoutbreakService extends Service {
 	}
 
 	@Override
-	public void onStart(Intent intent, int startId) {
-		super.onStart(intent, startId);
+	public int onStartCommand(Intent intent, int flags, int startId) {
+		super.onStartCommand(intent, flags, startId);
 		Message message = new Message();
-		if (_uiHasConnectedOnce) {
+		if (_isServiceRunning) {
 			emptyCallbacks();		
 			message.what = Vars.MESSAGE_STATE_UI_RECONNECT;
 			runOnServiceThread(message);
 		} else {
-			_uiHasConnectedOnce = true;
+			_isServiceRunning = true;
 			message.what = Vars.MESSAGE_STATE_INIT;
 			runOnServiceThread(message);
 		}
 		Log.d(getClass().getSimpleName(), "onStart()");
+		return START_STICKY;
 	}
+	
 	
 	@Override
 	public void onDestroy() {

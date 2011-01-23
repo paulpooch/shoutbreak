@@ -58,7 +58,7 @@ public class Database {
     			long lastUpdatedMillisecs = Date.parse(lastUpdated);
     			long diff = (new Date().getTime()) - lastUpdatedMillisecs;
     			if (diff < Vars.DENSITY_EXPIRATION) {
-    				result.density = cursor.getFloat(0);
+    				result.density = cursor.getDouble(0);
     				result.isSet = true;
     				return result;
     			} 

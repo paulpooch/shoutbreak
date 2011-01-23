@@ -40,7 +40,7 @@ public class UserLocationOverlay extends MyLocationOverlay {
     private GeoPoint _lastUserLocationGeoPoint; // the last user coordinates
     private GeoPoint _lastTopRadiusGeoPoint; 	// the coordinates of the top of the current radius
     
-    private final float SQRT2 = (float) 1.4142;	// square root of 2, for hypotenuse of 45, 45, 90 triangle, for resize icon location
+    private final double SQRT2 = (double) 1.4142;	// square root of 2, for hypotenuse of 45, 45, 90 triangle, for resize icon location
     private float _baseRadiusMeters;// radius length in meters of baseRadius (baseRadius is radius length with no user resizing)
     private float _baseRadiusPx; 	// baseRadius in pixels
     private float _currentRadiusPx; // currently displayed radius (baseRadius + resizeAdjustment)
@@ -102,7 +102,7 @@ public class UserLocationOverlay extends MyLocationOverlay {
         canvas.drawPath(path, _circleBorderPaint);
         
         // draw icon
-        float iconXYOffset = _currentRadiusPx / SQRT2;
+        double iconXYOffset = _currentRadiusPx / SQRT2;
         _resizeIconLocation.x = (int) (_userLocationPx.x - iconXYOffset - (_resizeIconSize.x / 2));
         _resizeIconLocation.y = (int) (_userLocationPx.y + iconXYOffset - (_resizeIconSize.y / 2));
         canvas.drawBitmap(
@@ -160,7 +160,7 @@ public class UserLocationOverlay extends MyLocationOverlay {
         _lastTopRadiusGeoPoint = _mapView.getProjection().fromPixels(_userLocationPx.x, (int) (_userLocationPx.y - _currentRadiusPx));
     }
     
-    public void setPopulationDensity(float density) {
+    public void setPopulationDensity(double density) {
     	// TODO: don't hardcode level
     	// TODO: do we keep track of resize if density changes?  or just say fuck it?    	
     	_baseRadiusMeters = User.calculateRadius(10, density);
@@ -186,8 +186,8 @@ public class UserLocationOverlay extends MyLocationOverlay {
     	if (_mapSizeConstraint == -1) {
     		_mapSizeConstraint = (_mapView.getWidth() >= _mapView.getHeight()) ? _mapView.getHeight() : _mapView.getWidth();
     	}
-    	float diameter = _currentRadiusPx + _currentRadiusPx;
-    	float factor = _mapSizeConstraint / diameter;
+    	double diameter = _currentRadiusPx + _currentRadiusPx;
+    	double factor = _mapSizeConstraint / diameter;
     	// each zoom level shows half as much as the previous
     	double zoomChange = Math.log(factor) / Math.log(2); // = log2(factor)
     	_zoomLevel += Math.floor(zoomChange);

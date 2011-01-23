@@ -164,19 +164,21 @@ public class StateEngine {
 			case Vars.MESSAGE_STATE_RECEIVE_SHOUTS: {
 				try {
 					_user.setShoutsJustReceived(0);
+					_user.setScoresJustReceived(false);
 					if (obj.json.has(Vars.JSON_DENSITY)) {
-						float density = (float) obj.json.optDouble(Vars.JSON_DENSITY);
+						double density = (double) obj.json.optDouble(Vars.JSON_DENSITY);
 						_user.saveDensity(density);
 					}
 					if (obj.json.has(Vars.JSON_SHOUTS)) {
 						JSONArray shouts = obj.json.getJSONArray(Vars.JSON_SHOUTS);
+						_user.setShoutsJustReceived(shouts.length());
 						for (int i = 0; i < shouts.length(); i++) {
 							JSONObject jsonShout = shouts.getJSONObject(i);
 							_user.getInbox().addShout(jsonShout);
 						}
-						_user.setShoutsJustReceived(shouts.length());
 					}
 					if (obj.json.has(Vars.JSON_SCORES)) {
+						_user.setScoresJustReceived(true);
 						JSONArray scores = obj.json.getJSONArray(Vars.JSON_SCORES);
 						for (int i = 0; i < scores.length(); i++) {
 							JSONObject jsonScore = scores.getJSONObject(i);

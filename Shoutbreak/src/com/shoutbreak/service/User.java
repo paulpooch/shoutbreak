@@ -18,9 +18,9 @@ public class User {
 
 	// STATICS ////////////////////////////////////////////////////////////////
 
-	public static float calculateRadius(int level, float density) {
+	public static float calculateRadius(int level, double density) {
 		int maxPeople = level * 5;
-		float area = maxPeople / density;
+		double area = maxPeople / density;
 		float radius = (float) Math.sqrt(area / Math.PI);
 		return radius;
 	}
@@ -32,8 +32,7 @@ public class User {
 		editor.commit();
 	}
 
-	public static boolean getBooleanPreference(Context context, String key) {
-		boolean defaultReturnVal = true;
+	public static boolean getBooleanPreference(Context context, String key, boolean defaultReturnVal) {
 		SharedPreferences settings = context.getSharedPreferences(Vars.PREFS_NAMESPACE, Context.MODE_PRIVATE);
 		boolean val = settings.getBoolean(key, defaultReturnVal);
 		return val;
@@ -48,6 +47,7 @@ public class User {
 	private LocationTracker _locationTracker;
 	protected Inbox _inbox;
 	private int _shoutsJustReceived;
+	private boolean _scoresJustReceived;
 	private String _uid;
 	private String _auth;
 	private boolean _passwordExists; // no reason to put actual pw into memory
@@ -63,6 +63,7 @@ public class User {
 	public void initializeUser() {
 		_passwordExists = false;
 		_shoutsJustReceived = 0;
+		_scoresJustReceived = false;
 		_auth = "default"; // we don't have auth yet... just give us nonce
 		HashMap<String, String> userSettings = _db.getUserSettings();
 		if (userSettings.containsKey(Vars.KEY_USER_PW)) {
@@ -85,6 +86,14 @@ public class User {
 	
 	public int getShoutsJustReceived() {
 		return _shoutsJustReceived;
+	}
+	
+	public void setScoresJustReceived(boolean b) {
+		_scoresJustReceived = b;
+	}
+	
+	public boolean getScoresJustReceived() {
+		return _scoresJustReceived;
 	}
 	
 	public double getLatitude() {
@@ -125,7 +134,7 @@ public class User {
 		return _cellDensity;
 	}
 
-	public synchronized void saveDensity(float density) {
+	public synchronized void saveDensity(double density) {
 		CellDensity tempCellDensity = _locationTracker.getCurrentCell();
 		_cellDensity.cellX = tempCellDensity.cellX;
 		_cellDensity.cellY = tempCellDensity.cellY;

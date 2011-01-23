@@ -13,7 +13,7 @@ public class Vars {
 	public static final long DENSITY_EXPIRATION = (long) 4.32E8; // 5 days
 	
 	public static final int MIN_TARGETS_FOR_HIT_COUNT = 3;
-	public static final double SHOUT_SCORING_Z_SCORE = 1.644853;
+	public static final double SHOUT_SCORING_DEFAULT_POWER = 0.10; //  0.10 to have a 95% chance that your lower bound is correct
 		
 	public static final int DEFAULT_ZOOM_LEVEL = 15;
 	public static final int RESIZE_ICON_TOUCH_TOLERANCE = 100; // +/- 50 px from center

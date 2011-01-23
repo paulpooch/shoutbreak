@@ -59,7 +59,7 @@ public class FixedMyLocationOverlay extends MyLocationOverlay {
 			float[] result = new float[1];
 
 			Location.distanceBetween(latitude, longitude, latitude, longitude + 1, result);
-			float longitudeLineDistance = result[0];
+			double longitudeLineDistance = result[0];
 
 			GeoPoint leftGeo = new GeoPoint((int)(latitude*1e6), (int)((longitude-accuracy/longitudeLineDistance)*1e6));
 			projection.toPixels(leftGeo, left);

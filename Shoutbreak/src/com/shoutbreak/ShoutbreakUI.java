@@ -162,9 +162,16 @@ public class ShoutbreakUI extends MapActivity {
 				String text = _cShoutText.getText().toString().trim();
 				try {
 					_service.shout(text);
+					hideKeyboard();
 				} catch (RemoteException ex) {
 					ErrorManager.manage(ex);
 				}
+			}
+		});
+		
+		_cShoutText.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				getWindow().clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
 			}
 		});
 		
@@ -174,7 +181,6 @@ public class ShoutbreakUI extends MapActivity {
 					getWindow().clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
 				} else {
 					hideKeyboard();
-					getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
 				}	
 			}
 		});
@@ -190,14 +196,6 @@ public class ShoutbreakUI extends MapActivity {
 				turnServiceOff();
 			}
 		});
-
-		// are we coming from a status bar notification?
-		Bundle extras = getIntent().getExtras();
-		if (extras != null) {
-			if (extras.containsKey(Vars.EXTRA_REFERRED_FROM_NOTIFICATION) && extras.getBoolean(Vars.EXTRA_REFERRED_FROM_NOTIFICATION)) {
-				goToInbox();
-			}
-		}
 		
 		initMap();
 	}
@@ -210,14 +208,14 @@ public class ShoutbreakUI extends MapActivity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		
-		// we disable/enable to be nice to user battery
-		_userLocationOverlay.enableMyLocation();
-		_user.getLocationTracker().startListeningToLocation();
-		
-		_user.getInbox().refresh();		
-		// this should go last.. let ui render
-		linkToService();
+		if (User.getBooleanPreference(_context, Vars.PREF_APP_ON_OFF_STATUS, true)) {
+			turnEverythingOn();
+		} else {
+			turnEverythingOff();
+		}
+		// this gets extras from notification if app not running
+		Bundle extras = getIntent().getExtras();
+		handleExtras(extras);
 	}
 	
 	@Override
@@ -245,6 +243,39 @@ public class ShoutbreakUI extends MapActivity {
 	///////////////////////////////////////////////////////////////////////////
 	// END LIFECYCLE METHODS
 	///////////////////////////////////////////////////////////////////////////
+	
+	protected void turnEverythingOn() {
+		
+		// we disable/enable to be nice to user battery
+		_userLocationOverlay.enableMyLocation();
+		_user.getLocationTracker().startListeningToLocation();
+		
+		CellDensity cellDensity = _user.getCellDensity();
+		if (cellDensity.isSet) {	
+			_userLocationOverlay.setPopulationDensity(cellDensity.density);
+		}
+		_user.getInbox().refresh();		
+		turnServiceOn();
+	}
+	
+	protected void turnEverythingOff() {
+		turnServiceOff(); // this is probably redundant but we'll be totally sure service is dead with this
+	}
+	
+	// this gets extras from notification if app already running
+	public void onNewIntent(Intent intent){
+		Bundle extras = intent.getExtras();
+		handleExtras(extras);		
+    }
+	
+	protected void handleExtras(Bundle extras) {
+		if (extras != null) {
+			if (extras.containsKey(Vars.EXTRA_REFERRED_FROM_NOTIFICATION) && extras.getBoolean(Vars.EXTRA_REFERRED_FROM_NOTIFICATION)) {
+				goToInbox();
+			}
+		}
+		
+	}
 	
 	protected void goToInbox() {
 		_cInboxButton.setImageResource(R.drawable.tab_on);
@@ -302,40 +333,31 @@ public class ShoutbreakUI extends MapActivity {
 	
 	public void hideKeyboard() {
 		_inputMM.hideSoftInputFromWindow(_cShoutText.getWindowToken(), 0);
+		getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
 	}
 	
-	protected void linkToService() {
+	protected void turnServiceOn() {
 		if (_serviceConn == null) {
-			startService(_serviceIntent);
 			_serviceConn = new ShoutbreakServiceConnection();
 			bindService(_serviceIntent, _serviceConn, Context.BIND_AUTO_CREATE);
-			Log.d(getClass().getSimpleName(), "linkToService");
-		}		
+		}
+		startService(_serviceIntent);
+		User.setBooleanPreference(_context, Vars.PREF_APP_ON_OFF_STATUS, true);
+	}
+	
+	protected void turnServiceOff() {
+		releaseService();
+		stopService(_serviceIntent);
+		User.setBooleanPreference(_context, Vars.PREF_APP_ON_OFF_STATUS, false);	
 	}
 
 	protected void releaseService() {
 		if (_serviceConn != null) {
 			unbindService(_serviceConn);
 			_serviceConn = null;
-			Log.d(getClass().getSimpleName(), "releaseService");
-		} else {
-			// cannot unbind - serivce not bound
 		}
 	}
-
-	protected void turnServiceOn() {
-		startService(_serviceIntent);
-		User.setBooleanPreference(_context, Vars.PREF_APP_ON_OFF_STATUS, true);
-		Log.d(getClass().getSimpleName(), "turnServiceOn");
-	}
-
-	protected void turnServiceOff() {
-		_serviceIntent.setClassName("com.shoutbreak", "com.shoutbreak.ShoutbreakService");
-		stopService(_serviceIntent);
-		User.setBooleanPreference(_context, Vars.PREF_APP_ON_OFF_STATUS, false);
-		Log.d(getClass().getSimpleName(), "turnServiceOff");
-	}
-
+	
 	/**
 	 * This implementation is used to receive callbacks from the remote service.
 	 */
@@ -369,6 +391,8 @@ public class ShoutbreakUI extends MapActivity {
 							notice += "s"; // plural is dumb
 						}
 						giveNotice(notice);
+						_user.getInbox().refresh();
+					} else if (_user.getScoresJustReceived()) {
 						_user.getInbox().refresh();
 					}
 					break;
