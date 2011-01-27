@@ -16,6 +16,7 @@ import android.view.View.OnClickListener;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -30,7 +31,9 @@ import com.shoutbreak.service.CellDensity;
 import com.shoutbreak.service.ErrorManager;
 import com.shoutbreak.service.User;
 import com.shoutbreak.ui.CustomMapView;
+import com.shoutbreak.ui.InboxListViewAdapter;
 import com.shoutbreak.ui.UserLocationOverlay;
+import com.shoutbreak.ui.InboxViewHolder;
 
 public class ShoutbreakUI extends MapActivity {
 	// TODO: bundle saved instance... restore state from that
@@ -67,6 +70,7 @@ public class ShoutbreakUI extends MapActivity {
 	
 	protected UserLocationOverlay _userLocationOverlay;
 	protected MapController _mapController;
+	protected InboxListViewAdapter _inboxListViewAdapter;
 
 	///////////////////////////////////////////////////////////////////////////
 	// LIFECYCLE METHODS
@@ -116,9 +120,9 @@ public class ShoutbreakUI extends MapActivity {
 		
 		// Setup User
 		ShoutbreakApplication app = (ShoutbreakApplication)this.getApplication();
+		app.setUIReference(this);
 		_user = app.getUser();
-		_user.initializeInbox(this, _cInboxListView);
-	
+		
 		_cShoutsButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {	
 				_cShoutsButton.setImageResource(R.drawable.tab_on);
@@ -192,6 +196,7 @@ public class ShoutbreakUI extends MapActivity {
 			}
 		});
 		
+		initInboxListView();
 		initMap();
 	}
 	
@@ -232,6 +237,8 @@ public class ShoutbreakUI extends MapActivity {
 	protected void onDestroy() {
 		super.onDestroy();
 		releaseService();
+		ShoutbreakApplication app = (ShoutbreakApplication)this.getApplication();
+		app.getUIReference().clear();
 		Log.d(getClass().getSimpleName(), "onDestroy");
 		Log.e("### UI ###", "UI destroy");
 	}
@@ -282,6 +289,37 @@ public class ShoutbreakUI extends MapActivity {
 		_cRow3.setVisibility(View.GONE);
 		_cRow4.setVisibility(View.GONE);
 		_cRow6.setVisibility(View.VISIBLE);
+	}
+	
+	public InboxListViewAdapter getInboxListViewAdapter() {
+		return _inboxListViewAdapter;
+	}
+	
+	protected void initInboxListView() {
+		
+		_inboxListViewAdapter = new InboxListViewAdapter(this);
+		_cInboxListView.setAdapter(_inboxListViewAdapter);
+		_cInboxListView.setItemsCanFocus(false);
+        
+        // item expand listener
+		_cInboxListView.setOnItemClickListener(new ListView.OnItemClickListener() {        
+			public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
+				// TODO Auto-generated method stub
+				InboxViewHolder holder = (InboxViewHolder) view.getTag();
+				String shoutID = holder.shoutID;
+				holder.collapsed.setVisibility(View.GONE);
+		        holder.expanded.setVisibility(View.VISIBLE);
+				
+		        // TODO: is this hacky?
+		        if (((Shout)_inboxListViewAdapter.getItem(position)).state_flag == Vars.SHOUT_STATE_NEW) {
+		        	_user.getInbox().markShoutAsRead(shoutID);
+		        	_inboxListViewAdapter.notifyDataSetChanged();
+		    	}
+		        
+		        _inboxListViewAdapter.getCacheExpandState().put(shoutID, true);
+			}
+        });
+		
 	}
 	
 	protected void initMap() {

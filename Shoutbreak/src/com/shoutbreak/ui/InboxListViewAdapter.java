@@ -1,6 +1,7 @@
 package com.shoutbreak.ui;
 
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -25,7 +26,7 @@ import android.widget.TextView;
 
 public class InboxListViewAdapter extends BaseAdapter {
    
-	private Context _context;
+    private ShoutbreakUI _ui;
     private List<Shout> _displayedShouts;
     private LayoutInflater _inflater;
     private PrettyTime _prettyTime;
@@ -33,37 +34,20 @@ public class InboxListViewAdapter extends BaseAdapter {
     public OnClickListener onVoteUpClickListener;
     public OnClickListener onVoteDownClickListener;
     public OnClickListener onDeleteClickListener;
-    private ShoutbreakUI _ui;
     private HashMap<String, Boolean> _cacheExpandState;
     private HashMap<String, String> _cachePrettyTimeAgo;
     private HashMap<String, Integer> _cacheVoteTemporary;
     
-    static class InboxViewHolder {
-    	String shoutID;
-    	TextView textC;
-    	TextView textE;
-    	TextView timeAgoC;
-    	TextView timeAgoE;
-    	TextView scoreC;
-    	TextView scoreE;
-    	TextView voteLabelE;
-    	RelativeLayout collapsed;
-    	RelativeLayout expanded;
-    	ImageButton btnVoteUp;
-    	ImageButton btnVoteDown;
-    	ImageButton btnDelete;
-    }
-    
     public HashMap<String, Boolean> getCacheExpandState() {
     	return _cacheExpandState;
     }
-    
-    public InboxListViewAdapter(Context context, ShoutbreakUI ui, List<Shout> displayedShouts) {
-        _context = context;
+        
+    public InboxListViewAdapter(ShoutbreakUI ui) {
+    	
         _ui = ui;
-        _displayedShouts = displayedShouts;
+        _displayedShouts = new ArrayList<Shout>();
         _prettyTime = new PrettyTime();
-        _inflater = (LayoutInflater) _context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        _inflater = (LayoutInflater) _ui.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         _cacheExpandState = new HashMap<String, Boolean>();
         _cachePrettyTimeAgo = new HashMap<String, String>();
         _cacheVoteTemporary = new HashMap<String, Integer>();
@@ -133,7 +117,8 @@ public class InboxListViewAdapter extends BaseAdapter {
         Shout entry = _displayedShouts.get(position);
         
         if (convertView == null) {
-            convertView = _inflater.inflate(R.layout.inbox_item, parent, false);
+            // TODO: can we reduce the number of items?
+        	convertView = _inflater.inflate(R.layout.inbox_item, parent, false);
         	holder = new InboxViewHolder();
         	holder.textC = (TextView) convertView.findViewById(R.id.tvTextC);
         	holder.timeAgoC = (TextView) convertView.findViewById(R.id.tvTimeAgoC);

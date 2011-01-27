@@ -7,55 +7,34 @@ import java.util.List;
 import org.json.JSONObject;
 
 import com.shoutbreak.Shout;
+import com.shoutbreak.ShoutbreakApplication;
 import com.shoutbreak.ShoutbreakUI;
 import com.shoutbreak.Vars;
 import com.shoutbreak.service.Database;
-import com.shoutbreak.ui.InboxListViewAdapter.InboxViewHolder;
-
-import android.content.Context;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
 
 public class Inbox {
 	
-	private Context _context;
-	private ShoutbreakUI _ui;
+	private ShoutbreakApplication _app;
 	private Database _db;
 	private List<Shout> _shouts;
-	private InboxListViewAdapter _adapter;
-	
-	public Inbox(Context context, ShoutbreakUI ui, Database db, ListView lv) {
-		_context = context;
-		_ui = ui;
+		
+	public Inbox(ShoutbreakApplication app, Database db) {
+		_app = app;
 		_db = db;
-		_shouts = new ArrayList<Shout>();        
-       	_adapter = new InboxListViewAdapter(_context, _ui, _shouts);
-        lv.setAdapter(_adapter);
-        lv.setItemsCanFocus(false);
-        
-        // item expand listener
-        lv.setOnItemClickListener(new ListView.OnItemClickListener() {        
-			public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
-				// TODO Auto-generated method stub
-				InboxViewHolder holder = (InboxViewHolder) view.getTag();
-				String shoutID = holder.shoutID;
-				holder.collapsed.setVisibility(View.GONE);
-		        holder.expanded.setVisibility(View.VISIBLE);
-				// Mark shout as read/unread
-		        if (_shouts.get(position).state_flag == Vars.SHOUT_STATE_NEW) {
-		        	markShoutAsRead(shoutID);
-		        	refresh();
-		    	}
-		        _adapter.getCacheExpandState().put(shoutID, true);
-			}
-        });
-        
+		_shouts = new ArrayList<Shout>();   
+	}
+	
+	// update ListView if the ui exists right now
+	protected void updateDisplay(List<Shout> shouts) {
+		ShoutbreakUI uiRef = _app.getUIReference().get();
+		if (uiRef != null) {
+			uiRef.getInboxListViewAdapter().updateDisplay(shouts);
+		}
 	}
 	
 	public void refresh() {
 		_shouts = _db.getShouts(0, 50);
-		_adapter.updateDisplay(_shouts);
+		updateDisplay(_shouts);
 	}
 	
 	public void refreshShout(String shoutID) {
@@ -64,7 +43,7 @@ public class Inbox {
 				shout = _db.getShout(shoutID);
 			}
 		}
-		_adapter.updateDisplay(_shouts);
+		updateDisplay(_shouts);
 	}
 	
 	public ArrayList<String> getOpenShoutIDs() {
@@ -128,7 +107,7 @@ public class Inbox {
 	public synchronized void markShoutAsRead(String shoutID) {
 		_db.markShoutAsRead(shoutID);
 		refreshShout(shoutID);
-		_adapter.updateDisplay(_shouts);
+		updateDisplay(_shouts);
 	}
 	
 	public synchronized void deleteShout(String shoutID) {
@@ -139,8 +118,11 @@ public class Inbox {
 				break;
 			}
 		}
-		_ui.giveNotice("shout deleted");
-		_adapter.updateDisplay(_shouts);
+		updateDisplay(_shouts);
+		ShoutbreakUI uiRef = _app.getUIReference().get();
+		if (uiRef != null) {
+			uiRef.giveNotice("shout deleted");
+		}
 	}
 	
 }

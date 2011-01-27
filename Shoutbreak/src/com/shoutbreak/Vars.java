@@ -31,6 +31,13 @@ public class Vars {
 	public static final int APP_NOTIFICATION_ID = 0;
 	public static final String EXTRA_REFERRED_FROM_NOTIFICATION = "rfn";
 	
+	public static final double NORMAL_DIST_B[] = {
+		1.570796288, 0.03706987906, -0.8364353589e-3,
+		-0.2250947176e-3, 0.6841218299e-5, 0.5824238515e-5,
+		-0.104527497e-5, 0.8360937017e-7, -0.3231081277e-8,
+		0.3657763036e-10, 0.6936233982e-12
+	};
+	
 	// JSON FALLBACKS 
 	// what we assume if value not returned by server	
 	public static final int NULL_APPROVAL = -1;

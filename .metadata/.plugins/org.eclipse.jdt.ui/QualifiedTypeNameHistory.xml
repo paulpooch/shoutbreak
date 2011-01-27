@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-<fullyQualifiedTypeName name="android.os.Parcelable.Creator"/>
 <fullyQualifiedTypeName name="android.os.Parcel"/>
 <fullyQualifiedTypeName name="org.json.JSONArray"/>
 <fullyQualifiedTypeName name="org.json.JSONObject"/>
-<fullyQualifiedTypeName name="android.content.Context"/>
 <fullyQualifiedTypeName name="android.app.Application"/>
 <fullyQualifiedTypeName name="com.shoutbreak.ShoutParcel"/>
 <fullyQualifiedTypeName name="android.widget.TextView"/>
@@ -36,7 +34,6 @@
 <fullyQualifiedTypeName name="com.shoutbreak.R.color"/>
 <fullyQualifiedTypeName name="android.graphics.Color"/>
 <fullyQualifiedTypeName name="android.widget.ListView"/>
-<fullyQualifiedTypeName name="com.shoutbreak.ShoutbreakApplication"/>
 <fullyQualifiedTypeName name="com.shoutbreak.service.CellDensity"/>
 <fullyQualifiedTypeName name="com.shoutbreak.service.Database"/>
 <fullyQualifiedTypeName name="java.util.Date"/>
@@ -51,7 +48,6 @@
 <fullyQualifiedTypeName name="android.widget.ImageButton"/>
 <fullyQualifiedTypeName name="com.shoutbreak.R.id"/>
 <fullyQualifiedTypeName name="com.shoutbreak.R.drawable"/>
-<fullyQualifiedTypeName name="com.shoutbreak.ShoutbreakUI"/>
 <fullyQualifiedTypeName name="android.view.ViewGroup.LayoutParams"/>
 <fullyQualifiedTypeName name="com.shoutbreak.service.User"/>
 <fullyQualifiedTypeName name="android.util.Log"/>
@@ -60,4 +56,8 @@
 <fullyQualifiedTypeName name="com.shoutbreak.ShoutbreakService"/>
 <fullyQualifiedTypeName name="android.os.Handler"/>
 <fullyQualifiedTypeName name="android.view.View"/>
+<fullyQualifiedTypeName name="java.lang.ref.WeakReference"/>
+<fullyQualifiedTypeName name="android.content.Context"/>
+<fullyQualifiedTypeName name="com.shoutbreak.ShoutbreakApplication"/>
+<fullyQualifiedTypeName name="com.shoutbreak.ShoutbreakUI"/>
 </qualifiedTypeNameHistroy>

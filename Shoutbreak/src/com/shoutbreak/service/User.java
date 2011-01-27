@@ -2,7 +2,7 @@ package com.shoutbreak.service;
 
 import java.util.HashMap;
 
-import com.shoutbreak.ShoutbreakUI;
+import com.shoutbreak.ShoutbreakApplication;
 import com.shoutbreak.Vars;
 import com.shoutbreak.ui.Inbox;
 
@@ -10,7 +10,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
-import android.widget.ListView;
 
 public class User {
 	// All Database stuff should go through User. Any writes should be
@@ -27,8 +26,8 @@ public class User {
 
 	// END STATICS ////////////////////////////////////////////////////////////
 	
-	private Context _context = null;
-	private TelephonyManager _tm = null;
+	private ShoutbreakApplication _app;
+	private TelephonyManager _tm;
 	private Database _db;
 	private CellDensity _cellDensity;
 	private LocationTracker _locationTracker;
@@ -39,15 +38,12 @@ public class User {
 	private String _auth;
 	private boolean _passwordExists; // no reason to put actual pw into memory
 	
-	public User(Context c) {
-		_context = c;
-		_tm = (TelephonyManager) _context.getSystemService(Context.TELEPHONY_SERVICE);
-		_db = new Database(_context);
-		_locationTracker = new LocationTracker(_context);
-		initializeUser();
-	}
-
-	public void initializeUser() {
+	public User(ShoutbreakApplication app) {
+		_app = app;
+		_tm = (TelephonyManager) _app.getSystemService(Context.TELEPHONY_SERVICE);
+		_db = new Database(_app);
+		_locationTracker = new LocationTracker(_app);
+		_inbox = new Inbox(_app, _db);
 		_passwordExists = false;
 		_shoutsJustReceived = 0;
 		_scoresJustReceived = false;
@@ -64,14 +60,14 @@ public class User {
 	}
 	
 	public void setBooleanPreference(String key, boolean val) {
-		SharedPreferences settings = _context.getSharedPreferences(Vars.PREFS_NAMESPACE, Context.MODE_PRIVATE);
+		SharedPreferences settings = _app.getSharedPreferences(Vars.PREFS_NAMESPACE, Context.MODE_PRIVATE);
 		SharedPreferences.Editor editor = settings.edit();
 		editor.putBoolean(key, val);
 		editor.commit();
 	}
 
 	public boolean getBooleanPreference(String key, boolean defaultReturnVal) {
-		SharedPreferences settings = _context.getSharedPreferences(Vars.PREFS_NAMESPACE, Context.MODE_PRIVATE);
+		SharedPreferences settings = _app.getSharedPreferences(Vars.PREFS_NAMESPACE, Context.MODE_PRIVATE);
 		boolean val = settings.getBoolean(key, defaultReturnVal);
 		return val;
 	}
@@ -102,10 +98,6 @@ public class User {
 
 	public double getLongitude() {
 		return _locationTracker.getLongitude();
-	}
-
-	public void initializeInbox(ShoutbreakUI ui, ListView inboxListView) {
-		_inbox = new Inbox(_context, ui, _db, inboxListView);
 	}
 
 	public Inbox getInbox() {
@@ -190,7 +182,7 @@ public class User {
 	}
 
 	public String getAndroidId() {
-		return Settings.Secure.getString(_context.getContentResolver(), Settings.Secure.ANDROID_ID);
+		return Settings.Secure.getString(_app.getContentResolver(), Settings.Secure.ANDROID_ID);
 	}
 
 }
