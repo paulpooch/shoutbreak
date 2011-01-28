@@ -1,8 +1,11 @@
-#Sun Jan 23 13:56:31 EST 2011
-com.android.ide.eclipse.ddms.logcat.time=245
-com.android.ide.eclipse.ddms.logcat.pid=67
-eclipse.preferences.version=1
-com.android.ide.eclipse.ddms.adb=C\:\\Program Files (x86)\\android-sdk-windows\\tools\\adb.exe
-com.android.ide.eclipse.ddms.logcat.message=673
+#Thu Jan 27 19:51:23 EST 2011
 com.android.ide.eclipse.ddms.logcat.level=27
 com.android.ide.eclipse.ddms.logcat.tag=241
+devicePanel.Col4=68
+devicePanel.Col1=51
+devicePanel.Col0=179
+com.android.ide.eclipse.ddms.logcat.time=245
+com.android.ide.eclipse.ddms.adb=C\:\\Program Files (x86)\\android-sdk-windows\\tools\\adb.exe
+com.android.ide.eclipse.ddms.logcat.message=673
+eclipse.preferences.version=1
+com.android.ide.eclipse.ddms.logcat.pid=67

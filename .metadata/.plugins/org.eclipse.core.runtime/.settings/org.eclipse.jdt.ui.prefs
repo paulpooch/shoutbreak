@@ -1,4 +1,4 @@
-#Mon Jan 10 00:23:35 EST 2011
+#Thu Jan 27 21:42:29 EST 2011
 content_assist_proposals_foreground=0,0,0
 spelling_locale_initialized=true
 spelling_ignore_urls=true
@@ -29,6 +29,6 @@ org.eclipse.jdt.ui.formatterprofiles=<?xml version\="1.0" encoding\="UTF-8" stan
 useQuickDiffPrefPage=true
 org.eclipse.jdt.ui.text.custom_templates=<?xml version\="1.0" encoding\="UTF-8" standalone\="no"?><templates/>
 formatter_settings_version=11
-content_assist_lru_history=<?xml version\="1.0" encoding\="UTF-8" standalone\="no"?><history maxLHS\="100" maxRHS\="10"><lhs name\="java.lang.Enum"><rhs name\="android.graphics.Path$Direction"/></lhs><lhs name\="java.lang.Cloneable"><rhs name\="java.util.HashMap"/></lhs><lhs name\="java.util.AbstractMap"><rhs name\="java.util.HashMap"/></lhs><lhs name\="java.util.Map"><rhs name\="java.util.HashMap"/></lhs><lhs name\="java.util.HashMap"><rhs name\="java.util.HashMap"/></lhs><lhs name\="android.location.LocationListener"><rhs name\="com.shoutbreak.service.LocationTracker$MyLocationListener"/></lhs></history>
+content_assist_lru_history=<?xml version\="1.0" encoding\="UTF-8" standalone\="no"?><history maxLHS\="100" maxRHS\="10"><lhs name\="java.lang.Enum"><rhs name\="android.graphics.Path$Direction"/></lhs><lhs name\="java.lang.Cloneable"><rhs name\="java.util.HashMap"/></lhs><lhs name\="java.util.AbstractMap"><rhs name\="java.util.HashMap"/></lhs><lhs name\="java.util.Map"><rhs name\="java.util.HashMap"/></lhs><lhs name\="java.util.HashMap"><rhs name\="java.util.HashMap"/></lhs><lhs name\="android.location.LocationListener"><rhs name\="com.shoutbreak.service.LocationTracker$MyLocationListener"/></lhs><lhs name\="java.io.Reader"><rhs name\="java.io.InputStreamReader"/><rhs name\="java.io.BufferedReader"/></lhs><lhs name\="java.lang.Readable"><rhs name\="java.io.InputStreamReader"/><rhs name\="java.io.BufferedReader"/></lhs><lhs name\="java.io.Closeable"><rhs name\="java.io.InputStreamReader"/><rhs name\="java.io.BufferedReader"/></lhs><lhs name\="java.io.InputStreamReader"><rhs name\="java.io.InputStreamReader"/></lhs><lhs name\="java.io.BufferedReader"><rhs name\="java.io.BufferedReader"/></lhs></history>
 spelling_ignore_sentence=true
 org.eclipse.jdt.ui.text.code_templates_migrated=true

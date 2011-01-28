@@ -21,7 +21,7 @@ public class Inbox {
 	public Inbox(ShoutbreakApplication app, Database db) {
 		_app = app;
 		_db = db;
-		_shouts = new ArrayList<Shout>();   
+		_shouts = new ArrayList<Shout>();
 	}
 	
 	// update ListView if the ui exists right now

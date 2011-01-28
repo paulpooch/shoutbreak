@@ -93,13 +93,21 @@ public class HttpConnection implements Runnable {
 	}
 
 	private void processEntity(HttpEntity entity) throws IllegalStateException,	IOException {
-		BufferedReader br = new BufferedReader(new InputStreamReader(entity.getContent()));
-		String line, result = "";
-		while ((line = br.readLine()) != null) {
-			result += line;
-		}				
+		InputStream inStream = null;
+		InputStreamReader inStreamReader = null;
+		BufferedReader bufferedReader = null;
+		JSONObject json;
 		try {
-			JSONObject json;
+			//BufferedReader br = new BufferedReader(new InputStreamReader(entity.getContent()));
+			
+			inStream = entity.getContent();
+			inStreamReader = new InputStreamReader(inStream);
+			bufferedReader = new BufferedReader(inStreamReader, 8192); // 8kB
+			
+			String line, result = "";
+			while ((line = bufferedReader.readLine()) != null) {
+				result += line;
+			}				
 			if (result.length() > 0) {
 				json = new JSONObject(result);
 				json = Security.filterJSON(json);
@@ -108,11 +116,23 @@ public class HttpConnection implements Runnable {
 				json = new JSONObject();
 				json.put("code",  Vars.JSON_CODE_PING_OK);
 			}
+			
 			_messageObject.json = json;			
 			Message message = Message.obtain(_handler, Vars.MESSAGE_HTTP_DID_SUCCEED, _messageObject);
 			_handler.sendMessage(message);
+			
 		} catch (JSONException ex) {
 			ErrorManager.manage(ex);
+		} finally {
+			if (bufferedReader != null) {
+				bufferedReader.close();
+			}
+			if (inStreamReader != null) {
+				inStreamReader.close();
+			}
+			if (inStream != null) {
+				inStream.close();
+			}
 		}
 	}
 

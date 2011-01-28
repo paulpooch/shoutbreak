@@ -137,7 +137,6 @@ public class ShoutbreakService extends Service {
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		_uiThreadHandler = null;
 		_uiCallbacks.kill();
 		Log.d(getClass().getSimpleName(), "onDestroy()");
 		Log.e("### ShoutbreakService ###", "destroy");

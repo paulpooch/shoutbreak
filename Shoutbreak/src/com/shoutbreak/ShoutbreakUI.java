@@ -208,6 +208,7 @@ public class ShoutbreakUI extends MapActivity {
 	@Override
 	protected void onResume() {
 		super.onResume();
+		_user.getInbox().refresh();
 		if (_user.getBooleanPreference(Vars.PREF_APP_ON_OFF_STATUS, true)) {
 			turnEverythingOn();
 		} else {
@@ -256,8 +257,7 @@ public class ShoutbreakUI extends MapActivity {
 		CellDensity cellDensity = _user.getCellDensity();
 		if (cellDensity.isSet) {	
 			_userLocationOverlay.setPopulationDensity(cellDensity.density);
-		}
-		_user.getInbox().refresh();		
+		}	
 		turnServiceOn();
 	}
 	
