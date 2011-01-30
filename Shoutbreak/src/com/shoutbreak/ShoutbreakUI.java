@@ -47,9 +47,9 @@ public class ShoutbreakUI extends MapActivity {
 	protected InputMethodManager _inputMM;
 	
 	// UI controls
-	protected ImageButton _cShoutsButton;
-	protected ImageButton _cInboxButton;
-	protected ImageButton _cSettingsButton;
+	protected ImageButton _cShoutingTabButton;
+	protected ImageButton _cInboxTabButton;
+	protected ImageButton _cUserTabsButton;
 	protected Button _cOnButton;
 	protected Button _cOffButton;
 	protected ImageButton _cShoutButton;
@@ -95,9 +95,9 @@ public class ShoutbreakUI extends MapActivity {
 		_inputMM = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);		
 		_animNoticeExpand = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.notice_expand);
 		_animNoticeShowText = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.notice_show_text);
-		_cShoutsButton = (ImageButton) findViewById(R.id.btnShouts);
-		_cInboxButton = (ImageButton) findViewById(R.id.btnInbox);
-		_cSettingsButton = (ImageButton) findViewById(R.id.btnSettings);
+		_cShoutingTabButton = (ImageButton) findViewById(R.id.btnShoutingTab);
+		_cInboxTabButton = (ImageButton) findViewById(R.id.btnInboxTab);
+		_cUserTabsButton = (ImageButton) findViewById(R.id.btnUserTab);
 		_cOnButton = (Button) findViewById(R.id.btnOn);
 		_cOffButton = (Button) findViewById(R.id.btnOff);
 		_cShoutButton = (ImageButton) findViewById(R.id.btnShout);
@@ -116,18 +116,18 @@ public class ShoutbreakUI extends MapActivity {
 		_cRow6 = (RelativeLayout) findViewById(R.id.llRow6);
 		
 		_mapController = _cMapView.getController();
-		_cShoutsButton.setImageResource(R.drawable.tab_on); // start in shouts tab
+		_cShoutingTabButton.setImageResource(R.drawable.tab_shouting_on); // start in shouts tab
 		
 		// Setup User
 		ShoutbreakApplication app = (ShoutbreakApplication)this.getApplication();
 		app.setUIReference(this);
 		_user = app.getUser();
 		
-		_cShoutsButton.setOnClickListener(new OnClickListener() {
+		_cShoutingTabButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {	
-				_cShoutsButton.setImageResource(R.drawable.tab_on);
-				_cInboxButton.setImageResource(R.drawable.tab_button_states);
-				_cSettingsButton.setImageResource(R.drawable.tab_button_states);
+				_cShoutingTabButton.setImageResource(R.drawable.tab_shouting_on);
+				_cInboxTabButton.setImageResource(R.drawable.tab_inbox);
+				_cUserTabsButton.setImageResource(R.drawable.tab_user);
 				_cRow1.setVisibility(View.VISIBLE);
 				_cRow2.setVisibility(View.VISIBLE);
 				_cRow3.setVisibility(View.VISIBLE);
@@ -136,18 +136,18 @@ public class ShoutbreakUI extends MapActivity {
 			}
 		});
 		
-		_cInboxButton.setOnClickListener(new OnClickListener() {
+		_cInboxTabButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				goToInbox();				
 			}
 		});
 		
-		_cSettingsButton.setOnClickListener(new OnClickListener() {
+		_cUserTabsButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				_cSettingsButton.setImageResource(R.drawable.tab_on);
-				_cShoutsButton.setImageResource(R.drawable.tab_button_states);
-				_cInboxButton.setImageResource(R.drawable.tab_button_states);
-				giveNotice("TEST Test Tdada!");
+				_cUserTabsButton.setImageResource(R.drawable.tab_user_on);
+				_cShoutingTabButton.setImageResource(R.drawable.tab_shouting);
+				_cInboxTabButton.setImageResource(R.drawable.tab_inbox);
+				giveNotice("...coming soon...");
 //				_cRow1.setVisibility(View.GONE);
 //				_cRow2.setVisibility(View.GONE);
 //				_cRow3.setVisibility(View.GONE);
@@ -281,9 +281,9 @@ public class ShoutbreakUI extends MapActivity {
 	}
 	
 	protected void goToInbox() {
-		_cInboxButton.setImageResource(R.drawable.tab_on);
-		_cShoutsButton.setImageResource(R.drawable.tab_button_states);
-		_cSettingsButton.setImageResource(R.drawable.tab_button_states);
+		_cInboxTabButton.setImageResource(R.drawable.tab_inbox_on);
+		_cShoutingTabButton.setImageResource(R.drawable.tab_shouting);
+		_cUserTabsButton.setImageResource(R.drawable.tab_user);
 		_cRow1.setVisibility(View.GONE);
 		_cRow2.setVisibility(View.GONE);
 		_cRow3.setVisibility(View.GONE);
