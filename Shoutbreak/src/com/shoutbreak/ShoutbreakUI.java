@@ -17,10 +17,8 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -41,26 +39,25 @@ public class ShoutbreakUI extends MapActivity {
 	protected User _user;
 	protected Intent _serviceIntent;
 	protected IShoutbreakService _service;
-	protected ShoutbreakServiceConnection _serviceConn;	
+	protected ShoutbreakServiceConnection _serviceConn;
+	protected boolean _isPowerOn;
 	
 	// keyboard
 	protected InputMethodManager _inputMM;
 	
 	// UI controls
+	protected ImageButton _cPowerButton;
+	protected ImageButton _cShoutButton;
 	protected ImageButton _cShoutingTabButton;
 	protected ImageButton _cInboxTabButton;
 	protected ImageButton _cUserTabsButton;
-	protected Button _cOnButton;
-	protected Button _cOffButton;
-	protected ImageButton _cShoutButton;
 	protected CustomMapView _cMapView;
 	protected EditText _cShoutText;
 	protected ListView _cInboxListView;
-	protected LinearLayout _cRow1;
-	protected LinearLayout _cRow2;
+	protected RelativeLayout _cRow1;
+	protected RelativeLayout _cRow2;
 	protected RelativeLayout _cRow3;
 	protected RelativeLayout _cRow4;
-	protected RelativeLayout _cRow6;
 	protected RelativeLayout _cNoticeBox;
 	protected RelativeLayout _cNoticeBoxInbox;
 	protected TextView _cNoticeText;
@@ -98,8 +95,8 @@ public class ShoutbreakUI extends MapActivity {
 		_cShoutingTabButton = (ImageButton) findViewById(R.id.btnShoutingTab);
 		_cInboxTabButton = (ImageButton) findViewById(R.id.btnInboxTab);
 		_cUserTabsButton = (ImageButton) findViewById(R.id.btnUserTab);
-		_cOnButton = (Button) findViewById(R.id.btnOn);
-		_cOffButton = (Button) findViewById(R.id.btnOff);
+		
+		_cPowerButton = (ImageButton) findViewById(R.id.btnPower);
 		_cShoutButton = (ImageButton) findViewById(R.id.btnShout);
 		_cMapView = (CustomMapView)findViewById(R.id.cmvMap);
 		_cShoutText = (EditText) findViewById(R.id.etShoutText);	
@@ -109,11 +106,10 @@ public class ShoutbreakUI extends MapActivity {
 		_cNoticeTextInbox = (TextView) findViewById(R.id.tvNoticeInbox);
 		_cInboxListView = (ListView)findViewById(R.id.lvInbox);
 		
-		_cRow1 = (LinearLayout) findViewById(R.id.llRow1);
-		_cRow2 = (LinearLayout) findViewById(R.id.llRow2);
+		_cRow1 = (RelativeLayout) findViewById(R.id.rlRow1);
+		_cRow2 = (RelativeLayout) findViewById(R.id.rlRow2);
 		_cRow3 = (RelativeLayout) findViewById(R.id.rlRow3);
 		_cRow4 = (RelativeLayout) findViewById(R.id.rlRow4);
-		_cRow6 = (RelativeLayout) findViewById(R.id.llRow6);
 		
 		_mapController = _cMapView.getController();
 		_cShoutingTabButton.setImageResource(R.drawable.tab_shouting_on); // start in shouts tab
@@ -131,8 +127,7 @@ public class ShoutbreakUI extends MapActivity {
 				_cRow1.setVisibility(View.VISIBLE);
 				_cRow2.setVisibility(View.VISIBLE);
 				_cRow3.setVisibility(View.VISIBLE);
-				_cRow4.setVisibility(View.VISIBLE);
-				_cRow6.setVisibility(View.GONE);
+				_cRow4.setVisibility(View.GONE);
 			}
 		});
 		
@@ -184,18 +179,16 @@ public class ShoutbreakUI extends MapActivity {
 			}
 		});
 		
-		_cOnButton.setOnClickListener(new OnClickListener() {
+		_cPowerButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				turnServiceOn();
+				if (_isPowerOn) {
+					turnServiceOff();
+				} else {
+					turnServiceOn();
+				}
 			}
 		});
 
-		_cOffButton.setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {
-				turnServiceOff();
-			}
-		});
-		
 		initInboxListView();
 		initMap();
 	}
@@ -287,8 +280,7 @@ public class ShoutbreakUI extends MapActivity {
 		_cRow1.setVisibility(View.GONE);
 		_cRow2.setVisibility(View.GONE);
 		_cRow3.setVisibility(View.GONE);
-		_cRow4.setVisibility(View.GONE);
-		_cRow6.setVisibility(View.VISIBLE);
+		_cRow4.setVisibility(View.VISIBLE);
 	}
 	
 	public InboxListViewAdapter getInboxListViewAdapter() {
@@ -377,12 +369,16 @@ public class ShoutbreakUI extends MapActivity {
 			bindService(_serviceIntent, _serviceConn, Context.BIND_AUTO_CREATE);
 		}
 		_user.setBooleanPreference(Vars.PREF_APP_ON_OFF_STATUS, true);
+		_cPowerButton.setImageResource(R.drawable.power_button_on);
+		_isPowerOn = true;
 	}
 	
 	protected void turnServiceOff() {
 		releaseService();
 		stopService(_serviceIntent);
-		_user.setBooleanPreference(Vars.PREF_APP_ON_OFF_STATUS, false);	
+		_user.setBooleanPreference(Vars.PREF_APP_ON_OFF_STATUS, false);
+		_cPowerButton.setImageResource(R.drawable.power_button_off);
+		_isPowerOn = false;
 	}
 
 	protected void releaseService() {

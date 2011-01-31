@@ -14,6 +14,7 @@ import com.shoutbreak.service.ErrorManager;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.graphics.PorterDuff.Mode;
 import android.os.RemoteException;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -128,13 +129,17 @@ public class InboxListViewAdapter extends BaseAdapter {
         	holder.scoreE = (TextView) convertView.findViewById(R.id.tvScoreE);
         	holder.collapsed = (RelativeLayout) convertView.findViewById(R.id.rlCollapsed);
         	holder.expanded = (RelativeLayout) convertView.findViewById(R.id.rlExpanded);
-        	holder.voteLabelE= (TextView) convertView.findViewById(R.id.tvVoteLabel);
         	holder.btnVoteUp = (ImageButton) convertView.findViewById(R.id.btnVoteUp);
         	holder.btnVoteUp.setOnClickListener(onVoteUpClickListener);
         	holder.btnVoteDown = (ImageButton) convertView.findViewById(R.id.btnVoteDown);
         	holder.btnVoteDown.setOnClickListener(onVoteDownClickListener);
         	holder.btnDelete = (ImageButton) convertView.findViewById(R.id.btnDelete);
         	holder.btnDelete.setOnClickListener(onDeleteClickListener);
+        	holder.btnReply = (ImageButton) convertView.findViewById(R.id.btnReply);
+        	holder.btnVoteUp.getBackground().setColorFilter(0xAA9900FF, Mode.SRC_ATOP);
+        	holder.btnVoteDown.getBackground().setColorFilter(0xAA9900FF, Mode.SRC_ATOP);
+        	holder.btnDelete.getBackground().setColorFilter(0xAA9900FF, Mode.SRC_ATOP);
+        	holder.btnReply.getBackground().setColorFilter(0xAA9900FF, Mode.SRC_ATOP);
         	holder.expanded.setOnClickListener(onCollapseClickListener);
         	holder.expanded.setTag(holder);
         	convertView.setTag(holder);
@@ -177,14 +182,14 @@ public class InboxListViewAdapter extends BaseAdapter {
         		vote |= _cacheVoteTemporary.get(entry.id);
         	}
         	if (vote != Vars.NULL_VOTE) {
-    	      	holder.voteLabelE.setText("ALREADY VOTED" + entry.open +" | "+vote);
+    	      	//holder.voteLabelE.setText("ALREADY VOTED" + entry.open +" | "+vote);
     	      	isVotingAllowed = false;
         	} else {
-        		holder.voteLabelE.setText("VOTE" + entry.open +" | "+vote);
+        		//holder.voteLabelE.setText("VOTE" + entry.open +" | "+vote);
     	      	isVotingAllowed = true;
         	}
         } else {
-        	holder.voteLabelE.setText("VOTING CLOSED");
+        	//holder.voteLabelE.setText("VOTING CLOSED");
         	isVotingAllowed = false;
         }
         if (isVotingAllowed) {

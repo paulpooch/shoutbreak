@@ -4,39 +4,18 @@
 	android:background="#ff000000" android:orientation="vertical">
 
 	<!--  ROW 1 (1/16) -->
-	<LinearLayout android:id="@+id/llRow1"
+	<RelativeLayout android:id="@+id/rlRow1" android:background="@drawable/top_bg"
 		android:layout_width="fill_parent" android:layout_height="wrap_content"
 		android:layout_weight="0">
-		<TableLayout android:layout_width="fill_parent"
-			android:layout_height="wrap_content" android:stretchColumns="0">
-			<TableRow>
-				<TextView android:layout_width="fill_parent"
-					android:layout_height="wrap_content" android:layout_gravity="left"
-					android:text="@string/appTitle" />
-				<!-- TITLE BAR -->
-				<LinearLayout android:orientation="horizontal"
-					android:layout_width="fill_parent" android:layout_height="wrap_content"
-					android:gravity="right">
-					<Button android:id="@+id/btnOn" android:layout_width="100dp"
-						android:layout_height="wrap_content" android:padding="0dp"
-						android:text="on" />
-					<Button android:id="@+id/btnOff" android:layout_width="100dp"
-						android:layout_height="wrap_content" android:padding="0dp"
-						android:text="off" />
-				</LinearLayout>
-			</TableRow>
-		</TableLayout>
-	</LinearLayout>
+			<ImageButton android:id="@+id/btnPower" android:text="power"
+			android:layout_centerVertical="true" android:background="#00000000"
+			android:layout_alignParentRight="true" android:layout_width="wrap_content"
+			android:layout_marginTop="10px" android:layout_marginRight="10px"
+			android:src="@drawable/power_button_on" android:layout_height="wrap_content" />
+	</RelativeLayout>
 
-	<!--  ROW 2 (1/16) -->
-	<LinearLayout android:id="@+id/llRow2"
-		android:layout_width="fill_parent" android:layout_height="wrap_content"
-		android:layout_weight="0">
-
-	</LinearLayout>
-
-	<!--  ROW 3 (10/16) -->
-	<RelativeLayout android:id="@+id/rlRow3"
+	<!--  ROW 2 (10/16) -->
+	<RelativeLayout android:id="@+id/rlRow2"
 		android:layout_width="fill_parent" android:layout_height="wrap_content"
 		android:layout_weight="1">
 		<com.shoutbreak.ui.CustomMapView
@@ -54,8 +33,8 @@
 			android:text="This is a test of notice" />
 	</RelativeLayout>
 
-	<!--  ROW 4 (2/16) -->
-	<RelativeLayout android:id="@+id/rlRow4"
+	<!--  ROW 3 (2/16) -->
+	<RelativeLayout android:id="@+id/rlRow3"
 		android:background="@drawable/shout_input_bg" android:layout_width="fill_parent"
 		android:layout_height="wrap_content" android:layout_weight="0">
 		<ImageButton android:id="@+id/btnShout" android:text="shout"
@@ -75,8 +54,8 @@
 	<!--  INBOX TAB -->
 	<!-- ///////////////////////////////////////////////////////////// -->
 
-	<!--  ROW 6 -->
-	<RelativeLayout android:id="@+id/llRow6"
+	<!--  ROW 4 -->
+	<RelativeLayout android:id="@+id/rlRow4"
 		android:layout_width="fill_parent" android:layout_height="wrap_content"
 		android:visibility="gone" android:layout_weight="1">
 		<ListView android:id="@+id/lvInbox" android:layout_width="fill_parent"
