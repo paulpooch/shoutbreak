@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent" android:layout_height="wrap_content"
+	android:orientation="vertical">
+
+	<!--  COLLAPSED -->
+	<RelativeLayout android:id="@+id/rlCollapsed"
+		android:orientation="horizontal" android:layout_width="fill_parent"
+		android:layout_height="90px" android:padding="5dp"
+		android:background="@drawable/inbox_collapsed_bg_x">
+		<LinearLayout android:layout_width="wrap_content"
+			android:id="@+id/llScoreC" android:layout_height="wrap_content"
+			android:layout_alignParentRight="true" android:background="@drawable/inbox_score">
+			<TextView android:id="@+id/tvScoreC" android:layout_width="fill_parent"
+				android:layout_height="wrap_content" android:layout_centerInParent="true"
+				android:textColor="#fff" android:textSize="25dp" android:gravity="center"
+				android:text="85" />
+		</LinearLayout>
+		<TextView android:id="@+id/tvTimeAgoC" android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_alignParentBottom="true"
+			android:layout_alignParentRight="true" android:textColor="#e155f0"
+			android:textSize="10dp" />
+		<TextView android:id="@+id/tvTextC" android:layout_width="wrap_content"
+			android:layout_height="fill_parent" android:layout_alignParentLeft="true"
+			android:layout_toLeftOf="@id/llScoreC" android:textSize="15dp"
+			android:textColor="#3c056e" android:text="this is text" />
+	</RelativeLayout>
+
+	<!--  EXPANDED -->
+	<RelativeLayout android:id="@+id/rlExpanded"
+		android:minHeight="160dp" android:visibility="gone"
+		android:orientation="horizontal" android:layout_width="fill_parent"
+		android:layout_height="wrap_content" android:background="#000"
+		android:paddingBottom="5dp">
+		<LinearLayout android:background="@drawable/inbox_expanded_bg_x"
+			android:layout_height="50px" android:layout_width="fill_parent"
+			android:layout_alignParentTop="true" />
+		<LinearLayout android:layout_width="wrap_content"
+			android:id="@+id/llScoreE" android:layout_height="wrap_content"
+			android:layout_alignParentRight="true" android:layout_alignParentTop="true"
+			android:layout_marginTop="5dp" android:layout_marginRight="5dp"
+			android:background="@drawable/inbox_score">
+			<TextView android:id="@+id/tvScoreE" android:layout_width="fill_parent"
+				android:layout_height="wrap_content" android:layout_centerInParent="true"
+				android:textColor="#fff" android:textSize="25dp" android:gravity="center"
+				android:text="85" />
+		</LinearLayout>
+		<TextView android:id="@+id/tvTextE" android:layout_width="wrap_content"
+			android:layout_height="fill_parent" android:layout_alignParentLeft="true"
+			android:layout_alignParentTop="true" android:layout_toLeftOf="@id/llScoreE"
+			android:textSize="15dp" android:textColor="#fff" android:text="this is text"
+			android:layout_marginLeft="8dp" android:layout_marginRight="10dp"
+			android:layout_marginBottom="10dp" android:layout_marginTop="5dp" />
+
+		<TextView android:id="@+id/tvTimeAgoE" android:layout_width="wrap_content"
+			android:layout_height="wrap_content" android:layout_below="@id/llScoreE"
+			android:layout_alignParentRight="true" android:textColor="#e155f0" android:gravity="right"
+			android:textSize="10dp" android:layout_marginRight="5dp" />
+		<RelativeLayout android:layout_width="wrap_content"
+			android:id="@+id/rlVoteBox" android:background="@drawable/inbox_button_border"
+			android:layout_height="wrap_content" android:layout_below="@id/tvTextE"
+			android:layout_alignParentBottom="true"
+			android:layout_alignParentLeft="true" android:layout_marginLeft="5dp">
+			<TextView android:id="@+id/tvVoteLabel" android:textColor="#999999"
+				android:layout_height="wrap_content" android:layout_width="wrap_content"
+				android:textSize="10dp" android:layout_alignParentLeft="true"
+				android:layout_alignParentTop="true" android:layout_marginLeft="4dp"
+				android:layout_marginBottom="2dp" android:text="VOTE" />
+			<ImageButton android:id="@+id/btnVoteUp" android:onClick="myClickHandler"
+				android:layout_width="wrap_content" android:layout_height="wrap_content"
+				android:paddingBottom="10dp" android:layout_alignParentLeft="true"
+				android:layout_below="@id/tvVoteLabel" android:src="@drawable/vote_up" />
+			<ImageButton android:id="@+id/btnVoteDown"
+				android:layout_width="wrap_content" android:layout_height="wrap_content"
+				android:layout_toRightOf="@id/btnVoteUp" android:layout_alignBottom="@id/btnVoteUp"
+				android:paddingBottom="10dp" android:src="@drawable/vote_down" />
+		</RelativeLayout>
+		<RelativeLayout android:layout_width="wrap_content"
+			android:background="@drawable/inbox_button_border"
+			android:layout_marginLeft="15dp" android:layout_height="wrap_content"
+			android:layout_below="@id/tvTextE" android:layout_alignParentBottom="true"
+			android:layout_toRightOf="@id/rlVoteBox">
+			<TextView android:id="@+id/tvReplyLabel" android:textColor="#999999"
+				android:layout_height="wrap_content" android:layout_width="wrap_content"
+				android:textSize="10dp" android:layout_alignParentLeft="true"
+				android:layout_alignParentTop="true" android:layout_marginLeft="4dp"
+				android:layout_marginBottom="2dp" android:text="REPLY" />
+			<ImageButton android:id="@+id/btnShoutBack"
+				android:layout_width="wrap_content" android:layout_height="wrap_content"
+				android:paddingBottom="10dp" android:layout_alignParentLeft="true"
+				android:layout_below="@id/tvReplyLabel" android:src="@drawable/inbox_reply" />
+		</RelativeLayout>
+		<RelativeLayout android:layout_width="wrap_content"
+			android:background="@drawable/inbox_button_border"
+			android:layout_marginRight="5dp" android:layout_marginLeft="20dp"
+			android:layout_height="wrap_content" android:layout_below="@id/tvTextE"
+			android:layout_alignParentBottom="true"
+			android:layout_alignParentRight="true">
+			<TextView android:id="@+id/tvDeleteLabel" android:textColor="#999999"
+				android:layout_height="wrap_content" android:layout_width="wrap_content"
+				android:textSize="10dp" android:layout_alignParentLeft="true"
+				android:layout_alignParentTop="true" android:layout_marginLeft="4dp"
+				android:layout_marginBottom="2dp" android:text="DELETE" />
+			<ImageButton android:id="@+id/btnDelete"
+				android:layout_width="wrap_content" android:layout_height="wrap_content"
+				android:layout_below="@id/tvDeleteLabel"
+				android:layout_alignParentLeft="true" android:paddingBottom="10dp"
+				android:src="@drawable/inbox_delete" />
+		</RelativeLayout>
+	</RelativeLayout>
+</LinearLayout>

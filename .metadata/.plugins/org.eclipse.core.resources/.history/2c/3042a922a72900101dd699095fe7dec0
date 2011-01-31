@@ -1,0 +1,29 @@
+package com.shoutbreak;
+
+import java.lang.ref.WeakReference;
+
+import android.app.Application;
+import android.content.Context;
+import com.shoutbreak.service.User;
+
+public class ShoutbreakApplication extends Application {
+
+	private User _user = null;
+	private WeakReference<ShoutbreakUI> _ui; 
+	
+	public void setUIReference(ShoutbreakUI ui) {
+		_ui = new WeakReference<ShoutbreakUI>(ui);
+	}
+	
+	public ShoutbreakApplication getAppContext() {
+		return this;
+	}
+	
+	public User getUser() {
+		if (_user == null) {
+			_user = new User(_appContext);
+		}
+		return _user;
+	}
+	
+}
