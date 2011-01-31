@@ -124,7 +124,7 @@ public class ShoutbreakUI extends MapActivity {
 				_cShoutingTabButton.setImageResource(R.drawable.tab_shouting_on);
 				_cInboxTabButton.setImageResource(R.drawable.tab_inbox);
 				_cUserTabsButton.setImageResource(R.drawable.tab_user);
-				_cRow1.setVisibility(View.VISIBLE);
+				//_cRow1.setVisibility(View.VISIBLE);
 				_cRow2.setVisibility(View.VISIBLE);
 				_cRow3.setVisibility(View.VISIBLE);
 				_cRow4.setVisibility(View.GONE);
@@ -277,7 +277,7 @@ public class ShoutbreakUI extends MapActivity {
 		_cInboxTabButton.setImageResource(R.drawable.tab_inbox_on);
 		_cShoutingTabButton.setImageResource(R.drawable.tab_shouting);
 		_cUserTabsButton.setImageResource(R.drawable.tab_user);
-		_cRow1.setVisibility(View.GONE);
+		//_cRow1.setVisibility(View.GONE);
 		_cRow2.setVisibility(View.GONE);
 		_cRow3.setVisibility(View.GONE);
 		_cRow4.setVisibility(View.VISIBLE);
