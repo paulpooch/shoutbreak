@@ -3,6 +3,7 @@ package com.shoutbreak;
 public class Vars {
 
 	public static final String SERVER_ADDRESS = "http://app.shoutbreak.co";
+	public static final String CRASH_REPORT_ADDRESS = "http://app.shoutbreak.co/crash_reports/upload.php";
 	public static final long IDLE_THREAD_LOOP_INTERVAL = 20000; // milliseconds
 	
 	public static final int GPS_MIN_UPDATE_MILLISECS = 20000; // 0 gives most frequent

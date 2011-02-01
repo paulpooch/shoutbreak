@@ -48,9 +48,11 @@ public class ShoutbreakService extends Service {
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		Log.e("### ShoutbreakService ###", "create");
-		_app = (ShoutbreakApplication)this.getApplication();
 		
+		Log.e("### ShoutbreakService ###", "create");
+		Thread.setDefaultUncaughtExceptionHandler(new CustomExceptionHandler(Vars.CRASH_REPORT_ADDRESS));
+		
+		_app = (ShoutbreakApplication)this.getApplication();
 		_isServiceRunning = false;
 		_notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 		

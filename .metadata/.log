@@ -219,3 +219,334 @@ org.eclipse.core.runtime.CoreException: Error in an XML file: aborting build.
 !MESSAGE Error in an XML file: aborting build.
 !SUBENTRY 1 com.android.ide.eclipse.adt 8 0 2011-01-30 20:23:12.856
 !MESSAGE Error in an XML file: aborting build.
+
+!ENTRY org.eclipse.jface 4 0 2011-01-30 20:57:50.382
+!MESSAGE Unhandled event loop exception during blocked modal context.
+!STACK 0
+org.eclipse.swt.SWTException: Failed to execute runnable (org.eclipse.swt.SWTException: Widget is disposed)
+	at org.eclipse.swt.SWT.error(SWT.java:3884)
+	at org.eclipse.swt.SWT.error(SWT.java:3799)
+	at org.eclipse.swt.widgets.Synchronizer.runAsyncMessages(Synchronizer.java:137)
+	at org.eclipse.swt.widgets.Display.runAsyncMessages(Display.java:3885)
+	at org.eclipse.swt.widgets.Display.readAndDispatch(Display.java:3506)
+	at org.eclipse.jface.operation.ModalContext$ModalContextThread.block(ModalContext.java:173)
+	at org.eclipse.jface.operation.ModalContext.run(ModalContext.java:388)
+	at org.eclipse.jface.dialogs.ProgressMonitorDialog.run(ProgressMonitorDialog.java:507)
+	at org.eclipse.ui.internal.progress.ProgressMonitorJobsDialog.run(ProgressMonitorJobsDialog.java:275)
+	at org.eclipse.ui.internal.ide.application.IDEWorkbenchAdvisor.disconnectFromWorkspace(IDEWorkbenchAdvisor.java:460)
+	at org.eclipse.ui.internal.ide.application.IDEWorkbenchAdvisor.postShutdown(IDEWorkbenchAdvisor.java:316)
+	at org.eclipse.ui.internal.Workbench.shutdown(Workbench.java:2732)
+	at org.eclipse.ui.internal.Workbench.busyClose(Workbench.java:939)
+	at org.eclipse.ui.internal.Workbench.access$15(Workbench.java:856)
+	at org.eclipse.ui.internal.Workbench$23.run(Workbench.java:1100)
+	at org.eclipse.swt.custom.BusyIndicator.showWhile(BusyIndicator.java:70)
+	at org.eclipse.ui.internal.Workbench.close(Workbench.java:1098)
+	at org.eclipse.ui.internal.Workbench.close(Workbench.java:1070)
+	at org.eclipse.ui.internal.WorkbenchWindow.busyClose(WorkbenchWindow.java:721)
+	at org.eclipse.ui.internal.WorkbenchWindow.access$0(WorkbenchWindow.java:700)
+	at org.eclipse.ui.internal.WorkbenchWindow$5.run(WorkbenchWindow.java:816)
+	at org.eclipse.swt.custom.BusyIndicator.showWhile(BusyIndicator.java:70)
+	at org.eclipse.ui.internal.WorkbenchWindow.close(WorkbenchWindow.java:814)
+	at org.eclipse.jface.window.Window.handleShellCloseEvent(Window.java:741)
+	at org.eclipse.jface.window.Window$3.shellClosed(Window.java:687)
+	at org.eclipse.swt.widgets.TypedListener.handleEvent(TypedListener.java:92)
+	at org.eclipse.swt.widgets.EventTable.sendEvent(EventTable.java:84)
+	at org.eclipse.swt.widgets.Widget.sendEvent(Widget.java:1003)
+	at org.eclipse.swt.widgets.Widget.sendEvent(Widget.java:1027)
+	at org.eclipse.swt.widgets.Widget.sendEvent(Widget.java:1012)
+	at org.eclipse.swt.widgets.Decorations.closeWidget(Decorations.java:308)
+	at org.eclipse.swt.widgets.Decorations.WM_CLOSE(Decorations.java:1645)
+	at org.eclipse.swt.widgets.Control.windowProc(Control.java:3948)
+	at org.eclipse.swt.widgets.Canvas.windowProc(Canvas.java:342)
+	at org.eclipse.swt.widgets.Decorations.windowProc(Decorations.java:1578)
+	at org.eclipse.swt.widgets.Shell.windowProc(Shell.java:2010)
+	at org.eclipse.swt.widgets.Display.windowProc(Display.java:4619)
+	at org.eclipse.swt.internal.win32.OS.DefWindowProcW(Native Method)
+	at org.eclipse.swt.internal.win32.OS.DefWindowProc(OS.java:2406)
+	at org.eclipse.swt.widgets.Shell.callWindowProc(Shell.java:492)
+	at org.eclipse.swt.widgets.Control.windowProc(Control.java:4036)
+	at org.eclipse.swt.widgets.Canvas.windowProc(Canvas.java:342)
+	at org.eclipse.swt.widgets.Decorations.windowProc(Decorations.java:1578)
+	at org.eclipse.swt.widgets.Shell.windowProc(Shell.java:2010)
+	at org.eclipse.swt.widgets.Display.windowProc(Display.java:4619)
+	at org.eclipse.swt.internal.win32.OS.DefWindowProcW(Native Method)
+	at org.eclipse.swt.internal.win32.OS.DefWindowProc(OS.java:2406)
+	at org.eclipse.swt.widgets.Shell.callWindowProc(Shell.java:492)
+	at org.eclipse.swt.widgets.Control.windowProc(Control.java:4036)
+	at org.eclipse.swt.widgets.Canvas.windowProc(Canvas.java:342)
+	at org.eclipse.swt.widgets.Decorations.windowProc(Decorations.java:1578)
+	at org.eclipse.swt.widgets.Shell.windowProc(Shell.java:2010)
+	at org.eclipse.swt.widgets.Display.windowProc(Display.java:4619)
+	at org.eclipse.swt.internal.win32.OS.DispatchMessageW(Native Method)
+	at org.eclipse.swt.internal.win32.OS.DispatchMessage(OS.java:2411)
+	at org.eclipse.swt.widgets.Display.readAndDispatch(Display.java:3501)
+	at org.eclipse.ui.internal.Workbench.runEventLoop(Workbench.java:2405)
+	at org.eclipse.ui.internal.Workbench.runUI(Workbench.java:2369)
+	at org.eclipse.ui.internal.Workbench.access$4(Workbench.java:2221)
+	at org.eclipse.ui.internal.Workbench$5.run(Workbench.java:500)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:332)
+	at org.eclipse.ui.internal.Workbench.createAndRunWorkbench(Workbench.java:493)
+	at org.eclipse.ui.PlatformUI.createAndRunWorkbench(PlatformUI.java:149)
+	at org.eclipse.ui.internal.ide.application.IDEApplication.start(IDEApplication.java:113)
+	at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:194)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:110)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:79)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:368)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:179)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:559)
+	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:514)
+	at org.eclipse.equinox.launcher.Main.run(Main.java:1311)
+Caused by: org.eclipse.swt.SWTException: Widget is disposed
+	at org.eclipse.swt.SWT.error(SWT.java:3884)
+	at org.eclipse.swt.SWT.error(SWT.java:3799)
+	at org.eclipse.swt.SWT.error(SWT.java:3770)
+	at org.eclipse.swt.widgets.Widget.error(Widget.java:463)
+	at org.eclipse.swt.widgets.Widget.checkWidget(Widget.java:336)
+	at org.eclipse.swt.widgets.Combo.removeAll(Combo.java:1207)
+	at com.android.ide.eclipse.adt.internal.editors.layout.configuration.ConfigurationComposite.updateLocales(Unknown Source)
+	at com.android.ide.eclipse.adt.internal.editors.layout.gle1.GraphicalLayoutEditor$3.run(Unknown Source)
+	at org.eclipse.swt.widgets.RunnableLock.run(RunnableLock.java:35)
+	at org.eclipse.swt.widgets.Synchronizer.runAsyncMessages(Synchronizer.java:134)
+	... 73 more
+
+!ENTRY org.eclipse.jface 4 0 2011-01-30 20:57:50.398
+!MESSAGE Unhandled event loop exception during blocked modal context.
+!STACK 0
+org.eclipse.swt.SWTException: Failed to execute runnable (org.eclipse.swt.SWTException: Widget is disposed)
+	at org.eclipse.swt.SWT.error(SWT.java:3884)
+	at org.eclipse.swt.SWT.error(SWT.java:3799)
+	at org.eclipse.swt.widgets.Synchronizer.runAsyncMessages(Synchronizer.java:137)
+	at org.eclipse.swt.widgets.Display.runAsyncMessages(Display.java:3885)
+	at org.eclipse.swt.widgets.Display.readAndDispatch(Display.java:3506)
+	at org.eclipse.jface.operation.ModalContext$ModalContextThread.block(ModalContext.java:173)
+	at org.eclipse.jface.operation.ModalContext.run(ModalContext.java:388)
+	at org.eclipse.jface.dialogs.ProgressMonitorDialog.run(ProgressMonitorDialog.java:507)
+	at org.eclipse.ui.internal.progress.ProgressMonitorJobsDialog.run(ProgressMonitorJobsDialog.java:275)
+	at org.eclipse.ui.internal.ide.application.IDEWorkbenchAdvisor.disconnectFromWorkspace(IDEWorkbenchAdvisor.java:460)
+	at org.eclipse.ui.internal.ide.application.IDEWorkbenchAdvisor.postShutdown(IDEWorkbenchAdvisor.java:316)
+	at org.eclipse.ui.internal.Workbench.shutdown(Workbench.java:2732)
+	at org.eclipse.ui.internal.Workbench.busyClose(Workbench.java:939)
+	at org.eclipse.ui.internal.Workbench.access$15(Workbench.java:856)
+	at org.eclipse.ui.internal.Workbench$23.run(Workbench.java:1100)
+	at org.eclipse.swt.custom.BusyIndicator.showWhile(BusyIndicator.java:70)
+	at org.eclipse.ui.internal.Workbench.close(Workbench.java:1098)
+	at org.eclipse.ui.internal.Workbench.close(Workbench.java:1070)
+	at org.eclipse.ui.internal.WorkbenchWindow.busyClose(WorkbenchWindow.java:721)
+	at org.eclipse.ui.internal.WorkbenchWindow.access$0(WorkbenchWindow.java:700)
+	at org.eclipse.ui.internal.WorkbenchWindow$5.run(WorkbenchWindow.java:816)
+	at org.eclipse.swt.custom.BusyIndicator.showWhile(BusyIndicator.java:70)
+	at org.eclipse.ui.internal.WorkbenchWindow.close(WorkbenchWindow.java:814)
+	at org.eclipse.jface.window.Window.handleShellCloseEvent(Window.java:741)
+	at org.eclipse.jface.window.Window$3.shellClosed(Window.java:687)
+	at org.eclipse.swt.widgets.TypedListener.handleEvent(TypedListener.java:92)
+	at org.eclipse.swt.widgets.EventTable.sendEvent(EventTable.java:84)
+	at org.eclipse.swt.widgets.Widget.sendEvent(Widget.java:1003)
+	at org.eclipse.swt.widgets.Widget.sendEvent(Widget.java:1027)
+	at org.eclipse.swt.widgets.Widget.sendEvent(Widget.java:1012)
+	at org.eclipse.swt.widgets.Decorations.closeWidget(Decorations.java:308)
+	at org.eclipse.swt.widgets.Decorations.WM_CLOSE(Decorations.java:1645)
+	at org.eclipse.swt.widgets.Control.windowProc(Control.java:3948)
+	at org.eclipse.swt.widgets.Canvas.windowProc(Canvas.java:342)
+	at org.eclipse.swt.widgets.Decorations.windowProc(Decorations.java:1578)
+	at org.eclipse.swt.widgets.Shell.windowProc(Shell.java:2010)
+	at org.eclipse.swt.widgets.Display.windowProc(Display.java:4619)
+	at org.eclipse.swt.internal.win32.OS.DefWindowProcW(Native Method)
+	at org.eclipse.swt.internal.win32.OS.DefWindowProc(OS.java:2406)
+	at org.eclipse.swt.widgets.Shell.callWindowProc(Shell.java:492)
+	at org.eclipse.swt.widgets.Control.windowProc(Control.java:4036)
+	at org.eclipse.swt.widgets.Canvas.windowProc(Canvas.java:342)
+	at org.eclipse.swt.widgets.Decorations.windowProc(Decorations.java:1578)
+	at org.eclipse.swt.widgets.Shell.windowProc(Shell.java:2010)
+	at org.eclipse.swt.widgets.Display.windowProc(Display.java:4619)
+	at org.eclipse.swt.internal.win32.OS.DefWindowProcW(Native Method)
+	at org.eclipse.swt.internal.win32.OS.DefWindowProc(OS.java:2406)
+	at org.eclipse.swt.widgets.Shell.callWindowProc(Shell.java:492)
+	at org.eclipse.swt.widgets.Control.windowProc(Control.java:4036)
+	at org.eclipse.swt.widgets.Canvas.windowProc(Canvas.java:342)
+	at org.eclipse.swt.widgets.Decorations.windowProc(Decorations.java:1578)
+	at org.eclipse.swt.widgets.Shell.windowProc(Shell.java:2010)
+	at org.eclipse.swt.widgets.Display.windowProc(Display.java:4619)
+	at org.eclipse.swt.internal.win32.OS.DispatchMessageW(Native Method)
+	at org.eclipse.swt.internal.win32.OS.DispatchMessage(OS.java:2411)
+	at org.eclipse.swt.widgets.Display.readAndDispatch(Display.java:3501)
+	at org.eclipse.ui.internal.Workbench.runEventLoop(Workbench.java:2405)
+	at org.eclipse.ui.internal.Workbench.runUI(Workbench.java:2369)
+	at org.eclipse.ui.internal.Workbench.access$4(Workbench.java:2221)
+	at org.eclipse.ui.internal.Workbench$5.run(Workbench.java:500)
+	at org.eclipse.core.databinding.observable.Realm.runWithDefault(Realm.java:332)
+	at org.eclipse.ui.internal.Workbench.createAndRunWorkbench(Workbench.java:493)
+	at org.eclipse.ui.PlatformUI.createAndRunWorkbench(PlatformUI.java:149)
+	at org.eclipse.ui.internal.ide.application.IDEApplication.start(IDEApplication.java:113)
+	at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:194)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:110)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:79)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:368)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:179)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:559)
+	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:514)
+	at org.eclipse.equinox.launcher.Main.run(Main.java:1311)
+Caused by: org.eclipse.swt.SWTException: Widget is disposed
+	at org.eclipse.swt.SWT.error(SWT.java:3884)
+	at org.eclipse.swt.SWT.error(SWT.java:3799)
+	at org.eclipse.swt.SWT.error(SWT.java:3770)
+	at org.eclipse.swt.widgets.Widget.error(Widget.java:463)
+	at org.eclipse.swt.widgets.Widget.checkWidget(Widget.java:336)
+	at org.eclipse.swt.widgets.Combo.removeAll(Combo.java:1207)
+	at com.android.ide.eclipse.adt.internal.editors.layout.configuration.ConfigurationComposite.updateLocales(Unknown Source)
+	at com.android.ide.eclipse.adt.internal.editors.layout.gle1.GraphicalLayoutEditor$3.run(Unknown Source)
+	at org.eclipse.swt.widgets.RunnableLock.run(RunnableLock.java:35)
+	at org.eclipse.swt.widgets.Synchronizer.runAsyncMessages(Synchronizer.java:134)
+	... 73 more
+!SESSION 2011-01-31 19:11:40.979 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.6.0_22
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=win32, ARCH=x86, WS=win32, NL=en_US
+Framework arguments:  -product org.eclipse.epp.package.java.product
+Command-line arguments:  -os win32 -ws win32 -arch x86 -product org.eclipse.epp.package.java.product
+
+!ENTRY org.eclipse.core.resources 8 2 2011-01-31 19:11:49.878
+!MESSAGE Problems occurred when invoking code from plug-in: "org.eclipse.core.resources".
+!STACK 1
+org.eclipse.core.runtime.CoreException: Project target not loaded yet.
+	at com.android.ide.eclipse.adt.internal.build.BaseBuilder.stopBuild(Unknown Source)
+	at com.android.ide.eclipse.adt.internal.build.BaseBuilder.abortOnBadSetup(Unknown Source)
+	at com.android.ide.eclipse.adt.internal.build.ResourceManagerBuilder.build(Unknown Source)
+	at org.eclipse.core.internal.events.BuildManager$2.run(BuildManager.java:627)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:170)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:201)
+	at org.eclipse.core.internal.events.BuildManager$1.run(BuildManager.java:253)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:256)
+	at org.eclipse.core.internal.events.BuildManager.basicBuildLoop(BuildManager.java:309)
+	at org.eclipse.core.internal.events.BuildManager.build(BuildManager.java:341)
+	at org.eclipse.core.internal.events.AutoBuildJob.doBuild(AutoBuildJob.java:140)
+	at org.eclipse.core.internal.events.AutoBuildJob.run(AutoBuildJob.java:238)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:55)
+!SUBENTRY 1 com.android.ide.eclipse.adt 8 0 2011-01-31 19:11:49.879
+!MESSAGE Project target not loaded yet.
+!SUBENTRY 1 com.android.ide.eclipse.adt 8 0 2011-01-31 19:11:49.879
+!MESSAGE Project target not loaded yet.
+
+!ENTRY org.eclipse.core.resources 8 2 2011-01-31 19:11:49.892
+!MESSAGE Problems occurred when invoking code from plug-in: "org.eclipse.core.resources".
+!STACK 1
+org.eclipse.core.runtime.CoreException: Project target not loaded yet.
+	at com.android.ide.eclipse.adt.internal.build.BaseBuilder.stopBuild(Unknown Source)
+	at com.android.ide.eclipse.adt.internal.build.BaseBuilder.abortOnBadSetup(Unknown Source)
+	at com.android.ide.eclipse.adt.internal.build.PreCompilerBuilder.build(Unknown Source)
+	at org.eclipse.core.internal.events.BuildManager$2.run(BuildManager.java:627)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:170)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:201)
+	at org.eclipse.core.internal.events.BuildManager$1.run(BuildManager.java:253)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:256)
+	at org.eclipse.core.internal.events.BuildManager.basicBuildLoop(BuildManager.java:309)
+	at org.eclipse.core.internal.events.BuildManager.build(BuildManager.java:341)
+	at org.eclipse.core.internal.events.AutoBuildJob.doBuild(AutoBuildJob.java:140)
+	at org.eclipse.core.internal.events.AutoBuildJob.run(AutoBuildJob.java:238)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:55)
+!SUBENTRY 1 com.android.ide.eclipse.adt 8 0 2011-01-31 19:11:49.892
+!MESSAGE Project target not loaded yet.
+!SUBENTRY 1 com.android.ide.eclipse.adt 8 0 2011-01-31 19:11:49.892
+!MESSAGE Project target not loaded yet.
+
+!ENTRY org.eclipse.core.resources 8 2 2011-01-31 19:11:50.474
+!MESSAGE Problems occurred when invoking code from plug-in: "org.eclipse.core.resources".
+!STACK 1
+org.eclipse.core.runtime.CoreException: Project target not loaded yet.
+	at com.android.ide.eclipse.adt.internal.build.BaseBuilder.stopBuild(Unknown Source)
+	at com.android.ide.eclipse.adt.internal.build.BaseBuilder.abortOnBadSetup(Unknown Source)
+	at com.android.ide.eclipse.adt.internal.build.ResourceManagerBuilder.build(Unknown Source)
+	at org.eclipse.core.internal.events.BuildManager$2.run(BuildManager.java:627)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:170)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:201)
+	at org.eclipse.core.internal.events.BuildManager$1.run(BuildManager.java:253)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:256)
+	at org.eclipse.core.internal.events.BuildManager.basicBuildLoop(BuildManager.java:309)
+	at org.eclipse.core.internal.events.BuildManager.build(BuildManager.java:341)
+	at org.eclipse.core.internal.events.AutoBuildJob.doBuild(AutoBuildJob.java:140)
+	at org.eclipse.core.internal.events.AutoBuildJob.run(AutoBuildJob.java:238)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:55)
+!SUBENTRY 1 com.android.ide.eclipse.adt 8 0 2011-01-31 19:11:50.474
+!MESSAGE Project target not loaded yet.
+!SUBENTRY 1 com.android.ide.eclipse.adt 8 0 2011-01-31 19:11:50.474
+!MESSAGE Project target not loaded yet.
+
+!ENTRY org.eclipse.core.resources 8 2 2011-01-31 19:11:50.487
+!MESSAGE Problems occurred when invoking code from plug-in: "org.eclipse.core.resources".
+!STACK 1
+org.eclipse.core.runtime.CoreException: Project target not loaded yet.
+	at com.android.ide.eclipse.adt.internal.build.BaseBuilder.stopBuild(Unknown Source)
+	at com.android.ide.eclipse.adt.internal.build.BaseBuilder.abortOnBadSetup(Unknown Source)
+	at com.android.ide.eclipse.adt.internal.build.PreCompilerBuilder.build(Unknown Source)
+	at org.eclipse.core.internal.events.BuildManager$2.run(BuildManager.java:627)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:170)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:201)
+	at org.eclipse.core.internal.events.BuildManager$1.run(BuildManager.java:253)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:256)
+	at org.eclipse.core.internal.events.BuildManager.basicBuildLoop(BuildManager.java:309)
+	at org.eclipse.core.internal.events.BuildManager.build(BuildManager.java:341)
+	at org.eclipse.core.internal.events.AutoBuildJob.doBuild(AutoBuildJob.java:140)
+	at org.eclipse.core.internal.events.AutoBuildJob.run(AutoBuildJob.java:238)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:55)
+!SUBENTRY 1 com.android.ide.eclipse.adt 8 0 2011-01-31 19:11:50.487
+!MESSAGE Project target not loaded yet.
+!SUBENTRY 1 com.android.ide.eclipse.adt 8 0 2011-01-31 19:11:50.487
+!MESSAGE Project target not loaded yet.
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-01-31 21:03:45.637
+!MESSAGE AndroidManifest: Ignoring unknown 'T' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-01-31 21:06:13.319
+!MESSAGE AndroidManifest: Ignoring unknown 'TextViewa' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-01-31 21:06:13.491
+!MESSAGE AndroidManifest: Ignoring unknown 'TextViewan' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-01-31 21:06:13.626
+!MESSAGE AndroidManifest: Ignoring unknown 'TextViewand' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-01-31 21:06:13.790
+!MESSAGE AndroidManifest: Ignoring unknown 'TextViewandr' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-01-31 21:06:13.849
+!MESSAGE AndroidManifest: Ignoring unknown 'TextViewandro' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-01-31 21:06:14.023
+!MESSAGE AndroidManifest: Ignoring unknown 'TextViewandroi' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-01-31 21:06:14.217
+!MESSAGE AndroidManifest: Ignoring unknown 'TextViewandro' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-01-31 21:06:14.359
+!MESSAGE AndroidManifest: Ignoring unknown 'TextViewandr' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-01-31 21:06:14.508
+!MESSAGE AndroidManifest: Ignoring unknown 'TextViewand' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-01-31 21:06:14.594
+!MESSAGE AndroidManifest: Ignoring unknown 'TextViewan' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-01-31 21:06:14.736
+!MESSAGE AndroidManifest: Ignoring unknown 'TextViewa' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-01-31 21:06:15.030
+!MESSAGE AndroidManifest: Ignoring unknown 'TextViewa' XML element
+
+!ENTRY com.android.ide.eclipse.adt 2 0 2011-01-31 21:06:15.139
+!MESSAGE AndroidManifest: Ignoring unknown 'TextViewa' XML element

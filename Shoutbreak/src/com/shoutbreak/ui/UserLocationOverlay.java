@@ -1,6 +1,5 @@
 package com.shoutbreak.ui;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -15,6 +14,7 @@ import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapView;
 import com.google.android.maps.MyLocationOverlay;
 import com.shoutbreak.R;
+import com.shoutbreak.ShoutbreakUI;
 import com.shoutbreak.Vars;
 import com.shoutbreak.service.User;
 
@@ -23,12 +23,13 @@ import com.shoutbreak.service.User;
 // http://www.gitorious.net/android-maps-api/android-maps-api/blobs/42614538ffda1a6985c398933a85fcd9afc752ee/src/com/google/android/maps/MyLocationOverlay.java
 public class UserLocationOverlay extends MyLocationOverlay {
 
-	private Context _context;
+	private ShoutbreakUI _ui;
 	private Canvas _canvas;
 	private CustomMapView _mapView;
 	private Paint _circleFillPaint;
     private Paint _circleBorderPaint;
     private Bitmap _resizeIcon;
+    private double _density;
      
     private boolean _baseRadiusPxIsWrong;				// is the radius calculation based on the current zoom level? or is the pixel value wrong?
     private boolean _calibrateZoomLevelForRadiusSize;	// have we calibrated for the best zoom level yet?
@@ -51,9 +52,11 @@ public class UserLocationOverlay extends MyLocationOverlay {
     private int _zoomLevel;			// current zoom level of map
     private int _mapSizeConstraint; // min(map width, map height)
     
-    public UserLocationOverlay(Context context, MapView mapView) {
-    	super(context, mapView);
-        _context = context;
+    private int _latRadiusLatForPeopleCount;
+    
+    public UserLocationOverlay(ShoutbreakUI ui, MapView mapView) {
+    	super(ui, mapView);
+        _ui = ui;
     	
         _baseRadiusPx = -1;
         _baseRadiusMeters = Vars.MIN_RADIUS_METERS;
@@ -62,6 +65,8 @@ public class UserLocationOverlay extends MyLocationOverlay {
     	_calibrateZoomLevelForRadiusSize = false;
         _mapSizeConstraint = -1;
         _resizeAdjustmentPx = 0;
+        
+        _latRadiusLatForPeopleCount = 0;
         
 		_circleFillPaint = new Paint();
 		_circleFillPaint.setARGB(50, 108, 10, 171);
@@ -73,7 +78,7 @@ public class UserLocationOverlay extends MyLocationOverlay {
         _circleBorderPaint.setStyle(Style.STROKE);
         _circleBorderPaint.setStrokeWidth(4);
         
-        Bitmap resizeBitmap = BitmapFactory.decodeResource(_context.getResources(), R.drawable.resize_icon);
+        Bitmap resizeBitmap = BitmapFactory.decodeResource(_ui.getResources(), R.drawable.resize_icon);
         _resizeIconSize = new Point(resizeBitmap.getWidth(), resizeBitmap.getHeight());
         _resizeIconLocation = new Point();
         _resizeIcon = Bitmap.createBitmap(resizeBitmap, 0, 0, _resizeIconSize.x, _resizeIconSize.y);
@@ -158,12 +163,30 @@ public class UserLocationOverlay extends MyLocationOverlay {
     public void calculateCurrentRadius() {    	
         _currentRadiusPx = _baseRadiusPx + _resizeAdjustmentPx;
         _lastTopRadiusGeoPoint = _mapView.getProjection().fromPixels(_userLocationPx.x, (int) (_userLocationPx.y - _currentRadiusPx));
+        updatePeopleCount();
+    }
+    
+    protected void updatePeopleCount() {
+    	// prevents us from doing this way too often - let's only care every 50 microdegrees
+    	if (Math.abs(_lastTopRadiusGeoPoint.getLatitudeE6() - _latRadiusLatForPeopleCount) > 50) {
+    		_latRadiusLatForPeopleCount = _lastTopRadiusGeoPoint.getLatitudeE6();
+	        Location l1 = new Location("GPS");
+	        l1.setLatitude(_lastTopRadiusGeoPoint.getLatitudeE6() / 1E6);
+	        l1.setLongitude(_lastTopRadiusGeoPoint.getLongitudeE6() / 1E6);
+	        Location l2 = new Location("GPS");
+	        l2.setLatitude(_lastUserLocationGeoPoint.getLatitudeE6() / 1E6);
+	        l2.setLongitude(_lastUserLocationGeoPoint.getLongitudeE6() / 1E6);
+	        float dist = l1.distanceTo(l2);
+	        int peopleCount = (int)(Math.PI * dist * dist * _density);
+	        _ui.setTitleBarText(peopleCount + " people will hear this");
+    	}
     }
     
     public void setPopulationDensity(double density) {
     	// TODO: don't hardcode level
     	// TODO: do we keep track of resize if density changes?  or just say fuck it?    	
-    	_baseRadiusMeters = User.calculateRadius(10, density);
+    	_density = density;
+    	_baseRadiusMeters = User.calculateRadius(10, _density);
     	_calibrateZoomLevelForRadiusSize = true;
     	_baseRadiusPxIsWrong = true;
     	// this calls draw() immediately rather than wait for next interval

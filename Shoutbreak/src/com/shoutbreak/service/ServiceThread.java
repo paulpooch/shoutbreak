@@ -1,5 +1,8 @@
 package com.shoutbreak.service;
 
+import com.shoutbreak.CustomExceptionHandler;
+import com.shoutbreak.Vars;
+
 import android.os.Handler;
 import android.os.Message;
 
@@ -10,6 +13,7 @@ public class ServiceThread implements Runnable {
 	private Message _message;
 	
 	public ServiceThread(Handler uiThreadHandler, User user, Message message) {
+		Thread.setDefaultUncaughtExceptionHandler(new CustomExceptionHandler(Vars.CRASH_REPORT_ADDRESS));
 		_stateEngine = new StateEngine(uiThreadHandler, user);
 		_message = message;
 	}

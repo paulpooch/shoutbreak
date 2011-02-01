@@ -62,6 +62,7 @@ public class ShoutbreakUI extends MapActivity {
 	protected RelativeLayout _cNoticeBoxInbox;
 	protected TextView _cNoticeText;
 	protected TextView _cNoticeTextInbox;
+	protected TextView _cTitleBarText;
 	protected Animation _animNoticeExpand;
 	protected Animation _animNoticeShowText;
 	
@@ -78,7 +79,7 @@ public class ShoutbreakUI extends MapActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		
 		Log.e("### UI ###", "UI constructor");
-		
+		Thread.setDefaultUncaughtExceptionHandler(new CustomExceptionHandler(Vars.CRASH_REPORT_ADDRESS));
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		
 		// this fixes the "android title bar bug" - it also CAUSES the keyboard not sliding up the editText bug
@@ -96,13 +97,14 @@ public class ShoutbreakUI extends MapActivity {
 		_cInboxTabButton = (ImageButton) findViewById(R.id.btnInboxTab);
 		_cUserTabsButton = (ImageButton) findViewById(R.id.btnUserTab);
 		
+		_cTitleBarText = (TextView) findViewById(R.id.tvTitleBar);
 		_cPowerButton = (ImageButton) findViewById(R.id.btnPower);
 		_cShoutButton = (ImageButton) findViewById(R.id.btnShout);
 		_cMapView = (CustomMapView)findViewById(R.id.cmvMap);
 		_cShoutText = (EditText) findViewById(R.id.etShoutText);	
 		_cNoticeBox = (RelativeLayout) findViewById(R.id.rlNotice);
 		_cNoticeText = (TextView) findViewById(R.id.tvNotice);
-		_cNoticeBoxInbox = (RelativeLayout) findViewById(R.id.r6Notice);
+		_cNoticeBoxInbox = (RelativeLayout) findViewById(R.id.r4Notice);
 		_cNoticeTextInbox = (TextView) findViewById(R.id.tvNoticeInbox);
 		_cInboxListView = (ListView)findViewById(R.id.lvInbox);
 		
@@ -335,6 +337,10 @@ public class ShoutbreakUI extends MapActivity {
 		// TODO Auto-generated method stub
 		return false;
 	}	
+	
+	public void setTitleBarText(String s) {
+		_cTitleBarText.setText(s);
+	}
 	
 	public User getUser() {
 		return _user;

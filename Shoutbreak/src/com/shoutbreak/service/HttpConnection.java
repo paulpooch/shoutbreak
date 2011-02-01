@@ -11,6 +11,7 @@ import org.apache.http.params.HttpConnectionParams;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.shoutbreak.CustomExceptionHandler;
 import com.shoutbreak.Vars;
 
 import android.os.*;
@@ -31,6 +32,8 @@ public class HttpConnection implements Runnable {
 
 	public HttpConnection() {
 		this(new Handler());
+		// TODO: remove this once we know it's not crashing - probably hurting performance
+		Thread.setDefaultUncaughtExceptionHandler(new CustomExceptionHandler(Vars.CRASH_REPORT_ADDRESS));
 	}
 
 	public HttpConnection(Handler handler) {
