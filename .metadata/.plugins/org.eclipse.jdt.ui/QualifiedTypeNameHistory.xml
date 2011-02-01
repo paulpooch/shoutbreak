@@ -1,20 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-<fullyQualifiedTypeName name="android.app.Application"/>
-<fullyQualifiedTypeName name="com.shoutbreak.ShoutParcel"/>
-<fullyQualifiedTypeName name="android.widget.TextView"/>
-<fullyQualifiedTypeName name="android.widget.ScrollView"/>
-<fullyQualifiedTypeName name="android.widget.LinearLayout"/>
-<fullyQualifiedTypeName name="android.view.LayoutInflater"/>
-<fullyQualifiedTypeName name="com.shoutbreak.R.layout"/>
-<fullyQualifiedTypeName name="com.shoutbreak.Shout"/>
-<fullyQualifiedTypeName name="com.shoutbreak.ui.InboxListViewAdapter"/>
-<fullyQualifiedTypeName name="java.util.ArrayList"/>
-<fullyQualifiedTypeName name="com.ocpsoft.pretty.time.PrettyTime"/>
-<fullyQualifiedTypeName name="android.text.format.DateFormat"/>
-<fullyQualifiedTypeName name="java.text.DateFormat"/>
-<fullyQualifiedTypeName name="com.shoutbreak.service.ErrorManager"/>
-<fullyQualifiedTypeName name="com.shoutbreak.ui.ISO8601DateParser"/>
 <fullyQualifiedTypeName name="android.widget.AdapterView.OnItemClickListener"/>
 <fullyQualifiedTypeName name="android.widget.Toast"/>
 <fullyQualifiedTypeName name="android.widget.AdapterView.OnItemSelectedListener"/>
@@ -33,12 +18,10 @@
 <fullyQualifiedTypeName name="android.widget.ListView"/>
 <fullyQualifiedTypeName name="com.shoutbreak.service.CellDensity"/>
 <fullyQualifiedTypeName name="com.shoutbreak.service.Database"/>
-<fullyQualifiedTypeName name="java.util.Date"/>
 <fullyQualifiedTypeName name="com.shoutbreak.Vars"/>
 <fullyQualifiedTypeName name="java.util.HashMap"/>
 <fullyQualifiedTypeName name="com.google.android.maps.GeoPoint"/>
 <fullyQualifiedTypeName name="com.shoutbreak.R"/>
-<fullyQualifiedTypeName name="java.util.List"/>
 <fullyQualifiedTypeName name="com.google.android.maps.Overlay"/>
 <fullyQualifiedTypeName name="java.lang.Appendable"/>
 <fullyQualifiedTypeName name="com.shoutbreak.service.LocationTracker.MyLocationListener"/>
@@ -55,9 +38,26 @@
 <fullyQualifiedTypeName name="java.lang.ref.WeakReference"/>
 <fullyQualifiedTypeName name="android.content.Context"/>
 <fullyQualifiedTypeName name="com.shoutbreak.ShoutbreakApplication"/>
-<fullyQualifiedTypeName name="com.shoutbreak.ShoutbreakUI"/>
 <fullyQualifiedTypeName name="java.io.InputStreamReader"/>
 <fullyQualifiedTypeName name="java.io.BufferedReader"/>
 <fullyQualifiedTypeName name="android.graphics.PorterDuff.Mode"/>
+<fullyQualifiedTypeName name="java.lang.Thread.UncaughtExceptionHandler"/>
+<fullyQualifiedTypeName name="java.io.FileWriter"/>
+<fullyQualifiedTypeName name="com.shoutbreak.ui.ISO8601DateParser"/>
+<fullyQualifiedTypeName name="java.util.Date"/>
+<fullyQualifiedTypeName name="java.io.StringWriter"/>
+<fullyQualifiedTypeName name="java.io.Writer"/>
+<fullyQualifiedTypeName name="java.io.PrintWriter"/>
+<fullyQualifiedTypeName name="java.io.BufferedWriter"/>
+<fullyQualifiedTypeName name="java.io.IOException"/>
+<fullyQualifiedTypeName name="org.apache.http.protocol.HTTP"/>
+<fullyQualifiedTypeName name="org.apache.http.message.BasicNameValuePair"/>
+<fullyQualifiedTypeName name="org.apache.http.impl.client.DefaultHttpClient"/>
+<fullyQualifiedTypeName name="org.apache.http.client.methods.HttpPost"/>
+<fullyQualifiedTypeName name="java.util.ArrayList"/>
+<fullyQualifiedTypeName name="java.util.List"/>
+<fullyQualifiedTypeName name="org.apache.http.NameValuePair"/>
+<fullyQualifiedTypeName name="org.apache.http.client.entity.UrlEncodedFormEntity"/>
 <fullyQualifiedTypeName name="com.shoutbreak.R.id"/>
+<fullyQualifiedTypeName name="com.shoutbreak.ShoutbreakUI"/>
 </qualifiedTypeNameHistroy>
