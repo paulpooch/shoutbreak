@@ -59,12 +59,12 @@
 		<ImageButton android:id="@+id/btnVoteUp" android:onClick="myClickHandler"
 			android:layout_width="wrap_content" android:layout_height="wrap_content"
 			android:layout_alignParentLeft="true" android:layout_marginLeft="5dp"
-			android:layout_alignParentBottom="true" android:src="@drawable/inbox_up" />
+			android:layout_alignParentBottom="true" android:src="@drawable/vote_up_button" />
 		<ImageButton android:id="@+id/btnVoteDown"
 			android:layout_alignParentBottom="true" android:layout_width="wrap_content"
 			android:layout_height="wrap_content" android:layout_marginLeft="5dp"
 			android:layout_toRightOf="@id/btnVoteUp" android:layout_alignBottom="@id/btnVoteUp"
-			android:src="@drawable/inbox_down" />
+			android:src="@drawable/vote_down_button" />
 		<ImageButton android:id="@+id/btnDelete"
 			android:layout_marginRight="5dp" android:layout_alignParentBottom="true"
 			android:layout_width="wrap_content" android:layout_height="wrap_content"

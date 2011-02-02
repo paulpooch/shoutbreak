@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-<fullyQualifiedTypeName name="android.widget.AdapterView.OnItemClickListener"/>
-<fullyQualifiedTypeName name="android.widget.Toast"/>
 <fullyQualifiedTypeName name="android.widget.AdapterView.OnItemSelectedListener"/>
 <fullyQualifiedTypeName name="com.google.android.maps.MapController"/>
 <fullyQualifiedTypeName name="android.widget.RelativeLayout"/>
@@ -26,7 +24,6 @@
 <fullyQualifiedTypeName name="java.lang.Appendable"/>
 <fullyQualifiedTypeName name="com.shoutbreak.service.LocationTracker.MyLocationListener"/>
 <fullyQualifiedTypeName name="android.widget.ImageButton"/>
-<fullyQualifiedTypeName name="com.shoutbreak.R.drawable"/>
 <fullyQualifiedTypeName name="android.view.ViewGroup.LayoutParams"/>
 <fullyQualifiedTypeName name="com.shoutbreak.service.User"/>
 <fullyQualifiedTypeName name="android.util.Log"/>
@@ -60,4 +57,7 @@
 <fullyQualifiedTypeName name="org.apache.http.client.entity.UrlEncodedFormEntity"/>
 <fullyQualifiedTypeName name="com.shoutbreak.R.id"/>
 <fullyQualifiedTypeName name="com.shoutbreak.ShoutbreakUI"/>
+<fullyQualifiedTypeName name="android.text.format.DateFormat"/>
+<fullyQualifiedTypeName name="java.text.SimpleDateFormat"/>
+<fullyQualifiedTypeName name="com.shoutbreak.R.drawable"/>
 </qualifiedTypeNameHistroy>

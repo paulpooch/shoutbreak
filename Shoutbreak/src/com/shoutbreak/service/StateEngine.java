@@ -196,7 +196,7 @@ public class StateEngine {
 									String code = messageObject.json.getString(Vars.JSON_CODE);
 									if (code.equals(Vars.JSON_CODE_PING_OK)) {
 										// if normal ping, repeat this run method
-										_uiThreadHandler.sendMessage(Message.obtain(_uiThreadHandler, Vars.MESSAGE_REPOST_IDLE_DELAYED));
+										_uiThreadHandler.sendMessage(Message.obtain(_uiThreadHandler, Vars.MESSAGE_REPOST_IDLE_DELAYED, messageObject));
 									} else if (code.equals(Vars.JSON_CODE_SHOUTS) ||
 									code.equals(Vars.JSON_CODE_EXPIRED_AUTH) ||
 									code.equals(Vars.JSON_CODE_INVALID_UID) ||

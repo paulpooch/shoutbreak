@@ -257,6 +257,11 @@ public class ShoutbreakUI extends MapActivity {
 	}
 	
 	protected void turnEverythingOff() {
+		
+		// we disable/enable to be nice to user battery
+		_userLocationOverlay.disableMyLocation();
+		_user.getLocationTracker().stopListeningToLocation();
+		
 		turnServiceOff(); // this is probably redundant but we'll be totally sure service is dead with this
 	}
 	
@@ -376,6 +381,7 @@ public class ShoutbreakUI extends MapActivity {
 		}
 		_user.setBooleanPreference(Vars.PREF_APP_ON_OFF_STATUS, true);
 		_cPowerButton.setImageResource(R.drawable.power_button_on);
+		_inboxListViewAdapter.setServiceIsOn(true);
 		_isPowerOn = true;
 	}
 	
@@ -384,6 +390,7 @@ public class ShoutbreakUI extends MapActivity {
 		stopService(_serviceIntent);
 		_user.setBooleanPreference(Vars.PREF_APP_ON_OFF_STATUS, false);
 		_cPowerButton.setImageResource(R.drawable.power_button_off);
+		_inboxListViewAdapter.setServiceIsOn(false);
 		_isPowerOn = false;
 	}
 

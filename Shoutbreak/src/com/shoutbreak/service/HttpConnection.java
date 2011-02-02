@@ -91,10 +91,14 @@ public class HttpConnection implements Runnable {
 		} catch (Exception e) {
 			_messageObject.exception = e;
 			_handler.sendMessage(Message.obtain(_handler, Vars.MESSAGE_HTTP_DID_ERROR, _messageObject));
+		} finally {
+			ConnectionQueue.getInstance().didComplete(this);
 		}
-		ConnectionQueue.getInstance().didComplete(this);
 	}
 
+	// if continued errors, consider catching throwables
+	// https://github.com/appcelerator/titanium_mobile/commit/28b82751c1ceacc7166bd0135518f97b08c2691b
+	
 	private void processEntity(HttpEntity entity) throws IllegalStateException,	IOException {
 		InputStream inStream = null;
 		InputStreamReader inStreamReader = null;
