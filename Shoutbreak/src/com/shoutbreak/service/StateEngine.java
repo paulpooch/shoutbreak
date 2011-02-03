@@ -88,8 +88,8 @@ public class StateEngine {
 			
 			case Vars.MESSAGE_STATE_SHOUT: {
 				// TODO: power from UI
-				String shoutPower = "10";
 				String shoutText = obj.args[0];
+				String shoutPower = obj.args[1];
 				
 				// this catches the response of the HttpConnection when it finishes
 				Handler tempServiceThreadHandler = new Handler() {
@@ -293,12 +293,16 @@ public class StateEngine {
 								try {
 									MessageObject messageObject = (MessageObject)message.obj;
 									String password = messageObject.json.getString(Vars.JSON_PW);
+									String maxPower = messageObject.json.getString(Vars.JSON_LEVEL);
 									String uid = messageObject.args[0];
 									// lock user when writing to it
 									_user.setUID(uid);
 									_user.setPassword(password);
-									message.what = Vars.MESSAGE_STATE_IDLE;
-									goToState(message);
+									_user.setMaxPower(maxPower);
+									messageObject = new MessageObject();
+									messageObject.isMasterThread = _isMasterThread;
+									messageObject.serviceEventCode = Vars.SEC_ACCOUNT_CREATED;
+									_uiThreadHandler.sendMessage(Message.obtain(_uiThreadHandler, Vars.CALLBACK_SERVICE_EVENT_COMPLETE, messageObject));
 								} catch (JSONException ex) {
 									ErrorManager.manage(ex);
 								}

@@ -65,7 +65,9 @@ case TRANSACTION_shout:
 data.enforceInterface(DESCRIPTOR);
 java.lang.String _arg0;
 _arg0 = data.readString();
-this.shout(_arg0);
+int _arg1;
+_arg1 = data.readInt();
+this.shout(_arg0, _arg1);
 reply.writeNoException();
 return true;
 }
@@ -145,13 +147,14 @@ _reply.recycle();
 _data.recycle();
 }
 }
-public void shout(java.lang.String shoutText) throws android.os.RemoteException
+public void shout(java.lang.String shoutText, int shoutLevel) throws android.os.RemoteException
 {
 android.os.Parcel _data = android.os.Parcel.obtain();
 android.os.Parcel _reply = android.os.Parcel.obtain();
 try {
 _data.writeInterfaceToken(DESCRIPTOR);
 _data.writeString(shoutText);
+_data.writeInt(shoutLevel);
 mRemote.transact(Stub.TRANSACTION_shout, _data, _reply, 0);
 _reply.readException();
 }
@@ -208,7 +211,7 @@ public void registerCallback(com.shoutbreak.IShoutbreakServiceCallback cb) throw
      * Remove a previously registered callback interface.
      */
 public void unregisterCallback(com.shoutbreak.IShoutbreakServiceCallback cb) throws android.os.RemoteException;
-public void shout(java.lang.String shoutText) throws android.os.RemoteException;
+public void shout(java.lang.String shoutText, int shoutLevel) throws android.os.RemoteException;
 public void vote(java.lang.String shoutID, int vote) throws android.os.RemoteException;
 public void deleteShout(java.lang.String shoutID) throws android.os.RemoteException;
 }

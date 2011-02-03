@@ -17,11 +17,15 @@ public class User {
 
 	// STATICS ////////////////////////////////////////////////////////////////
 
-	public static float calculateRadius(int level, double density) {
-		int maxPeople = level * 5;
+	public static float calculateRadius(int power, double density) {
+		int maxPeople = power * Vars.CONFIG_PEOPLE_PER_POWER;
 		double area = maxPeople / density;
 		float radius = (float) Math.sqrt(area / Math.PI);
 		return radius;
+	}
+	
+	public static int calculatePower(int people) {
+		return (int)Math.ceil(people / Vars.CONFIG_PEOPLE_PER_POWER);
 	}
 
 	// END STATICS ////////////////////////////////////////////////////////////
@@ -33,6 +37,7 @@ public class User {
 	private LocationTracker _locationTracker;
 	protected Inbox _inbox;
 	private int _shoutsJustReceived;
+	private int _maxPower;
 	private boolean _scoresJustReceived;
 	private String _uid;
 	private String _auth;
@@ -47,6 +52,7 @@ public class User {
 		_passwordExists = false;
 		_shoutsJustReceived = 0;
 		_scoresJustReceived = false;
+		_maxPower = 0;
 		_auth = "default"; // we don't have auth yet... just give us nonce
 		HashMap<String, String> userSettings = _db.getUserSettings();
 		if (userSettings.containsKey(Vars.KEY_USER_PW)) {
@@ -54,6 +60,9 @@ public class User {
 		}
 		if (userSettings.containsKey(Vars.KEY_USER_ID)) {
 			_uid = userSettings.get(Vars.KEY_USER_ID);
+		}
+		if (userSettings.containsKey(Vars.KEY_USER_MAX_POWER)) {
+			_maxPower = Integer.parseInt(userSettings.get(Vars.KEY_USER_MAX_POWER));
 		}
 		_cellDensity = new CellDensity();
 		_cellDensity.isSet = false;
@@ -164,9 +173,18 @@ public class User {
 		_db.saveUserSetting(Vars.KEY_USER_ID, uid);
 		_uid = uid;
 	}
-
+	
 	public String getUID() {
 		return _uid;
+	}
+	
+	public synchronized void setMaxPower(String maxPower) {
+		_db.saveUserSetting(Vars.KEY_USER_MAX_POWER, maxPower);
+		_maxPower = Integer.parseInt(maxPower);
+	}
+
+	public int getMaxPower() {
+		return _maxPower;
 	}
 
 	public String getDeviceId() {

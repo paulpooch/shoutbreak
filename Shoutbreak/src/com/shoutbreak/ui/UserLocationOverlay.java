@@ -53,6 +53,7 @@ public class UserLocationOverlay extends MyLocationOverlay {
     private int _mapSizeConstraint; // min(map width, map height)
     
     private int _latRadiusLatForPeopleCount;
+    private int _peopleCount;
     
     public UserLocationOverlay(ShoutbreakUI ui, MapView mapView) {
     	super(ui, mapView);
@@ -67,6 +68,7 @@ public class UserLocationOverlay extends MyLocationOverlay {
         _resizeAdjustmentPx = 0;
         
         _latRadiusLatForPeopleCount = 0;
+        _peopleCount = 0;
         
 		_circleFillPaint = new Paint();
 		_circleFillPaint.setARGB(50, 108, 10, 171);
@@ -87,6 +89,10 @@ public class UserLocationOverlay extends MyLocationOverlay {
         
     }
         
+    public int getCurrentPower() {
+    	return User.calculatePower(_peopleCount);
+    }
+    
     // called every time map is redrawn....   don't do anything heavy here
     @Override 
     protected void drawMyLocation(Canvas canvas, MapView mapView, Location lastFix, GeoPoint myLocation, long when) {
@@ -177,8 +183,8 @@ public class UserLocationOverlay extends MyLocationOverlay {
 	        l2.setLatitude(_lastUserLocationGeoPoint.getLatitudeE6() / 1E6);
 	        l2.setLongitude(_lastUserLocationGeoPoint.getLongitudeE6() / 1E6);
 	        float dist = l1.distanceTo(l2);
-	        int peopleCount = (int)(Math.PI * dist * dist * _density);
-	        _ui.setTitleBarText(peopleCount + " people will hear this");
+	        _peopleCount = (int)(Math.PI * dist * dist * _density);
+	        _ui.setTitleBarText(_peopleCount + " people will hear this");
     	}
     }
     
@@ -202,7 +208,7 @@ public class UserLocationOverlay extends MyLocationOverlay {
     public void setMapView(CustomMapView mapView) {
     	_mapView = mapView;
     }
-    
+        
     // finds a zoom level that displays the circle nicely
     // http://groups.google.com/group/google-maps-api/browse_thread/thread/6ff83431273c6adb/0f83700b2a7b4144
     public void calibrateZoomLevelToShowCircle() {

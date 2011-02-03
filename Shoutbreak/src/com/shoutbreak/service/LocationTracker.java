@@ -37,7 +37,7 @@ public class LocationTracker {
 	
 	public void startListeningToLocation() {
 		_provider = _locationManager.getBestProvider(_criteria, true);
-		_locationManager.requestLocationUpdates(_provider, Vars.GPS_MIN_UPDATE_MILLISECS, Vars.GPS_MIN_UPDATE_METERS, _locationListener);
+		_locationManager.requestLocationUpdates(_provider, Vars.CONFIG_GPS_MIN_UPDATE_MILLISECS, Vars.CONFIG_GPS_MIN_UPDATE_METERS, _locationListener);
 	}
 	
 	public void stopListeningToLocation() {
@@ -98,7 +98,7 @@ public class LocationTracker {
 
         public void onStatusChanged(String provider, int status, Bundle extras) {
     		_provider = _locationManager.getBestProvider(_criteria, true);
-    		_locationManager.requestLocationUpdates(_provider, Vars.GPS_MIN_UPDATE_MILLISECS, Vars.GPS_MIN_UPDATE_METERS, _locationListener);
+    		_locationManager.requestLocationUpdates(_provider, Vars.CONFIG_GPS_MIN_UPDATE_MILLISECS, Vars.CONFIG_GPS_MIN_UPDATE_METERS, _locationListener);
         }
     
 	}

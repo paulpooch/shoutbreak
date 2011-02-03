@@ -34,7 +34,7 @@ public class ShoutbreakService extends Service {
 	public void giveStatusBarNotification(String alert, String title, String message) {
 		Intent intent = new Intent(this, ShoutbreakUI.class);
 		intent.putExtra(Vars.EXTRA_REFERRED_FROM_NOTIFICATION, true);
-	    Notification notification = new Notification(R.drawable.icon, alert, System.currentTimeMillis());
+	    Notification notification = new Notification(R.drawable.notification_icon, alert, System.currentTimeMillis());
 	    notification.setLatestEventInfo(this, title, message,
 	    		PendingIntent.getActivity(this.getBaseContext(), 0, intent, PendingIntent.FLAG_CANCEL_CURRENT));
 	    notification.flags |= Notification.FLAG_AUTO_CANCEL;
@@ -63,6 +63,8 @@ public class ShoutbreakService extends Service {
 					
 					case Vars.CALLBACK_SERVICE_EVENT_COMPLETE: {
 						
+						long delayBeforeNextIdleLoop = Vars.CONFIG_IDLE_THREAD_LOOP_INTERVAL;
+						
 						// do we give a status bar notification?
 						if (obj.serviceEventCode == Vars.SEC_RECEIVE_SHOUTS) {
 							int newShoutCount = Integer.parseInt(obj.args[0]);
@@ -70,8 +72,11 @@ public class ShoutbreakService extends Service {
 								String pluralShout = "shout" + (newShoutCount > 1 ? "s" : "");
 								giveStatusBarNotification(newShoutCount + " " + pluralShout + " received", "Shoutbreak", "you have " + newShoutCount + " new " + pluralShout);
 							}
+						} else if (obj.serviceEventCode == Vars.SEC_ACCOUNT_CREATED) {
+							delayBeforeNextIdleLoop = 0;
 						}
 						
+						// give callback to UI with whatever SEC_SERVICE_EVENT_CODE
 						final int N = _uiCallbacks.beginBroadcast();
 						for (int i = 0; i < N; i++) {
 							try {
@@ -81,7 +86,7 @@ public class ShoutbreakService extends Service {
 								ErrorManager.manage(ex);
 							}
 						}
-						_uiCallbacks.finishBroadcast();
+						_uiCallbacks.finishBroadcast();												
 						
 						// back to idle
 						if (obj.isMasterThread) {
@@ -90,7 +95,7 @@ public class ShoutbreakService extends Service {
 							messageObject.isMasterThread = true;
 							message.obj = messageObject;
 							message.what = Vars.MESSAGE_STATE_IDLE;
-							runOnServiceThreadDelayed(message, Vars.IDLE_THREAD_LOOP_INTERVAL);
+							runOnServiceThreadDelayed(message, delayBeforeNextIdleLoop);
 						}
 						
 						break;						
@@ -98,7 +103,7 @@ public class ShoutbreakService extends Service {
 					
 					case Vars.MESSAGE_REPOST_IDLE_DELAYED: {
 						if (obj.isMasterThread) {
-							runOnServiceThreadDelayed(msg, Vars.IDLE_THREAD_LOOP_INTERVAL);
+							runOnServiceThreadDelayed(msg, Vars.CONFIG_IDLE_THREAD_LOOP_INTERVAL);
 						}
 						break;
 					}
@@ -166,9 +171,9 @@ public class ShoutbreakService extends Service {
 
 	private IShoutbreakService.Stub _shoutbreakServiceStub = new IShoutbreakService.Stub() {
 
-		public void shout(String shoutText) {
+		public void shout(String shoutText, int shoutLevel) {
 			MessageObject messageObject = new MessageObject();
-			messageObject.args = new String[] { shoutText };
+			messageObject.args = new String[] { shoutText, Integer.toString(shoutLevel) };
 			Message message = new Message();
 			message.what = Vars.MESSAGE_STATE_SHOUT;
 			message.obj = messageObject;

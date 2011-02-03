@@ -4,18 +4,18 @@ public class Vars {
 
 	public static final String SERVER_ADDRESS = "http://app.shoutbreak.co";
 	public static final String CRASH_REPORT_ADDRESS = "http://app.shoutbreak.co/crash_reports/upload.php";
-	public static final long IDLE_THREAD_LOOP_INTERVAL = 20000; // milliseconds
 	
-	public static final int GPS_MIN_UPDATE_MILLISECS = 20000; // 0 gives most frequent
-	public static final int GPS_MIN_UPDATE_METERS = 100; // 0 gives smallest interval
+	public static final long CONFIG_IDLE_THREAD_LOOP_INTERVAL = 30000; // milliseconds
+	public static final int CONFIG_GPS_MIN_UPDATE_MILLISECS = 60000; // 0 gives most frequent
+	public static final int CONFIG_GPS_MIN_UPDATE_METERS = 20; // 0 gives smallest interval
+	public static final int CONFIG_PEOPLE_PER_POWER = 5;
+	public static final int CONFIG_MIN_TARGETS_FOR_HIT_COUNT = 3;
 	
 	public static final int DENSITY_GRID_X_GRANULARITY = 129600; // 10 second cells
 	public static final int DENSITY_GRID_Y_GRANULARITY = 64800; // 10 second cells
 	public static final long DENSITY_EXPIRATION = (long) 4.32E8; // 5 days
 	
-	public static final int MIN_TARGETS_FOR_HIT_COUNT = 3;
-	public static final double SHOUT_SCORING_DEFAULT_POWER = 0.10; //  0.10 to have a 95% chance that your lower bound is correct
-		
+	public static final double SHOUT_SCORING_DEFAULT_POWER = 0.10; //  0.10 to have a 95% chance that your lower bound is correct	
 	public static final int DEFAULT_ZOOM_LEVEL = 15;
 	public static final int RESIZE_ICON_TOUCH_TOLERANCE = 100; // +/- 50 px from center
 	public static final int TOUCH_TOLERANCE = 4;
@@ -61,10 +61,11 @@ public class Vars {
 	public static final String DB_TABLE_USER_SETTINGS = "USER_SETTINGS";
 	public static final String DB_TABLE_DENSITY = "DENSITY";
 	public static final String DB_TABLE_SHOUTS = "SHOUTS";
-	public static final int DB_VERSION = 5;
+	public static final int DB_VERSION = 6;
 	
 	public static final String KEY_USER_PW = "user_pw";
 	public static final String KEY_USER_ID = "user_id";
+	public static final String KEY_USER_MAX_POWER = "max_power";
 	
 	// MESSAGES ///////////////////////////////////////////////////////////////
 	
@@ -98,6 +99,7 @@ public class Vars {
 	public static final int SEC_RECEIVE_SHOUTS = 1;
 	public static final int SEC_VOTE_COMPLETED = 2;
 	public static final int SEC_UI_RECONNECT_COMPLETE = 3;
+	public static final int SEC_ACCOUNT_CREATED = 4;
 	
 	// JSON KEYS  /////////////////////////////////////////////////////////////
 	

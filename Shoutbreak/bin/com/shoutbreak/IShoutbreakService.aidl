@@ -16,7 +16,7 @@ interface IShoutbreakService {
      */
     void unregisterCallback(IShoutbreakServiceCallback cb);
     
-    void shout(String shoutText);
+    void shout(String shoutText, int shoutLevel);
 	
 	void vote(String shoutID, int vote);
 	

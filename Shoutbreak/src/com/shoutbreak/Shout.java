@@ -45,7 +45,7 @@ public class Shout {
 
 	public void calculateScore() {
 		// begin here: http://www.derivante.com/2009/09/01/php-content-rating-confidence/
-		if (hit > Vars.MIN_TARGETS_FOR_HIT_COUNT) {
+		if (hit > Vars.CONFIG_MIN_TARGETS_FOR_HIT_COUNT) {
 			score = ratingAverage(ups, ups + downs);
 		} else {
 			score = approval;

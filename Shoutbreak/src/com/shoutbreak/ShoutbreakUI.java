@@ -58,13 +58,17 @@ public class ShoutbreakUI extends MapActivity {
 	protected RelativeLayout _cRow2;
 	protected RelativeLayout _cRow3;
 	protected RelativeLayout _cRow4;
+	protected RelativeLayout _cRow5;
 	protected RelativeLayout _cNoticeBox;
 	protected RelativeLayout _cNoticeBoxInbox;
+	protected RelativeLayout _cNoticeBoxUser;
 	protected TextView _cNoticeText;
 	protected TextView _cNoticeTextInbox;
+	protected TextView _cNoticeTextUser;
 	protected TextView _cTitleBarText;
 	protected Animation _animNoticeExpand;
 	protected Animation _animNoticeShowText;
+	protected TextView _cUserLevel;
 	
 	protected UserLocationOverlay _userLocationOverlay;
 	protected MapController _mapController;
@@ -91,29 +95,39 @@ public class ShoutbreakUI extends MapActivity {
 		_serviceIntent = new Intent();
 		_serviceIntent.setClassName("com.shoutbreak", "com.shoutbreak.ShoutbreakService");
 		_inputMM = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);		
+		
 		_animNoticeExpand = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.notice_expand);
 		_animNoticeShowText = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.notice_show_text);
+		
+		_cRow1 = (RelativeLayout) findViewById(R.id.rlRow1);
+		_cRow2 = (RelativeLayout) findViewById(R.id.rlRow2);
+		_cRow3 = (RelativeLayout) findViewById(R.id.rlRow3);
+		_cRow4 = (RelativeLayout) findViewById(R.id.rlRow4);
+		_cRow5 = (RelativeLayout) findViewById(R.id.rlRow5);
+		
+		_cNoticeBox = (RelativeLayout) findViewById(R.id.rlNotice);
+		_cNoticeText = (TextView) findViewById(R.id.tvNotice);
+		_cNoticeBoxInbox = (RelativeLayout) findViewById(R.id.rlNoticeInbox);
+		_cNoticeTextInbox = (TextView) findViewById(R.id.tvNoticeInbox);
+		_cNoticeBoxUser = (RelativeLayout) findViewById(R.id.rlNoticeUser);
+		_cNoticeTextUser = (TextView) findViewById(R.id.tvNoticeUser);
+		
 		_cShoutingTabButton = (ImageButton) findViewById(R.id.btnShoutingTab);
 		_cInboxTabButton = (ImageButton) findViewById(R.id.btnInboxTab);
 		_cUserTabsButton = (ImageButton) findViewById(R.id.btnUserTab);
 		
 		_cTitleBarText = (TextView) findViewById(R.id.tvTitleBar);
 		_cPowerButton = (ImageButton) findViewById(R.id.btnPower);
-		_cShoutButton = (ImageButton) findViewById(R.id.btnShout);
+		
 		_cMapView = (CustomMapView)findViewById(R.id.cmvMap);
+		_mapController = _cMapView.getController();
 		_cShoutText = (EditText) findViewById(R.id.etShoutText);	
-		_cNoticeBox = (RelativeLayout) findViewById(R.id.rlNotice);
-		_cNoticeText = (TextView) findViewById(R.id.tvNotice);
-		_cNoticeBoxInbox = (RelativeLayout) findViewById(R.id.r4Notice);
-		_cNoticeTextInbox = (TextView) findViewById(R.id.tvNoticeInbox);
+		_cShoutButton = (ImageButton) findViewById(R.id.btnShout);
+		
 		_cInboxListView = (ListView)findViewById(R.id.lvInbox);
 		
-		_cRow1 = (RelativeLayout) findViewById(R.id.rlRow1);
-		_cRow2 = (RelativeLayout) findViewById(R.id.rlRow2);
-		_cRow3 = (RelativeLayout) findViewById(R.id.rlRow3);
-		_cRow4 = (RelativeLayout) findViewById(R.id.rlRow4);
+		_cUserLevel = (TextView)findViewById(R.id.tvUserLevel);
 		
-		_mapController = _cMapView.getController();
 		_cShoutingTabButton.setImageResource(R.drawable.tab_shouting_on); // start in shouts tab
 		
 		// Setup User
@@ -126,10 +140,10 @@ public class ShoutbreakUI extends MapActivity {
 				_cShoutingTabButton.setImageResource(R.drawable.tab_shouting_on);
 				_cInboxTabButton.setImageResource(R.drawable.tab_inbox);
 				_cUserTabsButton.setImageResource(R.drawable.tab_user);
-				//_cRow1.setVisibility(View.VISIBLE);
 				_cRow2.setVisibility(View.VISIBLE);
 				_cRow3.setVisibility(View.VISIBLE);
 				_cRow4.setVisibility(View.GONE);
+				_cRow5.setVisibility(View.GONE);
 			}
 		});
 		
@@ -144,20 +158,19 @@ public class ShoutbreakUI extends MapActivity {
 				_cUserTabsButton.setImageResource(R.drawable.tab_user_on);
 				_cShoutingTabButton.setImageResource(R.drawable.tab_shouting);
 				_cInboxTabButton.setImageResource(R.drawable.tab_inbox);
-				giveNotice("...coming soon...");
-//				_cRow1.setVisibility(View.GONE);
-//				_cRow2.setVisibility(View.GONE);
-//				_cRow3.setVisibility(View.GONE);
-//				_cRow4.setVisibility(View.GONE);
-//				_cRow6.setVisibility(View.GONE);
+				_cRow2.setVisibility(View.GONE);
+				_cRow3.setVisibility(View.GONE);
+				_cRow4.setVisibility(View.GONE);
+				_cRow5.setVisibility(View.VISIBLE);
 			}
 		});
 		
 		_cShoutButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				String text = _cShoutText.getText().toString().trim();
+				int level = _userLocationOverlay.getCurrentPower();
 				try {
-					_service.shout(text);
+					_service.shout(text, level);
 					hideKeyboard();
 				} catch (RemoteException ex) {
 					ErrorManager.manage(ex);
@@ -193,6 +206,7 @@ public class ShoutbreakUI extends MapActivity {
 
 		initInboxListView();
 		initMap();
+		updateUserStats();
 	}
 	
 	@Override
@@ -284,10 +298,14 @@ public class ShoutbreakUI extends MapActivity {
 		_cInboxTabButton.setImageResource(R.drawable.tab_inbox_on);
 		_cShoutingTabButton.setImageResource(R.drawable.tab_shouting);
 		_cUserTabsButton.setImageResource(R.drawable.tab_user);
-		//_cRow1.setVisibility(View.GONE);
 		_cRow2.setVisibility(View.GONE);
 		_cRow3.setVisibility(View.GONE);
 		_cRow4.setVisibility(View.VISIBLE);
+		_cRow5.setVisibility(View.GONE);
+	}
+	
+	public void updateUserStats() {
+		_cUserLevel.setText("Your level is " + _user.getMaxPower());
 	}
 	
 	public InboxListViewAdapter getInboxListViewAdapter() {
@@ -362,6 +380,11 @@ public class ShoutbreakUI extends MapActivity {
 		_cNoticeBoxInbox.startAnimation(_animNoticeExpand);
 		_cNoticeTextInbox.setTextColor(Color.WHITE);
 		_cNoticeTextInbox.startAnimation(_animNoticeShowText);
+		// user notice
+		_cNoticeTextUser.setText(noticeText);
+		_cNoticeBoxUser.startAnimation(_animNoticeExpand);
+		_cNoticeTextUser.setTextColor(Color.WHITE);
+		_cNoticeTextUser.startAnimation(_animNoticeShowText);
 	}
 	
 	public IShoutbreakService getService() {
@@ -443,7 +466,11 @@ public class ShoutbreakUI extends MapActivity {
 				case Vars.SEC_VOTE_COMPLETED: {
 					_user.getInbox().refresh();
 					break;
-				}				
+				}
+				case Vars.SEC_ACCOUNT_CREATED: {
+					updateUserStats();
+					break;
+				}
 			}
 		}
 	};
