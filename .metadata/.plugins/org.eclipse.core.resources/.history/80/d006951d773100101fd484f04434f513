@@ -1,0 +1,6 @@
+package com.shoutbreak;
+
+public class CrossThreadPacket {
+
+	public JSONObject json;
+}

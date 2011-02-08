@@ -1,6 +1,6 @@
 package com.shoutbreak.service;
 
-import com.shoutbreak.Vars;
+import com.shoutbreak.C;
 
 import android.content.Context;
 import android.location.Criteria;
@@ -37,7 +37,7 @@ public class LocationTracker {
 	
 	public void startListeningToLocation() {
 		_provider = _locationManager.getBestProvider(_criteria, true);
-		_locationManager.requestLocationUpdates(_provider, Vars.CONFIG_GPS_MIN_UPDATE_MILLISECS, Vars.CONFIG_GPS_MIN_UPDATE_METERS, _locationListener);
+		_locationManager.requestLocationUpdates(_provider, C.CONFIG_GPS_MIN_UPDATE_MILLISECS, C.CONFIG_GPS_MIN_UPDATE_METERS, _locationListener);
 	}
 	
 	public void stopListeningToLocation() {
@@ -69,11 +69,11 @@ public class LocationTracker {
 								
 		// GRID WRAPPING
 		// X must be between 0 & 129,599
-		if (cellDensity.cellX == Vars.DENSITY_GRID_X_GRANULARITY) {
+		if (cellDensity.cellX == C.CONFIG_DENSITY_GRID_X_GRANULARITY) {
 			cellDensity.cellX = 0;
 		}
 		// Y must be between 0 & 64,799
-		if (cellDensity.cellY == Vars.DENSITY_GRID_Y_GRANULARITY) {
+		if (cellDensity.cellY == C.CONFIG_DENSITY_GRID_Y_GRANULARITY) {
 			cellDensity.cellY = 0;
 		}		
 		
@@ -98,7 +98,7 @@ public class LocationTracker {
 
         public void onStatusChanged(String provider, int status, Bundle extras) {
     		_provider = _locationManager.getBestProvider(_criteria, true);
-    		_locationManager.requestLocationUpdates(_provider, Vars.CONFIG_GPS_MIN_UPDATE_MILLISECS, Vars.CONFIG_GPS_MIN_UPDATE_METERS, _locationListener);
+    		_locationManager.requestLocationUpdates(_provider, C.CONFIG_GPS_MIN_UPDATE_MILLISECS, C.CONFIG_GPS_MIN_UPDATE_METERS, _locationListener);
         }
     
 	}

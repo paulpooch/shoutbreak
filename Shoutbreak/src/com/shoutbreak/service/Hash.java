@@ -2,6 +2,9 @@ package com.shoutbreak.service;
 
 import java.security.MessageDigest;
 
+import com.shoutbreak.ErrorManager;
+
+
 public class Hash {
 
 	private static String convertToHex(byte[] data) {

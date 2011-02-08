@@ -1,0 +1,5 @@
+package com.shoutbreak.ui.map;
+
+public class CustomMapView {
+
+}

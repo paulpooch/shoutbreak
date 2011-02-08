@@ -1,0 +1,7 @@
+package com.shoutbreak.ui;
+
+public class IUIBridge {
+
+	public void test(String s);
+	
+}

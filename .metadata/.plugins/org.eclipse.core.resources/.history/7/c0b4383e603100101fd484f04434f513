@@ -1,0 +1,7 @@
+package com.shoutbreak.service;
+
+import com.shoutbreak.ui.IUIBridge;
+
+public interface IServiceBridge {
+	public void registerBridgeForService(IUIBridge bridge);
+}

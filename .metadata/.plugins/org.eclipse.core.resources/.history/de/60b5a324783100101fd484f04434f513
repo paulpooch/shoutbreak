@@ -1,0 +1,12 @@
+package com.shoutbreak;
+
+public class ErrorManager {
+
+	public static void manage(Exception ex) {
+		if (ex instanceof JSONException) {
+						
+		}
+		
+	}
+		
+}

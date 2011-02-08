@@ -6,16 +6,14 @@ import java.util.HashMap;
 import java.util.List;
 
 import com.ocpsoft.pretty.time.PrettyTime;
+import com.shoutbreak.C;
+import com.shoutbreak.ErrorManager;
 import com.shoutbreak.R;
 import com.shoutbreak.Shout;
-import com.shoutbreak.ShoutbreakUI;
-import com.shoutbreak.Vars;
-import com.shoutbreak.service.ErrorManager;
 
 import android.content.Context;
 import android.graphics.Typeface;
 import android.graphics.PorterDuff.Mode;
-import android.os.RemoteException;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,7 +25,7 @@ import android.widget.TextView;
 
 public class InboxListViewAdapter extends BaseAdapter {
    
-    private ShoutbreakUI _ui;
+    private Shoutbreak _ui;
     private List<Shout> _displayedShouts;
     private LayoutInflater _inflater;
     private PrettyTime _prettyTime;
@@ -44,7 +42,7 @@ public class InboxListViewAdapter extends BaseAdapter {
     	return _cacheExpandState;
     }
         
-    public InboxListViewAdapter(ShoutbreakUI ui) {
+    public InboxListViewAdapter(Shoutbreak ui) {
     	
         _ui = ui;
         _displayedShouts = new ArrayList<Shout>();
@@ -67,31 +65,31 @@ public class InboxListViewAdapter extends BaseAdapter {
         onVoteUpClickListener = new OnClickListener() {
         	public void onClick(View view) {
         		InboxViewHolder holder = (InboxViewHolder) view.getTag();
-        		_cacheVoteTemporary.put(holder.shoutID, Vars.SHOUT_VOTE_UP);
-            	try {
-					_ui.getService().vote(holder.shoutID, Vars.SHOUT_VOTE_UP);
-				} catch (RemoteException ex) {
-					ErrorManager.manage(ex);
-				}
+        		_cacheVoteTemporary.put(holder.shoutID, C.SHOUT_VOTE_UP);
+            	//try {
+				//	_ui.getService().vote(holder.shoutID, C.SHOUT_VOTE_UP);
+				//} catch (RemoteException ex) {
+				//	ErrorManager.manage(ex);
+				//}
         	}
         };
         
         onVoteDownClickListener = new OnClickListener() {
         	public void onClick(View view) {
         		InboxViewHolder holder = (InboxViewHolder) view.getTag();
-        		_cacheVoteTemporary.put(holder.shoutID, Vars.SHOUT_VOTE_DOWN);
-            	try {
-					_ui.getService().vote(holder.shoutID, Vars.SHOUT_VOTE_DOWN);
-				} catch (RemoteException ex) {
-					ErrorManager.manage(ex);
-				}
+        		_cacheVoteTemporary.put(holder.shoutID, C.SHOUT_VOTE_DOWN);
+            	//try {
+				//	_ui.getService().vote(holder.shoutID, C.SHOUT_VOTE_DOWN);
+				//} catch (RemoteException ex) {
+				//	ErrorManager.manage(ex);
+				//}
         	}
         };
         
         onDeleteClickListener = new OnClickListener() {
         	public void onClick(View view) {
         		InboxViewHolder holder = (InboxViewHolder) view.getTag();        		
-        		_ui.getUser().getInbox().deleteShout(holder.shoutID);
+        		//_ui.getUser().getInbox().deleteShout(holder.shoutID);
 			}
         };
         
@@ -194,10 +192,10 @@ public class InboxListViewAdapter extends BaseAdapter {
         if (_cacheVoteTemporary.containsKey(entry.id)) {
         	vote |= _cacheVoteTemporary.get(entry.id);
         }
-        if (vote != Vars.NULL_VOTE) {
+        if (vote != C.NULL_VOTE) {
         	isVotingAllowed = false;
         	//holder.voteLabelE.setText("ALREADY VOTED" + entry.open +" | "+vote);
-        	if (vote == Vars.SHOUT_VOTE_DOWN) {
+        	if (vote == C.SHOUT_VOTE_DOWN) {
         		holder.btnVoteDown.setImageResource(R.drawable.inbox_down_lit);
         	} else {
         		holder.btnVoteUp.setImageResource(R.drawable.inbox_up_lit);
@@ -216,12 +214,12 @@ public class InboxListViewAdapter extends BaseAdapter {
         
         // Is there a score?
         String score = Integer.toString(entry.score);
-        if (entry.score == Vars.NULL_APPROVAL || entry.score == Vars.NULL_SCORE) {
+        if (entry.score == C.NULL_APPROVAL || entry.score == C.NULL_SCORE) {
         	score = "?";
         }
         
         // Mark shout as read/unread
-        if (entry.state_flag == Vars.SHOUT_STATE_NEW) {
+        if (entry.state_flag == C.SHOUT_STATE_NEW) {
     		holder.textC.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
     	} else {
     		holder.textC.setTypeface(Typeface.DEFAULT, Typeface.NORMAL);

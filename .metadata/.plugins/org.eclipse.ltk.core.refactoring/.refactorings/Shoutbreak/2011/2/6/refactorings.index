@@ -12,3 +12,36 @@
 1296691400165	Rename field 'GPS_MIN_UPDATE_METERS'
 1296691530557	Rename field 'PEOPLE_AT_POWER'
 1296691543390	Rename field 'MIN_TARGETS_FOR_HIT_COUNT'
+1296867241261	Delete elements
+1296867247038	Delete elements
+1296867258330	Delete element
+1296867265044	Delete element
+1296867267426	Delete element
+1296867274052	Delete elements
+1296867279880	Delete elements
+1296867287272	Delete element
+1296867296134	Delete element
+1296867667173	Rename type 'ShoutbreakService'
+1296867682699	Move compilation unit
+1296867694529	Rename package 'com.shoutbreak'
+1296867703849	Move compilation unit
+1296867707139	Move compilation unit
+1296867715629	Rename type 'Shoutbreak'
+1296867732351	Rename type 'ShoutbreakUI'
+1296868354336	Delete element
+1296930687798	Rename field 'mNM'
+1296931056039	Rename field 'mBoundService'
+1296931376793	Rename field 'mConnection'
+1296931408797	Rename field 'mIsBound'
+1296932741399	Rename field 'mBinder'
+1296933534610	Rename type 'LocalBinder'
+1296933614382	Rename type 'ServiceBinder'
+1296934464271	Rename type 'IBridgeToService'
+1296934472497	Rename compilation unit 'IBridgeToUI.java'
+1296934939576	Rename type 'IBridgeForUI'
+1296934951563	Rename type 'IBridgeForService'
+1296944643207	Rename compilation unit 'UncaughtExceptionHandler.java'
+1296945560887	Rename type 'Filters'
+1296945809259	Rename local variable 'messageObject'
+1296949490970	Rename method 'doBindService'
+1296949615962	Rename method 'doUnbindService'

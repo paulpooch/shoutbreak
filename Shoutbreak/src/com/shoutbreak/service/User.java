@@ -2,9 +2,7 @@ package com.shoutbreak.service;
 
 import java.util.HashMap;
 
-import com.shoutbreak.ShoutbreakApplication;
-import com.shoutbreak.Vars;
-import com.shoutbreak.ui.Inbox;
+import com.shoutbreak.C;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -18,67 +16,70 @@ public class User {
 	// STATICS ////////////////////////////////////////////////////////////////
 
 	public static float calculateRadius(int power, double density) {
-		int maxPeople = power * Vars.CONFIG_PEOPLE_PER_POWER;
+		int maxPeople = power * C.CONFIG_PEOPLE_PER_LEVEL;
 		double area = maxPeople / density;
 		float radius = (float) Math.sqrt(area / Math.PI);
 		return radius;
 	}
 	
 	public static int calculatePower(int people) {
-		return (int)Math.ceil(people / Vars.CONFIG_PEOPLE_PER_POWER);
+		return (int)Math.ceil(people / C.CONFIG_PEOPLE_PER_LEVEL);
 	}
 
 	// END STATICS ////////////////////////////////////////////////////////////
 	
-	private ShoutbreakApplication _app;
+	private ShoutbreakService _service;
 	private TelephonyManager _tm;
 	private Database _db;
 	private CellDensity _cellDensity;
 	private LocationTracker _locationTracker;
 	protected Inbox _inbox;
 	private int _shoutsJustReceived;
-	private int _maxPower;
 	private boolean _scoresJustReceived;
 	private String _uid;
 	private String _auth;
 	private boolean _passwordExists; // no reason to put actual pw into memory
+	private int _level;
+	private int _points;
+	private int _nextLevelAt;
 	
-	public User(ShoutbreakApplication app) {
-		_app = app;
-		_tm = (TelephonyManager) _app.getSystemService(Context.TELEPHONY_SERVICE);
-		_db = new Database(_app);
-		_locationTracker = new LocationTracker(_app);
-		_inbox = new Inbox(_app, _db);
-		_passwordExists = false;
-		_shoutsJustReceived = 0;
-		_scoresJustReceived = false;
-		_maxPower = 0;
-		_auth = "default"; // we don't have auth yet... just give us nonce
-		HashMap<String, String> userSettings = _db.getUserSettings();
-		if (userSettings.containsKey(Vars.KEY_USER_PW)) {
-			_passwordExists = true;
-		}
-		if (userSettings.containsKey(Vars.KEY_USER_ID)) {
-			_uid = userSettings.get(Vars.KEY_USER_ID);
-		}
-		if (userSettings.containsKey(Vars.KEY_USER_MAX_POWER)) {
-			_maxPower = Integer.parseInt(userSettings.get(Vars.KEY_USER_MAX_POWER));
-		}
-		_cellDensity = new CellDensity();
-		_cellDensity.isSet = false;
-	}
-	
-	public void setBooleanPreference(String key, boolean val) {
-		SharedPreferences settings = _app.getSharedPreferences(Vars.PREFS_NAMESPACE, Context.MODE_PRIVATE);
+	public static void setBooleanPreference(Context context, String key, boolean val) {
+		SharedPreferences settings = context.getSharedPreferences(C.PREFS_NAMESPACE, Context.MODE_PRIVATE);
 		SharedPreferences.Editor editor = settings.edit();
 		editor.putBoolean(key, val);
 		editor.commit();
 	}
 
-	public boolean getBooleanPreference(String key, boolean defaultReturnVal) {
-		SharedPreferences settings = _app.getSharedPreferences(Vars.PREFS_NAMESPACE, Context.MODE_PRIVATE);
+	public static boolean getBooleanPreference(Context context, String key, boolean defaultReturnVal) {
+		SharedPreferences settings = context.getSharedPreferences(C.PREFS_NAMESPACE, Context.MODE_PRIVATE);
 		boolean val = settings.getBoolean(key, defaultReturnVal);
 		return val;
+	}
+	
+	public User(ShoutbreakService service) {
+		_service = service;
+		_tm = (TelephonyManager) service.getSystemService(Context.TELEPHONY_SERVICE);
+		_db = new Database(_service);
+		_locationTracker = new LocationTracker(_service);
+		_inbox = new Inbox(_service, _db);
+		_passwordExists = false;
+		_shoutsJustReceived = 0;
+		_scoresJustReceived = false;
+		_level = 0;
+		_points = 0;
+		_auth = "default"; // we don't have auth yet... just give us nonce
+		HashMap<String, String> userSettings = _db.getUserSettings();
+		if (userSettings.containsKey(C.KEY_USER_PW)) {
+			_passwordExists = true;
+		}
+		if (userSettings.containsKey(C.KEY_USER_ID)) {
+			_uid = userSettings.get(C.KEY_USER_ID);
+		}
+		if (userSettings.containsKey(C.KEY_USER_LEVEL)) {
+			_level = Integer.parseInt(userSettings.get(C.KEY_USER_LEVEL));
+		}
+		_cellDensity = new CellDensity();
+		_cellDensity.isSet = false;
 	}
 	
 	public LocationTracker getLocationTracker() {
@@ -151,8 +152,8 @@ public class User {
 	public synchronized void updateAuth(String nonce) {
 		String pw = "";
 		HashMap<String, String> userSettings = _db.getUserSettings();
-		if (userSettings.containsKey(Vars.KEY_USER_PW)) {
-			pw = userSettings.get(Vars.KEY_USER_PW);
+		if (userSettings.containsKey(C.KEY_USER_PW)) {
+			pw = userSettings.get(C.KEY_USER_PW);
 		}
 		// $auth = sha1($uid . $pw . $nonce);
 		_auth = Hash.sha1(_uid + pw + nonce);
@@ -165,26 +166,47 @@ public class User {
 	public synchronized void setPassword(String pw) {
 		// TODO: should we encrypt or obfuscate this or something?
 		// plaintext in db safe?
-		_db.saveUserSetting(Vars.KEY_USER_PW, pw);
+		_db.saveUserSetting(C.KEY_USER_PW, pw);
 		_passwordExists = true;
 	}
 
 	public synchronized void setUID(String uid) {
-		_db.saveUserSetting(Vars.KEY_USER_ID, uid);
+		_db.saveUserSetting(C.KEY_USER_ID, uid);
 		_uid = uid;
+	}
+	
+	public synchronized void setLevel(int level) {
+		String sLevel = Integer.toString(level);
+		_db.saveUserSetting(C.KEY_USER_LEVEL, sLevel);
+		_level = level;
+	}
+	
+	public synchronized void setPoints(int points) {
+		String sPoints = Integer.toString(points);
+		_db.saveUserSetting(C.KEY_USER_POINTS, sPoints);
+		_points = points;
+	}
+	
+	public synchronized void setNextLevelAt(int nextLevelAt) {
+		String sNextLevelAt = Integer.toString(nextLevelAt);
+		_db.saveUserSetting(C.KEY_USER_NEXT_LEVEL_AT, sNextLevelAt);
+		_nextLevelAt = nextLevelAt;
 	}
 	
 	public String getUID() {
 		return _uid;
 	}
 	
-	public synchronized void setMaxPower(String maxPower) {
-		_db.saveUserSetting(Vars.KEY_USER_MAX_POWER, maxPower);
-		_maxPower = Integer.parseInt(maxPower);
+	public int getLevel() {
+		return _level;
 	}
-
-	public int getMaxPower() {
-		return _maxPower;
+	
+	public int getPoints() {
+		return _points;
+	}
+	
+	public int getNextLevelAt() {
+		return _nextLevelAt;
 	}
 
 	public String getDeviceId() {
@@ -200,7 +222,7 @@ public class User {
 	}
 
 	public String getAndroidId() {
-		return Settings.Secure.getString(_app.getContentResolver(), Settings.Secure.ANDROID_ID);
+		return Settings.Secure.getString(_service.getContentResolver(), Settings.Secure.ANDROID_ID);
 	}
 
 }
