@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<workbench progressCount="15" version="2.0">
+<workbench progressCount="22" version="2.0">
 <workbenchAdvisor/>
 <window height="1163" maximized="true" width="1555" x="282" y="0">
 <fastViewData fastViewLocation="1024"/>
@@ -13,14 +13,14 @@
 <coolItem id="adt.actionSet.avdManager" itemType="typeToolBarContribution" x="38" y="22"/>
 <coolItem id="adt.actionSet.wizards" itemType="typeToolBarContribution" x="84" y="22"/>
 <coolItem id="org.eclipse.debug.ui.launchActionSet" itemType="typeToolBarContribution" x="129" y="22"/>
-<coolItem id="org.eclipse.jdt.ui.ClassFileEditor" itemType="typePlaceholder" x="-1" y="-1"/>
+<coolItem id="org.eclipse.jdt.ui.ClassFileEditor" itemType="typeToolBarContribution" x="-1" y="-1"/>
 <coolItem id="org.eclipse.jdt.ui.CompilationUnitEditor" itemType="typeToolBarContribution" x="-1" y="-1"/>
 <coolItem id="org.eclipse.jdt.ui.JavaElementCreationActionSet" itemType="typeToolBarContribution" x="99" y="22"/>
 <coolItem id="org.eclipse.jdt.ui.PropertiesFileEditor" itemType="typeToolBarContribution" x="-1" y="-1"/>
 <coolItem id="org.eclipse.search.searchActionSet" itemType="typeToolBarContribution" x="99" y="22"/>
 <coolItem id="org.eclipse.ui.DefaultTextEditor" itemType="typePlaceholder" x="-1" y="-1"/>
 <coolItem id="org.eclipse.ui.edit.text.actionSet.presentation" itemType="typeToolBarContribution" x="130" y="22"/>
-<coolItem id="org.eclipse.wst.xml.ui.internal.tabletree.XMLMultiPageEditorPart" itemType="typePlaceholder" x="-1" y="-1"/>
+<coolItem id="org.eclipse.wst.xml.ui.internal.tabletree.XMLMultiPageEditorPart" itemType="typeToolBarContribution" x="-1" y="-1"/>
 <coolItem id="org.eclipse.wst.xml.ui.perspective.NewFileToolBar" itemType="typeToolBarContribution" x="-1" y="-1"/>
 <coolItem id="org.eclipse.wst.xml.ui.design.DesignToolBar" itemType="typeToolBarContribution" x="115" y="22"/>
 <coolItem id="group.nav" itemType="typeGroupMarker"/>
@@ -29,7 +29,7 @@
 <coolItem id="group.help" itemType="typeGroupMarker"/>
 <coolItem id="org.eclipse.ui.workbench.help" itemType="typeToolBarContribution" x="-1" y="-1"/>
 </coolbarLayout>
-<page aggregateWorkingSetId="Aggregate for window 1285802236943" focus="true" label="Workspace - Debug">
+<page aggregateWorkingSetId="Aggregate for window 1285802236943" focus="true" label="Workspace - Java">
 <editors>
 <editorArea activeWorkbook="DefaultEditorWorkbook">
 <info part="DefaultEditorWorkbook">
@@ -51,21 +51,26 @@
 <part id="13"/>
 <part id="14"/>
 <part id="15"/>
+<part id="16"/>
+<part id="17"/>
+<part id="18"/>
+<part id="19"/>
+<part id="20"/>
 </presentation>
 </folder>
 </info>
 </editorArea>
-<editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="Logic.java" partName="Logic.java" path="D:/work/shoutbreak_git/client/Shoutbreak/src/com/shoutbreak/service/Logic.java" title="Logic.java" tooltip="Shoutbreak/src/com/shoutbreak/service/Logic.java" workbook="DefaultEditorWorkbook">
+<editor activePart="true" focus="true" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="Logic.java" partName="Logic.java" path="D:/work/shoutbreak_git/client/Shoutbreak/src/com/shoutbreak/service/Logic.java" title="Logic.java" tooltip="Shoutbreak/src/com/shoutbreak/service/Logic.java" workbook="DefaultEditorWorkbook">
 <input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/Shoutbreak/src/com/shoutbreak/service/Logic.java"/>
-<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="1472" selectionTopPixel="1020"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="5690" selectionTopPixel="0"/>
 </editor>
 <editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="C.java" partName="C.java" path="D:/work/shoutbreak_git/client/Shoutbreak/src/com/shoutbreak/C.java" title="C.java" tooltip="Shoutbreak/src/com/shoutbreak/C.java" workbook="DefaultEditorWorkbook">
 <input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/Shoutbreak/src/com/shoutbreak/C.java"/>
-<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="1272" selectionTopPixel="0"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="6571" selectionTopPixel="0"/>
 </editor>
 <editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="ShoutbreakService.java" partName="ShoutbreakService.java" path="D:/work/shoutbreak_git/client/Shoutbreak/src/com/shoutbreak/service/ShoutbreakService.java" title="ShoutbreakService.java" tooltip="Shoutbreak/src/com/shoutbreak/service/ShoutbreakService.java" workbook="DefaultEditorWorkbook">
 <input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/Shoutbreak/src/com/shoutbreak/service/ShoutbreakService.java"/>
-<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="4695" selectionTopPixel="1793"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="2206" selectionTopPixel="427"/>
 </editor>
 <editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="CrossThreadPacket.java" partName="CrossThreadPacket.java" path="D:/work/shoutbreak_git/client/Shoutbreak/src/com/shoutbreak/CrossThreadPacket.java" title="CrossThreadPacket.java" tooltip="Shoutbreak/src/com/shoutbreak/CrossThreadPacket.java" workbook="DefaultEditorWorkbook">
 <input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/Shoutbreak/src/com/shoutbreak/CrossThreadPacket.java"/>
@@ -81,11 +86,11 @@
 </editor>
 <editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="IUIBridge.java" partName="IUIBridge.java" path="D:/work/shoutbreak_git/client/Shoutbreak/src/com/shoutbreak/ui/IUIBridge.java" title="IUIBridge.java" tooltip="Shoutbreak/src/com/shoutbreak/ui/IUIBridge.java" workbook="DefaultEditorWorkbook">
 <input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/Shoutbreak/src/com/shoutbreak/ui/IUIBridge.java"/>
-<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="86" selectionTopPixel="0"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="236" selectionTopPixel="0"/>
 </editor>
 <editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="Shoutbreak.java" partName="Shoutbreak.java" path="D:/work/shoutbreak_git/client/Shoutbreak/src/com/shoutbreak/ui/Shoutbreak.java" title="Shoutbreak.java" tooltip="Shoutbreak/src/com/shoutbreak/ui/Shoutbreak.java" workbook="DefaultEditorWorkbook">
 <input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/Shoutbreak/src/com/shoutbreak/ui/Shoutbreak.java"/>
-<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="4596" selectionTopPixel="2312"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="12421" selectionTopPixel="5106"/>
 </editor>
 <editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="InboxViewHolder.java" partName="InboxViewHolder.java" path="D:/work/shoutbreak_git/client/Shoutbreak/src/com/shoutbreak/ui/InboxViewHolder.java" title="InboxViewHolder.java" tooltip="Shoutbreak/src/com/shoutbreak/ui/InboxViewHolder.java" workbook="DefaultEditorWorkbook">
 <input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/Shoutbreak/src/com/shoutbreak/ui/InboxViewHolder.java"/>
@@ -98,9 +103,9 @@
 <input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/Shoutbreak/src/com/shoutbreak/service/LocationTracker.java"/>
 <editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="2286" selectionTopPixel="0"/>
 </editor>
-<editor activePart="true" focus="true" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="User.java" partName="User.java" path="D:/work/shoutbreak_git/client/Shoutbreak/src/com/shoutbreak/service/User.java" title="User.java" tooltip="Shoutbreak/src/com/shoutbreak/service/User.java" workbook="DefaultEditorWorkbook">
+<editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="User.java" partName="User.java" path="D:/work/shoutbreak_git/client/Shoutbreak/src/com/shoutbreak/service/User.java" title="User.java" tooltip="Shoutbreak/src/com/shoutbreak/service/User.java" workbook="DefaultEditorWorkbook">
 <input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/Shoutbreak/src/com/shoutbreak/service/User.java"/>
-<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="3452" selectionTopPixel="1802"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="6035" selectionTopPixel="2314"/>
 </editor>
 <editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="UserLocationOverlay.java" partName="UserLocationOverlay.java" path="D:/work/shoutbreak_git/client/Shoutbreak/src/com/shoutbreak/ui/UserLocationOverlay.java" title="UserLocationOverlay.java" tooltip="Shoutbreak/src/com/shoutbreak/ui/UserLocationOverlay.java" workbook="DefaultEditorWorkbook">
 <input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/Shoutbreak/src/com/shoutbreak/ui/UserLocationOverlay.java"/>
@@ -108,7 +113,7 @@
 </editor>
 <editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="IServiceBridge.java" partName="IServiceBridge.java" path="D:/work/shoutbreak_git/client/Shoutbreak/src/com/shoutbreak/service/IServiceBridge.java" title="IServiceBridge.java" tooltip="Shoutbreak/src/com/shoutbreak/service/IServiceBridge.java" workbook="DefaultEditorWorkbook">
 <input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/Shoutbreak/src/com/shoutbreak/service/IServiceBridge.java"/>
-<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="354" selectionTopPixel="0"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="446" selectionTopPixel="0"/>
 </editor>
 <editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="ISO8601DateParser.java" partName="ISO8601DateParser.java" path="D:/work/shoutbreak_git/client/Shoutbreak/src/com/shoutbreak/ui/ISO8601DateParser.java" title="ISO8601DateParser.java" tooltip="Shoutbreak/src/com/shoutbreak/ui/ISO8601DateParser.java" workbook="DefaultEditorWorkbook">
 <input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/Shoutbreak/src/com/shoutbreak/ui/ISO8601DateParser.java"/>
@@ -117,6 +122,24 @@
 <editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="CustomMapView.java" partName="CustomMapView.java" path="D:/work/shoutbreak_git/client/Shoutbreak/src/com/shoutbreak/ui/map/CustomMapView.java" title="CustomMapView.java" tooltip="Shoutbreak/src/com/shoutbreak/ui/map/CustomMapView.java" workbook="DefaultEditorWorkbook">
 <input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/Shoutbreak/src/com/shoutbreak/ui/map/CustomMapView.java"/>
 <editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="605" selectionTopPixel="17"/>
+</editor>
+<editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="ConnectionQueue.java" partName="ConnectionQueue.java" path="D:/work/shoutbreak_git/client/Shoutbreak/src/com/shoutbreak/service/http/ConnectionQueue.java" title="ConnectionQueue.java" tooltip="Shoutbreak/src/com/shoutbreak/service/http/ConnectionQueue.java" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/Shoutbreak/src/com/shoutbreak/service/http/ConnectionQueue.java"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="898" selectionTopPixel="0"/>
+</editor>
+<editor id="org.eclipse.jdt.ui.ClassFileEditor" name="Looper.class" partName="Looper.class" title="Looper.class" tooltip="android.os.Looper" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.jdt.ui.ClassFileEditorInputFactory" org.eclipse.jdt.ui.ClassFileIdentifier="=Shoutbreak/C:\/Program Files \(x86)\/android-sdk-windows\/platforms\/android-8\/android.jar&lt;android.os(Looper.class"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="0" selectionTopPixel="0"/>
+</editor>
+<editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="Database.java" partName="Database.java" path="D:/work/shoutbreak_git/client/Shoutbreak/src/com/shoutbreak/service/Database.java" title="Database.java" tooltip="Shoutbreak/src/com/shoutbreak/service/Database.java" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/Shoutbreak/src/com/shoutbreak/service/Database.java"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="1718" selectionTopPixel="0"/>
+</editor>
+<editor id="org.eclipse.wst.xml.ui.internal.tabletree.XMLMultiPageEditorPart" name="notice_expand.xml" partName="notice_expand.xml" path="D:/work/shoutbreak_git/client/Shoutbreak/res/anim/notice_expand.xml" title="notice_expand.xml" tooltip="Shoutbreak/res/anim/notice_expand.xml" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/Shoutbreak/res/anim/notice_expand.xml"/>
+</editor>
+<editor id="org.eclipse.wst.xml.ui.internal.tabletree.XMLMultiPageEditorPart" name="notice_show_text.xml" partName="notice_show_text.xml" path="D:/work/shoutbreak_git/client/Shoutbreak/res/anim/notice_show_text.xml" title="notice_show_text.xml" tooltip="Shoutbreak/res/anim/notice_show_text.xml" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/Shoutbreak/res/anim/notice_show_text.xml"/>
 </editor>
 </editors>
 <views>
@@ -128,8 +151,8 @@
 </view>
 <view id="org.eclipse.search.ui.views.SearchView" partName="Search">
 <viewState isPinned="false">
-<view IMemento.internal.id="org.eclipse.search.text.FileSearchResultPage" org.eclipse.search.lastActivation="1" org.eclipse.search.resultpage.layout="2" org.eclipse.search.resultpage.limit="1000" org.eclipse.search.resultpage.sorting="2"/>
 <view IMemento.internal.id="" org.eclipse.search.lastActivation="0"/>
+<view IMemento.internal.id="org.eclipse.search.text.FileSearchResultPage" org.eclipse.search.lastActivation="1" org.eclipse.search.resultpage.layout="2" org.eclipse.search.resultpage.limit="1000" org.eclipse.search.resultpage.sorting="2"/>
 </viewState>
 </view>
 <view id="org.eclipse.jdt.callhierarchy.view" partName="Call Hierarchy">
@@ -167,8 +190,8 @@
 <view id="org.eclipse.ui.views.ProblemView" partName="Problems">
 <viewState PRIMARY_SORT_FIELD="org.eclipse.ui.ide.severityAndDescriptionField" categoryGroup="org.eclipse.ui.ide.severity" markerContentGenerator="org.eclipse.ui.ide.problemsGenerator" partName="Problems">
 <expanded>
-<category IMemento.internal.id="Warnings"/>
 <category IMemento.internal.id="Errors"/>
+<category IMemento.internal.id="Warnings"/>
 </expanded>
 <columnWidths org.eclipse.ui.ide.locationField="64" org.eclipse.ui.ide.markerType="94" org.eclipse.ui.ide.pathField="124" org.eclipse.ui.ide.resourceField="336" org.eclipse.ui.ide.severityAndDescriptionField="745"/>
 <visible IMemento.internal.id="org.eclipse.ui.ide.severityAndDescriptionField"/>
@@ -226,7 +249,7 @@
 <viewState/>
 </view>
 </views>
-<perspectives activePart="com.android.ide.eclipse.ddms.views.LogCatView" activePerspective="org.eclipse.debug.ui.DebugPerspective">
+<perspectives activePart="org.eclipse.jdt.ui.CompilationUnitEditor" activePerspective="org.eclipse.jdt.ui.JavaPerspective">
 <perspective editorAreaTrimState="2" editorAreaVisible="1" fixed="0" version="0.016">
 <descriptor class="org.eclipse.jdt.internal.ui.JavaPerspectiveFactory" id="org.eclipse.jdt.ui.JavaPerspective" label="Java"/>
 <alwaysOnActionSet id="org.eclipse.mylyn.context.ui.actionSet"/>
@@ -319,7 +342,7 @@
 </folder>
 </info>
 <info folder="true" part="org.eclipse.ui.internal.ViewStack@d5d8e6" ratio="0.76177025" ratioLeft="809" ratioRight="253" relationship="4" relative="left">
-<folder activePageID="org.eclipse.ui.views.ProblemView" appearance="2" expanded="2">
+<folder activePageID="org.eclipse.ui.console.ConsoleView" appearance="2" expanded="2">
 <page content="org.eclipse.ui.views.ProblemView" label="Problems"/>
 <page content="org.eclipse.search.ui.views.SearchView" label="Search"/>
 <page content="org.eclipse.ui.console.ConsoleView" label="Console"/>
@@ -448,7 +471,7 @@
 </presentation>
 </folder>
 </info>
-<info folder="true" part="org.eclipse.debug.internal.ui.ConsoleFolderView" ratio="0.56497175" ratioLeft="600" ratioRight="462" relationship="4" relative="org.eclipse.debug.internal.ui.NavigatorFolderView">
+<info folder="true" part="org.eclipse.debug.internal.ui.ConsoleFolderView" ratio="0.9613936" ratioLeft="1021" ratioRight="41" relationship="4" relative="org.eclipse.debug.internal.ui.NavigatorFolderView">
 <folder activePageID="org.eclipse.ui.console.ConsoleView" appearance="2" expanded="2">
 <page content="org.eclipse.ui.console.ConsoleView" label="Console"/>
 <page content="org.eclipse.ui.views.TaskList" label="Tasks"/>
@@ -472,7 +495,7 @@
 </presentation>
 </folder>
 </info>
-<info part="org.eclipse.ui.editorss" ratio="0.4840871" ratioLeft="289" ratioRight="308" relationship="4" relative="org.eclipse.debug.internal.ui.NavigatorFolderView"/>
+<info part="org.eclipse.ui.editorss" ratio="0.45867097" ratioLeft="283" ratioRight="334" relationship="4" relative="org.eclipse.debug.internal.ui.NavigatorFolderView"/>
 <info folder="true" part="org.eclipse.debug.internal.ui.OutlineFolderView" ratio="0.8151394" ratioLeft="1023" ratioRight="232" relationship="2" relative="org.eclipse.ui.editorss">
 <folder activePageID="org.eclipse.ui.views.ContentOutline" appearance="2" expanded="2">
 <page content="org.eclipse.ui.views.ContentOutline" label="Outline"/>
@@ -501,157 +524,158 @@
 <workingSets/>
 <navigationHistory>
 <editors>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/Shoutbreak/src/com/shoutbreak/ui/Shoutbreak.java"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/Shoutbreak/src/com/shoutbreak/ui/InboxListViewAdapter.java"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/Shoutbreak/src/com/shoutbreak/ui/UserLocationOverlay.java"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/Shoutbreak/src/com/shoutbreak/ui/map/CustomMapView.java"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/Shoutbreak/src/com/shoutbreak/service/Logic.java"/>
 <editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/Shoutbreak/src/com/shoutbreak/C.java"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/Shoutbreak/src/com/shoutbreak/service/Inbox.java"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/Shoutbreak/src/com/shoutbreak/service/ShoutbreakService.java"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/Shoutbreak/src/com/shoutbreak/ui/Shoutbreak.java"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/Shoutbreak/src/com/shoutbreak/ui/IUIBridge.java"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.wst.xml.ui.internal.tabletree.XMLMultiPageEditorPart" path="/Shoutbreak/res/anim/notice_expand.xml"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.wst.xml.ui.internal.tabletree.XMLMultiPageEditorPart" path="/Shoutbreak/res/anim/notice_show_text.xml"/>
 <editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/Shoutbreak/src/com/shoutbreak/service/User.java"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/Shoutbreak/src/com/shoutbreak/service/IServiceBridge.java"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/Shoutbreak/src/com/shoutbreak/service/Database.java"/>
 </editors>
-<item historyLabel="UserLocationOverlay.java" index="2">
-<position info="not_deleted" x="8496" y="0"/>
+<item historyLabel="ShoutbreakService.java" index="2">
+<position info="not_deleted" x="5187" y="0"/>
 </item>
-<item historyLabel="CustomMapView.java" index="3">
-<position info="not_deleted" x="0" y="0"/>
+<item historyLabel="ShoutbreakService.java" index="2">
+<position info="not_deleted" x="5216" y="0"/>
 </item>
-<item historyLabel="CustomMapView.java" index="3">
-<position info="not_deleted" x="797" y="22"/>
+<item historyLabel="ShoutbreakService.java" index="2">
+<position info="not_deleted" x="5227" y="0"/>
 </item>
-<item historyLabel="CustomMapView.java" index="3">
-<position info="not_deleted" x="823" y="0"/>
+<item historyLabel="ShoutbreakService.java" index="2">
+<position info="not_deleted" x="5266" y="0"/>
 </item>
-<item historyLabel="Shoutbreak.java" index="0">
+<item historyLabel="ShoutbreakService.java" index="2">
+<position info="not_deleted" x="5176" y="21"/>
+</item>
+<item historyLabel="ShoutbreakService.java" index="2">
+<position info="not_deleted" x="5166" y="0"/>
+</item>
+<item historyLabel="ShoutbreakService.java" index="2">
+<position info="not_deleted" x="5415" y="0"/>
+</item>
+<item historyLabel="Logic.java" index="0">
 <position/>
 </item>
-<item historyLabel="Shoutbreak.java" index="0">
-<position info="not_deleted" x="4028" y="0"/>
-</item>
-<item historyLabel="Shoutbreak.java" index="0">
-<position info="not_deleted" x="1350" y="0"/>
-</item>
-<item historyLabel="Shoutbreak.java" index="0">
-<position info="not_deleted" x="1301" y="0"/>
-</item>
-<item historyLabel="CustomMapView.java" index="3">
-<position info="not_deleted" x="866" y="20"/>
-</item>
-<item historyLabel="CustomMapView.java" index="3">
-<position info="not_deleted" x="951" y="0"/>
-</item>
-<item historyLabel="CustomMapView.java" index="3">
+<item historyLabel="Logic.java" index="0">
 <position/>
 </item>
-<item historyLabel="Shoutbreak.java" index="0">
-<position info="not_deleted" x="1301" y="0"/>
+<item historyLabel="Logic.java" index="0">
+<position info="not_deleted" x="5586" y="1"/>
 </item>
-<item historyLabel="Shoutbreak.java" index="0">
-<position info="not_deleted" x="1441" y="0"/>
+<item historyLabel="ShoutbreakService.java" index="2">
+<position info="not_deleted" x="5415" y="0"/>
 </item>
-<item historyLabel="Shoutbreak.java" index="0">
-<position info="not_deleted" x="8652" y="0"/>
+<item historyLabel="Logic.java" index="0">
+<position info="not_deleted" x="5586" y="1"/>
 </item>
-<item historyLabel="CustomMapView.java" index="3">
-<position info="not_deleted" x="866" y="20"/>
+<item historyLabel="Logic.java" index="0">
+<position info="not_deleted" x="5649" y="0"/>
 </item>
-<item historyLabel="CustomMapView.java" index="3">
-<position info="not_deleted" x="399" y="0"/>
+<item historyLabel="Logic.java" index="0">
+<position info="not_deleted" x="5388" y="0"/>
 </item>
-<item historyLabel="CustomMapView.java" index="3">
-<position/>
+<item historyLabel="C.java" index="1">
+<position info="not_deleted" x="4106" y="0"/>
 </item>
-<item historyLabel="Shoutbreak.java" index="0">
-<position info="not_deleted" x="8658" y="0"/>
+<item historyLabel="Logic.java" index="0">
+<position info="not_deleted" x="5902" y="19"/>
 </item>
-<item historyLabel="CustomMapView.java" index="3">
-<position info="not_deleted" x="2263" y="0"/>
+<item historyLabel="C.java" index="1">
+<position info="not_deleted" x="6834" y="0"/>
 </item>
-<item historyLabel="Shoutbreak.java" index="0">
-<position info="not_deleted" x="8658" y="0"/>
+<item historyLabel="Logic.java" index="0">
+<position info="not_deleted" x="6215" y="18"/>
 </item>
-<item historyLabel="Shoutbreak.java" index="0">
-<position info="not_deleted" x="2309" y="0"/>
+<item historyLabel="C.java" index="1">
+<position info="not_deleted" x="6571" y="0"/>
 </item>
-<item historyLabel="Shoutbreak.java" index="0">
-<position info="not_deleted" x="2231" y="8"/>
+<item historyLabel="Logic.java" index="0">
+<position info="not_deleted" x="5387" y="18"/>
 </item>
-<item historyLabel="Shoutbreak.java" index="0">
-<position info="not_deleted" x="1690" y="0"/>
+<item historyLabel="Logic.java" index="0">
+<position info="not_deleted" x="5831" y="0"/>
 </item>
-<item historyLabel="Shoutbreak.java" index="0">
-<position info="not_deleted" x="1410" y="18"/>
+<item historyLabel="Logic.java" index="0">
+<position info="not_deleted" x="5690" y="0"/>
 </item>
-<item historyLabel="Shoutbreak.java" index="0">
-<position info="not_deleted" x="1476" y="0"/>
+<item historyLabel="C.java" index="1">
+<position info="not_deleted" x="6571" y="0"/>
 </item>
-<item historyLabel="Shoutbreak.java" index="0">
-<position info="not_deleted" x="9059" y="11"/>
+<item historyLabel="ShoutbreakService.java" index="2">
+<position info="not_deleted" x="5415" y="0"/>
 </item>
-<item historyLabel="Shoutbreak.java" index="0">
-<position info="not_deleted" x="2989" y="0"/>
+<item historyLabel="ShoutbreakService.java" index="2">
+<position info="not_deleted" x="2206" y="0"/>
 </item>
-<item historyLabel="Shoutbreak.java" index="0">
-<position info="not_deleted" x="1831" y="0"/>
+<item historyLabel="IUIBridge.java" index="4">
+<position info="not_deleted" x="86" y="0"/>
 </item>
-<item historyLabel="CustomMapView.java" index="3">
-<position info="not_deleted" x="1326" y="1"/>
+<item historyLabel="IUIBridge.java" index="4">
+<position info="not_deleted" x="236" y="0"/>
 </item>
-<item historyLabel="CustomMapView.java" index="3">
-<position info="not_deleted" x="1558" y="0"/>
+<item historyLabel="Shoutbreak.java" index="3">
+<position info="not_deleted" x="6457" y="11"/>
 </item>
-<item historyLabel="CustomMapView.java" index="3">
-<position/>
+<item historyLabel="Shoutbreak.java" index="3">
+<position info="not_deleted" x="2398" y="0"/>
 </item>
-<item historyLabel="C.java" index="4">
-<position info="not_deleted" x="1289" y="0"/>
+<item historyLabel="Shoutbreak.java" index="3">
+<position info="not_deleted" x="2324" y="9"/>
 </item>
-<item historyLabel="CustomMapView.java" index="3">
-<position info="not_deleted" x="1326" y="36"/>
+<item historyLabel="Shoutbreak.java" index="3">
+<position info="not_deleted" x="2099" y="0"/>
 </item>
-<item historyLabel="CustomMapView.java" index="3">
-<position info="not_deleted" x="1593" y="0"/>
+<item historyLabel="Shoutbreak.java" index="3">
+<position info="not_deleted" x="3939" y="0"/>
 </item>
-<item historyLabel="CustomMapView.java" index="3">
-<position info="not_deleted" x="1976" y="0"/>
+<item historyLabel="notice_expand.xml" index="5"/>
+<item historyLabel="notice_show_text.xml" index="6"/>
+<item historyLabel="Shoutbreak.java" index="3">
+<position info="not_deleted" x="3939" y="0"/>
 </item>
-<item historyLabel="C.java" index="4">
-<position info="not_deleted" x="1272" y="0"/>
+<item historyLabel="Shoutbreak.java" index="3">
+<position info="not_deleted" x="12421" y="0"/>
 </item>
-<item historyLabel="CustomMapView.java" index="3">
-<position info="not_deleted" x="1984" y="0"/>
+<item historyLabel="Shoutbreak.java" index="3">
+<position info="not_deleted" x="12562" y="5"/>
 </item>
-<item historyLabel="Shoutbreak.java" index="0">
-<position info="not_deleted" x="9117" y="13"/>
+<item historyLabel="Shoutbreak.java" index="3">
+<position info="not_deleted" x="12548" y="0"/>
 </item>
-<item historyLabel="Shoutbreak.java" index="0">
-<position info="not_deleted" x="9266" y="0"/>
+<item historyLabel="Shoutbreak.java" index="3">
+<position info="not_deleted" x="12421" y="0"/>
 </item>
-<item historyLabel="Inbox.java" index="5">
-<position info="not_deleted" x="288" y="0"/>
+<item historyLabel="Logic.java" index="0">
+<position info="not_deleted" x="5690" y="0"/>
 </item>
-<item historyLabel="CustomMapView.java" index="3">
-<position info="not_deleted" x="186" y="0"/>
+<item historyLabel="C.java" index="1">
+<position info="not_deleted" x="6571" y="0"/>
 </item>
-<item historyLabel="InboxListViewAdapter.java" index="1">
-<position info="not_deleted" x="3479" y="0"/>
+<item historyLabel="ShoutbreakService.java" index="2">
+<position info="not_deleted" x="2206" y="0"/>
 </item>
-<item historyLabel="Shoutbreak.java" index="0">
-<position info="not_deleted" x="2091" y="0"/>
+<item historyLabel="IUIBridge.java" index="4">
+<position info="not_deleted" x="236" y="0"/>
 </item>
-<item historyLabel="CustomMapView.java" index="3">
-<position info="not_deleted" x="186" y="0"/>
+<item historyLabel="Shoutbreak.java" index="3">
+<position info="not_deleted" x="12421" y="0"/>
 </item>
-<item historyLabel="CustomMapView.java" index="3">
-<position info="not_deleted" x="749" y="0"/>
+<item historyLabel="User.java" index="7">
+<position info="not_deleted" x="6035" y="0"/>
 </item>
-<item historyLabel="CustomMapView.java" index="3">
-<position info="not_deleted" x="605" y="0"/>
+<item historyLabel="IServiceBridge.java" index="8">
+<position info="not_deleted" x="446" y="0"/>
 </item>
-<item historyLabel="Shoutbreak.java" index="0">
-<position info="not_deleted" x="4596" y="0"/>
+<item historyLabel="Database.java" index="9">
+<position info="not_deleted" x="1718" y="0"/>
 </item>
-<item active="true" historyLabel="User.java" index="6">
-<position info="not_deleted" x="3452" y="0"/>
+<item historyLabel="notice_expand.xml" index="5"/>
+<item historyLabel="notice_show_text.xml" index="6"/>
+<item active="true" historyLabel="Logic.java" index="0">
+<position info="not_deleted" x="5690" y="0"/>
 </item>
 </navigationHistory>
 <input factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/" type="8"/>
@@ -673,6 +697,30 @@
 </trimLayout>
 </window>
 <mruList>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.wst.xml.ui.internal.tabletree.XMLMultiPageEditorPart" name="notice_show_text.xml" tooltip="Shoutbreak/res/anim/notice_show_text.xml">
+<persistable path="/Shoutbreak/res/anim/notice_show_text.xml"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.wst.xml.ui.internal.tabletree.XMLMultiPageEditorPart" name="notice_expand.xml" tooltip="Shoutbreak/res/anim/notice_expand.xml">
+<persistable path="/Shoutbreak/res/anim/notice_expand.xml"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="Database.java" tooltip="Shoutbreak/src/com/shoutbreak/service/Database.java">
+<persistable path="/Shoutbreak/src/com/shoutbreak/service/Database.java"/>
+</file>
+<file factoryID="org.eclipse.jdt.ui.ClassFileEditorInputFactory" id="org.eclipse.jdt.ui.ClassFileEditor" name="Handler.class" tooltip="android.os.Handler">
+<persistable org.eclipse.jdt.ui.ClassFileIdentifier="=Shoutbreak/C:\/Program Files \(x86)\/android-sdk-windows\/platforms\/android-8\/android.jar&lt;android.os(Handler.class"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="ServiceThread.java" tooltip="Shoutbreak/src/com/shoutbreak/service/ServiceThread.java">
+<persistable path="/Shoutbreak/src/com/shoutbreak/service/ServiceThread.java"/>
+</file>
+<file factoryID="org.eclipse.jdt.ui.ClassFileEditorInputFactory" id="org.eclipse.jdt.ui.ClassFileEditor" name="AdapterView$OnItemClickListener.class" tooltip="android.widget.AdapterView$OnItemClickListener">
+<persistable org.eclipse.jdt.ui.ClassFileIdentifier="=Shoutbreak/C:\/Program Files \(x86)\/android-sdk-windows\/platforms\/android-8\/android.jar&lt;android.widget(AdapterView$OnItemClickListener.class"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="ConnectionQueue.java" tooltip="Shoutbreak/src/com/shoutbreak/service/http/ConnectionQueue.java">
+<persistable path="/Shoutbreak/src/com/shoutbreak/service/http/ConnectionQueue.java"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="HttpConnection.java" tooltip="Shoutbreak/src/com/shoutbreak/service/http/HttpConnection.java">
+<persistable path="/Shoutbreak/src/com/shoutbreak/service/http/HttpConnection.java"/>
+</file>
 <file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="CustomMapView.java" tooltip="Shoutbreak/src/com/shoutbreak/ui/map/CustomMapView.java">
 <persistable path="/Shoutbreak/src/com/shoutbreak/ui/map/CustomMapView.java"/>
 </file>
@@ -693,24 +741,6 @@
 </file>
 <file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="LocationTracker.java" tooltip="Shoutbreak/src/com/shoutbreak/service/LocationTracker.java">
 <persistable path="/Shoutbreak/src/com/shoutbreak/service/LocationTracker.java"/>
-</file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.android.ide.eclipse.editors.layout.LayoutEditor" name="main.xml" tooltip="Shoutbreak/res/layout/main.xml">
-<persistable path="/Shoutbreak/res/layout/main.xml"/>
-</file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="InboxViewHolder.java" tooltip="Shoutbreak/src/com/shoutbreak/ui/InboxViewHolder.java">
-<persistable path="/Shoutbreak/src/com/shoutbreak/ui/InboxViewHolder.java"/>
-</file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="Shoutbreak.java" tooltip="Shoutbreak/src/com/shoutbreak/ui/Shoutbreak.java">
-<persistable path="/Shoutbreak/src/com/shoutbreak/ui/Shoutbreak.java"/>
-</file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="IUIBridge.java" tooltip="Shoutbreak/src/com/shoutbreak/ui/IUIBridge.java">
-<persistable path="/Shoutbreak/src/com/shoutbreak/ui/IUIBridge.java"/>
-</file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="Inbox.java" tooltip="Shoutbreak/src/com/shoutbreak/service/Inbox.java">
-<persistable path="/Shoutbreak/src/com/shoutbreak/service/Inbox.java"/>
-</file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="InboxListViewAdapter.java" tooltip="Shoutbreak/src/com/shoutbreak/ui/InboxListViewAdapter.java">
-<persistable path="/Shoutbreak/src/com/shoutbreak/ui/InboxListViewAdapter.java"/>
 </file>
 </mruList>
 </workbench>

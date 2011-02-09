@@ -28,11 +28,15 @@ public class Logic {
 	public void go(Message message) {
 		switch (message.what) {
 			case C.STATE_IDLE: {
-				idle();
+				idle(message);
 				break;
 			}
 			case C.STATE_RECEIVE_SHOUTS: {
 				receiveShouts(message);
+				break;
+			}
+			case C.STATE_VOTE: {
+				vote(message);
 				break;
 			}
 			case C.STATE_SHOUT: {
@@ -54,17 +58,17 @@ public class Logic {
 		}
 	}
     
-	public void idle() {
+	public void idle(Message message) {
 
 		if (!_user.hasAccount()) {
-			createAccount();
+			createAccount(message);
 			return;
 		}
-		ping();
+		ping(message);
 		
 	}
 	
-	public void ping() {
+	public void ping(Message message) {
 		Handler httpHandler = new Handler() {
 			public void handleMessage(Message message) {
 				switch (message.what) {
@@ -99,6 +103,7 @@ public class Logic {
 				}
 			}
 		};
+		CrossThreadPacket xPacket = (CrossThreadPacket)message.obj;
 		ArrayList<String> scoresToRequest = _user.getInbox().getOpenShoutIDs();
 		PostData postData = new PostData();
 		postData.add(C.JSON_ACTION, C.JSON_ACTION_USER_PING);
@@ -125,8 +130,8 @@ public class Logic {
 			postData.add(C.JSON_DENSITY, "1");
 			//Toast.makeText(_context, "Requesting Density: " + tempCellDensity.cellX + " , " + tempCellDensity.cellY, Toast.LENGTH_SHORT).show();
 		}
-		
-		new HttpConnection(httpHandler).post(postData);	
+	
+		new HttpConnection(httpHandler).post(postData, xPacket);	
 	}
 	
 	public void receiveShouts(Message message) {
@@ -189,10 +194,36 @@ public class Logic {
 		postData.add(C.JSON_LONG, Double.toString(_user.getLongitude()));
 		postData.add(C.JSON_SHOUT_TEXT, shoutText);
 		postData.add(C.JSON_SHOUT_POWER, Integer.toString(shoutPower));
-		new HttpConnection(httpHandler).post(postData);	
+		new HttpConnection(httpHandler).post(postData, xPacket);	
 	}
 	
-	public void createAccount() {
+	public void vote(Message message) {
+		CrossThreadPacket xPacket = (CrossThreadPacket)message.obj;
+		final String shoutID = xPacket.sArgs[0];
+		final int vote = xPacket.iArgs[0];
+		Handler httpHandler = new Handler() {
+			public void handleMessage(Message message) {
+				switch (message.what) {
+					case C.HTTP_DID_SUCCEED: {
+						_user.getInbox().reflectVote(shoutID, vote);
+						CrossThreadPacket xPacket = (CrossThreadPacket)message.obj;
+						xPacket.uiCode = C.UI_VOTE_COMPLETED;
+						_uiThreadHandler.sendMessage(Message.obtain(_uiThreadHandler, C.STATE_IDLE, xPacket)); // STATE doesn't matter - going to die
+						break;
+					}
+				}
+			}
+		};
+		PostData postData = new PostData();
+		postData.add(C.JSON_ACTION, C.JSON_ACTION_VOTE);
+		postData.add(C.JSON_UID, _user.getUID());
+		postData.add(C.JSON_AUTH, _user.getAuth());
+		postData.add(C.JSON_SHOUT_ID, shoutID);
+		postData.add(C.JSON_VOTE, Integer.toString(vote));
+		new HttpConnection(httpHandler).post(postData, xPacket);	
+	}
+	
+	public void createAccount(Message message) {
 		Handler httpHandler = new Handler() {
 			public void handleMessage(Message message) {
 				switch (message.what) {
@@ -203,9 +234,10 @@ public class Logic {
 				}
 			}
 		};
+		CrossThreadPacket xPacket = (CrossThreadPacket)message.obj;
 		PostData postData = new PostData();
 		postData.add(C.JSON_ACTION, C.JSON_ACTION_CREATE_ACCOUNT);
-		new HttpConnection(httpHandler).post(postData);	
+		new HttpConnection(httpHandler).post(postData, xPacket);	
 	}
 	
 	public void createAccountStep2(Message message) {
@@ -269,7 +301,7 @@ public class Logic {
 			CrossThreadPacket xPacket = (CrossThreadPacket)message.obj;
 			String nonce = xPacket.json.getString(C.JSON_NONCE);
 			_user.updateAuth(nonce);
-			ping();
+			ping(message);
 		} catch (JSONException ex) {
 			ErrorManager.manage(ex);
 		}

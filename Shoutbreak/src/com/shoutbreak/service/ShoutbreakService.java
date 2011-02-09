@@ -20,6 +20,8 @@ import com.shoutbreak.ui.Shoutbreak;
 
 public class ShoutbreakService extends Service {
 	
+	// TODO: are we doing anything heavy in UI thread?  DON'T!
+	
 	private NotificationManager _notificationManager;
 	private IUIBridge _uiBridge; // This is how we access the UI.
 	private final Binder _serviceBridge = new ServiceBridge(); // This is how the UI accesses us.
@@ -30,8 +32,8 @@ public class ShoutbreakService extends Service {
     
     @Override
     public void onCreate() {
-        _notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
-        showNotification();
+        //_notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+        //showNotification();
         
         _uiThreadHandler = new Handler() { 
 			@Override
@@ -54,17 +56,36 @@ public class ShoutbreakService extends Service {
 				
 				// Anything to do on UI?
 				switch(uiCode) {
-					case C.UI_RECEIVE_SHOUTS: {
+					case C.UI_VOTE_COMPLETED: {
 						_uiBridge.updateInboxView(_user.getInbox().getShoutsForUI());
+					}
+					case C.UI_RECEIVE_SHOUTS: {
+						CellDensity cellDensity = _user.getCellDensity();
+						_uiBridge.setPopulationDensity(cellDensity.density);
+						int newShouts = _user.getShoutsJustReceived();
+						if (newShouts > 0) {
+							String notice = "just heard " + newShouts + " new shout";
+							if (newShouts > 1) {
+								notice += "s"; // plural is dumb
+							}
+							_uiBridge.giveNoticeUI(notice);
+							_uiBridge.updateInboxView(_user.getInbox().getShoutsForUI());
+						} else if (_user.getScoresJustReceived()) {
+							_uiBridge.updateInboxView(_user.getInbox().getShoutsForUI());
+						}
+						_uiBridge.updateInboxView(_user.getInbox().getShoutsForUI());						
+						break;
 					}
 					case C.UI_SHOUT_SENT: {
 						_uiBridge.shoutSent();
+						break;
 					}
 					case C.UI_LEVEL_CHANGE: {
-						_uiBridge.test("new level = " + _user.getLevel());
+						_uiBridge.giveNoticeUI("new level = " + _user.getLevel());
+						break;
 					}
 					case C.UI_ACCOUNT_CREATED: {
-						_uiBridge.test("account created");
+						_uiBridge.giveNoticeUI("account created");
 						break;
 					}
 					
@@ -104,7 +125,7 @@ public class ShoutbreakService extends Service {
     @Override
     public void onDestroy() {
         // Cancel the persistent notification.
-        _notificationManager.cancel(R.string.local_service_started);
+        //_notificationManager.cancel(R.string.local_service_started);
         // Tell the user we stopped.
         Toast.makeText(this, R.string.local_service_stopped, Toast.LENGTH_SHORT).show();
     }
@@ -165,6 +186,23 @@ public class ShoutbreakService extends Service {
 			message.what = C.STATE_SHOUT;
 			ServiceThread thread = new ServiceThread(_uiThreadHandler, message, _user);
 			_uiThreadHandler.post(thread);
+		}
+
+		public void vote(String shoutID, int vote) {
+			Message message = new Message();
+			CrossThreadPacket xPacket = new CrossThreadPacket();
+			xPacket.purpose = C.PURPOSE_DEATH;
+			xPacket.sArgs = new String[] { shoutID };
+			xPacket.iArgs = new int[] { vote };
+			message.obj = xPacket;
+			message.what = C.STATE_VOTE;
+			ServiceThread thread = new ServiceThread(_uiThreadHandler, message, _user);
+			_uiThreadHandler.post(thread);			
+		}
+
+		public void deleteShout(String shoutID) {
+    		_user.getInbox().deleteShout(shoutID);
+    		_uiBridge.updateInboxView(_user.getInbox().getShoutsForUI());
 		}
 		
     };

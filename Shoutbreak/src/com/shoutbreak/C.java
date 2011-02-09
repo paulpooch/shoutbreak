@@ -12,7 +12,7 @@ public class C {
 	public static final int CONFIG_GPS_MIN_UPDATE_METERS = 20; // 0 gives smallest interval
 	public static final int CONFIG_DENSITY_GRID_X_GRANULARITY = 129600; // 10 second cells
 	public static final int CONFIG_DENSITY_GRID_Y_GRANULARITY = 64800; // 10 second cells
-	public static final long CONFIG_IDLE_LOOP_TIME_WITH_UI_OPEN = 30000; // 30 seconds
+	public static final long CONFIG_IDLE_LOOP_TIME_WITH_UI_OPEN = 60000; // 30 seconds
 	public static final long CONFIG_DENSITY_EXPIRATION = (long) 4.32E8; // 5 days
 	public static final double CONFIG_SHOUT_SCORING_DEFAULT_POWER = 0.10; //  0.10 to have a 95% chance that your lower bound is correct
 	public static final int CONFIG_RESIZE_ICON_TOUCH_TOLERANCE = 100; // +/- 50 px from center
@@ -28,6 +28,8 @@ public class C {
 	public static final int SHOUT_STATE_NEW = 1;
 	public static final int SHOUT_VOTE_UP = 1;
 	public static final int SHOUT_VOTE_DOWN = -1;	
+	
+	public static final String EXTRA_REFERRED_FROM_NOTIFICATION = "rfn";
 	
 	public static final double NORMAL_DIST_B[] = { 1.570796288, 0.03706987906, -0.8364353589e-3, -0.2250947176e-3,
 			0.6841218299e-5, 0.5824238515e-5, -0.104527497e-5, 0.8360937017e-7, -0.3231081277e-8, 0.3657763036e-10,
@@ -77,6 +79,7 @@ public class C {
 	public static final int UI_RECEIVE_SHOUTS = 11;
 	public static final int UI_LEVEL_CHANGE = 12;
 	public static final int UI_SHOUT_SENT = 13;
+	public static final int UI_VOTE_COMPLETED = 14;
 	
 	// HTTP CODES /////////////////////////////////////////////////////////////
 	
@@ -92,6 +95,7 @@ public class C {
 	public static final int STATE_RECEIVE_SHOUTS = 33;
 	public static final int STATE_LEVEL_CHANGE = 34;
 	public static final int STATE_SHOUT = 35;
+	public static final int STATE_VOTE = 36;
 	
 	// JSON KEYS /////////////////////////////////////////////////////////////
 
@@ -106,6 +110,7 @@ public class C {
 	public static final String JSON_ACTION_CREATE_ACCOUNT = "create_account";
 	public static final String JSON_ACTION_USER_PING = "user_ping";
 	public static final String JSON_ACTION_SHOUT = "shout";
+	public static final String JSON_ACTION_VOTE = "vote";
 
 	public static final String JSON_ANDROID_ID = "android_id";
 	public static final String JSON_AUTH = "auth";
@@ -133,5 +138,6 @@ public class C {
 	public static final String JSON_SHOUT_TIMESTAMP = "ts";
 	public static final String JSON_SHOUT_UPS = "ups";
 	public static final String JSON_UID = "uid";
+	public static final String JSON_VOTE = "vote";
 	
 }

@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -25,6 +26,7 @@ import android.widget.Toast;
 import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapController;
 import com.shoutbreak.C;
+import com.shoutbreak.CustomExceptionHandler;
 import com.shoutbreak.R;
 import com.shoutbreak.Shout;
 import com.shoutbreak.service.IServiceBridge;
@@ -74,9 +76,11 @@ public class Shoutbreak extends MapActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+		super.onCreate(savedInstanceState);		
 		setContentView(R.layout.main);
 	
+		Thread.setDefaultUncaughtExceptionHandler(new CustomExceptionHandler(C.CONFIG_CRASH_REPORT_ADDRESS));
+		
 		_serviceIntent = new Intent(Shoutbreak.this, ShoutbreakService.class);
 		_inboxListViewAdapter = new InboxListViewAdapter(this);
 		_inputMM = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -101,6 +105,9 @@ public class Shoutbreak extends MapActivity {
 		_cNoticeBoxUser = (RelativeLayout) findViewById(R.id.rlNoticeUser);
 		_cNoticeTextUser = (TextView) findViewById(R.id.tvNoticeUser);
 		
+		_animNoticeExpand = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.notice_expand);
+		_animNoticeShowText = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.notice_show_text);
+		
 		_cBtnPower.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				if (_isPowerOn) {
@@ -117,6 +124,22 @@ public class Shoutbreak extends MapActivity {
 				int power = _userLocationOverlay.getCurrentPower();
 				_serviceBridge.shout(text, power);
 				hideKeyboard();
+			}
+		});
+		
+		_cShoutText.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				getWindow().clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+			}
+		});
+		
+		_cShoutText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+			public void onFocusChange(View v, boolean hasFocus) {
+				if (hasFocus) {
+					getWindow().clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+				} else {
+					hideKeyboard();
+				}	
 			}
 		});
 		
@@ -190,22 +213,32 @@ public class Shoutbreak extends MapActivity {
 		releaseService();
 	}
 	
+	// this gets extras from notification if app already running
+	public void onNewIntent(Intent intent){
+		Bundle extras = intent.getExtras();
+		handleExtras(extras);		
+    }
+	
 	// SERVICE CONNECTION /////////////////////////////////////////////////////
 
 	// This is how the service accesses us.
 	private IUIBridge _uiBridge = new IUIBridge() {
-
-		public void test(String s) {
-			setTitleBarText(s);
-		}
 
 		public void updateInboxView(List<Shout> shoutsForDisplay) {
 			_inboxListViewAdapter.updateDisplay(shoutsForDisplay);			
 		}
 
 		public void shoutSent() {
-			// TODO Auto-generated method stub
-			
+			giveNotice("shout sent");
+			_cShoutText.setText("");
+		}
+
+		public void setPopulationDensity(double density) {
+			_userLocationOverlay.setPopulationDensity(density);			
+		}
+
+		public void giveNoticeUI(String s) {
+			giveNotice(s);
 		}
 
 	};
@@ -273,6 +306,10 @@ public class Shoutbreak extends MapActivity {
 	}
 
 	protected void releaseService() {
+		// we disable/enable to be nice to user battery
+		_serviceBridge.disableLocationTracker();
+		_userLocationOverlay.disableMyLocation();
+		_cMapView.getOverlays().remove(_userLocationOverlay);
 		if (_serviceBridge != null) {
 			// Detach our existing connection.
 			unbindService(_serviceConn);
@@ -282,6 +319,10 @@ public class Shoutbreak extends MapActivity {
 	
 	// THE REST ///////////////////////////////////////////////////////////////
 
+	public IServiceBridge getServiceBridge() {
+		return _serviceBridge;
+	}
+	
 	protected void initMap() {
 		_cMapView = (CustomMapView)findViewById(R.id.cmvMap);
 		_userLocationOverlay = new UserLocationOverlay(this, _cMapView);
@@ -324,6 +365,15 @@ public class Shoutbreak extends MapActivity {
 
 		
         });
+	}
+	
+	protected void handleExtras(Bundle extras) {
+		if (extras != null) {
+			if (extras.containsKey(C.EXTRA_REFERRED_FROM_NOTIFICATION) && extras.getBoolean(C.EXTRA_REFERRED_FROM_NOTIFICATION)) {
+				goToInbox();
+			}
+		}
+		
 	}
 	
 	public void hideKeyboard() {
