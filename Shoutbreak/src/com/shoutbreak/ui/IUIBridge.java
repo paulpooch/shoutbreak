@@ -1,14 +1,11 @@
 package com.shoutbreak.ui;
 
-import java.util.List;
-
-import com.shoutbreak.Shout;
+import com.shoutbreak.UserInfo;
 
 public interface IUIBridge {
-	
-	public void updateInboxView(List<Shout> shoutsForDisplay);
+
 	public void shoutSent();
-	public void setPopulationDensity(double density);
 	public void giveNoticeUI(String s);
+	public void pushUserInfo(UserInfo userInfo);
 	
 }

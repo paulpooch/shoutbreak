@@ -1,8 +1,0 @@
-package com.shoutbreak;
-
-import org.json.JSONObject;
-
-public class CrossThreadPacket {
-	public JSONObject json;
-	public Exception exception;
-}

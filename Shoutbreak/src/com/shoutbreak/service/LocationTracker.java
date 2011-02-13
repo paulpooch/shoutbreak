@@ -35,13 +35,13 @@ public class LocationTracker {
 		_location = _locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 	}
 	
-	public void startListeningToLocation() {
-		_provider = _locationManager.getBestProvider(_criteria, true);
-		_locationManager.requestLocationUpdates(_provider, C.CONFIG_GPS_MIN_UPDATE_MILLISECS, C.CONFIG_GPS_MIN_UPDATE_METERS, _locationListener);
-	}
-	
-	public void stopListeningToLocation() {
-		_locationManager.removeUpdates(_locationListener);
+	public void toggleListeningToLocation(boolean turnOn) {
+		if (turnOn) {
+			_provider = _locationManager.getBestProvider(_criteria, true);
+			_locationManager.requestLocationUpdates(_provider, C.CONFIG_GPS_MIN_UPDATE_MILLISECS, C.CONFIG_GPS_MIN_UPDATE_METERS, _locationListener);
+		} else {
+			_locationManager.removeUpdates(_locationListener);
+		}
 	}
 	
 	public Location getLocation() {

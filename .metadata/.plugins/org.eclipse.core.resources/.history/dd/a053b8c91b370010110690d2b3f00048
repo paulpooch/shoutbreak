@@ -1,0 +1,53 @@
+package com.shoutbreak;
+
+import com.shoutbreak.service.CellDensity;
+
+// This is all temporary crap for the UI.
+// The real data is stored in Database through User methods.
+// Use this just for UI stuff.
+public class UserInfo {
+
+	private int _level;
+	private int _points;
+	private int _nextLevelAt;
+	private CellDensity _cellDensity;
+	
+	public UserInfo() {
+		_level = 0;
+		_points = 0;
+		_nextLevelAt = 0;
+	}
+	
+	public void setLevel(int i) {
+		_level = i;
+	}
+	
+	public void setPoints(int i) {
+		_points = i;
+	}
+	
+	public void setNextLevelAt(int i) {
+		_nextLevelAt = i;
+	}
+	
+	public int getLevel() {
+		return _level;
+	}
+	
+	public int getPoints() {
+		return _points;
+	}
+	
+	public int getNextLevelAt() {
+		return _nextLevelAt;
+	}
+	
+	public void setCellDensity(CellDensity c) {
+		_cellDensity = c;
+	}
+	
+	public CellDensity getCellDensity() {
+		return _cellDensity;
+	}
+	
+}

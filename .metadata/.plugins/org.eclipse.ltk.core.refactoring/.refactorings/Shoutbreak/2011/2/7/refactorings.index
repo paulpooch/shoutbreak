@@ -26,3 +26,6 @@
 1297133712800	Rename field '_cNoticeBox'
 1297133716413	Rename field '_cNoticeText'
 1297133762552	Delete element
+1297387269357	Rename method 'handleServiceChange'
+1297392014523	Move compilation unit
+1297553843581	Rename type 'UserStats'

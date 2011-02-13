@@ -8,6 +8,7 @@ import java.util.HashMap;
 import com.shoutbreak.C;
 import com.shoutbreak.ErrorManager;
 import com.shoutbreak.Shout;
+import com.shoutbreak.ui.ISO8601DateParser;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -122,7 +123,7 @@ public class Database {
 			cursor = _db.rawQuery(sql, new String[] { Integer.toString(cell.cellX), Integer.toString(cell.cellY) });
 			if (cursor.moveToFirst()) {
 				String lastUpdated = cursor.getString(1);
-				long lastUpdatedMillisecs = Date.parse(lastUpdated);
+				long lastUpdatedMillisecs = ISO8601DateParser.parse(lastUpdated).getTime();
 				long diff = (new Date().getTime()) - lastUpdatedMillisecs;
 				if (diff < C.CONFIG_DENSITY_EXPIRATION) {
 					result.density = cursor.getDouble(0);

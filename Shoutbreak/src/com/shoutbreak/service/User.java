@@ -35,6 +35,8 @@ public class User {
 	private LocationTracker _locationTracker;
 	protected Inbox _inbox;
 	private int _shoutsJustReceived;
+	private boolean _levelJustChanged;
+	private boolean _densityJustChanged;
 	private boolean _scoresJustReceived;
 	private String _uid;
 	private String _auth;
@@ -61,10 +63,12 @@ public class User {
 		_tm = (TelephonyManager) service.getSystemService(Context.TELEPHONY_SERVICE);
 		_db = new Database(_service);
 		_locationTracker = new LocationTracker(_service);
-		_inbox = new Inbox(_service, _db);
+		_inbox = new Inbox(_db);
 		_passwordExists = false;
 		_shoutsJustReceived = 0;
 		_scoresJustReceived = false;
+		_levelJustChanged = false;
+		_densityJustChanged = false;
 		_level = 0;
 		_points = 0;
 		_auth = "default"; // we don't have auth yet... just give us nonce
@@ -92,6 +96,22 @@ public class User {
 	
 	public int getShoutsJustReceived() {
 		return _shoutsJustReceived;
+	}
+	
+	public void setLevelJustChanged(boolean b) {
+		_levelJustChanged = b;
+	}
+	
+	public boolean getLevelJustChanged() {
+		return _levelJustChanged;
+	}
+	
+	public void setDensityJustChanged(boolean b) {
+		_densityJustChanged = b;
+	}
+	
+	public boolean getDensityJustChanged() {
+		return _densityJustChanged;
 	}
 	
 	public void setScoresJustReceived(boolean b) {
@@ -143,6 +163,7 @@ public class User {
 		_cellDensity.density = density;
 		_db.saveCellDensity(_cellDensity);
 		_cellDensity.isSet = true;
+		setDensityJustChanged(true);
 	}
 
 	public String getAuth() {
@@ -179,6 +200,7 @@ public class User {
 		String sLevel = Integer.toString(level);
 		_db.saveUserSetting(C.KEY_USER_LEVEL, sLevel);
 		_level = level;
+		setLevelJustChanged(true);
 	}
 	
 	public synchronized void setPoints(int points) {

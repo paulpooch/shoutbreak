@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-<fullyQualifiedTypeName name="android.view.Window"/>
-<fullyQualifiedTypeName name="android.app.Service"/>
 <fullyQualifiedTypeName name="java.util.Timer"/>
 <fullyQualifiedTypeName name="java.util.TimerTask"/>
 <fullyQualifiedTypeName name="android.content.ServiceConnection"/>
 <fullyQualifiedTypeName name="android.content.ComponentName"/>
 <fullyQualifiedTypeName name="android.app.NotificationManager"/>
 <fullyQualifiedTypeName name="android.os.Binder"/>
-<fullyQualifiedTypeName name="com.shoutbreak.R"/>
 <fullyQualifiedTypeName name="android.app.Notification"/>
 <fullyQualifiedTypeName name="android.app.PendingIntent"/>
 <fullyQualifiedTypeName name="com.shoutbreak.service.ShoutbreakService"/>
@@ -46,7 +43,6 @@
 <fullyQualifiedTypeName name="com.shoutbreak.service.User"/>
 <fullyQualifiedTypeName name="com.shoutbreak.service.CellDensity"/>
 <fullyQualifiedTypeName name="com.shoutbreak.ui.map.CustomMapView"/>
-<fullyQualifiedTypeName name="com.shoutbreak.R.id"/>
 <fullyQualifiedTypeName name="com.google.android.maps.MapController"/>
 <fullyQualifiedTypeName name="com.shoutbreak.ui.UserLocationOverlay"/>
 <fullyQualifiedTypeName name="android.view.inputmethod.InputMethodManager"/>
@@ -60,4 +56,8 @@
 <fullyQualifiedTypeName name="com.shoutbreak.ErrorManager"/>
 <fullyQualifiedTypeName name="android.view.animation.Animation"/>
 <fullyQualifiedTypeName name="android.graphics.Color"/>
+<fullyQualifiedTypeName name="android.view.animation.AnimationUtils"/>
+<fullyQualifiedTypeName name="com.shoutbreak.ui.ISO8601DateParser"/>
+<fullyQualifiedTypeName name="com.shoutbreak.R.id"/>
+<fullyQualifiedTypeName name="com.shoutbreak.R"/>
 </qualifiedTypeNameHistroy>

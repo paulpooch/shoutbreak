@@ -13,16 +13,16 @@
 		<item value="false" key="isRegEx"/>
 		<item value="false" key="incremental"/>
 		<item value="false" key="wholeword"/>
-		<item value="purpose" key="selection"/>
+		<item value="METERS" key="selection"/>
 		<list key="findhistory">
+			<item value="meters"/>
+			<item value="_serviceBridge"/>
+			<item value="ccount_c"/>
+			<item value="acccount_c"/>
 			<item value="purpose"/>
 			<item value="user"/>
 			<item value="message"/>
 			<item value="_user"/>
-			<item value="ispower"/>
-			<item value="px"/>
-			<item value="row"/>
-			<item value="_user.getInbox().refresh();"/>
 		</list>
 		<list key="replacehistory">
 			<item value="quantile"/>

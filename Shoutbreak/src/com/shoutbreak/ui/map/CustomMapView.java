@@ -3,7 +3,6 @@ package com.shoutbreak.ui.map;
 import com.google.android.maps.MapView;
 import com.shoutbreak.C;
 import com.shoutbreak.ui.Shoutbreak;
-import com.shoutbreak.ui.UserLocationOverlay;
 
 import android.content.Context;
 import android.graphics.Point;

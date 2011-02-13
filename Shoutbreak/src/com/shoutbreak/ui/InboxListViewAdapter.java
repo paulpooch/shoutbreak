@@ -36,7 +36,7 @@ public class InboxListViewAdapter extends BaseAdapter {
     private HashMap<String, Boolean> _cacheExpandState;
     private HashMap<String, String> _cachePrettyTimeAgo;
     private HashMap<String, Integer> _cacheVoteTemporary;
-    private boolean _isPowerOn;
+    private boolean _isInputAllowed;
     
     public HashMap<String, Boolean> getCacheExpandState() {
     	return _cacheExpandState;
@@ -51,7 +51,7 @@ public class InboxListViewAdapter extends BaseAdapter {
         _cacheExpandState = new HashMap<String, Boolean>();
         _cachePrettyTimeAgo = new HashMap<String, String>();
         _cacheVoteTemporary = new HashMap<String, Integer>();
-        _isPowerOn = false;
+        _isInputAllowed = false;
         
         onCollapseClickListener = new OnClickListener() {
         	public void onClick(View view) {
@@ -87,8 +87,8 @@ public class InboxListViewAdapter extends BaseAdapter {
         
     }
     
-    public void setServiceIsOn(boolean b) {
-    	_isPowerOn = b;
+    public void setInputAllowed(boolean b) {
+    	_isInputAllowed = b;
     	notifyDataSetChanged();
     }
     
@@ -195,9 +195,9 @@ public class InboxListViewAdapter extends BaseAdapter {
         }
         
         if (isVotingAllowed) {
-        	holder.btnVoteUp.setEnabled(_isPowerOn);
+        	holder.btnVoteUp.setEnabled(_isInputAllowed);
         	holder.btnVoteUp.setTag(holder);
-        	holder.btnVoteDown.setEnabled(_isPowerOn);
+        	holder.btnVoteDown.setEnabled(_isInputAllowed);
         	holder.btnVoteDown.setTag(holder);
         } else {
         	holder.btnVoteUp.setEnabled(false);

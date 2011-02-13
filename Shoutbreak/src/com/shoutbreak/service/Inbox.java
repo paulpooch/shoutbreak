@@ -11,12 +11,10 @@ import com.shoutbreak.Shout;
 
 public class Inbox {
 	
-	private ShoutbreakService _service;
 	private Database _db;
 	private List<Shout> _shouts;
 		
-	public Inbox(ShoutbreakService service, Database db) {
-		_service = service;
+	public Inbox(Database db) {
 		_db = db;
 		_shouts = new ArrayList<Shout>();
 	}

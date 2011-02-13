@@ -1,0 +1,21 @@
+package com.shoutbreak.ui;
+
+public class UserStats {
+
+	private int _level;
+	private int _points;
+	private int _nextLevelAt;
+	
+	public void setLevel(int i) {
+		_level = i;
+	}
+	
+	public void setLevel(int i) {
+		_level = i;
+	}
+	
+	public void setLevel(int i) {
+		_level = i;
+	}
+	
+}
