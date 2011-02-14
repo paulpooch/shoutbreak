@@ -4,13 +4,13 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Binder;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.shoutbreak.C;
 import com.shoutbreak.CrossThreadPacket;
@@ -23,11 +23,10 @@ public class ShoutbreakService extends Service {
 
 	// TODO: are we doing anything heavy in UI thread? DON'T!
 
-	private NotificationManager _notificationManager;
 	private IUIBridge _uiBridge; // This is how we access the UI.
-	private final Binder _serviceBridge = new ServiceBridge(); // This is how
-																// the UI
-																// accesses us.
+	// This is how the UI accesses us.
+	private final Binder _serviceBridge = new ServiceBridge(); 
+	private NotificationManager _notificationManager;
 	private User _user;
 	private Handler _uiThreadHandler;
 	private boolean _isOn;
@@ -36,10 +35,10 @@ public class ShoutbreakService extends Service {
 
 	@Override
 	public void onCreate() {
-		// _notificationManager =
-		// (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
-		// showNotification();
-
+		super.onCreate();
+		
+		_notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+		
 		_uiThreadHandler = new Handler() {
 			@Override
 			public void handleMessage(Message message) {
@@ -66,25 +65,27 @@ public class ShoutbreakService extends Service {
 					case C.UI_VOTE_COMPLETED: {
 						UserInfo updatedUserInfo = getLatestUserInfo();
 						updatedUserInfo.flagInbox = true;
-						_uiBridge.pushUserInfo(getLatestUserInfo());
+						pushUserInfo(updatedUserInfo);
 					}
 					case C.UI_RECEIVE_SHOUTS: {
 						UserInfo updatedUserInfo = getLatestUserInfo();
 						int newShouts = _user.getShoutsJustReceived();
 						if (newShouts > 0) {
-							String notice = "just heard " + newShouts + " new shout";
-							if (newShouts > 1) {
-								notice += "s"; // plural is dumb
+							String pluralShout = "shout" + (newShouts > 1 ? "s" : "");
+							String notice = "just heard " + newShouts + " new " + pluralShout;
+							if (_uiBridge == null) {
+								giveStatusBarNotification(newShouts + " " + pluralShout + " received", "Shoutbreak", "you have " + newShouts + " new " + pluralShout);
+							} else {
+								_uiBridge.giveNoticeUI(notice);
 							}
-							_uiBridge.giveNoticeUI(notice);
 							updatedUserInfo.flagInbox = true;
 						}
 						if (_user.getScoresJustReceived()) {
 							updatedUserInfo.flagInbox = true;
 						}
-						updatedUserInfo.flagLevel = _user.getLevelJustChanged();
+						updatedUserInfo.flagLevelUp = _user.getLevelUpOccured();
 						updatedUserInfo.flagPopulationDensity = _user.getDensityJustChanged();
-						_uiBridge.pushUserInfo(getLatestUserInfo());
+						pushUserInfo(updatedUserInfo);
 						break;
 					}
 					case C.UI_SHOUT_SENT: {
@@ -119,6 +120,8 @@ public class ShoutbreakService extends Service {
 
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
+		super.onStartCommand(intent, flags, startId);
+		
 		Log.i("LocalService", "Received start id " + startId + ": " + intent);
 		// We want this service to continue running until it is explicitly
 		// stopped, so return sticky.
@@ -132,10 +135,11 @@ public class ShoutbreakService extends Service {
 
 	@Override
 	public void onDestroy() {
+		super.onDestroy();
 		// Cancel the persistent notification.
 		// _notificationManager.cancel(R.string.local_service_started);
 		// Tell the user we stopped.
-		Toast.makeText(this, R.string.local_service_stopped, Toast.LENGTH_SHORT).show();
+		//Toast.makeText(this, R.string.local_service_stopped, Toast.LENGTH_SHORT).show();
 	}
 
 	@Override
@@ -149,6 +153,8 @@ public class ShoutbreakService extends Service {
 
 		// When UI connects to service - it provides us a bridge into it.
 		public void registerUIBridge(IUIBridge bridge) {
+			// Cancel any status bar notification.
+			_notificationManager.cancel(C.APP_NOTIFICATION_ID);
 			_uiBridge = bridge;
 		}
 
@@ -189,6 +195,9 @@ public class ShoutbreakService extends Service {
 		
 		public void markShoutAsRead(String shoutID) {
 			_user.getInbox().markShoutAsRead(shoutID);
+			UserInfo updatedUserInfo = getLatestUserInfo();
+			updatedUserInfo.flagInbox = true;
+			pushUserInfo(updatedUserInfo);
 		}
 
 		public void shout(String text, int power) {
@@ -219,13 +228,20 @@ public class ShoutbreakService extends Service {
 			_user.getInbox().deleteShout(shoutID);
 			UserInfo updatedUserInfo = getLatestUserInfo();
 			updatedUserInfo.flagInbox = true;
-			_uiBridge.pushUserInfo(getLatestUserInfo());
+			pushUserInfo(updatedUserInfo);
 		}
 
 	};
 
 	// THE REST ///////////////////////////////////////////////////////////////
 
+	private void pushUserInfo(UserInfo userInfo) {
+		if (_uiBridge != null) {
+			_user.resetFlags();
+			_uiBridge.pushUserInfo(userInfo);
+		}
+	}
+	
 	private UserInfo getLatestUserInfo() {
 		UserInfo userInfo = new UserInfo();
 		userInfo.setLevel(_user.getLevel());
@@ -236,28 +252,14 @@ public class ShoutbreakService extends Service {
 		return userInfo;
 	}
 	
-	// METHODS THAT WILL RUN INSIDE SERVICE THREAD ////////////////////////////
-
-	// Show a notification while this service is running.
-	private void showNotification() {
-		// In this sample, we'll use the same text for the ticker and the
-		// expanded notification
-		CharSequence text = getText(R.string.local_service_started);
-
-		// Set the icon, scrolling text and timestamp
-		Notification notification = new Notification(R.drawable.notification_icon, text, System.currentTimeMillis());
-
-		// The PendingIntent to launch our activity if the user selects this
-		// notification
-		PendingIntent contentIntent = PendingIntent.getActivity(this, 0, new Intent(this, Shoutbreak.class), 0);
-
-		// Set the info for the views that show in the notification panel.
-		notification.setLatestEventInfo(this, getText(R.string.local_service_label), text, contentIntent);
-
-		// Send the notification.
-		// We use a layout id because it is a unique number. We use it later to
-		// cancel.
-		_notificationManager.notify(R.string.local_service_started, notification);
+	public void giveStatusBarNotification(String alert, String title, String message) {
+		Intent intent = new Intent(this, Shoutbreak.class);
+		intent.putExtra(C.EXTRA_REFERRED_FROM_NOTIFICATION, true);
+	    Notification notification = new Notification(R.drawable.notification_icon, alert, System.currentTimeMillis());
+	    notification.setLatestEventInfo(this, title, message,
+	    		PendingIntent.getActivity(this.getBaseContext(), 0, intent, PendingIntent.FLAG_CANCEL_CURRENT));
+	    notification.flags |= Notification.FLAG_AUTO_CANCEL;
+	    _notificationManager.notify(C.APP_NOTIFICATION_ID, notification);
 	}
-
+	
 }

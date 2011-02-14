@@ -130,10 +130,6 @@ public class Logic {
 	public void receiveShouts(Message message) {
 		CrossThreadPacket xPacket = (CrossThreadPacket)message.obj;
 		try {
-			_user.setShoutsJustReceived(0);
-			_user.setScoresJustReceived(false);
-			_user.setLevelJustChanged(false);
-			_user.setDensityJustChanged(false);
 			if (xPacket.json.has(C.JSON_DENSITY)) {
 				double density = (double) xPacket.json.optDouble(C.JSON_DENSITY);
 				_user.saveDensity(density);
@@ -162,6 +158,7 @@ public class Logic {
 				_user.setLevel(newLevel);
 				_user.setPoints(newPoints);
 				_user.setNextLevelAt(nextLevelAt);
+				_user.setLevelUpOccured(true);
 			}
 			xPacket.uiCode = C.UI_RECEIVE_SHOUTS;
 			xPacket.iArgs = new int[] { _user.getShoutsJustReceived() };

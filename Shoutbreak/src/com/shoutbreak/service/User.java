@@ -23,7 +23,7 @@ public class User {
 	}
 	
 	public static int calculatePower(int people) {
-		return (int)Math.ceil(people / C.CONFIG_PEOPLE_PER_LEVEL);
+		return (int)Math.ceil((float)people / (float)C.CONFIG_PEOPLE_PER_LEVEL);
 	}
 
 	// END STATICS ////////////////////////////////////////////////////////////
@@ -35,7 +35,7 @@ public class User {
 	private LocationTracker _locationTracker;
 	protected Inbox _inbox;
 	private int _shoutsJustReceived;
-	private boolean _levelJustChanged;
+	private boolean _levelUpOccured; //This means level up.
 	private boolean _densityJustChanged;
 	private boolean _scoresJustReceived;
 	private String _uid;
@@ -65,13 +65,10 @@ public class User {
 		_locationTracker = new LocationTracker(_service);
 		_inbox = new Inbox(_db);
 		_passwordExists = false;
-		_shoutsJustReceived = 0;
-		_scoresJustReceived = false;
-		_levelJustChanged = false;
-		_densityJustChanged = false;
 		_level = 0;
 		_points = 0;
 		_auth = "default"; // we don't have auth yet... just give us nonce
+		resetFlags();
 		HashMap<String, String> userSettings = _db.getUserSettings();
 		if (userSettings.containsKey(C.KEY_USER_PW)) {
 			_passwordExists = true;
@@ -81,6 +78,9 @@ public class User {
 		}
 		if (userSettings.containsKey(C.KEY_USER_LEVEL)) {
 			_level = Integer.parseInt(userSettings.get(C.KEY_USER_LEVEL));
+		}
+		if (userSettings.containsKey(C.KEY_USER_NEXT_LEVEL_AT)) {
+			_nextLevelAt = Integer.parseInt(userSettings.get(C.KEY_USER_NEXT_LEVEL_AT));
 		}
 		_cellDensity = new CellDensity();
 		_cellDensity.isSet = false;
@@ -98,12 +98,12 @@ public class User {
 		return _shoutsJustReceived;
 	}
 	
-	public void setLevelJustChanged(boolean b) {
-		_levelJustChanged = b;
+	public void setLevelUpOccured(boolean b) {
+		_levelUpOccured = b;
 	}
 	
-	public boolean getLevelJustChanged() {
-		return _levelJustChanged;
+	public boolean getLevelUpOccured() {
+		return _levelUpOccured;
 	}
 	
 	public void setDensityJustChanged(boolean b) {
@@ -200,7 +200,6 @@ public class User {
 		String sLevel = Integer.toString(level);
 		_db.saveUserSetting(C.KEY_USER_LEVEL, sLevel);
 		_level = level;
-		setLevelJustChanged(true);
 	}
 	
 	public synchronized void setPoints(int points) {
@@ -246,5 +245,11 @@ public class User {
 	public String getAndroidId() {
 		return Settings.Secure.getString(_service.getContentResolver(), Settings.Secure.ANDROID_ID);
 	}
-
+	
+	public void resetFlags() {
+		setShoutsJustReceived(0);
+		setScoresJustReceived(false);
+		setLevelUpOccured(false);
+		setDensityJustChanged(false);
+	}
 }

@@ -93,11 +93,6 @@ public final class R {
         public static final int main=0x7f030001;
     }
     public static final class string {
-        public static final int local_service_connected=0x7f050004;
-        public static final int local_service_disconnected=0x7f050005;
-        public static final int local_service_label=0x7f050003;
-        public static final int local_service_started=0x7f050001;
-        public static final int local_service_stopped=0x7f050002;
         public static final int maps_api_key=0x7f050000;
     }
 }

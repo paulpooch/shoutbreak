@@ -197,7 +197,9 @@ public class UserLocationOverlay extends MyLocationOverlay {
 	        l2.setLongitude(_lastUserLocationGeoPoint.getLongitudeE6() / 1E6);
 	        float dist = l1.distanceTo(l2);
 	        _peopleCount = (int)(Math.PI * dist * dist * _density);
-	        _ui.setTitleBarText(_peopleCount + " people will hear this");
+	        // Tack an extra person on to display cuz it looks better.
+	        // It's usually a little low - but we don't want people trying to shout beyond their level so leave it low.
+	        _ui.setTitleBarText((_peopleCount + 1) + " people will hear this");
     	}
     }
     

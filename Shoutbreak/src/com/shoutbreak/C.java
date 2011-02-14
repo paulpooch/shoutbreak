@@ -12,7 +12,7 @@ public class C {
 	public static final int CONFIG_GPS_MIN_UPDATE_METERS = 20; // 0 gives smallest interval
 	public static final int CONFIG_DENSITY_GRID_X_GRANULARITY = 129600; // 10 second cells
 	public static final int CONFIG_DENSITY_GRID_Y_GRANULARITY = 64800; // 10 second cells
-	public static final long CONFIG_IDLE_LOOP_TIME_WITH_UI_OPEN = 60000; // 30 seconds
+	public static final long CONFIG_IDLE_LOOP_TIME_WITH_UI_OPEN = 60000; // 60 seconds
 	public static final long CONFIG_DENSITY_EXPIRATION = (long) 4.32E8; // 5 days
 	public static final double CONFIG_SHOUT_SCORING_DEFAULT_POWER = 0.10; //  0.10 to have a 95% chance that your lower bound is correct
 	public static final int CONFIG_RESIZE_ICON_TOUCH_TOLERANCE = 100; // +/- 50 px from center
@@ -28,6 +28,7 @@ public class C {
 	public static final int SHOUT_VOTE_UP = 1;
 	public static final int SHOUT_VOTE_DOWN = -1;	
 	
+	public static final int APP_NOTIFICATION_ID = 0;
 	public static final String EXTRA_REFERRED_FROM_NOTIFICATION = "rfn";
 	
 	public static final double NORMAL_DIST_B[] = { 1.570796288, 0.03706987906, -0.8364353589e-3, -0.2250947176e-3,

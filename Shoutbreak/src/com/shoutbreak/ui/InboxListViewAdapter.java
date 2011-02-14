@@ -14,6 +14,7 @@ import com.shoutbreak.Shout;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.graphics.PorterDuff.Mode;
+import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,6 +43,19 @@ public class InboxListViewAdapter extends BaseAdapter {
     	return _cacheExpandState;
     }
         
+    private class VoteTask extends AsyncTask<Object, Void, Void> {
+		@Override
+		protected Void doInBackground(Object... params) {
+			InboxViewHolder holder = (InboxViewHolder)params[0];
+			Integer voteDirection = (Integer)params[1];
+    		_cacheVoteTemporary.put(holder.shoutID, voteDirection);
+        	_ui.getServiceBridge().vote(holder.shoutID, voteDirection);
+			return null;
+		}
+        protected void onPostExecute(Void unused) {
+        }
+    }
+    
     public InboxListViewAdapter(Shoutbreak ui) {
     	
         _ui = ui;
@@ -64,17 +78,15 @@ public class InboxListViewAdapter extends BaseAdapter {
         
         onVoteUpClickListener = new OnClickListener() {
         	public void onClick(View view) {
-        		InboxViewHolder holder = (InboxViewHolder) view.getTag();
-        		_cacheVoteTemporary.put(holder.shoutID, C.SHOUT_VOTE_UP);
-            	_ui.getServiceBridge().vote(holder.shoutID, C.SHOUT_VOTE_UP);
+        		VoteTask task = new VoteTask();
+        		task.execute(view.getTag(), C.SHOUT_VOTE_UP);
         	}
-        };
-        
+        };        
+         
         onVoteDownClickListener = new OnClickListener() {
         	public void onClick(View view) {
-        		InboxViewHolder holder = (InboxViewHolder) view.getTag();
-        		_cacheVoteTemporary.put(holder.shoutID, C.SHOUT_VOTE_DOWN);
-            	_ui.getServiceBridge().vote(holder.shoutID, C.SHOUT_VOTE_DOWN);
+        		VoteTask task = new VoteTask();
+        		task.execute(view.getTag(), C.SHOUT_VOTE_DOWN);
         	}
         };
         

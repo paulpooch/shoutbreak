@@ -7,6 +7,7 @@ import android.content.ServiceConnection;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.View.OnClickListener;
@@ -25,6 +26,7 @@ import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapController;
 import com.shoutbreak.C;
 import com.shoutbreak.CustomExceptionHandler;
+import com.shoutbreak.ErrorManager;
 import com.shoutbreak.R;
 import com.shoutbreak.Shout;
 import com.shoutbreak.UserInfo;
@@ -37,6 +39,7 @@ import com.shoutbreak.ui.map.UserLocationOverlay;
 
 public class Shoutbreak extends MapActivity {
 
+	private Shoutbreak _ui;
 	private Intent _serviceIntent;
 	private ShoutbreakServiceConnection _serviceConn;
 	private IServiceBridge _serviceBridge; // This is how we access the service.
@@ -82,6 +85,7 @@ public class Shoutbreak extends MapActivity {
 
 		Thread.setDefaultUncaughtExceptionHandler(new CustomExceptionHandler(C.CONFIG_CRASH_REPORT_ADDRESS));
 
+		_ui = this;
 		_userInfo = new UserInfo();
 		_serviceIntent = new Intent(Shoutbreak.this, ShoutbreakService.class);
 		_inboxListViewAdapter = new InboxListViewAdapter(this);
@@ -125,8 +129,19 @@ public class Shoutbreak extends MapActivity {
 			public void onClick(View v) {
 				String text = _cShoutText.getText().toString().trim();
 				int power = _userLocationOverlay.getCurrentPower();
+				boolean valid = true;
+				if (text.equals("")) {
+					ErrorManager.warnUser(_ui, "cannot shout blanks");
+					valid = false;
+				}
+				if (valid && power < 1) {
+					ErrorManager.warnUser(_ui, "a shout with zero power won't reach won't reach anybody");
+					valid = false;
+				}
 				if (_serviceBridge != null) {
 					_serviceBridge.shout(text, power);
+				} else {
+					ErrorManager.warnUser(_ui, "cannot shout with service offline");
 				}
 				hideKeyboard();
 			}
@@ -191,19 +206,20 @@ public class Shoutbreak extends MapActivity {
 	protected void onStart() {
 		super.onStart();
 	}
-
+   
 	@Override
 	protected void onResume() {
 		super.onResume();
 		figureOutService();
+		// this gets extras from notification if app not running
+		Bundle extras = getIntent().getExtras();
+		handleExtras(extras);
 	}
 
 	@Override
 	protected void onPause() {
 		super.onPause();
-		// we disable/enable to be nice to user battery
-		disableInputs();
-		toggleGPSUsage(false);
+		serviceOnUIOff();
 	}
 
 	@Override
@@ -214,7 +230,6 @@ public class Shoutbreak extends MapActivity {
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		serviceOnUIOff();
 	}
 
 	// this gets extras from notification if app already running
@@ -231,7 +246,11 @@ public class Shoutbreak extends MapActivity {
 			_inboxListViewAdapter.updateDisplay(_userInfo.getDisplayInbox());
 		}
 		if (_userInfo.flagLevel || _userInfo.flagPopulationDensity) {
+			updateUserInfo();
 			_userLocationOverlay.updateUserInfo(_userInfo.getLevel(), _userInfo.getCellDensity());
+			if (_userInfo.flagLevelUp) {
+				giveNotice("shoutreach grew +" + C.CONFIG_PEOPLE_PER_LEVEL + " people");
+			}
 		}
 	}
 	
@@ -242,13 +261,17 @@ public class Shoutbreak extends MapActivity {
 	private void enableInputs() {
 		_cBtnShout.setEnabled(true);
 		_cShoutText.setEnabled(true);
+		_cShoutText.setFocusable(true);
+		_cShoutText.setText("");
 		_inboxListViewAdapter.setInputAllowed(true);
 	}
 	
 	private void disableInputs() {
 		_cBtnShout.setEnabled(false);
 		_cShoutText.setEnabled(false);
-		_inboxListViewAdapter.setInputAllowed(false);
+		_cShoutText.setFocusable(false);
+		_cShoutText.setText("Turn on the power to shout.");
+		_inboxListViewAdapter.setInputAllowed(false);	
 	}
 	
 	private void toggleGPSUsage(boolean turnOn) {
@@ -256,9 +279,17 @@ public class Shoutbreak extends MapActivity {
 			_serviceBridge.toggleLocationTracker(turnOn);
 		}
 		if (turnOn) {
-			_userLocationOverlay.enableMyLocation();
+			if (_cMapView.getOverlays().size() == 0) {
+				_cMapView.getOverlays().add(_userLocationOverlay);
+				_userLocationOverlay.enableMyLocation();
+				_cMapView.postInvalidate();
+			}
 		} else {
-			_userLocationOverlay.disableMyLocation();
+			if (_cMapView.getOverlays().size() > 0) {
+				_userLocationOverlay.disableMyLocation();
+				_cMapView.getOverlays().clear();
+				_cMapView.postInvalidate();
+			}
 		}
 	}
 	
@@ -269,6 +300,9 @@ public class Shoutbreak extends MapActivity {
 	protected void initMap() {
 		_cMapView = (CustomMapView) findViewById(R.id.cmvMap);
 		_userLocationOverlay = new UserLocationOverlay(this, _cMapView);
+		if (_cMapView.getOverlays().size() == 0) {
+			_cMapView.getOverlays().add(_userLocationOverlay);
+		}
 		_mapController = _cMapView.getController();
 		_mapController.setZoom(C.DEFAULT_ZOOM_LEVEL);
 		_cMapView.setClickable(true);
@@ -281,6 +315,7 @@ public class Shoutbreak extends MapActivity {
 				_mapController.animateTo(_userLocationOverlay.getMyLocation());
 			}
 		});
+		_userLocationOverlay.enableMyLocation();
 	}
 	
 	protected void initInboxListView() {
@@ -358,12 +393,12 @@ public class Shoutbreak extends MapActivity {
 	}
 
 	
-//	public void updateUserInfo() {
-//		int level = _userInfo.getLevel();
-//		_cTvUserLevel.setText("Points: " + _userInfo.getPoints() 
-//				+ "\nShoutreach: " + _userInfo.getLevel() * C.CONFIG_PEOPLE_PER_LEVEL + " people"
-//				+ "\nYou need " +  _userInfo.getNextLevelAt() + " more points to reach " + (level + 1) * C.CONFIG_PEOPLE_PER_LEVEL + " people.");
-//	}
+	public void updateUserInfo() {
+		int level = _userInfo.getLevel();
+		_cTvUserLevel.setText("Points: " + _userInfo.getPoints() 
+				+ "\nShoutreach: " + _userInfo.getLevel() * C.CONFIG_PEOPLE_PER_LEVEL + " people"
+				+ "\nYou need " +  _userInfo.getNextLevelAt() + " more points to reach " + (level + 1) * C.CONFIG_PEOPLE_PER_LEVEL + " people.");
+	}
 	
 	@Override
 	protected boolean isRouteDisplayed() {
@@ -412,14 +447,17 @@ public class Shoutbreak extends MapActivity {
 	}
 
 	private void serviceOnUIOff() {
+		//disableInputs();
 		if (_serviceBridge != null) {
+			toggleGPSUsage(false);
+			_serviceBridge.unRegisterUIBridge();
 			unbindService(_serviceConn);
+			_serviceBridge = null;
 		}
 	}
 
 	// TODO put this in asynctask maybe
 	private void handleServiceChangeWithUIOn(boolean isOn) {
-		toggleGPSUsage(isOn);
 		if (isOn) {
 			if (_serviceBridge != null) {
 				_isPowerOn = true;
@@ -427,14 +465,13 @@ public class Shoutbreak extends MapActivity {
 				User.setBooleanPreference(this, C.PREF_APP_ON_OFF_STATUS, true);
 				_serviceBridge.registerUIBridge(_uiBridge);
 				setUserInfo(_serviceBridge.pullUserInfo());
-				if (_cMapView.getOverlays().size() == 0) {
-					_cMapView.getOverlays().add(_userLocationOverlay);
-				}
 				_serviceBridge.runServiceFromUI();
+				toggleGPSUsage(true);
 				enableInputs();
 			}
 		} else {
 			disableInputs();
+			toggleGPSUsage(false);
 			_isPowerOn = false;
 			_cBtnPower.setImageResource(R.drawable.power_button_off);
 			User.setBooleanPreference(this, C.PREF_APP_ON_OFF_STATUS, false);
@@ -444,31 +481,23 @@ public class Shoutbreak extends MapActivity {
 				unbindService(_serviceConn);
 			}
 			stopService(_serviceIntent);
-			if (_cMapView.getOverlays().size() == 1) {
-				_cMapView.getOverlays().remove(_userLocationOverlay);
-			}
-			_cMapView.postInvalidate();
 			_serviceBridge = null;
 		}
+		Log.e("HANDLE SERVICE", "done");
 	}
-
+	
 	class ShoutbreakServiceConnection implements ServiceConnection {
 		public void onServiceConnected(ComponentName className, IBinder service) {
 			_serviceBridge = (IServiceBridge) service;
 			handleServiceChangeWithUIOn(true);
-
-			// Tell the user about this for our demo.
-			Toast.makeText(Shoutbreak.this, R.string.local_service_connected, Toast.LENGTH_SHORT).show();
 		}
-
 		public void onServiceDisconnected(ComponentName className) {
 			// This is called when the connection with the service has been
 			// unexpectedly disconnected -- that is, its process crashed.
 			// Because it is running in our same process, we should never
 			// see this happen.
 			handleServiceChangeWithUIOn(false);
-
-			Toast.makeText(Shoutbreak.this, R.string.local_service_disconnected, Toast.LENGTH_SHORT).show();
+			Toast.makeText(Shoutbreak.this, "you dropped off the grid\nignoring all shouts", Toast.LENGTH_SHORT).show();
 		}
 	};
 

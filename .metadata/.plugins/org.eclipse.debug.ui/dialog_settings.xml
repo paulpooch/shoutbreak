@@ -3,22 +3,22 @@
 	<section name="org.eclipse.debug.ui.sourcelookup.SourceLookupDialog">
 		<item value="525" key="DIALOG_WIDTH"/>
 		<item value="317" key="DIALOG_Y_ORIGIN"/>
-		<item value="414" key="DIALOG_HEIGHT"/>
 		<item value="706" key="DIALOG_X_ORIGIN"/>
+		<item value="414" key="DIALOG_HEIGHT"/>
 		<item value="1|Segoe UI|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI" key="DIALOG_FONT_NAME"/>
 	</section>
 	<section name="org.eclipse.debug.ui.SELECT_LAUNCH_SHORTCUT_DIALOG">
 		<item value="350" key="DIALOG_WIDTH"/>
 		<item value="360" key="DIALOG_Y_ORIGIN"/>
-		<item value="633" key="DIALOG_X_ORIGIN"/>
 		<item value="350" key="DIALOG_HEIGHT"/>
+		<item value="633" key="DIALOG_X_ORIGIN"/>
 		<item value="1|Segoe UI|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI" key="DIALOG_FONT_NAME"/>
 	</section>
 	<section name="org.eclipse.debug.ui.LAUNCH_CONFIGURATION_EDIT_DIALOG_SECTION">
 		<item value="464" key="DIALOG_WIDTH"/>
 		<item value="167" key="DIALOG_Y_ORIGIN"/>
-		<item value="568" key="DIALOG_X_ORIGIN"/>
 		<item value="720" key="DIALOG_HEIGHT"/>
+		<item value="568" key="DIALOG_X_ORIGIN"/>
 		<item value="1|Segoe UI|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI" key="DIALOG_FONT_NAME"/>
 	</section>
 </section>

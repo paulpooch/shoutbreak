@@ -9,9 +9,13 @@ import com.shoutbreak.service.CellDensity;
 // Use this just for UI stuff.
 public class UserInfo {
 
+	// Flags indicate if the data should be looked at
 	public boolean flagLevel;
 	public boolean flagPopulationDensity;
 	public boolean flagInbox;
+	
+	// Did a level up just occur?
+	public boolean flagLevelUp;
 	
 	private int _level;
 	private int _points;
@@ -22,6 +26,7 @@ public class UserInfo {
 	public UserInfo() {
 	
 		flagLevel = false;
+		flagLevelUp = false;
 		flagPopulationDensity = false;
 		flagInbox = false;
 		
