@@ -1,8 +1,0 @@
-package com.shoutbreak.ui;
-
-public interface IUIBridge {
-
-	public void test(String s);
-	public void updateInboxView(List<Shout> shoutsForDisplay);
-	
-}

@@ -13,16 +13,16 @@
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="false" key="wholeword"/>
-		<item value="setLevel" key="selection"/>
+		<item value="getMy" key="selection"/>
 		<list key="findhistory">
-			<item value="setlevel"/>
-			<item value="pull"/>
-			<item value="ui"/>
-			<item value="userinfo"/>
-			<item value="shoutsent"/>
-			<item value="just"/>
-			<item value="setpop"/>
+			<item value="getmy"/>
+			<item value="initmap"/>
+			<item value="_currentRadiusPx"/>
+			<item value="_zoomLevel"/>
 			<item value="enable"/>
+			<item value="toggle"/>
+			<item value="userloc"/>
+			<item value="disableInputs"/>
 		</list>
 		<list key="replacehistory">
 			<item value="quantile"/>

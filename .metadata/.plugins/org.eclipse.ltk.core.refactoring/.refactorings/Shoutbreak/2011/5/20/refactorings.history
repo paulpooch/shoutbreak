@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename type &apos;com.shoutbreak.ui.Dialogs&apos; to &apos;DialogBuilder&apos;&#x0D;&#x0A;- Original project: &apos;Shoutbreak&apos;&#x0D;&#x0A;- Original element: &apos;com.shoutbreak.ui.Dialogs&apos;&#x0D;&#x0A;- Renamed element: &apos;com.shoutbreak.ui.DialogBuilder&apos;&#x0D;&#x0A;- Update references to refactored element&#x0D;&#x0A;- Update textual occurrences in comments and strings" description="Rename type &apos;Dialogs&apos;" flags="589830" id="org.eclipse.jdt.ui.rename.type" input="/src&lt;com.shoutbreak.ui{Dialogs.java[Dialogs" matchStrategy="1" name="DialogBuilder" qualified="false" references="true" similarDeclarations="false" stamp="1304894407546" textual="false" version="1.0"/>
+</session>

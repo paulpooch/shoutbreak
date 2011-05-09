@@ -231,10 +231,15 @@ public class UserLocationOverlay extends MyLocationOverlay {
     		_mapSizeConstraint = (_mapView.getWidth() >= _mapView.getHeight()) ? _mapView.getHeight() : _mapView.getWidth();
     	}
     	double diameter = _currentRadiusPx + _currentRadiusPx;
-    	double factor = _mapSizeConstraint / diameter;
-    	// each zoom level shows half as much as the previous
-    	double zoomChange = Math.log(factor) / Math.log(2); // = log2(factor)
-    	_zoomLevel += Math.floor(zoomChange);
+    	if (diameter > 0) {
+    		double factor = _mapSizeConstraint / diameter;
+	    	// each zoom level shows half as much as the previous
+	    	double zoomChange = Math.log(factor) / Math.log(2); // = log2(factor)
+	    	int flooredZoomChange = (int) Math.floor(zoomChange);
+	    	_zoomLevel += flooredZoomChange;
+    	} else {
+    		_zoomLevel = _mapView.getMaxZoomLevel() - 1;
+    	}
     	
     	// TODO: fancy smooth zooming
     	// TODO: can we use zoom to show a given lat/long span

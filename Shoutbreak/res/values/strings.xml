@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<string name="maps_api_key">0D9gVcQxZ-ijg3QikhBogqhXdsjzHAAPZWJ6vLw</string>
+	<!-- debug   0D9gVcQxZ-ijg3QikhBogqhXdsjzHAAPZWJ6vLw -->
+	<!-- release 0D9gVcQxZ-igLZVT8x5P_y1YjYjVIiMJEi7ygjw -->
 </resources>

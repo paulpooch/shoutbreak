@@ -8,6 +8,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.location.Location;
 import android.os.Bundle;
+import android.provider.Settings;
 
 public class LocationTracker {
 	// http://stackoverflow.com/questions/1389811/gps-not-update-location-after-close-and-reopen-app-on-android
@@ -32,6 +33,7 @@ public class LocationTracker {
 		_criteria.setCostAllowed(true);
 		_criteria.setPowerRequirement(Criteria.NO_REQUIREMENT);
 		_provider = _locationManager.getBestProvider(_criteria, true);
+		//String allowedProviders = Settings.Secure.getString(_context.getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
 		_location = _locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 	}
 	
@@ -39,9 +41,21 @@ public class LocationTracker {
 		if (turnOn) {
 			_provider = _locationManager.getBestProvider(_criteria, true);
 			_locationManager.requestLocationUpdates(_provider, C.CONFIG_GPS_MIN_UPDATE_MILLISECS, C.CONFIG_GPS_MIN_UPDATE_METERS, _locationListener);
+			_location = _locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 		} else {
 			_locationManager.removeUpdates(_locationListener);
 		}
+	}
+	
+	public boolean isLocationEnabled() {
+		boolean result = false;
+		_provider = _locationManager.getBestProvider(_criteria, true);
+		_location = _locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+		// if _location is null, it means User has location disabled in settings
+		if (_location != null && _provider != null && _locationManager.isProviderEnabled(_provider)) {
+			result = true;
+		}
+		return result;
 	}
 	
 	public Location getLocation() {

@@ -14,6 +14,9 @@ public class UserInfo {
 	public boolean flagPopulationDensity;
 	public boolean flagInbox;
 	
+	// Is user's location enabled?
+	public boolean isLocationEnabled;
+	
 	// Did a level up just occur?
 	public boolean flagLevelUp;
 	
@@ -29,6 +32,7 @@ public class UserInfo {
 		flagLevelUp = false;
 		flagPopulationDensity = false;
 		flagInbox = false;
+		isLocationEnabled = false;
 		
 		_level = 0;
 		_points = 0;

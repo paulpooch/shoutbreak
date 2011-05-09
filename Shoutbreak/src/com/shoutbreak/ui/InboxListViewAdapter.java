@@ -43,8 +43,8 @@ public class InboxListViewAdapter extends BaseAdapter {
     	return _cacheExpandState;
     }
         
-    private class VoteTask extends AsyncTask<Object, Void, Void> {
-		@Override
+    private class VoteTask extends AsyncTask<Object, Void, Void> {    	
+    	@Override
 		protected Void doInBackground(Object... params) {
 			InboxViewHolder holder = (InboxViewHolder)params[0];
 			Integer voteDirection = (Integer)params[1];
@@ -78,6 +78,12 @@ public class InboxListViewAdapter extends BaseAdapter {
         
         onVoteUpClickListener = new OnClickListener() {
         	public void onClick(View view) {
+        		InboxViewHolder holder = (InboxViewHolder) view.getTag();
+        		holder.btnVoteUp.setEnabled(false);
+        		holder.btnVoteDown.setEnabled(false);
+                holder.btnVoteUp.setImageResource(R.drawable.vote_up_button);
+        		view.invalidate();
+        		
         		VoteTask task = new VoteTask();
         		task.execute(view.getTag(), C.SHOUT_VOTE_UP);
         	}
@@ -85,6 +91,12 @@ public class InboxListViewAdapter extends BaseAdapter {
          
         onVoteDownClickListener = new OnClickListener() {
         	public void onClick(View view) {
+        		InboxViewHolder holder = (InboxViewHolder) view.getTag();
+        		holder.btnVoteUp.setEnabled(false);
+        		holder.btnVoteDown.setEnabled(false);
+                holder.btnVoteDown.setImageResource(R.drawable.vote_down_button);
+        		view.invalidate();
+        		
         		VoteTask task = new VoteTask();
         		task.execute(view.getTag(), C.SHOUT_VOTE_DOWN);
         	}

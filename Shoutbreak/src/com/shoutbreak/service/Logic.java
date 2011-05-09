@@ -104,6 +104,20 @@ public class Logic {
 		postData.add(C.JSON_AUTH, _user.getAuth());
 		postData.add(C.JSON_LAT, Double.toString(_user.getLatitude()));
 		postData.add(C.JSON_LONG, Double.toString(_user.getLongitude()));
+		
+		// do we need to pull a density?
+		CellDensity tempCellDensity = _user.getCellDensity();
+		if (!tempCellDensity.isSet) {	
+			postData.add(C.JSON_DENSITY, "1");
+			//Toast.makeText(_context, "Requesting Density: " + tempCellDensity.cellX + " , " + tempCellDensity.cellY, Toast.LENGTH_SHORT).show();
+		}
+		
+		// acknowledge any level up packets
+		if (_user.getLevelUpOccured()) {
+			postData.add(C.JSON_LEVEL, Integer.toString(_user.getLevel()));
+			_user.setLevelUpOccured(false);
+		}
+		
 		if (scoresToRequest.size() > 0) {
 			StringBuilder scoreReq = new StringBuilder("[");
 			int i = 0;
@@ -116,14 +130,7 @@ public class Logic {
 			scoreReq.append("]");
 			postData.add(C.JSON_SCORES, scoreReq.toString());
 		}
-		
-		// do we need to pull a density?
-		CellDensity tempCellDensity = _user.getCellDensity();
-		if (!tempCellDensity.isSet) {	
-			postData.add(C.JSON_DENSITY, "1");
-			//Toast.makeText(_context, "Requesting Density: " + tempCellDensity.cellX + " , " + tempCellDensity.cellY, Toast.LENGTH_SHORT).show();
-		}
-	
+			
 		new HttpConnection(httpHandler).post(postData, xPacket);	
 	}
 	

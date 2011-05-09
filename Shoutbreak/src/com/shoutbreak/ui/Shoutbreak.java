@@ -46,6 +46,7 @@ public class Shoutbreak extends MapActivity {
 	private InboxListViewAdapter _inboxListViewAdapter;
 	private UserLocationOverlay _userLocationOverlay;
 	protected MapController _mapController;
+	private DialogBuilder _dialogBuilder;
 	private UserInfo _userInfo;
 	private boolean _isPowerOn;
 
@@ -90,6 +91,7 @@ public class Shoutbreak extends MapActivity {
 		_serviceIntent = new Intent(Shoutbreak.this, ShoutbreakService.class);
 		_inboxListViewAdapter = new InboxListViewAdapter(this);
 		_inputMM = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+		_dialogBuilder = new DialogBuilder(_ui);
 
 		_cRlMap = (RelativeLayout) findViewById(R.id.rlMap);
 		_cRlShoutInput = (RelativeLayout) findViewById(R.id.rlShoutInput);
@@ -138,10 +140,12 @@ public class Shoutbreak extends MapActivity {
 					ErrorManager.warnUser(_ui, "a shout with zero power won't reach won't reach anybody");
 					valid = false;
 				}
-				if (_serviceBridge != null) {
-					_serviceBridge.shout(text, power);
-				} else {
-					ErrorManager.warnUser(_ui, "cannot shout with service offline");
+				if (valid) {
+					if (_serviceBridge != null) {
+						_serviceBridge.shout(text, power);
+					} else {
+						ErrorManager.warnUser(_ui, "cannot shout with service offline");
+					}
 				}
 				hideKeyboard();
 			}
@@ -247,7 +251,9 @@ public class Shoutbreak extends MapActivity {
 		}
 		if (_userInfo.flagLevel || _userInfo.flagPopulationDensity) {
 			updateUserInfo();
-			_userLocationOverlay.updateUserInfo(_userInfo.getLevel(), _userInfo.getCellDensity());
+			if (_userInfo.isLocationEnabled) {
+				_userLocationOverlay.updateUserInfo(_userInfo.getLevel(), _userInfo.getCellDensity());
+			}
 			if (_userInfo.flagLevelUp) {
 				giveNotice("shoutreach grew +" + C.CONFIG_PEOPLE_PER_LEVEL + " people");
 			}
@@ -261,7 +267,6 @@ public class Shoutbreak extends MapActivity {
 	private void enableInputs() {
 		_cBtnShout.setEnabled(true);
 		_cShoutText.setEnabled(true);
-		_cShoutText.setFocusable(true);
 		_cShoutText.setText("");
 		_inboxListViewAdapter.setInputAllowed(true);
 	}
@@ -269,8 +274,7 @@ public class Shoutbreak extends MapActivity {
 	private void disableInputs() {
 		_cBtnShout.setEnabled(false);
 		_cShoutText.setEnabled(false);
-		_cShoutText.setFocusable(false);
-		_cShoutText.setText("Turn on the power to shout.");
+		_cShoutText.setText("   Turn on power to shout...");
 		_inboxListViewAdapter.setInputAllowed(false);	
 	}
 	
@@ -283,6 +287,8 @@ public class Shoutbreak extends MapActivity {
 				_cMapView.getOverlays().add(_userLocationOverlay);
 				_userLocationOverlay.enableMyLocation();
 				_cMapView.postInvalidate();
+				
+				_mapController.animateTo(_userLocationOverlay.getMyLocation());
 			}
 		} else {
 			if (_cMapView.getOverlays().size() > 0) {
@@ -395,9 +401,12 @@ public class Shoutbreak extends MapActivity {
 	
 	public void updateUserInfo() {
 		int level = _userInfo.getLevel();
-		_cTvUserLevel.setText("Points: " + _userInfo.getPoints() 
+		_cTvUserLevel.setText(
+				"Points: " + _userInfo.getPoints() 
+				+ "\nLevel: " + _userInfo.getLevel()
 				+ "\nShoutreach: " + _userInfo.getLevel() * C.CONFIG_PEOPLE_PER_LEVEL + " people"
-				+ "\nYou need " +  _userInfo.getNextLevelAt() + " more points to reach " + (level + 1) * C.CONFIG_PEOPLE_PER_LEVEL + " people.");
+				+ "\nYou need " +  _userInfo.getNextLevelAt() + " more points to reach " + (level + 1) * C.CONFIG_PEOPLE_PER_LEVEL + " people."
+				+ "\n\nCell: [" + _userInfo.getCellDensity().cellX + ", " + _userInfo.getCellDensity().cellY + "] = " + _userInfo.getCellDensity().density);
 	}
 	
 	@Override
@@ -464,10 +473,16 @@ public class Shoutbreak extends MapActivity {
 				_cBtnPower.setImageResource(R.drawable.power_button_on);
 				User.setBooleanPreference(this, C.PREF_APP_ON_OFF_STATUS, true);
 				_serviceBridge.registerUIBridge(_uiBridge);
-				setUserInfo(_serviceBridge.pullUserInfo());
-				_serviceBridge.runServiceFromUI();
-				toggleGPSUsage(true);
-				enableInputs();
+				UserInfo userInfo = _serviceBridge.pullUserInfo();
+				setUserInfo(userInfo);
+				if (!userInfo.isLocationEnabled) {
+					serviceOffUIOn();
+					_dialogBuilder.showDialog(DialogBuilder.DIALOG_LOCATION_DISABLED);
+				} else {
+					_serviceBridge.runServiceFromUI();
+					toggleGPSUsage(true);
+					enableInputs();
+				}
 			}
 		} else {
 			disableInputs();
