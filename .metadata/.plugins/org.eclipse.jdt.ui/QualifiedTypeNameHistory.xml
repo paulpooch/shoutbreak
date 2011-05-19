@@ -1,11 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-<fullyQualifiedTypeName name="android.content.ComponentName"/>
-<fullyQualifiedTypeName name="android.os.Binder"/>
-<fullyQualifiedTypeName name="com.shoutbreak.service.ShoutbreakService"/>
-<fullyQualifiedTypeName name="android.widget.Toast"/>
-<fullyQualifiedTypeName name="android.os.Bundle"/>
-<fullyQualifiedTypeName name="com.shoutbreak.service.IBridgeForUI"/>
 <fullyQualifiedTypeName name="com.shoutbreak.ui.IBridgeForService"/>
 <fullyQualifiedTypeName name="com.shoutbreak.ui.IUIBridge"/>
 <fullyQualifiedTypeName name="android.graphics.Point"/>
@@ -60,4 +54,10 @@
 <fullyQualifiedTypeName name="android.app.NotificationManager"/>
 <fullyQualifiedTypeName name="android.content.Context"/>
 <fullyQualifiedTypeName name="java.lang.Integer"/>
+<fullyQualifiedTypeName name="android.app.AlertDialog"/>
+<fullyQualifiedTypeName name="android.content.DialogInterface"/>
+<fullyQualifiedTypeName name="android.provider.Settings"/>
+<fullyQualifiedTypeName name="android.content.Intent"/>
+<fullyQualifiedTypeName name="com.shoutbreak.ui.DialogBuilder"/>
+<fullyQualifiedTypeName name="android.app.AlertDialog.Builder"/>
 </qualifiedTypeNameHistroy>
