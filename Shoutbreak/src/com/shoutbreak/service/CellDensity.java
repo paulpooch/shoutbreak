@@ -2,10 +2,17 @@ package com.shoutbreak.service;
 
 public class CellDensity {
 
-	public int cellX = -1;
-	public int cellY = -1;
-	public double density = -1;
-	public boolean isSet = false;
+	public int cellX;
+	public int cellY;
+	public double density;
+	public boolean isSet;
 	public String lastUpdated;
+	
+	public CellDensity() {
+		cellX = -1;
+		cellY = -1;
+		density = -1;
+		isSet = false;
+	}
 	
 }

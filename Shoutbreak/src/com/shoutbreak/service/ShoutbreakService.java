@@ -15,15 +15,13 @@ import android.util.Log;
 import com.shoutbreak.C;
 import com.shoutbreak.CrossThreadPacket;
 import com.shoutbreak.R;
-import com.shoutbreak.UserInfo;
-import com.shoutbreak.ui.IUIBridge;
 import com.shoutbreak.ui.Shoutbreak;
 
 public class ShoutbreakService extends Service {
 
 	// TODO: are we doing anything heavy in UI thread? DON'T!
 
-	private IUIBridge _uiBridge; // This is how we access the UI.
+	//private IUIBridge _uiBridge; // This is how we access the UI.
 	// This is how the UI accesses us.
 	private final Binder _serviceBridge = new ServiceBridge(); 
 	private NotificationManager _notificationManager;
@@ -62,41 +60,14 @@ public class ShoutbreakService extends Service {
 
 				// Anything to do on UI?
 				switch (uiCode) {
-					case C.UI_VOTE_COMPLETED: {
-						UserInfo updatedUserInfo = getLatestUserInfo();
-						updatedUserInfo.flagInbox = true;
-						pushUserInfo(updatedUserInfo);
-					}
 					case C.UI_RECEIVE_SHOUTS: {
-						UserInfo updatedUserInfo = getLatestUserInfo();
 						int newShouts = _user.getShoutsJustReceived();
 						if (newShouts > 0) {
 							String pluralShout = "shout" + (newShouts > 1 ? "s" : "");
-							String notice = "just heard " + newShouts + " new " + pluralShout;
-							if (_uiBridge == null) {
-								giveStatusBarNotification(newShouts + " " + pluralShout + " received", "Shoutbreak", "you have " + newShouts + " new " + pluralShout);
-							} else {
-								_uiBridge.giveNoticeUI(notice);
-							}
-							updatedUserInfo.flagInbox = true;
+							giveStatusBarNotification(newShouts + " " + pluralShout + " received", "Shoutbreak", "you have " + newShouts + " new " + pluralShout);
 						}
-						if (_user.getScoresJustReceived()) {
-							updatedUserInfo.flagInbox = true;
-						}
-						updatedUserInfo.flagLevelUp = _user.getLevelUpOccured();
-						updatedUserInfo.flagPopulationDensity = _user.getDensityJustChanged();
-						pushUserInfo(updatedUserInfo);
 						break;
 					}
-					case C.UI_SHOUT_SENT: {
-						_uiBridge.shoutSent();
-						break;
-					}
-					case C.UI_ACCOUNT_CREATED: {
-						// Do anything here?  The level up info will come on next ping; end up in RECEIVE_SHOUTS
-						break;
-					}
-
 				}
 
 				if (_isOn) {
@@ -151,17 +122,22 @@ public class ShoutbreakService extends Service {
 
 	public class ServiceBridge extends Binder implements IServiceBridge {
 
-		// When UI connects to service - it provides us a bridge into it.
-		public void registerUIBridge(IUIBridge bridge) {
-			// Cancel any status bar notification.
-			_notificationManager.cancel(C.APP_NOTIFICATION_ID);
-			_uiBridge = bridge;
+		public void registerUserListener(UserListener listener) {
+			_user.addUserListener(listener);
 		}
+		
+		
+		// When UI connects to service - it provides us a bridge into it.
+		//public void registerUIBridge(IUIBridge bridge) {
+			// Cancel any status bar notification.
+			//_notificationManager.cancel(C.APP_NOTIFICATION_ID);
+			//_uiBridge = bridge;
+		//}
 
 		// When it disconnects, it lets us know the bridge is dead.
-		public void unRegisterUIBridge() {
-			_uiBridge = null;
-		}
+		//public void unRegisterUIBridge() {
+		//	_uiBridge = null;
+		//}
 
 		public void runServiceFromUI() {
 			_isOn = true;
@@ -176,28 +152,19 @@ public class ShoutbreakService extends Service {
 
 		public void stopServiceFromUI() {
 			_isOn = false;
+			_user.removeAllListeners();
 		}
 
 		public void toggleLocationTracker(boolean turnOn) {
 			_user.getLocationTracker().toggleListeningToLocation(turnOn);
 		}
 		
-		// The UI pulls info once on initial service connection.
-		// Flags tell it to read all fields.
-		// After initial pull service will pushUserInfo() whenever necessary.
-		public UserInfo pullUserInfo() {
-			UserInfo userInfo = getLatestUserInfo();
-			userInfo.flagInbox = true;
-			userInfo.flagLevel = true;
-			userInfo.flagPopulationDensity = true;
-			return userInfo;
+		public void pullUserInfo() {
+			_user.pullUserInfo();
 		}
 		
 		public void markShoutAsRead(String shoutID) {
 			_user.getInbox().markShoutAsRead(shoutID);
-			UserInfo updatedUserInfo = getLatestUserInfo();
-			updatedUserInfo.flagInbox = true;
-			pushUserInfo(updatedUserInfo);
 		}
 
 		public void shout(String text, int power) {
@@ -226,34 +193,11 @@ public class ShoutbreakService extends Service {
 
 		public void deleteShout(String shoutID) {
 			_user.getInbox().deleteShout(shoutID);
-			UserInfo updatedUserInfo = getLatestUserInfo();
-			updatedUserInfo.flagInbox = true;
-			pushUserInfo(updatedUserInfo);
 		}
 
 	};
 
-	// THE REST ///////////////////////////////////////////////////////////////
-
-	private void pushUserInfo(UserInfo userInfo) {
-		if (_uiBridge != null) {
-			_user.resetFlags();
-			_uiBridge.pushUserInfo(userInfo);
-		}
-	}
-	
-	private UserInfo getLatestUserInfo() {
-		UserInfo userInfo = new UserInfo();
-		userInfo.isLocationEnabled = _user.getLocationTracker().isLocationEnabled();
-		userInfo.setLevel(_user.getLevel());
-		userInfo.setPoints(_user.getPoints());
-		userInfo.setNextLevelAt(_user.getNextLevelAt());
-		userInfo.setDisplayInbox(_user.getInbox().getShoutsForUI());
-		if (userInfo.isLocationEnabled) {
-			userInfo.setCellDensity(_user.getCellDensity());
-		}
-		return userInfo;
-	}
+	// THE REST ///////////////////////////////////////////////////////////////	
 	
 	public void giveStatusBarNotification(String alert, String title, String message) {
 		Intent intent = new Intent(this, Shoutbreak.class);
@@ -263,6 +207,13 @@ public class ShoutbreakService extends Service {
 	    		PendingIntent.getActivity(this.getBaseContext(), 0, intent, PendingIntent.FLAG_CANCEL_CURRENT));
 	    notification.flags |= Notification.FLAG_AUTO_CANCEL;
 	    _notificationManager.notify(C.APP_NOTIFICATION_ID, notification);
+	}
+	
+	public boolean doesUIExist() {
+		if (_user.getListenerCount() > 0) {
+			return true;
+		}
+		return false;
 	}
 	
 }

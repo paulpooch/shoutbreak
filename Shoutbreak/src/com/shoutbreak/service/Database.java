@@ -94,6 +94,7 @@ public class Database {
 					.execSQL("CREATE TABLE "
 							+ C.DB_TABLE_SHOUTS
 							+ " (shout_id TEXT, timestamp TEXT, time_received INTEGER, txt TEXT, is_outbox INTEGER, re TEXT, vote INTEGER, hit INTEGER, open INTEGER, ups INTEGER, downs INTEGER, pts INTEGER, approval INTEGER, state_flag INTEGER)");
+			db.execSQL("CREATE TABLE " + C.DB_TABLE_POINTS + " (points_value INTEGER, points_type INTEGER, points_timestamp TEXT)");
 		}
 
 		@Override
@@ -237,6 +238,16 @@ public class Database {
 		}
 		try {
 			update.execute();
+		
+			// If the shout is closed, we checked if it's in our outbox.
+			// If it is, we need to save the points.
+			if (!shout.open){
+				Shout shoutFromDB = getShout(shout.id);
+				if (shoutFromDB.is_outbox) {
+					savePoints(C.POINTS_SHOUT, shout.pts);		
+				}
+			}
+			
 			result = true;
 		} catch (Exception ex) {
 			ErrorManager.manage(ex);
@@ -246,6 +257,22 @@ public class Database {
 		return result;
 	}
 
+	public Long savePoints(int pointsType, int pointsValue) {
+		String sql = "INSERT INTO " + C.DB_TABLE_POINTS + " (points_type, points_amount, points_timestamp) VALUES (?, ?, ?)";
+		SQLiteStatement insert = this._db.compileStatement(sql);
+		insert.bindLong(1, pointsType);
+		insert.bindLong(2, pointsValue);
+		insert.bindString(3, getDateAsISO8601String(new Date()));
+		try {
+			return insert.executeInsert();
+		} catch (Exception ex) {
+			ErrorManager.manage(ex);
+		} finally {
+			insert.close();
+		}
+		return 0l;
+	}
+	
 	public ArrayList<Shout> getShouts(int start, int amount) {
 		// shout_id TEXT, timestamp TEXT, time_received INTEGER, txt TEXT,
 		// is_outbox INTEGER, re TEXT, vote INTEGER, hit INTEGER, open INTEGER,

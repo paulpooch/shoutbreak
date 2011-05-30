@@ -8,7 +8,6 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.location.Location;
 import android.os.Bundle;
-import android.provider.Settings;
 
 public class LocationTracker {
 	// http://stackoverflow.com/questions/1389811/gps-not-update-location-after-close-and-reopen-app-on-android

@@ -1,0 +1,16 @@
+package com.shoutbreak.service;
+
+public class UserEvent {
+	
+	private User _source;
+	public enum UserEventType { densityChange };
+	
+	public UserEvent(User source) {
+		_source = source;
+	}
+
+	public User getSource() {
+		return _source;
+	}
+	
+}

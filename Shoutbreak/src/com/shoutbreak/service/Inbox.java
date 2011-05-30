@@ -100,7 +100,7 @@ public class Inbox {
 		shout.pts = C.NULL_PTS;
 		shout.approval = jsonScore.optInt(C.JSON_SHOUT_APPROVAL, C.NULL_APPROVAL);
 		shout.open = jsonScore.optInt(C.JSON_SHOUT_OPEN, 0) == 1 ? true : C.NULL_OPEN;
-		_db.updateScore(shout);
+		_db.updateScore(shout);		
 	}
 	
 	public synchronized void reflectVote(String shoutID, int vote) {

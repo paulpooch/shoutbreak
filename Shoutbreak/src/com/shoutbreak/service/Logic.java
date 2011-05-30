@@ -106,8 +106,7 @@ public class Logic {
 		postData.add(C.JSON_LONG, Double.toString(_user.getLongitude()));
 		
 		// do we need to pull a density?
-		CellDensity tempCellDensity = _user.getCellDensity();
-		if (!tempCellDensity.isSet) {	
+		if (! _user.getCellDensity().isSet) {	
 			postData.add(C.JSON_DENSITY, "1");
 			//Toast.makeText(_context, "Requesting Density: " + tempCellDensity.cellX + " , " + tempCellDensity.cellY, Toast.LENGTH_SHORT).show();
 		}
@@ -115,7 +114,6 @@ public class Logic {
 		// acknowledge any level up packets
 		if (_user.getLevelUpOccured()) {
 			postData.add(C.JSON_LEVEL, Integer.toString(_user.getLevel()));
-			_user.setLevelUpOccured(false);
 		}
 		
 		if (scoresToRequest.size() > 0) {
@@ -140,6 +138,7 @@ public class Logic {
 			if (xPacket.json.has(C.JSON_DENSITY)) {
 				double density = (double) xPacket.json.optDouble(C.JSON_DENSITY);
 				_user.saveDensity(density);
+				_user.fireUserEvent(UserEvent.DENSITY_CHANGE);
 			}
 			if (xPacket.json.has(C.JSON_SHOUTS)) {
 				JSONArray shouts = xPacket.json.getJSONArray(C.JSON_SHOUTS);
@@ -148,6 +147,8 @@ public class Logic {
 					JSONObject jsonShout = shouts.getJSONObject(i);
 					_user.getInbox().addShout(jsonShout);
 				}
+				xPacket.uiCode = C.UI_RECEIVE_SHOUTS;
+				_user.fireUserEvent(UserEvent.SHOUTS_RECEIVED);
 			}
 			if (xPacket.json.has(C.JSON_SCORES)) {
 				_user.setScoresJustReceived(true);
@@ -155,7 +156,8 @@ public class Logic {
 				for (int i = 0; i < scores.length(); i++) {
 					JSONObject jsonScore = scores.getJSONObject(i);
 					_user.getInbox().updateScore(jsonScore);
-				}				
+				}
+				_user.fireUserEvent(UserEvent.SCORES_CHANGE);
 			}
 			if (xPacket.json.has(C.JSON_LEVEL_CHANGE)) {
 				JSONObject levelInfo = xPacket.json.getJSONObject(C.JSON_LEVEL_CHANGE);				
@@ -165,14 +167,14 @@ public class Logic {
 				_user.setLevel(newLevel);
 				_user.setPoints(newPoints);
 				_user.setNextLevelAt(nextLevelAt);
-				_user.setLevelUpOccured(true);
+				_user.fireUserEvent(UserEvent.LEVEL_CHANGE);
+				_user.fireUserEvent(UserEvent.POINTS_CHANGE);
 			}
-			xPacket.uiCode = C.UI_RECEIVE_SHOUTS;
-			xPacket.iArgs = new int[] { _user.getShoutsJustReceived() };
 			if (xPacket.purpose == C.PURPOSE_LOOP_FROM_UI) {
 				xPacket.purpose = C.PURPOSE_LOOP_FROM_UI_DELAYED;
-			}
-			_uiThreadHandler.sendMessage(Message.obtain(_uiThreadHandler, C.STATE_IDLE, xPacket));				
+			}			
+			_uiThreadHandler.sendMessage(Message.obtain(_uiThreadHandler, C.STATE_IDLE, xPacket));	
+			
 		} catch (JSONException ex) {
 			ErrorManager.manage(ex);
 		}				
@@ -183,9 +185,10 @@ public class Logic {
 			public void handleMessage(Message message) {
 				switch (message.what) {
 					case C.HTTP_DID_SUCCEED: {
-						CrossThreadPacket xPacket = (CrossThreadPacket)message.obj;
-						xPacket.uiCode = C.UI_SHOUT_SENT;
-						_uiThreadHandler.sendMessage(Message.obtain(_uiThreadHandler, C.STATE_IDLE, xPacket)); // STATE doesn't matter - going to die
+						_user.fireUserEvent(UserEvent.SHOUT_SENT);				
+						// Unless shout occurs in idle thread, we don't need to sendMessage.
+						//CrossThreadPacket xPacket = (CrossThreadPacket)message.obj;
+						//_uiThreadHandler.sendMessage(Message.obtain(_uiThreadHandler, C.STATE_IDLE, xPacket)); // STATE doesn't matter - going to die
 						break;
 					}
 				}
@@ -214,9 +217,10 @@ public class Logic {
 				switch (message.what) {
 					case C.HTTP_DID_SUCCEED: {
 						_user.getInbox().reflectVote(shoutID, vote);
-						CrossThreadPacket xPacket = (CrossThreadPacket)message.obj;
-						xPacket.uiCode = C.UI_VOTE_COMPLETED;
-						_uiThreadHandler.sendMessage(Message.obtain(_uiThreadHandler, C.STATE_IDLE, xPacket)); // STATE doesn't matter - going to die
+						_user.fireUserEvent(UserEvent.VOTE_COMPLETE);
+						// Unless vote occurs in idle thread, we don't need to sendMessage.
+						//CrossThreadPacket xPacket = (CrossThreadPacket)message.obj;
+						//_uiThreadHandler.sendMessage(Message.obtain(_uiThreadHandler, C.STATE_IDLE, xPacket)); // STATE doesn't matter - going to die
 						break;
 					}
 				}
@@ -259,7 +263,7 @@ public class Logic {
 							String uid = xPacket.sArgs[0];
 							_user.setUID(uid);
 							_user.setPassword(password);
-							xPacket.uiCode = C.UI_ACCOUNT_CREATED;
+							_user.fireUserEvent(UserEvent.ACCOUNT_CREATED);
 							_uiThreadHandler.sendMessage(Message.obtain(_uiThreadHandler, C.STATE_IDLE, xPacket));
 						} catch (JSONException ex) {
 							ErrorManager.manage(ex);

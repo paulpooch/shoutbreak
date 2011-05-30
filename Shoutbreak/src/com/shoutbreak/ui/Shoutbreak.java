@@ -29,15 +29,16 @@ import com.shoutbreak.CustomExceptionHandler;
 import com.shoutbreak.ErrorManager;
 import com.shoutbreak.R;
 import com.shoutbreak.Shout;
-import com.shoutbreak.UserInfo;
 import com.shoutbreak.service.IServiceBridge;
 import com.shoutbreak.service.ShoutbreakService;
 import com.shoutbreak.service.User;
+import com.shoutbreak.service.UserEvent;
+import com.shoutbreak.service.UserListener;
 
 import com.shoutbreak.ui.map.CustomMapView;
 import com.shoutbreak.ui.map.UserLocationOverlay;
 
-public class Shoutbreak extends MapActivity {
+public class Shoutbreak extends MapActivity implements UserListener {
 
 	private Shoutbreak _ui;
 	private Intent _serviceIntent;
@@ -47,7 +48,6 @@ public class Shoutbreak extends MapActivity {
 	private UserLocationOverlay _userLocationOverlay;
 	protected MapController _mapController;
 	private DialogBuilder _dialogBuilder;
-	private UserInfo _userInfo;
 	private boolean _isPowerOn;
 
 	// keyboard
@@ -87,7 +87,7 @@ public class Shoutbreak extends MapActivity {
 		Thread.setDefaultUncaughtExceptionHandler(new CustomExceptionHandler(C.CONFIG_CRASH_REPORT_ADDRESS));
 
 		_ui = this;
-		_userInfo = new UserInfo();
+		//_userInfo = new UserInfo();
 		_serviceIntent = new Intent(Shoutbreak.this, ShoutbreakService.class);
 		_inboxListViewAdapter = new InboxListViewAdapter(this);
 		_inputMM = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -243,26 +243,55 @@ public class Shoutbreak extends MapActivity {
 	}
 
 	///////////////////////////////////////////////////////////////////////////
-
-	private void setUserInfo(UserInfo userInfo) {
-		_userInfo = userInfo;
-		if (_userInfo.flagInbox) {
-			_inboxListViewAdapter.updateDisplay(_userInfo.getDisplayInbox());
-		}
-		if (_userInfo.flagLevel || _userInfo.flagPopulationDensity) {
-			updateUserInfo();
-			if (_userInfo.isLocationEnabled) {
-				_userLocationOverlay.updateUserInfo(_userInfo.getLevel(), _userInfo.getCellDensity());
-			}
-			if (_userInfo.flagLevelUp) {
-				giveNotice("shoutreach grew +" + C.CONFIG_PEOPLE_PER_LEVEL + " people");
-			}
-		}
-	}
 	
-	public UserInfo getUserInfo() {
-		return _userInfo;
-	}
+	// TODO: Optimize this.  We shouldn't refresh inbox 3 times on 1 ping for instance.
+	public void handleUserEvent(UserEvent e) {
+		User user = e.getUser();
+		
+		if (e.type == UserEvent.LOCATION_SERVICES_CHANGE) {	
+			if (user.getLocationTracker().isLocationEnabled()) {
+				// run service from here?
+				toggleGPSUsage(true);
+				_serviceBridge.runServiceFromUI();
+				enableInputs();
+			} else {
+				serviceOffUIOn();
+				_dialogBuilder.showDialog(DialogBuilder.DIALOG_LOCATION_DISABLED);
+			}
+		
+		} else if (e.type == UserEvent.INBOX_CHANGE) {
+			_inboxListViewAdapter.updateDisplay(user.getInbox().getShoutsForUI());
+		
+		} else if (e.type == UserEvent.SHOUT_SENT) {
+			giveNotice("shout sent");
+			_cShoutText.setText("");
+		
+		} else if (e.type == UserEvent.SHOUTS_RECEIVED) {
+			int newShouts = user.getShoutsJustReceived();
+			if (newShouts > 0) {
+				String pluralShout = "shout" + (newShouts > 1 ? "s" : "");
+				String notice = "just heard " + newShouts + " new " + pluralShout;
+				giveNotice(notice);
+				_inboxListViewAdapter.updateDisplay(user.getInbox().getShoutsForUI());
+			}
+		
+		} else if (e.type == UserEvent.VOTE_COMPLETE) {
+			_inboxListViewAdapter.updateDisplay(user.getInbox().getShoutsForUI());
+		
+		} else if (e.type == UserEvent.ACCOUNT_CREATED) {
+			// Do anything?
+		
+		} else if (e.type == UserEvent.DENSITY_CHANGE) {
+			// This goes directly to UserLocationOverlay.  Handled there.
+		
+		} else if (e.type == UserEvent.LEVEL_CHANGE) {
+			giveNotice("shoutreach grew +" + C.CONFIG_PEOPLE_PER_LEVEL + " people");
+	
+		} else if (e.type == UserEvent.SCORES_CHANGE) {
+			_inboxListViewAdapter.updateDisplay(user.getInbox().getShoutsForUI());
+			
+		}
+	};
 	
 	private void enableInputs() {
 		_cBtnShout.setEnabled(true);
@@ -318,7 +347,8 @@ public class Shoutbreak extends MapActivity {
 		_cMapView.postInvalidate();
 		_userLocationOverlay.runOnFirstFix(new Runnable() {
 			public void run() {
-				_mapController.animateTo(_userLocationOverlay.getMyLocation());
+				//GeoPoint loc = _userLocationOverlay.getMyLocation();
+				//_mapController.animateTo(loc);
 			}
 		});
 		_userLocationOverlay.enableMyLocation();
@@ -400,13 +430,12 @@ public class Shoutbreak extends MapActivity {
 
 	
 	public void updateUserInfo() {
-		int level = _userInfo.getLevel();
-		_cTvUserLevel.setText(
-				"Points: " + _userInfo.getPoints() 
-				+ "\nLevel: " + _userInfo.getLevel()
-				+ "\nShoutreach: " + _userInfo.getLevel() * C.CONFIG_PEOPLE_PER_LEVEL + " people"
-				+ "\nYou need " +  _userInfo.getNextLevelAt() + " more points to reach " + (level + 1) * C.CONFIG_PEOPLE_PER_LEVEL + " people."
-				+ "\n\nCell: [" + _userInfo.getCellDensity().cellX + ", " + _userInfo.getCellDensity().cellY + "] = " + _userInfo.getCellDensity().density);
+		//_cTvUserLevel.setText(
+		//		"Points: " + _userInfo.getPoints() 
+		//		+ "\nLevel: " + _userInfo.getLevel()
+		//		+ "\nShoutreach: " + _userInfo.getLevel() * C.CONFIG_PEOPLE_PER_LEVEL + " people"
+		//		+ "\nYou need " +  _userInfo.getNextLevelAt() + " more points to reach " + (level + 1) * C.CONFIG_PEOPLE_PER_LEVEL + " people."
+		//		+ "\n\nCell: [" + _userInfo.getCellDensity().cellX + ", " + _userInfo.getCellDensity().cellY + "] = " + _userInfo.getCellDensity().density);
 	}
 	
 	@Override
@@ -416,24 +445,6 @@ public class Shoutbreak extends MapActivity {
 	}
 	
 	// SERVICE CONNECTION /////////////////////////////////////////////////////
-
-	// This is how the service accesses us.
-	private IUIBridge _uiBridge = new IUIBridge() {
-
-		public void shoutSent() {
-			giveNotice("shout sent");
-			_cShoutText.setText("");
-		}
-
-		public void giveNoticeUI(String s) {
-			giveNotice(s);
-		}
-
-		public void pushUserInfo(UserInfo userInfo) {
-			setUserInfo(userInfo);
-		}
-
-	};
 
 	private void figureOutService() {
 		if (User.getBooleanPreference(this, C.PREF_APP_ON_OFF_STATUS, true)) {
@@ -459,9 +470,9 @@ public class Shoutbreak extends MapActivity {
 		//disableInputs();
 		if (_serviceBridge != null) {
 			toggleGPSUsage(false);
-			_serviceBridge.unRegisterUIBridge();
+			//_serviceBridge.unRegisterUIBridge();
 			unbindService(_serviceConn);
-			_serviceBridge = null;
+			//_serviceBridge = null;
 		}
 	}
 
@@ -472,17 +483,11 @@ public class Shoutbreak extends MapActivity {
 				_isPowerOn = true;
 				_cBtnPower.setImageResource(R.drawable.power_button_on);
 				User.setBooleanPreference(this, C.PREF_APP_ON_OFF_STATUS, true);
-				_serviceBridge.registerUIBridge(_uiBridge);
-				UserInfo userInfo = _serviceBridge.pullUserInfo();
-				setUserInfo(userInfo);
-				if (!userInfo.isLocationEnabled) {
-					serviceOffUIOn();
-					_dialogBuilder.showDialog(DialogBuilder.DIALOG_LOCATION_DISABLED);
-				} else {
-					_serviceBridge.runServiceFromUI();
-					toggleGPSUsage(true);
-					enableInputs();
-				}
+				_serviceBridge.registerUserListener(_ui);
+				_serviceBridge.registerUserListener(_userLocationOverlay);
+				_serviceBridge.pullUserInfo();
+				// Service will be triggered when LOCATION_SERVICES_CHANGE event is fired.
+				//_serviceBridge.runServiceFromUI();
 			}
 		} else {
 			disableInputs();
@@ -492,7 +497,6 @@ public class Shoutbreak extends MapActivity {
 			User.setBooleanPreference(this, C.PREF_APP_ON_OFF_STATUS, false);
 			if (_serviceBridge != null) {
 				_serviceBridge.stopServiceFromUI();
-				_serviceBridge.unRegisterUIBridge();
 				unbindService(_serviceConn);
 			}
 			stopService(_serviceIntent);
@@ -514,6 +518,6 @@ public class Shoutbreak extends MapActivity {
 			handleServiceChangeWithUIOn(false);
 			Toast.makeText(Shoutbreak.this, "you dropped off the grid\nignoring all shouts", Toast.LENGTH_SHORT).show();
 		}
-	};
+	}
 
 }

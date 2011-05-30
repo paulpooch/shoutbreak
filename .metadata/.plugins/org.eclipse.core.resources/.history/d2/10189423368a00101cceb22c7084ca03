@@ -1,0 +1,19 @@
+package com.shoutbreak.service;
+
+public class UserEvent {
+	
+	public static final int DENSITY_CHANGE = 0;
+	
+	private User _source;
+	public int_type;
+	
+	public UserEvent(User source, int type) {
+		_source = source;
+		_type = type;
+	}
+
+	public User getSource() {
+		return _source;
+	}
+	
+}

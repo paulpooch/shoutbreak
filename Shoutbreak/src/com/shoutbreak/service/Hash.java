@@ -37,5 +37,19 @@ public class Hash {
 		}
 		return convertToHex(sha1hash);
 	}
+	
+	public static String sha512(String text) {
+		MessageDigest md = null;
+		byte[] sha512hash = null;
+		try {
+			md = MessageDigest.getInstance("SHA-512");
+			sha512hash = new byte[40];
+			md.update(text.getBytes("iso-8859-1"), 0, text.length());
+			sha512hash = md.digest();
+		} catch (Exception ex) {
+			ErrorManager.manage(ex);
+		}
+		return convertToHex(sha512hash);
+	}
 
 }

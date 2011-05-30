@@ -57,28 +57,28 @@ public class C {
 	public static final String DB_TABLE_USER_SETTINGS = "USER_SETTINGS";
 	public static final String DB_TABLE_DENSITY = "DENSITY";
 	public static final String DB_TABLE_SHOUTS = "SHOUTS";
-	public static final int DB_VERSION = 1;
+	public static final String DB_TABLE_POINTS = "POINTS";
+	public static final int DB_VERSION = 2;
 
 	public static final String KEY_USER_PW = "user_pw";
 	public static final String KEY_USER_ID = "user_id";
 	public static final String KEY_USER_LEVEL = "user_level";
 	public static final String KEY_USER_POINTS = "user_points";
 	public static final String KEY_USER_NEXT_LEVEL_AT = "user_next_level_at";	
+	
+	// POINTS TYPES ///////////////////////////////////////////////////////////
+	
+	public static final int POINTS_SHOUT = 0;
 
 	// PURPOSES ///////////////////////////////////////////////////////////////
 
 	public static final int PURPOSE_LOOP_FROM_UI = 0; // no delay
 	public static final int PURPOSE_LOOP_FROM_UI_DELAYED = 1; // delay
-	public static final int PURPOSE_LOOP_STANDALONE = 2; // no delay
-	public static final int PURPOSE_LOOP_STANDALONE_DELAYED = 3; // delay
-	public static final int PURPOSE_DEATH = 4; // don't repeat this - just die
+	public static final int PURPOSE_DEATH = 2; // don't repeat this - just die
 	
 	// UI CODES ///////////////////////////////////////////////////////////////
 	
-	public static final int UI_ACCOUNT_CREATED = 10;
-	public static final int UI_RECEIVE_SHOUTS = 11;
-	public static final int UI_SHOUT_SENT = 12;
-	public static final int UI_VOTE_COMPLETED = 13;
+	public static final int UI_RECEIVE_SHOUTS = 10;
 	
 	// HTTP CODES /////////////////////////////////////////////////////////////
 	

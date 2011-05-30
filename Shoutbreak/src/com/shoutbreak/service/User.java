@@ -1,6 +1,8 @@
 package com.shoutbreak.service;
 
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 import com.shoutbreak.C;
 
@@ -9,7 +11,35 @@ import android.content.SharedPreferences;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
 
+// Based on observer pattern. More here: http://www.youtube.com/watch?v=qw0zZAte66A
 public class User {
+	
+	// OBSERVER PATTERN STUFF
+	private Set<UserListener> _listeners; // Set prevents duplicates from being entered.
+	
+	public synchronized void addUserListener(UserListener listener) {
+		_listeners.add(listener);
+	}
+
+	public synchronized void removeUserListener(UserListener listener) {
+		_listeners.remove(listener);
+	}
+	
+	public synchronized void removeAllListeners() {
+		_listeners.clear();
+	}
+	
+	protected synchronized void fireUserEvent(int eventType) {
+		UserEvent e = new UserEvent(this, eventType);
+		for (UserListener listener : _listeners) {
+			listener.handleUserEvent(e);
+		}
+	}
+	
+	public synchronized int getListenerCount() {
+		return _listeners.size();
+	}
+	
 	// All Database stuff should go through User. Any writes should be
 	// synchronized.
 
@@ -26,25 +56,6 @@ public class User {
 		return (int)Math.ceil((float)people / (float)C.CONFIG_PEOPLE_PER_LEVEL);
 	}
 
-	// END STATICS ////////////////////////////////////////////////////////////
-	
-	private ShoutbreakService _service;
-	private TelephonyManager _tm;
-	private Database _db;
-	private CellDensity _cellDensity;
-	private LocationTracker _locationTracker;
-	protected Inbox _inbox;
-	private int _shoutsJustReceived;
-	private boolean _levelUpOccured; //This means level up.
-	private boolean _densityJustChanged;
-	private boolean _scoresJustReceived;
-	private String _uid;
-	private String _auth;
-	private boolean _passwordExists; // no reason to put actual pw into memory
-	private int _level;
-	private int _points;
-	private int _nextLevelAt;
-	
 	public static void setBooleanPreference(Context context, String key, boolean val) {
 		SharedPreferences settings = context.getSharedPreferences(C.PREFS_NAMESPACE, Context.MODE_PRIVATE);
 		SharedPreferences.Editor editor = settings.edit();
@@ -58,8 +69,28 @@ public class User {
 		return val;
 	}
 	
+	// END STATICS ////////////////////////////////////////////////////////////
+	
+	private ShoutbreakService _service;
+	private TelephonyManager _tm;
+	private Database _db;
+	private CellDensity _cellDensity;
+	private LocationTracker _locationTracker;
+	protected Inbox _inbox;
+	private int _shoutsJustReceived;
+	private boolean _levelUpOccured; //This means level up.
+	//private boolean _densityJustChanged;
+	private boolean _scoresJustReceived;
+	private String _uid;
+	private String _auth;
+	private boolean _passwordExists; // no reason to put actual pw into memory
+	private int _level;
+	private int _points;
+	private int _nextLevelAt;
+	
 	public User(ShoutbreakService service) {
 		_service = service;
+		_listeners = new HashSet<UserListener>();
 		_tm = (TelephonyManager) service.getSystemService(Context.TELEPHONY_SERVICE);
 		_db = new Database(_service);
 		_locationTracker = new LocationTracker(_service);
@@ -68,7 +99,6 @@ public class User {
 		_level = 0;
 		_points = 0;
 		_auth = "default"; // we don't have auth yet... just give us nonce
-		resetFlags();
 		HashMap<String, String> userSettings = _db.getUserSettings();
 		if (userSettings.containsKey(C.KEY_USER_PW)) {
 			_passwordExists = true;
@@ -82,8 +112,27 @@ public class User {
 		if (userSettings.containsKey(C.KEY_USER_NEXT_LEVEL_AT)) {
 			_nextLevelAt = Integer.parseInt(userSettings.get(C.KEY_USER_NEXT_LEVEL_AT));
 		}
-		_cellDensity = new CellDensity();
-		_cellDensity.isSet = false;
+		
+		_cellDensity = getCellDensity();
+		
+	}
+	
+	public synchronized void pullUserInfo() {
+		fireUserEvent(UserEvent.LOCATION_SERVICES_CHANGE);
+		fireUserEvent(UserEvent.LEVEL_CHANGE);
+		fireUserEvent(UserEvent.POINTS_CHANGE);
+		fireUserEvent(UserEvent.INBOX_CHANGE);
+		fireUserEvent(UserEvent.DENSITY_CHANGE);
+	}
+	
+	public synchronized void saveDensity(double density) {
+		CellDensity tempCellDensity = _locationTracker.getCurrentCell();
+		_cellDensity.cellX = tempCellDensity.cellX;
+		_cellDensity.cellY = tempCellDensity.cellY;
+		_cellDensity.density = density;
+		_db.saveCellDensity(_cellDensity);
+		_cellDensity.isSet = true;
+		//setDensityJustChanged(true);
 	}
 	
 	public LocationTracker getLocationTracker() {
@@ -104,14 +153,6 @@ public class User {
 	
 	public boolean getLevelUpOccured() {
 		return _levelUpOccured;
-	}
-	
-	public void setDensityJustChanged(boolean b) {
-		_densityJustChanged = b;
-	}
-	
-	public boolean getDensityJustChanged() {
-		return _densityJustChanged;
 	}
 	
 	public void setScoresJustReceived(boolean b) {
@@ -135,35 +176,26 @@ public class User {
 	}
 
 	public synchronized CellDensity getCellDensity() {
-
-		CellDensity oldCellDensity = _cellDensity;
-		CellDensity tempCellDensity = _locationTracker.getCurrentCell();
-		_cellDensity.cellX = tempCellDensity.cellX;
-		_cellDensity.cellY = tempCellDensity.cellY;
-
-		if (_cellDensity.isSet && _cellDensity.cellX == oldCellDensity.cellX
-				&& _cellDensity.cellY == oldCellDensity.cellY) {
-			// in same cell
-			return _cellDensity;
+		if (_cellDensity == null) {
+			_cellDensity = new CellDensity();
 		} else {
-			// check db for cached result
-			tempCellDensity = _db.getDensityAtCell(_cellDensity);
-			if (tempCellDensity.isSet) {
-				_cellDensity.density = tempCellDensity.density;
-				_cellDensity.isSet = true;
+			// If _cellDensity exists, see if it's still valid.
+			CellDensity oldCellDensity = _cellDensity;
+			CellDensity tempCellDensity = _locationTracker.getCurrentCell();
+			_cellDensity.cellX = tempCellDensity.cellX;
+			_cellDensity.cellY = tempCellDensity.cellY;
+			if (_cellDensity.isSet && _cellDensity.cellX == oldCellDensity.cellX && _cellDensity.cellY == oldCellDensity.cellY) {
+				// We're still in the same cell so return this.
+				return _cellDensity;
 			}
 		}
+		// Otherwise we'll see if DB has a cached result. If not, isSet will be false.
+		CellDensity tempCellDensity = _db.getDensityAtCell(_cellDensity);
+		if (tempCellDensity.isSet) {
+			_cellDensity.density = tempCellDensity.density;
+			_cellDensity.isSet = true;
+		}
 		return _cellDensity;
-	}
-
-	public synchronized void saveDensity(double density) {
-		CellDensity tempCellDensity = _locationTracker.getCurrentCell();
-		_cellDensity.cellX = tempCellDensity.cellX;
-		_cellDensity.cellY = tempCellDensity.cellY;
-		_cellDensity.density = density;
-		_db.saveCellDensity(_cellDensity);
-		_cellDensity.isSet = true;
-		setDensityJustChanged(true);
 	}
 
 	public String getAuth() {
@@ -177,7 +209,8 @@ public class User {
 			pw = userSettings.get(C.KEY_USER_PW);
 		}
 		// $auth = sha1($uid . $pw . $nonce);
-		_auth = Hash.sha1(_uid + pw + nonce);
+		//_auth = Hash.sha1(_uid + pw + nonce);	
+		_auth = pw + Hash.sha512(pw + nonce + _uid);		
 	}
 
 	public boolean hasAccount() {
@@ -245,11 +278,5 @@ public class User {
 	public String getAndroidId() {
 		return Settings.Secure.getString(_service.getContentResolver(), Settings.Secure.ANDROID_ID);
 	}
-	
-	public void resetFlags() {
-		setShoutsJustReceived(0);
-		setScoresJustReceived(false);
-		setLevelUpOccured(false);
-		setDensityJustChanged(false);
-	}
+
 }

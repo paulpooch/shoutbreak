@@ -1,12 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-<fullyQualifiedTypeName name="com.shoutbreak.ui.IBridgeForService"/>
-<fullyQualifiedTypeName name="com.shoutbreak.ui.IUIBridge"/>
-<fullyQualifiedTypeName name="android.graphics.Point"/>
-<fullyQualifiedTypeName name="android.view.MotionEvent"/>
-<fullyQualifiedTypeName name="android.util.AttributeSet"/>
-<fullyQualifiedTypeName name="com.google.android.maps.MapView"/>
-<fullyQualifiedTypeName name="org.apache.http.NameValuePair"/>
 <fullyQualifiedTypeName name="org.apache.http.message.BasicNameValuePair"/>
 <fullyQualifiedTypeName name="com.shoutbreak.service.http.HttpConnection"/>
 <fullyQualifiedTypeName name="com.shoutbreak.service.http.PostData"/>
@@ -42,7 +35,6 @@
 <fullyQualifiedTypeName name="com.shoutbreak.R.id"/>
 <fullyQualifiedTypeName name="com.shoutbreak.R"/>
 <fullyQualifiedTypeName name="com.shoutbreak.UserInfo"/>
-<fullyQualifiedTypeName name="java.util.ArrayList"/>
 <fullyQualifiedTypeName name="java.util.List"/>
 <fullyQualifiedTypeName name="com.shoutbreak.service.CellDensity"/>
 <fullyQualifiedTypeName name="java.lang.String"/>
@@ -60,4 +52,12 @@
 <fullyQualifiedTypeName name="android.content.Intent"/>
 <fullyQualifiedTypeName name="com.shoutbreak.ui.DialogBuilder"/>
 <fullyQualifiedTypeName name="android.app.AlertDialog.Builder"/>
+<fullyQualifiedTypeName name="java.util.ArrayList"/>
+<fullyQualifiedTypeName name="com.shoutbreak.service.UserEvent"/>
+<fullyQualifiedTypeName name="java.util.Set"/>
+<fullyQualifiedTypeName name="java.util.HashSet"/>
+<fullyQualifiedTypeName name="com.shoutbreak.service.UserEvent.UserEventType"/>
+<fullyQualifiedTypeName name="com.shoutbreak.service.UserListener"/>
+<fullyQualifiedTypeName name="com.google.android.maps.GeoPoint"/>
+<fullyQualifiedTypeName name="android.widget.PopupWindow"/>
 </qualifiedTypeNameHistroy>
