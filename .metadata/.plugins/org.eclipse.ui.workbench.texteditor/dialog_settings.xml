@@ -3,26 +3,26 @@
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
 		<item value="257" key="DIALOG_WIDTH"/>
 		<item value="152" key="DIALOG_Y_ORIGIN"/>
-		<item value="380" key="DIALOG_HEIGHT"/>
 		<item value="1181" key="DIALOG_X_ORIGIN"/>
+		<item value="380" key="DIALOG_HEIGHT"/>
 		<item value="1|Segoe UI|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI" key="DIALOG_FONT_NAME"/>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="true" key="wrap"/>
-		<item value="false" key="isRegEx"/>
 		<item value="false" key="casesensitive"/>
+		<item value="false" key="isRegEx"/>
 		<item value="false" key="incremental"/>
 		<item value="false" key="wholeword"/>
-		<item value="_serviceBridge" key="selection"/>
+		<item value="toggleLoca" key="selection"/>
 		<list key="findhistory">
-			<item value="_serviceBridge"/>
-			<item value="_serviceConn"/>
-			<item value="_serviceBridge = null"/>
-			<item value="onresume"/>
-			<item value="se"/>
-			<item value="onDestroy"/>
-			<item value="_serviceIntent"/>
-			<item value="_serviceIntent ="/>
+			<item value="toggleloca"/>
+			<item value="services"/>
+			<item value="location"/>
+			<item value="getmy"/>
+			<item value="initmap"/>
+			<item value="_currentRadiusPx"/>
+			<item value="_zoomLevel"/>
+			<item value="enable"/>
 		</list>
 		<list key="replacehistory">
 			<item value="quantile"/>
