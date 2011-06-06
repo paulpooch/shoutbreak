@@ -13,16 +13,16 @@
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="false" key="wholeword"/>
-		<item value="pullUser" key="selection"/>
+		<item value="_serviceBridge" key="selection"/>
 		<list key="findhistory">
-			<item value="pulluser"/>
-			<item value="density"/>
-			<item value="tempCellDensity"/>
-			<item value="getlevel"/>
-			<item value="getcell"/>
-			<item value="savedensity"/>
-			<item value="toggleloca"/>
-			<item value="services"/>
+			<item value="_serviceBridge"/>
+			<item value="_serviceConn"/>
+			<item value="_serviceBridge = null"/>
+			<item value="onresume"/>
+			<item value="se"/>
+			<item value="onDestroy"/>
+			<item value="_serviceIntent"/>
+			<item value="_serviceIntent ="/>
 		</list>
 		<list key="replacehistory">
 			<item value="quantile"/>

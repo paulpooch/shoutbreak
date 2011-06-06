@@ -1,5 +1,0 @@
-package com.shoutbreak.service;
-
-public interface UserListener {
-
-}

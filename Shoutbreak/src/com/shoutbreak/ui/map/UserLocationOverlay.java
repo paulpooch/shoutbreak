@@ -113,6 +113,7 @@ public class UserLocationOverlay extends MyLocationOverlay implements UserListen
         _resizeIconLocation = new Point();
         _resizeIcon = Bitmap.createBitmap(resizeBitmap, 0, 0, _resizeIconSize.x, _resizeIconSize.y);
         
+        // TODO: does this need to be called?
         this.getMyLocation();
         
     }

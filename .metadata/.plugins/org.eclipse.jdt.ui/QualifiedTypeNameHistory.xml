@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-<fullyQualifiedTypeName name="org.apache.http.message.BasicNameValuePair"/>
-<fullyQualifiedTypeName name="com.shoutbreak.service.http.HttpConnection"/>
 <fullyQualifiedTypeName name="com.shoutbreak.service.http.PostData"/>
 <fullyQualifiedTypeName name="android.util.Log"/>
 <fullyQualifiedTypeName name="android.widget.ImageButton"/>
@@ -20,7 +18,6 @@
 <fullyQualifiedTypeName name="android.widget.RelativeLayout"/>
 <fullyQualifiedTypeName name="com.shoutbreak.service.User"/>
 <fullyQualifiedTypeName name="com.shoutbreak.ui.map.CustomMapView"/>
-<fullyQualifiedTypeName name="com.google.android.maps.MapController"/>
 <fullyQualifiedTypeName name="com.shoutbreak.ui.UserLocationOverlay"/>
 <fullyQualifiedTypeName name="android.view.inputmethod.InputMethodManager"/>
 <fullyQualifiedTypeName name="android.widget.EditText"/>
@@ -58,6 +55,9 @@
 <fullyQualifiedTypeName name="java.util.HashSet"/>
 <fullyQualifiedTypeName name="com.shoutbreak.service.UserEvent.UserEventType"/>
 <fullyQualifiedTypeName name="com.shoutbreak.service.UserListener"/>
-<fullyQualifiedTypeName name="com.google.android.maps.GeoPoint"/>
 <fullyQualifiedTypeName name="android.widget.PopupWindow"/>
+<fullyQualifiedTypeName name="com.google.android.maps.MapController"/>
+<fullyQualifiedTypeName name="com.google.android.maps.GeoPoint"/>
+<fullyQualifiedTypeName name="com.shoutbreak.service.LocationTracker"/>
+<fullyQualifiedTypeName name="android.location.Location"/>
 </qualifiedTypeNameHistroy>

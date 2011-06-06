@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.graphics.Color;
+import android.location.Location;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
@@ -22,6 +23,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapController;
 import com.shoutbreak.C;
@@ -30,6 +32,7 @@ import com.shoutbreak.ErrorManager;
 import com.shoutbreak.R;
 import com.shoutbreak.Shout;
 import com.shoutbreak.service.IServiceBridge;
+import com.shoutbreak.service.LocationTracker;
 import com.shoutbreak.service.ShoutbreakService;
 import com.shoutbreak.service.User;
 import com.shoutbreak.service.UserEvent;
@@ -87,7 +90,6 @@ public class Shoutbreak extends MapActivity implements UserListener {
 		Thread.setDefaultUncaughtExceptionHandler(new CustomExceptionHandler(C.CONFIG_CRASH_REPORT_ADDRESS));
 
 		_ui = this;
-		//_userInfo = new UserInfo();
 		_serviceIntent = new Intent(Shoutbreak.this, ShoutbreakService.class);
 		_inboxListViewAdapter = new InboxListViewAdapter(this);
 		_inputMM = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -204,6 +206,8 @@ public class Shoutbreak extends MapActivity implements UserListener {
 		initInboxListView();
 		disableInputs();
 		
+		// TODO: moved this from onResume()
+		figureOutService();
 	}
 
 	@Override
@@ -214,7 +218,8 @@ public class Shoutbreak extends MapActivity implements UserListener {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		figureOutService();
+		// TODO: moved this to onCreate()
+		// figureOutService();
 		// this gets extras from notification if app not running
 		Bundle extras = getIntent().getExtras();
 		handleExtras(extras);
@@ -223,7 +228,8 @@ public class Shoutbreak extends MapActivity implements UserListener {
 	@Override
 	protected void onPause() {
 		super.onPause();
-		serviceOnUIOff();
+		// TODO: moved to onDestroy()
+		//serviceOnUIOff();
 	}
 
 	@Override
@@ -234,6 +240,7 @@ public class Shoutbreak extends MapActivity implements UserListener {
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
+		serviceOnUIOff();
 	}
 
 	// this gets extras from notification if app already running
@@ -248,48 +255,72 @@ public class Shoutbreak extends MapActivity implements UserListener {
 	public void handleUserEvent(UserEvent e) {
 		User user = e.getUser();
 		
-		if (e.type == UserEvent.LOCATION_SERVICES_CHANGE) {	
-			if (user.getLocationTracker().isLocationEnabled()) {
-				// run service from here?
-				toggleGPSUsage(true);
-				_serviceBridge.runServiceFromUI();
-				enableInputs();
-			} else {
-				serviceOffUIOn();
-				_dialogBuilder.showDialog(DialogBuilder.DIALOG_LOCATION_DISABLED);
-			}
-		
-		} else if (e.type == UserEvent.INBOX_CHANGE) {
-			_inboxListViewAdapter.updateDisplay(user.getInbox().getShoutsForUI());
-		
-		} else if (e.type == UserEvent.SHOUT_SENT) {
-			giveNotice("shout sent");
-			_cShoutText.setText("");
-		
-		} else if (e.type == UserEvent.SHOUTS_RECEIVED) {
-			int newShouts = user.getShoutsJustReceived();
-			if (newShouts > 0) {
-				String pluralShout = "shout" + (newShouts > 1 ? "s" : "");
-				String notice = "just heard " + newShouts + " new " + pluralShout;
-				giveNotice(notice);
-				_inboxListViewAdapter.updateDisplay(user.getInbox().getShoutsForUI());
-			}
-		
-		} else if (e.type == UserEvent.VOTE_COMPLETE) {
-			_inboxListViewAdapter.updateDisplay(user.getInbox().getShoutsForUI());
-		
-		} else if (e.type == UserEvent.ACCOUNT_CREATED) {
-			// Do anything?
-		
-		} else if (e.type == UserEvent.DENSITY_CHANGE) {
-			// This goes directly to UserLocationOverlay.  Handled there.
-		
-		} else if (e.type == UserEvent.LEVEL_CHANGE) {
-			giveNotice("shoutreach grew +" + C.CONFIG_PEOPLE_PER_LEVEL + " people");
-	
-		} else if (e.type == UserEvent.SCORES_CHANGE) {
-			_inboxListViewAdapter.updateDisplay(user.getInbox().getShoutsForUI());
+		switch(e.type) {
 			
+			case UserEvent.LOCATION_CHANGED: {
+				animateMap(user.getLocationTracker().getLocation());
+				break;
+			}
+			
+			case UserEvent.LOCATION_SERVICES_CHANGE: {
+				if (user.getLocationTracker().isLocationEnabled()) {
+					// run service from here?
+					toggleGPSUsage(true);
+					_serviceBridge.runServiceFromUI();
+					enableInputs();
+				} else {
+					serviceOffUIOn();
+					_dialogBuilder.showDialog(DialogBuilder.DIALOG_LOCATION_DISABLED);
+				}
+				break;
+			}
+			
+			case UserEvent.INBOX_CHANGE: {
+				_inboxListViewAdapter.updateDisplay(user.getInbox().getShoutsForUI());
+				break;
+			}
+			
+			case UserEvent.SHOUT_SENT: {
+				giveNotice("shout sent");
+				_cShoutText.setText("");
+				break;
+			}	
+			
+			case UserEvent.SHOUTS_RECEIVED: {
+				int newShouts = user.getShoutsJustReceived();
+				if (newShouts > 0) {
+					String pluralShout = "shout" + (newShouts > 1 ? "s" : "");
+					String notice = "just heard " + newShouts + " new " + pluralShout;
+					giveNotice(notice);
+					_inboxListViewAdapter.updateDisplay(user.getInbox().getShoutsForUI());
+				}
+				break;
+			}		
+			
+			case UserEvent.VOTE_COMPLETE: {
+				_inboxListViewAdapter.updateDisplay(user.getInbox().getShoutsForUI());
+				break;
+			}
+			
+			case UserEvent.ACCOUNT_CREATED: {
+				// Do anything?
+				break;
+			}	
+			
+			case UserEvent.DENSITY_CHANGE: {
+				// This goes directly to UserLocationOverlay.  Handled there.
+				break;
+			}
+			
+			case UserEvent.LEVEL_CHANGE: {
+				giveNotice("shoutreach grew +" + C.CONFIG_PEOPLE_PER_LEVEL + " people");
+				break;
+			}
+			
+			case UserEvent.SCORES_CHANGE: {
+				_inboxListViewAdapter.updateDisplay(user.getInbox().getShoutsForUI());
+				break;
+			}
 		}
 	};
 	
@@ -311,14 +342,16 @@ public class Shoutbreak extends MapActivity implements UserListener {
 		if (_serviceBridge != null) {
 			_serviceBridge.toggleLocationTracker(turnOn);
 		}
+		// turn on gps
 		if (turnOn) {
 			if (_cMapView.getOverlays().size() == 0) {
 				_cMapView.getOverlays().add(_userLocationOverlay);
 				_userLocationOverlay.enableMyLocation();
 				_cMapView.postInvalidate();
 				
-				_mapController.animateTo(_userLocationOverlay.getMyLocation());
+				//animateMap(_userLocationOverlay.getLocation(), false);
 			}
+		// turn off gps
 		} else {
 			if (_cMapView.getOverlays().size() > 0) {
 				_userLocationOverlay.disableMyLocation();
@@ -345,12 +378,14 @@ public class Shoutbreak extends MapActivity implements UserListener {
 		// _cMapView.setUI(this);
 		_cMapView.setUserLocationOverlay(_userLocationOverlay);
 		_cMapView.postInvalidate();
-		_userLocationOverlay.runOnFirstFix(new Runnable() {
-			public void run() {
-				//GeoPoint loc = _userLocationOverlay.getMyLocation();
-				//_mapController.animateTo(loc);
-			}
-		});
+		
+		// TODO: remove this. called when 'on/off' switch is clicked
+		//_userLocationOverlay.runOnFirstFix(new Runnable() {
+		//	public void run() {
+		//		GeoPoint loc = _userLocationOverlay.getMyLocation();
+		//		_mapController.animateTo(loc);
+		//	}
+		//});
 		_userLocationOverlay.enableMyLocation();
 	}
 	
@@ -438,15 +473,22 @@ public class Shoutbreak extends MapActivity implements UserListener {
 		//		+ "\n\nCell: [" + _userInfo.getCellDensity().cellX + ", " + _userInfo.getCellDensity().cellY + "] = " + _userInfo.getCellDensity().density);
 	}
 	
+	public void animateMap(Location location) {
+		if (location != null) {
+			_mapController.animateTo(LocationTracker.LocationToGeoPoint(location));
+		} else
+			Toast.makeText(Shoutbreak.this, "null location", Toast.LENGTH_SHORT).show();
+	}
+	
 	@Override
 	protected boolean isRouteDisplayed() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 	
 	// SERVICE CONNECTION /////////////////////////////////////////////////////
 
 	private void figureOutService() {
+		// TODO: the UI is always 'on' in this class. dick sneeze. 
 		if (User.getBooleanPreference(this, C.PREF_APP_ON_OFF_STATUS, true)) {
 			serviceOnUIOn();
 		} else {
@@ -455,6 +497,7 @@ public class Shoutbreak extends MapActivity implements UserListener {
 	}
 
 	private void serviceOnUIOn() {
+		// TODO: shouldn't serviceBridge always be null here?
 		if (_serviceBridge == null) {
 			startService(_serviceIntent);
 			_serviceConn = new ShoutbreakServiceConnection();
@@ -470,9 +513,12 @@ public class Shoutbreak extends MapActivity implements UserListener {
 		//disableInputs();
 		if (_serviceBridge != null) {
 			toggleGPSUsage(false);
-			//_serviceBridge.unRegisterUIBridge();
-			unbindService(_serviceConn);
-			//_serviceBridge = null;
+			try {
+				// don't remove _serviceBridge reference
+				unbindService(_serviceConn);
+			} catch(IllegalArgumentException e) {
+				Toast.makeText(Shoutbreak.this, "leaked service connection", Toast.LENGTH_LONG).show();
+			}
 		}
 	}
 
@@ -499,17 +545,21 @@ public class Shoutbreak extends MapActivity implements UserListener {
 				_serviceBridge.stopServiceFromUI();
 				unbindService(_serviceConn);
 			}
-			stopService(_serviceIntent);
+			// TODO: flipped the order of the following two lines
+			//       must remove all references before stopping service
 			_serviceBridge = null;
+			stopService(_serviceIntent);
 		}
 		Log.e("HANDLE SERVICE", "done");
 	}
 	
 	class ShoutbreakServiceConnection implements ServiceConnection {
+		
 		public void onServiceConnected(ComponentName className, IBinder service) {
 			_serviceBridge = (IServiceBridge) service;
 			handleServiceChangeWithUIOn(true);
 		}
+		
 		public void onServiceDisconnected(ComponentName className) {
 			// This is called when the connection with the service has been
 			// unexpectedly disconnected -- that is, its process crashed.

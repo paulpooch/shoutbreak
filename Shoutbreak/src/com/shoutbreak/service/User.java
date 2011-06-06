@@ -93,7 +93,7 @@ public class User {
 		_listeners = new HashSet<UserListener>();
 		_tm = (TelephonyManager) service.getSystemService(Context.TELEPHONY_SERVICE);
 		_db = new Database(_service);
-		_locationTracker = new LocationTracker(_service);
+		_locationTracker = new LocationTracker(_service, this);
 		_inbox = new Inbox(_db);
 		_passwordExists = false;
 		_level = 0;

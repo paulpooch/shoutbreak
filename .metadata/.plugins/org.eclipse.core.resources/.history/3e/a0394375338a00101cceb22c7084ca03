@@ -1,7 +1,0 @@
-package com.shoutbreak.service;
-
-public interface Subject {
-	public void registerObserver(UserListener o);
-	public void removeObserver(UserListener o);
-	public void notifyObservers();
-}
