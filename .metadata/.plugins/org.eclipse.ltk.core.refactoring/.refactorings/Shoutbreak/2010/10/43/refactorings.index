@@ -1,5 +1,0 @@
-1287617731527	Rename field '_radiusPx'
-1287620470572	Rename field '_zoomLevelNeedsAdjusting'
-1287620515378	Rename method 'adjustZoomLevelToShowCircle'
-1287621891094	Rename field '_oldTopRadiusGeoPoint'
-1287630339812	Rename field '_baseTopRadiusMeters'

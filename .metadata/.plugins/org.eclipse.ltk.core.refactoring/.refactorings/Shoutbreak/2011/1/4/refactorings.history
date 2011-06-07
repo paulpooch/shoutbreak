@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<session version="1.0">
-<refactoring comment="Rename method &apos;com.shoutbreak.ShoutbreakUI.tempNotify(...)&apos; to &apos;giveTitleBarNotification&apos;&#x0D;&#x0A;- Original project: &apos;Shoutbreak&apos;&#x0D;&#x0A;- Original element: &apos;com.shoutbreak.ShoutbreakUI.tempNotify(...)&apos;&#x0D;&#x0A;- Renamed element: &apos;com.shoutbreak.ShoutbreakUI.giveTitleBarNotification(...)&apos;&#x0D;&#x0A;- Update references to refactored element" delegate="false" deprecate="false" description="Rename method &apos;tempNotify&apos;" flags="589830" id="org.eclipse.jdt.ui.rename.method" input="/src&lt;com.shoutbreak{ShoutbreakUI.java[ShoutbreakUI~tempNotify~QString;~QString;~QString;" name="giveTitleBarNotification" references="true" stamp="1295399213610" version="1.0"/>
-</session>
