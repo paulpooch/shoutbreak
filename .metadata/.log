@@ -253,3 +253,73 @@ Command-line arguments:  -os win32 -ws win32 -arch x86 -product org.eclipse.epp.
 
 !ENTRY com.android.ide.eclipse.adt 4 0 2011-06-06 16:51:32.003
 !MESSAGE loadAndParseRClass: failed to find manifest package for project Shoutbreak
+!SESSION 2011-06-06 18:04:58.373 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.6.0_24
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=win32, ARCH=x86, WS=win32, NL=en_US
+Framework arguments:  -product org.eclipse.epp.package.java.product
+Command-line arguments:  -os win32 -ws win32 -arch x86 -product org.eclipse.epp.package.java.product
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2011-06-06 18:05:05.196
+!MESSAGE loadAndParseRClass: failed to find manifest package for project Shoutbreak
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2011-06-06 18:05:08.027
+!MESSAGE loadAndParseRClass: failed to find manifest package for project Shoutbreak
+
+!ENTRY com.android.ide.eclipse.adt 4 0 2011-06-06 18:05:11.338
+!MESSAGE Unable to read C:\Users\John\Android\shoutbreak\Shoutbreak\AndroidManifest.xml: org.eclipse.core.internal.resources.ResourceException: Resource is out of sync with the file system: '/Shoutbreak/AndroidManifest.xml'.
+!STACK 0
+com.android.sdklib.io.StreamException: org.eclipse.core.internal.resources.ResourceException: Resource is out of sync with the file system: '/Shoutbreak/AndroidManifest.xml'.
+	at com.android.ide.eclipse.adt.io.IFileWrapper.getContents(IFileWrapper.java:49)
+	at com.android.sdklib.xml.AndroidManifestParser.parse(AndroidManifestParser.java:608)
+	at com.android.ide.eclipse.adt.internal.project.AndroidManifestHelper.parse(AndroidManifestHelper.java:71)
+	at com.android.ide.eclipse.adt.internal.build.builders.PreCompilerBuilder.build(PreCompilerBuilder.java:318)
+	at org.eclipse.core.internal.events.BuildManager$2.run(BuildManager.java:627)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:170)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:201)
+	at org.eclipse.core.internal.events.BuildManager$1.run(BuildManager.java:253)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42)
+	at org.eclipse.core.internal.events.BuildManager.basicBuild(BuildManager.java:256)
+	at org.eclipse.core.internal.events.BuildManager.basicBuildLoop(BuildManager.java:309)
+	at org.eclipse.core.internal.events.BuildManager.build(BuildManager.java:341)
+	at org.eclipse.core.internal.events.AutoBuildJob.doBuild(AutoBuildJob.java:140)
+	at org.eclipse.core.internal.events.AutoBuildJob.run(AutoBuildJob.java:238)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:55)
+Caused by: org.eclipse.core.internal.resources.ResourceException: Resource is out of sync with the file system: '/Shoutbreak/AndroidManifest.xml'.
+	at org.eclipse.core.internal.localstore.FileSystemResourceManager.read(FileSystemResourceManager.java:664)
+	at org.eclipse.core.internal.resources.File.getContents(File.java:288)
+	at org.eclipse.core.internal.resources.File.getContents(File.java:277)
+	at com.android.ide.eclipse.adt.io.IFileWrapper.getContents(IFileWrapper.java:47)
+	... 15 more
+!SESSION 2011-06-06 18:19:30.693 -----------------------------------------------
+eclipse.buildId=unknown
+java.version=1.6.0_24
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=win32, ARCH=x86, WS=win32, NL=en_US
+Framework arguments:  -product org.eclipse.epp.package.java.product
+Command-line arguments:  -os win32 -ws win32 -arch x86 -product org.eclipse.epp.package.java.product
+
+!ENTRY org.eclipse.mat.ui 1 0 2011-06-06 18:20:53.394
+!MESSAGE Heap C:\Users\John\AppData\Local\Temp\android3225729595830604229.hprof contains 55,514 objects
+
+!ENTRY org.eclipse.mat.report 4 0 2011-06-06 18:21:51.098
+!MESSAGE Ignoring result of 'Top Components' due to Object 0x45d57bc8 not found.
+!STACK 0
+org.eclipse.mat.SnapshotException: Object 0x45d57bc8 not found.
+	at org.eclipse.mat.parser.internal.SnapshotImpl.mapAddressToId(SnapshotImpl.java:1451)
+	at org.eclipse.mat.snapshot.model.ObjectReference.getObjectId(ObjectReference.java:56)
+	at org.eclipse.mat.inspections.component.ComponentReportQuery.addReferenceStatistic(ComponentReportQuery.java:764)
+	at org.eclipse.mat.inspections.component.ComponentReportQuery.execute(ComponentReportQuery.java:134)
+	at org.eclipse.mat.query.registry.ArgumentSet.execute(ArgumentSet.java:129)
+	at org.eclipse.mat.snapshot.query.SnapshotQuery.execute(SnapshotQuery.java:192)
+	at org.eclipse.mat.inspections.component.TopComponentsReportQuery.execute(TopComponentsReportQuery.java:66)
+	at org.eclipse.mat.query.registry.ArgumentSet.execute(ArgumentSet.java:129)
+	at org.eclipse.mat.query.registry.CommandLine.execute(CommandLine.java:93)
+	at org.eclipse.mat.report.internal.QueryPart.execute(QueryPart.java:96)
+	at org.eclipse.mat.report.TestSuite.execute(TestSuite.java:131)
+	at org.eclipse.mat.report.internal.RunRegisterdReport.execute(RunRegisterdReport.java:50)
+	at org.eclipse.mat.query.registry.ArgumentSet.execute(ArgumentSet.java:129)
+	at org.eclipse.mat.ui.QueryExecution$ExecutionJob.run(QueryExecution.java:174)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:55)
