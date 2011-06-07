@@ -12,6 +12,7 @@ public class UserEvent {
 	public static final int VOTE_COMPLETE = 7;
 	public static final int ACCOUNT_CREATED = 9;
 	public static final int SCORES_CHANGE = 10;
+	public static final int LOCATION_CHANGED = 11;
 	
 	private User _source;
 	public int type;	

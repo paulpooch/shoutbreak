@@ -1,7 +1,0 @@
-package com.shoutbreak.service;
-
-public class UserEvent {
-
-	prive User _source;
-	
-}

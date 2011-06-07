@@ -1,5 +1,6 @@
 package com.shoutbreak.service;
 
+import com.google.android.maps.GeoPoint;
 import com.shoutbreak.C;
 
 import android.content.Context;
@@ -13,14 +14,16 @@ public class LocationTracker {
 	// http://stackoverflow.com/questions/1389811/gps-not-update-location-after-close-and-reopen-app-on-android
 		
 	private Context _context;
+	private User _user;
 	private LocationManager _locationManager;
 	private Location _location;
 	private LocationListener _locationListener;
 	private String _provider;
 	private Criteria _criteria;
 	
-	public LocationTracker(Context context) {
+	public LocationTracker(Context context, User user) {
 		_context = context;
+		_user = user;
 		_locationManager = (LocationManager) _context.getSystemService(Context.LOCATION_SERVICE);
 		_locationListener = new CustomLocationListener();
 		//_location = _locationManager.getLastKnownLocation(_provider);
@@ -61,6 +64,7 @@ public class LocationTracker {
 		return _location;
 	}
 	
+	
 	public double getLatitude() {
 		return _location.getLatitude();
 	}
@@ -99,6 +103,7 @@ public class LocationTracker {
 			 if (isBetterLocation(location, _location)) {
 				 _location = location;
 			 }
+			 _user.fireUserEvent(UserEvent.LOCATION_CHANGED);
         }
 
         public void onProviderDisabled(String provider) {
@@ -171,5 +176,8 @@ public class LocationTracker {
 	     }
 	     return provider1.equals(provider2);
 	 }
-		
+	 
+	 public static GeoPoint LocationToGeoPoint(Location location) {
+		 return new GeoPoint((int)(location.getLatitude() * 1e6), (int)(location.getLongitude() * 1e6));
+	 }		
 }
