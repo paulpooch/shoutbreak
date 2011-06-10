@@ -94,7 +94,7 @@ public class User {
 		_tm = (TelephonyManager) service.getSystemService(Context.TELEPHONY_SERVICE);
 		_db = new Database(_service);
 		_locationTracker = new LocationTracker(_service, this);
-		_inbox = new Inbox(_db);
+		_inbox = new Inbox(_db, this);
 		_passwordExists = false;
 		_level = 0;
 		_points = 0;
@@ -112,7 +112,7 @@ public class User {
 		if (userSettings.containsKey(C.KEY_USER_NEXT_LEVEL_AT)) {
 			_nextLevelAt = Integer.parseInt(userSettings.get(C.KEY_USER_NEXT_LEVEL_AT));
 		}
-		
+		initializePoints();
 		_cellDensity = getCellDensity();
 		
 	}
@@ -229,22 +229,30 @@ public class User {
 		_uid = uid;
 	}
 	
-	public synchronized void setLevel(int level) {
+	public synchronized void levelUp(int newLevel, int newPoints, int nextLevelAt) {
+		setLevel(newLevel);
+		setNextLevelAt(nextLevelAt);
+		setPoints(newPoints);
+	}
+	
+	private synchronized void setLevel(int level) {
 		String sLevel = Integer.toString(level);
 		_db.saveUserSetting(C.KEY_USER_LEVEL, sLevel);
 		_level = level;
 	}
 	
-	public synchronized void setPoints(int points) {
-		String sPoints = Integer.toString(points);
-		_db.saveUserSetting(C.KEY_USER_POINTS, sPoints);
-		_points = points;
-	}
-	
-	public synchronized void setNextLevelAt(int nextLevelAt) {
+	private synchronized void setNextLevelAt(int nextLevelAt) {
 		String sNextLevelAt = Integer.toString(nextLevelAt);
 		_db.saveUserSetting(C.KEY_USER_NEXT_LEVEL_AT, sNextLevelAt);
 		_nextLevelAt = nextLevelAt;
+	}
+	
+	// TODO: implement this for when level changes
+	private synchronized void setPoints(int points) {
+		//String sPoints = Integer.toString(points);
+		//_db.saveUserSetting(C.KEY_USER_POINTS, sPoints);
+		_db.savePoints(C.POINTS_LEVEL_CHANGE, points);
+		initializePoints();
 	}
 	
 	public String getUID() {
@@ -255,8 +263,17 @@ public class User {
 		return _level;
 	}
 	
+	public synchronized void savePoints(int amount) {
+		_db.savePoints(C.POINTS_SHOUT, amount);
+		_points += amount;
+	}
+	
 	public int getPoints() {
 		return _points;
+	}
+	
+	private synchronized void initializePoints() {
+		_points = _db.calculateUsersPoints();
 	}
 	
 	public int getNextLevelAt() {

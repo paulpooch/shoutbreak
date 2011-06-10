@@ -320,6 +320,11 @@ public class Shoutbreak extends MapActivity implements UserListener {
 				_inboxListViewAdapter.updateDisplay(user.getInbox().getShoutsForUI());
 				break;
 			}
+			
+			case UserEvent.POINTS_CHANGE: {
+				updateUserInfo(user);
+				break;
+			}
 		}
 	};
 	
@@ -461,9 +466,9 @@ public class Shoutbreak extends MapActivity implements UserListener {
 		_cNoticeTextUser.setTextColor(Color.WHITE);
 		_cNoticeTextUser.startAnimation(_animNoticeShowText);
 	}
-
 	
-	public void updateUserInfo() {
+	public void updateUserInfo(User user) {
+		_cTvUserLevel.setText("Points: " + user.getPoints());
 		//_cTvUserLevel.setText(
 		//		"Points: " + _userInfo.getPoints() 
 		//		+ "\nLevel: " + _userInfo.getLevel()

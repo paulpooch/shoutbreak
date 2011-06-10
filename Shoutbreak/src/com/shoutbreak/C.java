@@ -68,8 +68,9 @@ public class C {
 	
 	// POINTS TYPES ///////////////////////////////////////////////////////////
 	
-	public static final int POINTS_SHOUT = 0;
-
+	public static final int POINTS_LEVEL_CHANGE = 0;
+	public static final int POINTS_SHOUT = 1;
+	
 	// PURPOSES ///////////////////////////////////////////////////////////////
 
 	public static final int PURPOSE_LOOP_FROM_UI = 0; // no delay

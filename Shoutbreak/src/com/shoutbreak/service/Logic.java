@@ -164,9 +164,6 @@ public class Logic {
 				int newLevel = (int) levelInfo.getLong(C.JSON_LEVEL);
 				int newPoints = (int) levelInfo.getLong(C.JSON_POINTS);
 				int nextLevelAt = (int) levelInfo.getLong(C.JSON_NEXT_LEVEL_AT);
-				_user.setLevel(newLevel);
-				_user.setPoints(newPoints);
-				_user.setNextLevelAt(nextLevelAt);
 				_user.fireUserEvent(UserEvent.LEVEL_CHANGE);
 				_user.fireUserEvent(UserEvent.POINTS_CHANGE);
 			}

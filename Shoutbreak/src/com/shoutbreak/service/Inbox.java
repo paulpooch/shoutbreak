@@ -13,10 +13,12 @@ public class Inbox {
 	
 	private Database _db;
 	private List<Shout> _shouts;
-		
-	public Inbox(Database db) {
+	private User _user;	
+	
+	public Inbox(Database db, User user) {
 		_db = db;
 		_shouts = new ArrayList<Shout>();
+		_user = user;
 	}
 	
 	public List<Shout> getShoutsForUI() {
@@ -100,7 +102,18 @@ public class Inbox {
 		shout.pts = C.NULL_PTS;
 		shout.approval = jsonScore.optInt(C.JSON_SHOUT_APPROVAL, C.NULL_APPROVAL);
 		shout.open = jsonScore.optInt(C.JSON_SHOUT_OPEN, 0) == 1 ? true : C.NULL_OPEN;
-		_db.updateScore(shout);		
+		_db.updateScore(shout);
+		
+		// If the shout is closed, we checked if it's in our outbox.
+		// If it is, we need to save the points.
+		if (!shout.open){
+			Shout shoutFromDB = _db.getShout(shout.id);
+			if (shoutFromDB.is_outbox) {
+				_user.savePoints(shout.pts);
+				_user.fireUserEvent(UserEvent.POINTS_CHANGE);
+			}
+		}
+		
 	}
 	
 	public synchronized void reflectVote(String shoutID, int vote) {

@@ -103,6 +103,7 @@ public class Database {
 			db.execSQL("DROP TABLE IF EXISTS " + C.DB_TABLE_USER_SETTINGS);
 			db.execSQL("DROP TABLE IF EXISTS " + C.DB_TABLE_DENSITY);
 			db.execSQL("DROP TABLE IF EXISTS " + C.DB_TABLE_SHOUTS);
+			db.execSQL("DROP TABLE IF EXISTS " + C.DB_TABLE_POINTS);
 			onCreate(db);
 		}
 	}
@@ -237,17 +238,7 @@ public class Database {
 			update.bindString(4, shout.id);
 		}
 		try {
-			update.execute();
-		
-			// If the shout is closed, we checked if it's in our outbox.
-			// If it is, we need to save the points.
-			if (!shout.open){
-				Shout shoutFromDB = getShout(shout.id);
-				if (shoutFromDB.is_outbox) {
-					savePoints(C.POINTS_SHOUT, shout.pts);		
-				}
-			}
-			
+			update.execute();			
 			result = true;
 		} catch (Exception ex) {
 			ErrorManager.manage(ex);
@@ -258,7 +249,7 @@ public class Database {
 	}
 
 	public Long savePoints(int pointsType, int pointsValue) {
-		String sql = "INSERT INTO " + C.DB_TABLE_POINTS + " (points_type, points_amount, points_timestamp) VALUES (?, ?, ?)";
+		String sql = "INSERT INTO " + C.DB_TABLE_POINTS + " (points_type, points_value, points_timestamp) VALUES (?, ?, ?)";
 		SQLiteStatement insert = this._db.compileStatement(sql);
 		insert.bindLong(1, pointsType);
 		insert.bindLong(2, pointsValue);
@@ -314,6 +305,44 @@ public class Database {
 		return results;
 	}
 
+	public int calculateUsersPoints() {
+		String sql = "SELECT points_value, points_timestamp FROM " + C.DB_TABLE_POINTS + " WHERE points_type = ? ORDER BY points_timestamp DESC";
+		Cursor cursor = null;
+		String cutoffDate = null;
+		int points = 0;
+		try {
+			
+			// Get most recent level_change info
+			cursor = _db.rawQuery(sql, new String[] { Integer.toString(C.POINTS_LEVEL_CHANGE) });
+			if (cursor.moveToFirst()) {
+				points = cursor.getInt(0);
+				cutoffDate = cursor.getString(1);
+			}
+			cursor.close();
+			
+			// Get all valid points
+			if (cutoffDate != null) {
+				String sql2 = "SELECT points_value FROM " + C.DB_TABLE_POINTS + " WHERE points_timestamp > ?";
+				cursor = _db.rawQuery(sql2, new String[] { cutoffDate });
+			} else {
+				String sql2 = "SELECT points_value FROM " + C.DB_TABLE_POINTS;
+				cursor = _db.rawQuery(sql2, null);
+			}	
+			while (cursor.moveToNext()) {
+				points += cursor.getInt(0);
+			}
+		
+		} catch (Exception ex) {
+			ErrorManager.manage(ex);
+			points = 0;
+		} finally {
+			if (cursor != null && !cursor.isClosed()) {
+				cursor.close();
+			}
+		}
+		return points;	
+	}
+	
 	public Shout getShout(String shoutID) {
 		String sql = "SELECT * FROM " + C.DB_TABLE_SHOUTS + " WHERE shout_id = ?";
 		Cursor cursor = null;
