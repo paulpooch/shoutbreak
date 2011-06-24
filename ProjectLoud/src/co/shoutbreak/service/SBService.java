@@ -1,6 +1,8 @@
 package co.shoutbreak.service;
 
 import java.util.Calendar;
+import java.util.Observable;
+import java.util.Observer;
 
 import co.shoutbreak.components.SBStateManager;
 import co.shoutbreak.components.SBUser;
@@ -11,10 +13,10 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
 import android.os.Binder;
-import android.os.Bundle;
 import android.os.IBinder;
+import android.widget.Toast;
 
-public class SBService extends Service {
+public class SBService extends Service implements Observer{
 
 	private final String TAG = "SBService";
 	
@@ -35,13 +37,18 @@ public class SBService extends Service {
 		super.onCreate();
 		
 		_StateManager = new SBStateManager();
+		_StateManager.addObserver(this);
 	}
 
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		SBLog.i(TAG, "onStartCommand()");
-		_isServiceOn = true;
-		
+		if (!_isServiceOn) {
+			_isServiceOn = true;
+			_StateManager.enableData();
+			_StateManager.enableUI();
+			_StateManager.disableData();
+		}
 		return START_STICKY;
 	}
 	
@@ -70,9 +77,16 @@ public class SBService extends Service {
 		Calendar cal = Calendar.getInstance();
 		cal.add(Calendar.SECOND, numSeconds);
 		Intent intent = new Intent(getApplicationContext(), SBAlarmReceiver.class);
-		intent.putExtra(C.ALARM_MESSAGE, "O'Doyle Rules!");
+		//intent.putExtra(C.ALARM_MESSAGE, "O'Doyle Rules!");
 		PendingIntent sender = PendingIntent.getBroadcast(this, C.ALARM_REQUEST_CODE, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 		AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
 		am.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), sender);
+	}
+
+	/* OBSERVER METHODS */
+	
+	public void update(Observable observable, Object data) {
+		SBStateManager smgr = (SBStateManager) observable;
+		Toast.makeText(getApplicationContext(), smgr.getState() + " " , Toast.LENGTH_SHORT).show();
 	}
 }

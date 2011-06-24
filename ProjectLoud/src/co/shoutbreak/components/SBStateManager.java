@@ -83,6 +83,7 @@ public class SBStateManager extends Observable {
 			
 			// notify observers of state change
 			if (isValidState) {
+				setChanged();
 				notifyObservers();
 			}
 		}
