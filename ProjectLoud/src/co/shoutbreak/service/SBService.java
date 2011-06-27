@@ -16,7 +16,7 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.widget.Toast;
 
-public class SBService extends Service implements Observer{
+public class SBService extends Service implements Observer {
 
 	private final String TAG = "SBService";
 	
@@ -45,9 +45,6 @@ public class SBService extends Service implements Observer{
 		SBLog.i(TAG, "onStartCommand()");
 		if (!_isServiceOn) {
 			_isServiceOn = true;
-			_StateManager.enableData();
-			_StateManager.enableUI();
-			_StateManager.disableData();
 		}
 		return START_STICKY;
 	}
@@ -62,6 +59,10 @@ public class SBService extends Service implements Observer{
 		
 		public SBUser getUser() {
 			return null;
+		}
+		
+		public SBStateManager getStateManager() {
+			return _StateManager;
 		}
 	}
 	
@@ -87,6 +88,6 @@ public class SBService extends Service implements Observer{
 	
 	public void update(Observable observable, Object data) {
 		SBStateManager smgr = (SBStateManager) observable;
-		Toast.makeText(getApplicationContext(), smgr.getState() + " " , Toast.LENGTH_SHORT).show();
+		//Toast.makeText(getApplicationContext(), smgr.getState() + " " , Toast.LENGTH_SHORT).show();
 	}
 }

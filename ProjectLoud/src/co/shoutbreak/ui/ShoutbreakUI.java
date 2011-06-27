@@ -1,12 +1,16 @@
 package co.shoutbreak.ui;
 
+import java.util.Observable;
+import java.util.Observer;
+
 import co.shoutbreak.R;
 import co.shoutbreak.components.SBNotificationManager;
 import co.shoutbreak.components.SBPageChanger;
-import co.shoutbreak.components.SBUser;
+import co.shoutbreak.components.SBStateManager;
 import co.shoutbreak.misc.C;
 import co.shoutbreak.misc.SBLog;
 import co.shoutbreak.service.SBService;
+import co.shoutbreak.service.ServiceBridgeInterface;
 
 import android.app.Activity;
 import android.content.ComponentName;
@@ -15,16 +19,15 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.widget.Toast;
 
-public class ShoutbreakUI extends Activity {
+public class ShoutbreakUI extends Activity implements Observer {
 	
 	private final String TAG = "Shoutbreak.java";
 
-	private SBService _Service;
-	private SBUser _User;
 	private SBNotificationManager _NotificationManager;
 	private SBPageChanger _PageChanger;
-	private Intent serviceIntent;
+	private ServiceBridgeInterface _ServiceBinder;
 	
 	/* LIFECYCLE METHODS */
 	
@@ -42,7 +45,7 @@ public class ShoutbreakUI extends Activity {
         _PageChanger = new SBPageChanger(this);
         
         // connect to service
-        serviceIntent = new Intent(ShoutbreakUI.this, SBService.class);
+        Intent serviceIntent = new Intent(ShoutbreakUI.this, SBService.class);
         serviceIntent.putExtra(C.START_FROM_UI, true);
         startService(serviceIntent); // must be called, BIND_AUTO_CREATE doesn't start service
         bindService(serviceIntent, _ServiceConnection, Context.BIND_AUTO_CREATE);
@@ -52,8 +55,12 @@ public class ShoutbreakUI extends Activity {
     	
     	public void onServiceConnected(ComponentName className, IBinder service) {
     		SBLog.i(TAG, "onServiceConnected()");
-    		//ServiceBridgeInterface serviceBinder = (ServiceBridgeInterface) service;
-    		//_User = serviceBinder.getUser();
+    		_ServiceBinder = (ServiceBridgeInterface) service;
+    		_ServiceBinder.getStateManager().addObserver(ShoutbreakUI.this);
+    		_ServiceBinder.getStateManager().enableData();
+    		_ServiceBinder.getStateManager().disableData();
+    		_ServiceBinder.getStateManager().enableData();
+    		
     	}
 
     	public void onServiceDisconnected(ComponentName className) {
@@ -97,8 +104,9 @@ public class ShoutbreakUI extends Activity {
 	@Override
 	protected void onDestroy() {
 		SBLog.i(TAG, "onDestroy()");
+		_ServiceBinder.getStateManager().deleteObserver(ShoutbreakUI.this);
 		unbindService(_ServiceConnection);
-		_User = null;
+		_ServiceBinder = null;
 		super.onDestroy();
 	}
 	
@@ -106,6 +114,13 @@ public class ShoutbreakUI extends Activity {
 	
 	public SBPageChanger getSBPageChanger() {
 		return _PageChanger;
+	}
+
+	/* OBSERVER METHODS */
+	
+	public void update(Observable observable, Object data) {
+		SBStateManager smgr = (SBStateManager) observable;
+		Toast.makeText(getApplicationContext(), smgr.getState() + " " , Toast.LENGTH_SHORT).show();
 	}
 	
 }

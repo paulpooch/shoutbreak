@@ -12,7 +12,6 @@ public class SBStateManager extends Observable {
 	private final int SERVICE_ON = 4;
 	private final int LOCATION_ON = 2;
 	private final int DATA_ON = 1;
-	private final int ALL_ON = 15;
 	
 	private int _state;
 	
@@ -27,7 +26,7 @@ public class SBStateManager extends Observable {
 			isValidState = true;
 			_state = newState;
 		
-			switch(newState) {
+			switch (newState) {
 		
 				/* APP OFF */
 				case 0:	case 1:	case 2:	case 3:
@@ -94,7 +93,7 @@ public class SBStateManager extends Observable {
 	}
 	
 	public void disableUI() {
-		setState(_state & (ALL_ON - UI_ON));
+		setState(_state - UI_ON);
 	}
 	
 	public void enableService() {
@@ -102,7 +101,7 @@ public class SBStateManager extends Observable {
 	}
 	
 	public void disableService() {
-		setState(_state & (ALL_ON - SERVICE_ON));
+		setState(_state - SERVICE_ON);
 	}
 	
 	public void enableLocation() {
@@ -110,7 +109,7 @@ public class SBStateManager extends Observable {
 	}
 	
 	public void disableLocation() {
-		setState(_state & (ALL_ON - LOCATION_ON));
+		setState(_state - LOCATION_ON);
 	}
 	
 	public void enableData() {
@@ -118,7 +117,7 @@ public class SBStateManager extends Observable {
 	}
 	
 	public void disableData() {
-		setState(_state & (ALL_ON - DATA_ON));
+		setState(_state - DATA_ON);
 	}
 	
 }
