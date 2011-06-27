@@ -1,12 +1,12 @@
 package co.shoutbreak.components;
 
 import co.shoutbreak.misc.C;
-import co.shoutbreak.ui.ShoutbreakUI;
+import co.shoutbreak.ui.SBContext;
 import android.os.Bundle;
 
 public class SBNotificationManager extends SBComponent {
 	
-	public SBNotificationManager(ShoutbreakUI context) {
+	public SBNotificationManager(SBContext context) {
 		super(context, "SBNotificationManager");
 	}
 	
@@ -14,7 +14,7 @@ public class SBNotificationManager extends SBComponent {
 		if (extras != null) {
 			if (extras.containsKey(C.EXTRA_REFERRED_FROM_NOTIFICATION)
 					&& extras.getBoolean(C.EXTRA_REFERRED_FROM_NOTIFICATION)) {
-				_ShoutbreakUI.getSBPageChanger().goToInbox();
+				//_SBContext.getSBPageChanger().goToInbox();
 			}
 		}
 	}

@@ -2,17 +2,26 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" package="co.shoutbreak" android:versionCode="2" android:versionName="2.0">
     <uses-sdk android:minSdkVersion="8" />
     <application android:icon="@drawable/icon" android:label="Shoutbreak">
-        <activity android:name=".ui.ShoutbreakUI" android:label="Shoutbreak" android:screenOrientation="portrait" android:launchMode="singleTop" android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
+		
+		<!-- ShoutbreakUI -->
+        <activity android:name="ui.Shout" android:label="Shoutbreak" android:screenOrientation="portrait" android:launchMode="singleTop" android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        
+        <!-- Inbox -->
+        <activity android:name="ui.InboxView" android:label="Shoutbreak" android:screenOrientation="portrait" android:launchMode="singleTop" android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
+        </activity>
+        
+        <!-- Service -->
         <service android:name=".service.SBService" android:exported="true">
 			<intent-filter>
 				<action android:name="co.shoutbreak.service.SBService" />
 			</intent-filter>
 		</service>
+		
 		<receiver android:name="service.SBAlarmReceiver" android:exported="true">
 			<intent-filter>
 				<action android:name="co.shoutbreak.service.SBAlarmReceiver" />

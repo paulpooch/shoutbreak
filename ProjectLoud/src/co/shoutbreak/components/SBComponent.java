@@ -1,14 +1,14 @@
 package co.shoutbreak.components;
 
-import co.shoutbreak.ui.ShoutbreakUI;
+import co.shoutbreak.ui.SBContext;
 
 public class SBComponent {
 
 	protected final String _TAG;
-	protected ShoutbreakUI _ShoutbreakUI;
+	protected SBContext _Context;
 	
-	public SBComponent(ShoutbreakUI context, String tag) {
+	public SBComponent(SBContext context, String tag) {
 		_TAG = tag;
-		_ShoutbreakUI = context;
+		_Context = context;
 	}
 }
