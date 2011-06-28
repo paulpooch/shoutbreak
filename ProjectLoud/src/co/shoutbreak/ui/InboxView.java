@@ -12,19 +12,19 @@ public class InboxView extends SBView implements Observer {
 	public InboxView(SBContext context, String name, int resourceId, int notificationId) {
 		super(context, name, resourceId, notificationId);
 	}
+
+	@Override
+	void onShow() {
+		SBLog.i(TAG, "onShow()");
+		// TODO Auto-generated method stub
+	}
 	
 	@Override
 	void onHide() {
 		SBLog.i(TAG, "onHide()");
 		// TODO Auto-generated method stub
 	}
-
-	@Override
-	void onShow() {
-		SBLog.i(TAG, "onHide()");
-		// TODO Auto-generated method stub
-	}
-
+	
 	/* OBSERVER METHODS */
 	
 	public void update(Observable observable, Object data) {

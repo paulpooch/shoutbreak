@@ -4,13 +4,13 @@ import android.view.View;
 
 public abstract class SBView {
 	
-	public static final String NOTIFICATION_ID = "NOTIFICATION_ID";
+	public static final String NOTIFICATION_REFERRAL_ID = "NOTIFICATION_REFERRAL_ID";
 	
 	private SBContext _Context;
 	private String _name;
 	private final int _notificationId;
 	private final int _resourceId;
-	private boolean _isVisible = false;
+	private boolean _isVisible;
 	
 	abstract void onShow();
 	abstract void onHide();
@@ -20,6 +20,7 @@ public abstract class SBView {
 		_name = name;
 		_resourceId = resourceId;
 		_notificationId = notificationId;
+		_isVisible = false;
 	}
 	
 	public void show() {

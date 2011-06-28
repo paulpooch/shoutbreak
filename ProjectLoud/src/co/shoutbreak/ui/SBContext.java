@@ -20,12 +20,16 @@ import android.widget.ImageButton;
 
 public class SBContext extends Activity {
 
+	public static final int COMPOSE_VIEW = 0;
+	public static final int INBOX_VIEW = 1;
+	public static final int PROFILE_VIEW = 2;
+	
 	private static final String TAG = "SBContext.java";
 
 	private SBNotificationManager _NotificationManager;
 	private ServiceBridgeInterface _ServiceBinder;
 	private SBView _ViewArray[];
-	private SBView _currentView;
+	private SBView _CurrentView;
 
 	/* LIFECYCLE METHODS */
 
@@ -45,11 +49,10 @@ public class SBContext extends Activity {
 		// set current view
 		setContentView(R.layout.main);
 		_ViewArray = new SBView[3];
-		_ViewArray[0] = new ComposeView(SBContext.this, "Send Shout", R.id.compose_view, 0);
-		_ViewArray[1] = new InboxView(SBContext.this, "Inbox", R.id.inbox_view, 1);
-		_ViewArray[2] = new ProfileView(SBContext.this, "Profile", R.id.profile_view, 2);
-		switchView(_ViewArray[0]);
-		switchView(_ViewArray[2]);
+		_ViewArray[COMPOSE_VIEW] = new ComposeView(SBContext.this, "Send Shout", R.id.compose_view, 0);
+		_ViewArray[INBOX_VIEW] = new InboxView(SBContext.this, "Inbox", R.id.inbox_view, 1);
+		_ViewArray[PROFILE_VIEW] = new ProfileView(SBContext.this, "Profile", R.id.profile_view, 2);
+		switchView(_ViewArray[COMPOSE_VIEW]);
 
 		// connect to service
 		serviceIntent = new Intent(SBContext.this, SBService.class);
@@ -71,8 +74,6 @@ public class SBContext extends Activity {
 		public void onServiceConnected(ComponentName className, IBinder service) {
 			SBLog.i(TAG, "onServiceConnected()");
 			_ServiceBinder = (ServiceBridgeInterface) service;
-			_ServiceBinder.getStateManager().enableData();
-			_ServiceBinder.getStateManager().disableData();
 			_ServiceBinder.getStateManager().enableData();
 		}
 
@@ -118,7 +119,6 @@ public class SBContext extends Activity {
 	@Override
 	protected void onDestroy() {
 		SBLog.i(TAG, "onDestroy()");
-
 		unbindService(_ServiceConnection);
 		_ServiceBinder = null;
 		super.onDestroy();
@@ -127,29 +127,33 @@ public class SBContext extends Activity {
 	/* VIEW METHODS */
 
 	public void switchView(SBView view) {
-		SBLog.i(TAG, "switchView()");
-		if (_currentView != null) {
-			_currentView.hide();
+		SBLog.i(TAG, "switchView(" + view.getName() + ")");
+		if (_CurrentView != null) {
+			_CurrentView.hide();
 		}
-		_currentView = view;
-		_currentView.show();
+		_CurrentView = view;
+		_CurrentView.show();
+	}
+	
+	public SBView getView(int viewId) {
+		return _ViewArray[viewId];
 	}
 	
 	private OnClickListener _composeTabListener = new OnClickListener() {
 		public void onClick(View v) {
-			switchView(_ViewArray[0]);
+			switchView(_ViewArray[COMPOSE_VIEW]);
 		}
 	};
 	
 	private OnClickListener _inboxTabListener = new OnClickListener() {
 		public void onClick(View v) {
-			switchView(_ViewArray[1]);
+			switchView(_ViewArray[INBOX_VIEW]);
 		}
 	};
 	
 	private OnClickListener _profileTabListener = new OnClickListener() {
 		public void onClick(View v) {
-			switchView(_ViewArray[2]);
+			switchView(_ViewArray[PROFILE_VIEW]);
 		}
 	};
 }
