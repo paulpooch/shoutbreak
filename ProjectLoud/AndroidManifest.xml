@@ -3,16 +3,12 @@
     <uses-sdk android:minSdkVersion="8" />
     <application android:icon="@drawable/icon" android:label="Shoutbreak">
 		
-		<!-- ShoutbreakUI -->
-        <activity android:name="ui.Shout" android:label="Shoutbreak" android:screenOrientation="portrait" android:launchMode="singleTop" android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
+		<!-- Launcher -->
+        <activity android:name=".ui.SBContext" android:label="Shoutbreak" android:screenOrientation="portrait" android:launchMode="singleTop" android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        
-        <!-- Inbox -->
-        <activity android:name="ui.InboxView" android:label="Shoutbreak" android:screenOrientation="portrait" android:launchMode="singleTop" android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
         </activity>
         
         <!-- Service -->
@@ -22,11 +18,13 @@
 			</intent-filter>
 		</service>
 		
+		<!--  Alarm Manager -->
 		<receiver android:name="service.SBAlarmReceiver" android:exported="true">
 			<intent-filter>
 				<action android:name="co.shoutbreak.service.SBAlarmReceiver" />
 			</intent-filter>
 		</receiver>
+		
     </application>
     <uses-permission android:name="android.permission.INTERNET" />
 	<uses-permission android:name="android.permission.READ_PHONE_STATE" />

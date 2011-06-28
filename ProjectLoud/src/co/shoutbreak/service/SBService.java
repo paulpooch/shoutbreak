@@ -14,7 +14,6 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
-import android.widget.Toast;
 
 public class SBService extends Service implements Observer {
 
@@ -87,7 +86,7 @@ public class SBService extends Service implements Observer {
 	/* OBSERVER METHODS */
 	
 	public void update(Observable observable, Object data) {
-		SBStateManager smgr = (SBStateManager) observable;
+		//SBStateManager smgr = (SBStateManager) observable;
 		//Toast.makeText(getApplicationContext(), smgr.getState() + " " , Toast.LENGTH_SHORT).show();
 	}
 }
