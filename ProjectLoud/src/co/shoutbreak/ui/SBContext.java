@@ -17,7 +17,7 @@ import android.os.IBinder;
 
 public class SBContext extends Activity {
 
-	private final static String TAG = "Launcher.java";
+	private static final String TAG = "Launcher.java";
 
 	private SBNotificationManager _NotificationManager;
 	private ServiceBridgeInterface _ServiceBinder;
@@ -31,12 +31,11 @@ public class SBContext extends Activity {
 		SBLog.i(TAG, "onCreate()");
 		super.onCreate(bundle);
 
-		setContentView(R.layout.main);
-
 		// initialize components
 		_NotificationManager = new SBNotificationManager(this);
 
 		// set current view
+		setContentView(R.layout.main);
 		_ViewArray = new SBView[3];
 		_ViewArray[0] = new ComposeView(SBContext.this, "Send Shout", R.id.compose_view, 0);
 		_ViewArray[1] = new InboxView(SBContext.this, "Inbox", R.id.inbox_view, 1);
