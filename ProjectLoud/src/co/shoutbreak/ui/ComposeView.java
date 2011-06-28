@@ -17,15 +17,17 @@ public class ComposeView extends SBView implements Observer {
 	/* LIFECYCLE METHODS */
 	
 	@Override
-	void onHide() {
-		SBLog.i(TAG, "onHide()");
-		// TODO Auto-generated method stub
-	}
-
-	@Override
 	void onShow() {
 		SBLog.i(TAG, "onShow()");
+		// inflate map view
 		// TODO Auto-generated method stub	
+	}
+	
+	@Override
+	void onHide() {
+		SBLog.i(TAG, "onHide()");
+		// remove map view
+		// TODO Auto-generated method stub
 	}
 
 	/* OBSERVER METHODS */

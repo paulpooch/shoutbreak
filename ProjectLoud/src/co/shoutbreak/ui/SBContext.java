@@ -14,10 +14,13 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.ImageButton;
 
 public class SBContext extends Activity {
 
-	private static final String TAG = "Launcher.java";
+	private static final String TAG = "SBContext.java";
 
 	private SBNotificationManager _NotificationManager;
 	private ServiceBridgeInterface _ServiceBinder;
@@ -28,6 +31,11 @@ public class SBContext extends Activity {
 
 	@Override
 	public void onCreate(Bundle bundle) {
+		Intent serviceIntent;
+		ImageButton composeTab;
+		ImageButton inboxTab;
+		ImageButton profileTab;
+		
 		SBLog.i(TAG, "onCreate()");
 		super.onCreate(bundle);
 
@@ -44,10 +52,18 @@ public class SBContext extends Activity {
 		switchView(_ViewArray[2]);
 
 		// connect to service
-		Intent serviceIntent = new Intent(SBContext.this, SBService.class);
+		serviceIntent = new Intent(SBContext.this, SBService.class);
 		serviceIntent.putExtra(C.START_FROM_UI, true);
 		startService(serviceIntent); // must be called, BIND_AUTO_CREATE doesn't start service
 		bindService(serviceIntent, _ServiceConnection, Context.BIND_AUTO_CREATE);
+		
+		// register tab listeners
+		composeTab = (ImageButton) findViewById(R.id.composeTab);
+		composeTab.setOnClickListener(_composeTabListener);
+		inboxTab = (ImageButton) findViewById(R.id.inboxTab);
+		inboxTab.setOnClickListener(_inboxTabListener);
+		profileTab = (ImageButton) findViewById(R.id.profileTab);
+		profileTab.setOnClickListener(_profileTabListener);
 	}
 
 	private ServiceConnection _ServiceConnection = new ServiceConnection() {
@@ -111,10 +127,29 @@ public class SBContext extends Activity {
 	/* VIEW METHODS */
 
 	public void switchView(SBView view) {
+		SBLog.i(TAG, "switchView()");
 		if (_currentView != null) {
 			_currentView.hide();
 		}
 		_currentView = view;
 		_currentView.show();
 	}
+	
+	private OnClickListener _composeTabListener = new OnClickListener() {
+		public void onClick(View v) {
+			switchView(_ViewArray[0]);
+		}
+	};
+	
+	private OnClickListener _inboxTabListener = new OnClickListener() {
+		public void onClick(View v) {
+			switchView(_ViewArray[1]);
+		}
+	};
+	
+	private OnClickListener _profileTabListener = new OnClickListener() {
+		public void onClick(View v) {
+			switchView(_ViewArray[2]);
+		}
+	};
 }
