@@ -9,8 +9,11 @@ public class ProfileView extends SBView implements Observer {
 	
 	private final String TAG = "InboxView.java";
 	
+	/* Do NOT store any SBContext parameters, will cause service leak */
+	
 	public ProfileView(SBContext context, String name, int resourceId, int notificationId) {
 		super(context, name, resourceId, notificationId);
+		super.getContext().getStateManager().addObserver(this);
 	}
 	
 	@Override
@@ -23,6 +26,12 @@ public class ProfileView extends SBView implements Observer {
 	void onShow() {
 		SBLog.i(TAG, "onHide()");
 		// TODO Auto-generated method stub
+	}
+	
+	@Override
+	void onDestroy() {
+		SBLog.i(TAG, "onDestroy()");
+		super.getContext().getStateManager().deleteObserver(this);		
 	}
 
 	/* OBSERVER METHODS */

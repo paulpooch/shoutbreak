@@ -50,6 +50,7 @@ public class SBService extends Service implements Observer {
 	
 	@Override
 	public void onDestroy() {
+		_StateManager.deleteObserver(this);
 		SBLog.i(TAG, "onDestroy()");
 		super.onDestroy();
 	}

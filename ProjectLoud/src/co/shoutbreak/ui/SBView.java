@@ -1,8 +1,10 @@
 package co.shoutbreak.ui;
 
+import java.util.Observer;
+
 import android.view.View;
 
-public abstract class SBView {
+public abstract class SBView implements Observer {
 	
 	public static final String NOTIFICATION_REFERRAL_ID = "NOTIFICATION_REFERRAL_ID";
 	
@@ -14,6 +16,7 @@ public abstract class SBView {
 	
 	abstract void onShow();
 	abstract void onHide();
+	abstract void onDestroy();
 	
 	public SBView(SBContext context, String name, int resourceId, int notificationId) {
 		_Context = context;
@@ -35,6 +38,10 @@ public abstract class SBView {
 		view.setVisibility(View.INVISIBLE);
 		_isVisible = false;
 		onHide();
+	}
+	
+	public void destroy() {
+		onDestroy();
 	}
 	
 	public SBContext getContext() {

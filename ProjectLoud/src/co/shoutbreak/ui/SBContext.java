@@ -2,6 +2,7 @@ package co.shoutbreak.ui;
 
 import co.shoutbreak.R;
 import co.shoutbreak.components.SBNotificationManager;
+import co.shoutbreak.components.SBStateManager;
 import co.shoutbreak.misc.C;
 import co.shoutbreak.misc.SBLog;
 import co.shoutbreak.service.SBService;
@@ -26,6 +27,7 @@ public class SBContext extends Activity {
 	
 	private static final String TAG = "SBContext.java";
 
+	private SBStateManager _StateManager;
 	private SBNotificationManager _NotificationManager;
 	private ServiceBridgeInterface _ServiceBinder;
 	private SBView _ViewArray[];
@@ -74,7 +76,7 @@ public class SBContext extends Activity {
 		public void onServiceConnected(ComponentName className, IBinder service) {
 			SBLog.i(TAG, "onServiceConnected()");
 			_ServiceBinder = (ServiceBridgeInterface) service;
-			_ServiceBinder.getStateManager().enableData();
+			_StateManager = _ServiceBinder.getStateManager();
 		}
 
 		public void onServiceDisconnected(ComponentName className) {
@@ -119,8 +121,16 @@ public class SBContext extends Activity {
 	@Override
 	protected void onDestroy() {
 		SBLog.i(TAG, "onDestroy()");
+		
+		// unregister Views from StateManager
+		for (SBView view: _ViewArray) {
+			view.destroy();
+		}
+		// unbind and null bound objects
 		unbindService(_ServiceConnection);
+		_StateManager = null;
 		_ServiceBinder = null;
+		
 		super.onDestroy();
 	}
 
@@ -156,4 +166,8 @@ public class SBContext extends Activity {
 			switchView(_ViewArray[PROFILE_VIEW]);
 		}
 	};
+	
+	public SBStateManager getStateManager() {
+		return _StateManager;
+	}
 }
