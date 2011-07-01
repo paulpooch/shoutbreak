@@ -1,7 +1,7 @@
 package co.shoutbreak.components;
 
 import co.shoutbreak.ui.SBContext;
-import co.shoutbreak.ui.SBView;
+import co.shoutbreak.ui.views.SBView;
 import android.os.Bundle;
 
 public class SBNotificationManager extends SBComponent {

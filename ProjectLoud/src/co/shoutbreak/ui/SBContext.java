@@ -7,6 +7,10 @@ import co.shoutbreak.misc.C;
 import co.shoutbreak.misc.SBLog;
 import co.shoutbreak.service.SBService;
 import co.shoutbreak.service.SBServiceBridgeInterface;
+import co.shoutbreak.ui.views.ComposeView;
+import co.shoutbreak.ui.views.InboxView;
+import co.shoutbreak.ui.views.ProfileView;
+import co.shoutbreak.ui.views.SBView;
 
 import android.app.Activity;
 import android.content.ComponentName;
