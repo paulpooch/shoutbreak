@@ -13,6 +13,7 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
 import android.os.Binder;
+import android.os.Handler;
 import android.os.IBinder;
 
 public class SBService extends Service implements Observer {
@@ -21,6 +22,9 @@ public class SBService extends Service implements Observer {
 	
 	private SBStateManager _StateManager;
 	private boolean _isServiceOn = false;
+	
+	private ServiceLoop _ServiceLoop;
+	private Handler _LoopHandler;
 	
 	/* LIFECYCLE METHODS */
 	
@@ -37,6 +41,9 @@ public class SBService extends Service implements Observer {
 		
 		_StateManager = new SBStateManager();
 		_StateManager.addObserver(this);
+		
+		_ServiceLoop = new ServiceLoop();
+		_LoopHandler = _ServiceLoop.getHandler();
 	}
 
 	@Override
@@ -44,6 +51,7 @@ public class SBService extends Service implements Observer {
 		SBLog.i(TAG, "onStartCommand()");
 		if (!_isServiceOn) {
 			_isServiceOn = true;
+			_ServiceLoop.start();
 		}
 		return START_STICKY;
 	}
@@ -51,6 +59,7 @@ public class SBService extends Service implements Observer {
 	@Override
 	public void onDestroy() {
 		_StateManager.deleteObserver(this);
+		_LoopHandler.getLooper().quit();
 		SBLog.i(TAG, "onDestroy()");
 		super.onDestroy();
 	}
@@ -64,11 +73,6 @@ public class SBService extends Service implements Observer {
 		public SBStateManager getStateManager() {
 			return _StateManager;
 		}
-	}
-	
-	public void continueService(String task) {
-		SBLog.i(TAG, "startService()");
-		scheduleAlarm(10);
 	}
 	
 	/* ADDITIONAL METHODS */
