@@ -6,7 +6,7 @@ import co.shoutbreak.components.SBStateManager;
 import co.shoutbreak.misc.C;
 import co.shoutbreak.misc.SBLog;
 import co.shoutbreak.service.SBService;
-import co.shoutbreak.service.ServiceBridgeInterface;
+import co.shoutbreak.service.SBServiceBridgeInterface;
 
 import android.app.Activity;
 import android.content.ComponentName;
@@ -29,7 +29,7 @@ public class SBContext extends Activity {
 
 	private SBStateManager _StateManager;
 	private SBNotificationManager _NotificationManager;
-	private ServiceBridgeInterface _ServiceBinder;
+	private SBServiceBridgeInterface _ServiceBinder;
 	private SBView _ViewArray[];
 	private SBView _CurrentView;
 
@@ -75,7 +75,7 @@ public class SBContext extends Activity {
 
 		public void onServiceConnected(ComponentName className, IBinder service) {
 			SBLog.i(TAG, "onServiceConnected()");
-			_ServiceBinder = (ServiceBridgeInterface) service;
+			_ServiceBinder = (SBServiceBridgeInterface) service;
 			_StateManager = _ServiceBinder.getStateManager();
 		}
 

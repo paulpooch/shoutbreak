@@ -23,7 +23,7 @@ public class SBService extends Service implements Observer {
 	private SBStateManager _StateManager;
 	private boolean _isServiceOn = false;
 	
-	private ServiceLoop _ServiceLoop;
+	private SBServiceLoop _ServiceLoop;
 	private Handler _LoopHandler;
 	
 	/* LIFECYCLE METHODS */
@@ -42,8 +42,8 @@ public class SBService extends Service implements Observer {
 		_StateManager = new SBStateManager();
 		_StateManager.addObserver(this);
 		
-		_ServiceLoop = new ServiceLoop();
-		_LoopHandler = _ServiceLoop.getHandler();
+		_ServiceLoop = new SBServiceLoop(this);
+		_LoopHandler = _ServiceLoop.getLoopHandler();
 	}
 
 	@Override
@@ -64,7 +64,7 @@ public class SBService extends Service implements Observer {
 		super.onDestroy();
 	}
 	
-	public class ServiceBridge extends Binder implements ServiceBridgeInterface {
+	public class ServiceBridge extends Binder implements SBServiceBridgeInterface {
 		
 		public SBUser getUser() {
 			return null;
