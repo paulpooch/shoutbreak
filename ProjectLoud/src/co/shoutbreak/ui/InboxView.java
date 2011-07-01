@@ -3,6 +3,7 @@ package co.shoutbreak.ui;
 import java.util.Observable;
 import java.util.Observer;
 
+import co.shoutbreak.components.SBStateManager;
 import co.shoutbreak.misc.SBLog;
 
 public class InboxView extends SBView implements Observer {
@@ -35,8 +36,12 @@ public class InboxView extends SBView implements Observer {
 	}
 	
 	/* OBSERVER METHODS */
-	
+
 	public void update(Observable observable, Object data) {
-		// TODO Auto-generated method stub
+		SBStateManager stateManager = (SBStateManager) observable;
+		switch (stateManager.getState()) {
+			case 1: 
+			break;
+		}
 	}
 }

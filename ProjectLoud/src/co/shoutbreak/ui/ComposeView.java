@@ -42,6 +42,10 @@ public class ComposeView extends SBView implements Observer {
 	/* OBSERVER METHODS */
 
 	public void update(Observable observable, Object data) {
-		SBStateManager smgr = (SBStateManager) observable;
+		SBStateManager stateManager = (SBStateManager) observable;
+		switch (stateManager.getState()) {
+			case 1: 
+			break;
+		}
 	}
 }
