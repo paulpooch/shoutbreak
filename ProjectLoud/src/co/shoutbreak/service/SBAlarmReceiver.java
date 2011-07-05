@@ -6,8 +6,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.widget.Toast;
 
-public class SBAlarmReceiver extends BroadcastReceiver {
+/* starts service when actions fired off in the manifest are triggered */
 
+public class SBAlarmReceiver extends BroadcastReceiver {
+	
 	private static final String TAG = "AlarmReceiver";
 	
 	@Override
