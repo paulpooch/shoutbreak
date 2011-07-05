@@ -147,10 +147,6 @@ public class User {
 		return _shoutsJustReceived;
 	}
 	
-	public void setLevelUpOccured(boolean b) {
-		_levelUpOccured = b;
-	}
-	
 	public boolean getLevelUpOccured() {
 		return _levelUpOccured;
 	}
@@ -233,6 +229,7 @@ public class User {
 		setLevel(newLevel);
 		setNextLevelAt(nextLevelAt);
 		setPoints(newPoints);
+		_levelUpOccured = true;
 	}
 	
 	private synchronized void setLevel(int level) {
