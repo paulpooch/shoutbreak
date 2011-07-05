@@ -1,0 +1,26 @@
+what,kind,bundleId,bundleVersion,description,time
+started,bundle,org.eclipse.ui.views,3.4.1.M20090826-0800,"org.eclipse.ui.views",1308713488620
+started,bundle,org.eclipse.ui.workbench,3.5.2.M20100113-0800,"org.eclipse.ui.workbench",1308713488620
+started,bundle,org.eclipse.ui.workbench.texteditor,3.5.1.r352_v20100105,"org.eclipse.ui.workbench.texteditor",1308713488621
+started,bundle,org.eclipse.update.configurator,3.3.0.v20090312,"org.eclipse.update.configurator",1308713488622
+started,bundle,org.eclipse.update.core,3.2.300.v20090525,"org.eclipse.update.core",1308713488623
+started,bundle,org.eclipse.update.scheduler,3.2.200.v20081127,"org.eclipse.update.scheduler",1308713488623
+started,bundle,com.android.ide.eclipse.adt,0.9.9.v201009221407-60953,"com.android.ide.eclipse.adt",1308713488623
+started,bundle,com.android.ide.eclipse.ddms,0.9.9.v201009221407-60953,"com.android.ide.eclipse.ddms",1308713488623
+os,sysinfo,,,"win32",1308713488625
+arch,sysinfo,,,"x86",1308713488625
+ws,sysinfo,,,"win32",1308713488625
+locale,sysinfo,,,"en_US",1308713488625
+processors,sysinfo,,,"2",1308713488625
+java.runtime.name,sysinfo,,,"Java(TM) SE Runtime Environment",1308713488625
+java.runtime.version,sysinfo,,,"1.6.0_22-b04",1308713488625
+java.specification.name,sysinfo,,,"Java Platform API Specification",1308713488625
+java.specification.vendor,sysinfo,,,"Sun Microsystems Inc.",1308713488625
+java.specification.version,sysinfo,,,"1.6",1308713488625
+java.vendor,sysinfo,,,"Sun Microsystems Inc.",1308713488625
+java.version,sysinfo,,,"1.6.0_22",1308713488625
+java.vm.info,sysinfo,,,"mixed mode, sharing",1308713488625
+java.vm.name,sysinfo,,,"Java HotSpot(TM) Client VM",1308713488625
+java.vm.specification.name,sysinfo,,,"Java Virtual Machine Specification",1308713488625
+java.vm.specification.vendor,sysinfo,,,"Sun Microsystems Inc.",1308713488625
+java.vm.specification.version,sysinfo,,,"1.0",1308713488625
