@@ -4,6 +4,7 @@ import co.shoutbreak.misc.SBLog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.widget.Toast;
 
 public class SBAlarmReceiver extends BroadcastReceiver {
 
@@ -18,6 +19,7 @@ public class SBAlarmReceiver extends BroadcastReceiver {
 		Intent newIntent = new Intent(context, SBService.class);
 		//newIntent.putExtra(C.ALARM_MESSAGE, message);
 		newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		Toast.makeText(context, "service started", Toast.LENGTH_SHORT).show();
 		context.startService(newIntent);
 	}
 

@@ -52,14 +52,6 @@ public class SBContext extends Activity {
 		// initialize components
 		_NotificationManager = new SBNotificationManager(this);
 
-		// set current view
-		setContentView(R.layout.main);
-		_ViewArray = new SBView[3];
-		_ViewArray[COMPOSE_VIEW] = new ComposeView(SBContext.this, "Send Shout", R.id.compose_view, 0);
-		_ViewArray[INBOX_VIEW] = new InboxView(SBContext.this, "Inbox", R.id.inbox_view, 1);
-		_ViewArray[PROFILE_VIEW] = new ProfileView(SBContext.this, "Profile", R.id.profile_view, 2);
-		switchView(_ViewArray[COMPOSE_VIEW]);
-
 		// connect to service
 		serviceIntent = new Intent(SBContext.this, SBService.class);
 		serviceIntent.putExtra(C.START_FROM_UI, true);
@@ -67,6 +59,7 @@ public class SBContext extends Activity {
 		bindService(serviceIntent, _ServiceConnection, Context.BIND_AUTO_CREATE);
 		
 		// register tab listeners
+		setContentView(R.layout.main);
 		composeTab = (ImageButton) findViewById(R.id.composeTab);
 		composeTab.setOnClickListener(_composeTabListener);
 		inboxTab = (ImageButton) findViewById(R.id.inboxTab);
@@ -81,6 +74,13 @@ public class SBContext extends Activity {
 			SBLog.i(TAG, "onServiceConnected()");
 			_ServiceBinder = (SBServiceBridgeInterface) service;
 			_StateManager = _ServiceBinder.getStateManager();
+			
+			// initialize views
+			_ViewArray = new SBView[3];
+			_ViewArray[COMPOSE_VIEW] = new ComposeView(SBContext.this, "Send Shout", R.id.compose_view, 0);
+			_ViewArray[INBOX_VIEW] = new InboxView(SBContext.this, "Inbox", R.id.inbox_view, 1);
+			_ViewArray[PROFILE_VIEW] = new ProfileView(SBContext.this, "Profile", R.id.profile_view, 2);
+			switchView(_ViewArray[COMPOSE_VIEW]);
 		}
 
 		public void onServiceDisconnected(ComponentName className) {

@@ -22,6 +22,8 @@
 		<receiver android:name="service.SBAlarmReceiver" android:exported="true">
 			<intent-filter>
 				<action android:name="co.shoutbreak.service.SBAlarmReceiver" />
+				<action android:name="android.intent.action.BOOT_COMPLETED" />
+				<action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
 			</intent-filter>
 		</receiver>
 		
