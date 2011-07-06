@@ -13,6 +13,11 @@ public class SBStateManager extends Observable {
 	private final int LOCATION_ON = 2;
 	private final int DATA_ON = 1;
 	
+	private boolean _isUIOn = false;
+	private boolean _isServiceOn = false;
+	private boolean _isLocationOn = false;
+	private boolean _isDataOn = false;
+	
 	private int _state;
 	
 	public int getState() {
@@ -90,34 +95,42 @@ public class SBStateManager extends Observable {
 	
 	public void enableUI() {
 		setState(_state | UI_ON);
+		_isUIOn = true;
 	}
 	
 	public void disableUI() {
 		setState(_state - UI_ON);
+		_isUIOn = false;
 	}
 	
 	public void enableService() {
 		setState(_state | SERVICE_ON);
+		_isServiceOn = true;
 	}
 	
 	public void disableService() {
 		setState(_state - SERVICE_ON);
+		_isServiceOn = false;
 	}
 	
 	public void enableLocation() {
 		setState(_state | LOCATION_ON);
+		_isLocationOn = true;
 	}
 	
 	public void disableLocation() {
 		setState(_state - LOCATION_ON);
+		_isLocationOn = false;
 	}
 	
 	public void enableData() {
 		setState(_state | DATA_ON);
+		_isDataOn = true;
 	}
 	
 	public void disableData() {
 		setState(_state - DATA_ON);
+		_isDataOn = false;
 	}
 	
 }

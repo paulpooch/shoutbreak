@@ -16,15 +16,18 @@ import android.os.Binder;
 import android.os.Handler;
 import android.os.IBinder;
 
+/* SBService.java */
+// communicates with the UI via the StateManager
+// launches the service loop
 public class SBService extends Service implements Observer {
 
 	private final String TAG = "SBService";
 	
-	private SBStateManager _StateManager;
-	private boolean _isServiceOn = false;
-	
+	private SBStateManager _StateManager;	
 	private SBServiceLoop _ServiceLoop;
 	private Handler _LoopHandler;
+	
+	private boolean _isServiceOn = false;
 	
 	/* LIFECYCLE METHODS */
 	
@@ -41,7 +44,6 @@ public class SBService extends Service implements Observer {
 		
 		_StateManager = new SBStateManager();
 		_StateManager.addObserver(this);
-		
 		_ServiceLoop = new SBServiceLoop(this);
 		_LoopHandler = _ServiceLoop.getLoopHandler();
 	}

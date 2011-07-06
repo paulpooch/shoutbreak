@@ -2,6 +2,7 @@ package co.shoutbreak.ui;
 
 import co.shoutbreak.R;
 import co.shoutbreak.components.SBNotificationManager;
+import co.shoutbreak.components.SBPreferenceManager;
 import co.shoutbreak.components.SBStateManager;
 import co.shoutbreak.misc.C;
 import co.shoutbreak.misc.SBLog;
@@ -23,16 +24,21 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
 
+/* SBContext.java */
+// application launcher
+// starts service and manages views
+// shares StateManager with the service
 public class SBContext extends Activity {
 
+	private static final String TAG = "SBContext.java";
+	
 	public static final int COMPOSE_VIEW = 0;
 	public static final int INBOX_VIEW = 1;
 	public static final int PROFILE_VIEW = 2;
-	
-	private static final String TAG = "SBContext.java";
 
 	private SBStateManager _StateManager;
 	private SBNotificationManager _NotificationManager;
+	private SBPreferenceManager _PreferenceManager;
 	private SBServiceBridgeInterface _ServiceBinder;
 	private SBView _ViewArray[];
 	private SBView _CurrentView;
@@ -51,6 +57,7 @@ public class SBContext extends Activity {
 
 		// initialize components
 		_NotificationManager = new SBNotificationManager(this);
+		_PreferenceManager = new SBPreferenceManager(this);
 
 		// connect to service
 		serviceIntent = new Intent(SBContext.this, SBService.class);
@@ -76,18 +83,20 @@ public class SBContext extends Activity {
 			_StateManager = _ServiceBinder.getStateManager();
 			
 			// initialize views
+			// state manager must be initialized
 			_ViewArray = new SBView[3];
 			_ViewArray[COMPOSE_VIEW] = new ComposeView(SBContext.this, "Send Shout", R.id.compose_view, 0);
 			_ViewArray[INBOX_VIEW] = new InboxView(SBContext.this, "Inbox", R.id.inbox_view, 1);
 			_ViewArray[PROFILE_VIEW] = new ProfileView(SBContext.this, "Profile", R.id.profile_view, 2);
 			switchView(_ViewArray[COMPOSE_VIEW]);
+			
+			_StateManager.enableUI();
 		}
 
 		public void onServiceDisconnected(ComponentName className) {
 			// should never be called
 			SBLog.i(TAG, "onServiceDisconnected()");
 		}
-
 	};
 
 	@Override
@@ -130,8 +139,10 @@ public class SBContext extends Activity {
 		for (SBView view: _ViewArray) {
 			view.destroy();
 		}
+		
 		// unbind and null bound objects
 		unbindService(_ServiceConnection);
+		_StateManager.disableUI();
 		_StateManager = null;
 		_ServiceBinder = null;
 		
@@ -171,7 +182,13 @@ public class SBContext extends Activity {
 		}
 	};
 	
+	/* Component Getters */
+	
 	public SBStateManager getStateManager() {
 		return _StateManager;
+	}
+	
+	public SBPreferenceManager getPreferenceManager() {
+		return _PreferenceManager;
 	}
 }
