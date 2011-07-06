@@ -182,7 +182,7 @@ public class SBContext extends Activity {
 		}
 	};
 	
-	/* Component Getters */
+	/* COMPONENT GETTERS */
 	
 	public SBStateManager getStateManager() {
 		return _StateManager;
