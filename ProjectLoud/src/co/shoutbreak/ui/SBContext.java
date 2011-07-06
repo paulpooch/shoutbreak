@@ -31,6 +31,7 @@ import android.widget.ImageButton;
 public class SBContext extends Activity {
 
 	private static final String TAG = "SBContext.java";
+	private static final String POWER_STATE_PREF = "POWER_STATE";
 	
 	public static final int COMPOSE_VIEW = 0;
 	public static final int INBOX_VIEW = 1;
@@ -42,7 +43,10 @@ public class SBContext extends Activity {
 	private SBServiceBridgeInterface _ServiceBinder;
 	private SBView _ViewArray[];
 	private SBView _CurrentView;
-
+	private ImageButton _PowerButton;
+	
+	private boolean _isPowerOn;
+	
 	/* LIFECYCLE METHODS */
 
 	@Override
@@ -81,6 +85,11 @@ public class SBContext extends Activity {
 			SBLog.i(TAG, "onServiceConnected()");
 			_ServiceBinder = (SBServiceBridgeInterface) service;
 			_StateManager = _ServiceBinder.getStateManager();
+			
+			// register power button listener
+			_PowerButton = (ImageButton) findViewById(R.id.powerButton);
+			_PowerButton.setOnClickListener(_powerButtonListener);
+			setPowerState(_PreferenceManager.getBoolean(POWER_STATE_PREF, false));
 			
 			// initialize views
 			// state manager must be initialized
@@ -164,6 +173,8 @@ public class SBContext extends Activity {
 		return _ViewArray[viewId];
 	}
 	
+	/* BUTTON LISTENERS */
+	
 	private OnClickListener _composeTabListener = new OnClickListener() {
 		public void onClick(View v) {
 			switchView(_ViewArray[COMPOSE_VIEW]);
@@ -182,13 +193,29 @@ public class SBContext extends Activity {
 		}
 	};
 	
+	private OnClickListener _powerButtonListener = new OnClickListener() {
+		public void onClick(View v) {
+			setPowerState(!_isPowerOn);
+		}
+	};
+	
+	private void setPowerState(boolean state) {
+		if (state) {
+			_isPowerOn = true;
+			_PowerButton.setImageResource(R.drawable.power_button_on);
+			_PreferenceManager.putBoolean(POWER_STATE_PREF, true);
+			_StateManager.enableService();
+		} else {
+			_isPowerOn = false;
+			_PowerButton.setImageResource(R.drawable.power_button_off);
+			_PreferenceManager.putBoolean(POWER_STATE_PREF, false);
+			_StateManager.disableService();
+		}
+	}
+	
 	/* COMPONENT GETTERS */
 	
 	public SBStateManager getStateManager() {
 		return _StateManager;
-	}
-	
-	public SBPreferenceManager getPreferenceManager() {
-		return _PreferenceManager;
 	}
 }
