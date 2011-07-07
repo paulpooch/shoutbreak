@@ -15,6 +15,7 @@ import android.content.Intent;
 import android.os.Binder;
 import android.os.Handler;
 import android.os.IBinder;
+import android.widget.Toast;
 
 /* SBService.java */
 // communicates with the UI via the StateManager
@@ -25,7 +26,6 @@ public class SBService extends Service implements Observer {
 	
 	private SBStateManager _StateManager;	
 	private SBServiceLoop _ServiceLoop;
-	private Handler _LoopHandler;
 	
 	private boolean _isServiceOn = false;
 	
@@ -45,7 +45,6 @@ public class SBService extends Service implements Observer {
 		_StateManager = new SBStateManager();
 		_StateManager.addObserver(this);
 		_ServiceLoop = new SBServiceLoop(this);
-		_LoopHandler = _ServiceLoop.getLoopHandler();
 	}
 
 	@Override
@@ -53,6 +52,7 @@ public class SBService extends Service implements Observer {
 		SBLog.i(TAG, "onStartCommand()");
 		if (!_isServiceOn) {
 			_isServiceOn = true;
+			Toast.makeText(getApplicationContext(), "Service On" , Toast.LENGTH_SHORT).show();
 			_ServiceLoop.start();
 		}
 		return START_STICKY;
@@ -61,7 +61,8 @@ public class SBService extends Service implements Observer {
 	@Override
 	public void onDestroy() {
 		_StateManager.deleteObserver(this);
-		_LoopHandler.getLooper().quit();
+		_ServiceLoop.quit();
+		Toast.makeText(getApplicationContext(), "Service Destroyed" , Toast.LENGTH_SHORT).show();
 		SBLog.i(TAG, "onDestroy()");
 		super.onDestroy();
 	}
@@ -93,7 +94,12 @@ public class SBService extends Service implements Observer {
 	/* OBSERVER METHODS */
 	
 	public void update(Observable observable, Object data) {
-		//SBStateManager smgr = (SBStateManager) observable;
-		//Toast.makeText(getApplicationContext(), smgr.getState() + " " , Toast.LENGTH_SHORT).show();
+		int code = (Integer) data;
+		switch(code) {
+			case SBStateManager.DISABLE_SERVICE:
+				//Toast.makeText(getApplicationContext(), "Turning off service" , Toast.LENGTH_SHORT).show();
+				stopSelf();
+			break;
+		}
 	}
 }

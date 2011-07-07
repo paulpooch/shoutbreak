@@ -39,7 +39,8 @@ public class SBServiceLoop extends Thread {
 		}
 	};
 	
-	public Handler getLoopHandler() {
-		return _LoopHandler;
+	public void quit() {
+		if (_LoopHandler != null)
+			_LoopHandler.getLooper().quit();
 	}
 }

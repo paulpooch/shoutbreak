@@ -23,8 +23,6 @@ public class SBPreferenceManager extends SBComponent {
 	public void putBoolean(String key, boolean value) {
 		SharedPreferences.Editor _Editor = _Preferences.edit();
 		_Editor.putBoolean(key, value);
-		Toast.makeText(_Context, "state: " + value, Toast.LENGTH_SHORT).show();
-
 		_Editor.commit();
 	}
 	

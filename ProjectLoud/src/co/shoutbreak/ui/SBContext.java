@@ -41,6 +41,7 @@ public class SBContext extends Activity {
 	private SBNotificationManager _NotificationManager;
 	private SBPreferenceManager _PreferenceManager;
 	private SBServiceBridgeInterface _ServiceBinder;
+	private Intent _ServiceIntent;
 	private SBView _ViewArray[];
 	private SBView _CurrentView;
 	private ImageButton _PowerButton;
@@ -51,7 +52,6 @@ public class SBContext extends Activity {
 
 	@Override
 	public void onCreate(Bundle bundle) {
-		Intent serviceIntent;
 		ImageButton composeTab;
 		ImageButton inboxTab;
 		ImageButton profileTab;
@@ -64,10 +64,9 @@ public class SBContext extends Activity {
 		_PreferenceManager = new SBPreferenceManager(this);
 
 		// connect to service
-		serviceIntent = new Intent(SBContext.this, SBService.class);
-		serviceIntent.putExtra(C.START_FROM_UI, true);
-		startService(serviceIntent); // must be called, BIND_AUTO_CREATE doesn't start service
-		bindService(serviceIntent, _ServiceConnection, Context.BIND_AUTO_CREATE);
+		_ServiceIntent = new Intent(SBContext.this, SBService.class);
+		_ServiceIntent.putExtra(C.START_FROM_UI, true);
+		bindService(_ServiceIntent, _ServiceConnection, Context.BIND_AUTO_CREATE);
 		
 		// register tab listeners
 		setContentView(R.layout.main);
@@ -99,7 +98,7 @@ public class SBContext extends Activity {
 			_ViewArray[PROFILE_VIEW] = new ProfileView(SBContext.this, "Profile", R.id.profile_view, 2);
 			switchView(_ViewArray[COMPOSE_VIEW]);
 			
-			_StateManager.enableUI();
+			_StateManager.call(SBStateManager.ENABLE_UI);
 		}
 
 		public void onServiceDisconnected(ComponentName className) {
@@ -149,10 +148,14 @@ public class SBContext extends Activity {
 			view.destroy();
 		}
 		
-		// unbind and null bound objects
-		unbindService(_ServiceConnection);
-		_StateManager.disableUI();
+		// kill service if power is off
+		if (!_isPowerOn) {
+			stopService(_ServiceIntent);
+		}
+		
+		_StateManager.call(SBStateManager.DISABLE_UI);
 		_StateManager = null;
+		unbindService(_ServiceConnection);
 		_ServiceBinder = null;
 		
 		super.onDestroy();
@@ -199,17 +202,20 @@ public class SBContext extends Activity {
 		}
 	};
 	
+	/* MISCELLANEOUS */
+	
 	private void setPowerState(boolean state) {
 		if (state) {
 			_isPowerOn = true;
 			_PowerButton.setImageResource(R.drawable.power_button_on);
 			_PreferenceManager.putBoolean(POWER_STATE_PREF, true);
-			_StateManager.enableService();
+			_StateManager.call(SBStateManager.ENABLE_POLLING);
+			startService(_ServiceIntent); // must be called, BIND_AUTO_CREATE doesn't start service
 		} else {
 			_isPowerOn = false;
 			_PowerButton.setImageResource(R.drawable.power_button_off);
 			_PreferenceManager.putBoolean(POWER_STATE_PREF, false);
-			_StateManager.disableService();
+			_StateManager.call(SBStateManager.DISABLE_POLLING);
 		}
 	}
 	
