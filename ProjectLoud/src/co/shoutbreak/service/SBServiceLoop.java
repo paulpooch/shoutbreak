@@ -23,7 +23,6 @@ public class SBServiceLoop extends Thread {
 		Looper.prepare();
 		
 		_isLoopOn = true;
-		Toast.makeText(_Service, "Loop Started" , Toast.LENGTH_SHORT).show();
 
 		_LoopHandler = new Handler() {
 			public void handleMessage(Message msg) {

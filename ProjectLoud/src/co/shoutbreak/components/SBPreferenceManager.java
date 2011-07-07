@@ -2,16 +2,16 @@ package co.shoutbreak.components;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.widget.Toast;
-import co.shoutbreak.ui.SBContext;
 
 public class SBPreferenceManager extends SBComponent {
 
 	private final String PREFERENCE_FILE = "PREFERENCES";
 	
+	public static final String POWER_STATE_PREF = "POWER_STATE_PREF";
+	
 	SharedPreferences _Preferences;
 	
-	public SBPreferenceManager(SBContext context) {
+	public SBPreferenceManager(Context context) {
 		super(context, "SBPreferenceManager");
 		_Preferences = _Context.getSharedPreferences(PREFERENCE_FILE, Context.MODE_PRIVATE);
 	}

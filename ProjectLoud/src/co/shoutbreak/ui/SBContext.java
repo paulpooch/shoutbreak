@@ -31,7 +31,6 @@ import android.widget.ImageButton;
 public class SBContext extends Activity {
 
 	private static final String TAG = "SBContext.java";
-	private static final String POWER_STATE_PREF = "POWER_STATE";
 	
 	public static final int COMPOSE_VIEW = 0;
 	public static final int INBOX_VIEW = 1;
@@ -88,7 +87,7 @@ public class SBContext extends Activity {
 			// register power button listener
 			_PowerButton = (ImageButton) findViewById(R.id.powerButton);
 			_PowerButton.setOnClickListener(_powerButtonListener);
-			setPowerState(_PreferenceManager.getBoolean(POWER_STATE_PREF, false));
+			setPowerState(_PreferenceManager.getBoolean(SBPreferenceManager.POWER_STATE_PREF, false));
 			
 			// initialize views
 			// state manager must be initialized
@@ -208,13 +207,13 @@ public class SBContext extends Activity {
 		if (state) {
 			_isPowerOn = true;
 			_PowerButton.setImageResource(R.drawable.power_button_on);
-			_PreferenceManager.putBoolean(POWER_STATE_PREF, true);
+			_PreferenceManager.putBoolean(SBPreferenceManager.POWER_STATE_PREF, true);
 			_StateManager.call(SBStateManager.ENABLE_POLLING);
 			startService(_ServiceIntent); // must be called, BIND_AUTO_CREATE doesn't start service
 		} else {
 			_isPowerOn = false;
 			_PowerButton.setImageResource(R.drawable.power_button_off);
-			_PreferenceManager.putBoolean(POWER_STATE_PREF, false);
+			_PreferenceManager.putBoolean(SBPreferenceManager.POWER_STATE_PREF, false);
 			_StateManager.call(SBStateManager.DISABLE_POLLING);
 		}
 	}

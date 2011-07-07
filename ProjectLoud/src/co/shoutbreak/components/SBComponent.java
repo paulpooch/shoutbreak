@@ -1,13 +1,13 @@
 package co.shoutbreak.components;
 
-import co.shoutbreak.ui.SBContext;
+import android.content.Context;
 
 public class SBComponent {
 
 	protected final String _TAG;
-	protected SBContext _Context;
+	protected Context _Context;
 	
-	public SBComponent(SBContext context, String tag) {
+	public SBComponent(Context context, String tag) {
 		_TAG = tag;
 		_Context = context;
 	}
