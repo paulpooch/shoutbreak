@@ -8,12 +8,10 @@ public class SBStateManager extends Observable {
 
 	private final String TAG = "SBStateManager";
 	
-	public static final int DISABLE_SERVICE = 0;
-	public static final int ENABLE_SERVICE = 1;
+	public static final int DISABLE_POLLING = 0;
+	public static final int ENABLE_POLLING = 1;
 	public static final int DISABLE_UI = 2;
 	public static final int ENABLE_UI = 3;
-	public static final int DISABLE_POLLING = 4;
-	public static final int ENABLE_POLLING = 5;
 	
 	public void call(int command) {
 		setChanged();

@@ -13,7 +13,6 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
 import android.os.Binder;
-import android.os.Handler;
 import android.os.IBinder;
 import android.widget.Toast;
 
@@ -44,7 +43,6 @@ public class SBService extends Service implements Observer {
 		
 		_StateManager = new SBStateManager();
 		_StateManager.addObserver(this);
-		_ServiceLoop = new SBServiceLoop(this);
 	}
 
 	@Override
@@ -53,7 +51,6 @@ public class SBService extends Service implements Observer {
 		if (!_isServiceOn) {
 			_isServiceOn = true;
 			Toast.makeText(getApplicationContext(), "Service On" , Toast.LENGTH_SHORT).show();
-			_ServiceLoop.start();
 		}
 		return START_STICKY;
 	}
@@ -95,11 +92,16 @@ public class SBService extends Service implements Observer {
 	
 	public void update(Observable observable, Object data) {
 		int code = (Integer) data;
-		switch(code) {
-			case SBStateManager.DISABLE_SERVICE:
-				//Toast.makeText(getApplicationContext(), "Turning off service" , Toast.LENGTH_SHORT).show();
-				stopSelf();
-			break;
+		switch (code) {
+			
+			case SBStateManager.ENABLE_POLLING:
+				_ServiceLoop = new SBServiceLoop(this);
+				_ServiceLoop.start();
+				break;
+				
+			case SBStateManager.DISABLE_POLLING:
+				_ServiceLoop.quit();
+				break;
 		}
 	}
 }
