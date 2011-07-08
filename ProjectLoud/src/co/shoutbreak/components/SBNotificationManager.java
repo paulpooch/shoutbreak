@@ -15,8 +15,8 @@ public class SBNotificationManager extends SBComponent {
 		if (extras != null) {
 			if (extras.containsKey(SBView.NOTIFICATION_REFERRAL_ID)
 					&& extras.getBoolean(SBView.NOTIFICATION_REFERRAL_ID)) {
-				inbox = _Context.getView(SBContext.INBOX_VIEW);
-				_Context.switchView(inbox);
+				inbox = ((SBContext) _Context).getView(SBContext.INBOX_VIEW);
+				((SBContext) _Context).switchView(inbox);
 			}
 		}
 	}

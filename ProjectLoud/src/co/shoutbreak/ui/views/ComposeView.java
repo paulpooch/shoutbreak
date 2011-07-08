@@ -47,11 +47,9 @@ public class ComposeView extends SBView implements Observer {
 	/* OBSERVER METHODS */
 
 	public void update(Observable observable, Object data) {
-		/* TODO: this design is getting ugly */
 		SBStateManager stateManager = (SBStateManager) observable;
 	}
 	
-	/* TODO: also kind of ugly */
 	private class PowerStateChngeTask extends AsyncTask<SBContext, Integer, Integer> {
 
 		@Override
