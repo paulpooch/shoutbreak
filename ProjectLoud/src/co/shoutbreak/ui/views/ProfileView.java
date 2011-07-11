@@ -15,7 +15,7 @@ public class ProfileView extends SBView implements Observer {
 	
 	public ProfileView(SBContext context, String name, int resourceId, int notificationId) {
 		super(context, name, resourceId, notificationId);
-		_Context.getStateManager().addObserver(this);
+		_context.getStateManager().addObserver(this);
 	}
 	
 	@Override
@@ -32,7 +32,7 @@ public class ProfileView extends SBView implements Observer {
 	
 	@Override
 	void onDestroy() {
-		_Context.getStateManager().deleteObserver(this);		
+		_context.getStateManager().deleteObserver(this);		
 	}
 
 	/* OBSERVER METHODS */

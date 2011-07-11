@@ -7,15 +7,15 @@ import android.widget.Toast;
 
 // looper pipelines message tasks
 // http://mindtherobot.com/blog/159/android-guts-intro-to-loopers-and-handlers/
-public class SBServiceLoop extends Thread {
+public class SBServiceLoop implements Runnable {
 	
-	private SBService _Service;
-	private Handler _LoopHandler;
+	private SBService _service;
+	private Handler _loopHandler;
 	
 	private boolean _isLoopOn = false;
 	
 	public SBServiceLoop(SBService service) {
-		_Service = service;
+		_service = service;
 	}
 	
 	// pipelined loop thread, spawns new tasks
@@ -24,7 +24,7 @@ public class SBServiceLoop extends Thread {
 		
 		_isLoopOn = true;
 
-		_LoopHandler = new Handler() {
+		_loopHandler = new Handler() {
 			public void handleMessage(Message msg) {
 				// process incoming messages here
 				
@@ -45,11 +45,11 @@ public class SBServiceLoop extends Thread {
 	};
 	
 	public void quit() {
-		if (_isLoopOn & _LoopHandler != null) {
-			Toast.makeText(_Service, "Loop Quit" , Toast.LENGTH_SHORT).show();
-			_LoopHandler.removeCallbacks(this);
-			_LoopHandler.getLooper().quit();
-			_LoopHandler = null;
+		if (_isLoopOn & _loopHandler != null) {
+			Toast.makeText(_service, "Loop Quit" , Toast.LENGTH_SHORT).show();
+			_loopHandler.removeCallbacks(this);
+			_loopHandler.getLooper().quit();
+			_loopHandler = null;
 			_ResponseHandler.removeCallbacks(this);
 			_ResponseHandler = null;
 		}

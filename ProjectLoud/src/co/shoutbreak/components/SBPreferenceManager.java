@@ -5,28 +5,28 @@ import android.content.SharedPreferences;
 
 public class SBPreferenceManager extends SBComponent {
 
-	private final String PREFERENCE_FILE = "PREFERENCES";
+	private static final String PREFERENCE_FILE = "PREFERENCES";
 	
 	public static final String POWER_STATE_PREF = "POWER_STATE_PREF";
 	
-	SharedPreferences _Preferences;
+	SharedPreferences _preferences;
 	
 	public SBPreferenceManager(Context context) {
 		super(context, "SBPreferenceManager");
-		_Preferences = _Context.getSharedPreferences(PREFERENCE_FILE, Context.MODE_PRIVATE);
+		_preferences = _context.getSharedPreferences(PREFERENCE_FILE, Context.MODE_PRIVATE);
 	}
 
 	public SharedPreferences get() {
-		return _Preferences;
+		return _preferences;
 	}	
 	
 	public void putBoolean(String key, boolean value) {
-		SharedPreferences.Editor _Editor = _Preferences.edit();
+		SharedPreferences.Editor _Editor = _preferences.edit();
 		_Editor.putBoolean(key, value);
 		_Editor.commit();
 	}
 	
 	public boolean getBoolean(String key, boolean defaultValue) {
-		return _Preferences.getBoolean(key, defaultValue);
+		return _preferences.getBoolean(key, defaultValue);
 	}
 }

@@ -19,10 +19,10 @@ import android.widget.Toast;
 // launches the service loop
 public class SBService extends Service implements Observer {
 
-	private final String TAG = "SBService";
+	private final String TAG = "SBService.java";
 	
-	private SBStateManager _StateManager;	
-	private SBServiceLoop _ServiceLoop;
+	private SBStateManager _stateManager;	
+	private SBServiceLoop _serviceLoop;
 	
 	private boolean _isServiceOn = false;
 	
@@ -39,8 +39,8 @@ public class SBService extends Service implements Observer {
 		SBLog.i(TAG, "onCreate()");
 		super.onCreate();
 		
-		_StateManager = new SBStateManager();
-		_StateManager.addObserver(this);
+		_stateManager = new SBStateManager();
+		_stateManager.addObserver(this);
 	}
 
 	@Override
@@ -54,7 +54,7 @@ public class SBService extends Service implements Observer {
 			if (bundle != null & bundle.getBoolean(SBAlarmReceiver.LAUNCHED_FROM_ALARM)) {
 				SBPreferenceManager preferences = new SBPreferenceManager(SBService.this);
 				preferences.getBoolean(SBPreferenceManager.POWER_STATE_PREF, true);
-				_StateManager.call(SBStateManager.ENABLE_POLLING);
+				_stateManager.call(SBStateManager.ENABLE_POLLING);
 			}
 			
 		}
@@ -66,8 +66,8 @@ public class SBService extends Service implements Observer {
 		SBLog.i(TAG, "onDestroy()");
 		super.onDestroy();
 		
-		_StateManager.deleteObserver(this);
-		_StateManager.call(SBStateManager.DISABLE_POLLING);
+		_stateManager.deleteObserver(this);
+		_stateManager.call(SBStateManager.DISABLE_POLLING);
 	}
 	
 	public class ServiceBridge extends Binder implements SBServiceBridgeInterface {
@@ -77,7 +77,7 @@ public class SBService extends Service implements Observer {
 		}
 		
 		public SBStateManager getStateManager() {
-			return _StateManager;
+			return _stateManager;
 		}
 	}
 
@@ -89,13 +89,13 @@ public class SBService extends Service implements Observer {
 			
 			case SBStateManager.ENABLE_POLLING:
 				Toast.makeText(getApplicationContext(), "Loop Started" , Toast.LENGTH_SHORT).show();
-				_ServiceLoop = new SBServiceLoop(this);
-				_ServiceLoop.start();
+				_serviceLoop = new SBServiceLoop(this);
+				_serviceLoop.run();
 				break;
 				
 			case SBStateManager.DISABLE_POLLING:
-				if (_ServiceLoop != null) {
-					_ServiceLoop.quit();
+				if (_serviceLoop != null) {
+					_serviceLoop.quit();
 				}
 				break;
 		}

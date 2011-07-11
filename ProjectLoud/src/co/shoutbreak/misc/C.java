@@ -4,8 +4,10 @@ package co.shoutbreak.misc;
 public class C {
 	/* new constants */
 	
-	// alarm manager
+	// notification manager
+	public static final String NOTIFICATION_REFERRAL_ID = "NOTIFICATION_REFERRAL_ID";
 	
+	// alarm manager
 	public static final String START_FROM_UI = "start_from_ui";
 	public static final String ALARM_MESSAGE = "alarm_message";
 	public static final int ALARM_REQUEST_CODE = 1;

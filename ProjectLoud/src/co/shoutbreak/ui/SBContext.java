@@ -36,14 +36,14 @@ public class SBContext extends Activity {
 	public static final int INBOX_VIEW = 1;
 	public static final int PROFILE_VIEW = 2;
 
-	private SBStateManager _StateManager;
-	private SBNotificationManager _NotificationManager;
-	private SBPreferenceManager _PreferenceManager;
-	private SBServiceBridgeInterface _ServiceBinder;
-	private Intent _ServiceIntent;
-	private SBView _ViewArray[];
-	private SBView _CurrentView;
-	private ImageButton _PowerButton;
+	private SBStateManager _stateManager;
+	private SBNotificationManager _notificationManager;
+	private SBPreferenceManager _preferenceManager;
+	private SBServiceBridgeInterface _serviceBinder;
+	private Intent _serviceIntent;
+	private SBView _viewArray[];
+	private SBView _currentView;
+	private ImageButton _powerButton;
 	
 	private boolean _isPowerOn;
 	
@@ -59,13 +59,13 @@ public class SBContext extends Activity {
 		super.onCreate(bundle);
 
 		// initialize components
-		_NotificationManager = new SBNotificationManager(this);
-		_PreferenceManager = new SBPreferenceManager(this);
+		_notificationManager = new SBNotificationManager(this);
+		_preferenceManager = new SBPreferenceManager(this);
 
 		// connect to service
-		_ServiceIntent = new Intent(SBContext.this, SBService.class);
-		_ServiceIntent.putExtra(C.START_FROM_UI, true);
-		bindService(_ServiceIntent, _ServiceConnection, Context.BIND_AUTO_CREATE);
+		_serviceIntent = new Intent(SBContext.this, SBService.class);
+		_serviceIntent.putExtra(C.START_FROM_UI, true);
+		bindService(_serviceIntent, _ServiceConnection, Context.BIND_AUTO_CREATE);
 		
 		// register tab listeners
 		setContentView(R.layout.main);
@@ -81,23 +81,23 @@ public class SBContext extends Activity {
 
 		public void onServiceConnected(ComponentName className, IBinder service) {
 			SBLog.i(TAG, "onServiceConnected()");
-			_ServiceBinder = (SBServiceBridgeInterface) service;
-			_StateManager = _ServiceBinder.getStateManager();
+			_serviceBinder = (SBServiceBridgeInterface) service;
+			_stateManager = _serviceBinder.getStateManager();
 			
 			// register power button listener
-			_PowerButton = (ImageButton) findViewById(R.id.powerButton);
-			_PowerButton.setOnClickListener(_powerButtonListener);
-			setPowerState(_PreferenceManager.getBoolean(SBPreferenceManager.POWER_STATE_PREF, false));
+			_powerButton = (ImageButton) findViewById(R.id.powerButton);
+			_powerButton.setOnClickListener(_powerButtonListener);
+			setPowerState(_preferenceManager.getBoolean(SBPreferenceManager.POWER_STATE_PREF, false));
 			
 			// initialize views
 			// state manager must be initialized
-			_ViewArray = new SBView[3];
-			_ViewArray[COMPOSE_VIEW] = new ComposeView(SBContext.this, "Send Shout", R.id.compose_view, 0);
-			_ViewArray[INBOX_VIEW] = new InboxView(SBContext.this, "Inbox", R.id.inbox_view, 1);
-			_ViewArray[PROFILE_VIEW] = new ProfileView(SBContext.this, "Profile", R.id.profile_view, 2);
-			switchView(_ViewArray[COMPOSE_VIEW]);
+			_viewArray = new SBView[3];
+			_viewArray[COMPOSE_VIEW] = new ComposeView(SBContext.this, "Send Shout", R.id.compose_view, 0);
+			_viewArray[INBOX_VIEW] = new InboxView(SBContext.this, "Inbox", R.id.inbox_view, 1);
+			_viewArray[PROFILE_VIEW] = new ProfileView(SBContext.this, "Profile", R.id.profile_view, 2);
+			switchView(_viewArray[COMPOSE_VIEW]);
 			
-			_StateManager.call(SBStateManager.ENABLE_UI);
+			_stateManager.call(SBStateManager.ENABLE_UI);
 		}
 
 		public void onServiceDisconnected(ComponentName className) {
@@ -109,7 +109,7 @@ public class SBContext extends Activity {
 	@Override
 	public void onNewIntent(Intent intent) {
 		SBLog.i(TAG, "onNewIntent()");
-		_NotificationManager.handleNotificationExtras(intent.getExtras());
+		_notificationManager.handleNotificationExtras(intent.getExtras());
 	}
 
 	@Override
@@ -123,7 +123,7 @@ public class SBContext extends Activity {
 		SBLog.i(TAG, "onResume()");
 		super.onResume();
 		/* TODO: not sure if this is needed */
-		_NotificationManager.handleNotificationExtras(getIntent().getExtras());
+		_notificationManager.handleNotificationExtras(getIntent().getExtras());
 	}
 
 	@Override
@@ -143,19 +143,19 @@ public class SBContext extends Activity {
 		SBLog.i(TAG, "onDestroy()");
 		
 		// unregister Views from StateManager
-		for (SBView view: _ViewArray) {
+		for (SBView view: _viewArray) {
 			view.destroy();
 		}
 		
 		// kill service if power is off
 		if (!_isPowerOn) {
-			stopService(_ServiceIntent);
+			stopService(_serviceIntent);
 		}
 		
-		_StateManager.call(SBStateManager.DISABLE_UI);
-		_StateManager = null;
+		_stateManager.call(SBStateManager.DISABLE_UI);
+		_stateManager = null;
 		unbindService(_ServiceConnection);
-		_ServiceBinder = null;
+		_serviceBinder = null;
 		
 		super.onDestroy();
 	}
@@ -164,34 +164,34 @@ public class SBContext extends Activity {
 
 	public void switchView(SBView view) {
 		SBLog.i(TAG, "switchView(" + view.getName() + ")");
-		if (_CurrentView != null) {
-			_CurrentView.hide();
+		if (_currentView != null) {
+			_currentView.hide();
 		}
-		_CurrentView = view;
-		_CurrentView.show();
+		_currentView = view;
+		_currentView.show();
 	}
 	
 	public SBView getView(int viewId) {
-		return _ViewArray[viewId];
+		return _viewArray[viewId];
 	}
 	
 	/* BUTTON LISTENERS */
 	
 	private OnClickListener _composeTabListener = new OnClickListener() {
 		public void onClick(View v) {
-			switchView(_ViewArray[COMPOSE_VIEW]);
+			switchView(_viewArray[COMPOSE_VIEW]);
 		}
 	};
 	
 	private OnClickListener _inboxTabListener = new OnClickListener() {
 		public void onClick(View v) {
-			switchView(_ViewArray[INBOX_VIEW]);
+			switchView(_viewArray[INBOX_VIEW]);
 		}
 	};
 	
 	private OnClickListener _profileTabListener = new OnClickListener() {
 		public void onClick(View v) {
-			switchView(_ViewArray[PROFILE_VIEW]);
+			switchView(_viewArray[PROFILE_VIEW]);
 		}
 	};
 	
@@ -206,21 +206,21 @@ public class SBContext extends Activity {
 	private void setPowerState(boolean state) {
 		if (state) {
 			_isPowerOn = true;
-			_PowerButton.setImageResource(R.drawable.power_button_on);
-			_PreferenceManager.putBoolean(SBPreferenceManager.POWER_STATE_PREF, true);
-			_StateManager.call(SBStateManager.ENABLE_POLLING);
-			startService(_ServiceIntent); // must be called, BIND_AUTO_CREATE doesn't start service
+			_powerButton.setImageResource(R.drawable.power_button_on);
+			_preferenceManager.putBoolean(SBPreferenceManager.POWER_STATE_PREF, true);
+			_stateManager.call(SBStateManager.ENABLE_POLLING);
+			startService(_serviceIntent); // must be called, BIND_AUTO_CREATE doesn't start service
 		} else {
 			_isPowerOn = false;
-			_PowerButton.setImageResource(R.drawable.power_button_off);
-			_PreferenceManager.putBoolean(SBPreferenceManager.POWER_STATE_PREF, false);
-			_StateManager.call(SBStateManager.DISABLE_POLLING);
+			_powerButton.setImageResource(R.drawable.power_button_off);
+			_preferenceManager.putBoolean(SBPreferenceManager.POWER_STATE_PREF, false);
+			_stateManager.call(SBStateManager.DISABLE_POLLING);
 		}
 	}
 	
 	/* COMPONENT GETTERS */
 	
 	public SBStateManager getStateManager() {
-		return _StateManager;
+		return _stateManager;
 	}
 }

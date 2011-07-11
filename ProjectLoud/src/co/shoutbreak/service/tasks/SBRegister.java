@@ -3,7 +3,6 @@ package co.shoutbreak.service.tasks;
 import android.os.Handler;
 
 public class SBRegister extends SBThreadedTask {
-
 	
 	public SBRegister(Handler handler) {
 		super(handler);

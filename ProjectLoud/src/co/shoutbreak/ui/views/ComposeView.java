@@ -17,7 +17,7 @@ public class ComposeView extends SBView implements Observer {
 	
 	public ComposeView(SBContext context, String name, int resourceId, int notificationId) {
 		super(context, name, resourceId, notificationId);
-		_Context.getStateManager().addObserver(this);
+		_context.getStateManager().addObserver(this);
 	}
 	
 	/* LIFECYCLE METHODS */
@@ -39,7 +39,7 @@ public class ComposeView extends SBView implements Observer {
 	@Override
 	void onDestroy() {
 		SBLog.i(TAG, "onDestroy()");
-		_Context.getStateManager().deleteObserver(this);		
+		_context.getStateManager().deleteObserver(this);		
 	}
 	
 	/* LISTENERS: use AsyncTasks for expensive shit */

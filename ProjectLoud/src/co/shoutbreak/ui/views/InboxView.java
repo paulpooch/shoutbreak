@@ -15,7 +15,7 @@ public class InboxView extends SBView implements Observer {
 	
 	public InboxView(SBContext context, String name, int resourceId, int notificationId) {
 		super(context, name, resourceId, notificationId);
-		_Context.getStateManager().addObserver(this);
+		_context.getStateManager().addObserver(this);
 	}
 
 	@Override
@@ -33,7 +33,7 @@ public class InboxView extends SBView implements Observer {
 	@Override
 	void onDestroy() {
 		SBLog.i(TAG, "onDestroy()");
-		_Context.getStateManager().deleteObserver(this);		
+		_context.getStateManager().deleteObserver(this);		
 	}
 	
 	/* OBSERVER METHODS */
