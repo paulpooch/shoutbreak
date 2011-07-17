@@ -3,8 +3,9 @@ package co.shoutbreak.ui.views;
 import java.util.Observable;
 import java.util.Observer;
 
-import co.shoutbreak.components.SBStateManager;
-import co.shoutbreak.misc.SBLog;
+import co.shoutbreak.shared.StateManager;
+import co.shoutbreak.shared.User;
+import co.shoutbreak.shared.utils.SBLog;
 import co.shoutbreak.ui.SBContext;
 
 public class ProfileView extends SBView implements Observer {
@@ -36,12 +37,13 @@ public class ProfileView extends SBView implements Observer {
 	}
 
 	/* OBSERVER METHODS */
-
 	public void update(Observable observable, Object data) {
-		SBStateManager stateManager = (SBStateManager) observable;
-		switch (stateManager.getState()) {
-			case 1: 
-			break;
+		if (observable instanceof StateManager) {
+			// STATE MANAGER //////////////////////////////////////////////////
+			
+		} else if (observable instanceof User) {
+			// USER ///////////////////////////////////////////////////////////
+				
 		}
 	}
 }

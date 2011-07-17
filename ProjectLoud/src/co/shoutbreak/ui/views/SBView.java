@@ -55,4 +55,5 @@ public abstract class SBView implements Observer {
 	public final int getNotificationId() {
 		return _notificationId;
 	}
+
 }

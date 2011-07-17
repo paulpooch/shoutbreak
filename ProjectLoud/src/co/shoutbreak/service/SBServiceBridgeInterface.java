@@ -1,11 +1,11 @@
 package co.shoutbreak.service;
 
-import co.shoutbreak.components.SBStateManager;
-import co.shoutbreak.components.SBUser;
+import co.shoutbreak.shared.StateManager;
+import co.shoutbreak.shared.User;
 
 public interface SBServiceBridgeInterface {
 	
-	public SBUser getUser();
-	public SBStateManager getStateManager();
+	public User getUser();
+	public StateManager getStateManager();
 	
 }

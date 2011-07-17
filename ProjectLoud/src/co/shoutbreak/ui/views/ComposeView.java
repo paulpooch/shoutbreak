@@ -3,21 +3,40 @@ package co.shoutbreak.ui.views;
 import java.util.Observable;
 import java.util.Observer;
 
-import android.os.AsyncTask;
+import com.google.android.maps.MapController;
 
-import co.shoutbreak.components.SBStateManager;
-import co.shoutbreak.misc.SBLog;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
+
+import co.shoutbreak.R;
+import co.shoutbreak.shared.C;
+import co.shoutbreak.shared.StateManager;
+import co.shoutbreak.shared.User;
+import co.shoutbreak.shared.utils.SBLog;
 import co.shoutbreak.ui.SBContext;
+import co.shoutbreak.ui.map.CustomMapView;
+import co.shoutbreak.ui.map.UserLocationOverlay;
 
 public class ComposeView extends SBView implements Observer {
 	
 	private final String TAG = "ComposeView.java";
 	
+	private CustomMapView _cMapView;
+	private MapController _mapController;
+	private UserLocationOverlay _userLocationOverlay;
+	private EditText _cShoutText;
+	// keyboard
+	protected InputMethodManager _inputMM;
+	
 	/* Do NOT store any SBContext parameters, will cause service leak */
+	// Pretty sure we have to John.  Why can't we?
+	// Map initialization takes it by default
 	
 	public ComposeView(SBContext context, String name, int resourceId, int notificationId) {
 		super(context, name, resourceId, notificationId);
 		_context.getStateManager().addObserver(this);
+		initMap();
 	}
 	
 	/* LIFECYCLE METHODS */
@@ -45,17 +64,44 @@ public class ComposeView extends SBView implements Observer {
 	/* LISTENERS: use AsyncTasks for expensive shit */
 	
 	/* OBSERVER METHODS */
-
 	public void update(Observable observable, Object data) {
-		SBStateManager stateManager = (SBStateManager) observable;
+		if (observable instanceof StateManager) {
+			// STATE MANAGER //////////////////////////////////////////////////
+			
+		} else if (observable instanceof User) {
+			// USER ///////////////////////////////////////////////////////////
+				
+		}
 	}
 	
-	private class PowerStateChngeTask extends AsyncTask<SBContext, Integer, Integer> {
-
-		@Override
-		protected Integer doInBackground(SBContext... params) {
-			return null;
+	private void initMap() {
+		_cMapView = (CustomMapView) _context.findViewById(R.id.cmvMap);
+		_userLocationOverlay = new UserLocationOverlay(_context, _cMapView);
+		if (_cMapView.getOverlays().size() == 0) {
+			_cMapView.getOverlays().add(_userLocationOverlay);
 		}
+		_mapController = _cMapView.getController();
+		_mapController.setZoom(C.DEFAULT_ZOOM_LEVEL);
+		_cMapView.setClickable(true);
+		_cMapView.setEnabled(true);
+		// _cMapView.setUI(this);
+		_cMapView.setUserLocationOverlay(_userLocationOverlay);
+		_cMapView.postInvalidate();
 		
-	}
+		// TODO: remove this. called when 'on/off' switch is clicked
+		//_userLocationOverlay.runOnFirstFix(new Runnable() {
+		//	public void run() {
+		//		GeoPoint loc = _userLocationOverlay.getMyLocation();
+		//		_mapController.animateTo(loc);
+		//	}
+		//});
+		_userLocationOverlay.enableMyLocation();
+	}	
+	
+	public void hideKeyboard() {
+		_inputMM.hideSoftInputFromWindow(_cShoutText.getWindowToken(), 0);
+		_context.getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+			WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+	}	
+	
 }

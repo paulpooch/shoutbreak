@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" package="co.shoutbreak" android:versionCode="2" android:versionName="2.0">
     <uses-sdk android:minSdkVersion="8" />
-    <application android:icon="@drawable/icon" android:label="Shoutbreak">
+    <application android:icon="@drawable/icon" android:label="Shoutbreak" android:debuggable="true">
 		
 		<!-- Launcher -->
         <activity android:name=".ui.SBContext" android:label="Shoutbreak" android:screenOrientation="portrait" android:launchMode="singleTop" android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
@@ -26,6 +26,8 @@
 				<action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
 			</intent-filter>
 		</receiver>
+		
+		<uses-library android:name="com.google.android.maps" />
 		
     </application>
     <uses-permission android:name="android.permission.INTERNET" />
