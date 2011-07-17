@@ -17,6 +17,7 @@ public class InboxView extends SBView implements Observer {
 	public InboxView(SBContext context, String name, int resourceId, int notificationId) {
 		super(context, name, resourceId, notificationId);
 		_context.getStateManager().addObserver(this);
+		_context.getUser().addObserver(this);
 	}
 
 	@Override

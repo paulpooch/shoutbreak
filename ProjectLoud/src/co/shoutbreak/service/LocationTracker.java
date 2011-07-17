@@ -70,11 +70,13 @@ public class LocationTracker {
 	
 	
 	public double getLatitude() {
-		return _location.getLatitude();
+		// We only care about 5 decimal places = 1.11m accuracy
+		return ((double)Math.round(_location.getLatitude() * 100000)) / 100000;
 	}
 	
 	public double getLongitude() {
-		return _location.getLongitude();
+		// We only care about 5 decimal places = 1.11m accuracy
+		return ((double)Math.round(_location.getLongitude() * 100000)) / 100000;
 	}
 	
 	public CellDensity getCurrentCell() {

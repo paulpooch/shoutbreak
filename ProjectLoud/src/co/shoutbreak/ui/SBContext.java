@@ -21,6 +21,8 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.view.View;
@@ -95,7 +97,7 @@ public class SBContext extends MapActivity {
 			SBLog.i(TAG, "onServiceConnected()");
 			_serviceBinder = (SBServiceBridgeInterface) service;
 			_stateManager = _serviceBinder.getStateManager();
-			_stateManager.setIsUIOn(true);
+			_stateManager.setIsServiceBound(true);
 			_user = _serviceBinder.getUser();
 			
 			// initialize views
@@ -110,13 +112,16 @@ public class SBContext extends MapActivity {
 			_powerButton = (ImageButton) findViewById(R.id.powerButton);
 			_powerButton.setOnClickListener(_powerButtonListener);
 			
-			initializeApplication();
-			
+			_user.pullUserInfo();
+			initializeState();
+			setPowerState(_preferenceManager.getBoolean(SBPreferenceManager.POWER_STATE_PREF, false));
 		}
 
 		public void onServiceDisconnected(ComponentName className) {
 			// should never be called
 			SBLog.i(TAG, "onServiceDisconnected()");
+			_serviceBinder = null;
+			_stateManager.setIsServiceBound(false);
 		}
 	};
 
@@ -217,31 +222,33 @@ public class SBContext extends MapActivity {
 	
 	/* MISCELLANEOUS */
 	
-	private void initializeApplication() {
-		setPowerState(_preferenceManager.getBoolean(SBPreferenceManager.POWER_STATE_PREF, false));
+	private void initializeState() {
+		_stateManager.setIsUIOn(true);
+		if (_user.getLocationTracker().isLocationEnabled()) {
+			_stateManager.setIsLocationAvailable(true);
+		} else {
+			_stateManager.setIsLocationAvailable(false);
+		}
+		if (isNetworkAvailable()) {
+			_stateManager.setIsDataAvailable(true);
+		} else {
+			_stateManager.setIsDataAvailable(false);
+		}
 	}
 	
-	private void setPowerState(boolean state) {
-		if (state) {
-			if (_user.getLocationTracker().isLocationEnabled()) {
-				_isPowerOn = true;
-				_powerButton.setImageResource(R.drawable.power_button_on);
-				_preferenceManager.putBoolean(SBPreferenceManager.POWER_STATE_PREF, true);
-				_stateManager.setIsPowerButtonOn(true);
-				_stateManager.setIsPowerPrefOn(true);
-				_stateManager.setIsLocationAvailable(true);
-				StateEvent e = new StateEvent();
-				e.pollingTurnedOn = true;
-				e.locationTurnedOn = true;
-				_stateManager.fireStateEvent(e);
-				startService(_serviceIntent); // must be called, BIND_AUTO_CREATE doesn't start service
-			} else {
-				StateEvent e = new StateEvent();
-				e.locationTurnedOff = true;
-				_stateManager.fireStateEvent(e);
-				_stateManager.setIsLocationAvailable(false);
-				_dialogBuilder.showDialog(DialogBuilder.DIALOG_LOCATION_DISABLED);
-			}
+	private void setPowerState(boolean turnOn) {
+		if (turnOn) {
+			_isPowerOn = true;
+			_powerButton.setImageResource(R.drawable.power_button_on);
+			_preferenceManager.putBoolean(SBPreferenceManager.POWER_STATE_PREF, true);
+			_stateManager.setIsPowerButtonOn(true);
+			_stateManager.setIsPowerPrefOn(true);
+			_stateManager.setIsLocationAvailable(true);
+			StateEvent e = new StateEvent();
+			e.pollingTurnedOn = true;
+			e.locationTurnedOn = true;
+			_stateManager.fireStateEvent(e);
+			startService(_serviceIntent); // must be called, BIND_AUTO_CREATE doesn't start service
 		} else {
 			_isPowerOn = false;
 			_powerButton.setImageResource(R.drawable.power_button_off);
@@ -256,10 +263,20 @@ public class SBContext extends MapActivity {
 		_cTvTitleBar.setText(s);
 	}
 	
+	private boolean isNetworkAvailable() {
+	    ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+	    NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+	    return activeNetworkInfo != null;
+	}
+	
 	/* COMPONENT GETTERS */
 	
 	public StateManager getStateManager() {
 		return _stateManager;
+	}
+	
+	public User getUser() {
+		return _user;
 	}
 
 	@Override

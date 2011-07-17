@@ -11,6 +11,7 @@ import android.telephony.TelephonyManager;
 import co.shoutbreak.service.LocationTracker;
 import co.shoutbreak.service.ShoutbreakService;
 import co.shoutbreak.shared.utils.Hash;
+import co.shoutbreak.shared.utils.SBLog;
 
 //Based on observer pattern. More here: http://www.youtube.com/watch?v=qw0zZAte66A
 public class User extends Observable {
@@ -45,6 +46,8 @@ public class User extends Observable {
 	}
 	
 	// END STATICS ////////////////////////////////////////////////////////////
+	
+	private final String TAG = "User";
 	
 	private ShoutbreakService _service;
 	private TelephonyManager _tm;
@@ -92,6 +95,7 @@ public class User extends Observable {
 	}
 	
 	public void fireUserEvent(UserEvent e) {
+		SBLog.i(TAG, "StateManager.fireUserEvent\n" + e.toLogString());
 		setChanged();
 		notifyObservers(e);
 	}

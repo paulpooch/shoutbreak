@@ -52,6 +52,7 @@ public class ShoutbreakService extends Service implements Observer {
 		
 		_stateManager = new StateManager();
 		_stateManager.addObserver(this);
+		_stateManager.setIsServiceAlive(true);
 		_user = new User(this);
 		_user.addObserver(this);
 		
@@ -113,7 +114,6 @@ public class ShoutbreakService extends Service implements Observer {
 		SBLog.i(TAG, "onStartCommand()");
 		if (!_isServiceOn) {
 			_isServiceOn = true;
-			_stateManager.setIsServiceOn(true);
 			
 			// enable polling if called from alarm receiver
 			Bundle bundle = intent.getExtras();
@@ -121,12 +121,13 @@ public class ShoutbreakService extends Service implements Observer {
 				SBPreferenceManager preferences = new SBPreferenceManager(ShoutbreakService.this);
 				preferences.putBoolean(SBPreferenceManager.POWER_STATE_PREF, true);
 				_stateManager.setIsPowerPrefOn(true);
-				_stateManager.setIsPollingOn(true);
-				StateEvent e = new StateEvent();
-				e.pollingTurnedOn = true;
-				_stateManager.fireStateEvent(e);
 			}
 			
+			// This is caught in update below.
+			_stateManager.setIsPollingOn(true);
+			StateEvent e = new StateEvent();
+			e.pollingTurnedOn = true;
+			_stateManager.fireStateEvent(e);
 		}
 		return START_STICKY;
 	}
@@ -134,10 +135,10 @@ public class ShoutbreakService extends Service implements Observer {
 	@Override
 	public void onDestroy() {
 		SBLog.i(TAG, "onDestroy()");
-		super.onDestroy();
-		
+		super.onDestroy();		
 		_stateManager.deleteObserver(this);
-		_stateManager.setIsServiceOn(false);
+		_stateManager.setIsServiceAlive(false);
+		_stateManager.setIsServiceBound(false);
 		_stateManager.setIsPollingOn(false);
 		StateEvent e = new StateEvent();
 		e.pollingTurnedOff = true;
@@ -161,7 +162,9 @@ public class ShoutbreakService extends Service implements Observer {
 		if (observable instanceof StateManager) {
 			// STATE MANAGER //////////////////////////////////////////////////
 			StateEvent e = (StateEvent)data;
+			
 			if (e.pollingTurnedOn) {
+				_stateManager.setIsDataAvailable(true);
 				Toast.makeText(getApplicationContext(), "Polling Started" , Toast.LENGTH_SHORT).show();
 				_isPollingAllowed = true;
 				Message message = new Message();
@@ -172,10 +175,24 @@ public class ShoutbreakService extends Service implements Observer {
 				ServiceThread thread = new ServiceThread(_uiThreadHandler, message, _user);
 				_uiThreadHandler.post(thread);
 			}
+						
 			if (e.pollingTurnedOff) {
 				Toast.makeText(getApplicationContext(), "Polling Stopped" , Toast.LENGTH_SHORT).show();
 				_isPollingAllowed = false;
 			}
+			
+			if (e.uiJustSentShout) {
+				Message message = new Message();
+				CrossThreadPacket xPacket = new CrossThreadPacket();
+				xPacket.purpose = C.PURPOSE_DEATH;
+				xPacket.sArgs = new String[] { e.shoutText };
+				xPacket.iArgs = new int[] { e.shoutPower };
+				message.obj = xPacket;
+				message.what = C.STATE_SHOUT;
+				ServiceThread thread = new ServiceThread(_uiThreadHandler, message, _user);
+				_uiThreadHandler.post(thread);
+			}
+			
 		} else if (observable instanceof User) {
 			// USER ///////////////////////////////////////////////////////////
 				

@@ -13,7 +13,8 @@ public class StateManager extends Observable {
 	private final String TAG = "SBStateManager";
 	
 	private int isUIOn = -1; // -1 indicates unknown. 0 = off. 1 = on.
-	private int isServiceOn = -1;
+	private int isServiceAlive = -1;
+	private int isServiceBound = -1;
 	private int isPollingOn = -1;
 	private int isDataAvailable = -1;
 	private int isLocationAvailable = -1;
@@ -22,10 +23,10 @@ public class StateManager extends Observable {
 	private int isInputEnabled = -1;
 	private int isPowerButtonOn = -1;
 	private int isPowerPrefOn = -1;
-	private int isServiceBound = -1;
 	private int isUserOverlayVisible = -1;
 	
 	public void fireStateEvent(StateEvent e) {
+		SBLog.i(TAG, "StateManager.fireStateEvent\n" + e.toLogString());
 		updateState(e);
 		setChanged();
 		notifyObservers(e);
@@ -38,6 +39,23 @@ public class StateManager extends Observable {
 
 	}
 	
+	public void shout(String text, int power) {
+		StateEvent e = new StateEvent();
+		e.uiJustSentShout = true;
+		e.shoutText = text;
+		e.shoutPower = power;
+		fireStateEvent(e);
+	}
+	
+	public boolean isAppFullyFunctional() {
+		// TODO: This function sucks. Mainly just here to show we need something like this.
+		boolean result = false;
+		if (isUIOn + isServiceAlive + isServiceBound + isPollingOn + isDataAvailable + isLocationAvailable + isLocationTrackerUsingGPS + isUserOverlayUsingGPS + isInputEnabled + isPowerButtonOn  + isPowerPrefOn + isServiceBound + isUserOverlayVisible > 12) {
+			result = true;
+		}
+		return result;
+	}
+	
 	// Nothing below can fire Events or will have an endless cycle.
 	
 	private void updateLog() {
@@ -46,7 +64,8 @@ public class StateManager extends Observable {
 		sb.append("////////////////////// STATE UPDATE /////////////////////////\n");
 		sb.append("/////////////////////////////////////////////////////////////\n");
 		sb.append("isUIOn = " + isUIOn + "\n");
-		sb.append("isServiceOn = " + isServiceOn + "\n");
+		sb.append("isServiceAlive = " + isServiceAlive + "\n");
+		sb.append("isServiceBound = " + isServiceBound + "\n");
 		sb.append("isPollingOn = " + isPollingOn + "\n");
 		sb.append("isDataAvailable = " + isDataAvailable + "\n");
 		sb.append("isLocationAvailable = " + isLocationAvailable + "\n");
@@ -65,13 +84,23 @@ public class StateManager extends Observable {
 		updateLog();
 	}
 	
-	public void setIsServiceOn(boolean b) {
-		isServiceOn = (b) ? 1 : 0;
+	public void setIsServiceAlive(boolean b) {
+		isServiceAlive = (b) ? 1 : 0;
+		updateLog();
+	}
+	
+	public void setIsServiceBound(boolean b) {
+		isServiceBound = (b) ? 1 : 0;
 		updateLog();
 	}
 	
 	public void setIsPollingOn(boolean b) {
 		isPollingOn = (b) ? 1 : 0;
+		updateLog();
+	}
+	
+	public void setIsDataAvailable(boolean b) {
+		isDataAvailable = (b) ? 1 : 0;
 		updateLog();
 	}
 	

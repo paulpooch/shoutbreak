@@ -111,6 +111,7 @@ public class UserLocationOverlay extends MyLocationOverlay implements Observer  
 		super(context, mapView);
 		_context = context;
 		_context.getStateManager().addObserver(this);
+		_context.getUser().addObserver(this);
 		_baseRadiusPx = -1;
 		_baseRadiusMeters = 0;
 		_zoomLevel = C.DEFAULT_ZOOM_LEVEL;
