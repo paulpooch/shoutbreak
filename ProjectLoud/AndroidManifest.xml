@@ -12,9 +12,9 @@
         </activity>
         
         <!-- Service -->
-        <service android:name=".service.SBService" android:exported="true">
+        <service android:name=".service.ShoutbreakService" android:exported="true">
 			<intent-filter>
-				<action android:name="co.shoutbreak.service.SBService" />
+				<action android:name="co.shoutbreak.service.ShoutbreakService" />
 			</intent-filter>
 		</service>
 		

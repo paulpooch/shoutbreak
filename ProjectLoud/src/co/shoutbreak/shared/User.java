@@ -9,7 +9,7 @@ import android.provider.Settings;
 import android.telephony.TelephonyManager;
 
 import co.shoutbreak.service.LocationTracker;
-import co.shoutbreak.service.SBService;
+import co.shoutbreak.service.ShoutbreakService;
 import co.shoutbreak.shared.utils.Hash;
 
 //Based on observer pattern. More here: http://www.youtube.com/watch?v=qw0zZAte66A
@@ -46,7 +46,7 @@ public class User extends Observable {
 	
 	// END STATICS ////////////////////////////////////////////////////////////
 	
-	private SBService _service;
+	private ShoutbreakService _service;
 	private TelephonyManager _tm;
 	private Database _db;
 	private CellDensity _cellDensity;
@@ -63,7 +63,7 @@ public class User extends Observable {
 	private int _points;
 	private int _nextLevelAt;
 	
-	public User(SBService service) {
+	public User(ShoutbreakService service) {
 		_service = service;
 		_tm = (TelephonyManager) service.getSystemService(Context.TELEPHONY_SERVICE);
 		_db = new Database(_service);

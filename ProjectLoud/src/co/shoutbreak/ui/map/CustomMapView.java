@@ -1,12 +1,6 @@
 package co.shoutbreak.ui.map;
 
-import java.util.Observable;
-import java.util.Observer;
-
 import co.shoutbreak.shared.C;
-import co.shoutbreak.shared.StateEvent;
-import co.shoutbreak.shared.StateManager;
-import co.shoutbreak.shared.User;
 import co.shoutbreak.ui.SBContext;
 import co.shoutbreak.ui.views.ComposeView;
 
@@ -17,7 +11,7 @@ import android.graphics.Point;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 
-public class CustomMapView extends MapView implements Observer {
+public class CustomMapView extends MapView {
 
 	private SBContext _context;
 	private UserLocationOverlay _userLocationOverlay;
@@ -31,33 +25,8 @@ public class CustomMapView extends MapView implements Observer {
 	public CustomMapView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		_context = (SBContext)context;
-		_context.getStateManager().addObserver(this);
 		_isBeingResized = false;
 		_lastZoomLevel = -1;
-	}
-	
-	/* OBSERVER METHODS */
-	public void update(Observable observable, Object data) {
-		if (observable instanceof StateManager) {
-			// STATE MANAGER //////////////////////////////////////////////////
-			StateEvent e = (StateEvent)data;
-			if (e.locationTurnedOn) {
-				if (getOverlays().size() == 0) {
-					getOverlays().add(_userLocationOverlay);
-					postInvalidate();
-					//animateMap(_userLocationOverlay.getLocation(), false);
-				}
-			}
-			if (e.locationTurnedOff) {
-				if (getOverlays().size() > 0) {
-					getOverlays().clear();
-					postInvalidate();
-				}
-			}
-		} else if (observable instanceof User) {
-			// USER ///////////////////////////////////////////////////////////
-				
-		}
 	}
 	
 	public void setUserLocationOverlay(UserLocationOverlay userLocationOverlay) {

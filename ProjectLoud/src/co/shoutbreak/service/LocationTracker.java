@@ -15,7 +15,7 @@ import com.google.android.maps.GeoPoint;
 public class LocationTracker {
 	// http://stackoverflow.com/questions/1389811/gps-not-update-location-after-close-and-reopen-app-on-android
 		
-	private Context _context;
+	private ShoutbreakService _service;
 	private User _user;
 	private LocationManager _locationManager;
 	private Location _location;
@@ -24,9 +24,9 @@ public class LocationTracker {
 	private Criteria _criteria;
 	
 	public LocationTracker(Context context, User user) {
-		_context = context;
+		_service = (ShoutbreakService)context;
 		_user = user;
-		_locationManager = (LocationManager) _context.getSystemService(Context.LOCATION_SERVICE);
+		_locationManager = (LocationManager) _service.getSystemService(Context.LOCATION_SERVICE);
 		_locationListener = new CustomLocationListener();
 		//_location = _locationManager.getLastKnownLocation(_provider);
 		_criteria = new Criteria();
@@ -46,8 +46,10 @@ public class LocationTracker {
 			_provider = _locationManager.getBestProvider(_criteria, true);
 			_locationManager.requestLocationUpdates(_provider, C.CONFIG_GPS_MIN_UPDATE_MILLISECS, C.CONFIG_GPS_MIN_UPDATE_METERS, _locationListener);
 			_location = _locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+			_service.getStateManager().setIsLocationTrackerUsingGPS(true);
 		} else {
 			_locationManager.removeUpdates(_locationListener);
+			_service.getStateManager().setIsLocationTrackerUsingGPS(false);
 		}
 	}
 	

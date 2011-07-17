@@ -2,9 +2,28 @@ package co.shoutbreak.shared;
 
 import java.util.Observable;
 
+import co.shoutbreak.shared.utils.SBLog;
+
 public class StateManager extends Observable {
 
+	// IMPORTANT THINGS TO KNOW:
+	// 1. An update() observer method can never fire another event.  This would lead to an endless notifyObservers loop.
+	// 2. Always set state updates when they occur.
+	
 	private final String TAG = "SBStateManager";
+	
+	private int isUIOn = -1; // -1 indicates unknown. 0 = off. 1 = on.
+	private int isServiceOn = -1;
+	private int isPollingOn = -1;
+	private int isDataAvailable = -1;
+	private int isLocationAvailable = -1;
+	private int isLocationTrackerUsingGPS = -1;
+	private int isUserOverlayUsingGPS = -1;
+	private int isInputEnabled = -1;
+	private int isPowerButtonOn = -1;
+	private int isPowerPrefOn = -1;
+	private int isServiceBound = -1;
+	private int isUserOverlayVisible = -1;
 	
 	public void fireStateEvent(StateEvent e) {
 		updateState(e);
@@ -16,13 +35,80 @@ public class StateManager extends Observable {
 		// TODO: here is where we can update the state
 		// There are more than 16 states... for example polling & service are 2 different flags, so at least 32
 		// We'll let need dictate if/how this needs to be done.
-		if (e.locationTurnedOn) {
-			
-		}
-		if (e.locationTurnedOff) {
-			
-		}		
+
 	}
+	
+	// Nothing below can fire Events or will have an endless cycle.
+	
+	private void updateLog() {
+		StringBuffer sb = new StringBuffer();
+		sb.append("\n/////////////////////////////////////////////////////////////\n");
+		sb.append("////////////////////// STATE UPDATE /////////////////////////\n");
+		sb.append("/////////////////////////////////////////////////////////////\n");
+		sb.append("isUIOn = " + isUIOn + "\n");
+		sb.append("isServiceOn = " + isServiceOn + "\n");
+		sb.append("isPollingOn = " + isPollingOn + "\n");
+		sb.append("isDataAvailable = " + isDataAvailable + "\n");
+		sb.append("isLocationAvailable = " + isLocationAvailable + "\n");
+		sb.append("isLocationTrackerUsingGPS = " + isLocationTrackerUsingGPS + "\n");
+		sb.append("isUserOverlayUsingGPS = " + isUserOverlayUsingGPS + "\n");
+		sb.append("isInputEnabled = " + isInputEnabled + "\n");
+		sb.append("isPowerButtonOn = " + isPowerButtonOn + "\n");
+		sb.append("isPowerPrefOn = " + isPowerPrefOn + "\n");
+		sb.append("isServiceBound = " + isServiceBound + "\n");
+		sb.append("isUserOverlayVisible = " + isUserOverlayVisible + "\n");
+		SBLog.i(TAG, sb.toString());
+	}
+	
+	public void setIsUIOn(boolean b) {
+		isUIOn = (b) ? 1 : 0;
+		updateLog();
+	}
+	
+	public void setIsServiceOn(boolean b) {
+		isServiceOn = (b) ? 1 : 0;
+		updateLog();
+	}
+	
+	public void setIsPollingOn(boolean b) {
+		isPollingOn = (b) ? 1 : 0;
+		updateLog();
+	}
+	
+	public void setIsLocationAvailable(boolean b) {
+		isLocationAvailable = (b) ? 1 : 0;
+		updateLog();
+	}
+	
+	public void setIsLocationTrackerUsingGPS(boolean b) {
+		isLocationTrackerUsingGPS = (b) ? 1 : 0;
+		updateLog();
+	}
+	
+	public void setIsUserOverlayUsingGPS(boolean b) {
+		isUserOverlayUsingGPS = (b) ? 1 : 0;
+		updateLog();
+	}
+	
+	public void setIsUserOverlayVisible(boolean b) {
+		isUserOverlayVisible = (b) ? 1 : 0;
+		updateLog();
+	}
+	
+	public void setIsPowerButtonOn(boolean b) {
+		isPowerButtonOn = (b) ? 1 : 0;
+		updateLog();
+	}
+	
+	public void setIsPowerPrefOn(boolean b) {
+		isPowerPrefOn = (b) ? 1 : 0;
+		updateLog();
+	}
+
+	
+	
+	
+	
 	
 //	private final int DATA_ON = 1;
 //	private final int LOCATION_ON = 2;

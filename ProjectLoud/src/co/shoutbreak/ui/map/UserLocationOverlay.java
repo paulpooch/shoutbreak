@@ -66,20 +66,23 @@ public class UserLocationOverlay extends MyLocationOverlay implements Observer  
 	public void update(Observable observable, Object data) {
 		if (observable instanceof StateManager) {
 			// STATE MANAGER //////////////////////////////////////////////////
+			StateManager stateManager = (StateManager)observable;
 			StateEvent e = (StateEvent)data;
 			if (e.locationTurnedOn) {
 				// TODO: toggleLocationTracker in Service
 				enableMyLocation();
+				stateManager.setIsUserOverlayUsingGPS(true);
 			}
 			if (e.locationTurnedOff) {
 				disableMyLocation();
+				stateManager.setIsUserOverlayUsingGPS(false);
 			}		
 		} else if (observable instanceof User) {
 			// USER ///////////////////////////////////////////////////////////
 			UserEvent e = (UserEvent)data;
 			User user = (User)observable;
 			if (e.densityChanged || e.levelChanged) {
-				_density =user.getCellDensity().density;
+				_density = user.getCellDensity().density;
 				_baseRadiusMeters = User.calculateRadius(user.getLevel(), _density);
 				_calibrateZoomLevelForRadiusSize = true;
 				_baseRadiusPxIsWrong = true;
@@ -135,8 +138,7 @@ public class UserLocationOverlay extends MyLocationOverlay implements Observer  
 		_resizeIcon = Bitmap.createBitmap(resizeBitmap, 0, 0, _resizeIconSize.x, _resizeIconSize.y);
 
 		// TODO: does this need to be called?
-				this.getMyLocation();
-
+		this.getMyLocation();
 	}
 
 	public int getCurrentPower() {
@@ -146,7 +148,6 @@ public class UserLocationOverlay extends MyLocationOverlay implements Observer  
 	// called every time map is redrawn....   don't do anything heavy here
 	@Override 
 	protected void drawMyLocation(Canvas canvas, MapView mapView, Location lastFix, GeoPoint myLocation, long when) {
-
 		_lastUserLocationGeoPoint = myLocation;
 		_userLocationPx = mapView.getProjection().toPixels(_lastUserLocationGeoPoint, null);
 

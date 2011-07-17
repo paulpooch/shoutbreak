@@ -3,13 +3,14 @@ package co.shoutbreak.ui;
 import com.google.android.maps.MapActivity;
 
 import co.shoutbreak.R;
-import co.shoutbreak.service.SBService;
+import co.shoutbreak.service.ShoutbreakService;
 import co.shoutbreak.service.SBServiceBridgeInterface;
 import co.shoutbreak.shared.C;
 import co.shoutbreak.shared.SBNotificationManager;
 import co.shoutbreak.shared.SBPreferenceManager;
 import co.shoutbreak.shared.StateEvent;
 import co.shoutbreak.shared.StateManager;
+import co.shoutbreak.shared.User;
 import co.shoutbreak.shared.utils.SBLog;
 import co.shoutbreak.ui.views.ComposeView;
 import co.shoutbreak.ui.views.InboxView;
@@ -33,6 +34,8 @@ import android.widget.TextView;
 // shares StateManager with the service
 public class SBContext extends MapActivity {
 
+	// TODO: Can default view (before 3 views load) be a sweet splash with funky texture?
+	
 	private static final String TAG = "SBContext.java";
 	
 	public static final int COMPOSE_VIEW = 0;
@@ -40,9 +43,11 @@ public class SBContext extends MapActivity {
 	public static final int PROFILE_VIEW = 2;
 
 	private StateManager _stateManager;
+	private User _user;
 	private SBNotificationManager _notificationManager;
 	private SBPreferenceManager _preferenceManager;
 	private SBServiceBridgeInterface _serviceBinder;
+	private DialogBuilder _dialogBuilder;
 	private Intent _serviceIntent;
 	private SBView _viewArray[];
 	private SBView _currentView;
@@ -68,7 +73,7 @@ public class SBContext extends MapActivity {
 		_preferenceManager = new SBPreferenceManager(this);
 
 		// connect to service
-		_serviceIntent = new Intent(SBContext.this, SBService.class);
+		_serviceIntent = new Intent(SBContext.this, ShoutbreakService.class);
 		_serviceIntent.putExtra(C.ALARM_START_FROM_UI, true);
 		bindService(_serviceIntent, _ServiceConnection, Context.BIND_AUTO_CREATE);
 		
@@ -90,11 +95,8 @@ public class SBContext extends MapActivity {
 			SBLog.i(TAG, "onServiceConnected()");
 			_serviceBinder = (SBServiceBridgeInterface) service;
 			_stateManager = _serviceBinder.getStateManager();
-			
-			// register power button listener
-			_powerButton = (ImageButton) findViewById(R.id.powerButton);
-			_powerButton.setOnClickListener(_powerButtonListener);
-			setPowerState(_preferenceManager.getBoolean(SBPreferenceManager.POWER_STATE_PREF, false));
+			_stateManager.setIsUIOn(true);
+			_user = _serviceBinder.getUser();
 			
 			// initialize views
 			// state manager must be initialized
@@ -104,9 +106,12 @@ public class SBContext extends MapActivity {
 			_viewArray[PROFILE_VIEW] = new ProfileView(SBContext.this, "Profile", R.id.profile_view, 2);
 			switchView(_viewArray[COMPOSE_VIEW]);
 			
-			StateEvent e = new StateEvent();
-			e.uiTurnedOn = true;
-			_stateManager.fireStateEvent(e);
+			// register power button listener
+			_powerButton = (ImageButton) findViewById(R.id.powerButton);
+			_powerButton.setOnClickListener(_powerButtonListener);
+			
+			initializeApplication();
+			
 		}
 
 		public void onServiceDisconnected(ComponentName className) {
@@ -161,9 +166,7 @@ public class SBContext extends MapActivity {
 			stopService(_serviceIntent);
 		}
 		
-		StateEvent e = new StateEvent();
-		e.uiTurnedOff = true;
-		_stateManager.fireStateEvent(e);
+		_stateManager.setIsUIOn(false);
 		_stateManager = null;
 		unbindService(_ServiceConnection);
 		_serviceBinder = null;
@@ -214,15 +217,31 @@ public class SBContext extends MapActivity {
 	
 	/* MISCELLANEOUS */
 	
+	private void initializeApplication() {
+		setPowerState(_preferenceManager.getBoolean(SBPreferenceManager.POWER_STATE_PREF, false));
+	}
+	
 	private void setPowerState(boolean state) {
 		if (state) {
-			_isPowerOn = true;
-			_powerButton.setImageResource(R.drawable.power_button_on);
-			_preferenceManager.putBoolean(SBPreferenceManager.POWER_STATE_PREF, true);
-			StateEvent e = new StateEvent();
-			e.pollingTurnedOn = true;
-			_stateManager.fireStateEvent(e);
-			startService(_serviceIntent); // must be called, BIND_AUTO_CREATE doesn't start service
+			if (_user.getLocationTracker().isLocationEnabled()) {
+				_isPowerOn = true;
+				_powerButton.setImageResource(R.drawable.power_button_on);
+				_preferenceManager.putBoolean(SBPreferenceManager.POWER_STATE_PREF, true);
+				_stateManager.setIsPowerButtonOn(true);
+				_stateManager.setIsPowerPrefOn(true);
+				_stateManager.setIsLocationAvailable(true);
+				StateEvent e = new StateEvent();
+				e.pollingTurnedOn = true;
+				e.locationTurnedOn = true;
+				_stateManager.fireStateEvent(e);
+				startService(_serviceIntent); // must be called, BIND_AUTO_CREATE doesn't start service
+			} else {
+				StateEvent e = new StateEvent();
+				e.locationTurnedOff = true;
+				_stateManager.fireStateEvent(e);
+				_stateManager.setIsLocationAvailable(false);
+				_dialogBuilder.showDialog(DialogBuilder.DIALOG_LOCATION_DISABLED);
+			}
 		} else {
 			_isPowerOn = false;
 			_powerButton.setImageResource(R.drawable.power_button_off);

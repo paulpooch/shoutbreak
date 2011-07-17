@@ -11,6 +11,7 @@ import android.widget.EditText;
 
 import co.shoutbreak.R;
 import co.shoutbreak.shared.C;
+import co.shoutbreak.shared.StateEvent;
 import co.shoutbreak.shared.StateManager;
 import co.shoutbreak.shared.User;
 import co.shoutbreak.shared.utils.SBLog;
@@ -36,6 +37,9 @@ public class ComposeView extends SBView implements Observer {
 	public ComposeView(SBContext context, String name, int resourceId, int notificationId) {
 		super(context, name, resourceId, notificationId);
 		_context.getStateManager().addObserver(this);
+		
+		_inputMM = (InputMethodManager)context.getSystemService(context.INPUT_METHOD_SERVICE);
+		
 		initMap();
 	}
 	
@@ -67,7 +71,24 @@ public class ComposeView extends SBView implements Observer {
 	public void update(Observable observable, Object data) {
 		if (observable instanceof StateManager) {
 			// STATE MANAGER //////////////////////////////////////////////////
-			
+			StateManager stateManager = (StateManager)observable;
+			StateEvent e = (StateEvent)data;
+			if (e.locationTurnedOn) {
+				if (_cMapView.getOverlays().size() == 0) {
+					_cMapView.getOverlays().add(_userLocationOverlay);
+					_cMapView.postInvalidate();
+					stateManager.setIsUserOverlayVisible(true);
+		
+					//animateMap(_userLocationOverlay.getLocation(), false);
+				}
+			}
+			if (e.locationTurnedOff) {
+				if (_cMapView.getOverlays().size() > 0) {
+					_cMapView.getOverlays().clear();
+					_cMapView.postInvalidate();
+				}
+				stateManager.setIsUserOverlayVisible(false);
+			}
 		} else if (observable instanceof User) {
 			// USER ///////////////////////////////////////////////////////////
 				

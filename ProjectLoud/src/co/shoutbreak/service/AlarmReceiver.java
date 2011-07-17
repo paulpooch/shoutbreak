@@ -19,7 +19,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 		// launch service intent
 		//Bundle bundle = intent.getExtras();
 		//String message = bundle.getString(C.ALARM_MESSAGE);
-		Intent newIntent = new Intent(context, SBService.class);
+		Intent newIntent = new Intent(context, ShoutbreakService.class);
 		newIntent.putExtra(LAUNCHED_FROM_ALARM, true);
 		newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		Toast.makeText(context, "service started", Toast.LENGTH_SHORT).show();

@@ -24,12 +24,11 @@ import android.os.IBinder;
 import android.os.Message;
 import android.widget.Toast;
 
-/* SBService.java */
 // communicates with the UI via the StateManager
 // launches the service loop
-public class SBService extends Service implements Observer {
+public class ShoutbreakService extends Service implements Observer {
 
-	private final String TAG = "SBService.java";
+	private final String TAG = "ShoutbreakService.java";
 	
 	private StateManager _stateManager;	
 	private User _user;
@@ -66,8 +65,7 @@ public class SBService extends Service implements Observer {
 				int uiCode = xPacket.uiCode;
 				int threadPurpose = xPacket.purpose;
 
-				// We need to re-create a new Message object. The old one falls
-				// out of scope.
+				// We need to re-create a new Message object. The old one falls out of scope.
 				// This is probably good for dumping stale data anyway.
 				Message freshMessage = new Message();
 				freshMessage.what = message.what;
@@ -115,12 +113,15 @@ public class SBService extends Service implements Observer {
 		SBLog.i(TAG, "onStartCommand()");
 		if (!_isServiceOn) {
 			_isServiceOn = true;
+			_stateManager.setIsServiceOn(true);
 			
 			// enable polling if called from alarm receiver
 			Bundle bundle = intent.getExtras();
 			if (bundle != null & bundle.getBoolean(AlarmReceiver.LAUNCHED_FROM_ALARM)) {
-				SBPreferenceManager preferences = new SBPreferenceManager(SBService.this);
-				preferences.getBoolean(SBPreferenceManager.POWER_STATE_PREF, true);
+				SBPreferenceManager preferences = new SBPreferenceManager(ShoutbreakService.this);
+				preferences.putBoolean(SBPreferenceManager.POWER_STATE_PREF, true);
+				_stateManager.setIsPowerPrefOn(true);
+				_stateManager.setIsPollingOn(true);
 				StateEvent e = new StateEvent();
 				e.pollingTurnedOn = true;
 				_stateManager.fireStateEvent(e);
@@ -136,6 +137,8 @@ public class SBService extends Service implements Observer {
 		super.onDestroy();
 		
 		_stateManager.deleteObserver(this);
+		_stateManager.setIsServiceOn(false);
+		_stateManager.setIsPollingOn(false);
 		StateEvent e = new StateEvent();
 		e.pollingTurnedOff = true;
 		_stateManager.fireStateEvent(e);
@@ -144,7 +147,7 @@ public class SBService extends Service implements Observer {
 	public class ServiceBridge extends Binder implements SBServiceBridgeInterface {
 		
 		public User getUser() {
-			return null;
+			return _user;
 		}
 		
 		public StateManager getStateManager() {
@@ -189,6 +192,11 @@ public class SBService extends Service implements Observer {
 	    		PendingIntent.getActivity(this.getBaseContext(), 0, intent, PendingIntent.FLAG_CANCEL_CURRENT));
 	    notification.flags |= Notification.FLAG_AUTO_CANCEL;
 	    _notificationManager.notify(C.APP_NOTIFICATION_ID, notification);
+	}
+	
+	// TODO: is this ok to do?
+	public StateManager getStateManager() {
+		return _stateManager;
 	}
 	
 }
