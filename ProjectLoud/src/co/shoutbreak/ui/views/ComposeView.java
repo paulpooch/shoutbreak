@@ -105,25 +105,22 @@ public class ComposeView extends SBView implements Observer {
 	
 	/* OBSERVER METHODS */
 	public void update(Observable observable, Object data) {
-		if (observable instanceof StateManager) {
-			// STATE MANAGER //////////////////////////////////////////////////
-			StateManager stateManager = (StateManager)observable;
-			StateEvent e = (StateEvent)data;
-			if (e.locationTurnedOn) {
-				if (_cMapView.getOverlays().size() == 0) {
-					_cMapView.getOverlays().add(_userLocationOverlay);
-					_cMapView.postInvalidate();
-					stateManager.setIsUserOverlayVisible(true);
-					animateMap(_userLocationOverlay.getMyLocation());
-				}
+		StateManager stateManager = (StateManager)observable;
+		StateEvent e = (StateEvent)data;
+		if (e.locationTurnedOn) {
+			if (_cMapView.getOverlays().size() == 0) {
+				_cMapView.getOverlays().add(_userLocationOverlay);
+				_cMapView.postInvalidate();
+				stateManager.setIsUserOverlayVisible(true);
+				animateMap(_userLocationOverlay.getMyLocation());
 			}
-			if (e.locationTurnedOff) {
-				if (_cMapView.getOverlays().size() > 0) {
-					_cMapView.getOverlays().clear();
-					_cMapView.postInvalidate();
-				}
-				stateManager.setIsUserOverlayVisible(false);
+		}
+		if (e.locationTurnedOff) {
+			if (_cMapView.getOverlays().size() > 0) {
+				_cMapView.getOverlays().clear();
+				_cMapView.postInvalidate();
 			}
+			stateManager.setIsUserOverlayVisible(false);
 		}
 	}
 	

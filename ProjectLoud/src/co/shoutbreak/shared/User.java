@@ -47,7 +47,7 @@ public class User implements Observer {
 		_tm = (TelephonyManager) service.getSystemService(Context.TELEPHONY_SERVICE);
 		_db = new Database(_service);
 		_locationTracker = new LocationTracker(_service);
-		//_inbox = new Inbox(_db, this);
+		_inbox = new Inbox(_service, _db, this);
 		_passwordExists = false;
 		_level = 0;
 		_points = 0;

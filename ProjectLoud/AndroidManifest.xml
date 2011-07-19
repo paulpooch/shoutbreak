@@ -12,16 +12,16 @@
         </activity>
         
         <!-- Service -->
-        <service android:name="service.SBService" android:exported="true">
+        <service android:name=".service.ShoutbreakService" android:exported="true">
 			<intent-filter>
 				<action android:name="co.shoutbreak.service.ShoutbreakService" />
 			</intent-filter>
 		</service>
 		
 		<!--  Alarm Manager -->
-		<receiver android:name=".service.SBAlarmReceiver" android:exported="true">
+		<receiver android:name=".service.AlarmReceiver" android:exported="true">
 			<intent-filter>
-				<action android:name="co.shoutbreak.service.SBAlarmReceiver" />
+				<action android:name="co.shoutbreak.service.AlarmReceiver" />
 				<action android:name="android.intent.action.BOOT_COMPLETED" />
 				<action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
 			</intent-filter>

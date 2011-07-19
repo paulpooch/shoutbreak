@@ -39,10 +39,6 @@ public class InboxView extends SBView implements Observer {
 	
 	/* OBSERVER METHODS */
 	public void update(Observable observable, Object data) {
-		if (observable instanceof StateManager) {
-			// STATE MANAGER //////////////////////////////////////////////////
-			
-		}
 	}
 
 }
