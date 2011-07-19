@@ -17,7 +17,6 @@ public class ProfileView extends SBView implements Observer {
 	public ProfileView(SBContext context, String name, int resourceId, int notificationId) {
 		super(context, name, resourceId, notificationId);
 		_context.getStateManager().addObserver(this);
-		_context.getUser().addObserver(this);
 	}
 	
 	@Override
@@ -42,9 +41,6 @@ public class ProfileView extends SBView implements Observer {
 		if (observable instanceof StateManager) {
 			// STATE MANAGER //////////////////////////////////////////////////
 			
-		} else if (observable instanceof User) {
-			// USER ///////////////////////////////////////////////////////////
-				
 		}
 	}
 }

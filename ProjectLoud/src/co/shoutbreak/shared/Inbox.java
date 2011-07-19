@@ -5,9 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.json.JSONObject;
-
-
-
+/*
 public class Inbox {
 	
 	private Database _db;
@@ -109,9 +107,9 @@ public class Inbox {
 			Shout shoutFromDB = _db.getShout(shout.id);
 			if (shoutFromDB.is_outbox) {
 				_user.savePoints(shout.pts);
-				UserEvent e = new UserEvent();
+				StateEvent e = new StateEvent();
 				e.pointsChanged = true;
-				_user.fireUserEvent(e);
+				_context._stateManager.fireStateEvent(e);
 			}
 		}
 		
@@ -144,3 +142,4 @@ public class Inbox {
 	}
 	
 }
+*/

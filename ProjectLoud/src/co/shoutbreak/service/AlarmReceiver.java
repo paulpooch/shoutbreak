@@ -6,7 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.widget.Toast;
 
-/* starts service when actions fired off in the manifest are triggered */
+/* starts service when actions fired off as defined in the manifest are triggered */
 
 public class AlarmReceiver extends BroadcastReceiver {
 	

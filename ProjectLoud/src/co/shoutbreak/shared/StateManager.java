@@ -10,7 +10,7 @@ public class StateManager extends Observable {
 	// 1. An update() observer method can never fire another event.  This would lead to an endless notifyObservers loop.
 	// 2. Always set state updates when they occur.
 	
-	private final String TAG = "SBStateManager";
+	private final String TAG = "SBStateManager.java";
 	
 	private int isUIOn = -1; // -1 indicates unknown. 0 = off. 1 = on.
 	private int isServiceAlive = -1;

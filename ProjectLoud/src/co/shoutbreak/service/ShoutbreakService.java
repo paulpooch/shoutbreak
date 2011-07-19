@@ -10,13 +10,11 @@ import co.shoutbreak.shared.StateEvent;
 import co.shoutbreak.shared.StateManager;
 import co.shoutbreak.shared.User;
 import co.shoutbreak.shared.utils.SBLog;
-import co.shoutbreak.ui.SBContext;
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Binder;
 import android.os.Bundle;
 import android.os.Handler;
@@ -35,7 +33,7 @@ public class ShoutbreakService extends Service implements Observer {
 	private Handler _uiThreadHandler;	
 	private boolean _isServiceOn = false;
 	private boolean _isPollingAllowed = false;
-	private NotificationManager _notificationManager;
+	private SBNotificationManager _notificationManager;
 	
 	/* LIFECYCLE METHODS */
 	
@@ -53,11 +51,11 @@ public class ShoutbreakService extends Service implements Observer {
 		_stateManager = new StateManager();
 		_stateManager.addObserver(this);
 		_stateManager.setIsServiceAlive(true);
-		_user = new User(this);
-		_user.addObserver(this);
 		
-		_notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+		_notificationManager = new SBNotificationManager(ShoutbreakService.this);
 		
+		_user = new User(this, _stateManager);
+				
 		_uiThreadHandler = new Handler() {
 			@Override
 			public void handleMessage(Message message) {
@@ -83,7 +81,7 @@ public class ShoutbreakService extends Service implements Observer {
 						int newShouts = _user.getShoutsJustReceived();
 						if (newShouts > 0) {
 							String pluralShout = "shout" + (newShouts > 1 ? "s" : "");
-							giveStatusBarNotification(newShouts + " " + pluralShout + " received", "Shoutbreak", "you have " + newShouts + " new " + pluralShout);
+							_notificationManager.notify(newShouts + " " + pluralShout + " received", "Shoutbreak", "you have " + newShouts + " new " + pluralShout);
 						}
 						break;
 					}
@@ -123,7 +121,7 @@ public class ShoutbreakService extends Service implements Observer {
 				_stateManager.setIsPowerPrefOn(true);
 			}
 			
-			// This is caught in update below.
+			// this is caught in update below.
 			_stateManager.setIsPollingOn(true);
 			StateEvent e = new StateEvent();
 			e.pollingTurnedOn = true;
@@ -135,7 +133,11 @@ public class ShoutbreakService extends Service implements Observer {
 	@Override
 	public void onDestroy() {
 		SBLog.i(TAG, "onDestroy()");
-		super.onDestroy();		
+		super.onDestroy();
+		
+		_user.destroy();
+		_user = null;
+		
 		_stateManager.deleteObserver(this);
 		_stateManager.setIsServiceAlive(false);
 		_stateManager.setIsServiceBound(false);
@@ -143,6 +145,7 @@ public class ShoutbreakService extends Service implements Observer {
 		StateEvent e = new StateEvent();
 		e.pollingTurnedOff = true;
 		_stateManager.fireStateEvent(e);
+		_stateManager = null;
 	}
 	
 	public class ServiceBridge extends Binder implements SBServiceBridgeInterface {
@@ -159,61 +162,48 @@ public class ShoutbreakService extends Service implements Observer {
 	/* OBSERVER METHODS */
 	
 	public void update(Observable observable, Object data) {
-		if (observable instanceof StateManager) {
-			// STATE MANAGER //////////////////////////////////////////////////
-			StateEvent e = (StateEvent)data;
-			
-			if (e.pollingTurnedOn) {
-				_stateManager.setIsDataAvailable(true);
-				Toast.makeText(getApplicationContext(), "Polling Started" , Toast.LENGTH_SHORT).show();
-				_isPollingAllowed = true;
-				Message message = new Message();
-				CrossThreadPacket xPacket = new CrossThreadPacket();
-				xPacket.purpose = C.PURPOSE_LOOP_FROM_UI;
-				message.obj = xPacket;
-				message.what = C.STATE_IDLE;
-				ServiceThread thread = new ServiceThread(_uiThreadHandler, message, _user);
-				_uiThreadHandler.post(thread);
-			}
-						
-			if (e.pollingTurnedOff) {
-				Toast.makeText(getApplicationContext(), "Polling Stopped" , Toast.LENGTH_SHORT).show();
-				_isPollingAllowed = false;
-			}
-			
-			if (e.uiJustSentShout) {
-				Message message = new Message();
-				CrossThreadPacket xPacket = new CrossThreadPacket();
-				xPacket.purpose = C.PURPOSE_DEATH;
-				xPacket.sArgs = new String[] { e.shoutText };
-				xPacket.iArgs = new int[] { e.shoutPower };
-				message.obj = xPacket;
-				message.what = C.STATE_SHOUT;
-				ServiceThread thread = new ServiceThread(_uiThreadHandler, message, _user);
-				_uiThreadHandler.post(thread);
-			}
-			
-		} else if (observable instanceof User) {
-			// USER ///////////////////////////////////////////////////////////
-				
+	
+		StateEvent e = (StateEvent)data;
+	
+		if (e.pollingTurnedOn) {
+			_stateManager.setIsDataAvailable(true);
+			Toast.makeText(getApplicationContext(), "Polling Started" , Toast.LENGTH_SHORT).show();
+			_isPollingAllowed = true;
+			Message message = new Message();
+			CrossThreadPacket xPacket = new CrossThreadPacket();
+			xPacket.purpose = C.PURPOSE_LOOP_FROM_UI;
+			message.obj = xPacket;
+			message.what = C.STATE_IDLE;
+			ServiceThread thread = new ServiceThread(_uiThreadHandler, message, _user);
+			_uiThreadHandler.post(thread);
+		}
+					
+		if (e.pollingTurnedOff) {
+			Toast.makeText(getApplicationContext(), "Polling Stopped" , Toast.LENGTH_SHORT).show();
+			_isPollingAllowed = false;
+		}
+		
+		if (e.uiJustSentShout) {
+			Message message = new Message();
+			CrossThreadPacket xPacket = new CrossThreadPacket();
+			xPacket.purpose = C.PURPOSE_DEATH;
+			xPacket.sArgs = new String[] { e.shoutText };
+			xPacket.iArgs = new int[] { e.shoutPower };
+			message.obj = xPacket;
+			message.what = C.STATE_SHOUT;
+			ServiceThread thread = new ServiceThread(_uiThreadHandler, message, _user);
+			_uiThreadHandler.post(thread);
 		}
 	}
-
-	// This gives notifications to the status bar.
-	// Unable to find a logical way to put this into SBNotificationManager.
-	public void giveStatusBarNotification(String alert, String title, String message) {
-		Intent intent = new Intent(this, SBContext.class);
-		intent.putExtra(C.EXTRA_REFERRED_FROM_NOTIFICATION, true);
-	    Notification notification = new Notification(R.drawable.notification_icon, alert, System.currentTimeMillis());
-	    notification.setLatestEventInfo(this, title, message,
-	    		PendingIntent.getActivity(this.getBaseContext(), 0, intent, PendingIntent.FLAG_CANCEL_CURRENT));
-	    notification.flags |= Notification.FLAG_AUTO_CANCEL;
-	    _notificationManager.notify(C.APP_NOTIFICATION_ID, notification);
-	}
 	
-	// TODO: is this ok to do?
 	public StateManager getStateManager() {
 		return _stateManager;
+	}
+	
+	private boolean isNetworkAvailable() {
+	    ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+	    NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+	    return activeNetworkInfo != null;
 	}
 	
 }

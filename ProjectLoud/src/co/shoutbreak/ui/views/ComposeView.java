@@ -47,7 +47,6 @@ public class ComposeView extends SBView implements Observer {
 	public ComposeView(SBContext context, String name, int resourceId, int notificationId) {
 		super(context, name, resourceId, notificationId);
 		_context.getStateManager().addObserver(this);
-		_context.getUser().addObserver(this);
 		
 		_inputMM = (InputMethodManager)_context.getSystemService(SBContext.INPUT_METHOD_SERVICE);
 		_cShoutText = (EditText)_context.findViewById(R.id.etShoutText);
@@ -125,9 +124,6 @@ public class ComposeView extends SBView implements Observer {
 				}
 				stateManager.setIsUserOverlayVisible(false);
 			}
-		} else if (observable instanceof User) {
-			// USER ///////////////////////////////////////////////////////////
-				
 		}
 	}
 	

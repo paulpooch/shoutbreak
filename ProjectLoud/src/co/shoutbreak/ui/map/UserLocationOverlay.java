@@ -18,7 +18,6 @@ import co.shoutbreak.shared.C;
 import co.shoutbreak.shared.StateEvent;
 import co.shoutbreak.shared.StateManager;
 import co.shoutbreak.shared.User;
-import co.shoutbreak.shared.UserEvent;
 import co.shoutbreak.ui.SBContext;
 
 import com.google.android.maps.GeoPoint;
@@ -64,34 +63,28 @@ public class UserLocationOverlay extends MyLocationOverlay implements Observer  
 
 
 	public void update(Observable observable, Object data) {
-		if (observable instanceof StateManager) {
-			// STATE MANAGER //////////////////////////////////////////////////
-			StateManager stateManager = (StateManager)observable;
-			StateEvent e = (StateEvent)data;
-			if (e.locationTurnedOn) {
-				// TODO: toggleLocationTracker in Service
-				enableMyLocation();
-				stateManager.setIsUserOverlayUsingGPS(true);
-			}
-			if (e.locationTurnedOff) {
-				disableMyLocation();
-				stateManager.setIsUserOverlayUsingGPS(false);
-			}		
-		} else if (observable instanceof User) {
-			// USER ///////////////////////////////////////////////////////////
-			UserEvent e = (UserEvent)data;
-			User user = (User)observable;
-			if (e.densityChanged || e.levelChanged) {
-				_density = user.getCellDensity().density;
-				_baseRadiusMeters = User.calculateRadius(user.getLevel(), _density);
-				_calibrateZoomLevelForRadiusSize = true;
-				_baseRadiusPxIsWrong = true;
-				_resizeAdjustmentPx = 0;
-				// this calls draw() immediately rather than wait for next interval
-				//if (_canvas != null && _mapView != null) {
-				//_mapView.draw(_canvas);
-				//}	
-			}
+		StateManager stateManager = (StateManager)observable;
+		StateEvent e = (StateEvent)data;
+		if (e.locationTurnedOn) {
+			// TODO: toggleLocationTracker in Service
+			enableMyLocation();
+			stateManager.setIsUserOverlayUsingGPS(true);
+		}
+		if (e.locationTurnedOff) {
+			disableMyLocation();
+			stateManager.setIsUserOverlayUsingGPS(false);
+		}		
+
+		if (e.densityChanged || e.levelChanged) {
+			_density = user.getCellDensity().density;
+			_baseRadiusMeters = User.calculateRadius(user.getLevel(), _density);
+			_calibrateZoomLevelForRadiusSize = true;
+			_baseRadiusPxIsWrong = true;
+			_resizeAdjustmentPx = 0;
+			// this calls draw() immediately rather than wait for next interval
+			//if (_canvas != null && _mapView != null) {
+			//_mapView.draw(_canvas);
+			//}	
 		}
 	}
 
@@ -111,7 +104,7 @@ public class UserLocationOverlay extends MyLocationOverlay implements Observer  
 		super(context, mapView);
 		_context = context;
 		_context.getStateManager().addObserver(this);
-		_context.getUser().addObserver(this);
+		
 		_baseRadiusPx = -1;
 		_baseRadiusMeters = 0;
 		_zoomLevel = C.DEFAULT_ZOOM_LEVEL;

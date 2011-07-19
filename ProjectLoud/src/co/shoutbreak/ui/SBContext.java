@@ -3,14 +3,14 @@ package co.shoutbreak.ui;
 import com.google.android.maps.MapActivity;
 
 import co.shoutbreak.R;
+import co.shoutbreak.service.AlarmReceiver;
+import co.shoutbreak.service.SBNotificationManager;
 import co.shoutbreak.service.ShoutbreakService;
 import co.shoutbreak.service.SBServiceBridgeInterface;
 import co.shoutbreak.shared.C;
-import co.shoutbreak.shared.SBNotificationManager;
 import co.shoutbreak.shared.SBPreferenceManager;
 import co.shoutbreak.shared.StateEvent;
 import co.shoutbreak.shared.StateManager;
-import co.shoutbreak.shared.User;
 import co.shoutbreak.shared.utils.SBLog;
 import co.shoutbreak.ui.views.ComposeView;
 import co.shoutbreak.ui.views.InboxView;
@@ -21,8 +21,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.view.View;
@@ -35,17 +34,14 @@ import android.widget.TextView;
 // starts service and manages views
 // shares StateManager with the service
 public class SBContext extends MapActivity {
-
-	// TODO: Can default view (before 3 views load) be a sweet splash with funky texture?
 	
-	private static final String TAG = "SBContext.java";
+	private static final String TAG = "SBContext";
 	
 	public static final int COMPOSE_VIEW = 0;
 	public static final int INBOX_VIEW = 1;
 	public static final int PROFILE_VIEW = 2;
 
 	private StateManager _stateManager;
-	private User _user;
 	private SBNotificationManager _notificationManager;
 	private SBPreferenceManager _preferenceManager;
 	private SBServiceBridgeInterface _serviceBinder;
@@ -54,7 +50,7 @@ public class SBContext extends MapActivity {
 	private SBView _viewArray[];
 	private SBView _currentView;
 	private ImageButton _powerButton;
-	private TextView _cTvTitleBar;
+	private TextView _titleBar;
 	
 	private boolean _isPowerOn;
 	
@@ -69,6 +65,10 @@ public class SBContext extends MapActivity {
 		
 		SBLog.i(TAG, "onCreate()");
 		super.onCreate(bundle);
+		
+		// TODO: Can default view (before 3 views load) be a sweet splash with funky texture?
+		// this should be displayed while we're initializing components and determining state
+		toggleSplash(true);
 
 		// initialize components
 		_notificationManager = new SBNotificationManager(this);
@@ -88,7 +88,7 @@ public class SBContext extends MapActivity {
 		profileTab = (ImageButton) findViewById(R.id.profileTab);
 		profileTab.setOnClickListener(_profileTabListener);
 		
-		_cTvTitleBar = (TextView) findViewById(R.id.tvTitleBar);
+		_titleBar = (TextView) findViewById(R.id.tvTitleBar);
 	}
 
 	private ServiceConnection _ServiceConnection = new ServiceConnection() {
@@ -98,7 +98,9 @@ public class SBContext extends MapActivity {
 			_serviceBinder = (SBServiceBridgeInterface) service;
 			_stateManager = _serviceBinder.getStateManager();
 			_stateManager.setIsServiceBound(true);
-			_user = _serviceBinder.getUser();
+			
+			// initialize state
+			_stateManager.setIsUIOn(true);
 			
 			// initialize views
 			// state manager must be initialized
@@ -112,8 +114,6 @@ public class SBContext extends MapActivity {
 			_powerButton = (ImageButton) findViewById(R.id.powerButton);
 			_powerButton.setOnClickListener(_powerButtonListener);
 			
-			_user.pullUserInfo();
-			initializeState();
 			setPowerState(_preferenceManager.getBoolean(SBPreferenceManager.POWER_STATE_PREF, false));
 		}
 
@@ -178,6 +178,11 @@ public class SBContext extends MapActivity {
 		
 		super.onDestroy();
 	}
+	
+	@Override
+	protected boolean isRouteDisplayed() {
+		return false;
+	}
 
 	/* VIEW METHODS */
 
@@ -192,6 +197,14 @@ public class SBContext extends MapActivity {
 	
 	public SBView getView(int viewId) {
 		return _viewArray[viewId];
+	}
+	
+	private void toggleSplash(boolean show) {
+		if (show) {
+			// show splash
+		} else {
+			// hide splash
+		}
 	}
 	
 	/* BUTTON LISTENERS */
@@ -222,37 +235,24 @@ public class SBContext extends MapActivity {
 	
 	/* MISCELLANEOUS */
 	
-	private void initializeState() {
-		_stateManager.setIsUIOn(true);
-		if (_user.getLocationTracker().isLocationEnabled()) {
-			_stateManager.setIsLocationAvailable(true);
-		} else {
-			_stateManager.setIsLocationAvailable(false);
-		}
-		if (isNetworkAvailable()) {
-			_stateManager.setIsDataAvailable(true);
-		} else {
-			_stateManager.setIsDataAvailable(false);
-		}
-	}
-	
 	private void setPowerState(boolean turnOn) {
+		ComponentName component = new ComponentName(SBContext.this, AlarmReceiver.class);
 		if (turnOn) {
 			_isPowerOn = true;
 			_powerButton.setImageResource(R.drawable.power_button_on);
 			_preferenceManager.putBoolean(SBPreferenceManager.POWER_STATE_PREF, true);
+			getPackageManager().setComponentEnabledSetting(component, PackageManager.COMPONENT_ENABLED_STATE_ENABLED , PackageManager.DONT_KILL_APP);
 			_stateManager.setIsPowerButtonOn(true);
 			_stateManager.setIsPowerPrefOn(true);
-			_stateManager.setIsLocationAvailable(true);
 			StateEvent e = new StateEvent();
 			e.pollingTurnedOn = true;
-			e.locationTurnedOn = true;
 			_stateManager.fireStateEvent(e);
 			startService(_serviceIntent); // must be called, BIND_AUTO_CREATE doesn't start service
 		} else {
 			_isPowerOn = false;
 			_powerButton.setImageResource(R.drawable.power_button_off);
 			_preferenceManager.putBoolean(SBPreferenceManager.POWER_STATE_PREF, false);
+			getPackageManager().setComponentEnabledSetting(component, PackageManager.COMPONENT_ENABLED_STATE_DISABLED , PackageManager.DONT_KILL_APP);
 			StateEvent e = new StateEvent();
 			e.pollingTurnedOff = true;
 			_stateManager.fireStateEvent(e);
@@ -260,28 +260,12 @@ public class SBContext extends MapActivity {
 	}
 	
 	public void setTitleBarText(String s) {
-		_cTvTitleBar.setText(s);
-	}
-	
-	private boolean isNetworkAvailable() {
-	    ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-	    NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-	    return activeNetworkInfo != null;
+		_titleBar.setText(s);
 	}
 	
 	/* COMPONENT GETTERS */
 	
 	public StateManager getStateManager() {
 		return _stateManager;
-	}
-	
-	public User getUser() {
-		return _user;
-	}
-
-	@Override
-	protected boolean isRouteDisplayed() {
-		// TODO Auto-generated method stub
-		return false;
 	}
 }

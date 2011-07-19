@@ -2,8 +2,8 @@ package co.shoutbreak.service;
 
 import co.shoutbreak.shared.C;
 import co.shoutbreak.shared.CellDensity;
+import co.shoutbreak.shared.StateEvent;
 import co.shoutbreak.shared.User;
-import co.shoutbreak.shared.UserEvent;
 import android.content.Context;
 import android.location.Criteria;
 import android.location.LocationListener;
@@ -109,9 +109,9 @@ public class LocationTracker {
 			 if (isBetterLocation(location, _location)) {
 				 _location = location;
 			 }
-			 UserEvent e = new UserEvent();
+			 StateEvent e = new StateEvent();
 			 e.locationChanged = true;		 
-			 _user.fireUserEvent(e);
+			 _stateManager.fireStateEvent(e);
         }
 
         public void onProviderDisabled(String provider) {

@@ -2,6 +2,7 @@ package co.shoutbreak.shared;
 
 import java.util.HashMap;
 import java.util.Observable;
+import java.util.Observer;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -11,50 +12,22 @@ import android.telephony.TelephonyManager;
 import co.shoutbreak.service.LocationTracker;
 import co.shoutbreak.service.ShoutbreakService;
 import co.shoutbreak.shared.utils.Hash;
-import co.shoutbreak.shared.utils.SBLog;
 
-//Based on observer pattern. More here: http://www.youtube.com/watch?v=qw0zZAte66A
-public class User extends Observable {
+public class User implements Observer {
 	
 	// All Database stuff should go through User. Any writes should be
 	// synchronized.
-
-	// STATICS ////////////////////////////////////////////////////////////////
-
-	public static float calculateRadius(int power, double density) {
-		int maxPeople = power * C.CONFIG_PEOPLE_PER_LEVEL;
-		double area = maxPeople / density;
-		float radius = (float) Math.sqrt(area / Math.PI);
-		return radius;
-	}
-	
-	public static int calculatePower(int people) {
-		return (int)Math.ceil((float)people / (float)C.CONFIG_PEOPLE_PER_LEVEL);
-	}
-
-	public static void setBooleanPreference(Context context, String key, boolean val) {
-		SharedPreferences settings = context.getSharedPreferences(C.PREFS_NAMESPACE, Context.MODE_PRIVATE);
-		SharedPreferences.Editor editor = settings.edit();
-		editor.putBoolean(key, val);
-		editor.commit();
-	}
-
-	public static boolean getBooleanPreference(Context context, String key, boolean defaultReturnVal) {
-		SharedPreferences settings = context.getSharedPreferences(C.PREFS_NAMESPACE, Context.MODE_PRIVATE);
-		boolean val = settings.getBoolean(key, defaultReturnVal);
-		return val;
-	}
-	
-	// END STATICS ////////////////////////////////////////////////////////////
 	
 	private final String TAG = "User";
 	
 	private ShoutbreakService _service;
+	private StateManager _stateManager;
+	
 	private TelephonyManager _tm;
 	private Database _db;
 	private CellDensity _cellDensity;
 	private LocationTracker _locationTracker;
-	protected Inbox _inbox;
+	//protected Inbox _inbox;
 	private int _shoutsJustReceived;
 	private boolean _levelUpOccured; //This means level up.
 	//private boolean _densityJustChanged;
@@ -66,12 +39,15 @@ public class User extends Observable {
 	private int _points;
 	private int _nextLevelAt;
 	
-	public User(ShoutbreakService service) {
+	public User(ShoutbreakService service, StateManager stateManager) {
 		_service = service;
+		_stateManager = stateManager;
+		_stateManager.addObserver(this);
+		
 		_tm = (TelephonyManager) service.getSystemService(Context.TELEPHONY_SERVICE);
 		_db = new Database(_service);
 		_locationTracker = new LocationTracker(_service, this);
-		_inbox = new Inbox(_db, this);
+		//_inbox = new Inbox(_db, this);
 		_passwordExists = false;
 		_level = 0;
 		_points = 0;
@@ -92,22 +68,15 @@ public class User extends Observable {
 		initializePoints();
 		_cellDensity = getCellDensity();
 		
-	}
-	
-	public void fireUserEvent(UserEvent e) {
-		SBLog.i(TAG, "StateManager.fireUserEvent\n" + e.toLogString());
-		setChanged();
-		notifyObservers(e);
-	}
-	
-	public synchronized void pullUserInfo() {
-		UserEvent e = new UserEvent();
+		// initialize user state
+		StateEvent e = new StateEvent();
 		e.locationServicesChanged = true;
 		e.levelChanged = true;
 		e.pointsChanged = true;
 		e.inboxChanged = true;
 		e.densityChanged = true;
-		fireUserEvent(e);
+		_stateManager.fireStateEvent(e);
+		
 	}
 	
 	public synchronized void saveDensity(double density) {
@@ -152,9 +121,9 @@ public class User extends Observable {
 		return _locationTracker.getLongitude();
 	}
 
-	public Inbox getInbox() {
+	/*public Inbox getInbox() {
 		return _inbox;
-	}
+	}*/
 
 	public synchronized CellDensity getCellDensity() {
 		if (_cellDensity == null) {
@@ -277,5 +246,41 @@ public class User extends Observable {
 	public String getAndroidId() {
 		return Settings.Secure.getString(_service.getContentResolver(), Settings.Secure.ANDROID_ID);
 	}
+	
+	public void destroy() {
+		_stateManager.deleteObserver(this);
+		_stateManager = null;
+		_service = null;
+	}
 
+	public void update(Observable observable, Object data) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	// STATICS ////////////////////////////////////////////////////////////////
+
+	public static float calculateRadius(int power, double density) {
+		int maxPeople = power * C.CONFIG_PEOPLE_PER_LEVEL;
+		double area = maxPeople / density;
+		float radius = (float) Math.sqrt(area / Math.PI);
+		return radius;
+	}
+	
+	public static int calculatePower(int people) {
+		return (int)Math.ceil((float)people / (float)C.CONFIG_PEOPLE_PER_LEVEL);
+	}
+
+	public static void setBooleanPreference(Context context, String key, boolean val) {
+		SharedPreferences settings = context.getSharedPreferences(C.PREFS_NAMESPACE, Context.MODE_PRIVATE);
+		SharedPreferences.Editor editor = settings.edit();
+		editor.putBoolean(key, val);
+		editor.commit();
+	}
+
+	public static boolean getBooleanPreference(Context context, String key, boolean defaultReturnVal) {
+		SharedPreferences settings = context.getSharedPreferences(C.PREFS_NAMESPACE, Context.MODE_PRIVATE);
+		boolean val = settings.getBoolean(key, defaultReturnVal);
+		return val;
+	}
 }
