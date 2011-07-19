@@ -91,12 +91,12 @@ public class ShoutbreakService extends Service implements Observer {
 					// Do we return Logic?
 					switch (threadPurpose) {
 						case C.PURPOSE_LOOP_FROM_UI: {
-							ServiceThread thread = new ServiceThread(_uiThreadHandler, freshMessage, _user);
+							ServiceThread thread = new ServiceThread(ShoutbreakService.this, _uiThreadHandler, freshMessage, _user);
 							_uiThreadHandler.post(thread);
 							break;
 						}
 						case C.PURPOSE_LOOP_FROM_UI_DELAYED: {
-							ServiceThread thread = new ServiceThread(_uiThreadHandler, freshMessage, _user);
+							ServiceThread thread = new ServiceThread(ShoutbreakService.this, _uiThreadHandler, freshMessage, _user);
 							_uiThreadHandler.postDelayed(thread, C.CONFIG_IDLE_LOOP_TIME_WITH_UI_OPEN);
 							break;
 						}
@@ -174,7 +174,7 @@ public class ShoutbreakService extends Service implements Observer {
 			xPacket.purpose = C.PURPOSE_LOOP_FROM_UI;
 			message.obj = xPacket;
 			message.what = C.STATE_IDLE;
-			ServiceThread thread = new ServiceThread(_uiThreadHandler, message, _user);
+			ServiceThread thread = new ServiceThread(ShoutbreakService.this, _uiThreadHandler, message, _user);
 			_uiThreadHandler.post(thread);
 		}
 					
@@ -191,7 +191,7 @@ public class ShoutbreakService extends Service implements Observer {
 			xPacket.iArgs = new int[] { e.shoutPower };
 			message.obj = xPacket;
 			message.what = C.STATE_SHOUT;
-			ServiceThread thread = new ServiceThread(_uiThreadHandler, message, _user);
+			ServiceThread thread = new ServiceThread(ShoutbreakService.this,_uiThreadHandler, message, _user);
 			_uiThreadHandler.post(thread);
 		}
 	}

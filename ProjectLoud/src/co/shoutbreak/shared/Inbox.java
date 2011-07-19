@@ -5,14 +5,18 @@ import java.util.Date;
 import java.util.List;
 
 import org.json.JSONObject;
-/*
+
+import co.shoutbreak.service.ShoutbreakService;
+
 public class Inbox {
 	
+	private ShoutbreakService _service;
 	private Database _db;
 	private List<Shout> _shouts;
 	private User _user;	
 	
-	public Inbox(Database db, User user) {
+	public Inbox(ShoutbreakService service, Database db, User user) {
+		_service = service;
 		_db = db;
 		_shouts = new ArrayList<Shout>();
 		_user = user;
@@ -109,7 +113,7 @@ public class Inbox {
 				_user.savePoints(shout.pts);
 				StateEvent e = new StateEvent();
 				e.pointsChanged = true;
-				_context._stateManager.fireStateEvent(e);
+				_service.getStateManager().fireStateEvent(e);
 			}
 		}
 		
@@ -139,7 +143,5 @@ public class Inbox {
 		//if (uiRef != null) {
 		//	uiRef.giveNotice("shout deleted");
 		//}
-	}
-	
+	}	
 }
-*/

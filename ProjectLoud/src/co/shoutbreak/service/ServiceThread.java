@@ -8,11 +8,13 @@ import android.os.Message;
 
 public class ServiceThread implements Runnable {
 	
+	private ShoutbreakService _service;
 	private Message _message;
 	private Handler _uiThreadHandler;
 	private User _user;
 	
-	public ServiceThread(Handler uiThreadHandler, Message message, User user) {
+	public ServiceThread(ShoutbreakService service, Handler uiThreadHandler, Message message, User user) {
+		_service = service;
 		_message = message;
 		_uiThreadHandler = uiThreadHandler;
 		_user = user;
@@ -20,7 +22,7 @@ public class ServiceThread implements Runnable {
 	
 	public void run() {
 		Thread.setDefaultUncaughtExceptionHandler(new CustomExceptionHandler(C.CONFIG_CRASH_REPORT_ADDRESS));
-		Logic logic = new Logic(_uiThreadHandler, _user);
+		Logic logic = new Logic(_service, _uiThreadHandler, _user);
 		logic.go(_message);
 	}
  

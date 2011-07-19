@@ -11,6 +11,7 @@ import co.shoutbreak.shared.C;
 import co.shoutbreak.shared.SBPreferenceManager;
 import co.shoutbreak.shared.StateEvent;
 import co.shoutbreak.shared.StateManager;
+import co.shoutbreak.shared.User;
 import co.shoutbreak.shared.utils.SBLog;
 import co.shoutbreak.ui.views.ComposeView;
 import co.shoutbreak.ui.views.InboxView;
@@ -45,7 +46,6 @@ public class SBContext extends MapActivity {
 	private SBNotificationManager _notificationManager;
 	private SBPreferenceManager _preferenceManager;
 	private SBServiceBridgeInterface _serviceBinder;
-	private DialogBuilder _dialogBuilder;
 	private Intent _serviceIntent;
 	private SBView _viewArray[];
 	private SBView _currentView;
@@ -257,6 +257,10 @@ public class SBContext extends MapActivity {
 			e.pollingTurnedOff = true;
 			_stateManager.fireStateEvent(e);
 		}
+	}
+	
+	public User getUser() {
+		return _serviceBinder.getUser();
 	}
 	
 	public void setTitleBarText(String s) {

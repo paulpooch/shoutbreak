@@ -76,8 +76,8 @@ public class UserLocationOverlay extends MyLocationOverlay implements Observer  
 		}		
 
 		if (e.densityChanged || e.levelChanged) {
-			_density = user.getCellDensity().density;
-			_baseRadiusMeters = User.calculateRadius(user.getLevel(), _density);
+			_density = _context.getUser().getCellDensity().density;
+			_baseRadiusMeters = User.calculateRadius(_context.getUser().getLevel(), _density);
 			_calibrateZoomLevelForRadiusSize = true;
 			_baseRadiusPxIsWrong = true;
 			_resizeAdjustmentPx = 0;

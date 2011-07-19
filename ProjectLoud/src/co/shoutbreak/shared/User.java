@@ -27,7 +27,7 @@ public class User implements Observer {
 	private Database _db;
 	private CellDensity _cellDensity;
 	private LocationTracker _locationTracker;
-	//protected Inbox _inbox;
+	protected Inbox _inbox;
 	private int _shoutsJustReceived;
 	private boolean _levelUpOccured; //This means level up.
 	//private boolean _densityJustChanged;
@@ -46,7 +46,7 @@ public class User implements Observer {
 		
 		_tm = (TelephonyManager) service.getSystemService(Context.TELEPHONY_SERVICE);
 		_db = new Database(_service);
-		_locationTracker = new LocationTracker(_service, this);
+		_locationTracker = new LocationTracker(_service);
 		//_inbox = new Inbox(_db, this);
 		_passwordExists = false;
 		_level = 0;
@@ -121,9 +121,9 @@ public class User implements Observer {
 		return _locationTracker.getLongitude();
 	}
 
-	/*public Inbox getInbox() {
+	public Inbox getInbox() {
 		return _inbox;
-	}*/
+	}
 
 	public synchronized CellDensity getCellDensity() {
 		if (_cellDensity == null) {

@@ -9,8 +9,8 @@ import org.json.JSONObject;
 import co.shoutbreak.service.http.HttpConnection;
 import co.shoutbreak.service.http.PostData;
 import co.shoutbreak.shared.C;
+import co.shoutbreak.shared.StateEvent;
 import co.shoutbreak.shared.User;
-import co.shoutbreak.shared.UserEvent;
 import co.shoutbreak.shared.utils.ErrorManager;
 
 import android.os.Handler;
@@ -18,10 +18,12 @@ import android.os.Message;
 
 public class Logic {
 	
+	private ShoutbreakService _service;
     private Handler _uiThreadHandler;
     private User _user;
     
-    public Logic(Handler uiThreadHandler, User user) {
+    public Logic(ShoutbreakService service, Handler uiThreadHandler, User user) {
+    	_service = service;
     	_uiThreadHandler = uiThreadHandler;
     	_user = user;
     }
@@ -139,9 +141,9 @@ public class Logic {
 			if (xPacket.json.has(C.JSON_DENSITY)) {
 				double density = (double) xPacket.json.optDouble(C.JSON_DENSITY);
 				_user.saveDensity(density);
-				UserEvent e = new UserEvent();
+				StateEvent e = new StateEvent();
 				e.densityChanged = true;
-				_user.fireUserEvent(e);
+				_service.getStateManager().fireStateEvent(e);
 			}
 			if (xPacket.json.has(C.JSON_SHOUTS)) {
 				JSONArray shouts = xPacket.json.getJSONArray(C.JSON_SHOUTS);
@@ -151,9 +153,9 @@ public class Logic {
 					_user.getInbox().addShout(jsonShout);
 				}
 				xPacket.uiCode = C.UI_RECEIVE_SHOUTS;
-				UserEvent e = new UserEvent();
+				StateEvent e = new StateEvent();
 				e.shoutsReceived = true;
-				_user.fireUserEvent(e);
+				_service.getStateManager().fireStateEvent(e);
 			}
 			if (xPacket.json.has(C.JSON_SCORES)) {
 				_user.setScoresJustReceived(true);
@@ -162,9 +164,9 @@ public class Logic {
 					JSONObject jsonScore = scores.getJSONObject(i);
 					_user.getInbox().updateScore(jsonScore);
 				}
-				UserEvent e = new UserEvent();
+				StateEvent e = new StateEvent();
 				e.scoresChanged = true;
-				_user.fireUserEvent(e);
+				_service.getStateManager().fireStateEvent(e);
 			}
 			if (xPacket.json.has(C.JSON_LEVEL_CHANGE)) {
 				JSONObject levelInfo = xPacket.json.getJSONObject(C.JSON_LEVEL_CHANGE);				
@@ -172,10 +174,10 @@ public class Logic {
 				int newPoints = (int) levelInfo.getLong(C.JSON_POINTS);
 				int nextLevelAt = (int) levelInfo.getLong(C.JSON_NEXT_LEVEL_AT);
 				_user.levelUp(newLevel, newPoints, nextLevelAt);
-				UserEvent e = new UserEvent();
+				StateEvent e = new StateEvent();
 				e.levelChanged = true;
 				e.pointsChanged = true;
-				_user.fireUserEvent(e);
+				_service.getStateManager().fireStateEvent(e);
 			}
 			if (xPacket.purpose == C.PURPOSE_LOOP_FROM_UI) {
 				xPacket.purpose = C.PURPOSE_LOOP_FROM_UI_DELAYED;
@@ -192,9 +194,9 @@ public class Logic {
 			public void handleMessage(Message message) {
 				switch (message.what) {
 					case C.HTTP_DID_SUCCEED: {
-						UserEvent e = new UserEvent();
+						StateEvent e = new StateEvent();
 						e.shoutSent = true;
-						_user.fireUserEvent(e);				
+						_service.getStateManager().fireStateEvent(e);				
 						// Unless shout occurs in idle thread, we don't need to sendMessage.
 						//CrossThreadPacket xPacket = (CrossThreadPacket)message.obj;
 						//_uiThreadHandler.sendMessage(Message.obtain(_uiThreadHandler, C.STATE_IDLE, xPacket)); // STATE doesn't matter - going to die
@@ -226,9 +228,9 @@ public class Logic {
 				switch (message.what) {
 					case C.HTTP_DID_SUCCEED: {
 						_user.getInbox().reflectVote(shoutID, vote);
-						UserEvent e = new UserEvent();
+						StateEvent e = new StateEvent();
 						e.voteCompleted = true;
-						_user.fireUserEvent(e);
+						_service.getStateManager().fireStateEvent(e);
 						// Unless vote occurs in idle thread, we don't need to sendMessage.
 						//CrossThreadPacket xPacket = (CrossThreadPacket)message.obj;
 						//_uiThreadHandler.sendMessage(Message.obtain(_uiThreadHandler, C.STATE_IDLE, xPacket)); // STATE doesn't matter - going to die
@@ -274,9 +276,9 @@ public class Logic {
 							String uid = xPacket.sArgs[0];
 							_user.setUID(uid);
 							_user.setPassword(password);
-							UserEvent e = new UserEvent();
+							StateEvent e = new StateEvent();
 							e.accountCreated = true;
-							_user.fireUserEvent(e);
+							_service.getStateManager().fireStateEvent(e);
 							_uiThreadHandler.sendMessage(Message.obtain(_uiThreadHandler, C.STATE_IDLE, xPacket));
 						} catch (JSONException ex) {
 							ErrorManager.manage(ex);
