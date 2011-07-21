@@ -39,14 +39,14 @@ public class User implements Observer {
 	private int _points;
 	private int _nextLevelAt;
 	
-	public User(ShoutbreakService service, StateManager stateManager) {
+	public User(ShoutbreakService service, StateManager stateManager, LocationTracker locationTracker) {
 		_service = service;
 		_stateManager = stateManager;
 		_stateManager.addObserver(this);
 		
 		_tm = (TelephonyManager) service.getSystemService(Context.TELEPHONY_SERVICE);
 		_db = new Database(_service);
-		_locationTracker = new LocationTracker(_service);
+		_locationTracker = locationTracker;
 		_inbox = new Inbox(_service, _db, this);
 		_passwordExists = false;
 		_level = 0;

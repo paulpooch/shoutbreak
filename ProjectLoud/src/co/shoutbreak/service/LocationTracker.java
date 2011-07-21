@@ -36,6 +36,8 @@ public class LocationTracker {
 		_provider = _locationManager.getBestProvider(_criteria, true);
 		//String allowedProviders = Settings.Secure.getString(_context.getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
 		_location = _locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+		
+		isLocationEnabled();
 	}
 	
 	public void toggleListeningToLocation(boolean turnOn) {
@@ -51,13 +53,21 @@ public class LocationTracker {
 	}
 	
 	public boolean isLocationEnabled() {
-		boolean result = false;
+		boolean result;
+		StateEvent e = new StateEvent();
 		_provider = _locationManager.getBestProvider(_criteria, true);
 		_location = _locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 		// if _location is null, it means User has location disabled in settings
 		if (_location != null && _provider != null && _locationManager.isProviderEnabled(_provider)) {
+			_service.getStateManager().setIsLocationAvailable(true);
+			e.locationTurnedOn = true;
 			result = true;
+		} else {
+			_service.getStateManager().setIsLocationAvailable(false);
+			e.locationTurnedOff = true;
+			result = false;
 		}
+		_service.getStateManager().fireStateEvent(e);
 		return result;
 	}
 	
@@ -112,11 +122,11 @@ public class LocationTracker {
         }
 
         public void onProviderDisabled(String provider) {
-        	
+        	isLocationEnabled();
         }
 
         public void onProviderEnabled(String provider) {
-
+        	isLocationEnabled();
         }
 
         public void onStatusChanged(String provider, int status, Bundle extras) {

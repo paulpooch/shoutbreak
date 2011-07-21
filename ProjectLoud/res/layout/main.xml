@@ -2,7 +2,13 @@
 	android:layout_width="fill_parent" android:layout_height="fill_parent"
 	android:background="#ff000000" android:orientation="vertical">
 	
-	<!-- TITLE BAR -->
+	<!-- Splash -->
+	<LinearLayout android:id="@+id/splash"
+		android:layout_width="fill_parent" android:layout_height="fill_parent"
+		android:background="@drawable/splash" android:orientation="vertical">
+	</LinearLayout>
+	
+	<!-- Title Bar -->
 	<RelativeLayout android:background="@drawable/top_bg"
 		android:layout_width="fill_parent" android:layout_height="wrap_content"
 		android:layout_weight="0">
@@ -78,6 +84,12 @@
 			android:background="#ff000000" android:orientation="vertical">
 			<TextView android:text="Profile View" android:layout_width="fill_parent"
 				android:layout_height="wrap_content" />
+		</LinearLayout>
+		
+		<!-- Enable Location -->
+		<LinearLayout android:id="@+id/enable_location_view" android:visibility="invisible"
+			android:layout_width="fill_parent" android:layout_height="wrap_content"
+			android:background="@drawable/splash" android:orientation="vertical">
 		</LinearLayout>
 		
 	</RelativeLayout>

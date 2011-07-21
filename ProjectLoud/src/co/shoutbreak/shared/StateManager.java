@@ -2,6 +2,8 @@ package co.shoutbreak.shared;
 
 import java.util.Observable;
 
+import android.widget.Toast;
+
 import co.shoutbreak.shared.utils.SBLog;
 
 public class StateManager extends Observable {
@@ -10,7 +12,7 @@ public class StateManager extends Observable {
 	// 1. An update() observer method can never fire another event.  This would lead to an endless notifyObservers loop.
 	// 2. Always set state updates when they occur.
 	
-	private final String TAG = "SBStateManager.java";
+	private final String TAG = "SBStateManager";
 	
 	private int isUIOn = -1; // -1 indicates unknown. 0 = off. 1 = on.
 	private int isServiceAlive = -1;
@@ -48,11 +50,20 @@ public class StateManager extends Observable {
 	}
 	
 	public boolean isAppFullyFunctional() {
+		boolean result;
 		// TODO: This function sucks. Mainly just here to show we need something like this.
+		if (isUIOn + isServiceAlive + isServiceBound + isPollingOn + isLocationAvailable > 4) {
+			result = true;
+		} else {
+			result = false;
+		}
+		
+		/*
 		boolean result = false;
 		if (isUIOn + isServiceAlive + isServiceBound + isPollingOn + isDataAvailable + isLocationAvailable + isLocationTrackerUsingGPS + isUserOverlayUsingGPS + isInputEnabled + isPowerButtonOn  + isPowerPrefOn + isServiceBound + isUserOverlayVisible > 12) {
 			result = true;
-		}
+		}*/
+		
 		return result;
 	}
 	
@@ -77,6 +88,10 @@ public class StateManager extends Observable {
 		sb.append("isServiceBound = " + isServiceBound + "\n");
 		sb.append("isUserOverlayVisible = " + isUserOverlayVisible + "\n");
 		SBLog.i(TAG, sb.toString());
+	}
+	
+	public boolean isLocationAvailable() {
+		return isLocationAvailable == 1;
 	}
 	
 	public void setIsUIOn(boolean b) {
@@ -134,6 +149,54 @@ public class StateManager extends Observable {
 		updateLog();
 	}
 
+	
+	/*
+	// events
+	public static final int UPDATE_DENSITY = -1;
+	
+	// state changes
+	public static final int ENABLE_UI = 1;
+	public static final int DISABLE_UI = 2;
+	
+	// app state
+	public boolean isUIEnabled;
+	
+	// command handler
+	public void call(int cmd) {
+
+		// handle state change
+		if (cmd > 0) {
+			
+			// don't do anything if already enabled
+			switch (cmd) {
+	
+				case ENABLE_UI:
+					if (isUIEnabled) return;
+					break;
+	
+				case DISABLE_UI:
+					if (!isUIEnabled) return;
+					break;
+			}
+			
+			setChanged(); // ignore. this must be called.
+			notifyObservers(cmd); // send the cmd to observers
+			
+			// change the state after the observers receive the cmd
+			switch (cmd) {
+				case ENABLE_UI: case DISABLE_UI:
+					isUIEnabled = !isUIEnabled;
+					break;
+			}
+			
+		// handle event
+		} else {
+			setChanged();
+			notifyObservers(cmd); // send the event to observers
+		}
+	}
+}
+*/
 	
 	
 	

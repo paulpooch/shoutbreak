@@ -1,5 +1,8 @@
 package co.shoutbreak.ui;
 
+import java.util.Observable;
+import java.util.Observer;
+
 import com.google.android.maps.MapActivity;
 
 import co.shoutbreak.R;
@@ -13,10 +16,7 @@ import co.shoutbreak.shared.StateEvent;
 import co.shoutbreak.shared.StateManager;
 import co.shoutbreak.shared.User;
 import co.shoutbreak.shared.utils.SBLog;
-import co.shoutbreak.ui.views.ComposeView;
-import co.shoutbreak.ui.views.InboxView;
-import co.shoutbreak.ui.views.ProfileView;
-import co.shoutbreak.ui.views.SBView;
+import co.shoutbreak.ui.views.*;
 
 import android.content.ComponentName;
 import android.content.Context;
@@ -28,19 +28,21 @@ import android.os.IBinder;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 /* SBContext.java */
 // application launcher
 // starts service and manages views
 // shares StateManager with the service
-public class SBContext extends MapActivity {
+public class SBContext extends MapActivity implements Observer {
 	
 	private static final String TAG = "SBContext";
 	
 	public static final int COMPOSE_VIEW = 0;
 	public static final int INBOX_VIEW = 1;
 	public static final int PROFILE_VIEW = 2;
+	public static final int ENABLE_LOCATION_VIEW = 3;
 
 	private StateManager _stateManager;
 	private SBNotificationManager _notificationManager;
@@ -66,10 +68,8 @@ public class SBContext extends MapActivity {
 		SBLog.i(TAG, "onCreate()");
 		super.onCreate(bundle);
 		
-		// TODO: Can default view (before 3 views load) be a sweet splash with funky texture?
-		// this should be displayed while we're initializing components and determining state
-		toggleSplash(true);
-
+		setContentView(R.layout.main);
+		
 		// initialize components
 		_notificationManager = new SBNotificationManager(this);
 		_preferenceManager = new SBPreferenceManager(this);
@@ -80,7 +80,6 @@ public class SBContext extends MapActivity {
 		bindService(_serviceIntent, _ServiceConnection, Context.BIND_AUTO_CREATE);
 		
 		// register tab listeners
-		setContentView(R.layout.main);
 		composeTab = (ImageButton) findViewById(R.id.composeTab);
 		composeTab.setOnClickListener(_composeTabListener);
 		inboxTab = (ImageButton) findViewById(R.id.inboxTab);
@@ -97,6 +96,7 @@ public class SBContext extends MapActivity {
 			SBLog.i(TAG, "onServiceConnected()");
 			_serviceBinder = (SBServiceBridgeInterface) service;
 			_stateManager = _serviceBinder.getStateManager();
+			_stateManager.addObserver(SBContext.this);
 			_stateManager.setIsServiceBound(true);
 			
 			// initialize state
@@ -104,17 +104,23 @@ public class SBContext extends MapActivity {
 			
 			// initialize views
 			// state manager must be initialized
-			_viewArray = new SBView[3];
+			_viewArray = new SBView[4];
 			_viewArray[COMPOSE_VIEW] = new ComposeView(SBContext.this, "Send Shout", R.id.compose_view, 0);
 			_viewArray[INBOX_VIEW] = new InboxView(SBContext.this, "Inbox", R.id.inbox_view, 1);
 			_viewArray[PROFILE_VIEW] = new ProfileView(SBContext.this, "Profile", R.id.profile_view, 2);
+			_viewArray[ENABLE_LOCATION_VIEW] = new EnableLocationView(SBContext.this, "Enable Location", R.id.enable_location_view, 3);
 			switchView(_viewArray[COMPOSE_VIEW]);
 			
 			// register power button listener
 			_powerButton = (ImageButton) findViewById(R.id.powerButton);
 			_powerButton.setOnClickListener(_powerButtonListener);
 			
-			setPowerState(_preferenceManager.getBoolean(SBPreferenceManager.POWER_STATE_PREF, false));
+			// TODO: use power preference
+			//setPowerState(_preferenceManager.getBoolean(SBPreferenceManager.POWER_STATE_PREF, false));
+			setPowerState(true);
+			
+			// hide splash
+			((LinearLayout) findViewById(R.id.splash)).setVisibility(View.GONE);
 		}
 
 		public void onServiceDisconnected(ComponentName className) {
@@ -171,6 +177,7 @@ public class SBContext extends MapActivity {
 			stopService(_serviceIntent);
 		}
 		
+		_stateManager.deleteObserver(SBContext.this);
 		_stateManager.setIsUIOn(false);
 		_stateManager = null;
 		unbindService(_ServiceConnection);
@@ -197,14 +204,6 @@ public class SBContext extends MapActivity {
 	
 	public SBView getView(int viewId) {
 		return _viewArray[viewId];
-	}
-	
-	private void toggleSplash(boolean show) {
-		if (show) {
-			// show splash
-		} else {
-			// hide splash
-		}
 	}
 	
 	/* BUTTON LISTENERS */
@@ -237,7 +236,7 @@ public class SBContext extends MapActivity {
 	
 	private void setPowerState(boolean turnOn) {
 		ComponentName component = new ComponentName(SBContext.this, AlarmReceiver.class);
-		if (turnOn) {
+		if (turnOn && _stateManager.isAppFullyFunctional()) {
 			_isPowerOn = true;
 			_powerButton.setImageResource(R.drawable.power_button_on);
 			_preferenceManager.putBoolean(SBPreferenceManager.POWER_STATE_PREF, true);
@@ -271,5 +270,18 @@ public class SBContext extends MapActivity {
 	
 	public StateManager getStateManager() {
 		return _stateManager;
+	}
+
+	public void update(Observable observable, Object data) {
+		StateEvent e = (StateEvent) data;
+		
+		if (!_stateManager.isLocationAvailable()) {
+			switchView(_viewArray[ENABLE_LOCATION_VIEW]);
+			//setPowerState(false);
+		}
+		
+		if (e.locationTurnedOn) {
+			switchView(_viewArray[COMPOSE_VIEW]);
+		}
 	}
 }

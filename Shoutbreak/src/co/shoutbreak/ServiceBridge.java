@@ -1,9 +1,9 @@
-package co.shoutbreak.service;
+package co.shoutbreak;
 
 import co.shoutbreak.shared.StateManager;
 import co.shoutbreak.shared.User;
 
-public interface SBServiceBridgeInterface {
+public interface ServiceBridge {
 	
 	public StateManager getStateManager();
 	public User getUser();

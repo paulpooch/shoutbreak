@@ -29,6 +29,7 @@ public class ShoutbreakService extends Service implements Observer {
 	private final String TAG = "ShoutbreakService.java";
 	
 	private StateManager _stateManager;	
+	private LocationTracker _locationTracker;
 	private User _user;
 	private Handler _uiThreadHandler;	
 	private boolean _isServiceOn = false;
@@ -53,9 +54,8 @@ public class ShoutbreakService extends Service implements Observer {
 		_stateManager.setIsServiceAlive(true);
 		
 		_notificationManager = new SBNotificationManager(ShoutbreakService.this);
+		_locationTracker = new LocationTracker(ShoutbreakService.this);
 		
-		_user = new User(this, _stateManager);
-				
 		_uiThreadHandler = new Handler() {
 			@Override
 			public void handleMessage(Message message) {
@@ -104,7 +104,7 @@ public class ShoutbreakService extends Service implements Observer {
 				}
 			}
 		};
-		
+
 	}
 
 	@Override
@@ -112,7 +112,9 @@ public class ShoutbreakService extends Service implements Observer {
 		SBLog.i(TAG, "onStartCommand()");
 		if (!_isServiceOn) {
 			_isServiceOn = true;
-			
+	
+			_user = new User(this, _stateManager, _locationTracker);
+
 			// enable polling if called from alarm receiver
 			Bundle bundle = intent.getExtras();
 			if (bundle != null & bundle.getBoolean(AlarmReceiver.LAUNCHED_FROM_ALARM)) {
@@ -150,12 +152,15 @@ public class ShoutbreakService extends Service implements Observer {
 	
 	public class ServiceBridge extends Binder implements SBServiceBridgeInterface {
 		
-		public User getUser() {
-			return _user;
-		}
+		// SBContext must bind to the StateManager and add itself as an observer before it
+		// initializes any components
 		
 		public StateManager getStateManager() {
 			return _stateManager;
+		}
+		
+		public User getUser() {
+			return _user;
 		}
 	}
 
