@@ -18,7 +18,7 @@ public class ShoutbreakService extends Service implements Colleague {
 	}
 
 	@Override
-	public void unSetMediator() {
+	public void unsetMediator() {
     	SBLog.i(TAG, "unSetMediator()");
 		_m.kill(); // this can only be called here
 		_m = null;

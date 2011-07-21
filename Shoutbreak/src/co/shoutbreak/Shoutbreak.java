@@ -47,7 +47,7 @@ public class Shoutbreak extends Activity implements Colleague {
 	}
 
 	@Override
-	public void unSetMediator() {
+	public void unsetMediator() {
 		SBLog.i(TAG, "unSetMediator()");
 		_m = null;		
 	}
