@@ -42,7 +42,6 @@ public class Mediator {
 	
 	public void kill() {
     	SBLog.i(TAG, "kill()");
-		_service.unsetMediator();
 		_service = null;
 		_ui.unsetMediator();
 		_ui = null;

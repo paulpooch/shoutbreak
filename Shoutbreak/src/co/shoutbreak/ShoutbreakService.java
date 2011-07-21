@@ -19,9 +19,7 @@ public class ShoutbreakService extends Service implements Colleague {
 
 	@Override
 	public void unsetMediator() {
-    	SBLog.i(TAG, "unSetMediator()");
-		_m.kill(); // this can only be called here
-		_m = null;
+		// should never be called
 	}
 	
 	@Override
@@ -35,5 +33,13 @@ public class ShoutbreakService extends Service implements Colleague {
 	public IBinder onBind(Intent intent) {
     	SBLog.i(TAG, "onBind()");
 		return null;
+	}
+	
+	@Override
+	public void onDestroy() {
+		SBLog.i(TAG, "onDestroy()");
+		_m.kill(); // this can only be called here
+		_m = null;
+		super.onDestroy();
 	}
 }
