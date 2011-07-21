@@ -20,18 +20,14 @@ public class Mediator {
 	// state flags
 	private boolean _isUIOn;
 	private boolean _isServiceConnected;
+	private boolean _isLocationAvailable;
+	private boolean _isDataAvailable;
+	private boolean _isBeingReferredFromNotification;
+	private boolean _isPowerOn;
 	
 	// shit show of variables
 	private Intent _serviceIntent;
 	private ServiceBridge _serviceBridge;
-
-	protected boolean _isLocationAvailable;
-
-	protected boolean _isDataAvailable;
-
-	protected boolean _isBeingReferredFromNotification;
-
-	protected boolean _isPowerOn;
 	
 	/* Mediator Lifecycle */
 	
