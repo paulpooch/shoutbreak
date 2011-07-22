@@ -24,8 +24,9 @@ public class Mediator {
 	
 	// state flags
 	private boolean _isUIAlive;
-	private boolean _isServiceAlive;
+	private boolean _isPollingAlive;
 	private boolean _isServiceConnected;
+	private boolean _areFlagsInitialized;
 	private boolean _isLocationAvailable;
 	private boolean _isDataAvailable;
 	private boolean _isBeingReferredFromNotification;
@@ -45,6 +46,11 @@ public class Mediator {
 		_preferences.setMediator(this);
 		_location = new LocationTracker();
 		_location.setMediator(this);
+		
+		// app launched from alarm
+		if (APP_LAUNCHED_FROM_ALARM) {
+			startPolling();
+		}
 	}
 	
 	public void registerUI(Shoutbreak ui) {
@@ -79,12 +85,12 @@ public class Mediator {
 		// hide splash
 		((LinearLayout) _ui.findViewById(R.id.splash)).setVisibility(View.GONE);
 		
-		setPowerPreference();
-		setAlarmReceiver();
-		setIsLocationAvailable();
-		setIsDataAvailable();
-		setIsBeingReferredFromNotification();
+		initializeFlags();
 		
+		if (!_isPollingAlive) {
+			startPolling();
+		}
+
 		if (_isPowerOn && _isLocationAvailable && _isDataAvailable && !_isBeingReferredFromNotification) {
 			// compose view
 			switchView();
@@ -99,6 +105,9 @@ public class Mediator {
 		} else if (_isBeingReferredFromNotification) {
 			// inbox view
 			switchView();
+			if (_isPowerOn) {
+				
+			}
 		} else {
 			// should never get here	
 		}
@@ -146,5 +155,27 @@ public class Mediator {
 	
 	public void switchView() {
 		
+	}
+	
+	public void initializeFlags() {
+		if (!_areFlagsInitialized) {
+			setPowerPreference();
+			setAlarmReceiver();
+			setIsLocationAvailable();
+			setIsDataAvailable();
+			setIsBeingReferredFromNotification();
+			_areFlagsInitialized = true;
+		}
+	}
+	
+	public void startPolling() {
+		if (!_isPollingAlive) {
+			
+			initializeFlags();
+			
+			if (_isPowerOn && _isLocationAvailable && _isDataAvailable) {
+				
+			}
+		}
 	}
 }
