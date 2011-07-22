@@ -4,9 +4,12 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.IBinder;
 import android.view.View;
 import android.widget.LinearLayout;
+import co.shoutbreak.shared.C;
 import co.shoutbreak.shared.SBLog;
 
 public class Mediator {
@@ -16,9 +19,12 @@ public class Mediator {
 	// colleagues
 	private ShoutbreakService _service;
 	private Shoutbreak _ui;
+	private PreferenceManager _preferences;
+	private LocationTracker _location;
 	
 	// state flags
-	private boolean _isUIOn;
+	private boolean _isUIAlive;
+	private boolean _isServiceAlive;
 	private boolean _isServiceConnected;
 	private boolean _isLocationAvailable;
 	private boolean _isDataAvailable;
@@ -27,7 +33,6 @@ public class Mediator {
 	
 	// shit show of variables
 	private Intent _serviceIntent;
-	private ServiceBridge _serviceBridge;
 	
 	/* Mediator Lifecycle */
 	
@@ -36,68 +41,110 @@ public class Mediator {
 		// add colleagues
 		_service = service;
 		_service.setMediator(this);
-		_ui = new Shoutbreak();
-		_ui.setMediator(this);
+		_preferences = new PreferenceManager();
+		_preferences.setMediator(this);
+		_location = new LocationTracker();
+		_location.setMediator(this);
+	}
+	
+	public void registerUI(Shoutbreak ui) {
+		SBLog.i(TAG, "registerUI()");
+		_ui = ui;
+		_ui.setMediator(this);	
 	}
 	
 	public void kill() {
     	SBLog.i(TAG, "kill()");
 		_service = null;
-		_ui.unsetMediator();
-		_ui = null;
+		
+		if (_isUIAlive) {
+			_ui.unsetMediator();
+			_ui = null;
+		}
+		
+		_preferences.unsetMediator();
+		_preferences = null;
+		
+		_location.unsetMediator();
+		_location = null;
 	}
 	
 	/* Mediator Commands */
 	
-	public void setUIOn() {
-		_isUIOn = true;
+	public void onServiceConnected() {
+		SBLog.i(TAG, "onServiceConnected()");
+		_isUIAlive = true;
+		_isServiceConnected = true;
+			
+		// hide splash
+		((LinearLayout) _ui.findViewById(R.id.splash)).setVisibility(View.GONE);
+		
+		setPowerPreference();
+		setAlarmReceiver();
+		setIsLocationAvailable();
+		setIsDataAvailable();
+		setIsBeingReferredFromNotification();
+		
+		if (_isPowerOn && _isLocationAvailable && _isDataAvailable && !_isBeingReferredFromNotification) {
+			// compose view
+			switchView();
+		} else if (!_isPowerOn) {
+			// map disabled view
+		} else if (!_isLocationAvailable) {
+			// location disabled view
+			switchView();
+		} else if (!_isDataAvailable) {
+			// data disabled view
+			switchView();
+		} else if (_isBeingReferredFromNotification) {
+			// inbox view
+			switchView();
+		} else {
+			// should never get here	
+		}
 	}
 	
-	public void bindUIToService() {
-		if (_isUIOn) {
-			_serviceIntent = new Intent(_ui, ShoutbreakService.class);
-			_ui.bindService(_serviceIntent, _serviceConnection, Context.BIND_AUTO_CREATE);
+	public void onServiceDisconnected() {
+		SBLog.i(TAG, "onServiceDisconnected()");
+		_isServiceConnected = false;
+	}
+	
+	public SharedPreferences getSharedPreferences() {
+		SBLog.i(TAG, "getSharedPreferences()");
+		return _service.getSharedPreferences(C.PREFERENCE_FILE, Context.MODE_PRIVATE);
+	}
+	
+	public void setPowerPreference() {
+		SBLog.i(TAG, "setPowerPreference()");
+		if (_preferences.contains(C.POWER_STATE_PREF)) {
+			_isPowerOn = _preferences.getBoolean(C.POWER_STATE_PREF, true);
+		} else {
+			_isPowerOn = true;
 		}
 	}
 	
-	private ServiceConnection _serviceConnection = new ServiceConnection() {
-
-		@Override
-		public void onServiceConnected(ComponentName name, IBinder service) {
-			_isServiceConnected = true;
-			_serviceBridge = (ServiceBridge) service;
-			// hide splash
-			((LinearLayout) _ui.findViewById(R.id.splash)).setVisibility(View.GONE);
-			
-			if (_isPowerOn && _isLocationAvailable && _isDataAvailable && !_isBeingReferredFromNotification) {
-				// compose view
-				switchView();
-			} else if (!_isPowerOn) {
-				// map disabled view
-			} else if (!_isLocationAvailable) {
-				// location disabled view
-				switchView();
-			} else if (!_isDataAvailable) {
-				// data disabled view
-				switchView();
-			} else if (_isBeingReferredFromNotification) {
-				// inbox view
-				switchView();
-			} else {
-				
-			}
-			
+	public void setAlarmReceiver() {
+		ComponentName component = new ComponentName(_service, AlarmReceiver.class);
+		int state = PackageManager.COMPONENT_ENABLED_STATE_DISABLED;
+		if (_isPowerOn) {
+			state = PackageManager.COMPONENT_ENABLED_STATE_ENABLED;
 		}
+		_service.getPackageManager().setComponentEnabledSetting(component, state, PackageManager.DONT_KILL_APP);		
+	}
 
-		@Override
-		public void onServiceDisconnected(ComponentName name) {
-			_isServiceConnected = false;
-		}
+	public void setIsLocationAvailable() {
+		
+	}
 	
-	};
-
-	protected void switchView() {
-		// TODO Auto-generated method stub
+	public void setIsDataAvailable() {
+		
+	}
+	
+	public void setIsBeingReferredFromNotification() {
+		
+	}
+	
+	public void switchView() {
 		
 	}
 }

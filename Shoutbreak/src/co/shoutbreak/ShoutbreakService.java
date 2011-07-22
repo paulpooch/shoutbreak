@@ -1,8 +1,10 @@
 package co.shoutbreak;
 
+
 import co.shoutbreak.shared.SBLog;
 import android.app.Service;
 import android.content.Intent;
+import android.os.Binder;
 import android.os.IBinder;
 
 public class ShoutbreakService extends Service implements Colleague {
@@ -41,5 +43,14 @@ public class ShoutbreakService extends Service implements Colleague {
 		_m.kill(); // this can only be called here
 		_m = null;
 		super.onDestroy();
+	}
+
+	public class ServiceBridge extends Binder implements ServiceBridgeInterface {
+
+		@Override
+		public void registerUIWithMediator(Shoutbreak ui) {
+			_m.registerUI(ui);
+		}
+	
 	}
 }

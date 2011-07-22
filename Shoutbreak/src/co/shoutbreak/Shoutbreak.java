@@ -3,7 +3,12 @@ package co.shoutbreak;
 import co.shoutbreak.shared.SBLog;
 
 import android.app.Activity;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
@@ -13,6 +18,8 @@ public class Shoutbreak extends Activity implements Colleague {
 	private static String TAG = "Shoutbreak";
 	
 	private Mediator _m;
+	private Intent _serviceIntent;
+	private ServiceBridgeInterface _serviceBridge;
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -36,8 +43,9 @@ public class Shoutbreak extends Activity implements Colleague {
 		powerButton = (ImageButton) findViewById(R.id.powerButton);
 		powerButton.setOnClickListener(_powerButtonListener);
 		
-        _m.setUIOn();
-        _m.bindUIToService();
+		// bind to service, initializes mediator
+		_serviceIntent = new Intent(Shoutbreak.this, ShoutbreakService.class);
+		bindService(_serviceIntent, _serviceConnection, Context.BIND_AUTO_CREATE);
     }
 
 	@Override
@@ -52,6 +60,22 @@ public class Shoutbreak extends Activity implements Colleague {
 		_m = null;		
 	}
 
+	// all mediator interaction must occur after onServiceConnected
+	private ServiceConnection _serviceConnection = new ServiceConnection() {
+
+		@Override
+		public void onServiceConnected(ComponentName name, IBinder service) {
+			_serviceBridge = (ServiceBridgeInterface) service;
+			_serviceBridge.registerUIWithMediator(Shoutbreak.this);
+			_m.onServiceConnected();			
+		}
+
+		@Override
+		public void onServiceDisconnected(ComponentName name) {
+			_m.onServiceDisconnected();
+		}
+	};
+	
 	/* Button Listeners */
 	
 	private OnClickListener _composeTabListener = new OnClickListener() {
