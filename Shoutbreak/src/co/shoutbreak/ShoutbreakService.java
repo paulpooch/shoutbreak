@@ -12,6 +12,7 @@ public class ShoutbreakService extends Service implements Colleague {
 	private static String TAG = "ShoutbreakService";
 	
 	private Mediator _m;
+	private boolean _isAlive;
 	
 	@Override
 	public void setMediator(Mediator mediator) {
@@ -29,6 +30,17 @@ public class ShoutbreakService extends Service implements Colleague {
     	SBLog.i(TAG, "onCreate()");
 		super.onCreate();
 		new Mediator(ShoutbreakService.this);
+	}
+	
+	@Override
+	public int onStartCommand(Intent intent, int flags, int startId) {
+		SBLog.i(TAG, "onStartCommand()");
+		super.onStartCommand(intent, flags, startId);
+		if (!_isAlive) {
+			_isAlive = true;
+			_m.onServiceStartCommand(intent);
+		}
+		return START_STICKY;
 	}
 	
 	@Override

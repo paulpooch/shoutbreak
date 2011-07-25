@@ -67,7 +67,7 @@ public class Shoutbreak extends Activity implements Colleague {
 		public void onServiceConnected(ComponentName name, IBinder service) {
 			_serviceBridge = (ServiceBridgeInterface) service;
 			_serviceBridge.registerUIWithMediator(Shoutbreak.this);
-			_m.onServiceConnected();			
+			_m.onServiceConnected(_serviceIntent);			
 		}
 
 		@Override
@@ -75,6 +75,14 @@ public class Shoutbreak extends Activity implements Colleague {
 			_m.onServiceDisconnected();
 		}
 	};
+	
+	@Override
+	public void onDestroy() {
+		SBLog.i(TAG, "onDestroy()");
+		_m.unregisterUI();
+		_m = null;
+		super.onDestroy();
+	}
 	
 	/* Button Listeners */
 	
