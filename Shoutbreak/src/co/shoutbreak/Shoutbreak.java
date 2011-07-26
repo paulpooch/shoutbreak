@@ -89,7 +89,7 @@ public class Shoutbreak extends Activity implements Colleague {
 	@Override
 	public void onDestroy() {
 		SBLog.i(TAG, "onDestroy()");
-		_m.unregisterUI();
+		_m.unregisterUI(false);
 		_m = null;
 		super.onDestroy();
 	}

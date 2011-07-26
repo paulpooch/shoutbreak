@@ -74,13 +74,16 @@ public class Mediator {
 		_ui.setMediator(this);
 	}
 	
-	public void unregisterUI() {
+	public void unregisterUI(boolean forceKillUI) {
 		// called by ui's onDestroy() method
 		SBLog.i(TAG, "unregisterUI()");
 		if (_isUIAlive) {
 			_isUIAlive = false;
 			_ui.unsetMediator();
-			_ui.finish(); // forces
+			if (forceKillUI) {
+				// forces UI to destroy itself if the mediator / service is killed off
+				_ui.finish();
+			}
 			_ui = null;
 		} else {
 			SBLog.e(TAG, "UI is not alive, unable to unregister");
@@ -93,7 +96,7 @@ public class Mediator {
     	SBLog.i(TAG, "kill()");
 		_service = null;
 		
-		unregisterUI();
+		unregisterUI(true);
 		
 		//_preferences.unsetMediator();
 		//_preferences = null;
