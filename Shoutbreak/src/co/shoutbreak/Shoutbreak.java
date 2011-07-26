@@ -1,5 +1,6 @@
 package co.shoutbreak;
 
+import co.shoutbreak.shared.C;
 import co.shoutbreak.shared.SBLog;
 
 import android.app.Activity;
@@ -12,6 +13,7 @@ import android.os.IBinder;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 
 public class Shoutbreak extends Activity implements Colleague {
 	
@@ -60,14 +62,22 @@ public class Shoutbreak extends Activity implements Colleague {
 		_m = null;		
 	}
 
-	// all mediator interaction must occur after onServiceConnected
+	// all mediator interaction must occur after onServiceConnected()
 	private ServiceConnection _serviceConnection = new ServiceConnection() {
 
 		@Override
 		public void onServiceConnected(ComponentName name, IBinder service) {
+			SBLog.i(TAG, "onServiceConnected()");
 			_serviceBridge = (ServiceBridgeInterface) service;
 			_serviceBridge.registerUIWithMediator(Shoutbreak.this);
-			_m.onServiceConnected(_serviceIntent);			
+			_m.onServiceConnected();
+			
+			// hide splash
+			((LinearLayout) findViewById(R.id.splash)).setVisibility(View.GONE);
+			
+			// begin the service
+			_serviceIntent.putExtra(C.APP_LAUNCHED_FROM_UI, true);
+			startService(_serviceIntent);
 		}
 
 		@Override
@@ -88,25 +98,25 @@ public class Shoutbreak extends Activity implements Colleague {
 	
 	private OnClickListener _composeTabListener = new OnClickListener() {
 		public void onClick(View v) {
-
+			//_m.showComposeView();
 		}
 	};
 	
 	private OnClickListener _inboxTabListener = new OnClickListener() {
 		public void onClick(View v) {
-
+			//_m.showInboxView();
 		}
 	};
 	
 	private OnClickListener _profileTabListener = new OnClickListener() {
 		public void onClick(View v) {
-
+			//_m.showProfileView();
 		}
 	};
 	
 	private OnClickListener _powerButtonListener = new OnClickListener() {
 		public void onClick(View v) {
-
+			//_m.startPolling();
 		}
 	};
 	

@@ -4,7 +4,7 @@ import co.shoutbreak.Component;
 import co.shoutbreak.R;
 import co.shoutbreak.shared.C;
 import co.shoutbreak.ui.SBContext;
-import co.shoutbreak.ui.views.SBView;
+import co.shoutbreak.views.SBView;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;

@@ -17,6 +17,11 @@ import co.shoutbreak.shared.StateManager;
 import co.shoutbreak.shared.User;
 import co.shoutbreak.shared.utils.SBLog;
 import co.shoutbreak.ui.views.*;
+import co.shoutbreak.views.ComposeView;
+import co.shoutbreak.views.EnableLocationView;
+import co.shoutbreak.views.InboxView;
+import co.shoutbreak.views.ProfileView;
+import co.shoutbreak.views.SBView;
 
 import android.content.ComponentName;
 import android.content.Context;
