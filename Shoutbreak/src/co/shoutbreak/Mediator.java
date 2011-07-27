@@ -19,48 +19,40 @@ import android.provider.Settings;
 import android.view.View;
 import android.widget.LinearLayout;
 import co.shoutbreak.shared.C;
+import co.shoutbreak.shared.Flag;
 import co.shoutbreak.shared.SBLog;
 
 public class Mediator {
 	
 	private static final String TAG = "Mediator";
 	
-	public static final int COMPOSE_VIEW = 0;
-	public static final int INBOX_VIEW = 1;
-	public static final int PROFILE_VIEW = 2;
-	public static final int ENABLE_LOCATION_VIEW = 3;
-	
 	// colleagues
 	private ShoutbreakService _service;
 	private Shoutbreak _ui;
-	//private PreferenceManager _preferences;
+	private PreferenceManager _preferences;
 	//private LocationTracker _location;
 	
 	// state flags
-	private boolean _isUIAlive;
-	private boolean _isPollingAlive;
-	private boolean _isServiceAlive;
-	private boolean _isServiceConnected;
-	private boolean _isServiceStarted;
-	private boolean _isServiceStartedFromUI;
-	private boolean _isServiceStartedFromAlarm;
-	private boolean _isServiceStartedFromNotification;
-	private boolean _areFlagsInitialized;
-	private boolean _isLocationAvailable;
-	private boolean _isWaitingForLocation;
-	private boolean _isDataAvailable;
-	private boolean _isPowerOn;
+	private Flag _isUIAlive = new Flag();
+	private Flag _isPollingAlive = new Flag();
+	private Flag _isServiceAlive = new Flag();
+	private Flag _isServiceConnected = new Flag();
+	private Flag _isServiceStarted = new Flag();
+	private Flag _isLocationAvailable = new Flag();
+	private Flag _isWaitingForLocation = new Flag();
+	private Flag _isDataAvailable = new Flag();
+	
+	private LocationProvider _locationProvider;
 	
 	/* Mediator Lifecycle */
-	private LocationProvider _locationProvider;
 	
 	public Mediator(ShoutbreakService service) {
     	SBLog.i(TAG, "new Mediator()");
 		// add colleagues
 		_service = service;
 		_service.setMediator(this);
-		//_preferences = new PreferenceManager();
-		//_preferences.setMediator(this);
+		_preferences = new PreferenceManager(_service.getSharedPreferences(C.PREFERENCE_FILE, Context.MODE_PRIVATE));
+		_preferences.setMediator(this);
 		//_location = new LocationTracker();
 		//_location.setMediator(this);
 	}
@@ -69,7 +61,7 @@ public class Mediator {
 		// ui is created before the mediator exists
 		// it must be added once the mediator is created
 		SBLog.i(TAG, "registerUI()");
-		_isUIAlive = true;
+		_isUIAlive.set(true);
 		_ui = ui;
 		_ui.setMediator(this);
 	}
@@ -77,16 +69,17 @@ public class Mediator {
 	public void unregisterUI(boolean forceKillUI) {
 		// called by ui's onDestroy() method
 		SBLog.i(TAG, "unregisterUI()");
-		if (_isUIAlive) {
-			_isUIAlive = false;
+		if (_isUIAlive.get()) {
+			_isUIAlive.set(false);
 			_ui.unsetMediator();
 			if (forceKillUI) {
 				// forces UI to destroy itself if the mediator / service is killed off
+				SBLog.e(TAG, "force killed ui, service shutdown while ui running");
 				_ui.finish();
 			}
 			_ui = null;
 		} else {
-			SBLog.e(TAG, "UI is not alive, unable to unregister");
+			SBLog.e(TAG, "ui is not alive, unable to unregister");
 		}
 	}
 	
@@ -95,62 +88,78 @@ public class Mediator {
 		// called by service's onDestroy() method
     	SBLog.i(TAG, "kill()");
 		_service = null;
-		
 		unregisterUI(true);
-		
-		//_preferences.unsetMediator();
-		//_preferences = null;
-		
+		_preferences.unsetMediator();
+		_preferences = null;
 		//_location.unsetMediator();
 		//_location = null;
 	}
 	
 	/* Mediator Commands */
 	
-	// service connected to ui
 	public void onServiceConnected() {
 		// called when service handler binds ui and service
 		SBLog.i(TAG, "onServiceConnected()");
-		_isServiceConnected = true;
+		_isServiceConnected.set(true);
 	}
 	
 	public void onServiceDisconnected() {
 		// called when ui unbinds from the service
 		// shouldn't ever be called
 		SBLog.i(TAG, "onServiceDisconnected()");
-		_isServiceConnected = false;
+		_isServiceConnected.set(false);
 	}
 	
 	public void appLaunchedFromUI() {
 		SBLog.i(TAG, "appLaunchedFromUI()");
-		_isServiceStarted = true;
+		_isServiceStarted.set(true);
+		if (_preferences.getBoolean(C.POWER_STATE_PREF, true)) {
+			_ui.setPowerState(true);
+			startPolling();
+		} else {
+			_ui.setPowerState(false);
+		}
 	}
 	
 	public void appLaunchedFromAlarm() {
 		SBLog.i(TAG, "appLaunchedFromAlarm()");
-		_isServiceStarted = true;
+		_isServiceStarted.set(true);
+		if (_preferences.getBoolean(C.POWER_STATE_PREF, true)) {
+			startPolling();
+		}
 	}
 	
 	public void appLaunchedFromNotification() {
 		SBLog.i(TAG, "appLaunchedFromNotification()");
-		_isServiceStarted = true;
+		_isServiceStarted.set(true);
+		if (_preferences.getBoolean(C.POWER_STATE_PREF, true)) {
+			startPolling();
+		}
 	}
 	
-	public void onServiceStartCommand() {
-		// never call this method directly, use startService(Intent intent) instead
-		SBLog.i(TAG, "onServiceStartCommand()");
-		_isServiceStarted = true;
-		
-		/*
-		// determine if app was started from an alarm or notification
-		if (intent.getBundleExtra(C.APP_LAUNCHED_FROM_UI) != null) {
-			_isServiceStartedFromUI = true;
-		} else if (intent.getBundleExtra(C.APP_LAUNCHED_FROM_ALARM) != null) {
-			_isServiceStartedFromAlarm = true;
-		} else if (intent.getBundleExtra(C.APP_LAUNCHED_FROM_NOTIFICATION) != null) {
-			_isServiceStartedFromNotification = true;
+	public void startPolling() {
+		SBLog.i(TAG, "startPolling()");
+		if (!_isPollingAlive.get()) {
+			_isPollingAlive.set(true);
+			_service.startPolling();
+		} else {
+			SBLog.e(TAG, "service is already polling, unable to call startPolling()");
 		}
-		
+	}
+	
+	public void stopPolling() {
+		SBLog.i(TAG, "stopPolling()");
+		if (_isPollingAlive.get()) {
+			_isPollingAlive.set(false);
+			_service.stopPolling();
+		} else {
+			SBLog.e(TAG, "service is not polling, unable to call stopPolling()");
+		}
+	}
+	
+	
+	
+	/*
 		initializeFlags();
 		
 		if (_isUIAlive) {
@@ -175,10 +184,7 @@ public class Mediator {
 		*/
 	}
 	/*
-	public SharedPreferences getSharedPreferences() {
-		SBLog.i(TAG, "getSharedPreferences()");
-		return _service.getSharedPreferences(C.PREFERENCE_FILE, Context.MODE_PRIVATE);
-	}
+
 	
 	public void initPowerPreference() {
 		SBLog.i(TAG, "initPowerPreference()");

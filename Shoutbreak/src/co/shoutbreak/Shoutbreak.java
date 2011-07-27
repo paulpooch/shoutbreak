@@ -1,6 +1,7 @@
 package co.shoutbreak;
 
 import co.shoutbreak.shared.C;
+import co.shoutbreak.shared.Flag;
 import co.shoutbreak.shared.SBLog;
 
 import android.app.Activity;
@@ -18,6 +19,8 @@ import android.widget.LinearLayout;
 public class Shoutbreak extends Activity implements Colleague {
 	
 	private static String TAG = "Shoutbreak";
+	
+	private Flag _isPowerOn = new Flag();
 	
 	private Mediator _m;
 	private Intent _serviceIntent;
@@ -94,6 +97,18 @@ public class Shoutbreak extends Activity implements Colleague {
 		super.onDestroy();
 	}
 	
+	public void setPowerState(boolean isOn) {
+		SBLog.i(TAG, "setPowerState()");
+		_isPowerOn.set(isOn);
+		if (isOn) {
+			SBLog.i(TAG, "turned power on");
+			
+		} else {
+			SBLog.i(TAG, "turned power off");
+			
+		}
+	}
+	
 	/* Button Listeners */
 	
 	private OnClickListener _composeTabListener = new OnClickListener() {
@@ -116,9 +131,11 @@ public class Shoutbreak extends Activity implements Colleague {
 	
 	private OnClickListener _powerButtonListener = new OnClickListener() {
 		public void onClick(View v) {
-			//_m.startPolling();
+			if (_isPowerOn.get()) {
+				setPowerState(false);
+			} else {
+				setPowerState(true);
+			}
 		}
-	};
-	
+	};	
 }
-
