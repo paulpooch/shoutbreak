@@ -1,23 +1,6 @@
 package co.shoutbreak;
 
-import android.app.AlertDialog;
-import android.content.ComponentName;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.ServiceConnection;
-import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.location.Criteria;
-import android.location.LocationListener;
-import android.location.LocationManager;
-import android.location.LocationProvider;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.os.IBinder;
-import android.provider.Settings;
-import android.view.View;
-import android.widget.LinearLayout;
 import co.shoutbreak.shared.C;
 import co.shoutbreak.shared.Flag;
 import co.shoutbreak.shared.SBLog;
@@ -30,19 +13,16 @@ public class Mediator {
 	private ShoutbreakService _service;
 	private Shoutbreak _ui;
 	private PreferenceManager _preferences;
+	private Notifier _notifier;
 	//private LocationTracker _location;
 	
 	// state flags
 	private Flag _isUIAlive = new Flag();
 	private Flag _isPollingAlive = new Flag();
-	private Flag _isServiceAlive = new Flag();
 	private Flag _isServiceConnected = new Flag();
 	private Flag _isServiceStarted = new Flag();
 	private Flag _isLocationAvailable = new Flag();
-	private Flag _isWaitingForLocation = new Flag();
 	private Flag _isDataAvailable = new Flag();
-	
-	private LocationProvider _locationProvider;
 	
 	/* Mediator Lifecycle */
 	
@@ -53,6 +33,8 @@ public class Mediator {
 		_service.setMediator(this);
 		_preferences = new PreferenceManager(_service.getSharedPreferences(C.PREFERENCE_FILE, Context.MODE_PRIVATE));
 		_preferences.setMediator(this);
+		_notifier = new Notifier(_service);
+		_notifier.setMediator(this);
 		//_location = new LocationTracker();
 		//_location.setMediator(this);
 	}
@@ -91,6 +73,8 @@ public class Mediator {
 		unregisterUI(true);
 		_preferences.unsetMediator();
 		_preferences = null;
+		_notifier.unsetMediator();
+		_notifier = null;
 		//_location.unsetMediator();
 		//_location = null;
 	}
@@ -110,12 +94,17 @@ public class Mediator {
 		_isServiceConnected.set(false);
 	}
 	
+	public void onServiceStart() {
+		SBLog.i(TAG, "onServiceStart()");
+		_isServiceStarted.set(true);
+		_isPollingAlive.set(false);
+	}
+	
 	public void appLaunchedFromUI() {
 		SBLog.i(TAG, "appLaunchedFromUI()");
 		_isServiceStarted.set(true);
 		if (_preferences.getBoolean(C.POWER_STATE_PREF, true)) {
 			_ui.setPowerState(true);
-			startPolling();
 		} else {
 			_ui.setPowerState(false);
 		}
@@ -125,15 +114,9 @@ public class Mediator {
 		SBLog.i(TAG, "appLaunchedFromAlarm()");
 		_isServiceStarted.set(true);
 		if (_preferences.getBoolean(C.POWER_STATE_PREF, true)) {
-			startPolling();
-		}
-	}
-	
-	public void appLaunchedFromNotification() {
-		SBLog.i(TAG, "appLaunchedFromNotification()");
-		_isServiceStarted.set(true);
-		if (_preferences.getBoolean(C.POWER_STATE_PREF, true)) {
-			startPolling();
+			_ui.setPowerState(true);
+		} else {
+			_ui.setPowerState(false);
 		}
 	}
 	
@@ -141,7 +124,7 @@ public class Mediator {
 		SBLog.i(TAG, "startPolling()");
 		if (!_isPollingAlive.get()) {
 			_isPollingAlive.set(true);
-			_service.startPolling();
+//			_service.startPolling();	
 		} else {
 			SBLog.e(TAG, "service is already polling, unable to call startPolling()");
 		}
@@ -151,14 +134,54 @@ public class Mediator {
 		SBLog.i(TAG, "stopPolling()");
 		if (_isPollingAlive.get()) {
 			_isPollingAlive.set(false);
-			_service.stopPolling();
+	//		_service.stopPolling();
 		} else {
 			SBLog.e(TAG, "service is not polling, unable to call stopPolling()");
 		}
 	}
 	
+	public void onPowerEnabled() {
+		SBLog.i(TAG, "onPowerEnabled()");
+		_service.enableAlarmReceiver();
+		startPolling();
+	}
 	
+	public void onPowerDisabled() {
+		SBLog.i(TAG, "onPowerDisabled()");
+		_service.disableAlarmReceiver();
+		stopPolling();
+	}
 	
+	public void onLocationEnabled() {
+		SBLog.i(TAG, "onLocationEnabled()");
+		if (_isUIAlive.get()) {
+			
+		}
+	}
+	
+	public void onLocationDisabled() {
+		SBLog.i(TAG, "onLocationEnabled()");
+		stopPolling();
+		if (_isUIAlive.get()) {
+			
+		}
+	}
+	
+	public void onDataEnabled() {
+		SBLog.i(TAG, "onDataEnabled()");
+		if (_isUIAlive.get()) {
+			
+		}
+	}
+	
+	public void onDataDisabled() {
+		SBLog.i(TAG, "onDataEnabled()");
+		stopPolling();
+		if (_isUIAlive.get()) {
+			
+		}
+	}
+}
 	/*
 		initializeFlags();
 		
@@ -181,9 +204,8 @@ public class Mediator {
 				startPolling();
 			}
 		}
-		*/
+	
 	}
-	/*
 
 	
 	public void initPowerPreference() {
@@ -302,4 +324,3 @@ public class Mediator {
 	public ShoutbreakService getService() {
 		return _service;
 	}*/
-}

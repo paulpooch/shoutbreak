@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 public class Shoutbreak extends Activity implements Colleague {
 	
@@ -27,7 +28,7 @@ public class Shoutbreak extends Activity implements Colleague {
 	private ServiceBridgeInterface _serviceBridge;
 	
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle extras) {
     	
 		ImageButton composeTab;
 		ImageButton inboxTab;
@@ -35,7 +36,7 @@ public class Shoutbreak extends Activity implements Colleague {
 		ImageButton powerButton;
     	
     	SBLog.i(TAG, "onCreate()");
-        super.onCreate(savedInstanceState);
+    	super.onCreate(extras);
         setContentView(R.layout.main);
         
 		// register button listeners
@@ -75,12 +76,20 @@ public class Shoutbreak extends Activity implements Colleague {
 			_serviceBridge.registerUIWithMediator(Shoutbreak.this);
 			_m.onServiceConnected();
 			
-			// hide splash
-			((LinearLayout) findViewById(R.id.splash)).setVisibility(View.GONE);
-			
 			// begin the service
 			_serviceIntent.putExtra(C.APP_LAUNCHED_FROM_UI, true);
 			startService(_serviceIntent);
+			
+			// hide splash
+			((LinearLayout) findViewById(R.id.splash)).setVisibility(View.GONE);
+			
+			// switch views
+			Bundle extras = getIntent().getExtras();
+			if (extras != null && extras.getBoolean(C.APP_LAUNCHED_FROM_NOTIFICATION)) {
+				// show inbox view
+			} else {
+				// show compose view
+			}
 		}
 
 		@Override
@@ -88,6 +97,16 @@ public class Shoutbreak extends Activity implements Colleague {
 			_m.onServiceDisconnected();
 		}
 	};
+	
+	@Override
+	public void onNewIntent(Intent intent) {
+		Bundle extras = intent.getExtras();
+		if (extras != null && extras.getBoolean(C.APP_LAUNCHED_FROM_NOTIFICATION)) {
+			// show inbox view
+		} else {
+			SBLog.e(TAG, "ui relaunched from something other than notification");
+		}
+	}
 	
 	@Override
 	public void onDestroy() {
@@ -101,11 +120,9 @@ public class Shoutbreak extends Activity implements Colleague {
 		SBLog.i(TAG, "setPowerState()");
 		_isPowerOn.set(isOn);
 		if (isOn) {
-			SBLog.i(TAG, "turned power on");
-			
+			_m.onPowerEnabled();
 		} else {
-			SBLog.i(TAG, "turned power off");
-			
+			_m.onPowerDisabled();
 		}
 	}
 	
