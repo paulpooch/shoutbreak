@@ -1,7 +1,6 @@
 package co.shoutbreak;
 
 import android.content.Context;
-import android.widget.Toast;
 import co.shoutbreak.shared.C;
 import co.shoutbreak.shared.Flag;
 import co.shoutbreak.shared.SBLog;
@@ -16,6 +15,7 @@ public class Mediator {
 	private PreferenceManager _preferences;
 	private Notifier _notifier;
 	private LocationTracker _location;
+	private DataListener _data;
 	
 	// state flags
 	private Flag _isUIAlive = new Flag();
@@ -38,6 +38,12 @@ public class Mediator {
 		_notifier.setMediator(this);
 		_location = new LocationTracker(_service);
 		_location.setMediator(this);
+		_data = new DataListener(_service);
+		_data.setMediator(this);
+		
+		// initialize state
+		_isLocationAvailable.set(_location.isLocationEnabled());
+		_isDataAvailable.set(_data.isDataEnabled());
 	}
 	
 	public void registerUI(Shoutbreak ui) {
@@ -78,6 +84,8 @@ public class Mediator {
 		_notifier = null;
 		_location.unsetMediator();
 		_location = null;
+		_data.unsetMediator();
+		_data = null;
 	}
 	
 	/* Mediator Commands */
@@ -136,7 +144,7 @@ public class Mediator {
 			}
 			if (_isUIAlive.get()) {
 				_ui.setPowerState(false);
-				Toast.makeText(_ui, "unable to turn on app", Toast.LENGTH_SHORT).show();
+				_ui.unableToTurnOnApp();
 			} else {
 				onPowerDisabled();
 			}
@@ -173,7 +181,7 @@ public class Mediator {
 		SBLog.i(TAG, "onLocationEnabled()");
 		_isLocationAvailable.set(true);
 		if (_isUIAlive.get()) {
-			
+
 		}
 	}
 	

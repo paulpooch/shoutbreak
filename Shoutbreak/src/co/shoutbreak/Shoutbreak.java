@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 public class Shoutbreak extends Activity implements Colleague {
 	
@@ -202,5 +203,9 @@ public class Shoutbreak extends Activity implements Colleague {
 	
 	public void onDataDisabled() {
 		
+	}
+	
+	public void unableToTurnOnApp() {
+		Toast.makeText(Shoutbreak.this, "unable to turn on app", Toast.LENGTH_SHORT).show();
 	}
 }
