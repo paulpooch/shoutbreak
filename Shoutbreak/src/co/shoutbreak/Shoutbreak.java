@@ -21,10 +21,10 @@ public class Shoutbreak extends Activity implements Colleague {
 	
 	private static String TAG = "Shoutbreak";
 	
-	private Flag _isPowerOn = new Flag();
-	private Flag _isComposeShowing = new Flag();
-	private Flag _isInboxShowing = new Flag();
-	private Flag _isProfileShowing = new Flag();
+	private Flag _isPowerOn = new Flag("_isPowerOn");
+	private Flag _isComposeShowing = new Flag("_isComposeShowing");
+	private Flag _isInboxShowing = new Flag("_isInboxShowing");
+	private Flag _isProfileShowing = new Flag("_isProfileShowing");
 	
 	private Mediator _m;
 	private Intent _serviceIntent;
@@ -83,6 +83,9 @@ public class Shoutbreak extends Activity implements Colleague {
 			_serviceIntent.putExtra(C.APP_LAUNCHED_FROM_UI, true);
 			startService(_serviceIntent);
 			
+			// call this whenever the ui starts / resumes
+			checkLocationProviderStatus();
+			
 			// hide splash
 			((LinearLayout) findViewById(R.id.splash)).setVisibility(View.GONE);
 			
@@ -103,8 +106,20 @@ public class Shoutbreak extends Activity implements Colleague {
 	};
 	
 	@Override
+	public void onResume() {
+		SBLog.i(TAG, "onResume()");
+		super.onResume();
+		if (_m != null) {
+			// call this whenever the ui starts / resumes
+			checkLocationProviderStatus();
+		}
+	}
+	
+	
+	@Override
 	public void onNewIntent(Intent intent) {
 		SBLog.i(TAG, "onNewIntent()");
+		super.onNewIntent(intent);
 		Bundle extras = intent.getExtras();
 		if (extras != null && extras.getBoolean(C.APP_LAUNCHED_FROM_NOTIFICATION)) {
 			// show inbox view
@@ -130,6 +145,9 @@ public class Shoutbreak extends Activity implements Colleague {
 		} else {
 			_powerButton.setImageResource(R.drawable.power_button_off);
 			_m.onPowerDisabled();
+			if (_isComposeShowing.get()) {
+				disableComposeView();
+			}
 		}
 	}
 	
@@ -195,14 +213,25 @@ public class Shoutbreak extends Activity implements Colleague {
 		findViewById(R.id.profile_view).setVisibility(View.VISIBLE);
 	}
 	
+	public void disableComposeView() {
+		SBLog.i(TAG, "disableComposeView()");
+	}
+	
 	/* Location and Data */
 	
 	public void onLocationDisabled() {
-		
+		SBLog.i(TAG, "onLocationDisabled()");
+		setPowerState(false);
 	}
 	
 	public void onDataDisabled() {
-		
+		SBLog.i(TAG, "onDataDisable()");
+		setPowerState(false);
+	}
+	
+	public void checkLocationProviderStatus() {
+		SBLog.i(TAG, "checkLocationProviderStatus()");
+		_m.checkLocationProviderStatus();
 	}
 	
 	public void unableToTurnOnApp() {

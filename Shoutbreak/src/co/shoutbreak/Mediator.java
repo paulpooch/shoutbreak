@@ -18,12 +18,12 @@ public class Mediator {
 	private DataListener _data;
 	
 	// state flags
-	private Flag _isUIAlive = new Flag();
-	private Flag _isPollingAlive = new Flag();
-	private Flag _isServiceConnected = new Flag();
-	private Flag _isServiceStarted = new Flag();
-	private Flag _isLocationAvailable = new Flag();
-	private Flag _isDataAvailable = new Flag();
+	private Flag _isUIAlive = new Flag("_isUIAlive");
+	private Flag _isPollingAlive = new Flag("_isPollingAlive");
+	private Flag _isServiceConnected = new Flag("_isServiceConnected");
+	private Flag _isServiceStarted = new Flag("_isServiceStarted");
+	private Flag _isLocationAvailable = new Flag("_isLocationAvailable");
+	private Flag _isDataAvailable = new Flag("_isDataAvailable");
 	
 	/* Mediator Lifecycle */
 	
@@ -44,6 +44,7 @@ public class Mediator {
 		// initialize state
 		_isLocationAvailable.set(_location.isLocationEnabled());
 		_isDataAvailable.set(_data.isDataEnabled());
+		_isUIAlive.set(false);
 	}
 	
 	public void registerUI(Shoutbreak ui) {
@@ -186,7 +187,7 @@ public class Mediator {
 	}
 	
 	public void onLocationDisabled() {
-		SBLog.i(TAG, "onLocationEnabled()");
+		SBLog.i(TAG, "onLocationDisabled()");
 		_isLocationAvailable.set(false);
 		stopPolling();
 		if (_isUIAlive.get()) {
@@ -203,11 +204,20 @@ public class Mediator {
 	}
 	
 	public void onDataDisabled() {
-		SBLog.i(TAG, "onDataEnabled()");
+		SBLog.i(TAG, "onDataDisabled()");
 		_isDataAvailable.set(false);
 		stopPolling();
 		if (_isUIAlive.get()) {
 			
+		}
+	}
+	
+	public void checkLocationProviderStatus() {
+		SBLog.i(TAG, "checkLocationProviderStatus()");
+		if (_location.isLocationEnabled()) {
+			onLocationEnabled();
+		} else {
+			onLocationDisabled();
 		}
 	}
 }
