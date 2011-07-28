@@ -1,6 +1,7 @@
 package co.shoutbreak;
 
 import android.content.Context;
+import android.widget.Toast;
 import co.shoutbreak.shared.C;
 import co.shoutbreak.shared.Flag;
 import co.shoutbreak.shared.SBLog;
@@ -122,10 +123,24 @@ public class Mediator {
 	
 	public void startPolling() {
 		SBLog.i(TAG, "startPolling()");
-		if (!_isPollingAlive.get()) {
+		if (!_isPollingAlive.get() && _isLocationAvailable.get() && _isDataAvailable.get()) {
+			SBLog.i(TAG, "app fully functional");
 			_isPollingAlive.set(true);
 //			_service.startPolling();	
-		} else {
+		} else if (!_isLocationAvailable.get() || !_isDataAvailable.get()) {
+			if (!_isLocationAvailable.get()) {
+				SBLog.e(TAG, "unable to start service, location unavailable");
+			}
+			if (!_isDataAvailable.get()) {
+				SBLog.e(TAG, "unable to start service, data unavailable");
+			}
+			if (_isUIAlive.get()) {
+				_ui.setPowerState(false);
+				Toast.makeText(_ui, "unable to turn on app", Toast.LENGTH_SHORT).show();
+			} else {
+				onPowerDisabled();
+			}
+		} else if (_isPollingAlive.get()) {
 			SBLog.i(TAG, "service is already polling, unable to call startPolling()");
 		}
 	}
@@ -156,6 +171,7 @@ public class Mediator {
 	
 	public void onLocationEnabled() {
 		SBLog.i(TAG, "onLocationEnabled()");
+		_isLocationAvailable.set(true);
 		if (_isUIAlive.get()) {
 			
 		}
@@ -163,6 +179,7 @@ public class Mediator {
 	
 	public void onLocationDisabled() {
 		SBLog.i(TAG, "onLocationEnabled()");
+		_isLocationAvailable.set(false);
 		stopPolling();
 		if (_isUIAlive.get()) {
 			_ui.onLocationDisabled();
@@ -171,6 +188,7 @@ public class Mediator {
 	
 	public void onDataEnabled() {
 		SBLog.i(TAG, "onDataEnabled()");
+		_isDataAvailable.set(true);
 		if (_isUIAlive.get()) {
 			_ui.onDataDisabled();
 		}
@@ -178,6 +196,7 @@ public class Mediator {
 	
 	public void onDataDisabled() {
 		SBLog.i(TAG, "onDataEnabled()");
+		_isDataAvailable.set(false);
 		stopPolling();
 		if (_isUIAlive.get()) {
 			
