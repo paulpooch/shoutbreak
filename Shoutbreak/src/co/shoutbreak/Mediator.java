@@ -14,7 +14,7 @@ public class Mediator {
 	private Shoutbreak _ui;
 	private PreferenceManager _preferences;
 	private Notifier _notifier;
-	//private LocationTracker _location;
+	private LocationTracker _location;
 	
 	// state flags
 	private Flag _isUIAlive = new Flag();
@@ -35,8 +35,8 @@ public class Mediator {
 		_preferences.setMediator(this);
 		_notifier = new Notifier(_service);
 		_notifier.setMediator(this);
-		//_location = new LocationTracker();
-		//_location.setMediator(this);
+		_location = new LocationTracker(_service);
+		_location.setMediator(this);
 	}
 	
 	public void registerUI(Shoutbreak ui) {
@@ -75,8 +75,8 @@ public class Mediator {
 		_preferences = null;
 		_notifier.unsetMediator();
 		_notifier = null;
-		//_location.unsetMediator();
-		//_location = null;
+		_location.unsetMediator();
+		_location = null;
 	}
 	
 	/* Mediator Commands */
@@ -165,14 +165,14 @@ public class Mediator {
 		SBLog.i(TAG, "onLocationEnabled()");
 		stopPolling();
 		if (_isUIAlive.get()) {
-			
+			_ui.onLocationDisabled();
 		}
 	}
 	
 	public void onDataEnabled() {
 		SBLog.i(TAG, "onDataEnabled()");
 		if (_isUIAlive.get()) {
-			
+			_ui.onDataDisabled();
 		}
 	}
 	

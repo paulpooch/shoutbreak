@@ -21,6 +21,9 @@ public class Shoutbreak extends Activity implements Colleague {
 	private static String TAG = "Shoutbreak";
 	
 	private Flag _isPowerOn = new Flag();
+	private Flag _isComposeShowing = new Flag();
+	private Flag _isInboxShowing = new Flag();
+	private Flag _isProfileShowing = new Flag();
 	
 	private Mediator _m;
 	private Intent _serviceIntent;
@@ -85,9 +88,9 @@ public class Shoutbreak extends Activity implements Colleague {
 			// switch views
 			Bundle extras = getIntent().getExtras();
 			if (extras != null && extras.getBoolean(C.APP_LAUNCHED_FROM_NOTIFICATION)) {
-				// show inbox view
+				showInbox();
 			} else {
-				// show compose view
+				showCompose();
 			}
 		}
 
@@ -163,6 +166,9 @@ public class Shoutbreak extends Activity implements Colleague {
 	
 	public void showCompose() {
 		SBLog.i(TAG, "showCompose()");
+		_isComposeShowing.set(true);
+		_isInboxShowing.set(false);
+		_isProfileShowing.set(false);
 		findViewById(R.id.compose_view).setVisibility(View.VISIBLE);
 		findViewById(R.id.inbox_view).setVisibility(View.GONE);
 		findViewById(R.id.profile_view).setVisibility(View.GONE);
@@ -170,6 +176,9 @@ public class Shoutbreak extends Activity implements Colleague {
 	
 	public void showInbox() {
 		SBLog.i(TAG, "showInbox()");
+		_isComposeShowing.set(false);
+		_isInboxShowing.set(true);
+		_isProfileShowing.set(false);
 		findViewById(R.id.compose_view).setVisibility(View.GONE);
 		findViewById(R.id.inbox_view).setVisibility(View.VISIBLE);
 		findViewById(R.id.profile_view).setVisibility(View.GONE);
@@ -177,8 +186,21 @@ public class Shoutbreak extends Activity implements Colleague {
 	
 	public void showProfile() {
 		SBLog.i(TAG, "showProfile()");
+		_isComposeShowing.set(false);
+		_isInboxShowing.set(false);
+		_isProfileShowing.set(true);
 		findViewById(R.id.compose_view).setVisibility(View.GONE);
 		findViewById(R.id.inbox_view).setVisibility(View.GONE);
 		findViewById(R.id.profile_view).setVisibility(View.VISIBLE);
+	}
+	
+	/* Location and Data */
+	
+	public void onLocationDisabled() {
+		
+	}
+	
+	public void onDataDisabled() {
+		
 	}
 }
