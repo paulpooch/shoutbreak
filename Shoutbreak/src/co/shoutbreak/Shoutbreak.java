@@ -15,7 +15,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 public class Shoutbreak extends Activity implements Colleague {
 	
@@ -26,6 +25,7 @@ public class Shoutbreak extends Activity implements Colleague {
 	private Mediator _m;
 	private Intent _serviceIntent;
 	private ServiceBridgeInterface _serviceBridge;
+	private ImageButton _powerButton;
 	
     @Override
     public void onCreate(Bundle extras) {
@@ -33,7 +33,6 @@ public class Shoutbreak extends Activity implements Colleague {
 		ImageButton composeTab;
 		ImageButton inboxTab;
 		ImageButton profileTab;
-		ImageButton powerButton;
     	
     	SBLog.i(TAG, "onCreate()");
     	super.onCreate(extras);
@@ -46,8 +45,8 @@ public class Shoutbreak extends Activity implements Colleague {
 		inboxTab.setOnClickListener(_inboxTabListener);
 		profileTab = (ImageButton) findViewById(R.id.profileTab);
 		profileTab.setOnClickListener(_profileTabListener);
-		powerButton = (ImageButton) findViewById(R.id.powerButton);
-		powerButton.setOnClickListener(_powerButtonListener);
+		_powerButton = (ImageButton) findViewById(R.id.powerButton);
+		_powerButton.setOnClickListener(_powerButtonListener);
 		
 		// bind to service, initializes mediator
 		_serviceIntent = new Intent(Shoutbreak.this, ShoutbreakService.class);
@@ -62,7 +61,7 @@ public class Shoutbreak extends Activity implements Colleague {
 
 	@Override
 	public void unsetMediator() {
-		SBLog.i(TAG, "unSetMediator()");
+		SBLog.i(TAG, "unsetMediator()");
 		_m = null;		
 	}
 
@@ -94,12 +93,14 @@ public class Shoutbreak extends Activity implements Colleague {
 
 		@Override
 		public void onServiceDisconnected(ComponentName name) {
+			SBLog.i(TAG, "onServiceDisconnected()");
 			_m.onServiceDisconnected();
 		}
 	};
 	
 	@Override
 	public void onNewIntent(Intent intent) {
+		SBLog.i(TAG, "onNewIntent()");
 		Bundle extras = intent.getExtras();
 		if (extras != null && extras.getBoolean(C.APP_LAUNCHED_FROM_NOTIFICATION)) {
 			// show inbox view
@@ -120,8 +121,10 @@ public class Shoutbreak extends Activity implements Colleague {
 		SBLog.i(TAG, "setPowerState()");
 		_isPowerOn.set(isOn);
 		if (isOn) {
+			_powerButton.setImageResource(R.drawable.power_button_on);
 			_m.onPowerEnabled();
 		} else {
+			_powerButton.setImageResource(R.drawable.power_button_off);
 			_m.onPowerDisabled();
 		}
 	}
@@ -130,19 +133,19 @@ public class Shoutbreak extends Activity implements Colleague {
 	
 	private OnClickListener _composeTabListener = new OnClickListener() {
 		public void onClick(View v) {
-			//_m.showComposeView();
+			showCompose();
 		}
 	};
 	
 	private OnClickListener _inboxTabListener = new OnClickListener() {
 		public void onClick(View v) {
-			//_m.showInboxView();
+			showInbox();
 		}
 	};
 	
 	private OnClickListener _profileTabListener = new OnClickListener() {
 		public void onClick(View v) {
-			//_m.showProfileView();
+			showProfile();
 		}
 	};
 	
@@ -154,5 +157,28 @@ public class Shoutbreak extends Activity implements Colleague {
 				setPowerState(true);
 			}
 		}
-	};	
+	};
+	
+	/* View Methods */
+	
+	public void showCompose() {
+		SBLog.i(TAG, "showCompose()");
+		findViewById(R.id.compose_view).setVisibility(View.VISIBLE);
+		findViewById(R.id.inbox_view).setVisibility(View.GONE);
+		findViewById(R.id.profile_view).setVisibility(View.GONE);
+	}
+	
+	public void showInbox() {
+		SBLog.i(TAG, "showInbox()");
+		findViewById(R.id.compose_view).setVisibility(View.GONE);
+		findViewById(R.id.inbox_view).setVisibility(View.VISIBLE);
+		findViewById(R.id.profile_view).setVisibility(View.GONE);
+	}
+	
+	public void showProfile() {
+		SBLog.i(TAG, "showProfile()");
+		findViewById(R.id.compose_view).setVisibility(View.GONE);
+		findViewById(R.id.inbox_view).setVisibility(View.GONE);
+		findViewById(R.id.profile_view).setVisibility(View.VISIBLE);
+	}
 }

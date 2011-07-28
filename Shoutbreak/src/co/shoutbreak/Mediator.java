@@ -114,9 +114,9 @@ public class Mediator {
 		SBLog.i(TAG, "appLaunchedFromAlarm()");
 		_isServiceStarted.set(true);
 		if (_preferences.getBoolean(C.POWER_STATE_PREF, true)) {
-			_ui.setPowerState(true);
+			startPolling();
 		} else {
-			_ui.setPowerState(false);
+			stopPolling();
 		}
 	}
 	
@@ -126,7 +126,7 @@ public class Mediator {
 			_isPollingAlive.set(true);
 //			_service.startPolling();	
 		} else {
-			SBLog.e(TAG, "service is already polling, unable to call startPolling()");
+			SBLog.i(TAG, "service is already polling, unable to call startPolling()");
 		}
 	}
 	
@@ -134,20 +134,22 @@ public class Mediator {
 		SBLog.i(TAG, "stopPolling()");
 		if (_isPollingAlive.get()) {
 			_isPollingAlive.set(false);
-	//		_service.stopPolling();
+//			_service.stopPolling();
 		} else {
-			SBLog.e(TAG, "service is not polling, unable to call stopPolling()");
+			SBLog.i(TAG, "service is not polling, unable to call stopPolling()");
 		}
 	}
 	
 	public void onPowerEnabled() {
 		SBLog.i(TAG, "onPowerEnabled()");
+		_preferences.putBoolean(C.POWER_STATE_PREF, true);
 		_service.enableAlarmReceiver();
 		startPolling();
 	}
 	
 	public void onPowerDisabled() {
 		SBLog.i(TAG, "onPowerDisabled()");
+		_preferences.putBoolean(C.POWER_STATE_PREF, false);
 		_service.disableAlarmReceiver();
 		stopPolling();
 	}
@@ -183,49 +185,6 @@ public class Mediator {
 	}
 }
 	/*
-		initializeFlags();
-		
-		if (_isUIAlive) {
-			if (_isPowerOn && _isLocationAvailable && _isDataAvailable && _isServiceStartedFromUI) {
-				// compose view
-				showComposeView();
-				startPolling();
-			} else if (!_isPowerOn || !_isLocationAvailable || !_isDataAvailable) {
-				// map disabled view
-				showDisabledView();
-			} else if (_isServiceStartedFromNotification) {
-				// inbox view
-				showInboxView();
-			} else {
-				// should never get here	
-			}
-		} else {
-			if (_isPowerOn && _isLocationAvailable && _isDataAvailable) {
-				startPolling();
-			}
-		}
-	
-	}
-
-	
-	public void initPowerPreference() {
-		SBLog.i(TAG, "initPowerPreference()");
-		if (_preferences.contains(C.POWER_STATE_PREF)) {
-			_isPowerOn = _preferences.getBoolean(C.POWER_STATE_PREF, true);
-		} else {
-			_isPowerOn = true;
-		}
-	}
-	
-	public void initAlarmReceiver() {
-		SBLog.i(TAG, "initAlarmReceiver()");
-		ComponentName component = new ComponentName(_service, AlarmReceiver.class);
-		int state = PackageManager.COMPONENT_ENABLED_STATE_DISABLED;
-		if (_isPowerOn) {
-			state = PackageManager.COMPONENT_ENABLED_STATE_ENABLED;
-		}
-		_service.getPackageManager().setComponentEnabledSetting(component, state, PackageManager.DONT_KILL_APP);	
-	}
 
 	public void initIsLocationAvailable() {
 		LocationManager manager = _location.getLocationManager();
@@ -258,69 +217,9 @@ public class Mediator {
 		_isLocationAvailable  = _location.isLocationEnabled();
 	}
 	
-	public void setIsLocationAvailable(boolean isAvailable) {
-		_isLocationAvailable = isAvailable;
-	}
-	
 	public void initIsDataAvailable() {
 		ConnectivityManager connectivityManager = (ConnectivityManager) _service.getSystemService(Context.CONNECTIVITY_SERVICE);
 		NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
 		_isDataAvailable = activeNetworkInfo != null;
 	}
-	
-	public void initializeFlags() {
-		if (!_areFlagsInitialized) {
-			initPowerPreference();
-			initAlarmReceiver();
-			initIsLocationAvailable();
-			initIsDataAvailable();
-			_areFlagsInitialized = true;
-		}
-	}
-	
-	public void startPolling() {
-		if (!_isPollingAlive) {
-			
-			initializeFlags();
-			
-			if (_isPowerOn && _isLocationAvailable && _isDataAvailable) {
-				
-			}
-		}
-	}
-	
-	public void showComposeView() {
-
-	}
-	
-	public void showInboxView() {
-		
-	}
-	
-	public void showProfileView() {
-		
-	}
-	
-	public void showDisabledView() {
-		
-	}
-	
-	public void hideComposeView() {
-		
-	}
-	
-	public void hideInboxView() {
-		
-	}
-	
-	public void hideProfileView() {
-		
-	}
-	
-	public void showEnableLocationView() {
-		
-	}
-	
-	public ShoutbreakService getService() {
-		return _service;
-	}*/
+*/

@@ -26,6 +26,7 @@ public class ShoutbreakService extends Service implements Colleague {
 
 	@Override
 	public void unsetMediator() {
+		SBLog.e(TAG, "unsetMediator()");
 		// should never be called
 	}
 	
@@ -43,19 +44,19 @@ public class ShoutbreakService extends Service implements Colleague {
 		if (!_isStarted) {
 			_isStarted = true;
 			_m.onServiceStart();
-			Bundle extras = intent.getExtras();
-			if (!extras.isEmpty()) {
-				// determine what launched the app
-				if (extras.getBoolean(C.APP_LAUNCHED_FROM_UI)) {
-					_m.appLaunchedFromUI();
-				} else if (extras.getBoolean(C.APP_LAUNCHED_FROM_ALARM)) {
-					_m.appLaunchedFromAlarm();
-				}
-			} else {
-				SBLog.e(TAG, "Service bundle must contain referral information");
-			}
 		} else {
 			SBLog.i(TAG, "service already started");
+		}
+		Bundle extras = intent.getExtras();
+		if (!extras.isEmpty()) {
+			// determine what launched the app
+			if (extras.getBoolean(C.APP_LAUNCHED_FROM_UI)) {
+				_m.appLaunchedFromUI();
+			} else if (extras.getBoolean(C.APP_LAUNCHED_FROM_ALARM)) {
+				_m.appLaunchedFromAlarm();
+			}
+		} else {
+			SBLog.e(TAG, "Service bundle must contain referral information");
 		}
 		return START_STICKY;
 	}
