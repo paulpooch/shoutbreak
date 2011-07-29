@@ -13,6 +13,7 @@ import android.graphics.Paint.Style;
 import android.graphics.Path.Direction;
 import android.location.Location;
 
+import co.shoutbreak.CustomMapView;
 import co.shoutbreak.R;
 import co.shoutbreak.shared.C;
 import co.shoutbreak.shared.StateEvent;

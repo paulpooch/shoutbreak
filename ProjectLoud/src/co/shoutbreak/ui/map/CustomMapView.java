@@ -2,6 +2,7 @@ package co.shoutbreak.ui.map;
 
 import co.shoutbreak.shared.C;
 import co.shoutbreak.ui.SBContext;
+import co.shoutbreak.ui.map.UserLocationOverlay;
 import co.shoutbreak.views.ComposeView;
 
 import com.google.android.maps.MapView;

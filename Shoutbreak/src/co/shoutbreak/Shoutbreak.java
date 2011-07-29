@@ -25,11 +25,13 @@ public class Shoutbreak extends Activity implements Colleague {
 	private Flag _isComposeShowing = new Flag("_isComposeShowing");
 	private Flag _isInboxShowing = new Flag("_isInboxShowing");
 	private Flag _isProfileShowing = new Flag("_isProfileShowing");
+	private Flag _isMapInitialized = new Flag("_isMapInitialized");
 	
 	private Mediator _m;
 	private Intent _serviceIntent;
 	private ServiceBridgeInterface _serviceBridge;
 	private ImageButton _powerButton;
+	private CustomMapView _map;
 	
     @Override
     public void onCreate(Bundle extras) {
@@ -41,6 +43,9 @@ public class Shoutbreak extends Activity implements Colleague {
     	SBLog.i(TAG, "onCreate()");
     	super.onCreate(extras);
         setContentView(R.layout.main);
+        
+        // intialized flags
+        _isMapInitialized.set(false);
         
 		// register button listeners
 		composeTab = (ImageButton) findViewById(R.id.composeTab);
@@ -85,7 +90,7 @@ public class Shoutbreak extends Activity implements Colleague {
 			
 			// call this whenever the ui starts / resumes
 			checkLocationProviderStatus();
-			
+						
 			// hide splash
 			((LinearLayout) findViewById(R.id.splash)).setVisibility(View.GONE);
 			
@@ -188,6 +193,32 @@ public class Shoutbreak extends Activity implements Colleague {
 		_isComposeShowing.set(true);
 		_isInboxShowing.set(false);
 		_isProfileShowing.set(false);
+		
+		if (!_isMapInitialized.get()) {
+			_map = (CustomMapView) findViewById(R.id.cmvMap);
+			_userLocationOverlay = new UserLocationOverlay(this, _cMapView);
+			if (_cMapView.getOverlays().size() == 0) {
+				_cMapView.getOverlays().add(_userLocationOverlay);
+			}
+			_mapController = _cMapView.getController();
+			_mapController.setZoom(C.DEFAULT_ZOOM_LEVEL);
+			_cMapView.setClickable(true);
+			_cMapView.setEnabled(true);
+			// _cMapView.setUI(this);
+			_cMapView.setUserLocationOverlay(_userLocationOverlay);
+			_cMapView.postInvalidate();
+			
+			// TODO: remove this. called when 'on/off' switch is clicked
+			//_userLocationOverlay.runOnFirstFix(new Runnable() {
+			//	public void run() {
+			//		GeoPoint loc = _userLocationOverlay.getMyLocation();
+			//		_mapController.animateTo(loc);
+			//	}
+			//});
+			_userLocationOverlay.enableMyLocation();
+			_isMapInitialized.set(true);
+		}
+		
 		findViewById(R.id.compose_view).setVisibility(View.VISIBLE);
 		findViewById(R.id.inbox_view).setVisibility(View.GONE);
 		findViewById(R.id.profile_view).setVisibility(View.GONE);
@@ -244,5 +275,10 @@ public class Shoutbreak extends Activity implements Colleague {
 			text += "data unavailable";
 		}
 		Toast.makeText(Shoutbreak.this, text, Toast.LENGTH_SHORT).show();
+	}
+
+	public void hideKeyboard() {
+		// TODO Auto-generated method stub
+		
 	}
 }

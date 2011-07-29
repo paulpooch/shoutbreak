@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import co.shoutbreak.CustomMapView;
 import co.shoutbreak.R;
 import co.shoutbreak.shared.C;
 import co.shoutbreak.shared.StateEvent;
@@ -22,7 +23,6 @@ import co.shoutbreak.shared.User;
 import co.shoutbreak.shared.utils.ErrorManager;
 import co.shoutbreak.shared.utils.SBLog;
 import co.shoutbreak.ui.SBContext;
-import co.shoutbreak.ui.map.CustomMapView;
 import co.shoutbreak.ui.map.UserLocationOverlay;
 
 public class ComposeView extends SBView implements Observer {
