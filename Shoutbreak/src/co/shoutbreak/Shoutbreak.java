@@ -234,7 +234,15 @@ public class Shoutbreak extends Activity implements Colleague {
 		_m.checkLocationProviderStatus();
 	}
 	
-	public void unableToTurnOnApp() {
-		Toast.makeText(Shoutbreak.this, "unable to turn on app", Toast.LENGTH_SHORT).show();
+	public void unableToTurnOnApp(boolean isLocationAvailable, boolean isDataAvailable) {
+		String text = "unable to turn on app, ";
+		if (!isLocationAvailable && !isDataAvailable) {
+			text += "location and data connection unavailable";
+		} else if (!isLocationAvailable) {
+			text += "location unavailable";
+		} else if (!isDataAvailable) {
+			text += "data unavailable";
+		}
+		Toast.makeText(Shoutbreak.this, text, Toast.LENGTH_SHORT).show();
 	}
 }

@@ -44,6 +44,7 @@ public class Mediator {
 		// initialize state
 		_isLocationAvailable.set(_location.isLocationEnabled());
 		_isDataAvailable.set(_data.isDataEnabled());
+		_isPollingAlive.set(false);
 		_isUIAlive.set(false);
 	}
 	
@@ -145,7 +146,7 @@ public class Mediator {
 			}
 			if (_isUIAlive.get()) {
 				_ui.setPowerState(false);
-				_ui.unableToTurnOnApp();
+				_ui.unableToTurnOnApp(_isLocationAvailable.get(), _isDataAvailable.get());
 			} else {
 				onPowerDisabled();
 			}
