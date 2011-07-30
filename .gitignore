@@ -1,0 +1,20 @@
+# eclipse metadata
+# http://stackoverflow.com/questions/681262/difference-in-the-paths-in-gitignore-file
+# https://github.com/github/gitignore/blob/master/Global/Eclipse.gitignore
+
+.project
+.metadata
+.metadata/
+gen/
+bin/**
+tmp/**
+tmp/**/*
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.classpath
+.settings/
+.loadpath
+.cache

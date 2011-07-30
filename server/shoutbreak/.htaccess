@@ -1,0 +1,6 @@
+RewriteEngine On
+RewriteBase /
+RewriteCond %{HTTP_HOST} ^(www\.)?shoutbreak\.co
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ([a-z0-9-]+)/? http://$1.shoutbreak.co [R=301,NC,L]
