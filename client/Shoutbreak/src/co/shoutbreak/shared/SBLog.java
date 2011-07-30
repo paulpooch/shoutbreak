@@ -1,8 +1,8 @@
-package co.shoutbreak.misc;
+package co.shoutbreak.shared;
 
 import android.util.Log;
 
-// Log wrapper class
+// log wrapper class
 public class SBLog {
 	
 	private static final boolean DEBUG_MODE = true; 
