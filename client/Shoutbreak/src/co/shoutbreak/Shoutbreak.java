@@ -7,6 +7,7 @@ import co.shoutbreak.shared.C;
 import co.shoutbreak.shared.Flag;
 import co.shoutbreak.shared.SBLog;
 
+import android.app.ProgressDialog;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
