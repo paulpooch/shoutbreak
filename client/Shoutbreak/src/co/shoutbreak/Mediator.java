@@ -1,6 +1,7 @@
 package co.shoutbreak;
 
 import android.content.Context;
+import android.widget.Toast;
 import co.shoutbreak.shared.C;
 import co.shoutbreak.shared.Flag;
 import co.shoutbreak.shared.SBLog;
@@ -219,6 +220,15 @@ public class Mediator {
 			onLocationEnabled();
 		} else {
 			onLocationDisabled();
+		}
+	}
+	
+	public void shout(CharSequence text) {
+		SBLog.i(TAG, "shout()");
+		if (text.length() == 0) {
+			Toast.makeText(_ui, "cannot shout blanks", Toast.LENGTH_SHORT).show();
+		} else {
+			// TODO: filter all text going to server
 		}
 	}
 }

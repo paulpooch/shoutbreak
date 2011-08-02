@@ -1,6 +1,5 @@
 package co.shoutbreak;
 
-
 import co.shoutbreak.shared.C;
 import co.shoutbreak.shared.SBLog;
 import android.app.Service;

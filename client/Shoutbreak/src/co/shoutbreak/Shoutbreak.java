@@ -1,10 +1,12 @@
 package co.shoutbreak;
 
+import com.google.android.maps.MapActivity;
+import com.google.android.maps.MapController;
+
 import co.shoutbreak.shared.C;
 import co.shoutbreak.shared.Flag;
 import co.shoutbreak.shared.SBLog;
 
-import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -13,11 +15,13 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
-public class Shoutbreak extends Activity implements Colleague {
+public class Shoutbreak extends MapActivity implements Colleague {
 	
 	private static String TAG = "Shoutbreak";
 	
@@ -31,15 +35,15 @@ public class Shoutbreak extends Activity implements Colleague {
 	private Intent _serviceIntent;
 	private ServiceBridgeInterface _serviceBridge;
 	private ImageButton _powerButton;
+	private ImageButton _composeTab;
+	private ImageButton _inboxTab;
+	private ImageButton _profileTab;
+	private ImageButton _shoutButton;
+	private TextView _textbox;
 	private CustomMapView _map;
 	
     @Override
     public void onCreate(Bundle extras) {
-    	
-		ImageButton composeTab;
-		ImageButton inboxTab;
-		ImageButton profileTab;
-    	
     	SBLog.i(TAG, "onCreate()");
     	super.onCreate(extras);
         setContentView(R.layout.main);
@@ -48,14 +52,17 @@ public class Shoutbreak extends Activity implements Colleague {
         _isMapInitialized.set(false);
         
 		// register button listeners
-		composeTab = (ImageButton) findViewById(R.id.composeTab);
-		composeTab.setOnClickListener(_composeTabListener);
-		inboxTab = (ImageButton) findViewById(R.id.inboxTab);
-		inboxTab.setOnClickListener(_inboxTabListener);
-		profileTab = (ImageButton) findViewById(R.id.profileTab);
-		profileTab.setOnClickListener(_profileTabListener);
+		_composeTab = (ImageButton) findViewById(R.id.composeTab);
+		_composeTab.setOnClickListener(_composeTabListener);
+		_inboxTab = (ImageButton) findViewById(R.id.inboxTab);
+		_inboxTab.setOnClickListener(_inboxTabListener);
+		_profileTab = (ImageButton) findViewById(R.id.profileTab);
+		_profileTab.setOnClickListener(_profileTabListener);
 		_powerButton = (ImageButton) findViewById(R.id.powerButton);
 		_powerButton.setOnClickListener(_powerButtonListener);
+		_shoutButton = (ImageButton) findViewById(R.id.shoutButton);
+		_shoutButton.setOnClickListener(_shoutButtonListener);
+		_textbox = (TextView) findViewById(R.id.etShoutText);
 		
 		// bind to service, initializes mediator
 		_serviceIntent = new Intent(Shoutbreak.this, ShoutbreakService.class);
@@ -141,6 +148,11 @@ public class Shoutbreak extends Activity implements Colleague {
 		super.onDestroy();
 	}
 	
+	@Override
+	protected boolean isRouteDisplayed() {
+		return false;
+	}
+	
 	public void setPowerState(boolean isOn) {
 		SBLog.i(TAG, "setPowerState()");
 		_isPowerOn.set(isOn);
@@ -186,6 +198,13 @@ public class Shoutbreak extends Activity implements Colleague {
 		}
 	};
 	
+	private OnClickListener _shoutButtonListener = new OnClickListener() {
+		public void onClick(View v) {
+			_m.shout(_textbox.getText());
+			hideKeyboard();
+		}
+	};
+	
 	/* View Methods */
 	
 	public void showCompose() {
@@ -193,20 +212,18 @@ public class Shoutbreak extends Activity implements Colleague {
 		_isComposeShowing.set(true);
 		_isInboxShowing.set(false);
 		_isProfileShowing.set(false);
-		
 		if (!_isMapInitialized.get()) {
 			_map = (CustomMapView) findViewById(R.id.cmvMap);
-			_userLocationOverlay = new UserLocationOverlay(this, _cMapView);
-			if (_cMapView.getOverlays().size() == 0) {
-				_cMapView.getOverlays().add(_userLocationOverlay);
+			UserLocationOverlay userLocationOverlay = new UserLocationOverlay(Shoutbreak.this, _map);
+			if (_map.getOverlays().size() == 0) {
+				_map.getOverlays().add(userLocationOverlay);
 			}
-			_mapController = _cMapView.getController();
-			_mapController.setZoom(C.DEFAULT_ZOOM_LEVEL);
-			_cMapView.setClickable(true);
-			_cMapView.setEnabled(true);
-			// _cMapView.setUI(this);
-			_cMapView.setUserLocationOverlay(_userLocationOverlay);
-			_cMapView.postInvalidate();
+			MapController mapController = _map.getController();
+			mapController.setZoom(C.DEFAULT_ZOOM_LEVEL);
+			_map.setClickable(true);
+			_map.setEnabled(true);
+			_map.setUserLocationOverlay(userLocationOverlay);
+			_map.postInvalidate();
 			
 			// TODO: remove this. called when 'on/off' switch is clicked
 			//_userLocationOverlay.runOnFirstFix(new Runnable() {
@@ -215,10 +232,12 @@ public class Shoutbreak extends Activity implements Colleague {
 			//		_mapController.animateTo(loc);
 			//	}
 			//});
-			_userLocationOverlay.enableMyLocation();
+			userLocationOverlay.enableMyLocation();
 			_isMapInitialized.set(true);
 		}
-		
+		_composeTab.setImageResource(R.drawable.tab_shouting_on);
+		_inboxTab.setImageResource(R.drawable.tab_inbox);
+		_profileTab.setImageResource(R.drawable.tab_user);
 		findViewById(R.id.compose_view).setVisibility(View.VISIBLE);
 		findViewById(R.id.inbox_view).setVisibility(View.GONE);
 		findViewById(R.id.profile_view).setVisibility(View.GONE);
@@ -229,6 +248,9 @@ public class Shoutbreak extends Activity implements Colleague {
 		_isComposeShowing.set(false);
 		_isInboxShowing.set(true);
 		_isProfileShowing.set(false);
+		_composeTab.setImageResource(R.drawable.tab_shouting);
+		_inboxTab.setImageResource(R.drawable.tab_inbox_on);
+		_profileTab.setImageResource(R.drawable.tab_user);
 		findViewById(R.id.compose_view).setVisibility(View.GONE);
 		findViewById(R.id.inbox_view).setVisibility(View.VISIBLE);
 		findViewById(R.id.profile_view).setVisibility(View.GONE);
@@ -239,6 +261,9 @@ public class Shoutbreak extends Activity implements Colleague {
 		_isComposeShowing.set(false);
 		_isInboxShowing.set(false);
 		_isProfileShowing.set(true);
+		_composeTab.setImageResource(R.drawable.tab_shouting);
+		_inboxTab.setImageResource(R.drawable.tab_inbox);
+		_profileTab.setImageResource(R.drawable.tab_user_on);
 		findViewById(R.id.compose_view).setVisibility(View.GONE);
 		findViewById(R.id.inbox_view).setVisibility(View.GONE);
 		findViewById(R.id.profile_view).setVisibility(View.VISIBLE);
@@ -266,6 +291,7 @@ public class Shoutbreak extends Activity implements Colleague {
 	}
 	
 	public void unableToTurnOnApp(boolean isLocationAvailable, boolean isDataAvailable) {
+		SBLog.i(TAG, "unableToTurnOnApp()");
 		String text = "unable to turn on app, ";
 		if (!isLocationAvailable && !isDataAvailable) {
 			text += "location and data connection unavailable";
@@ -277,8 +303,14 @@ public class Shoutbreak extends Activity implements Colleague {
 		Toast.makeText(Shoutbreak.this, text, Toast.LENGTH_SHORT).show();
 	}
 
+	public void setTitleBarText(String text) {
+		SBLog.i(TAG, "setTitleBarText()");
+		((TextView) findViewById(R.id.tvTitleBar)).setText(text);
+	}
+	
 	public void hideKeyboard() {
-		// TODO Auto-generated method stub
-		
+		SBLog.i(TAG, "hideKeyboard()");
+		InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+		imm.hideSoftInputFromWindow(_textbox.getWindowToken(), 0);
 	}
 }

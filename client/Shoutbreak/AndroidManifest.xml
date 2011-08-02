@@ -3,10 +3,41 @@
       package="co.shoutbreak"
       android:versionCode="1"
       android:versionName="1.0">
-    <application android:icon="@drawable/icon" android:label="@string/app_name">
+    <uses-sdk android:minSdkVersion="8" />
 
+    <application android:icon="@drawable/icon" android:label="Shoutbreak">
+		<!-- Launcher -->
+        <activity android:name=".Shoutbreak" android:label="Shoutbreak" android:screenOrientation="portrait" android:launchMode="singleTop" android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        
+        <!-- Service -->
+        <service android:name=".ShoutbreakService" android:exported="true">
+			<intent-filter>
+				<action android:name="co.shoutbreak.service.ShoutbreakService" />
+			</intent-filter>
+		</service>
+		
+		<!--  Alarm Manager -->
+		<receiver android:name=".AlarmReceiver" android:exported="true">
+			<intent-filter>
+				<action android:name="co.shoutbreak.service.AlarmReceiver" />
+				<action android:name="android.intent.action.BOOT_COMPLETED" />
+				<action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
+			</intent-filter>
+		</receiver>
+		
+		<uses-library android:name="com.google.android.maps" />
 
     </application>
-
-
-</manifest> 
+    <uses-permission android:name="android.permission.INTERNET" />
+	<uses-permission android:name="android.permission.READ_PHONE_STATE" />
+	<uses-permission android:name="android.permission.ACCESS_GPS" />
+	<uses-permission android:name="android.permission.ACCESS_LOCATION" />
+	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+</manifest>
