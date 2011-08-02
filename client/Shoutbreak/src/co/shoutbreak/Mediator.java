@@ -17,6 +17,7 @@ public class Mediator {
 	private Notifier _notifier;
 	private LocationTracker _location;
 	private DataListener _data;
+	private Database _db;
 	
 	// state flags
 	private Flag _isUIAlive = new Flag("_isUIAlive");
@@ -41,6 +42,8 @@ public class Mediator {
 		_location.setMediator(this);
 		_data = new DataListener(_service);
 		_data.setMediator(this);
+		_db = new Database(_service);
+		_db.setMediator(this);
 		
 		// initialize state
 		_isLocationAvailable.set(_location.isLocationEnabled());
@@ -89,6 +92,8 @@ public class Mediator {
 		_location = null;
 		_data.unsetMediator();
 		_data = null;
+		_db.unsetMediator();
+		_db = null;
 	}
 	
 	/* Mediator Commands */

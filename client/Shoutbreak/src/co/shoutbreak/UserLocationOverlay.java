@@ -282,8 +282,7 @@ public class UserLocationOverlay extends MyLocationOverlay implements Colleague 
 	
 	public int getCurrentPower() {
 		SBLog.i(TAG, "getCurrentPower()");
-		return 1;
-		// TODO: fix; return User.calculatePower(_peopleCount);
+		return 1; // TODO: return User.calculatePower(_peopleCount);
 	}
 
 	// distance math if we need it
