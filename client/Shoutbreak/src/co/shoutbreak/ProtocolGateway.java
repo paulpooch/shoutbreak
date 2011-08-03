@@ -150,10 +150,10 @@ public class ProtocolGateway {
 			}
 			if (xPacket.json.has(C.JSON_SHOUTS)) {
 				JSONArray shouts = xPacket.json.getJSONArray(C.JSON_SHOUTS);
-				_user.setShoutsJustReceived(shouts.length());
+				_safeM.setShoutsJustReceived(shouts.length());
 				for (int i = 0; i < shouts.length(); i++) {
 					JSONObject jsonShout = shouts.getJSONObject(i);
-					_user.getInbox().addShout(jsonShout);
+					_safeM.addShout(jsonShout); // replaces: _user.getInbox().addShout(jsonShout);
 				}
 				xPacket.uiCode = C.UI_RECEIVE_SHOUTS;
 				_user.fireUserEvent(UserEvent.SHOUTS_RECEIVED);
@@ -164,8 +164,7 @@ public class ProtocolGateway {
 				JSONArray scores = xPacket.json.getJSONArray(C.JSON_SCORES);
 				for (int i = 0; i < scores.length(); i++) {
 					JSONObject jsonScore = scores.getJSONObject(i);
-					_user.getInbox().updateScore(jsonScore);
-					// TODO: _safeM.updateScore(jsonScore);
+					_safeM.updateScore(jsonScore); // replaces: _user.getInbox().updateScore(jsonScore);
 				}
 				_user.fireUserEvent(UserEvent.SCORES_CHANGE);
 				// TODO: merge this event with _safeM.updateScore(jsonScore)
@@ -176,7 +175,7 @@ public class ProtocolGateway {
 				int newLevel = (int) levelInfo.getLong(C.JSON_LEVEL);
 				int newPoints = (int) levelInfo.getLong(C.JSON_POINTS);
 				int nextLevelAt = (int) levelInfo.getLong(C.JSON_NEXT_LEVEL_AT);
-				_safeM.levelUp(newLevel, newPoints, nextLevelAt);
+				_safeM.levelUp(newLevel, newPoints, nextLevelAt); // TODO: _safeM.levelUp() should call level and point change methods
 				_user.fireUserEvent(UserEvent.LEVEL_CHANGE);
 				_user.fireUserEvent(UserEvent.POINTS_CHANGE);
 			}
@@ -226,7 +225,7 @@ public class ProtocolGateway {
 			public void handleMessage(Message message) {
 				switch (message.what) {
 					case C.HTTP_DID_SUCCEED: {
-						_user.getInbox().reflectVote(shoutId, vote);
+						_safeM.reflectVote(shoutId, vote); // replaces: _user.getInbox().reflectVote(shoutId, vote);
 						_user.fireUserEvent(UserEvent.VOTE_COMPLETE);
 						// Unless vote occurs in idle thread, we don't need to sendMessage.
 						//CrossThreadPacket xPacket = (CrossThreadPacket)message.obj;

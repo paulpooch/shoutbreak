@@ -358,17 +358,36 @@ public class Mediator {
 			_user.levelUp(newLevel, newPoints, nextLevelAt);
 		}
 		
+		public void addShout(JSONObject jsonShout) {
+			_inbox.addShout(jsonShout);
+		}
+		
+		public void updateScore(JSONObject jsonScore) {
+			_inbox.updateScore(jsonScore);
+		}
+		
+		public void reflectVote(String shoutID, int vote) {
+			_inbox.reflectVote(shoutID, vote);
+		}
+		
 		/* TODO: events that need to be tracked down from old code below */
+		
+		public void densityChange() {
+			// TODO: track down all UserEvent.DENSITY_CHANGE events
+			//       and add them here
+		}
 		
 		public void receivedShouts() {
 			// TODO: track down all UserEvent.SHOUTS_RECEIVED events
 			//       and add them here
 		}
 		
-		public void updateScore(JSONObject jsonScore) {
+		public void scoreChange(JSONObject jsonScore) {
 			// TODO: track down all UserEvent.SCORES_CHANGE events
 			//       and add them here
 		}
+		
+		
 		
 		
 		

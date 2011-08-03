@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.json.JSONObject;
+
 import android.database.Cursor;
 import android.database.sqlite.SQLiteStatement;
 
@@ -184,6 +186,27 @@ public class Inbox implements Colleague {
 		return result;
 	}
 
+	public synchronized void addShout(JSONObject jsonShout) {
+		Shout shout = new Shout();
+		shout.id = jsonShout.optString(C.JSON_SHOUT_ID);
+		shout.timestamp = jsonShout.optString(C.JSON_SHOUT_TIMESTAMP);
+		shout.text = jsonShout.optString(C.JSON_SHOUT_TEXT);
+		shout.re = jsonShout.optString(C.JSON_SHOUT_RE);
+		Date d = new Date();
+		shout.time_received = d.getTime();
+		shout.open = jsonShout.optInt(C.JSON_SHOUT_OPEN, 0) == 1 ? true : C.NULL_OPEN;
+		shout.is_outbox = false;
+		shout.vote = C.NULL_VOTE;
+		shout.hit = jsonShout.optInt(C.JSON_SHOUT_HIT, C.NULL_HIT);
+		shout.ups = jsonShout.optInt(C.JSON_SHOUT_UPS, C.NULL_UPS);
+		shout.downs = jsonShout.optInt(C.JSON_SHOUT_DOWNS, C.NULL_DOWNS);
+		shout.pts = C.NULL_PTS;
+		shout.approval = jsonShout.optInt(C.JSON_SHOUT_APPROVAL, C.NULL_APPROVAL);
+		shout.state_flag = C.SHOUT_STATE_NEW;
+		shout.score = C.NULL_SCORE;		
+		addShoutToInbox(shout);
+	}
+	
 	public synchronized boolean deleteShout(String shoutID) {
 		SBLog.i(TAG, "new deleteShout()");
 		boolean result = false;
@@ -200,6 +223,29 @@ public class Inbox implements Colleague {
 			update.close();
 		}
 		return result;
+	}
+	
+	public synchronized void updateScore(JSONObject jsonScore) {
+		Shout shout = new Shout();
+		shout.id = jsonScore.optString(C.JSON_SHOUT_ID);
+		shout.ups = jsonScore.optInt(C.JSON_SHOUT_UPS, C.NULL_UPS);
+		shout.downs = jsonScore.optInt(C.JSON_SHOUT_DOWNS, C.NULL_DOWNS);
+		shout.hit = jsonScore.optInt(C.JSON_SHOUT_HIT, C.NULL_HIT);
+		shout.pts = C.NULL_PTS;
+		shout.approval = jsonScore.optInt(C.JSON_SHOUT_APPROVAL, C.NULL_APPROVAL);
+		shout.open = jsonScore.optInt(C.JSON_SHOUT_OPEN, 0) == 1 ? true : C.NULL_OPEN;
+		updateScore(shout);
+		
+		// If the shout is closed, we checked if it's in our outbox.
+		// If it is, we need to save the points.
+		if (!shout.open){
+			Shout shoutFromDB = getShout(shout.id);
+			if (shoutFromDB.is_outbox) {
+				_user.savePoints(shout.pts);
+				_user.fireUserEvent(UserEvent.POINTS_CHANGE);
+			}
+		}
+		
 	}
 	// READ ONLY METHODS //////////////////////////////////////////////////////
 	
@@ -323,50 +369,6 @@ public class Inbox implements Colleague {
 			}
 		}
 		return result;
-	}
-	
-	public synchronized void addShout(JSONObject jsonShout) {
-		Shout shout = new Shout();
-		shout.id = jsonShout.optString(C.JSON_SHOUT_ID);
-		shout.timestamp = jsonShout.optString(C.JSON_SHOUT_TIMESTAMP);
-		shout.text = jsonShout.optString(C.JSON_SHOUT_TEXT);
-		shout.re = jsonShout.optString(C.JSON_SHOUT_RE);
-		Date d = new Date();
-		shout.time_received = d.getTime();
-		shout.open = jsonShout.optInt(C.JSON_SHOUT_OPEN, 0) == 1 ? true : C.NULL_OPEN;
-		shout.is_outbox = false;
-		shout.vote = C.NULL_VOTE;
-		shout.hit = jsonShout.optInt(C.JSON_SHOUT_HIT, C.NULL_HIT);
-		shout.ups = jsonShout.optInt(C.JSON_SHOUT_UPS, C.NULL_UPS);
-		shout.downs = jsonShout.optInt(C.JSON_SHOUT_DOWNS, C.NULL_DOWNS);
-		shout.pts = C.NULL_PTS;
-		shout.approval = jsonShout.optInt(C.JSON_SHOUT_APPROVAL, C.NULL_APPROVAL);
-		shout.state_flag = C.SHOUT_STATE_NEW;
-		shout.score = C.NULL_SCORE;		
-		_db.addShoutToInbox(shout);
-	}
-	
-	public synchronized void updateScore(JSONObject jsonScore) {
-		Shout shout = new Shout();
-		shout.id = jsonScore.optString(C.JSON_SHOUT_ID);
-		shout.ups = jsonScore.optInt(C.JSON_SHOUT_UPS, C.NULL_UPS);
-		shout.downs = jsonScore.optInt(C.JSON_SHOUT_DOWNS, C.NULL_DOWNS);
-		shout.hit = jsonScore.optInt(C.JSON_SHOUT_HIT, C.NULL_HIT);
-		shout.pts = C.NULL_PTS;
-		shout.approval = jsonScore.optInt(C.JSON_SHOUT_APPROVAL, C.NULL_APPROVAL);
-		shout.open = jsonScore.optInt(C.JSON_SHOUT_OPEN, 0) == 1 ? true : C.NULL_OPEN;
-		_db.updateScore(shout);
-		
-		// If the shout is closed, we checked if it's in our outbox.
-		// If it is, we need to save the points.
-		if (!shout.open){
-			Shout shoutFromDB = _db.getShout(shout.id);
-			if (shoutFromDB.is_outbox) {
-				_user.savePoints(shout.pts);
-				_user.fireUserEvent(UserEvent.POINTS_CHANGE);
-			}
-		}
-		
 	}
 	
 	public synchronized void reflectVote(String shoutID, int vote) {
