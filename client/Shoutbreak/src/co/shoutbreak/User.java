@@ -140,7 +140,7 @@ public class User implements Colleague {
 	}
 	
 	public HashMap<String, String> getUserSettings() {
-		// TODO: ensure that this is read-only
+		// TODO: is this read-only?
 		SBLog.i(TAG, "getUserSettings()");
 		if (_userSettingsAreStale) {
 			_userSettings = new HashMap<String, String>();
@@ -392,22 +392,6 @@ public class User implements Colleague {
 	
 	public int getNextLevelAt() {
 		return _nextLevelAt;
-	}
-
-	public String getDeviceId() {
-		return _tm.getDeviceId();
-	}
-
-	public String getPhoneNumber() {
-		return _tm.getLine1Number();
-	}
-
-	public String getNetworkOperator() {
-		return _tm.getNetworkOperatorName();
-	}
-
-	public String getAndroidId() {
-		return Settings.Secure.getString(_service.getContentResolver(), Settings.Secure.ANDROID_ID);
 	}
 	
 	public void destroy() {

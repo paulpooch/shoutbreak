@@ -21,11 +21,13 @@ public class ProtocolGateway {
     private Handler _uiThreadHandler;
     
     public ProtocolGateway(ThreadSafeMediator safeMediator, Handler uiThreadHandler) {
+    	SBLog.i(TAG, "new ProtocolGateway()");
     	_safeM = safeMediator;
     	_uiThreadHandler = uiThreadHandler;
     }
     
 	public void go(Message message) {
+		SBLog.i(TAG, "go()");
 		switch (message.what) {
 			case C.STATE_IDLE: {
 				idle(message);
@@ -55,7 +57,7 @@ public class ProtocolGateway {
 	}
     
 	public void idle(Message message) {
-		
+		SBLog.i(TAG, "idle()");
 		if (!_safeM.userHasAccount()) {
 			createAccount(message);
 			return;
@@ -65,6 +67,7 @@ public class ProtocolGateway {
 	}
 	
 	public void ping(Message message) {
+		SBLog.i(TAG, "ping()");
 		Handler httpHandler = new Handler() {
 			public void handleMessage(Message message) {
 				switch (message.what) {

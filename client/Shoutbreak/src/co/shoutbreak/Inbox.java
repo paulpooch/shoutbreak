@@ -21,17 +21,20 @@ public class Inbox implements Colleague {
 	private Database _db;
 	
 	public Inbox(Database db) {
+		SBLog.i(TAG, "");
 		_db = db;
 		_shouts = new ArrayList<Shout>();
 	}
 	
 	@Override
 	public void setMediator(Mediator mediator) {
+		SBLog.i(TAG, "");
 		_m = mediator;
 	}
 
 	@Override
 	public void unsetMediator() {
+		SBLog.i(TAG, "");
 		_db = null;
 		_m = null;
 	}
@@ -218,6 +221,7 @@ public class Inbox implements Colleague {
 	// READ ONLY METHODS //////////////////////////////////////////////////////
 	
 	public ArrayList<String> getOpenShoutIDs() {
+		SBLog.i(TAG, "getOpenShoutIDs");
 		ArrayList<String> result = new ArrayList<String>();
 		for (Shout shout : _shouts) {
 			if (shout.open) {
@@ -228,12 +232,13 @@ public class Inbox implements Colleague {
 	}
 	
 	public List<Shout> getShoutsForUI() {
+		SBLog.i(TAG, "getShoutsForUI");
 		return getShoutsForUI(0, 50);
 	}
 	
 	public List<Shout> getShoutsForUI(int start, int amount) {		
 		// TODO: is this read-only?
-		SBLog.i(TAG, "getShouts()");
+		SBLog.i(TAG, "getShoutsForUI()");
 		// shout_id TEXT, timestamp TEXT, time_received INTEGER, txt TEXT,
 		// is_outbox INTEGER, re TEXT, vote INTEGER, hit INTEGER, open INTEGER,
 		// ups INTEGER, downs INTEGER, pts INTEGER, approval INTEGER, state_flag

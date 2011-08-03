@@ -19,6 +19,7 @@ public class Mediator {
 	private User _user;
 	private Inbox _inbox;
 	private PreferenceManager _preferences;
+	private DeviceInformation _device;
 	private Notifier _notifier;
 	private LocationTracker _location;
 	private DataListener _data;
@@ -42,6 +43,8 @@ public class Mediator {
 		_service.setMediator(this);
 		_preferences = new PreferenceManager(_service.getSharedPreferences(C.PREFERENCE_FILE, Context.MODE_PRIVATE));
 		_preferences.setMediator(this);
+		_device = new DeviceInformation(_service);
+		_device.setMediator(this);
 		_notifier = new Notifier(_service);
 		_notifier.setMediator(this);
 		_location = new LocationTracker();
@@ -97,6 +100,8 @@ public class Mediator {
 		unregisterUI(true);
 		_preferences.unsetMediator();
 		_preferences = null;
+		_device.unsetMediator();
+		_device = null;
 		_notifier.unsetMediator();
 		_notifier = null;
 		_location.unsetMediator();
@@ -253,10 +258,12 @@ public class Mediator {
 	}
 	
 	public Object getSystemService(String name) {
+		SBLog.i(TAG, "getSystemService()");
 		return _service.getSystemService(name);
 	}
 	
 	public void handlePollingResponse(Message message) {
+		SBLog.i(TAG, "handlePollingResponse()");
 		if (_isPollingAlive.get()) {
 			_pollingThreadLauncher.spawnNextPollingThread(message);
 		}
@@ -264,6 +271,7 @@ public class Mediator {
 	}
 	
 	public ThreadSafeMediator getAThreadSafeMediator() {
+		SBLog.i(TAG, "getAThreadSafeMediator()");
 		return new ThreadSafeMediator();
 	}
 	
@@ -271,7 +279,7 @@ public class Mediator {
 		// Methods of any other classes called from here should be synchronized or read only.
 		
 		public ThreadSafeMediator() {
-			
+		
 		}
 		
 		public boolean userHasAccount() {
