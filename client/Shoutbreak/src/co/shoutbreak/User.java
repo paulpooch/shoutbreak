@@ -28,10 +28,13 @@ public class User implements Colleague {
 	private Mediator _m;
 	private Database _db;
 	private HashMap<String, String> _userSettings;
+	private CellDensity _cellDensity;
 	private boolean _passwordExists; // no reason to put actual pw into memory
 	private boolean _userSettingsAreStale;
+	private boolean _levelUpOccured;
 	private String _uid;
 	private String _auth;
+	private int _level;
 	
 	@Override
 	public void setMediator(Mediator mediator) {
@@ -125,6 +128,58 @@ public class User implements Colleague {
 		}
 		return points;	
 	}
+	
+	public synchronized CellDensity getDensityAtCell(CellDensity cell) {
+		SBLog.i(TAG, "getDensityAtCell()");
+		CellDensity result = new CellDensity();
+		result.isSet = false;
+		String sql = "SELECT density, last_updated FROM " + C.DB_TABLE_DENSITY + " WHERE cell_x = ? AND cell_y = ?";
+		Cursor cursor = null;
+		try {
+			cursor = _db.rawQuery(sql, new String[] { Integer.toString(cell.cellX), Integer.toString(cell.cellY) });
+			if (cursor.moveToFirst()) {
+				String lastUpdated = cursor.getString(1);
+				long lastUpdatedMillisecs = ISO8601DateParser.parse(lastUpdated).getTime();
+				long diff = (new Date().getTime()) - lastUpdatedMillisecs;
+				if (diff < C.CONFIG_DENSITY_EXPIRATION) {
+					result.density = cursor.getDouble(0);
+					result.isSet = true;
+					return result;
+				}
+			}
+		} catch (Exception ex) {
+			Log.e(getClass().getSimpleName(), "getUserSettings");
+		} finally {
+			if (cursor != null && !cursor.isClosed()) {
+				cursor.close();
+			}
+		}
+		return result;
+	}
+	
+	public synchronized CellDensity getCellDensity() {
+		SBLog.i(TAG, "getCellDensity()");
+		if (_cellDensity == null) {
+			_cellDensity = new CellDensity();
+		} else {
+			// If _cellDensity exists, see if it's still valid.
+			CellDensity oldCellDensity = _cellDensity;
+			CellDensity tempCellDensity = _m.getCurrentCell();
+			_cellDensity.cellX = tempCellDensity.cellX;
+			_cellDensity.cellY = tempCellDensity.cellY;
+			if (_cellDensity.isSet && _cellDensity.cellX == oldCellDensity.cellX && _cellDensity.cellY == oldCellDensity.cellY) {
+				// We're still in the same cell so return this.
+				return _cellDensity;
+			}
+		}
+		// Otherwise we'll see if DB has a cached result. If not, isSet will be false.
+		CellDensity tempCellDensity = getDensityAtCell(_cellDensity);
+		if (tempCellDensity.isSet) {
+			_cellDensity.density = tempCellDensity.density;
+			_cellDensity.isSet = true;
+		}
+		return _cellDensity;
+	}
 	// READ ONLY METHODS //////////////////////////////////////////////////////
 
 	public boolean hasAccount() {
@@ -162,32 +217,12 @@ public class User implements Colleague {
 		return _userSettings;
 	}
 	
-	public synchronized CellDensity getDensityAtCell(CellDensity cell) {
-		SBLog.i(TAG, "getDensityAtCell()");
-		CellDensity result = new CellDensity();
-		result.isSet = false;
-		String sql = "SELECT density, last_updated FROM " + C.DB_TABLE_DENSITY + " WHERE cell_x = ? AND cell_y = ?";
-		Cursor cursor = null;
-		try {
-			cursor = _db.rawQuery(sql, new String[] { Integer.toString(cell.cellX), Integer.toString(cell.cellY) });
-			if (cursor.moveToFirst()) {
-				String lastUpdated = cursor.getString(1);
-				long lastUpdatedMillisecs = ISO8601DateParser.parse(lastUpdated).getTime();
-				long diff = (new Date().getTime()) - lastUpdatedMillisecs;
-				if (diff < C.CONFIG_DENSITY_EXPIRATION) {
-					result.density = cursor.getDouble(0);
-					result.isSet = true;
-					return result;
-				}
-			}
-		} catch (Exception ex) {
-			Log.e(getClass().getSimpleName(), "getUserSettings");
-		} finally {
-			if (cursor != null && !cursor.isClosed()) {
-				cursor.close();
-			}
-		}
-		return result;
+	public boolean getLevelUpOccured() {
+		return _levelUpOccured;
+	}
+	
+	public int getLevel() {
+		return _level;
 	}
 	
 	/*
@@ -268,10 +303,6 @@ public class User implements Colleague {
 		return _shoutsJustReceived;
 	}
 	
-	public boolean getLevelUpOccured() {
-		return _levelUpOccured;
-	}
-	
 	public void setScoresJustReceived(boolean b) {
 		_scoresJustReceived = b;
 	}
@@ -290,29 +321,6 @@ public class User implements Colleague {
 
 	public Inbox getInbox() {
 		return _inbox;
-	}
-
-	public synchronized CellDensity getCellDensity() {
-		if (_cellDensity == null) {
-			_cellDensity = new CellDensity();
-		} else {
-			// If _cellDensity exists, see if it's still valid.
-			CellDensity oldCellDensity = _cellDensity;
-			CellDensity tempCellDensity = _locationTracker.getCurrentCell();
-			_cellDensity.cellX = tempCellDensity.cellX;
-			_cellDensity.cellY = tempCellDensity.cellY;
-			if (_cellDensity.isSet && _cellDensity.cellX == oldCellDensity.cellX && _cellDensity.cellY == oldCellDensity.cellY) {
-				// We're still in the same cell so return this.
-				return _cellDensity;
-			}
-		}
-		// Otherwise we'll see if DB has a cached result. If not, isSet will be false.
-		CellDensity tempCellDensity = _db.getDensityAtCell(_cellDensity);
-		if (tempCellDensity.isSet) {
-			_cellDensity.density = tempCellDensity.density;
-			_cellDensity.isSet = true;
-		}
-		return _cellDensity;
 	}
 
 	public String getAuth() {
@@ -369,12 +377,6 @@ public class User implements Colleague {
 		//_db.saveUserSetting(C.KEY_USER_POINTS, sPoints);
 		_db.savePoints(C.POINTS_LEVEL_CHANGE, points);
 		initializePoints();
-	}
-	
-
-	
-	public int getLevel() {
-		return _level;
 	}
 	
 	public synchronized void savePoints(int amount) {

@@ -7,6 +7,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import co.shoutbreak.Mediator.ThreadSafeMediator;
+import co.shoutbreak.http.HttpConnection;
+import co.shoutbreak.http.PostData;
 import co.shoutbreak.shared.C;
 import co.shoutbreak.shared.SBLog;
 
@@ -93,7 +95,7 @@ public class ProtocolGateway {
 							}
 						} catch (JSONException ex) {
 							// TODO: Manage exception
-							SBLog.e(ex, ex.getMessage());
+							SBLog.e(TAG, ex.getMessage());
 						}
 						break;
 					}
@@ -110,14 +112,14 @@ public class ProtocolGateway {
 		postData.add(C.JSON_LONG, Double.toString(_safeM.getLongitude()));
 		
 		// do we need to pull a density?
-		if (! _user.getCellDensity().isSet) {	
+		if (! _safeM.getCellDensity().isSet) {	
 			postData.add(C.JSON_DENSITY, "1");
 			//Toast.makeText(_context, "Requesting Density: " + tempCellDensity.cellX + " , " + tempCellDensity.cellY, Toast.LENGTH_SHORT).show();
 		}
 		
 		// acknowledge any level up packets
-		if (_user.getLevelUpOccured()) {
-			postData.add(C.JSON_LEVEL, Integer.toString(_user.getLevel()));
+		if (_safeM.getLevelUpOccurred()) {
+			postData.add(C.JSON_LEVEL, Integer.toString(_safeM.getLevel()));
 		}
 		
 		if (scoresToRequest.size() > 0) {

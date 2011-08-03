@@ -1,4 +1,4 @@
-package co.shoutbreak;
+package co.shoutbreak.http;
 
 import java.util.ArrayList;
 import java.util.List;

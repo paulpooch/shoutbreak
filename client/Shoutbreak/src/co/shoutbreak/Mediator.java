@@ -6,6 +6,7 @@ import android.content.Context;
 import android.os.Message;
 import android.widget.Toast;
 import co.shoutbreak.shared.C;
+import co.shoutbreak.shared.CellDensity;
 import co.shoutbreak.shared.Flag;
 import co.shoutbreak.shared.SBLog;
 
@@ -270,6 +271,15 @@ public class Mediator {
 		// Else polling thread dies.
 	}
 	
+	public CellDensity getCurrentCell() {
+		// TODO: should this be moved to ThreadSafeMediator?
+		SBLog.i(TAG, "getCurrentCell()");
+		if (!_isLocationAvailable.get()) {
+			SBLog.e(TAG, "location is unavailable, unable to get current cell");
+		}
+		return _location.getCurrentCell();
+	}
+	
 	public ThreadSafeMediator getAThreadSafeMediator() {
 		SBLog.i(TAG, "getAThreadSafeMediator()");
 		return new ThreadSafeMediator();
@@ -298,12 +308,24 @@ public class Mediator {
 			return _user.getAuth();
 		}
 		
+		public CellDensity getCellDensity() {
+			return _user.getCellDensity();
+		}
+		
 		public double getLongitude() {
 			return _location.getLongitude();
 		}
 		
 		public double getLatitude() {
 			return _location.getLatitude();
+		}
+		
+		public boolean getLevelUpOccurred() {
+			return _user.getLevelUpOccured();
+		}
+		
+		public int getLevel() {
+			return _user.getLevel();
 		}
 	}
 }
