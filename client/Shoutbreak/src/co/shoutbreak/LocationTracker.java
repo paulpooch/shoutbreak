@@ -74,12 +74,12 @@ public class LocationTracker implements LocationListener, Colleague {
 		return _location;
 	}
 	
-	public double getLatitude() {
+	public synchronized double getLatitude() {
 		// We only care about 5 decimal places = 1.11m accuracy
 		return ((double)Math.round(_location.getLatitude() * 100000)) / 100000;
 	}
 	
-	public double getLongitude() {
+	public synchronized double getLongitude() {
 		// We only care about 5 decimal places = 1.11m accuracy
 		return ((double)Math.round(_location.getLongitude() * 100000)) / 100000;
 	}

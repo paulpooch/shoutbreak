@@ -18,6 +18,7 @@ public class User implements Colleague {
 	private Mediator _m;
 	private boolean _passwordExists; // no reason to put actual pw into memory
 	private String _uid;
+	private String _auth;
 	
 	@Override
 	public void setMediator(Mediator mediator) {
@@ -43,6 +44,10 @@ public class User implements Colleague {
 	
 	public String getUID() {
 		return _uid;
+	}
+	
+	public String getAuth() {
+		return _auth;
 	}
 	
 	/*

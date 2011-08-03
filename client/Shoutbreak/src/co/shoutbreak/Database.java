@@ -54,18 +54,18 @@ public class Database implements Colleague {
 		_m = null;	
 	}	
 	
-	public void open() {
+	public synchronized void open() {
 		SBLog.i(TAG, "open()");
 		_db = _openHelper.getWritableDatabase();
 		_db.setLockingEnabled(true);
 	}
 
-	public void close() {
+	public synchronized void close() {
 		SBLog.i(TAG, "close()");
 		_db.close();
 	}
 
-	public HashMap<String, String> getUserSettings() {
+	public synchronized HashMap<String, String> getUserSettings() {
 		SBLog.i(TAG, "getUserSettings()");
 		if (_userSettingsAreStale) {
 			_userSettings = new HashMap<String, String>();
@@ -87,7 +87,7 @@ public class Database implements Colleague {
 		return _userSettings;
 	}
 
-	public Long saveUserSetting(String key, String value) {
+	public synchronized Long saveUserSetting(String key, String value) {
 		SBLog.i(TAG, "saveUserSetting()");
 		_userSettingsAreStale = true;
 		String sql = "INSERT INTO " + C.DB_TABLE_USER_SETTINGS + " (setting_key, setting_value) VALUES (?, ?)";
@@ -112,7 +112,7 @@ public class Database implements Colleague {
 		}
 
 		@Override
-		public void onCreate(SQLiteDatabase db) {
+		public synchronized void onCreate(SQLiteDatabase db) {
 			SBLog.i(TAG, "onCreate()");
 			db.execSQL("CREATE TABLE " + C.DB_TABLE_USER_SETTINGS + " (setting_key TEXT, setting_value TEXT)");
 			db.execSQL("CREATE TABLE " + C.DB_TABLE_DENSITY
@@ -124,7 +124,7 @@ public class Database implements Colleague {
 		}
 
 		@Override
-		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+		public synchronized void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 			SBLog.i(TAG, "onUpgrade()");
 			db.execSQL("DROP TABLE IF EXISTS " + C.DB_TABLE_USER_SETTINGS);
 			db.execSQL("DROP TABLE IF EXISTS " + C.DB_TABLE_DENSITY);
@@ -134,7 +134,7 @@ public class Database implements Colleague {
 		}
 	}
 
-	public static String getDateAsISO8601String(Date date) {
+	public static synchronized String getDateAsISO8601String(Date date) {
 		SBLog.i(TAG, "getDateAsISO8601String()");
 		String result = ISO8601FORMAT.format(date);
 		// convert YYYYMMDDTHH:mm:ss+HH00 into YYYYMMDDTHH:mm:ss+HH:00
@@ -143,7 +143,7 @@ public class Database implements Colleague {
 		return result;
 	}
 
-	public CellDensity getDensityAtCell(CellDensity cell) {
+	public synchronized CellDensity getDensityAtCell(CellDensity cell) {
 		SBLog.i(TAG, "getDensityAtCell()");
 		CellDensity result = new CellDensity();
 		result.isSet = false;
@@ -171,7 +171,7 @@ public class Database implements Colleague {
 		return result;
 	}
 
-	public Long saveCellDensity(CellDensity cellDensity) {
+	public synchronized Long saveCellDensity(CellDensity cellDensity) {
 		SBLog.i(TAG, "new saveCellDensity()");
 		String sql = "INSERT INTO " + C.DB_TABLE_DENSITY
 				+ " (cell_x, cell_y, density, last_updated) VALUES (?, ?, ?, ?)";
@@ -190,7 +190,7 @@ public class Database implements Colleague {
 		return 0l;
 	}
 
-	public Long addShoutToInbox(Shout shout) {
+	public synchronized Long addShoutToInbox(Shout shout) {
 		SBLog.i(TAG, "addShoutToInbox()");
 		// (shout_id TEXT, timestamp TEXT, time_received INTEGER, txt TEXT,
 		// is_outbox INTEGER, re TEXT, vote INTEGER, hit INTEGER, open INTEGER,
@@ -223,7 +223,7 @@ public class Database implements Colleague {
 		return 0l;
 	}
 
-	public boolean reflectVote(String shoutID, int vote) {
+	public synchronized boolean reflectVote(String shoutID, int vote) {
 		SBLog.i(TAG, "reflectVote()");
 		boolean result = false;
 		String sql = "UPDATE " + C.DB_TABLE_SHOUTS + " SET ups = ups + 1, vote = ? WHERE shout_id = ?";
@@ -244,7 +244,7 @@ public class Database implements Colleague {
 		return result;
 	}
 
-	public boolean updateScore(Shout shout) {
+	public synchronized boolean updateScore(Shout shout) {
 		SBLog.i(TAG, "updateScore()");
 		boolean result = false;
 		SQLiteStatement update;
@@ -280,7 +280,7 @@ public class Database implements Colleague {
 		return result;
 	}
 
-	public Long savePoints(int pointsType, int pointsValue) {
+	public synchronized Long savePoints(int pointsType, int pointsValue) {
 		SBLog.i(TAG, "savePoints()");
 		String sql = "INSERT INTO " + C.DB_TABLE_POINTS + " (points_type, points_value, points_timestamp) VALUES (?, ?, ?)";
 		SQLiteStatement insert = this._db.compileStatement(sql);
@@ -297,7 +297,7 @@ public class Database implements Colleague {
 		return 0l;
 	}
 	
-	public ArrayList<Shout> getShouts(int start, int amount) {
+	public synchronized ArrayList<Shout> getShouts(int start, int amount) {
 		SBLog.i(TAG, "getShouts()");
 		// shout_id TEXT, timestamp TEXT, time_received INTEGER, txt TEXT,
 		// is_outbox INTEGER, re TEXT, vote INTEGER, hit INTEGER, open INTEGER,
@@ -339,7 +339,7 @@ public class Database implements Colleague {
 		return results;
 	}
 
-	public int calculateUsersPoints() {
+	public synchronized int calculateUsersPoints() {
 		SBLog.i(TAG, "calculateUserPoints()");
 		String sql = "SELECT points_value, points_timestamp FROM " + C.DB_TABLE_POINTS + " WHERE points_type = ? ORDER BY points_timestamp DESC";
 		Cursor cursor = null;
@@ -378,7 +378,7 @@ public class Database implements Colleague {
 		return points;	
 	}
 	
-	public Shout getShout(String shoutID) {
+	public synchronized Shout getShout(String shoutID) {
 		SBLog.i(TAG, "getShout()");
 		String sql = "SELECT * FROM " + C.DB_TABLE_SHOUTS + " WHERE shout_id = ?";
 		Cursor cursor = null;
@@ -413,7 +413,7 @@ public class Database implements Colleague {
 		return null;
 	}
 
-	public boolean markShoutAsRead(String shoutID) {
+	public synchronized boolean markShoutAsRead(String shoutID) {
 		SBLog.i(TAG, "markShoutAsRead()");
 		boolean result = false;
 		SQLiteStatement update;
@@ -432,7 +432,7 @@ public class Database implements Colleague {
 		return result;
 	}
 
-	public boolean deleteShout(String shoutID) {
+	public synchronized boolean deleteShout(String shoutID) {
 		SBLog.i(TAG, "new deleteShout()");
 		boolean result = false;
 		SQLiteStatement update;

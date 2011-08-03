@@ -103,6 +103,10 @@ public class Mediator {
 		_data = null;
 		_db.unsetMediator();
 		_db = null;
+		_inbox.unsetMediator();
+		_inbox = null;
+		_pollingThreadLauncher.unsetMediator();
+		_pollingThreadLauncher = null;
 	}
 	
 	/* Mediator Commands */
@@ -262,7 +266,7 @@ public class Mediator {
 	}
 	
 	public class ThreadSafeMediator {
-		// Methods of any other classes called from here should be synchronized.
+		// Methods of any other classes called from here should be synchronized or read only.
 		
 		public ThreadSafeMediator() {
 			
@@ -280,8 +284,18 @@ public class Mediator {
 			return _inbox.getOpenShoutIDs();
 		}
 		
+		public String getAuth() {
+			return _user.getAuth();
+		}
+		
+		public double getLongitude() {
+			return _location.getLongitude();
+		}
+		
+		public double getLatitude() {
+			return _location.getLatitude();
+		}
 	}
-	
 }
 	/*
 
@@ -314,11 +328,5 @@ public class Mediator {
 		}
 		
 		_isLocationAvailable  = _location.isLocationEnabled();
-	}
-	
-	public void initIsDataAvailable() {
-		ConnectivityManager connectivityManager = (ConnectivityManager) _service.getSystemService(Context.CONNECTIVITY_SERVICE);
-		NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-		_isDataAvailable = activeNetworkInfo != null;
 	}
 */

@@ -16,6 +16,7 @@ import android.os.Message;
 public class ProtocolGateway {
 	
 	private static final String TAG = "ProtocolGateway";
+	
 	private ThreadSafeMediator _safeM;
     private Handler _uiThreadHandler;
     
@@ -101,9 +102,9 @@ public class ProtocolGateway {
 		PostData postData = new PostData();
 		postData.add(C.JSON_ACTION, C.JSON_ACTION_USER_PING);
 		postData.add(C.JSON_UID, _safeM.getUserID());
-		postData.add(C.JSON_AUTH, _user.getAuth());
-		postData.add(C.JSON_LAT, Double.toString(_user.getLatitude()));
-		postData.add(C.JSON_LONG, Double.toString(_user.getLongitude()));
+		postData.add(C.JSON_AUTH, _safeM.getAuth());
+		postData.add(C.JSON_LAT, Double.toString(_safeM.getLatitude()));
+		postData.add(C.JSON_LONG, Double.toString(_safeM.getLongitude()));
 		
 		// do we need to pull a density?
 		if (! _user.getCellDensity().isSet) {	
