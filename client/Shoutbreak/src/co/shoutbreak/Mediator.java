@@ -40,8 +40,6 @@ public class Mediator {
 		// add colleagues
 		_service = service;
 		_service.setMediator(this);
-		_user = new User();
-		_inbox = new Inbox();
 		_preferences = new PreferenceManager(_service.getSharedPreferences(C.PREFERENCE_FILE, Context.MODE_PRIVATE));
 		_preferences.setMediator(this);
 		_notifier = new Notifier(_service);
@@ -52,6 +50,10 @@ public class Mediator {
 		_data.setMediator(this);
 		_db = new Database(_service);
 		_db.setMediator(this);
+		_user = new User(_db);
+		_user.setMediator(this);
+		_inbox = new Inbox(_db);
+		_inbox.setMediator(this);
 		_pollingThreadLauncher = new PollingThreadLauncher();
 		
 		// initialize state

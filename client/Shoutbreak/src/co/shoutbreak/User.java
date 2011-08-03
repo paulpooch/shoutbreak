@@ -1,22 +1,35 @@
 package co.shoutbreak;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
 
+import co.shoutbreak.shared.C;
+import co.shoutbreak.shared.CellDensity;
+import co.shoutbreak.shared.ErrorManager;
+import co.shoutbreak.shared.ISO8601DateParser;
+import co.shoutbreak.shared.SBLog;
+
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteStatement;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
+import android.util.Log;
 
 public class User implements Colleague {
 	
 	// All Database stuff should go through User. Any writes should be
 	// synchronized.
-	
 	private static final String TAG = "User";
+	
 	private Mediator _m;
+	private Database _db;
+	private HashMap<String, String> _userSettings;
 	private boolean _passwordExists; // no reason to put actual pw into memory
+	private boolean _userSettingsAreStale;
 	private String _uid;
 	private String _auth;
 	
@@ -27,15 +40,91 @@ public class User implements Colleague {
 
 	@Override
 	public void unsetMediator() {
+		_db = null;
 		_m = null;
 	}
 	
-	public User() {
+	public User(Database db) {
+		_db = db;
 		_passwordExists = false;
+		_userSettingsAreStale = true;
 	}
 	
 	// SYNCHRONIZED WRITE METHODS /////////////////////////////////////////////
+	public synchronized Long saveUserSetting(String key, String value) {
+		SBLog.i(TAG, "saveUserSetting()");
+		_userSettingsAreStale = true;
+		String sql = "INSERT INTO " + C.DB_TABLE_USER_SETTINGS + " (setting_key, setting_value) VALUES (?, ?)";
+		SQLiteStatement insert = _db.compileStatement(sql);
+		insert.bindString(1, key); // 1-indexed
+		insert.bindString(2, value);
+		try {
+			return insert.executeInsert();
+		} catch (Exception ex) {
+			SBLog.e(TAG, "saveUserSettings()");
+		} finally {
+			insert.close();
+		}
+		return 0l;
+	}
 	
+	public synchronized Long saveCellDensity(CellDensity cellDensity) {
+		SBLog.i(TAG, "saveCellDensity()");
+		String sql = "INSERT INTO " + C.DB_TABLE_DENSITY
+				+ " (cell_x, cell_y, density, last_updated) VALUES (?, ?, ?, ?)";
+		SQLiteStatement insert = this._db.compileStatement(sql);
+		insert.bindLong(1, cellDensity.cellX);
+		insert.bindLong(2, cellDensity.cellY);
+		insert.bindDouble(3, cellDensity.density);
+		insert.bindString(4, Database.getDateAsISO8601String(new Date()));
+		try {
+			return insert.executeInsert();
+		} catch (Exception ex) {
+			Log.e(getClass().getSimpleName(), "saveUserSetting");
+		} finally {
+			insert.close();
+		}
+		return 0l;
+	}
+	
+	public synchronized int calculateUsersPoints() {
+		SBLog.i(TAG, "calculateUserPoints()");
+		String sql = "SELECT points_value, points_timestamp FROM " + C.DB_TABLE_POINTS + " WHERE points_type = ? ORDER BY points_timestamp DESC";
+		Cursor cursor = null;
+		String cutoffDate = null;
+		int points = 0;
+		try {
+			
+			// Get most recent level_change info
+			cursor = _db.rawQuery(sql, new String[] { Integer.toString(C.POINTS_LEVEL_CHANGE) });
+			if (cursor.moveToFirst()) {
+				points = cursor.getInt(0);
+				cutoffDate = cursor.getString(1);
+			}
+			cursor.close();
+			
+			// Get all valid points
+			if (cutoffDate != null) {
+				String sql2 = "SELECT points_value FROM " + C.DB_TABLE_POINTS + " WHERE points_timestamp > ?";
+				cursor = _db.rawQuery(sql2, new String[] { cutoffDate });
+			} else {
+				String sql2 = "SELECT points_value FROM " + C.DB_TABLE_POINTS;
+				cursor = _db.rawQuery(sql2, null);
+			}	
+			while (cursor.moveToNext()) {
+				points += cursor.getInt(0);
+			}
+		
+		} catch (Exception ex) {
+			ErrorManager.manage(ex);
+			points = 0;
+		} finally {
+			if (cursor != null && !cursor.isClosed()) {
+				cursor.close();
+			}
+		}
+		return points;	
+	}
 	// READ ONLY METHODS //////////////////////////////////////////////////////
 
 	public boolean hasAccount() {
@@ -48,6 +137,57 @@ public class User implements Colleague {
 	
 	public String getAuth() {
 		return _auth;
+	}
+	
+	public HashMap<String, String> getUserSettings() {
+		// TODO: ensure that this is read-only
+		SBLog.i(TAG, "getUserSettings()");
+		if (_userSettingsAreStale) {
+			_userSettings = new HashMap<String, String>();
+			Cursor cursor = null;
+			try {
+				cursor = _db.query(C.DB_TABLE_USER_SETTINGS, null, null, null, null, null, null, null);
+				while (cursor.moveToNext()) {
+					_userSettings.put(cursor.getString(0), cursor.getString(1));
+				}
+				_userSettingsAreStale = false;
+			} catch (Exception ex) {
+				SBLog.e(TAG, "getUserSettings()");
+			} finally {
+				if (cursor != null && !cursor.isClosed()) {
+					cursor.close();
+				}
+			}
+		}
+		return _userSettings;
+	}
+	
+	public synchronized CellDensity getDensityAtCell(CellDensity cell) {
+		SBLog.i(TAG, "getDensityAtCell()");
+		CellDensity result = new CellDensity();
+		result.isSet = false;
+		String sql = "SELECT density, last_updated FROM " + C.DB_TABLE_DENSITY + " WHERE cell_x = ? AND cell_y = ?";
+		Cursor cursor = null;
+		try {
+			cursor = _db.rawQuery(sql, new String[] { Integer.toString(cell.cellX), Integer.toString(cell.cellY) });
+			if (cursor.moveToFirst()) {
+				String lastUpdated = cursor.getString(1);
+				long lastUpdatedMillisecs = ISO8601DateParser.parse(lastUpdated).getTime();
+				long diff = (new Date().getTime()) - lastUpdatedMillisecs;
+				if (diff < C.CONFIG_DENSITY_EXPIRATION) {
+					result.density = cursor.getDouble(0);
+					result.isSet = true;
+					return result;
+				}
+			}
+		} catch (Exception ex) {
+			Log.e(getClass().getSimpleName(), "getUserSettings");
+		} finally {
+			if (cursor != null && !cursor.isClosed()) {
+				cursor.close();
+			}
+		}
+		return result;
 	}
 	
 	/*
