@@ -18,7 +18,6 @@ public class LocationTracker implements LocationListener, Colleague {
 	private static final String TAG = "LocationTracker";
 	
 	private Mediator _m;
-	private ShoutbreakService _service;
 	private LocationManager _locationManager;
 	private Location _location;
 	private String _provider;
@@ -31,13 +30,11 @@ public class LocationTracker implements LocationListener, Colleague {
 
 	@Override
 	public void unsetMediator() {
-		_service = null;
 		_m = null;
 	}	
 	
-	public LocationTracker(ShoutbreakService service) {
-		_service = service;
-		_locationManager = (LocationManager) _service.getSystemService(Context.LOCATION_SERVICE);
+	public LocationTracker() {
+		_locationManager = (LocationManager)_m.getSystemService(Context.LOCATION_SERVICE);
 		//_location = _locationManager.getLastKnownLocation(_provider);
 		_criteria = new Criteria();
 		_criteria.setAccuracy(Criteria.ACCURACY_FINE);

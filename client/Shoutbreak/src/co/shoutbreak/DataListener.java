@@ -10,13 +10,11 @@ public class DataListener implements Colleague {
 	private static final String TAG = "DataListener";
 	
 	private Mediator _m;
-	private ShoutbreakService _service;
 	private TelephonyManager _telephonyManager;
 	
-	public DataListener(ShoutbreakService service) {
+	public DataListener() {
 		SBLog.i(TAG, "new DataListener()");
-		_service = service;
-		_telephonyManager = (TelephonyManager) _service.getSystemService(Context.TELEPHONY_SERVICE);
+		_telephonyManager = (TelephonyManager) _m.getSystemService(Context.TELEPHONY_SERVICE);
 		_telephonyManager.listen(_phoneStateListener, PhoneStateListener.LISTEN_DATA_CONNECTION_STATE);
 	}
 	
@@ -29,7 +27,6 @@ public class DataListener implements Colleague {
 	@Override
 	public void unsetMediator() {
 		SBLog.i(TAG, "unsetMediator()");
-		_service = null;
 		_m = null;	
 	}
 	

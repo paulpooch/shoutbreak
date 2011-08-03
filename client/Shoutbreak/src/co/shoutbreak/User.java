@@ -9,19 +9,44 @@ import android.content.SharedPreferences;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
 
-import co.shoutbreak.service.LocationTracker;
-import co.shoutbreak.service.ShoutbreakService;
-import co.shoutbreak.shared.utils.Hash;
-
-public class User implements Observer {
+public class User implements Colleague {
 	
 	// All Database stuff should go through User. Any writes should be
 	// synchronized.
 	
 	private static final String TAG = "User";
+	private Mediator _m;
+	private boolean _passwordExists; // no reason to put actual pw into memory
+	private String _uid;
 	
+	@Override
+	public void setMediator(Mediator mediator) {
+		_m = mediator;
+	}
+
+	@Override
+	public void unsetMediator() {
+		_m = null;
+	}
+	
+	public User() {
+		_passwordExists = false;
+	}
+	
+	// SYNCHRONIZED WRITE METHODS /////////////////////////////////////////////
+	
+	// READ ONLY METHODS //////////////////////////////////////////////////////
+
+	public boolean hasAccount() {
+		return _passwordExists;
+	}
+	
+	public String getUID() {
+		return _uid;
+	}
+	
+	/*
 	private ShoutbreakService _service;
-	
 	private TelephonyManager _tm;
 	private Database _db;
 	private CellDensity _cellDensity;
@@ -31,7 +56,7 @@ public class User implements Observer {
 	private boolean _levelUpOccured; //This means level up.
 	//private boolean _densityJustChanged;
 	private boolean _scoresJustReceived;
-	private String _uid;
+
 	private String _auth;
 	private boolean _passwordExists; // no reason to put actual pw into memory
 	private int _level;
@@ -160,9 +185,7 @@ public class User implements Observer {
 		_auth = pw + Hash.sha512(pw + nonce + _uid);		
 	}
 
-	public boolean hasAccount() {
-		return _passwordExists;
-	}
+
 
 	public synchronized void setPassword(String pw) {
 		// TODO: should we encrypt or obfuscate this or something?
@@ -203,9 +226,7 @@ public class User implements Observer {
 		initializePoints();
 	}
 	
-	public String getUID() {
-		return _uid;
-	}
+
 	
 	public int getLevel() {
 		return _level;
@@ -280,4 +301,6 @@ public class User implements Observer {
 		boolean val = settings.getBoolean(key, defaultReturnVal);
 		return val;
 	}
+	
+	*/
 }

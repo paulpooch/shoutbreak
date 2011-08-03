@@ -1,6 +1,9 @@
 package co.shoutbreak;
 
+import java.util.ArrayList;
+
 import android.content.Context;
+import android.os.Message;
 import android.widget.Toast;
 import co.shoutbreak.shared.C;
 import co.shoutbreak.shared.Flag;
@@ -13,11 +16,14 @@ public class Mediator {
 	// colleagues
 	private ShoutbreakService _service;
 	private Shoutbreak _ui;
+	private User _user;
+	private Inbox _inbox;
 	private PreferenceManager _preferences;
 	private Notifier _notifier;
 	private LocationTracker _location;
 	private DataListener _data;
 	private Database _db;
+	private PollingThreadLauncher _pollingThreadLauncher;
 	
 	// state flags
 	private Flag _isUIAlive = new Flag("_isUIAlive");
@@ -34,16 +40,19 @@ public class Mediator {
 		// add colleagues
 		_service = service;
 		_service.setMediator(this);
+		_user = new User();
+		_inbox = new Inbox();
 		_preferences = new PreferenceManager(_service.getSharedPreferences(C.PREFERENCE_FILE, Context.MODE_PRIVATE));
 		_preferences.setMediator(this);
 		_notifier = new Notifier(_service);
 		_notifier.setMediator(this);
-		_location = new LocationTracker(_service);
+		_location = new LocationTracker();
 		_location.setMediator(this);
-		_data = new DataListener(_service);
+		_data = new DataListener();
 		_data.setMediator(this);
 		_db = new Database(_service);
 		_db.setMediator(this);
+		_pollingThreadLauncher = new PollingThreadLauncher();
 		
 		// initialize state
 		_isLocationAvailable.set(_location.isLocationEnabled());
@@ -142,7 +151,7 @@ public class Mediator {
 		if (!_isPollingAlive.get() && _isLocationAvailable.get() && _isDataAvailable.get()) {
 			SBLog.i(TAG, "app fully functional");
 			_isPollingAlive.set(true);
-//			_service.startPolling();	
+			_pollingThreadLauncher.startPolling();
 		} else if (!_isLocationAvailable.get() || !_isDataAvailable.get()) {
 			if (!_isLocationAvailable.get()) {
 				SBLog.e(TAG, "unable to start service, location unavailable");
@@ -165,7 +174,7 @@ public class Mediator {
 		SBLog.i(TAG, "stopPolling()");
 		if (_isPollingAlive.get()) {
 			_isPollingAlive.set(false);
-//			_service.stopPolling();
+			_pollingThreadLauncher.stopPolling();
 		} else {
 			SBLog.i(TAG, "service is not polling, unable to call stopPolling()");
 		}
@@ -236,6 +245,43 @@ public class Mediator {
 			// TODO: filter all text going to server
 		}
 	}
+	
+	public Object getSystemService(String name) {
+		return _service.getSystemService(name);
+	}
+	
+	public void handlePollingResponse(Message message) {
+		if (_isPollingAlive.get()) {
+			_pollingThreadLauncher.spawnNextPollingThread(message);
+		}
+		// Else polling thread dies.
+	}
+	
+	public ThreadSafeMediator getAThreadSafeMediator() {
+		return new ThreadSafeMediator();
+	}
+	
+	public class ThreadSafeMediator {
+		// Methods of any other classes called from here should be synchronized.
+		
+		public ThreadSafeMediator() {
+			
+		}
+		
+		public boolean userHasAccount() {
+			return _user.hasAccount();
+		}
+		
+		public String getUserID() {
+			return _user.getUID();
+		}
+		
+		public ArrayList<String> getOpenShoutIDs() {
+			return _inbox.getOpenShoutIDs();
+		}
+		
+	}
+	
 }
 	/*
 
