@@ -10,6 +10,7 @@ import co.shoutbreak.Mediator.ThreadSafeMediator;
 import co.shoutbreak.http.HttpConnection;
 import co.shoutbreak.http.PostData;
 import co.shoutbreak.shared.C;
+import co.shoutbreak.shared.ErrorManager;
 import co.shoutbreak.shared.SBLog;
 
 import android.os.Handler;
@@ -103,10 +104,10 @@ public class ProtocolGateway {
 			}
 		};
 		CrossThreadPacket xPacket = (CrossThreadPacket)message.obj;
-		ArrayList<String> scoresToRequest = _safeM.getOpenShoutIDs();
+		ArrayList<String> scoresToRequest = _safeM.getOpenShoutIds();
 		PostData postData = new PostData();
 		postData.add(C.JSON_ACTION, C.JSON_ACTION_USER_PING);
-		postData.add(C.JSON_UID, _safeM.getUserID());
+		postData.add(C.JSON_UID, _safeM.getUserId());
 		postData.add(C.JSON_AUTH, _safeM.getAuth());
 		postData.add(C.JSON_LAT, Double.toString(_safeM.getLatitude()));
 		postData.add(C.JSON_LONG, Double.toString(_safeM.getLongitude()));
@@ -143,8 +144,9 @@ public class ProtocolGateway {
 		try {
 			if (xPacket.json.has(C.JSON_DENSITY)) {
 				double density = (double) xPacket.json.optDouble(C.JSON_DENSITY);
-				_user.saveDensity(density);
+				_safeM.saveDensity(density);
 				_user.fireUserEvent(UserEvent.DENSITY_CHANGE);
+				// TODO: UserEvent.DENSITY_CHANGE should be merged with _safeM.saveDensity();
 			}
 			if (xPacket.json.has(C.JSON_SHOUTS)) {
 				JSONArray shouts = xPacket.json.getJSONArray(C.JSON_SHOUTS);
@@ -155,22 +157,26 @@ public class ProtocolGateway {
 				}
 				xPacket.uiCode = C.UI_RECEIVE_SHOUTS;
 				_user.fireUserEvent(UserEvent.SHOUTS_RECEIVED);
+				// TODO: _safeM.receivedShouts();
 			}
 			if (xPacket.json.has(C.JSON_SCORES)) {
-				_user.setScoresJustReceived(true);
+				_safeM.setScoresJustReceived(true);
 				JSONArray scores = xPacket.json.getJSONArray(C.JSON_SCORES);
 				for (int i = 0; i < scores.length(); i++) {
 					JSONObject jsonScore = scores.getJSONObject(i);
 					_user.getInbox().updateScore(jsonScore);
+					// TODO: _safeM.updateScore(jsonScore);
 				}
 				_user.fireUserEvent(UserEvent.SCORES_CHANGE);
+				// TODO: merge this event with _safeM.updateScore(jsonScore)
+				
 			}
 			if (xPacket.json.has(C.JSON_LEVEL_CHANGE)) {
 				JSONObject levelInfo = xPacket.json.getJSONObject(C.JSON_LEVEL_CHANGE);				
 				int newLevel = (int) levelInfo.getLong(C.JSON_LEVEL);
 				int newPoints = (int) levelInfo.getLong(C.JSON_POINTS);
 				int nextLevelAt = (int) levelInfo.getLong(C.JSON_NEXT_LEVEL_AT);
-				_user.levelUp(newLevel, newPoints, nextLevelAt);
+				_safeM.levelUp(newLevel, newPoints, nextLevelAt);
 				_user.fireUserEvent(UserEvent.LEVEL_CHANGE);
 				_user.fireUserEvent(UserEvent.POINTS_CHANGE);
 			}
@@ -203,10 +209,10 @@ public class ProtocolGateway {
 		int shoutPower = xPacket.iArgs[0];
 		PostData postData = new PostData();
 		postData.add(C.JSON_ACTION, C.JSON_ACTION_SHOUT);
-		postData.add(C.JSON_UID, _user.getUID());
-		postData.add(C.JSON_AUTH, _user.getAuth());
-		postData.add(C.JSON_LAT, Double.toString(_user.getLatitude()));
-		postData.add(C.JSON_LONG, Double.toString(_user.getLongitude()));
+		postData.add(C.JSON_UID, _safeM.getUserId());
+		postData.add(C.JSON_AUTH, _safeM.getAuth());
+		postData.add(C.JSON_LAT, Double.toString(_safeM.getLatitude()));
+		postData.add(C.JSON_LONG, Double.toString(_safeM.getLongitude()));
 		postData.add(C.JSON_SHOUT_TEXT, shoutText);
 		postData.add(C.JSON_SHOUT_POWER, Integer.toString(shoutPower));
 		new HttpConnection(httpHandler).post(postData, xPacket);	
@@ -214,13 +220,13 @@ public class ProtocolGateway {
 	
 	public void vote(Message message) {
 		CrossThreadPacket xPacket = (CrossThreadPacket)message.obj;
-		final String shoutID = xPacket.sArgs[0];
+		final String shoutId = xPacket.sArgs[0];
 		final int vote = xPacket.iArgs[0];
 		Handler httpHandler = new Handler() {
 			public void handleMessage(Message message) {
 				switch (message.what) {
 					case C.HTTP_DID_SUCCEED: {
-						_user.getInbox().reflectVote(shoutID, vote);
+						_user.getInbox().reflectVote(shoutId, vote);
 						_user.fireUserEvent(UserEvent.VOTE_COMPLETE);
 						// Unless vote occurs in idle thread, we don't need to sendMessage.
 						//CrossThreadPacket xPacket = (CrossThreadPacket)message.obj;
@@ -232,9 +238,9 @@ public class ProtocolGateway {
 		};
 		PostData postData = new PostData();
 		postData.add(C.JSON_ACTION, C.JSON_ACTION_VOTE);
-		postData.add(C.JSON_UID, _user.getUID());
-		postData.add(C.JSON_AUTH, _user.getAuth());
-		postData.add(C.JSON_SHOUT_ID, shoutID);
+		postData.add(C.JSON_UID, _safeM.getUserId());
+		postData.add(C.JSON_AUTH, _safeM.getAuth());
+		postData.add(C.JSON_SHOUT_ID, shoutId);
 		postData.add(C.JSON_VOTE, Integer.toString(vote));
 		new HttpConnection(httpHandler).post(postData, xPacket);	
 	}
@@ -265,8 +271,8 @@ public class ProtocolGateway {
 							CrossThreadPacket xPacket = (CrossThreadPacket)message.obj;
 							String password = xPacket.json.getString(C.JSON_PW);
 							String uid = xPacket.sArgs[0];
-							_user.setUID(uid);
-							_user.setPassword(password);
+							_safeM.setUserId(uid);
+							_safeM.setPassword(password);
 							_user.fireUserEvent(UserEvent.ACCOUNT_CREATED);
 							_uiThreadHandler.sendMessage(Message.obtain(_uiThreadHandler, C.STATE_IDLE, xPacket));
 						} catch (JSONException ex) {
@@ -283,10 +289,10 @@ public class ProtocolGateway {
 			PostData postData = new PostData();
 			postData.add(C.JSON_ACTION, C.JSON_ACTION_CREATE_ACCOUNT);
 			postData.add(C.JSON_UID, tempUID);
-			postData.add(C.JSON_ANDROID_ID, _user.getAndroidId());
-			postData.add(C.JSON_DEVICE_ID, _user.getDeviceId());
-			postData.add(C.JSON_PHONE_NUM, _user.getPhoneNumber());
-			postData.add(C.JSON_CARRIER_NAME, _user.getNetworkOperator());
+			postData.add(C.JSON_ANDROID_ID, _safeM.getAndroidId());
+			postData.add(C.JSON_DEVICE_ID, _safeM.getDeviceId());
+			postData.add(C.JSON_PHONE_NUM, _safeM.getPhoneNumber());
+			postData.add(C.JSON_CARRIER_NAME, _safeM.getNetworkOperator());
 			xPacket.sArgs = new String[] { tempUID };
 			new HttpConnection(httpHandler).post(postData, xPacket);
 		} catch (JSONException ex) {
@@ -298,11 +304,10 @@ public class ProtocolGateway {
 		try {
 			CrossThreadPacket xPacket = (CrossThreadPacket)message.obj;
 			String nonce = xPacket.json.getString(C.JSON_NONCE);
-			_user.updateAuth(nonce);
+			_safeM.updateAuth(nonce);
 			ping(message);
 		} catch (JSONException ex) {
 			ErrorManager.manage(ex);
 		}
 	}
-		
 }

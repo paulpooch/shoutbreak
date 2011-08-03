@@ -130,23 +130,6 @@ public class Inbox implements Colleague {
 		return result;
 	}
 	
-	public synchronized Long savePoints(int pointsType, int pointsValue) {
-		SBLog.i(TAG, "savePoints()");
-		String sql = "INSERT INTO " + C.DB_TABLE_POINTS + " (points_type, points_value, points_timestamp) VALUES (?, ?, ?)";
-		SQLiteStatement insert = this._db.compileStatement(sql);
-		insert.bindLong(1, pointsType);
-		insert.bindLong(2, pointsValue);
-		insert.bindString(3, Database.getDateAsISO8601String(new Date()));
-		try {
-			return insert.executeInsert();
-		} catch (Exception ex) {
-			ErrorManager.manage(ex);
-		} finally {
-			insert.close();
-		}
-		return 0l;
-	}
-	
 	public synchronized Shout getShout(String shoutID) {
 		SBLog.i(TAG, "getShout()");
 		String sql = "SELECT * FROM " + C.DB_TABLE_SHOUTS + " WHERE shout_id = ?";

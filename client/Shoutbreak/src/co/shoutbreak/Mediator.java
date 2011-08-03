@@ -2,6 +2,8 @@ package co.shoutbreak;
 
 import java.util.ArrayList;
 
+import org.json.JSONObject;
+
 import android.content.Context;
 import android.os.Message;
 import android.widget.Toast;
@@ -296,11 +298,11 @@ public class Mediator {
 			return _user.hasAccount();
 		}
 		
-		public String getUserID() {
-			return _user.getUID();
+		public String getUserId() {
+			return _user.getUserId();
 		}
 		
-		public ArrayList<String> getOpenShoutIDs() {
+		public ArrayList<String> getOpenShoutIds() {
 			return _inbox.getOpenShoutIDs();
 		}
 		
@@ -326,6 +328,64 @@ public class Mediator {
 		
 		public int getLevel() {
 			return _user.getLevel();
+		}
+		
+		public void saveDensity(double density) {
+			_user.saveDensity(density);
+		}
+		
+		public void setPassword(String pw) {
+			_user.setPassword(pw);
+		}
+
+		public void setUserId(String uid) {
+			_user.setUserId(uid);
+		}
+		
+		public void updateAuth(String nonce) {
+			_user.updateAuth(nonce);
+		}
+		
+		public void setShoutsJustReceived(int i) {
+			_user.setShoutsJustReceived(i);
+		}
+		
+		public void setScoresJustReceived(boolean b) {
+			_user.setScoresJustReceived(b);
+		}
+		
+		public void levelUp(int newLevel, int newPoints, int nextLevelAt) {
+			_user.levelUp(newLevel, newPoints, nextLevelAt);
+		}
+		
+		/* TODO: events that need to be tracked down from old code below */
+		
+		public void receivedShouts() {
+			// TODO: track down all UserEvent.SHOUTS_RECEIVED events
+			//       and add them here
+		}
+		
+		public void updateScore(JSONObject jsonScore) {
+			// TODO: track down all UserEvent.SCORES_CHANGE events
+			//       and add them here
+		}
+		
+		
+		
+		public final String getAndroidId() {
+			return _device.getAndroidId();
+		}
+		
+		public final String getDeviceId() {
+			return _device.getDeviceId();
+		}
+		
+		public final String getPhoneNumber() {
+			return _device.getPhoneNumber();
+		}
+		
+		public final String getNetworkOperator() {
+			return _device.getNetworkOperator();
 		}
 	}
 }

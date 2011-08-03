@@ -9,12 +9,12 @@ public class DeviceInformation implements Colleague {
 	public static final String TAG = "DeviceInformation";
 	
 	private Mediator _m;
-	private ShoutbreakService _service;
 	private TelephonyManager _tm;
+	private String _androidId;
 	
 	public DeviceInformation(ShoutbreakService service) {
-		_service = service;
 		_tm = (TelephonyManager) service.getSystemService(Context.TELEPHONY_SERVICE);
+		_androidId = Settings.Secure.getString(service.getContentResolver(), Settings.Secure.ANDROID_ID);
 	}
 
 	@Override
@@ -25,23 +25,22 @@ public class DeviceInformation implements Colleague {
 	@Override
 	public void unsetMediator() {
 		_tm = null;
-		_service = null;
 		_m = null;		
 	}
 	
-	public String getDeviceId() {
+	public final String getDeviceId() {
 		return _tm.getDeviceId();
 	}
 
-	public String getPhoneNumber() {
+	public final String getPhoneNumber() {
 		return _tm.getLine1Number();
 	}
 
-	public String getNetworkOperator() {
+	public final String getNetworkOperator() {
 		return _tm.getNetworkOperatorName();
 	}
 
-	public String getAndroidId() {
-		return Settings.Secure.getString(_service.getContentResolver(), Settings.Secure.ANDROID_ID);
+	public final String getAndroidId() {
+		return _androidId;
 	}
 }

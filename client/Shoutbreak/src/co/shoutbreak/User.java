@@ -8,6 +8,7 @@ import java.util.Observer;
 import co.shoutbreak.shared.C;
 import co.shoutbreak.shared.CellDensity;
 import co.shoutbreak.shared.ErrorManager;
+import co.shoutbreak.shared.Hash;
 import co.shoutbreak.shared.ISO8601DateParser;
 import co.shoutbreak.shared.SBLog;
 
@@ -32,9 +33,14 @@ public class User implements Colleague {
 	private boolean _passwordExists; // no reason to put actual pw into memory
 	private boolean _userSettingsAreStale;
 	private boolean _levelUpOccured;
+	private boolean _scoresJustReceived;
 	private String _uid;
 	private String _auth;
 	private int _level;
+	private int _points;
+	private int _shoutsJustReceived;
+	private int _nextLevelAt;
+	
 	
 	@Override
 	public void setMediator(Mediator mediator) {
@@ -157,6 +163,28 @@ public class User implements Colleague {
 		return result;
 	}
 	
+	public synchronized HashMap<String, String> getUserSettings() {
+		SBLog.i(TAG, "getUserSettings()");
+		if (_userSettingsAreStale) {
+			_userSettings = new HashMap<String, String>();
+			Cursor cursor = null;
+			try {
+				cursor = _db.query(C.DB_TABLE_USER_SETTINGS, null, null, null, null, null, null, null);
+				while (cursor.moveToNext()) {
+					_userSettings.put(cursor.getString(0), cursor.getString(1));
+				}
+				_userSettingsAreStale = false;
+			} catch (Exception ex) {
+				SBLog.e(TAG, "getUserSettings()");
+			} finally {
+				if (cursor != null && !cursor.isClosed()) {
+					cursor.close();
+				}
+			}
+		}
+		return _userSettings;
+	}
+	
 	public synchronized CellDensity getCellDensity() {
 		SBLog.i(TAG, "getCellDensity()");
 		if (_cellDensity == null) {
@@ -180,41 +208,112 @@ public class User implements Colleague {
 		}
 		return _cellDensity;
 	}
+	
+	public synchronized void saveDensity(double density) {
+		CellDensity tempCellDensity = _m.getCurrentCell();
+		_cellDensity.cellX = tempCellDensity.cellX;
+		_cellDensity.cellY = tempCellDensity.cellY;
+		_cellDensity.density = density;
+		saveCellDensity(_cellDensity);
+		_cellDensity.isSet = true;
+		//setDensityJustChanged(true);
+	}
+	
+	public synchronized void setPassword(String pw) {
+		// TODO: should we encrypt or obfuscate this or something?
+		// plaintext in db safe?
+		saveUserSetting(C.KEY_USER_PW, pw);
+		_passwordExists = true;
+	}
+
+	public synchronized void setUserId(String uid) {
+		saveUserSetting(C.KEY_USER_ID, uid);
+		_uid = uid;
+	}
+	
+	public synchronized void updateAuth(String nonce) {
+		String pw = "";
+		HashMap<String, String> userSettings = getUserSettings();
+		if (userSettings.containsKey(C.KEY_USER_PW)) {
+			pw = userSettings.get(C.KEY_USER_PW);
+		}
+		// $auth = sha1($uid . $pw . $nonce);
+		//_auth = Hash.sha1(_uid + pw + nonce);	
+		_auth = pw + Hash.sha512(pw + nonce + _uid);		
+	}
+	
+	public synchronized void setShoutsJustReceived(int i) {
+		_shoutsJustReceived = i;
+	}
+	
+	public synchronized void setScoresJustReceived(boolean b) {
+		_scoresJustReceived = b;
+	}
+	
+	public synchronized void levelUp(int newLevel, int newPoints, int nextLevelAt) {
+		setLevel(newLevel);
+		setNextLevelAt(nextLevelAt);
+		setPoints(newPoints);
+		_levelUpOccured = true;
+	}
+	
+	private synchronized void setLevel(int level) {
+		String sLevel = Integer.toString(level);
+		saveUserSetting(C.KEY_USER_LEVEL, sLevel);
+		_level = level;
+	}
+	
+	private synchronized void setNextLevelAt(int nextLevelAt) {
+		String sNextLevelAt = Integer.toString(nextLevelAt);
+		saveUserSetting(C.KEY_USER_NEXT_LEVEL_AT, sNextLevelAt);
+		_nextLevelAt = nextLevelAt;
+	}
+	
+	// TODO: implement this for when level changes
+	private synchronized void setPoints(int points) {
+		//String sPoints = Integer.toString(points);
+		//_db.saveUserSetting(C.KEY_USER_POINTS, sPoints);
+		savePoints(C.POINTS_LEVEL_CHANGE, points);
+		initializePoints();
+	}
+	
+	public synchronized void savePoints(int amount) {
+		savePoints(C.POINTS_SHOUT, amount);
+		_points += amount;
+	}
+	
+	public synchronized Long savePoints(int pointsType, int pointsValue) {
+		SBLog.i(TAG, "savePoints()");
+		String sql = "INSERT INTO " + C.DB_TABLE_POINTS + " (points_type, points_value, points_timestamp) VALUES (?, ?, ?)";
+		SQLiteStatement insert = this._db.compileStatement(sql);
+		insert.bindLong(1, pointsType);
+		insert.bindLong(2, pointsValue);
+		insert.bindString(3, Database.getDateAsISO8601String(new Date()));
+		try {
+			return insert.executeInsert();
+		} catch (Exception ex) {
+			ErrorManager.manage(ex);
+		} finally {
+			insert.close();
+		}
+		return 0l;
+	}
+	
+	private synchronized void initializePoints() {
+		_points = calculateUsersPoints();
+	}
 	// READ ONLY METHODS //////////////////////////////////////////////////////
 
 	public boolean hasAccount() {
 		return _passwordExists;
 	}
 	
-	public String getUID() {
+	public String getUserId() {
 		return _uid;
 	}
 	
 	public String getAuth() {
 		return _auth;
-	}
-	
-	public HashMap<String, String> getUserSettings() {
-		// TODO: is this read-only?
-		SBLog.i(TAG, "getUserSettings()");
-		if (_userSettingsAreStale) {
-			_userSettings = new HashMap<String, String>();
-			Cursor cursor = null;
-			try {
-				cursor = _db.query(C.DB_TABLE_USER_SETTINGS, null, null, null, null, null, null, null);
-				while (cursor.moveToNext()) {
-					_userSettings.put(cursor.getString(0), cursor.getString(1));
-				}
-				_userSettingsAreStale = false;
-			} catch (Exception ex) {
-				SBLog.e(TAG, "getUserSettings()");
-			} finally {
-				if (cursor != null && !cursor.isClosed()) {
-					cursor.close();
-				}
-			}
-		}
-		return _userSettings;
 	}
 	
 	public boolean getLevelUpOccured() {
@@ -281,30 +380,12 @@ public class User implements Colleague {
 		
 	}
 	
-	public synchronized void saveDensity(double density) {
-		CellDensity tempCellDensity = _locationTracker.getCurrentCell();
-		_cellDensity.cellX = tempCellDensity.cellX;
-		_cellDensity.cellY = tempCellDensity.cellY;
-		_cellDensity.density = density;
-		_db.saveCellDensity(_cellDensity);
-		_cellDensity.isSet = true;
-		//setDensityJustChanged(true);
-	}
-	
 	public LocationTracker getLocationTracker() {
 		return _locationTracker;
 	}
 	
-	public void setShoutsJustReceived(int i) {
-		_shoutsJustReceived = i;
-	}
-	
 	public int getShoutsJustReceived() {
 		return _shoutsJustReceived;
-	}
-	
-	public void setScoresJustReceived(boolean b) {
-		_scoresJustReceived = b;
 	}
 	
 	public boolean getScoresJustReceived() {
@@ -326,70 +407,9 @@ public class User implements Colleague {
 	public String getAuth() {
 		return _auth;
 	}
-
-	public synchronized void updateAuth(String nonce) {
-		String pw = "";
-		HashMap<String, String> userSettings = _db.getUserSettings();
-		if (userSettings.containsKey(C.KEY_USER_PW)) {
-			pw = userSettings.get(C.KEY_USER_PW);
-		}
-		// $auth = sha1($uid . $pw . $nonce);
-		//_auth = Hash.sha1(_uid + pw + nonce);	
-		_auth = pw + Hash.sha512(pw + nonce + _uid);		
-	}
-
-
-
-	public synchronized void setPassword(String pw) {
-		// TODO: should we encrypt or obfuscate this or something?
-		// plaintext in db safe?
-		_db.saveUserSetting(C.KEY_USER_PW, pw);
-		_passwordExists = true;
-	}
-
-	public synchronized void setUID(String uid) {
-		_db.saveUserSetting(C.KEY_USER_ID, uid);
-		_uid = uid;
-	}
-	
-	public synchronized void levelUp(int newLevel, int newPoints, int nextLevelAt) {
-		setLevel(newLevel);
-		setNextLevelAt(nextLevelAt);
-		setPoints(newPoints);
-		_levelUpOccured = true;
-	}
-	
-	private synchronized void setLevel(int level) {
-		String sLevel = Integer.toString(level);
-		_db.saveUserSetting(C.KEY_USER_LEVEL, sLevel);
-		_level = level;
-	}
-	
-	private synchronized void setNextLevelAt(int nextLevelAt) {
-		String sNextLevelAt = Integer.toString(nextLevelAt);
-		_db.saveUserSetting(C.KEY_USER_NEXT_LEVEL_AT, sNextLevelAt);
-		_nextLevelAt = nextLevelAt;
-	}
-	
-	// TODO: implement this for when level changes
-	private synchronized void setPoints(int points) {
-		//String sPoints = Integer.toString(points);
-		//_db.saveUserSetting(C.KEY_USER_POINTS, sPoints);
-		_db.savePoints(C.POINTS_LEVEL_CHANGE, points);
-		initializePoints();
-	}
-	
-	public synchronized void savePoints(int amount) {
-		_db.savePoints(C.POINTS_SHOUT, amount);
-		_points += amount;
-	}
 	
 	public int getPoints() {
 		return _points;
-	}
-	
-	private synchronized void initializePoints() {
-		_points = _db.calculateUsersPoints();
 	}
 	
 	public int getNextLevelAt() {
