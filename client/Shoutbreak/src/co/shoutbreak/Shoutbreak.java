@@ -34,7 +34,6 @@ public class Shoutbreak extends MapActivity implements Colleague {
 	private Flag _isComposeShowing = new Flag("_isComposeShowing");
 	private Flag _isInboxShowing = new Flag("_isInboxShowing");
 	private Flag _isProfileShowing = new Flag("_isProfileShowing");
-	private Flag _isMapInitialized = new Flag("_isMapInitialized");
 	
 	private Mediator _m;
 	private Intent _serviceIntent;
@@ -51,15 +50,13 @@ public class Shoutbreak extends MapActivity implements Colleague {
 	private Animation _noticeShowText;
 	
 	private CustomMapView _map;
+	private UserLocationOverlay _overlay;
 	
     @Override
     public void onCreate(Bundle extras) {
     	SBLog.i(TAG, "onCreate()");
     	super.onCreate(extras);
         setContentView(R.layout.main);
-        
-        // intialized flags
-        _isMapInitialized.set(false);
         
 		// register button listeners
 		_composeTab = (ImageButton) findViewById(R.id.composeTab);
@@ -83,7 +80,6 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		bindService(_serviceIntent, _serviceConnection, Context.BIND_AUTO_CREATE);
     }
 
-	@Override
 	public void setMediator(Mediator mediator) {
 		SBLog.i(TAG, "setMediator()");
 		_m = mediator;
@@ -226,29 +222,6 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		_isComposeShowing.set(true);
 		_isInboxShowing.set(false);
 		_isProfileShowing.set(false);
-		if (!_isMapInitialized.get()) {
-			_map = (CustomMapView) findViewById(R.id.cmvMap);
-			UserLocationOverlay userLocationOverlay = new UserLocationOverlay(Shoutbreak.this, _map);
-			if (_map.getOverlays().size() == 0) {
-				_map.getOverlays().add(userLocationOverlay);
-			}
-			MapController mapController = _map.getController();
-			mapController.setZoom(C.DEFAULT_ZOOM_LEVEL);
-			_map.setClickable(true);
-			_map.setEnabled(true);
-			_map.setUserLocationOverlay(userLocationOverlay);
-			_map.postInvalidate();
-			
-			// TODO: remove this. called when 'on/off' switch is clicked
-			//_userLocationOverlay.runOnFirstFix(new Runnable() {
-			//	public void run() {
-			//		GeoPoint loc = _userLocationOverlay.getMyLocation();
-			//		_mapController.animateTo(loc);
-			//	}
-			//});
-			userLocationOverlay.enableMyLocation();
-			_isMapInitialized.set(true);
-		}
 		_composeTab.setImageResource(R.drawable.tab_shouting_on);
 		_inboxTab.setImageResource(R.drawable.tab_inbox);
 		_profileTab.setImageResource(R.drawable.tab_user);
@@ -316,6 +289,38 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		}
 		Toast.makeText(Shoutbreak.this, text, Toast.LENGTH_SHORT).show();
 	}
+	
+	public void enableMapAndOverlay() {
+		// TODO: just threw this together, not sure if it works
+		if (_map == null) {
+			_map = (CustomMapView) findViewById(R.id.cmvMap);
+		}
+		if (_overlay == null) {
+			_overlay = new UserLocationOverlay(Shoutbreak.this, _map);
+		}
+		if (_map.getOverlays().size() == 0) {
+			_map.getOverlays().add(_overlay);
+		}
+		MapController mapController = _map.getController();
+		mapController.setZoom(C.DEFAULT_ZOOM_LEVEL);
+		_map.setClickable(true);
+		_map.setEnabled(true);
+		_map.setUserLocationOverlay(_overlay);
+		_map.postInvalidate();
+		
+		// TODO: remove this. called when 'on/off' switch is clicked
+		//_userLocationOverlay.runOnFirstFix(new Runnable() {
+		//	public void run() {
+		//		GeoPoint loc = _userLocationOverlay.getMyLocation();
+		//		_mapController.animateTo(loc);
+		//	}
+		//});
+		_overlay.enableMyLocation();
+	}
+	
+	public void disableMapAndOverlay() {
+		
+	}
 
 	public void setTitleBarText(String text) {
 		SBLog.i(TAG, "setTitleBarText()");
@@ -336,7 +341,13 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		}
 	}
 	
-	public void handleLevelUpEvent(int newLevel) {
+	public void handleDensityChangeEvent(double newDensity, int level) {
+		_overlay.handleDensityChangeEvent(newDensity, level);
+	}
+	
+	
+	public void handleLevelUpEvent(double cellDensity, int newLevel) {
+		_overlay.handleLevelUpEvent(cellDensity, newLevel);
 		giveNotice("you leveled up to level " + newLevel + " !\nshoutreach grew +" + C.CONFIG_PEOPLE_PER_LEVEL + " people");
 	}
 	

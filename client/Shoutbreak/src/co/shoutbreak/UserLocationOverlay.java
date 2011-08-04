@@ -22,11 +22,10 @@ import com.google.android.maps.MyLocationOverlay;
 //If this crashes DroidX, use FixedMyLocationOverlay
 //http://stackoverflow.com/questions/753793/how-can-i-use-a-custom-bitmap-for-the-you-are-here-point-in-a-mylocationoverlay
 //http://www.gitorious.net/android-maps-api/android-maps-api/blobs/42614538ffda1a6985c398933a85fcd9afc752ee/src/com/google/android/maps/MyLocationOverlay.java
-public class UserLocationOverlay extends MyLocationOverlay implements Colleague {
+public class UserLocationOverlay extends MyLocationOverlay {
 	
 	private static final String TAG = "UserLocationOverlay";
 
-	private Mediator _m;
 	private Shoutbreak _ui;
 	private Canvas _canvas;
 	private CustomMapView _map;
@@ -118,10 +117,9 @@ public class UserLocationOverlay extends MyLocationOverlay implements Colleague 
 	//	// _baseRadiusMeters = (float) Math.sqrt(people / (_density * Math.PI));
 	//}
 
-	public UserLocationOverlay(Mediator mediator, Shoutbreak ui, MapView map) {
+	public UserLocationOverlay(Shoutbreak ui, MapView map) {
 		super(ui, map);
 		SBLog.i(TAG, "new UserLocationOverlay()");
-		_m = mediator;
 		_ui = ui;		
 		_baseRadiusPx = -1;
 		_baseRadiusMeters = 0;
@@ -144,13 +142,6 @@ public class UserLocationOverlay extends MyLocationOverlay implements Colleague 
 		_resizeIconSize = new Point(resizeBitmap.getWidth(), resizeBitmap.getHeight());
 		_resizeIconLocation = new Point();
 		_resizeIcon = Bitmap.createBitmap(resizeBitmap, 0, 0, _resizeIconSize.x, _resizeIconSize.y);
-	}
-
-	@Override
-	public void unsetMediator() {
-		SBLog.i(TAG, "unsetMediator()");
-		_ui = null;
-		_m = null;		
 	}
 
 	@Override 
@@ -297,7 +288,7 @@ public class UserLocationOverlay extends MyLocationOverlay implements Colleague 
 	
 	public int getCurrentPower() {
 		SBLog.i(TAG, "getCurrentPower()");
-		return 1; // TODO: return User.calculatePower(_peopleCount);
+		return User.calculatePower(_peopleCount);
 	}
 
 	// distance math if we need it

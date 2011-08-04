@@ -349,6 +349,9 @@ public class User implements Colleague {
 		return _points;
 	}
 	
+	public static int calculatePower(int people) {
+		return (int)Math.ceil((float)people / (float)C.CONFIG_PEOPLE_PER_LEVEL);
+	}
 	/*
 	private ShoutbreakService _service;
 	private TelephonyManager _tm;
@@ -445,10 +448,6 @@ public class User implements Colleague {
 		double area = maxPeople / density;
 		float radius = (float) Math.sqrt(area / Math.PI);
 		return radius;
-	}
-	
-	public static int calculatePower(int people) {
-		return (int)Math.ceil((float)people / (float)C.CONFIG_PEOPLE_PER_LEVEL);
 	}
 
 	public static void setBooleanPreference(Context context, String key, boolean val) {

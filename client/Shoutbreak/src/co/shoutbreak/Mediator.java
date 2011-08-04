@@ -29,7 +29,6 @@ public class Mediator {
 	private DataListener _data;
 	private Database _db;
 	private ThreadLauncher _threadLauncher;
-	private UserLocationOverlay _userLocationOverlay;
 	private InboxListViewAdapter _inboxListViewAdapter;
 	
 	// state flags
@@ -55,7 +54,6 @@ public class Mediator {
 		_user = new User(this, _db);
 		_inbox = new Inbox(this, _db);
 		_threadLauncher = new ThreadLauncher(this);
-		_userLocationOverlay = new UserLocationOverlay();
 		
 		// initialize state
 		_isLocationAvailable.set(_location.isLocationEnabled());
@@ -206,8 +204,8 @@ public class Mediator {
 	public void onLocationEnabled() {
 		SBLog.i(TAG, "onLocationEnabled()");
 		_isLocationAvailable.set(true);
-		if (_isUIAlive.get()) {
-
+		if (_isUIAlive.get() && _isDataAvailable.get()) {
+			_ui.enableMapAndOverlay();
 		}
 	}
 	
@@ -217,14 +215,15 @@ public class Mediator {
 		stopPolling();
 		if (_isUIAlive.get()) {
 			_ui.onLocationDisabled();
+			_ui.disableMapAndOverlay();
 		}
 	}
 	
 	public void onDataEnabled() {
 		SBLog.i(TAG, "onDataEnabled()");
 		_isDataAvailable.set(true);
-		if (_isUIAlive.get()) {
-			_ui.onDataDisabled();
+		if (_isUIAlive.get() && _isLocationAvailable.get()) {
+			_ui.enableMapAndOverlay();
 		}
 	}
 	
@@ -233,7 +232,8 @@ public class Mediator {
 		_isDataAvailable.set(false);
 		stopPolling();
 		if (_isUIAlive.get()) {
-			
+			_ui.onDataDisabled();
+			_ui.disableMapAndOverlay();
 		}
 	}
 	
@@ -313,7 +313,7 @@ public class Mediator {
 		public void densityChangeEvent(double density) {
 			// Note: The order in these matters.
 			_user.handleDensityChangeEvent(density);
-			_userLocationOverlay.handleDensityChangeEvent(density, _user.getLevel());
+			_ui.handleDensityChangeEvent(density, _user.getLevel());
 		}
 	
 		public void shoutsReceivedEvent(JSONArray shouts) {		
@@ -330,9 +330,8 @@ public class Mediator {
 			
 		public void levelUpEvent(JSONObject levelInfo) {
 			_user.handleLevelUpEvent(levelInfo);
-			_ui.handleLevelUpEvent(_user.getLevel());
+			_ui.handleLevelUpEvent(_user.getCellDensity().density, _user.getLevel());
 			_ui.handlePointsChangeEvent(_user.getPoints());
-			_userLocationOverlay.handleLevelUpEvent(_user.getCellDensity().density, _user.getLevel());
 		}
 		
 		public void shoutSentEvent() {
