@@ -1,5 +1,7 @@
 package co.shoutbreak;
 
+import org.json.JSONArray;
+
 import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapController;
 
@@ -314,4 +316,26 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 		imm.hideSoftInputFromWindow(_textbox.getWindowToken(), 0);
 	}
+	
+	public void handleShoutsReceivedEvent(int newShouts) {
+		if (newShouts > 0) {
+			String pluralShout = "shout" + (newShouts > 1 ? "s" : "");
+			String notice = "just heard " + newShouts + " new " + pluralShout;
+			giveNotice(notice);
+		}
+	}
+	
+	public void handleLevelUpEvent(int newLevel) {
+		giveNotice("you leveled up to level " + newLevel + " !\nshoutreach grew +" + C.CONFIG_PEOPLE_PER_LEVEL + " people");
+	}
+	
+	public void handlePointsChangeEvent(int newPoints) {
+		// TODO: something probably should be updated... stats page?
+	}
+	
+	public void handleShoutSentEvent() {
+		giveNotice("shout sent");
+		_cShoutText.setText("");
+	}
+	
 }

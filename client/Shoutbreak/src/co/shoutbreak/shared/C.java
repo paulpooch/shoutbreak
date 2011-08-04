@@ -105,6 +105,8 @@ public class C {
 	
 	public static final int SHOUT_STATE_NEW = 1;
 	public static final int SHOUT_STATE_READ = 0;
+	public static final int SHOUT_VOTE_UP = 1;
+	public static final int SHOUT_VOTE_DOWN = -1;	
 	
 	// ALARM MANAGER //////////////////////////////////////////////////////////
 	public static final String ALARM_START_FROM_UI = "start_from_ui";

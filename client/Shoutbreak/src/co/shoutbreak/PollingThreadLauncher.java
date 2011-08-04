@@ -24,7 +24,6 @@ public class PollingThreadLauncher implements Colleague {
 	public void spawnNextPollingThread(Message message) {
 		
 		CrossThreadPacket oldXPacket = (CrossThreadPacket) message.obj;
-		int oldUiCode = oldXPacket.uiCode;
 		int oldThreadPurpose = oldXPacket.purpose;
 
 		// We need to re-create a new Message object. The old one falls out of scope.
@@ -40,21 +39,6 @@ public class PollingThreadLauncher implements Colleague {
 			newXPacket.purpose = C.PURPOSE_LOOP_FROM_UI;
 		}
 		newMessage.obj = newXPacket;
-
-		// This should probably not exist when we're done.
-		// Anything to do on UI?
-		switch (oldUiCode) {
-			/*
-			case C.UI_RECEIVE_SHOUTS: {
-				int newShouts = _user.getShoutsJustReceived();
-				if (newShouts > 0) {
-					String pluralShout = "shout" + (newShouts > 1 ? "s" : "");
-					giveStatusBarNotification(newShouts + " " + pluralShout + " received", "Shoutbreak", "you have " + newShouts + " new " + pluralShout);
-				}
-				break;
-			}
-			*/
-		}
 
 		// Do we return to Logic?
 		switch (oldThreadPurpose) {

@@ -59,6 +59,26 @@ public class UserLocationOverlay extends MyLocationOverlay implements Colleague 
 	private int _latRadiusLatForPeopleCount;
 	private int _peopleCount;
 
+	public void handleDensityChangeEvent(double newDensity, int newLevel) {
+		handleRadiusChangeEvent(newDensity, newLevel);
+	}
+	
+	public void handleLevelUpEvent(double newDensity, int newLevel) {
+		handleRadiusChangeEvent(newDensity, newLevel);
+	}
+	
+	private void handleRadiusChangeEvent(double newDensity, int newLevel) {
+		_density = newDensity;
+		_baseRadiusMeters = User.calculateRadius(newLevel, newDensity);
+		_calibrateZoomLevelForRadiusSize = true;
+    	_baseRadiusPxIsWrong = true;
+    	_resizeAdjustmentPx = 0;
+    	// this calls draw() immediately rather than wait for next interval
+    	//if (_canvas != null && _mapView != null) {
+    		//_mapView.draw(_canvas);
+    	//}	
+	}
+	
 	/* TODO: not sure what to do with this
 	public void update(Observable observable, Object data) {
 		/* TODO: not sure what to do with this

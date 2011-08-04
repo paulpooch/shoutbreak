@@ -144,40 +144,19 @@ public class ProtocolGateway {
 		try {
 			if (xPacket.json.has(C.JSON_DENSITY)) {
 				double density = (double) xPacket.json.optDouble(C.JSON_DENSITY);
-				_safeM.saveDensity(density);
-				_user.fireUserEvent(UserEvent.DENSITY_CHANGE);
-				// TODO: UserEvent.DENSITY_CHANGE should be merged with _safeM.saveDensity();
+				_safeM.densityChangeEvent(density);
 			}
 			if (xPacket.json.has(C.JSON_SHOUTS)) {
 				JSONArray shouts = xPacket.json.getJSONArray(C.JSON_SHOUTS);
-				_safeM.setShoutsJustReceived(shouts.length());
-				for (int i = 0; i < shouts.length(); i++) {
-					JSONObject jsonShout = shouts.getJSONObject(i);
-					_safeM.addShout(jsonShout); // replaces: _user.getInbox().addShout(jsonShout);
-				}
-				xPacket.uiCode = C.UI_RECEIVE_SHOUTS;
-				_user.fireUserEvent(UserEvent.SHOUTS_RECEIVED);
-				// TODO: _safeM.receivedShouts();
+				_safeM.shoutsReceivedEvent(shouts);
 			}
 			if (xPacket.json.has(C.JSON_SCORES)) {
-				_safeM.setScoresJustReceived(true);
 				JSONArray scores = xPacket.json.getJSONArray(C.JSON_SCORES);
-				for (int i = 0; i < scores.length(); i++) {
-					JSONObject jsonScore = scores.getJSONObject(i);
-					_safeM.updateScore(jsonScore); // replaces: _user.getInbox().updateScore(jsonScore);
-				}
-				_user.fireUserEvent(UserEvent.SCORES_CHANGE);
-				// TODO: merge this event with _safeM.updateScore(jsonScore)
-				
+				_safeM.scoresReceivedEvent(scores);
 			}
 			if (xPacket.json.has(C.JSON_LEVEL_CHANGE)) {
-				JSONObject levelInfo = xPacket.json.getJSONObject(C.JSON_LEVEL_CHANGE);				
-				int newLevel = (int) levelInfo.getLong(C.JSON_LEVEL);
-				int newPoints = (int) levelInfo.getLong(C.JSON_POINTS);
-				int nextLevelAt = (int) levelInfo.getLong(C.JSON_NEXT_LEVEL_AT);
-				_safeM.levelUp(newLevel, newPoints, nextLevelAt); // TODO: _safeM.levelUp() should call level and point change methods
-				_user.fireUserEvent(UserEvent.LEVEL_CHANGE);
-				_user.fireUserEvent(UserEvent.POINTS_CHANGE);
+				JSONObject levelInfo = xPacket.json.getJSONObject(C.JSON_LEVEL_CHANGE);
+				_safeM.levelUpEvent(levelInfo);
 			}
 			if (xPacket.purpose == C.PURPOSE_LOOP_FROM_UI) {
 				xPacket.purpose = C.PURPOSE_LOOP_FROM_UI_DELAYED;
@@ -194,7 +173,7 @@ public class ProtocolGateway {
 			public void handleMessage(Message message) {
 				switch (message.what) {
 					case C.HTTP_DID_SUCCEED: {
-						_user.fireUserEvent(UserEvent.SHOUT_SENT);				
+						_safeM.shoutSentEvent();
 						// Unless shout occurs in idle thread, we don't need to sendMessage.
 						//CrossThreadPacket xPacket = (CrossThreadPacket)message.obj;
 						//_uiThreadHandler.sendMessage(Message.obtain(_uiThreadHandler, C.STATE_IDLE, xPacket)); // STATE doesn't matter - going to die
@@ -225,8 +204,7 @@ public class ProtocolGateway {
 			public void handleMessage(Message message) {
 				switch (message.what) {
 					case C.HTTP_DID_SUCCEED: {
-						_safeM.reflectVote(shoutId, vote); // replaces: _user.getInbox().reflectVote(shoutId, vote);
-						_user.fireUserEvent(UserEvent.VOTE_COMPLETE);
+						_safeM.voteSentEvent(shoutId, vote);
 						// Unless vote occurs in idle thread, we don't need to sendMessage.
 						//CrossThreadPacket xPacket = (CrossThreadPacket)message.obj;
 						//_uiThreadHandler.sendMessage(Message.obtain(_uiThreadHandler, C.STATE_IDLE, xPacket)); // STATE doesn't matter - going to die
@@ -270,9 +248,7 @@ public class ProtocolGateway {
 							CrossThreadPacket xPacket = (CrossThreadPacket)message.obj;
 							String password = xPacket.json.getString(C.JSON_PW);
 							String uid = xPacket.sArgs[0];
-							_safeM.setUserId(uid);
-							_safeM.setPassword(password);
-							_user.fireUserEvent(UserEvent.ACCOUNT_CREATED);
+							_safeM.accountCreatedEvent(uid, password);
 							_uiThreadHandler.sendMessage(Message.obtain(_uiThreadHandler, C.STATE_IDLE, xPacket));
 						} catch (JSONException ex) {
 							ErrorManager.manage(ex);

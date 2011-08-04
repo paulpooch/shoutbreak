@@ -5,6 +5,9 @@ import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import co.shoutbreak.shared.C;
 import co.shoutbreak.shared.CellDensity;
 import co.shoutbreak.shared.ErrorManager;
@@ -33,12 +36,10 @@ public class User implements Colleague {
 	private boolean _passwordExists; // no reason to put actual pw into memory
 	private boolean _userSettingsAreStale;
 	private boolean _levelUpOccured;
-	private boolean _scoresJustReceived;
 	private String _uid;
 	private String _auth;
 	private int _level;
 	private int _points;
-	private int _shoutsJustReceived;
 	private int _nextLevelAt;
 	
 	
@@ -59,7 +60,41 @@ public class User implements Colleague {
 		_userSettingsAreStale = true;
 	}
 	
+	// STATICS ////////////////////////////////////////////////////////////////
+
+	public static float calculateRadius(int power, double density) {
+		int maxPeople = power * C.CONFIG_PEOPLE_PER_LEVEL;
+		double area = maxPeople / density;
+		float radius = (float) Math.sqrt(area / Math.PI);
+		return radius;
+	}
+	
 	// SYNCHRONIZED WRITE METHODS /////////////////////////////////////////////
+	
+	public synchronized void handleDensityChangeEvent(double density) {
+		saveDensity(density);
+	}
+	
+	public synchronized void handleLevelUpEvent(JSONObject levelInfo) {
+		try {
+			int newLevel = (int) levelInfo.getLong(C.JSON_LEVEL);
+			int newPoints = (int) levelInfo.getLong(C.JSON_POINTS);
+			int nextLevelAt = (int) levelInfo.getLong(C.JSON_NEXT_LEVEL_AT);
+			levelUp(newLevel, newPoints, nextLevelAt);
+		} catch (JSONException e) {
+			SBLog.e(TAG, e.getMessage());
+		}
+	}
+	
+	public synchronized void handlePointsChangeEvent(int additonalPoints) {
+		 savePoints(additonalPoints);		
+	}
+	
+	public synchronized void handleAccountCreatedEvent(String uid, String password) {
+		setUserId(uid);
+		setPassword(password);
+	}
+	
 	public synchronized Long saveUserSetting(String key, String value) {
 		SBLog.i(TAG, "saveUserSetting()");
 		_userSettingsAreStale = true;
@@ -242,14 +277,6 @@ public class User implements Colleague {
 		_auth = pw + Hash.sha512(pw + nonce + _uid);		
 	}
 	
-	public synchronized void setShoutsJustReceived(int i) {
-		_shoutsJustReceived = i;
-	}
-	
-	public synchronized void setScoresJustReceived(boolean b) {
-		_scoresJustReceived = b;
-	}
-	
 	public synchronized void levelUp(int newLevel, int newPoints, int nextLevelAt) {
 		setLevel(newLevel);
 		setNextLevelAt(nextLevelAt);
@@ -324,6 +351,10 @@ public class User implements Colleague {
 		return _level;
 	}
 	
+	public int getPoints() {
+		return _points;
+	}
+	
 	/*
 	private ShoutbreakService _service;
 	private TelephonyManager _tm;
@@ -331,10 +362,8 @@ public class User implements Colleague {
 	private CellDensity _cellDensity;
 	private LocationTracker _locationTracker;
 	protected Inbox _inbox;
-	private int _shoutsJustReceived;
 	private boolean _levelUpOccured; //This means level up.
 	//private boolean _densityJustChanged;
-	private boolean _scoresJustReceived;
 
 	private String _auth;
 	private boolean _passwordExists; // no reason to put actual pw into memory
@@ -384,14 +413,6 @@ public class User implements Colleague {
 		return _locationTracker;
 	}
 	
-	public int getShoutsJustReceived() {
-		return _shoutsJustReceived;
-	}
-	
-	public boolean getScoresJustReceived() {
-		return _scoresJustReceived;
-	}
-	
 	public double getLatitude() {
 		return _locationTracker.getLatitude();
 	}
@@ -406,10 +427,6 @@ public class User implements Colleague {
 
 	public String getAuth() {
 		return _auth;
-	}
-	
-	public int getPoints() {
-		return _points;
 	}
 	
 	public int getNextLevelAt() {

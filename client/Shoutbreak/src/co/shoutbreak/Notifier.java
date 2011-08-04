@@ -1,5 +1,7 @@
 package co.shoutbreak;
 
+import org.json.JSONArray;
+
 import co.shoutbreak.R;
 import co.shoutbreak.shared.C;
 import co.shoutbreak.shared.SBLog;
@@ -44,5 +46,12 @@ public class Notifier implements Colleague {
 	    notification.setLatestEventInfo(_service, title, message, PendingIntent.getActivity(_service, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT));
 	    notification.flags |= Notification.FLAG_AUTO_CANCEL;
 	    notificationManager.notify(C.APP_NOTIFICATION_ID, notification);
+	}
+	
+	public void handleShoutsReceivedEvent(int newShouts) {
+		if (newShouts > 0) {
+			String pluralShout = "shout" + (newShouts > 1 ? "s" : "");
+			notify(newShouts + " " + pluralShout + " received", "Shoutbreak", "you have " + newShouts + " new " + pluralShout);
+		}
 	}
 }

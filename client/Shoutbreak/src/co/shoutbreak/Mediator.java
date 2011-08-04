@@ -2,6 +2,7 @@ package co.shoutbreak;
 
 import java.util.ArrayList;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.content.Context;
@@ -28,6 +29,8 @@ public class Mediator {
 	private DataListener _data;
 	private Database _db;
 	private PollingThreadLauncher _pollingThreadLauncher;
+	private UserLocationOverlay _userLocationOverlay;
+	private InboxListViewAdapter _inboxListViewAdapter;
 	
 	// state flags
 	private Flag _isUIAlive = new Flag("_isUIAlive");
@@ -61,6 +64,7 @@ public class Mediator {
 		_inbox = new Inbox(_db);
 		_inbox.setMediator(this);
 		_pollingThreadLauncher = new PollingThreadLauncher();
+		_userLocationOverlay = new UserLocationOverlay();
 		
 		// initialize state
 		_isLocationAvailable.set(_location.isLocationEnabled());
@@ -281,17 +285,64 @@ public class Mediator {
 		}
 		return _location.getCurrentCell();
 	}
+		
+	// Triggered from a Shout close.  Have user save earned points.
+	public void pointsChangeEvent(int additionalPoints) {
+		_user.handlePointsChangeEvent(additionalPoints);
+		_ui.handlePointsChangeEvent(_user.getPoints());
+	}
 	
 	public ThreadSafeMediator getAThreadSafeMediator() {
 		SBLog.i(TAG, "getAThreadSafeMediator()");
 		return new ThreadSafeMediator();
 	}
 	
+	// THREAD SAFE MEDIATOR ///////////////////////////////////////////////////
+	
 	public class ThreadSafeMediator {
 		// Methods of any other classes called from here should be synchronized or read only.
 		
 		public ThreadSafeMediator() {
 		
+		}
+		
+		public void densityChangeEvent(double density) {
+			// Note: The order in these matters.
+			_user.handleDensityChangeEvent(density);
+			_userLocationOverlay.handleDensityChangeEvent(density, _user.getLevel());
+		}
+	
+		public void shoutsReceivedEvent(JSONArray shouts) {		
+			_inbox.handleShoutsReceivedEvent(shouts);
+			_ui.handleShoutsReceivedEvent(shouts.length());
+			_notifier.handleShoutsReceivedEvent(shouts.length());			
+			_inboxListViewAdapter.handleShoutsReceivedEvent(_inbox.getShoutsForUI());
+		}
+		
+		public void scoresReceivedEvent(JSONArray scores) {
+			_inbox.handleScoresReceivedEvent(scores);
+			_inboxListViewAdapter.handleScoresReceivedEvent(_inbox.getShoutsForUI());
+		}
+			
+		public void levelUpEvent(JSONObject levelInfo) {
+			_user.handleLevelUpEvent(levelInfo);
+			_ui.handleLevelUpEvent(_user.getLevel());
+			_ui.handlePointsChangeEvent(_user.getPoints());
+			_userLocationOverlay.handleLevelUpEvent(_user.getCellDensity().density, _user.getLevel());
+		}
+		
+		public void shoutSentEvent() {
+			_ui.handleShoutSentEvent();
+		}
+		
+		public void voteSentEvent(String shoutId, int vote) {
+			_inbox.handleVoteSentEvent(shoutId, vote);
+			_inboxListViewAdapter.handleVoteSentEvent(_inbox.getShoutsForUI());
+		}
+		
+		public void accountCreatedEvent(String uid, String password) {
+			_user.handleAccountCreatedEvent(uid, password);
+			// Maybe we should do something in the UI?
 		}
 		
 		public boolean userHasAccount() {
@@ -330,36 +381,8 @@ public class Mediator {
 			return _user.getLevel();
 		}
 		
-		public void saveDensity(double density) {
-			_user.saveDensity(density);
-		}
-		
-		public void setPassword(String pw) {
-			_user.setPassword(pw);
-		}
-
-		public void setUserId(String uid) {
-			_user.setUserId(uid);
-		}
-		
 		public void updateAuth(String nonce) {
 			_user.updateAuth(nonce);
-		}
-		
-		public void setShoutsJustReceived(int i) {
-			_user.setShoutsJustReceived(i);
-		}
-		
-		public void setScoresJustReceived(boolean b) {
-			_user.setScoresJustReceived(b);
-		}
-		
-		public void levelUp(int newLevel, int newPoints, int nextLevelAt) {
-			_user.levelUp(newLevel, newPoints, nextLevelAt);
-		}
-		
-		public void addShout(JSONObject jsonShout) {
-			_inbox.addShout(jsonShout);
 		}
 		
 		public void updateScore(JSONObject jsonScore) {
@@ -369,27 +392,6 @@ public class Mediator {
 		public void reflectVote(String shoutID, int vote) {
 			_inbox.reflectVote(shoutID, vote);
 		}
-		
-		/* TODO: events that need to be tracked down from old code below */
-		
-		public void densityChange() {
-			// TODO: track down all UserEvent.DENSITY_CHANGE events
-			//       and add them here
-		}
-		
-		public void receivedShouts() {
-			// TODO: track down all UserEvent.SHOUTS_RECEIVED events
-			//       and add them here
-		}
-		
-		public void scoreChange(JSONObject jsonScore) {
-			// TODO: track down all UserEvent.SCORES_CHANGE events
-			//       and add them here
-		}
-		
-		
-		
-		
 		
 		public final String getAndroidId() {
 			return _device.getAndroidId();

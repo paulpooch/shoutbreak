@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.database.Cursor;
@@ -42,6 +44,34 @@ public class Inbox implements Colleague {
 	}
 	
 	// SYNCHRONIZED WRITE METHODS /////////////////////////////////////////////
+	
+	// needs to be synchronized?
+	public synchronized void handleShoutsReceivedEvent(JSONArray shouts) {
+		for (int i = 0; i < shouts.length(); i++) {
+			try {
+				JSONObject jsonShout = shouts.getJSONObject(i);
+				addShout(jsonShout);
+			} catch (JSONException e) {
+				SBLog.e(TAG, e.getMessage());
+			}
+		}
+	}
+	
+	public synchronized void handleScoresReceivedEvent(JSONArray scores) {
+		for (int i = 0; i < scores.length(); i++) {
+			try {
+				JSONObject jsonScore = scores.getJSONObject(i);
+				updateScore(jsonScore);
+			} catch (JSONException e) {
+				SBLog.e(TAG, e.getMessage());
+			}
+		}
+	}
+	
+	public synchronized void handleVoteSentEvent(String shoutId, int vote) {
+		reflectVote(shoutId, vote);
+	}
+	
 	public synchronized Long addShoutToInbox(Shout shout) {
 		SBLog.i(TAG, "addShoutToInbox()");
 		// (shout_id TEXT, timestamp TEXT, time_received INTEGER, txt TEXT,
@@ -241,8 +271,7 @@ public class Inbox implements Colleague {
 		if (!shout.open){
 			Shout shoutFromDB = getShout(shout.id);
 			if (shoutFromDB.is_outbox) {
-				_user.savePoints(shout.pts);
-				_user.fireUserEvent(UserEvent.POINTS_CHANGE);
+				_m.pointsChangeEvent(shout.pts);								
 			}
 		}
 		
