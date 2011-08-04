@@ -12,14 +12,10 @@ public class DeviceInformation implements Colleague {
 	private TelephonyManager _tm;
 	private String _androidId;
 	
-	public DeviceInformation(ShoutbreakService service) {
+	public DeviceInformation(Mediator mediator, ShoutbreakService service) {
+		_m = mediator;
 		_tm = (TelephonyManager) service.getSystemService(Context.TELEPHONY_SERVICE);
 		_androidId = Settings.Secure.getString(service.getContentResolver(), Settings.Secure.ANDROID_ID);
-	}
-
-	@Override
-	public void setMediator(Mediator mediator) {
-		_m = mediator;	
 	}
 
 	@Override

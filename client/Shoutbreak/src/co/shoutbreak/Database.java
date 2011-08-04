@@ -21,17 +21,12 @@ public class Database implements Colleague {
 	private OpenHelper _openHelper;
 	private static SimpleDateFormat ISO8601FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
 
-	public Database(ShoutbreakService service) {
+	public Database(Mediator mediator, ShoutbreakService service) {
 		SBLog.i(TAG, "new Database()");
+		_m = mediator;
 		_service = service;
 		_openHelper = new OpenHelper(_service);
 		open();
-	}
-
-	@Override
-	public void setMediator(Mediator mediator) {
-		SBLog.i(TAG, "setMediator()");
-		_m = mediator;
 	}
 
 	@Override

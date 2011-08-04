@@ -20,13 +20,17 @@ import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import co.shoutbreak.Mediator.ThreadSafeMediator;
 import co.shoutbreak.shared.C;
 import co.shoutbreak.shared.ErrorManager;
+import co.shoutbreak.shared.SBLog;
 import co.shoutbreak.shared.Shout;
 
-public class InboxListViewAdapter extends BaseAdapter {
-	   
-    private Shoutbreak _ui;
+public class InboxListViewAdapter extends BaseAdapter implements Colleague {
+	
+	private static final String TAG = "InboxListViewAdapter";
+	
+    private Mediator _m;
     private List<Shout> _displayedShouts;
     private LayoutInflater _inflater;
     private PrettyTime _prettyTime;
@@ -44,24 +48,25 @@ public class InboxListViewAdapter extends BaseAdapter {
     }
         
     private class VoteTask extends AsyncTask<Object, Void, Void> {    	
+    	// TODO: why is this an async task? all it does is fire off
+    	// a message that gets handled by a separate thread
     	@Override
 		protected Void doInBackground(Object... params) {
 			InboxViewHolder holder = (InboxViewHolder)params[0];
 			Integer voteDirection = (Integer)params[1];
     		_cacheVoteTemporary.put(holder.shoutID, voteDirection);
-        	_ui.getServiceBridge().vote(holder.shoutID, voteDirection);
+        	_m.vote(holder.shoutID, voteDirection);
 			return null;
 		}
         protected void onPostExecute(Void unused) {
         }
     }
     
-    public InboxListViewAdapter(Shoutbreak ui) {
-    	
-        _ui = ui;
+    public InboxListViewAdapter(Mediator mediator) {
+    	_m = mediator;
         _displayedShouts = new ArrayList<Shout>();
         _prettyTime = new PrettyTime();
-        _inflater = (LayoutInflater) _ui.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        _inflater = (LayoutInflater) _m.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         _cacheExpandState = new HashMap<String, Boolean>();
         _cachePrettyTimeAgo = new HashMap<String, String>();
         _cacheVoteTemporary = new HashMap<String, Integer>();
@@ -105,11 +110,17 @@ public class InboxListViewAdapter extends BaseAdapter {
         onDeleteClickListener = new OnClickListener() {
         	public void onClick(View view) {
         		InboxViewHolder holder = (InboxViewHolder) view.getTag();
-            	_ui.getServiceBridge().deleteShout(holder.shoutID);
+            	_m.deleteShout(holder.shoutID);
 			}
         };
         
     }
+
+	@Override
+	public void unsetMediator() {
+		SBLog.i(TAG, "unsetMediator()");
+		_m = null;	
+	}	
     
     public void handleShoutsReceivedEvent(List<Shout> shouts) {
 		updateDisplay(shouts);

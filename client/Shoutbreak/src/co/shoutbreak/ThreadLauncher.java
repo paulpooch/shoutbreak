@@ -5,12 +5,13 @@ import co.shoutbreak.shared.C;
 import android.os.Handler;
 import android.os.Message;
 
-public class PollingThreadLauncher implements Colleague {
+public class ThreadLauncher implements Colleague {
 
 	private Mediator _m;
 	private Handler _uiThreadHandler;
 	
-	public PollingThreadLauncher() {
+	public ThreadLauncher(Mediator mediator) {
+		_m = mediator;
 		
 		_uiThreadHandler = new Handler() {
 			@Override
@@ -19,6 +20,17 @@ public class PollingThreadLauncher implements Colleague {
 			}
 		};
 		
+	}
+	
+	@Override
+	public void unsetMediator() {
+		_m = null;		
+	}
+	
+	// TODO: rename this method
+	public void spawnANewUIServiceThread(Message message) {
+		ServiceThread thread = new ServiceThread(_m.getAThreadSafeMediator(), _uiThreadHandler, message);
+		_uiThreadHandler.post(thread);
 	}
 	
 	public void spawnNextPollingThread(Message message) {
@@ -93,16 +105,5 @@ public class PollingThreadLauncher implements Colleague {
 			gateway.go(_message);
 		}
 		
-	}
-
-	@Override
-	public void setMediator(Mediator mediator) {
-		_m = mediator;		
-	}
-
-	@Override
-	public void unsetMediator() {
-		_m = null;		
-	}
-	
+	}	
 }

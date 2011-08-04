@@ -28,7 +28,7 @@ public class Mediator {
 	private LocationTracker _location;
 	private DataListener _data;
 	private Database _db;
-	private PollingThreadLauncher _pollingThreadLauncher;
+	private ThreadLauncher _threadLauncher;
 	private UserLocationOverlay _userLocationOverlay;
 	private InboxListViewAdapter _inboxListViewAdapter;
 	
@@ -46,24 +46,15 @@ public class Mediator {
     	SBLog.i(TAG, "new Mediator()");
 		// add colleagues
 		_service = service;
-		_service.setMediator(this);
-		_preferences = new PreferenceManager(_service.getSharedPreferences(C.PREFERENCE_FILE, Context.MODE_PRIVATE));
-		_preferences.setMediator(this);
-		_device = new DeviceInformation(_service);
-		_device.setMediator(this);
-		_notifier = new Notifier(_service);
-		_notifier.setMediator(this);
-		_location = new LocationTracker();
-		_location.setMediator(this);
-		_data = new DataListener();
-		_data.setMediator(this);
-		_db = new Database(_service);
-		_db.setMediator(this);
-		_user = new User(_db);
-		_user.setMediator(this);
-		_inbox = new Inbox(_db);
-		_inbox.setMediator(this);
-		_pollingThreadLauncher = new PollingThreadLauncher();
+		_preferences = new PreferenceManager(this, _service.getSharedPreferences(C.PREFERENCE_FILE, Context.MODE_PRIVATE));
+		_device = new DeviceInformation(this, _service);
+		_notifier = new Notifier(this, _service);
+		_location = new LocationTracker(this);
+		_data = new DataListener(this);
+		_db = new Database(this, _service);
+		_user = new User(this, _db);
+		_inbox = new Inbox(this, _db);
+		_threadLauncher = new ThreadLauncher(this);
 		_userLocationOverlay = new UserLocationOverlay();
 		
 		// initialize state
@@ -119,8 +110,8 @@ public class Mediator {
 		_db = null;
 		_inbox.unsetMediator();
 		_inbox = null;
-		_pollingThreadLauncher.unsetMediator();
-		_pollingThreadLauncher = null;
+		_threadLauncher.unsetMediator();
+		_threadLauncher = null;
 	}
 	
 	/* Mediator Commands */
@@ -169,7 +160,7 @@ public class Mediator {
 		if (!_isPollingAlive.get() && _isLocationAvailable.get() && _isDataAvailable.get()) {
 			SBLog.i(TAG, "app fully functional");
 			_isPollingAlive.set(true);
-			_pollingThreadLauncher.startPolling();
+			_threadLauncher.startPolling();
 		} else if (!_isLocationAvailable.get() || !_isDataAvailable.get()) {
 			if (!_isLocationAvailable.get()) {
 				SBLog.e(TAG, "unable to start service, location unavailable");
@@ -192,7 +183,7 @@ public class Mediator {
 		SBLog.i(TAG, "stopPolling()");
 		if (_isPollingAlive.get()) {
 			_isPollingAlive.set(false);
-			_pollingThreadLauncher.stopPolling();
+			_threadLauncher.stopPolling();
 		} else {
 			SBLog.i(TAG, "service is not polling, unable to call stopPolling()");
 		}
@@ -272,7 +263,7 @@ public class Mediator {
 	public void handlePollingResponse(Message message) {
 		SBLog.i(TAG, "handlePollingResponse()");
 		if (_isPollingAlive.get()) {
-			_pollingThreadLauncher.spawnNextPollingThread(message);
+			_threadLauncher.spawnNextPollingThread(message);
 		}
 		// Else polling thread dies.
 	}
@@ -290,6 +281,19 @@ public class Mediator {
 	public void pointsChangeEvent(int additionalPoints) {
 		_user.handlePointsChangeEvent(additionalPoints);
 		_ui.handlePointsChangeEvent(_user.getPoints());
+	}
+	
+	public void deleteShout(String shoutId) {
+		_inbox.deleteShout(shoutId);
+	}
+	
+	public void vote(String shoutID, int vote) {
+		_inbox.vote(shoutID, vote);
+	}
+	
+	// TODO: rename this method
+	public void spawnANewUIServiceThread(Message message) {
+		_threadLauncher.spawnANewUIServiceThread(message);
 	}
 	
 	public ThreadSafeMediator getAThreadSafeMediator() {

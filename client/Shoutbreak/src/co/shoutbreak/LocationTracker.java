@@ -21,19 +21,10 @@ public class LocationTracker implements LocationListener, Colleague {
 	private LocationManager _locationManager;
 	private Location _location;
 	private String _provider;
-	private Criteria _criteria;
+	private Criteria _criteria;	
 	
-	@Override
-	public void setMediator(Mediator mediator) {
+	public LocationTracker(Mediator mediator) {
 		_m = mediator;
-	}
-
-	@Override
-	public void unsetMediator() {
-		_m = null;
-	}	
-	
-	public LocationTracker() {
 		_locationManager = (LocationManager)_m.getSystemService(Context.LOCATION_SERVICE);
 		//_location = _locationManager.getLastKnownLocation(_provider);
 		_criteria = new Criteria();
@@ -44,6 +35,11 @@ public class LocationTracker implements LocationListener, Colleague {
 		_criteria.setCostAllowed(true);
 		_criteria.setPowerRequirement(Criteria.NO_REQUIREMENT);
 		//String allowedProviders = Settings.Secure.getString(_context.getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
+	}
+	
+	@Override
+	public void unsetMediator() {
+		_m = null;
 	}
 	
 	public void toggleListeningToLocation(boolean turnOn) {

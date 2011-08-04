@@ -42,10 +42,11 @@ public class User implements Colleague {
 	private int _points;
 	private int _nextLevelAt;
 	
-	
-	@Override
-	public void setMediator(Mediator mediator) {
+	public User(Mediator mediator, Database db) {
 		_m = mediator;
+		_db = db;
+		_passwordExists = false;
+		_userSettingsAreStale = true;
 	}
 
 	@Override
@@ -53,13 +54,6 @@ public class User implements Colleague {
 		_db = null;
 		_m = null;
 	}
-	
-	public User(Database db) {
-		_db = db;
-		_passwordExists = false;
-		_userSettingsAreStale = true;
-	}
-	
 	// STATICS ////////////////////////////////////////////////////////////////
 
 	public static float calculateRadius(int power, double density) {

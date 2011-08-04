@@ -10,15 +10,10 @@ public class PreferenceManager implements Colleague {
 	private Mediator _m;
 	private SharedPreferences _preferences;
 	
-	public PreferenceManager(SharedPreferences preferences) {
+	public PreferenceManager(Mediator mediator, SharedPreferences preferences) {
 		SBLog.i(TAG, "new PreferenceManager()");
-		_preferences = preferences;
-	}
-
-	@Override
-	public void setMediator(Mediator mediator) {
-		SBLog.i(TAG, "setMediator()");
 		_m = mediator;
+		_preferences = preferences;
 	}
 
 	@Override

@@ -1,26 +1,28 @@
 package co.shoutbreak;
 
-import org.json.JSONArray;
-
 import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapController;
 
+import co.shoutbreak.R;
 import co.shoutbreak.shared.C;
 import co.shoutbreak.shared.Flag;
 import co.shoutbreak.shared.SBLog;
 
-import android.app.ProgressDialog;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,6 +45,11 @@ public class Shoutbreak extends MapActivity implements Colleague {
 	private ImageButton _profileTab;
 	private ImageButton _shoutButton;
 	private TextView _textbox;
+	private TextView _noticeText;
+	private RelativeLayout _noticeRl;
+	private Animation _noticeExpand;
+	private Animation _noticeShowText;
+	
 	private CustomMapView _map;
 	
     @Override
@@ -66,6 +73,10 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		_shoutButton = (ImageButton) findViewById(R.id.shoutButton);
 		_shoutButton.setOnClickListener(_shoutButtonListener);
 		_textbox = (TextView) findViewById(R.id.etShoutText);
+		_noticeText = (TextView) findViewById(R.id.noticeText);
+		_noticeRl = (RelativeLayout) findViewById(R.id.noticeRl);
+		_noticeExpand = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.notice_expand);
+		_noticeShowText = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.notice_show_text);
 		
 		// bind to service, initializes mediator
 		_serviceIntent = new Intent(Shoutbreak.this, ShoutbreakService.class);
@@ -335,7 +346,15 @@ public class Shoutbreak extends MapActivity implements Colleague {
 	
 	public void handleShoutSentEvent() {
 		giveNotice("shout sent");
-		_cShoutText.setText("");
+		_textbox.setText("");
+	}
+	
+	public void giveNotice(String text) {
+		// TODO: check if this works
+		_noticeText.setText(text);
+		_noticeRl.startAnimation(_noticeExpand);
+		_noticeText.setTextColor(Color.WHITE);
+		_noticeText.startAnimation(_noticeShowText);
 	}
 	
 }

@@ -118,9 +118,10 @@ public class UserLocationOverlay extends MyLocationOverlay implements Colleague 
 	//	// _baseRadiusMeters = (float) Math.sqrt(people / (_density * Math.PI));
 	//}
 
-	public UserLocationOverlay(Shoutbreak ui, MapView map) {
+	public UserLocationOverlay(Mediator mediator, Shoutbreak ui, MapView map) {
 		super(ui, map);
 		SBLog.i(TAG, "new UserLocationOverlay()");
+		_m = mediator;
 		_ui = ui;		
 		_baseRadiusPx = -1;
 		_baseRadiusMeters = 0;
@@ -143,12 +144,6 @@ public class UserLocationOverlay extends MyLocationOverlay implements Colleague 
 		_resizeIconSize = new Point(resizeBitmap.getWidth(), resizeBitmap.getHeight());
 		_resizeIconLocation = new Point();
 		_resizeIcon = Bitmap.createBitmap(resizeBitmap, 0, 0, _resizeIconSize.x, _resizeIconSize.y);
-	}
-	
-	@Override
-	public void setMediator(Mediator mediator) {
-		SBLog.i(TAG, "setMediator()");
-		_m = mediator;
 	}
 
 	@Override

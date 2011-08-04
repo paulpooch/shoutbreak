@@ -17,9 +17,7 @@ public class ShoutbreakService extends Service implements Colleague {
 	private Mediator _m;
 	private boolean _isStarted;
 	
-	@Override
-	public void setMediator(Mediator mediator) {
-    	SBLog.i(TAG, "setMediator()");
+	public ShoutbreakService(Mediator mediator) {
 		_m = mediator;
 	}
 

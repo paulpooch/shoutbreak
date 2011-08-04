@@ -12,16 +12,11 @@ public class DataListener implements Colleague {
 	private Mediator _m;
 	private TelephonyManager _telephonyManager;
 	
-	public DataListener() {
+	public DataListener(Mediator mediator) {
 		SBLog.i(TAG, "new DataListener()");
+		_m = mediator;
 		_telephonyManager = (TelephonyManager) _m.getSystemService(Context.TELEPHONY_SERVICE);
 		_telephonyManager.listen(_phoneStateListener, PhoneStateListener.LISTEN_DATA_CONNECTION_STATE);
-	}
-	
-	@Override
-	public void setMediator(Mediator mediator) {
-		SBLog.i(TAG, "setMediator()");
-		_m = mediator;
 	}
 
 	@Override

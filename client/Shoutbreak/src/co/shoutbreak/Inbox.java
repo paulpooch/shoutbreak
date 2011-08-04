@@ -10,6 +10,7 @@ import org.json.JSONObject;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteStatement;
+import android.os.Message;
 
 import co.shoutbreak.shared.C;
 import co.shoutbreak.shared.ErrorManager;
@@ -24,16 +25,11 @@ public class Inbox implements Colleague {
 	private List<Shout> _shouts;
 	private Database _db;
 	
-	public Inbox(Database db) {
-		SBLog.i(TAG, "");
-		_db = db;
-		_shouts = new ArrayList<Shout>();
-	}
-	
-	@Override
-	public void setMediator(Mediator mediator) {
+	public Inbox(Mediator mediator, Database db) {
 		SBLog.i(TAG, "");
 		_m = mediator;
+		_db = db;
+		_shouts = new ArrayList<Shout>();
 	}
 
 	@Override
@@ -41,6 +37,37 @@ public class Inbox implements Colleague {
 		SBLog.i(TAG, "");
 		_db = null;
 		_m = null;
+	}
+	
+	public void vote(String shoutID, int vote) {
+		// TODO: this should go in the inbox, ServiceThread doesn't exist though
+		// taken from old service bridge method
+		Message message = new Message();
+		CrossThreadPacket xPacket = new CrossThreadPacket();
+		xPacket.purpose = C.PURPOSE_DEATH;
+		xPacket.sArgs = new String[] { shoutID };
+		xPacket.iArgs = new int[] { vote };
+		message.obj = xPacket;
+		message.what = C.STATE_VOTE;
+		_m.spawnANewUIServiceThread(message);
+	}
+	
+	public synchronized boolean deleteShout(String shoutID) {
+		SBLog.i(TAG, "new deleteShout()");
+		boolean result = false;
+		SQLiteStatement update;
+		String sql = "DELETE FROM " + C.DB_TABLE_SHOUTS + " WHERE shout_id = ?";
+		update = this._db.compileStatement(sql);
+		update.bindString(1, shoutID);
+		try {
+			update.execute();
+			result = true;
+		} catch (Exception ex) {
+			ErrorManager.manage(ex);
+		} finally {
+			update.close();
+		}
+		return result;
 	}
 	
 	// SYNCHRONIZED WRITE METHODS /////////////////////////////////////////////
@@ -235,24 +262,6 @@ public class Inbox implements Colleague {
 		shout.state_flag = C.SHOUT_STATE_NEW;
 		shout.score = C.NULL_SCORE;		
 		addShoutToInbox(shout);
-	}
-	
-	public synchronized boolean deleteShout(String shoutID) {
-		SBLog.i(TAG, "new deleteShout()");
-		boolean result = false;
-		SQLiteStatement update;
-		String sql = "DELETE FROM " + C.DB_TABLE_SHOUTS + " WHERE shout_id = ?";
-		update = this._db.compileStatement(sql);
-		update.bindString(1, shoutID);
-		try {
-			update.execute();
-			result = true;
-		} catch (Exception ex) {
-			ErrorManager.manage(ex);
-		} finally {
-			update.close();
-		}
-		return result;
 	}
 	
 	public synchronized void updateScore(JSONObject jsonScore) {

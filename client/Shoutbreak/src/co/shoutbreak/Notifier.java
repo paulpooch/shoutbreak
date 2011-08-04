@@ -1,7 +1,5 @@
 package co.shoutbreak;
 
-import org.json.JSONArray;
-
 import co.shoutbreak.R;
 import co.shoutbreak.shared.C;
 import co.shoutbreak.shared.SBLog;
@@ -18,15 +16,10 @@ public class Notifier implements Colleague {
 	private Mediator _m;
 	private ShoutbreakService _service;
 	
-	public Notifier(ShoutbreakService service) {
+	public Notifier(Mediator mediator, ShoutbreakService service) {
 		SBLog.i(TAG, "new Notifier()");
-		_service = service;
-	}
-	
-	@Override
-	public void setMediator(Mediator mediator) {
-		SBLog.i(TAG, "setMediator()");
 		_m = mediator;
+		_service = service;
 	}
 
 	@Override

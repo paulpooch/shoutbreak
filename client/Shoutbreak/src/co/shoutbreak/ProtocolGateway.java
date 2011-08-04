@@ -23,12 +23,12 @@ public class ProtocolGateway {
 	private ThreadSafeMediator _safeM;
     private Handler _uiThreadHandler;
     
-    public ProtocolGateway(ThreadSafeMediator safeMediator, Handler uiThreadHandler) {
+    public ProtocolGateway(ThreadSafeMediator threadSafeMediator, Handler uiThreadHandler) {
     	SBLog.i(TAG, "new ProtocolGateway()");
-    	_safeM = safeMediator;
+    	_safeM = threadSafeMediator;
     	_uiThreadHandler = uiThreadHandler;
     }
-    
+	
 	public void go(Message message) {
 		SBLog.i(TAG, "go()");
 		switch (message.what) {
