@@ -47,7 +47,7 @@
 			<RelativeLayout android:id="@+id/rlMap"
 				android:layout_width="fill_parent" android:layout_height="wrap_content"
 				android:layout_weight="1">
-				<co.shoutbreak.CustomMapView
+				<co.shoutbreak.ui.CustomMapView
 					android:id="@+id/cmvMap" android:layout_width="fill_parent"
 					android:layout_height="wrap_content" android:clickable="true"
 					android:apiKey="@string/maps_api_key" />

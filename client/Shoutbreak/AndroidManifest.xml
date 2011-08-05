@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-      package="co.shoutbreak"
       android:versionCode="1"
-      android:versionName="1.0">
+      android:versionName="1.0" package="co.shoutbreak">
     <uses-sdk android:minSdkVersion="8" />
 
-    <application android:icon="@drawable/icon" android:label="Shoutbreak">
+    <application android:icon="@drawable/icon" android:label="Shoutbreak" android:debuggable="true">
 		<!-- Launcher -->
-        <activity android:name=".Shoutbreak" android:label="Shoutbreak" android:screenOrientation="portrait" android:launchMode="singleTop" android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
+        <activity android:name=".ui.Shoutbreak" android:label="Shoutbreak" android:screenOrientation="portrait" android:launchMode="singleTop" android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -15,16 +14,16 @@
         </activity>
         
         <!-- Service -->
-        <service android:name=".ShoutbreakService" android:exported="true">
+        <service android:name=".core.ShoutbreakService" android:exported="true">
 			<intent-filter>
-				<action android:name="co.shoutbreak.service.ShoutbreakService" />
+				<action android:name="co.shoutbreak.core.ShoutbreakService" />
 			</intent-filter>
 		</service>
 		
 		<!--  Alarm Manager -->
-		<receiver android:name=".AlarmReceiver" android:exported="true">
+		<receiver android:name=".polling.AlarmReceiver" android:exported="true">
 			<intent-filter>
-				<action android:name="co.shoutbreak.service.AlarmReceiver" />
+				<action android:name="co.shoutbreak.polling.AlarmReceiver" />
 				<action android:name="android.intent.action.BOOT_COMPLETED" />
 				<action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
 			</intent-filter>
