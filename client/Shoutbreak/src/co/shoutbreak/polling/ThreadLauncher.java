@@ -82,6 +82,17 @@ public class ThreadLauncher implements Colleague {
 		// I don't think there's anything to do here.
 	}
 	
+	public void handleShoutStartEvent(String text, int power) {
+		Message message = new Message();
+		CrossThreadPacket xPacket = new CrossThreadPacket();
+		xPacket.purpose = C.PURPOSE_DEATH;
+		xPacket.sArgs = new String[] { text };
+		xPacket.iArgs = new int[] { power };
+		message.obj = xPacket;
+		message.what = C.STATE_SHOUT;
+		launchPollingThread(message, false);
+	}
+	
 	public void handleVoteStartEvent(String shoutId, int vote) {
 		Message message = new Message();
 		CrossThreadPacket xPacket = new CrossThreadPacket();
@@ -91,6 +102,5 @@ public class ThreadLauncher implements Colleague {
 		message.obj = xPacket;
 		message.what = C.STATE_VOTE;
 		launchPollingThread(message, false);
-	}
-	
+	}	
 }

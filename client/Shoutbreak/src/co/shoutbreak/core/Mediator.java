@@ -251,13 +251,9 @@ public class Mediator {
 		}
 	}
 	
-	public void shout(CharSequence text) {
+	public void shoutStartEvent(String text, int power) {
 		SBLog.i(TAG, "shout()");
-		if (text.length() == 0) {
-			Toast.makeText(_ui, "cannot shout blanks", Toast.LENGTH_SHORT).show();
-		} else {
-			// TODO: filter all text going to server
-		}
+		_threadLauncher.handleShoutStartEvent(text, power);
 	}
 	
 	public Object getSystemService(String name) {
@@ -284,10 +280,12 @@ public class Mediator {
 		
 	
 	public void deleteShout(String shoutId) {
+		SBLog.i(TAG, "deleteShout()");
 		_inbox.deleteShout(shoutId);
 	}
 	
 	public void launchPollingThread(Message message) {
+		SBLog.i(TAG, "launchPollingThread()");
 		_threadLauncher.launchPollingThread(message, false);
 	}
 		
@@ -300,11 +298,13 @@ public class Mediator {
 	
 	// Triggered from a Shout close.  Have user save earned points.
 	public void pointsChangeEvent(int additionalPoints) {
+		SBLog.i(TAG, "pointsChangeEvent()");
 		_user.handlePointsChangeEvent(additionalPoints);
 		_ui.handlePointsChangeEvent(_user.getPoints());
 	}
 	
 	public void voteStartEvent(String shoutId, int vote) {
+		SBLog.i(TAG, "voteStartEvent()");
 		_threadLauncher.handleVoteStartEvent(shoutId, vote);
 	}
 	
@@ -314,138 +314,126 @@ public class Mediator {
 		// Methods of any other classes called from here should be synchronized or read only.
 		
 		public ThreadSafeMediator() {
-		
+			SBLog.i(TAG, "new ThreadSafeMediator()");
 		}
 		
 		public void densityChangeEvent(double density) {
+			SBLog.i(TAG, "densityChangeEvent()");
 			// Note: The order in these matters.
 			_user.handleDensityChangeEvent(density);
 			_ui.handleDensityChangeEvent(density, _user.getLevel());
 		}
 	
-		public void shoutsReceivedEvent(JSONArray shouts) {		
+		public void shoutsReceivedEvent(JSONArray shouts) {
+			SBLog.i(TAG, "shoutsReceivedEvent()");
 			_inbox.handleShoutsReceivedEvent(shouts);
 			_notifier.handleShoutsReceivedEvent(shouts.length());
 			_ui.handleShoutsReceivedEvent(_inbox.getShoutsForUI(), shouts.length());
-
 		}
 		
 		public void scoresReceivedEvent(JSONArray scores) {
+			SBLog.i(TAG, "scoresReceivedEvent()");
 			_inbox.handleScoresReceivedEvent(scores);
 			_ui.handleScoresReceivedEvent(_inbox.getShoutsForUI());
 		}
 			
 		public void levelUpEvent(JSONObject levelInfo) {
+			SBLog.i(TAG, "levelUpEvent()");
 			_user.handleLevelUpEvent(levelInfo);
 			_ui.handleLevelUpEvent(_user.getCellDensity().density, _user.getLevel());
 			_ui.handlePointsChangeEvent(_user.getPoints());
 		}
 		
 		public void shoutSentEvent() {
+			SBLog.i(TAG, "shoutSentEvent()");
 			_ui.handleShoutSentEvent();
 		}
 		
 		public void voteFinishEvent(String shoutId, int vote) {
+			SBLog.i(TAG, "voteFinishEvent()");
 			_inbox.handleVoteFinishEvent(shoutId, vote);
 			_ui.handleVoteFinishEvent(_inbox.getShoutsForUI());
 		}
 		
 		public void accountCreatedEvent(String uid, String password) {
+			SBLog.i(TAG, "accountCreatedEvent()");
 			_user.handleAccountCreatedEvent(uid, password);
 			// Maybe we should do something in the UI?
 		}
 		
 		public boolean userHasAccount() {
+			SBLog.i(TAG, "userHasAccount()");
 			return _user.hasAccount();
 		}
 		
 		public String getUserId() {
+			SBLog.i(TAG, "getUserId()");
 			return _user.getUserId();
 		}
 		
 		public ArrayList<String> getOpenShoutIds() {
+			SBLog.i(TAG, "getOpenShoutIds()");
 			return _inbox.getOpenShoutIDs();
 		}
 		
 		public String getAuth() {
+			SBLog.i(TAG, "getAuth()");
 			return _user.getAuth();
 		}
 		
 		public CellDensity getCellDensity() {
+			SBLog.i(TAG, "getCellDensity()");
 			return _user.getCellDensity();
 		}
 		
 		public double getLongitude() {
+			SBLog.i(TAG, "getLongitude()");
 			return _location.getLongitude();
 		}
 		
 		public double getLatitude() {
+			SBLog.i(TAG, "getLatitude()");
 			return _location.getLatitude();
 		}
 		
 		public boolean getLevelUpOccurred() {
+			SBLog.i(TAG, "getLevelUpOccurred()");
 			return _user.getLevelUpOccured();
 		}
 		
 		public int getLevel() {
+			SBLog.i(TAG, "getLevel()");
 			return _user.getLevel();
 		}
 		
 		public void updateAuth(String nonce) {
+			SBLog.i(TAG, "updateAuth()");
 			_user.updateAuth(nonce);
 		}
 		
 		public void updateScore(JSONObject jsonScore) {
+			SBLog.i(TAG, "updateScore()");
 			_inbox.updateScore(jsonScore);
 		}
 		
 		public final String getAndroidId() {
+			SBLog.i(TAG, "getAndroidId()");
 			return _device.getAndroidId();
 		}
 		
 		public final String getDeviceId() {
+			SBLog.i(TAG, "getDeviceId()");
 			return _device.getDeviceId();
 		}
 		
 		public final String getPhoneNumber() {
+			SBLog.i(TAG, "getPhoneNumber()");
 			return _device.getPhoneNumber();
 		}
 		
 		public final String getNetworkOperator() {
+			SBLog.i(TAG, "getNetworkOperator()");
 			return _device.getNetworkOperator();
 		}
 	}
 }
-	/*
-
-	public void initIsLocationAvailable() {
-		LocationManager manager = _location.getLocationManager();
-
-		// check if GPS is enabled
-		if (!manager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
-			if (_isUIAlive) {
-				new AlertDialog.Builder(_ui)
-					.setMessage("Your location seems to be disabled, do you want to enable it?")
-				 	.setCancelable(false)
-				 	.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-				 		public void onClick(final DialogInterface dialog, final int id) {
-				 	        ComponentName toLaunch = new ComponentName("com.android.settings","com.android.settings.SecuritySettings");
-				 	        Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-				 	        intent.addCategory(Intent.CATEGORY_LAUNCHER);
-				 	        intent.setComponent(toLaunch);
-				 	        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-				 	        _ui.startActivityForResult(intent, 0);
-				 		}
-				 })
-				 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-				 	public void onClick(final DialogInterface dialog, final int id) {
-				 		dialog.cancel();
-				 	}
-				 })
-				 .create().show();
-		    }
-		}
-		
-		_isLocationAvailable  = _location.isLocationEnabled();
-	}
-*/

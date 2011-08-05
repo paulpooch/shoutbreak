@@ -220,8 +220,14 @@ public class Shoutbreak extends MapActivity implements Colleague {
 	
 	private OnClickListener _shoutButtonListener = new OnClickListener() {
 		public void onClick(View v) {
-			_m.shout(_textbox.getText());
-			hideKeyboard();
+			CharSequence text = _textbox.getText();
+			if (text.length() == 0) {
+				Toast.makeText(Shoutbreak.this, "cannot shout blanks", Toast.LENGTH_SHORT).show();
+			} else {
+				// TODO: filter all text going to server
+				_m.shoutStartEvent(text.toString(), _overlay.getCurrentPower());
+				hideKeyboard();
+			}
 		}
 	};
 	
