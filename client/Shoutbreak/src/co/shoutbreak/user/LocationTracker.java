@@ -181,13 +181,11 @@ public class LocationTracker implements LocationListener, Colleague {
 	@Override
 	public void onProviderEnabled(String provider) {
 		SBLog.i(TAG, "onProviderEnabled()");
-		//_m.onLocationEnabled();
 	}
 
 	@Override
 	public void onProviderDisabled(String provider) {
 		SBLog.i(TAG, "onProviderDisabled()");
-		//_m.onLocationDisabled();
 	}
 
 	@Override

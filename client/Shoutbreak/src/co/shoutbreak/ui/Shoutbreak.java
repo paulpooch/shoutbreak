@@ -324,6 +324,7 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		_map.setClickable(true);
 		_map.setEnabled(true);
 		_map.setUserLocationOverlay(_overlay);
+		_overlay.enableMyLocation();
 		_map.postInvalidate();
 		
 		// TODO: remove this. called when 'on/off' switch is clicked
@@ -333,7 +334,6 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		//		_mapController.animateTo(loc);
 		//	}
 		//});
-		_overlay.enableMyLocation();
 	}
 	
 	public void disableMapAndOverlay() {
@@ -388,7 +388,6 @@ public class Shoutbreak extends MapActivity implements Colleague {
 	}
 	
 	public void giveNotice(String text) {
-		// TODO: check if this works
 		_noticeText.setText(text);
 		_noticeRl.startAnimation(_noticeExpand);
 		_noticeText.setTextColor(Color.WHITE);
