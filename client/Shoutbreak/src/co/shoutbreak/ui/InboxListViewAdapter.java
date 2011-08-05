@@ -66,11 +66,11 @@ public class InboxListViewAdapter extends BaseAdapter implements Colleague {
         }
     }
     
-    public InboxListViewAdapter(Mediator mediator) {
+    public InboxListViewAdapter(Shoutbreak ui, Mediator mediator) {
     	_m = mediator;
         _displayedShouts = new ArrayList<Shout>();
         _prettyTime = new PrettyTime();
-        _inflater = (LayoutInflater) _m.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        _inflater = (LayoutInflater) ui.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         _cacheExpandState = new HashMap<String, Boolean>();
         _cachePrettyTimeAgo = new HashMap<String, String>();
         _cacheVoteTemporary = new HashMap<String, Integer>();

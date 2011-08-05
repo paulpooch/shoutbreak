@@ -116,7 +116,7 @@ public class Shoutbreak extends MapActivity implements Colleague {
 			// call this whenever the ui starts / resumes
 			checkLocationProviderStatus();
 			
-			_inboxListViewAdapter = new InboxListViewAdapter(_m);
+			_inboxListViewAdapter = new InboxListViewAdapter(Shoutbreak.this, _m);
 			
 			// hide splash
 			((LinearLayout) findViewById(R.id.splash)).setVisibility(View.GONE);			
