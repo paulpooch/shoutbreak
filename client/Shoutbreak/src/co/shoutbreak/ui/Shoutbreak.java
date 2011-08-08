@@ -62,7 +62,9 @@ public class Shoutbreak extends MapActivity implements Colleague {
 	private CustomMapView _map;
 	private UserLocationOverlay _overlay;
 	private InboxListViewAdapter _inboxListViewAdapter;
-	protected ListView _cInboxListView;
+	private NoticeListViewAdapter _noticeListViewAdapter;
+	private ListView _inboxListView;
+	private ListView _noticeListView;
 	
 	@Override
 	public void onCreate(Bundle extras) {
@@ -82,8 +84,8 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		_shoutBtn = (ImageButton) findViewById(R.id.shoutBtn);
 		_shoutBtn.setOnClickListener(_shoutButtonListener);
 		_shoutInputEt = (EditText) findViewById(R.id.shoutInputEt);
-		_cInboxListView = (ListView) findViewById(R.id.inboxLv);
-		//_noticeTabBtn = (ImageButton) findViewById(R.id.noticeTabBtn);
+		_inboxListView = (ListView) findViewById(R.id.inboxLv);
+		_noticeListView = (ListView) findViewById(R.id.noticeLv);
 		_noticeTab = (NoticeTab) findViewById(R.id.noticeTab);
 		_splashLl = (LinearLayout) findViewById(R.id.splashLl);
 		_composeViewLl = (LinearLayout) findViewById(R.id.composeViewLl);
@@ -148,9 +150,7 @@ public class Shoutbreak extends MapActivity implements Colleague {
 				&& extras.getBoolean(C.APP_LAUNCHED_FROM_NOTIFICATION)) {
 			// show inbox view
 		} else {
-			SBLog
-					.e(TAG,
-							"ui relaunched from something other than notification");
+			SBLog.e(TAG, "ui relaunched from something other than notification");
 		}
 	}
 
@@ -347,9 +347,9 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		checkLocationProviderStatus();
 
 		_inboxListViewAdapter = new InboxListViewAdapter(Shoutbreak.this, _m);
-		_cInboxListView.setAdapter(_inboxListViewAdapter);
-		_cInboxListView.setItemsCanFocus(false);
-		_cInboxListView.setOnItemClickListener(new ListView.OnItemClickListener() {
+		_inboxListView.setAdapter(_inboxListViewAdapter);
+		_inboxListView.setItemsCanFocus(false);
+		_inboxListView.setOnItemClickListener(new ListView.OnItemClickListener() {
 			public void onItemClick(AdapterView<?> adapter, View view,
 					int position, long id) {
 				// TODO Auto-generated method stub
@@ -368,6 +368,9 @@ public class Shoutbreak extends MapActivity implements Colleague {
 						shoutId, true);
 			}
 		});
+		
+		_noticeListViewAdapter = new NoticeListViewAdapter(Shoutbreak.this, _m);
+		_noticeListView.setAdapter(_noticeListViewAdapter);
 			
 		// hide splash
 		_splashLl.setVisibility(View.GONE);
@@ -390,9 +393,10 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		return _map.getMeasuredHeight();
 	}
 	
-	public void setTitleBarText(String text) {
+	public void setPeopleCountText(String text) {
 		SBLog.i(TAG, "setTitleBarText()");
-		_titleBarTv.setText(text);
+		// TODO: semi transparent text box on map
+		//_titleBarTv.setText(text);
 	}
 
 	public void hideKeyboard() {

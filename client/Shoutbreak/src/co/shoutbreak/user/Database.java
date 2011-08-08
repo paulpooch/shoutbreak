@@ -68,7 +68,8 @@ public class Database {
 			db.execSQL("CREATE TABLE "
 					+ C.DB_TABLE_SHOUTS
 					+ " (shout_id TEXT, timestamp TEXT, time_received INTEGER, txt TEXT, is_outbox INTEGER, re TEXT, vote INTEGER, hit INTEGER, open INTEGER, ups INTEGER, downs INTEGER, pts INTEGER, approval INTEGER, state_flag INTEGER)");
-			db.execSQL("CREATE TABLE " + C.DB_TABLE_POINTS + " (points_value INTEGER, points_type INTEGER, points_timestamp TEXT)");
+			db.execSQL("CREATE TABLE " + C.DB_TABLE_POINTS + " (value INTEGER, type INTEGER, timestamp TEXT)");
+			db.execSQL("CREATE TABLE " + C.DB_TABLE_NOTICES + " (type INTEGER, text TEXT, ref TEXT, timestamp TEXT, state_flag INTEGER)");
 		}
 
 		@Override
@@ -78,6 +79,7 @@ public class Database {
 			db.execSQL("DROP TABLE IF EXISTS " + C.DB_TABLE_DENSITY);
 			db.execSQL("DROP TABLE IF EXISTS " + C.DB_TABLE_SHOUTS);
 			db.execSQL("DROP TABLE IF EXISTS " + C.DB_TABLE_POINTS);
+			db.execSQL("DROP TABLE IF EXISTS " + C.DB_TABLE_NOTICES);
 			onCreate(db);
 		}
 	}

@@ -123,7 +123,7 @@ public class User implements Colleague {
 	
 	public synchronized int calculateUsersPoints() {
 		SBLog.i(TAG, "calculateUserPoints()");
-		String sql = "SELECT points_value, points_timestamp FROM " + C.DB_TABLE_POINTS + " WHERE points_type = ? ORDER BY points_timestamp DESC";
+		String sql = "SELECT value, timestamp FROM " + C.DB_TABLE_POINTS + " WHERE type = ? ORDER BY timestamp DESC";
 		Cursor cursor = null;
 		String cutoffDate = null;
 		int points = 0;
@@ -139,10 +139,10 @@ public class User implements Colleague {
 			
 			// Get all valid points
 			if (cutoffDate != null) {
-				String sql2 = "SELECT points_value FROM " + C.DB_TABLE_POINTS + " WHERE points_timestamp > ?";
+				String sql2 = "SELECT value FROM " + C.DB_TABLE_POINTS + " WHERE timestamp > ?";
 				cursor = _db.rawQuery(sql2, new String[] { cutoffDate });
 			} else {
-				String sql2 = "SELECT points_value FROM " + C.DB_TABLE_POINTS;
+				String sql2 = "SELECT value FROM " + C.DB_TABLE_POINTS;
 				cursor = _db.rawQuery(sql2, null);
 			}	
 			while (cursor.moveToNext()) {
@@ -301,11 +301,30 @@ public class User implements Colleague {
 	
 	public synchronized Long savePoints(int pointsType, int pointsValue) {
 		SBLog.i(TAG, "savePoints()");
-		String sql = "INSERT INTO " + C.DB_TABLE_POINTS + " (points_type, points_value, points_timestamp) VALUES (?, ?, ?)";
+		String sql = "INSERT INTO " + C.DB_TABLE_POINTS + " (type, value, timestamp) VALUES (?, ?, ?)";
 		SQLiteStatement insert = this._db.compileStatement(sql);
 		insert.bindLong(1, pointsType);
 		insert.bindLong(2, pointsValue);
 		insert.bindString(3, Database.getDateAsISO8601String(new Date()));
+		try {
+			return insert.executeInsert();
+		} catch (Exception ex) {
+			ErrorManager.manage(ex);
+		} finally {
+			insert.close();
+		}
+		return 0l;
+	}
+	
+	public synchronized Long addNotice(int noticeType, String noticeText, String noticeRef) {
+		SBLog.i(TAG, "addNotice()");
+		String sql = "INSERT INTO " + C.DB_TABLE_POINTS + " (type, text, ref, timestamp, state_flag) VALUES (?, ?, ?, ?, ?)";
+		SQLiteStatement insert = this._db.compileStatement(sql);
+		insert.bindLong(1, noticeType);
+		insert.bindString(2, noticeText);
+		insert.bindString(3, noticeRef);
+		insert.bindString(4, Database.getDateAsISO8601String(new Date()));
+		insert.bindLong(5, C.SHOUT_STATE_NEW);
 		try {
 			return insert.executeInsert();
 		} catch (Exception ex) {

@@ -84,10 +84,9 @@ public class NoticeTab extends LinearLayout implements IGestureCapable {
  		if (_isDirectionDown && newHeight > _maxHeight) {
  			this.adjustTabHeight(_maxHeight);
  			return;
- 		// This is naturally enforced with minHeight in main.xml... So we'll just leave it out for performance.
- 		//} else if (!_isDirectionDown && newHeight < _minHeight) {
- 		//	this.adjustTabHeight(_minHeight);
- 		//	return;
+ 		} else if (!_isDirectionDown && newHeight < _minHeight) {
+ 			this.adjustTabHeight(_minHeight);
+ 			return;
  		} else {
 	 		this.adjustTabHeight(newHeight);
 	        //Log.v(DEBUG_TAG, "We're " + percentDistance + " of the way there!");

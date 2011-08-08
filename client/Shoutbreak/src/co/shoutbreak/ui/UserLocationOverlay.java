@@ -237,7 +237,7 @@ public class UserLocationOverlay extends MyLocationOverlay {
 			_peopleCount = (int)(Math.PI * dist * dist * _density);
 			// Tack an extra person on to display cuz it looks better.
 			// It's usually a little low - but we don't want people trying to shout beyond their level so leave it low.
-			_ui.setTitleBarText((_peopleCount + 1) + " people will hear this");
+			_ui.setPeopleCountText((_peopleCount + 1) + " people will hear this");
 		}
 	}
 

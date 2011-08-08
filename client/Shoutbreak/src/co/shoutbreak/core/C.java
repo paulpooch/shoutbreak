@@ -129,6 +129,7 @@ public class C {
 	public static final String DB_TABLE_DENSITY = "DENSITY";
 	public static final String DB_TABLE_SHOUTS = "SHOUTS";
 	public static final String DB_TABLE_POINTS = "POINTS";
+	public static final String DB_TABLE_NOTICES = "NOTICES";
 	public static final String DB_TABLE_USER_SETTINGS = "USER_SETTINGS";
 	
 	public static final String KEY_USER_ID = "user_id";
