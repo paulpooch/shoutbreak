@@ -144,19 +144,19 @@ public class Polling {
 		try {
 			if (xPacket.json.has(C.JSON_DENSITY)) {
 				double density = (double) xPacket.json.optDouble(C.JSON_DENSITY);
-				_safeM.densityChangeEvent(density);
+				_safeM.densityChange(density);
 			}
 			if (xPacket.json.has(C.JSON_SHOUTS)) {
 				JSONArray shouts = xPacket.json.getJSONArray(C.JSON_SHOUTS);
-				_safeM.shoutsReceivedEvent(shouts);
+				_safeM.shoutsReceived(shouts);
 			}
 			if (xPacket.json.has(C.JSON_SCORES)) {
 				JSONArray scores = xPacket.json.getJSONArray(C.JSON_SCORES);
-				_safeM.scoresReceivedEvent(scores);
+				_safeM.scoresReceived(scores);
 			}
 			if (xPacket.json.has(C.JSON_LEVEL_CHANGE)) {
 				JSONObject levelInfo = xPacket.json.getJSONObject(C.JSON_LEVEL_CHANGE);
-				_safeM.levelUpEvent(levelInfo);
+				_safeM.levelUp(levelInfo);
 			}
 			if (xPacket.purpose == C.PURPOSE_LOOP_FROM_UI) {
 				xPacket.purpose = C.PURPOSE_LOOP_FROM_UI_DELAYED;
@@ -173,7 +173,7 @@ public class Polling {
 			public void handleMessage(Message message) {
 				switch (message.what) {
 					case C.HTTP_DID_SUCCEED: {
-						_safeM.shoutSentEvent();
+						_safeM.shoutSent();
 						// Unless shout occurs in idle thread, we don't need to sendMessage.
 						//CrossThreadPacket xPacket = (CrossThreadPacket)message.obj;
 						//_uiThreadHandler.sendMessage(Message.obtain(_uiThreadHandler, C.STATE_IDLE, xPacket)); // STATE doesn't matter - going to die
@@ -204,7 +204,7 @@ public class Polling {
 			public void handleMessage(Message message) {
 				switch (message.what) {
 					case C.HTTP_DID_SUCCEED: {
-						_safeM.voteFinishEvent(shoutId, vote);
+						_safeM.voteFinish(shoutId, vote);
 						// Unless vote occurs in idle thread, we don't need to sendMessage.
 						//CrossThreadPacket xPacket = (CrossThreadPacket)message.obj;
 						//_uiThreadHandler.sendMessage(Message.obtain(_uiThreadHandler, C.STATE_IDLE, xPacket)); // STATE doesn't matter - going to die
@@ -248,7 +248,7 @@ public class Polling {
 							CrossThreadPacket xPacket = (CrossThreadPacket)message.obj;
 							String password = xPacket.json.getString(C.JSON_PW);
 							String uid = xPacket.sArgs[0];
-							_safeM.accountCreatedEvent(uid, password);
+							_safeM.accountCreated(uid, password);
 							_uiThreadHandler.sendMessage(Message.obtain(_uiThreadHandler, C.STATE_IDLE, xPacket));
 						} catch (JSONException ex) {
 							ErrorManager.manage(ex);

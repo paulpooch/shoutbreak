@@ -59,15 +59,15 @@ public class UserLocationOverlay extends MyLocationOverlay {
 	private int _latRadiusLatForPeopleCount;
 	private int _peopleCount;
 
-	public void handleDensityChangeEvent(double newDensity, int newLevel) {
-		handleRadiusChangeEvent(newDensity, newLevel);
+	public void handleDensityChange(double newDensity, int newLevel) {
+		handleRadiusChange(newDensity, newLevel);
 	}
 	
-	public void handleLevelUpEvent(double newDensity, int newLevel) {
-		handleRadiusChangeEvent(newDensity, newLevel);
+	public void handleLevelUp(double newDensity, int newLevel) {
+		handleRadiusChange(newDensity, newLevel);
 	}
 	
-	private void handleRadiusChangeEvent(double newDensity, int newLevel) {
+	private void handleRadiusChange(double newDensity, int newLevel) {
 		_density = newDensity;
 		_baseRadiusMeters = User.calculateRadius(newLevel, newDensity);
 		_calibrateZoomLevelForRadiusSize = true;

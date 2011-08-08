@@ -34,7 +34,7 @@ public class Notifier {
 	    notificationManager.notify(C.APP_NOTIFICATION_ID, notification);
 	}
 	
-	public void handleShoutsReceivedEvent(int newShouts) {
+	public void handleShoutsReceived(int newShouts) {
 		if (newShouts > 0) {
 			String pluralShout = "shout" + (newShouts > 1 ? "s" : "");
 			notify(newShouts + " " + pluralShout + " received", "Shoutbreak", "you have " + newShouts + " new " + pluralShout);

@@ -5,7 +5,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class InboxViewHolder {
-	public String shoutID;
+	public String shoutId;
 	TextView textC;
 	TextView textE;
 	TextView timeAgoC;

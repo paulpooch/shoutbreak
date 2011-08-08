@@ -82,7 +82,7 @@ public class ThreadLauncher implements Colleague {
 		// I don't think there's anything to do here.
 	}
 	
-	public void handleShoutStartEvent(String text, int power) {
+	public void handleShoutStart(String text, int power) {
 		Message message = new Message();
 		CrossThreadPacket xPacket = new CrossThreadPacket();
 		xPacket.purpose = C.PURPOSE_DEATH;
@@ -93,7 +93,7 @@ public class ThreadLauncher implements Colleague {
 		launchPollingThread(message, false);
 	}
 	
-	public void handleVoteStartEvent(String shoutId, int vote) {
+	public void handleVoteStart(String shoutId, int vote) {
 		Message message = new Message();
 		CrossThreadPacket xPacket = new CrossThreadPacket();
 		xPacket.purpose = C.PURPOSE_DEATH;

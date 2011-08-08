@@ -1,126 +1,157 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="fill_parent" android:layout_height="fill_parent"
-	android:background="#ff000000" android:orientation="vertical">
-	
-	<!-- Splash -->
-	<LinearLayout android:id="@+id/splash"
-		android:layout_width="fill_parent" android:layout_height="fill_parent"
-		android:background="@drawable/splash" android:orientation="vertical">
-	</LinearLayout>
-	
-	<!-- Title Bar -->
-	<RelativeLayout android:background="@drawable/top_bg"
-		android:layout_width="fill_parent" android:layout_height="wrap_content"
-		android:layout_weight="0">
-		<TextView android:id="@+id/tvTitleBar" android:layout_height="wrap_content"
-			android:layout_width="wrap_content" android:layout_centerVertical="true"
-			android:layout_alignParentLeft="true" android:layout_marginLeft="40dp"
-			android:textSize="15dp" android:textColor="#ffffffff" />
-		<ImageButton android:id="@+id/powerButton" android:text="power"
-			android:layout_centerVertical="true" android:background="#00000000"
-			android:layout_alignParentRight="true" android:layout_width="wrap_content"
-			android:layout_marginTop="5dp" android:layout_marginRight="5dp"
-			android:src="@drawable/power_button_on" android:layout_height="wrap_content" />
-	</RelativeLayout>
-	
-	<!-- Views -->
-	<RelativeLayout android:id="@+id/view_container" android:visibility="visible"
-		android:layout_width="fill_parent" android:layout_height="wrap_content"
-		android:layout_weight="1">
-		
-		<!-- Compose -->
-		<LinearLayout android:id="@+id/compose_view" android:visibility="invisible"
-			android:layout_width="fill_parent" android:layout_height="wrap_content"
-			android:background="#ff000000" android:orientation="vertical">
+	android:background="#ff000000">
 
-			<!-- Map -->
-			<RelativeLayout android:id="@+id/rlMap"
-				android:layout_width="fill_parent" android:layout_height="wrap_content"
-				android:layout_weight="1">
-				<co.shoutbreak.ui.CustomMapView
-					android:id="@+id/cmvMap" android:layout_width="fill_parent"
-					android:layout_height="wrap_content" android:clickable="true"
-					android:apiKey="@string/maps_api_key" />
-				<RelativeLayout android:layout_height="1dp"
-					android:id="@+id/rlNoticeShouting" android:background="#77000000"
-					android:layout_width="fill_parent" android:layout_alignParentTop="true">
-				</RelativeLayout>
-				<TextView android:layout_height="wrap_content" android:id="@+id/tvNoticeShouting"
-					android:layout_width="wrap_content" android:textColor="#00000000"
-					android:layout_alignParentTop="true" android:layout_centerHorizontal="true"
-					android:layout_marginTop="20dp" android:textSize="20dp" />
-			</RelativeLayout>
-			
-			<!-- Input -->
-			<RelativeLayout android:id="@+id/rlShoutInput"
-				android:background="@drawable/shout_input_bg" android:layout_width="fill_parent"
-				android:layout_height="wrap_content" android:layout_weight="0">
-				<ImageButton android:id="@+id/shoutButton" android:text="shout"
-					android:layout_centerVertical="true" android:background="#00000000"
-					android:layout_alignParentRight="true" android:layout_width="wrap_content"
-					android:layout_marginTop="6dp" android:layout_marginRight="2dp"
-					android:src="@drawable/shout_button" android:layout_height="wrap_content" />
-				<EditText android:id="@+id/etShoutText" android:layout_width="fill_parent"
-					android:layout_marginRight="3dp" android:layout_marginLeft="4dp"
-					android:padding="4dp" android:layout_toLeftOf="@id/shoutButton"
-					android:layout_height="wrap_content" android:background="@drawable/textbox"
-					android:gravity="top" android:layout_centerVertical="true"
-					android:imeOptions="actionSend" android:inputType="textLongMessage|textMultiLine" />
-			</RelativeLayout>
+	<LinearLayout android:layout_width="fill_parent"
+		android:layout_height="fill_parent" android:orientation="vertical">
 
-		</LinearLayout>
-	
-		<!-- Inbox -->
-		<LinearLayout android:id="@+id/inbox_view" android:visibility="invisible"
-			android:layout_width="fill_parent" android:layout_height="wrap_content"
-			android:background="#ff000000" android:orientation="vertical">
-			<ListView android:id="@+id/lvInbox" android:layout_width="fill_parent"
-				android:cacheColorHint="#ff000000" android:layout_height="fill_parent" />				
-		</LinearLayout>
-	
-		<!-- Profile -->
-		<LinearLayout android:id="@+id/profile_view" android:visibility="invisible"
-			android:layout_width="fill_parent" android:layout_height="wrap_content"
-			android:background="#ff000000" android:orientation="vertical">
-			<TextView android:text="Profile View" android:layout_width="fill_parent"
-				android:layout_height="wrap_content" />
-		</LinearLayout>
-		
-		<!-- Enable Location -->
-		<LinearLayout android:id="@+id/enable_location_view" android:visibility="invisible"
-			android:layout_width="fill_parent" android:layout_height="wrap_content"
+		<!-- Splash -->
+		<LinearLayout android:id="@+id/splashLl"
+			android:layout_width="fill_parent" android:layout_height="fill_parent"
 			android:background="@drawable/splash" android:orientation="vertical">
 		</LinearLayout>
-		
-		<!-- Notice -->
-		<RelativeLayout android:layout_height="1dp"
-			android:id="@+id/noticeRl" android:background="#77000000"
-			android:layout_width="fill_parent" android:layout_alignParentTop="true">
+
+		<!-- Title Bar -->
+		<RelativeLayout android:background="@drawable/top_bg" android:id="@+id/titleBarRl"
+			android:layout_width="fill_parent" android:layout_height="wrap_content"
+			android:layout_weight="0">
+			<TextView android:id="@+id/titleBarTv"
+				android:layout_height="wrap_content" android:layout_width="wrap_content"
+				android:layout_centerVertical="true" android:layout_alignParentLeft="true"
+				android:layout_marginLeft="40dp" android:textSize="15dp"
+				android:textColor="#ffffffff" />
+			<ImageButton android:id="@+id/powerBtn" android:text="power"
+				android:layout_centerVertical="true" android:background="#00000000"
+				android:layout_alignParentRight="true" android:layout_width="wrap_content"
+				android:layout_marginTop="5dp" android:layout_marginRight="5dp"
+				android:src="@drawable/power_button_on" android:layout_height="wrap_content" />
 		</RelativeLayout>
-		<TextView android:layout_height="wrap_content" android:id="@+id/noticeText"
-			android:layout_width="wrap_content" android:textColor="#00000000"
-			android:layout_alignParentTop="true" android:layout_centerHorizontal="true"
-			android:layout_marginTop="20dp" android:textSize="20dp" />
-		
+
+		<!-- Views -->
+		<RelativeLayout android:id="@+id/viewContainerRl"
+			android:visibility="visible" android:layout_width="fill_parent"
+			android:layout_height="wrap_content" android:layout_weight="1">
+
+			<!-- Compose -->
+			<LinearLayout android:id="@+id/composeViewLl"
+				android:visibility="invisible" android:layout_width="fill_parent"
+				android:layout_height="wrap_content" android:background="#ff000000"
+				android:orientation="vertical">
+
+				<!-- Map -->
+				<RelativeLayout android:id="@+id/mapRl"
+					android:layout_width="fill_parent" android:layout_height="wrap_content"
+					android:layout_weight="1">
+					<co.shoutbreak.ui.CustomMapView
+						android:id="@+id/mapCmv" android:layout_width="fill_parent"
+						android:layout_height="wrap_content" android:clickable="true"
+						android:apiKey="@string/maps_api_key" />
+					<RelativeLayout android:layout_height="1dp"
+						android:id="@+id/noticeShoutingRl" android:background="#77000000"
+						android:layout_width="fill_parent" android:layout_alignParentTop="true">
+					</RelativeLayout>
+					<TextView android:layout_height="wrap_content" android:id="@+id/noticeShoutingTv"
+						android:layout_width="wrap_content" android:textColor="#00000000"
+						android:layout_alignParentTop="true"
+						android:layout_centerHorizontal="true" android:layout_marginTop="20dp"
+						android:textSize="20dp" />
+				</RelativeLayout>
+
+	<!--  NAMING CONVENTIONS DONE UP TO HERE -->
+
+				<!-- Input -->
+				<RelativeLayout android:id="@+id/inputRl"
+					android:background="@drawable/shout_input_bg" android:layout_width="fill_parent"
+					android:layout_height="wrap_content" android:layout_weight="0">
+					<ImageButton android:id="@+id/shoutBtn"
+						android:text="shout" android:layout_centerVertical="true"
+						android:background="#00000000" android:layout_alignParentRight="true"
+						android:layout_width="wrap_content" android:layout_marginTop="6dp"
+						android:layout_marginRight="2dp" android:src="@drawable/shout_button_up"
+						android:layout_height="wrap_content" />
+					<EditText android:id="@+id/shoutInputEt"
+						android:layout_width="fill_parent" android:layout_marginRight="3dp"
+						android:layout_marginLeft="4dp" android:padding="4dp"
+						android:layout_toLeftOf="@id/shoutBtn" android:layout_height="wrap_content"
+						android:background="@drawable/textbox" android:gravity="top"
+						android:layout_centerVertical="true" android:imeOptions="actionSend"
+						android:inputType="textLongMessage|textMultiLine" />
+				</RelativeLayout>
+
+			</LinearLayout>
+
+			<!-- Inbox -->
+			<LinearLayout android:id="@+id/inboxViewLl"
+				android:visibility="invisible" android:layout_width="fill_parent"
+				android:layout_height="wrap_content" android:background="#ff000000"
+				android:orientation="vertical">
+				<ListView android:id="@+id/inboxLv" android:layout_width="fill_parent"
+					android:cacheColorHint="#ff000000" android:layout_height="fill_parent" />
+			</LinearLayout>
+
+			<!-- Profile -->
+			<LinearLayout android:id="@+id/profileViewLl"
+				android:visibility="invisible" android:layout_width="fill_parent"
+				android:layout_height="wrap_content" android:background="#ff000000"
+				android:orientation="vertical">
+				<TextView android:text="Profile View" android:layout_width="fill_parent"
+					android:layout_height="wrap_content" />
+			</LinearLayout>
+
+			<!-- Enable Location -->
+			<LinearLayout android:id="@+id/enable_location_view"
+				android:visibility="invisible" android:layout_width="fill_parent"
+				android:layout_height="wrap_content" android:background="@drawable/splash"
+				android:orientation="vertical">
+			</LinearLayout>
+
+			<!-- Notice -->
+			<RelativeLayout android:layout_height="1dp"
+				android:id="@+id/noticeRl" android:background="#77000000"
+				android:layout_width="fill_parent" android:layout_alignParentTop="true">
+			</RelativeLayout>
+			<TextView android:layout_height="wrap_content" android:id="@+id/noticeTv"
+				android:layout_width="wrap_content" android:textColor="#00000000"
+				android:layout_alignParentTop="true"
+				android:layout_centerHorizontal="true" android:layout_marginTop="20dp"
+				android:textSize="20dp" />
+
+		</RelativeLayout>
+
+		<!-- Tabs -->
+		<RelativeLayout android:layout_width="fill_parent"
+			android:layout_alignParentBottom="true" android:background="@drawable/tab_bg"
+			android:layout_height="wrap_content" android:layout_weight="0">
+			<ImageButton android:layout_centerInParent="true"
+				android:layout_width="149px" android:layout_height="99px"
+				android:id="@+id/inboxTabBtn" android:background="#00000000"
+				android:src="@drawable/tab_inbox" />
+			<ImageButton android:layout_toLeftOf="@id/inboxTabBtn"
+				android:layout_width="149px" android:layout_height="99px"
+				android:layout_marginRight="5dp" android:layout_centerVertical="true"
+				android:id="@+id/composeTabBtn" android:background="#00000000"
+				android:src="@drawable/tab_shouting" />
+			<ImageButton android:layout_toRightOf="@id/inboxTabBtn"
+				android:layout_width="149px" android:layout_height="99px"
+				android:layout_marginLeft="5dp" android:layout_centerVertical="true"
+				android:id="@+id/profileTabBtn" android:background="#00000000"
+				android:src="@drawable/tab_user" />
+		</RelativeLayout>
+
+	</LinearLayout>
+
+	<RelativeLayout android:id="@+id/noticeTabRl" android:layout_marginTop="48px"
+		android:layout_width="fill_parent" android:layout_height="fill_parent">
+		<co.shoutbreak.ui.NoticeTab android:id="@+id/noticeTab" android:background="@drawable/notice_tab_bg" android:minHeight="47px" android:layout_alignParentTop="true" android:layout_height="47px" android:layout_width="fill_parent">
+			<!-- <ListView android:id="@+id/noticeLabLv" android:layout_width="fill_parent"
+				android:cacheColorHint="#ffffffff" android:layout_height="fill_parent" />-->
+			<LinearLayout android:layout_height="fill_parent" android:layout_width="fill_parent" android:background="#ffffffff" android:layout_marginBottom="47px"/>
+		</co.shoutbreak.ui.NoticeTab>
+		<!-- 
+		<ImageButton
+			android:layout_width="fill_parent" android:layout_height="47px" android:layout_below="@id/noticeTabContentLl"
+			android:id="@+id/noticeTabBtn" android:src="@drawable/notice_tab" android:background="#00000000" />
+			 -->
 	</RelativeLayout>
 	
-	<!-- Tabs -->
-	<RelativeLayout android:layout_width="fill_parent" android:layout_alignParentBottom="true" 
-		android:background="@drawable/tab_bg" android:layout_height="wrap_content"
-		android:layout_weight="0">
-		<ImageButton android:layout_centerInParent="true"
-			android:layout_width="149px" android:layout_height="99px" android:id="@+id/inboxTab"
-			android:background="#00000000" android:src="@drawable/tab_inbox" />
-		<ImageButton android:layout_toLeftOf="@id/inboxTab"
-			android:layout_width="149px" android:layout_height="99px"
-			android:layout_marginRight="5dp" android:layout_centerVertical="true"
-			android:id="@+id/composeTab" android:background="#00000000"
-			android:src="@drawable/tab_shouting" />
-		<ImageButton android:layout_toRightOf="@id/inboxTab"
-			android:layout_width="149px" android:layout_height="99px"
-			android:layout_marginLeft="5dp" android:layout_centerVertical="true"
-			android:id="@+id/profileTab" android:background="#00000000"
-			android:src="@drawable/tab_user" />
-	</RelativeLayout>
-	
-</LinearLayout>
+</RelativeLayout>

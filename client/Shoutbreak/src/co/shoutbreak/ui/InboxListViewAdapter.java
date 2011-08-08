@@ -58,8 +58,8 @@ public class InboxListViewAdapter extends BaseAdapter implements Colleague {
 		protected Void doInBackground(Object... params) {
 			InboxViewHolder holder = (InboxViewHolder)params[0];
 			Integer voteDirection = (Integer)params[1];
-    		_cacheVoteTemporary.put(holder.shoutID, voteDirection);
-        	_m.voteStartEvent(holder.shoutID, voteDirection);
+    		_cacheVoteTemporary.put(holder.shoutId, voteDirection);
+        	_m.voteStart(holder.shoutId, voteDirection);
 			return null;
 		}
         protected void onPostExecute(Void unused) {
@@ -81,7 +81,7 @@ public class InboxListViewAdapter extends BaseAdapter implements Colleague {
         		InboxViewHolder holder = (InboxViewHolder) view.getTag();
         		holder.collapsed.setVisibility(View.VISIBLE);
 		        holder.expanded.setVisibility(View.GONE);
-		        _cacheExpandState.put(holder.shoutID, false);
+		        _cacheExpandState.put(holder.shoutId, false);
             }        	
         };
         
@@ -114,7 +114,7 @@ public class InboxListViewAdapter extends BaseAdapter implements Colleague {
         onDeleteClickListener = new OnClickListener() {
         	public void onClick(View view) {
         		InboxViewHolder holder = (InboxViewHolder) view.getTag();
-            	_m.deleteShout(holder.shoutID);
+            	_m.deleteShout(holder.shoutId);
 			}
         };
         
@@ -126,17 +126,9 @@ public class InboxListViewAdapter extends BaseAdapter implements Colleague {
 		_m = null;	
 	}	
     
-    public void handleShoutsReceivedEvent(List<Shout> shouts) {
+	public void refresh(List<Shout> shouts) {
 		updateDisplay(shouts);
-    }
-    
-    public void handleScoresReceivedEvent(List<Shout> shouts) {
-		updateDisplay(shouts);
-    }
-    
-    public void handleVoteFinishEvent(List<Shout> shouts) {
-		updateDisplay(shouts);
-    }
+	}
     
     public void setInputAllowed(boolean b) {
     	_isInputAllowed = b;
@@ -272,7 +264,7 @@ public class InboxListViewAdapter extends BaseAdapter implements Colleague {
         holder.textE.setText(entry.text);
         holder.scoreC.setText(score);
         holder.scoreE.setText(score);
-        holder.shoutID = entry.id;
+        holder.shoutId = entry.id;
         holder.timeAgoC.setText(timeAgo);
 		holder.timeAgoE.setText(timeAgo);
 		holder.btnDelete.setTag(holder);

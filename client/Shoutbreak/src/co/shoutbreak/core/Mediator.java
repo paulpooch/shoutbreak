@@ -76,7 +76,7 @@ public class Mediator {
 		SBLog.i(TAG, "registerUI()");
 		_isUIAlive.set(true);
 		_ui = ui;
-		_ui.setMediator(this);
+		_ui.setMediator(this);	
 	}
 	
 	public void unregisterUI(boolean forceKillUI) {
@@ -250,9 +250,9 @@ public class Mediator {
 		}
 	}
 	
-	public void shoutStartEvent(String text, int power) {
+	public void shoutStart(String text, int power) {
 		SBLog.i(TAG, "shout()");
-		_threadLauncher.handleShoutStartEvent(text, power);
+		_threadLauncher.handleShoutStart(text, power);
 	}
 	
 	public Object getSystemService(String name) {
@@ -276,11 +276,13 @@ public class Mediator {
 		}
 		return _location.getCurrentCell();
 	}
-		
 	
 	public void deleteShout(String shoutId) {
 		SBLog.i(TAG, "deleteShout()");
 		_inbox.deleteShout(shoutId);
+		if (_isUIAlive.get()) {
+			_ui.refreshInbox(_inbox.getShoutsForUI());
+		}
 	}
 	
 	public void launchPollingThread(Message message) {
@@ -295,18 +297,22 @@ public class Mediator {
 	
 	// EVENTS /////////////////////////////////////////////////////////////////
 	
+	public void inboxNewShoutSelected(Shout shout) {
+		_inbox.handleInboxNewShoutSelected(shout);
+	}
+		
 	// Triggered from a Shout close.  Have user save earned points.
-	public void pointsChangeEvent(int additionalPoints) {
-		SBLog.i(TAG, "pointsChangeEvent()");
-		_user.handlePointsChangeEvent(additionalPoints);
+	public void pointsChange(int additionalPoints) {
+		SBLog.i(TAG, "pointsChange()");
+		_user.handlePointsChange(additionalPoints);
 		if (_isUIAlive.get()) {
-			_ui.handlePointsChangeEvent(_user.getPoints());
+			_ui.handlePointsChange(_user.getPoints());
 		}
 	}
 	
-	public void voteStartEvent(String shoutId, int vote) {
-		SBLog.i(TAG, "voteStartEvent()");
-		_threadLauncher.handleVoteStartEvent(shoutId, vote);
+	public void voteStart(String shoutId, int vote) {
+		SBLog.i(TAG, "voteStart()");
+		_threadLauncher.handleVoteStart(shoutId, vote);
 	}
 	
 	// THREAD SAFE MEDIATOR ///////////////////////////////////////////////////
@@ -318,60 +324,60 @@ public class Mediator {
 			SBLog.i(TAG, "new ThreadSafeMediator()");
 		}
 		
-		public void densityChangeEvent(double density) {
-			SBLog.i(TAG, "densityChangeEvent()");
+		public void densityChange(double density) {
+			SBLog.i(TAG, "densityChange()");
 			// Note: The order in these matters.
-			_user.handleDensityChangeEvent(density);
+			_user.handleDensityChange(density);
 			if (_isUIAlive.get()) {
-				_ui.handleDensityChangeEvent(density, _user.getLevel());
+				_ui.handleDensityChange(density, _user.getLevel());
 			}
 		}
 	
-		public void shoutsReceivedEvent(JSONArray shouts) {
-			SBLog.i(TAG, "shoutsReceivedEvent()");
-			_inbox.handleShoutsReceivedEvent(shouts);
+		public void shoutsReceived(JSONArray shouts) {
+			SBLog.i(TAG, "shoutsReceived()");
+			_inbox.handleShoutsReceived(shouts);
 			if (_isUIAlive.get()) {
-				_ui.handleShoutsReceivedEvent(_inbox.getShoutsForUI(), shouts.length());
+				_ui.handleShoutsReceived(_inbox.getShoutsForUI(), shouts.length());
 			} else {
-				_notifier.handleShoutsReceivedEvent(shouts.length());				
+				_notifier.handleShoutsReceived(shouts.length());				
 			}
 		}
 		
-		public void scoresReceivedEvent(JSONArray scores) {
-			SBLog.i(TAG, "scoresReceivedEvent()");
-			_inbox.handleScoresReceivedEvent(scores);
+		public void scoresReceived(JSONArray scores) {
+			SBLog.i(TAG, "scoresReceived()");
+			_inbox.handleScoresReceived(scores);
 			if (_isUIAlive.get()) {
-				_ui.handleScoresReceivedEvent(_inbox.getShoutsForUI());
+				_ui.refreshInbox(_inbox.getShoutsForUI());
 			}
 		}
 			
-		public void levelUpEvent(JSONObject levelInfo) {
-			SBLog.i(TAG, "levelUpEvent()");
-			_user.handleLevelUpEvent(levelInfo);
+		public void levelUp(JSONObject levelInfo) {
+			SBLog.i(TAG, "levelUp()");
+			_user.handleLevelUp(levelInfo);
 			if (_isUIAlive.get()) {
-				_ui.handleLevelUpEvent(_user.getCellDensity().density, _user.getLevel());
-				_ui.handlePointsChangeEvent(_user.getPoints());
+				_ui.handleLevelUp(_user.getCellDensity().density, _user.getLevel());
+				_ui.handlePointsChange(_user.getPoints());
 			}
 		}
 		
-		public void shoutSentEvent() {
-			SBLog.i(TAG, "shoutSentEvent()");
+		public void shoutSent() {
+			SBLog.i(TAG, "shoutSent()");
 			if (_isUIAlive.get()) {
-				_ui.handleShoutSentEvent();
+				_ui.handleShoutSent();
 			}
 		}
 		
-		public void voteFinishEvent(String shoutId, int vote) {
-			SBLog.i(TAG, "voteFinishEvent()");
-			_inbox.handleVoteFinishEvent(shoutId, vote);
+		public void voteFinish(String shoutId, int vote) {
+			SBLog.i(TAG, "voteFinish()");
+			_inbox.handleVoteFinish(shoutId, vote);
 			if (_isUIAlive.get()) {
-				_ui.handleVoteFinishEvent(_inbox.getShoutsForUI());
+				_ui.refreshInbox(_inbox.getShoutsForUI());
 			}
 		}
 		
-		public void accountCreatedEvent(String uid, String password) {
-			SBLog.i(TAG, "accountCreatedEvent()");
-			_user.handleAccountCreatedEvent(uid, password);
+		public void accountCreated(String uid, String password) {
+			SBLog.i(TAG, "accountCreated()");
+			_user.handleAccountCreated(uid, password);
 			// Maybe we should do something in the UI?
 		}
 		

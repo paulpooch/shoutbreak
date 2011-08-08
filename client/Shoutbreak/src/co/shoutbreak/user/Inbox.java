@@ -43,7 +43,7 @@ public class Inbox implements Colleague {
 	// SYNCHRONIZED WRITE METHODS /////////////////////////////////////////////
 		
 	// needs to be synchronized?
-	public synchronized void handleShoutsReceivedEvent(JSONArray shouts) {
+	public synchronized void handleShoutsReceived(JSONArray shouts) {
 		for (int i = 0; i < shouts.length(); i++) {
 			try {
 				JSONObject jsonShout = shouts.getJSONObject(i);
@@ -54,7 +54,7 @@ public class Inbox implements Colleague {
 		}
 	}
 	
-	public synchronized void handleScoresReceivedEvent(JSONArray scores) {
+	public synchronized void handleScoresReceived(JSONArray scores) {
 		for (int i = 0; i < scores.length(); i++) {
 			try {
 				JSONObject jsonScore = scores.getJSONObject(i);
@@ -65,10 +65,15 @@ public class Inbox implements Colleague {
 		}
 	}
 	
-	public synchronized void handleVoteFinishEvent(String shoutId, int vote) {
+	public synchronized void handleVoteFinish(String shoutId, int vote) {
 		reflectVote(shoutId, vote);
 		refreshShout(shoutId);
 	}
+	
+	public synchronized void handleInboxNewShoutSelected(Shout shout) {
+		markShoutAsRead(shout.id);
+	}
+		
 	
 	public synchronized boolean deleteShout(String shoutID) {
 		SBLog.i(TAG, "new deleteShout()");
@@ -269,7 +274,7 @@ public class Inbox implements Colleague {
 		if (!shout.open){
 			Shout shoutFromDB = getShout(shout.id);
 			if (shoutFromDB.is_outbox) {
-				_m.pointsChangeEvent(shout.pts);								
+				_m.pointsChange(shout.pts);								
 			}
 		}
 		

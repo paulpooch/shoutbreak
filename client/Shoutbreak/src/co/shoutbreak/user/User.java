@@ -61,11 +61,11 @@ public class User implements Colleague {
 	
 	// SYNCHRONIZED WRITE METHODS /////////////////////////////////////////////
 	
-	public synchronized void handleDensityChangeEvent(double density) {
+	public synchronized void handleDensityChange(double density) {
 		saveDensity(density);
 	}
 	
-	public synchronized void handleLevelUpEvent(JSONObject levelInfo) {
+	public synchronized void handleLevelUp(JSONObject levelInfo) {
 		try {
 			int newLevel = (int) levelInfo.getLong(C.JSON_LEVEL);
 			int newPoints = (int) levelInfo.getLong(C.JSON_POINTS);
@@ -76,11 +76,11 @@ public class User implements Colleague {
 		}
 	}
 	
-	public synchronized void handlePointsChangeEvent(int additonalPoints) {
+	public synchronized void handlePointsChange(int additonalPoints) {
 		 savePoints(additonalPoints);		
 	}
 	
-	public synchronized void handleAccountCreatedEvent(String uid, String password) {
+	public synchronized void handleAccountCreated(String uid, String password) {
 		setUserId(uid);
 		setPassword(password);
 	}
