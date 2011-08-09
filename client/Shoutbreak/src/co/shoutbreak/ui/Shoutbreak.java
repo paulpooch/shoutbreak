@@ -23,6 +23,7 @@ import android.content.ServiceConnection;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.provider.Settings;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.InputMethodManager;
@@ -31,6 +32,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -51,11 +53,14 @@ public class Shoutbreak extends MapActivity implements Colleague {
 	private ImageButton _inboxTabBtn;
 	private ImageButton _profileTabBtn;
 	private ImageButton _shoutBtn;
+	private ImageButton _enableLocationBtn;
 	private EditText _shoutInputEt;
 	private LinearLayout _splashLl;
 	private LinearLayout _composeViewLl;
 	private LinearLayout _inboxViewLl;
 	private LinearLayout _profileViewLl;
+	private RelativeLayout _mapContainer;
+	private RelativeLayout _inputContainer;
 	private TextView _titleBarTv;
 	private NoticeTab _noticeTab;
 
@@ -92,7 +97,10 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		_inboxViewLl = (LinearLayout) findViewById(R.id.inboxViewLl);
 		_profileViewLl = (LinearLayout) findViewById(R.id.profileViewLl);
 		_titleBarTv = (TextView) findViewById(R.id.titleBarTv);
-		_map = (CustomMapView) findViewById(R.id.mapCmv);
+		_mapContainer = (RelativeLayout) findViewById(R.id.mapRl);
+		_inputContainer = (RelativeLayout) findViewById(R.id.inputRl);
+		_enableLocationBtn = (ImageButton) findViewById(R.id.enableLocationBtn);
+		_enableLocationBtn.setOnClickListener(_enableLocationListener);
 				
 		// bind to service, initializes mediator
 		_serviceIntent = new Intent(Shoutbreak.this, ShoutbreakService.class);
@@ -232,6 +240,13 @@ public class Shoutbreak extends MapActivity implements Colleague {
 			}
 		}
 	};
+	
+	private OnClickListener _enableLocationListener = new OnClickListener() {
+		public void onClick(View v) {
+			Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);  
+            startActivityForResult(intent, 1);
+		}
+	};
 
 	/* View Methods */
 
@@ -246,6 +261,9 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		_composeViewLl.setVisibility(View.VISIBLE);
 		_inboxViewLl.setVisibility(View.GONE);
 		_profileViewLl.setVisibility(View.GONE);
+		findViewById(R.id.mapRl).setVisibility(View.VISIBLE);
+		findViewById(R.id.inputRl).setVisibility(View.VISIBLE);
+		findViewById(R.id.enableLocationBtn).setVisibility(View.GONE);
 	}
 
 	public void showInbox() {
@@ -276,6 +294,9 @@ public class Shoutbreak extends MapActivity implements Colleague {
 
 	public void disableComposeView() {
 		SBLog.i(TAG, "disableComposeView()");
+		findViewById(R.id.mapRl).setVisibility(View.GONE);
+		findViewById(R.id.inputRl).setVisibility(View.GONE);
+		findViewById(R.id.enableLocationBtn).setVisibility(View.VISIBLE);
 	}
 
 	/* Location and Data */
@@ -328,13 +349,13 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		_map.postInvalidate();
 
 		// TODO: remove this. called when 'on/off' switch is clicked
-		_overlay.runOnFirstFix(new Runnable() {
+		/*_overlay.runOnFirstFix(new Runnable() {
 			public void run() {
 				GeoPoint loc = _overlay.getMyLocation();
 				MapController mapController = _map.getController();
 				mapController.animateTo(loc);
 			}
-		});
+		});*/
 		_overlay.enableMyLocation();
 	}
 

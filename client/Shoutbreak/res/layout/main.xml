@@ -38,6 +38,13 @@
 				android:layout_height="wrap_content" android:background="#ff000000"
 				android:orientation="vertical">
 
+				<!--  Enable Location -->
+				<ImageButton
+					android:id="@+id/enableLocationBtn" android:background="@drawable/enable_location"
+					android:layout_width="fill_parent" android:layout_height="fill_parent" 
+					android:layout_alignParentTop="true" android:visibility="gone">
+				</ImageButton>
+
 				<!-- Map -->
 				<RelativeLayout android:id="@+id/mapRl"
 					android:layout_width="fill_parent" android:layout_height="wrap_content"
@@ -94,13 +101,6 @@
 				android:orientation="vertical">
 				<TextView android:text="Profile View" android:layout_width="fill_parent"
 					android:layout_height="wrap_content" />
-			</LinearLayout>
-
-			<!-- Enable Location -->
-			<LinearLayout android:id="@+id/enableLocationViewLl"
-				android:visibility="invisible" android:layout_width="fill_parent"
-				android:layout_height="wrap_content" android:background="@drawable/splash"
-				android:orientation="vertical">
 			</LinearLayout>
 
 		</RelativeLayout>
