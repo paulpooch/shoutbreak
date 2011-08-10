@@ -241,8 +241,19 @@ public class Mediator {
 		}
 	}
 	
+	private void createNotice(int noticeType, String noticeText, String noticeRef) {
+		_user.saveNotice(noticeType, noticeText, noticeRef);
+		_ui.giveNotice(_user.getNoticesForUI());
+	}
+	
+	public void createDebugNotice(String noticeText) {
+		_user.saveNotice(C.NOTICE_DEBUG, noticeText, null);
+		_ui.giveNotice(_user.getNoticesForUI());
+	}
+	
 	public void checkLocationProviderStatus() {
 		SBLog.i(TAG, "checkLocationProviderStatus()");
+		createDebugNotice("Mediator.checkLocationProviderStatus = " + _location.isLocationEnabled());		
 		if (_location.isLocationEnabled()) {
 			onLocationEnabled();
 		} else {
@@ -341,6 +352,9 @@ public class Mediator {
 			} else {
 				_notifier.handleShoutsReceived(shouts.length());				
 			}
+			String pluralShout = "shout" + (shouts.length() > 1 ? "s" : "");
+			String notice = "just heard " + shouts.length() + " new " + pluralShout;
+			createNotice(C.NOTICE_SHOUTS_RECEIVED, notice, null);
 		}
 		
 		public void scoresReceived(JSONArray scores) {
@@ -358,6 +372,7 @@ public class Mediator {
 				_ui.handleLevelUp(_user.getCellDensity().density, _user.getLevel());
 				_ui.handlePointsChange(_user.getPoints());
 			}
+			createNotice(C.NOTICE_LEVEL_UP, "You leveled up! You're now level " + _user.getLevel(), null);
 		}
 		
 		public void shoutSent() {
@@ -365,6 +380,7 @@ public class Mediator {
 			if (_isUIAlive.get()) {
 				_ui.handleShoutSent();
 			}
+			createNotice(C.NOTICE_SHOUT_SENT, "shout sent", null);
 		}
 		
 		public void voteFinish(String shoutId, int vote) {

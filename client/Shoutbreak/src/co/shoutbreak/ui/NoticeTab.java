@@ -19,6 +19,8 @@ public class NoticeTab extends LinearLayout implements IGestureCapable {
     private float _totalAnimDy;
     private int _minHeight = 47;
     private int _maxHeight = -1;
+    private int _fullsizeMaxHeight = -1;
+    private int _oneLineHeight = _minHeight + 80;
     private boolean _isDirectionDown = true;
     
 	public NoticeTab(Context context) {
@@ -34,16 +36,14 @@ public class NoticeTab extends LinearLayout implements IGestureCapable {
 	}
 	
 	public boolean onTouchEvent(MotionEvent event) {
-		if (_maxHeight == -1) {
-			_maxHeight = _ui.getMapHeight() + _minHeight - 5;
+		if (_fullsizeMaxHeight == -1) {
+			_fullsizeMaxHeight = _ui.getMapHeight() + _minHeight - 5;
 		}
 		return _gestures.onTouchEvent(event);
 	}
 
 	@Override
-	public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX,
-			float distanceY) {
-		SBLog.e("---onScroll---",e1.toString()+e2.toString());
+	public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
 		int newHeight = (int) (e2.getY());
 		this.adjustTabHeight(newHeight);
 		// translate.postTranslate(dx, dy);
@@ -54,9 +54,31 @@ public class NoticeTab extends LinearLayout implements IGestureCapable {
 	public void adjustTabHeight(int newHeight) {
 		this.setLayoutParams(new RelativeLayout.LayoutParams(LayoutParams.FILL_PARENT, newHeight));
 	}
+	
+	public void showOneLine() {
+		if (this.getHeight() > _minHeight + _oneLineHeight) {
+			// already open
+			
+		} else {
+			_maxHeight = _oneLineHeight;
+			long duration = 400;
+		    _isDirectionDown = true;
+		    _overshootInterpolator = new OvershootInterpolator();
+	        _startTime = System.currentTimeMillis();
+	        _endTime = _startTime + duration;
+	        _totalAnimDy = 30;
+	        post(new Runnable() {
+	            @Override
+	            public void run() {
+	                onAnimateStep();
+	            }
+	        });
+		}
+	}
 
 	@Override
 	public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+		_maxHeight = _fullsizeMaxHeight;
 		final float distanceTimeFactor = 0.4f;
 	    final float totalDy = (distanceTimeFactor * velocityY / 2);
 	    long duration = (long) (1000 * distanceTimeFactor);
@@ -78,7 +100,7 @@ public class NoticeTab extends LinearLayout implements IGestureCapable {
      private void onAnimateStep() {
         long curTime = System.currentTimeMillis();
         float percentTime = (float) (curTime - _startTime) / (float) (_endTime - _startTime);
-        float percentDistance = _overshootInterpolator.getInterpolation(percentTime);;
+        float percentDistance = _overshootInterpolator.getInterpolation(percentTime);
         float curDy = percentDistance * _totalAnimDy;
  		int newHeight = (int)(this.getHeight() + curDy);
  		if (_isDirectionDown && newHeight > _maxHeight) {

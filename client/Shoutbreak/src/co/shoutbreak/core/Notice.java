@@ -2,20 +2,26 @@ package co.shoutbreak.core;
 
 public class Notice {
 
-	public String id;
-	public String timestamp;
+	public long id;
+	public int type;
 	public String text;
+	public String ref;
+	public long timestamp;
+	public int stateFlag;
+	
 	public int state_flag;
-
+	
 	public Notice() {
-		this("", "", "");
+		
 	}
 
-	public Notice(String id, String timestamp, String text) {
+	public Notice(int id, int type, String text, String ref, long timestamp, int stateFlag) {
 		this.id = id;
-		this.timestamp = timestamp;
+		this.type = type;
 		this.text = text;
-		this.state_flag = C.SHOUT_STATE_NEW;
+		this.ref = ref;
+		this.timestamp = timestamp;
+		this.stateFlag = stateFlag;
 	}
 	
 }

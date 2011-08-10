@@ -2,13 +2,20 @@ package co.shoutbreak.core;
 
 // Constants
 public class C {
+
+	// NOTICES ////////////////////////////////////////////////////////////////
+	public static final int NOTICE_SHOUTS_RECEIVED = 0;
+	public static final int NOTICE_LEVEL_UP = 1;
+	public static final int NOTICE_SHOUT_SENT = 2;
+	public static final int NOTICE_DEBUG = 100;
+	
+	// Organize your fucking stuff John
 	
 	public static final String POWER_STATE_PREF = "power_state_pref";
 	public static final String APP_LAUNCHED_FROM_UI = "app_launched_from_ui";
 	public static final String APP_LAUNCHED_FROM_ALARM = "app_launched_from_alarm";
 	public static final String APP_LAUNCHED_FROM_NOTIFICATION = "app_launched_from_notification";
 
-	
 	// CONFIG /////////////////////////////////////////////////////////////////
 	public static final String CONFIG_CRASH_REPORT_ADDRESS = "http://app.shoutbreak.co/crash_reports/upload.php";
 	public static final long CONFIG_DENSITY_EXPIRATION = (long) 4.32E8; // 5 days
@@ -123,7 +130,7 @@ public class C {
 	public static final int STATE_IDLE = 30;
 	
 	// DATABASE ///////////////////////////////////////////////////////////////
-	public static final int DB_VERSION = 2;
+	public static final int DB_VERSION = 5;
 
 	public static final String DB_NAME = "sbdb";
 	public static final String DB_TABLE_DENSITY = "DENSITY";

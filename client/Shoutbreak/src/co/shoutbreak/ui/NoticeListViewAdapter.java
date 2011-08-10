@@ -11,17 +11,10 @@ import android.view.View.OnClickListener;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 import co.shoutbreak.R;
-import co.shoutbreak.core.Colleague;
-import co.shoutbreak.core.Mediator;
 import co.shoutbreak.core.Notice;
-import co.shoutbreak.core.utils.SBLog;
 
-
-public class NoticeListViewAdapter extends BaseAdapter implements Colleague {
+public class NoticeListViewAdapter extends BaseAdapter {
 	
-	private static final String TAG = "NoticeListViewAdapter";
-	
-    private Mediator _m;
     private List<Notice> _displayedNotices;
     private LayoutInflater _inflater;
     public OnClickListener onCollapseClickListener;
@@ -29,17 +22,9 @@ public class NoticeListViewAdapter extends BaseAdapter implements Colleague {
     public OnClickListener onVoteDownClickListener;
     public OnClickListener onDeleteClickListener;
 
-   
-    public NoticeListViewAdapter(Shoutbreak ui, Mediator mediator) {
-    	_m = mediator;
+    public NoticeListViewAdapter(Shoutbreak ui) {
     	_displayedNotices = new ArrayList<Notice>();
         _inflater = (LayoutInflater) ui.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-        for (int i = 0; i < 100; i++) {
-        	Notice n1 = new Notice();
-        	n1.text = "Test the notice system " + i;
-        	_displayedNotices.add(n1);
-        }
     }
     
    public View getView(int position, View convertView, ViewGroup parent) {
@@ -61,12 +46,11 @@ public class NoticeListViewAdapter extends BaseAdapter implements Colleague {
         
 		return convertView;
     }
-
-	@Override
-	public void unsetMediator() {
-		SBLog.i(TAG, "unsetMediator()");
-		_m = null;	
-	}	
+	
+    public void refresh(List<Notice> list) {
+    	_displayedNotices = list;
+    	this.notifyDataSetChanged();
+    }
 	
     public int getCount() {
         return _displayedNotices.size();

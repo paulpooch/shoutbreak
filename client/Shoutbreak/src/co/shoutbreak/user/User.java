@@ -1,7 +1,9 @@
 package co.shoutbreak.user;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -9,6 +11,7 @@ import org.json.JSONObject;
 import co.shoutbreak.core.C;
 import co.shoutbreak.core.Colleague;
 import co.shoutbreak.core.Mediator;
+import co.shoutbreak.core.Notice;
 import co.shoutbreak.core.utils.ErrorManager;
 import co.shoutbreak.core.utils.Hash;
 import co.shoutbreak.core.utils.ISO8601DateParser;
@@ -316,14 +319,16 @@ public class User implements Colleague {
 		return 0l;
 	}
 	
-	public synchronized Long addNotice(int noticeType, String noticeText, String noticeRef) {
+	public synchronized Long saveNotice(int noticeType, String noticeText, String noticeRef) {
+		noticeRef = (noticeRef == null) ? "" : noticeRef;
+		Date date = new Date();
 		SBLog.i(TAG, "addNotice()");
-		String sql = "INSERT INTO " + C.DB_TABLE_POINTS + " (type, text, ref, timestamp, state_flag) VALUES (?, ?, ?, ?, ?)";
+		String sql = "INSERT INTO " + C.DB_TABLE_NOTICES + " (type, text, ref, timestamp, state_flag) VALUES (?, ?, ?, ?, ?)";
 		SQLiteStatement insert = this._db.compileStatement(sql);
 		insert.bindLong(1, noticeType);
 		insert.bindString(2, noticeText);
 		insert.bindString(3, noticeRef);
-		insert.bindString(4, Database.getDateAsISO8601String(new Date()));
+		insert.bindLong(4, date.getTime());
 		insert.bindLong(5, C.SHOUT_STATE_NEW);
 		try {
 			return insert.executeInsert();
@@ -367,6 +372,39 @@ public class User implements Colleague {
 	public static int calculatePower(int people) {
 		return (int)Math.ceil((float)people / (float)C.CONFIG_PEOPLE_PER_LEVEL);
 	}
+	
+	public List<Notice> getNoticesForUI() {
+		SBLog.i(TAG, "getNoticesForUI");
+		return getNoticesForUI(0, 50);
+	}
+	
+	public List<Notice> getNoticesForUI(int start, int amount) {		
+		SBLog.i(TAG, "getNoticesForUI()");
+		ArrayList<Notice> results = new ArrayList<Notice>();
+		String sql = "SELECT rowid, type, text, ref, timestamp, state_flag FROM " + C.DB_TABLE_NOTICES + " ORDER BY timestamp DESC LIMIT ? OFFSET ? ";
+		Cursor cursor = null;
+		try {
+			cursor = _db.rawQuery(sql, new String[] { Integer.toString(amount), Integer.toString(start) });
+			while (cursor.moveToNext()) {
+				Notice n = new Notice();
+				n.id = cursor.getLong(0);
+				n.type = cursor.getInt(1);
+				n.text = cursor.getString(2);
+				n.ref = cursor.getString(3);
+				n.timestamp = cursor.getLong(4);
+				n.state_flag = cursor.getInt(5);
+				results.add(n);
+			}
+		} catch (Exception ex) {
+			ErrorManager.manage(ex);
+		} finally {
+			if (cursor != null && !cursor.isClosed()) {
+				cursor.close();
+			}
+		}
+		return results;
+	}
+	
 	/*
 	private ShoutbreakService _service;
 	private TelephonyManager _tm;
