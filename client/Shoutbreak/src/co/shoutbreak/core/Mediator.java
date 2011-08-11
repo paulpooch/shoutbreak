@@ -191,25 +191,43 @@ public class Mediator {
 		}
 	}
 	
-	public void onPowerEnabled() {
-		SBLog.i(TAG, "onPowerEnabled()");
-		_preferences.putBoolean(C.POWER_STATE_PREF, true);
-		_service.enableAlarmReceiver();
-		startPolling();
+	public void setPowerPreferenceToOn() {
+		_preferences.setPowerPreferenceToOn();
 	}
 	
-	public void onPowerDisabled() {
+	public void setPowerPreferenceToOff() {
+		_preferences.setPowerPreferenceToOff();
+	}
+	
+	public boolean isPowerPreferenceEnabled() {
+		return _preferences.isPowerPreferenceSetToOn();
+	}
+	
+	public void onPowerPreferenceEnabled() {
+		SBLog.i(TAG, "onPowerEnabled()");
+		_service.enableAlarmReceiver();
+		if (_isUIAlive.get()) {
+			_ui.onPowerPreferenceEnabled();
+		}	
+	}
+	
+	public void onPowerPreferenceDisabled() {
 		SBLog.i(TAG, "onPowerDisabled()");
-		_preferences.putBoolean(C.POWER_STATE_PREF, false);
 		_service.disableAlarmReceiver();
-		stopPolling();
+		if (_isUIAlive.get()) {
+			_ui.onPowerPreferenceDisabled();
+		}
+	}
+	
+	public boolean isLocationEnabled() {
+		return _location.isLocationEnabled();
 	}
 	
 	public void onLocationEnabled() {
 		SBLog.i(TAG, "onLocationEnabled()");
 		_isLocationAvailable.set(true);
-		if (_isUIAlive.get() && _isDataAvailable.get()) {
-			_ui.enableMapAndOverlay();
+		if (_isUIAlive.get()) {
+			_ui.onLocationEnabled();
 		}
 	}
 	
@@ -219,25 +237,26 @@ public class Mediator {
 		stopPolling();
 		if (_isUIAlive.get()) {
 			_ui.onLocationDisabled();
-			_ui.disableMapAndOverlay();
 		}
+	}
+	
+	public boolean isDataEnabled() {
+		return _data.isDataEnabled();
 	}
 	
 	public void onDataEnabled() {
 		SBLog.i(TAG, "onDataEnabled()");
 		_isDataAvailable.set(true);
-		if (_isUIAlive.get() && _isLocationAvailable.get()) {
-			_ui.enableMapAndOverlay();
+		if (_isUIAlive.get()) {
+			_ui.onDataEnabled();
 		}
 	}
 	
 	public void onDataDisabled() {
 		SBLog.i(TAG, "onDataDisabled()");
 		_isDataAvailable.set(false);
-		stopPolling();
 		if (_isUIAlive.get()) {
 			_ui.onDataDisabled();
-			_ui.disableMapAndOverlay();
 		}
 	}
 	

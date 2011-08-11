@@ -374,7 +374,7 @@ public class User implements Colleague {
 	}
 	
 	public List<Notice> getNoticesForUI() {
-		SBLog.i(TAG, "getNoticesForUI");
+		SBLog.i(TAG, "getNoticesForUI()");
 		return getNoticesForUI(0, 50);
 	}
 	
