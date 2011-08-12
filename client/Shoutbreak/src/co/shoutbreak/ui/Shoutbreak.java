@@ -67,8 +67,8 @@ public class Shoutbreak extends MapActivity implements Colleague {
 	private Flag _isProfileShowing = new Flag("ui:_isProfileShowing");
 	private Flag _isTurnedOn = new Flag("ui:_isTurnedOn");
 	private Flag _isLocationEnabled = new Flag("ui:_isLocationEnabled");
-	private Flag _isDataEnabled = new Flag("ui:isDataEnabled");
-	private Flag _isPowerPreferenceEnabled = new Flag("ui:isPowerPreferenceEnabled"); // isPowerPrefSetToOn
+	private Flag _isDataEnabled = new Flag("ui:_isDataEnabled");
+	private Flag _isPowerPreferenceEnabled = new Flag("ui:_isPowerPreferenceEnabled"); // isPowerPrefSetToOn
 	
 	@Override
 	public void onCreate(Bundle extras) {
@@ -126,9 +126,13 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		@Override
 		public void onServiceConnected(ComponentName name, IBinder service) {
 			SBLog.i(TAG, "onServiceConnected()");
+
 			_serviceBridge = (ServiceBridgeInterface) service;
 			_serviceBridge.registerUIWithMediator(Shoutbreak.this);
 			_m.onServiceConnected();
+			
+			_serviceIntent.putExtra(C.APP_LAUNCHED_FROM_UI, true);
+			startService(_serviceIntent);
 			
 			_noticeListViewAdapter = new NoticeListViewAdapter(Shoutbreak.this);
 			_noticeListView.setAdapter(_noticeListViewAdapter);
