@@ -40,12 +40,13 @@ public class Mediator {
 	private ThreadLauncher _threadLauncher;
 	
 	// state flags
-	private Flag _isUIAlive = new Flag("_isUIAlive");
-	private Flag _isPollingAlive = new Flag("_isPollingAlive");
-	private Flag _isServiceConnected = new Flag("_isServiceConnected");
-	private Flag _isServiceStarted = new Flag("_isServiceStarted");
-	private Flag _isLocationAvailable = new Flag("_isLocationAvailable");
-	private Flag _isDataAvailable = new Flag("_isDataAvailable");
+	private Flag _isUIAlive = new Flag("m:_isUIAlive");
+	private Flag _isPollingAlive = new Flag("m:_isPollingAlive");
+	private Flag _isServiceConnected = new Flag("m:_isServiceConnected");
+	private Flag _isServiceStarted = new Flag("m:_isServiceStarted");
+	private Flag _isLocationEnabled = new Flag("m:_isLocationEnabled");
+	private Flag _isDataEnabled = new Flag("m:_isDataEnabled");
+	private Flag _isPowerPreferenceEnabled = new Flag("m:_isPowerPreferenceEnabled");		// is power preference set to on
 	
 	/* Mediator Lifecycle */
 	
@@ -64,10 +65,30 @@ public class Mediator {
 		_threadLauncher = new ThreadLauncher(this);
 		
 		// initialize state
-		_isLocationAvailable.set(_location.isLocationEnabled());
-		_isDataAvailable.set(_data.isDataEnabled());
 		_isPollingAlive.set(false);
 		_isUIAlive.set(false);
+		
+		_isDataEnabled.set(isDataEnabled());
+		_isLocationEnabled.set(isLocationEnabled());
+		_isPowerPreferenceEnabled.set(isPowerPreferenceEnabled());
+		
+		if (_isDataEnabled.get()) {
+			onDataEnabled();
+		} else {
+			onDataDisabled();
+		}
+		
+		if (_isLocationEnabled.get()) {
+			onLocationEnabled();
+		} else {
+			onLocationDisabled();
+		}
+		
+		if (_isPowerPreferenceEnabled.get()) {
+			onPowerPreferenceEnabled();
+		} else {
+			onPowerPreferenceDisabled();
+		}
 	}
 	
 	public void registerUI(Shoutbreak ui) {
@@ -140,43 +161,34 @@ public class Mediator {
 	public void appLaunchedFromUI() {
 		SBLog.i(TAG, "appLaunchedFromUI()");
 		_isServiceStarted.set(true);
-		if (_preferences.getBoolean(C.POWER_STATE_PREF, true)) {
-			_ui.setPowerState(true);
-		} else {
-			_ui.setPowerState(false);
-		}
+		startPolling();
 	}
 	
 	public void appLaunchedFromAlarm() {
 		SBLog.i(TAG, "appLaunchedFromAlarm()");
 		_isServiceStarted.set(true);
-		if (_preferences.getBoolean(C.POWER_STATE_PREF, true)) {
-			startPolling();
-		} else {
-			stopPolling();
-		}
+		startPolling();
 	}
 	
 	public void startPolling() {
 		SBLog.i(TAG, "startPolling()");
-		if (!_isPollingAlive.get() && _isLocationAvailable.get() && _isDataAvailable.get()) {
-			SBLog.i(TAG, "app fully functional");
-			_isPollingAlive.set(true);
-			_threadLauncher.startPolling();
-		} else if (!_isLocationAvailable.get() || !_isDataAvailable.get()) {
-			if (!_isLocationAvailable.get()) {
-				SBLog.e(TAG, "unable to start service, location unavailable");
-			}
-			if (!_isDataAvailable.get()) {
-				SBLog.e(TAG, "unable to start service, data unavailable");
-			}
-			if (_isUIAlive.get()) {
-				_ui.setPowerState(false);
-				_ui.unableToTurnOnApp(_isLocationAvailable.get(), _isDataAvailable.get());
+		if (!_isPollingAlive.get()) {
+			if (_isPowerPreferenceEnabled.get() && _isLocationEnabled.get() && _isDataEnabled.get()) {
+				SBLog.i(TAG, "app fully functional");
+				_isPollingAlive.set(true);
+				_threadLauncher.startPolling();
 			} else {
-				onPowerDisabled();
+				if (!_isPowerPreferenceEnabled.get()) {
+					SBLog.e(TAG, "unable to start service, power preference set to off");
+				}
+				if (!_isLocationEnabled.get()) {
+					SBLog.e(TAG, "unable to start service, location unavailable");
+				}
+				if (!_isDataEnabled.get()) {
+					SBLog.e(TAG, "unable to start service, data unavailable");
+				}
 			}
-		} else if (_isPollingAlive.get()) {
+		} else {
 			SBLog.i(TAG, "service is already polling, unable to call startPolling()");
 		}
 	}
@@ -205,18 +217,22 @@ public class Mediator {
 	
 	public void onPowerPreferenceEnabled() {
 		SBLog.i(TAG, "onPowerEnabled()");
+		_isPowerPreferenceEnabled.set(true);
 		_service.enableAlarmReceiver();
 		if (_isUIAlive.get()) {
 			_ui.onPowerPreferenceEnabled();
-		}	
+		}
+		startPolling();
 	}
 	
 	public void onPowerPreferenceDisabled() {
 		SBLog.i(TAG, "onPowerDisabled()");
+		_isPowerPreferenceEnabled.set(false);
 		_service.disableAlarmReceiver();
 		if (_isUIAlive.get()) {
 			_ui.onPowerPreferenceDisabled();
 		}
+		stopPolling();
 	}
 	
 	public boolean isLocationEnabled() {
@@ -225,19 +241,20 @@ public class Mediator {
 	
 	public void onLocationEnabled() {
 		SBLog.i(TAG, "onLocationEnabled()");
-		_isLocationAvailable.set(true);
+		_isLocationEnabled.set(true);
 		if (_isUIAlive.get()) {
 			_ui.onLocationEnabled();
 		}
+		startPolling();
 	}
 	
 	public void onLocationDisabled() {
 		SBLog.i(TAG, "onLocationDisabled()");
-		_isLocationAvailable.set(false);
-		stopPolling();
+		_isLocationEnabled.set(false);
 		if (_isUIAlive.get()) {
 			_ui.onLocationDisabled();
 		}
+		stopPolling();
 	}
 	
 	public boolean isDataEnabled() {
@@ -246,18 +263,20 @@ public class Mediator {
 	
 	public void onDataEnabled() {
 		SBLog.i(TAG, "onDataEnabled()");
-		_isDataAvailable.set(true);
+		_isDataEnabled.set(true);
 		if (_isUIAlive.get()) {
 			_ui.onDataEnabled();
 		}
+		startPolling();
 	}
 	
 	public void onDataDisabled() {
 		SBLog.i(TAG, "onDataDisabled()");
-		_isDataAvailable.set(false);
+		_isDataEnabled.set(false);
 		if (_isUIAlive.get()) {
 			_ui.onDataDisabled();
 		}
+		stopPolling();
 	}
 	
 	private void createNotice(int noticeType, String noticeText, String noticeRef) {
@@ -301,7 +320,7 @@ public class Mediator {
 	public CellDensity getCurrentCell() {
 		// TODO: should this be moved to ThreadSafeMediator?
 		SBLog.i(TAG, "getCurrentCell()");
-		if (!_isLocationAvailable.get()) {
+		if (!_isLocationEnabled.get()) {
 			SBLog.e(TAG, "location is unavailable, unable to get current cell");
 		}
 		return _location.getCurrentCell();
