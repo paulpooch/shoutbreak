@@ -5,12 +5,6 @@
 	<LinearLayout android:layout_width="fill_parent"
 		android:layout_height="fill_parent" android:orientation="vertical">
 
-		<!-- Splash -->
-		<LinearLayout android:id="@+id/splashLl"
-			android:layout_width="fill_parent" android:layout_height="fill_parent"
-			android:background="@drawable/splash" android:orientation="vertical">
-		</LinearLayout>
-
 		<!-- Title Bar -->
 		<RelativeLayout android:background="@drawable/top_bg" android:id="@+id/titleBarRl"
 			android:layout_width="fill_parent" android:layout_height="wrap_content"
@@ -137,5 +131,11 @@
 			</LinearLayout>
 		</co.shoutbreak.ui.NoticeTab>
 	</RelativeLayout>
+	
+	<!-- Splash -->
+	<LinearLayout android:id="@+id/splashLl"
+			android:layout_width="fill_parent" android:layout_height="fill_parent"
+			android:background="@drawable/splash" android:orientation="vertical">
+	</LinearLayout>
 	
 </RelativeLayout>

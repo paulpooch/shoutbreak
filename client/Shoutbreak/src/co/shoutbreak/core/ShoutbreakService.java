@@ -46,7 +46,7 @@ public class ShoutbreakService extends Service implements Colleague {
 			SBLog.i(TAG, "service already started");
 		}
 		Bundle extras = intent.getExtras();
-		if (!extras.isEmpty()) {
+		if (extras != null && !extras.isEmpty()) {
 			// determine what launched the app
 			if (extras.getBoolean(C.APP_LAUNCHED_FROM_UI)) {
 				_m.appLaunchedFromUI();
@@ -55,6 +55,7 @@ public class ShoutbreakService extends Service implements Colleague {
 			}
 		} else {
 			SBLog.e(TAG, "Service bundle must contain referral information");
+			_m.appLaunchedFromUI();
 		}
 		return START_STICKY;
 	}

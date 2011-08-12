@@ -181,15 +181,18 @@ public class LocationTracker implements LocationListener, Colleague {
 	@Override
 	public void onProviderEnabled(String provider) {
 		SBLog.i(TAG, "onProviderEnabled()");
+		_m.onLocationEnabled();
 	}
 
 	@Override
 	public void onProviderDisabled(String provider) {
 		SBLog.i(TAG, "onProviderDisabled()");
+		_m.onLocationDisabled();
 	}
 
 	@Override
 	public void onStatusChanged(String provider, int status, Bundle extras) {
+		SBLog.i(TAG, "onStatusChange()");
 		//_provider = _locationManager.getBestProvider(_criteria, true);
 		//_locationManager.requestLocationUpdates(_provider, C.CONFIG_GPS_MIN_UPDATE_MILLISECS, C.CONFIG_GPS_MIN_UPDATE_METERS, LocationTracker.this);
 		if (status == LocationProvider.AVAILABLE) {

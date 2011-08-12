@@ -23,10 +23,13 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Message;
 import android.provider.Settings;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -97,7 +100,8 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		_profileViewLl = (LinearLayout) findViewById(R.id.profileViewLl);
 		_enableLocationBtn = (ImageButton) findViewById(R.id.enableLocationBtn);
 		_enableLocationBtn.setOnClickListener(_enableLocationListener);
-				
+		_map = (CustomMapView) findViewById(R.id.mapCmv);
+		
 		// bind to service, initializes mediator
 		_serviceIntent = new Intent(Shoutbreak.this, ShoutbreakService.class);
 		bindService(_serviceIntent, _serviceConnection, Context.BIND_AUTO_CREATE);
@@ -107,7 +111,7 @@ public class Shoutbreak extends MapActivity implements Colleague {
 	public void onResume() {
 		SBLog.i(TAG, "onResume()");
 		super.onResume();
-		refreshFlags();
+		//refreshFlags();
 	}
 	
 	public void setMediator(Mediator mediator) {
@@ -134,6 +138,8 @@ public class Shoutbreak extends MapActivity implements Colleague {
 			_serviceIntent.putExtra(C.APP_LAUNCHED_FROM_UI, true);
 			startService(_serviceIntent);
 			
+			_overlay = new UserLocationOverlay(Shoutbreak.this, _map);
+			
 			_noticeListViewAdapter = new NoticeListViewAdapter(Shoutbreak.this);
 			_noticeListView.setAdapter(_noticeListViewAdapter);
 
@@ -158,7 +164,6 @@ public class Shoutbreak extends MapActivity implements Colleague {
 			});
 			
 			hideSplash();
-			
 			checkForReferral();
 		}
 
@@ -207,7 +212,15 @@ public class Shoutbreak extends MapActivity implements Colleague {
 	
 	private void hideSplash() {
 		SBLog.i(TAG, "hideSplash()");
-		_splashLl.setVisibility(View.GONE);
+		Handler splashHandler = new Handler() {
+			@Override
+			public void handleMessage(Message message) {
+		        _splashLl.startAnimation(AnimationUtils.loadAnimation(Shoutbreak.this, android.R.anim.fade_out));
+				_splashLl.setVisibility(View.GONE);
+				super.handleMessage(message);
+			}
+		};
+		splashHandler.sendMessageDelayed(new Message(), 2000);
 	}
 	
 	private void checkForReferral() {
@@ -388,12 +401,6 @@ public class Shoutbreak extends MapActivity implements Colleague {
 
 	private void enableMapAndOverlay() {
 		SBLog.i(TAG, "enableMapAndOverlay()");
-		if (_map == null) {
-			_map = (CustomMapView) findViewById(R.id.mapCmv);
-		}
-		if (_overlay == null) {
-			_overlay = new UserLocationOverlay(Shoutbreak.this, _map);
-		}
 		if (_map.getOverlays().size() == 0) {
 			_map.getOverlays().add(_overlay);
 		}
@@ -565,7 +572,8 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		public void onClick(View v) {
 			SBLog.i(TAG, "_enableLocationListener.onClick()");
 			Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);  
-            startActivityForResult(intent, 1);
+            startActivity(intent);
+			//startActivityForResult(intent, 1);
 		}
 	};
 	
