@@ -142,7 +142,7 @@ public class Shoutbreak extends MapActivity implements Colleague {
 			
 			_noticeListViewAdapter = new NoticeListViewAdapter(Shoutbreak.this);
 			_noticeListView.setAdapter(_noticeListViewAdapter);
-
+			
 			refreshFlags();
 			
 			_inboxListViewAdapter = new InboxListViewAdapter(Shoutbreak.this, _m);
@@ -189,6 +189,7 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		_isDataEnabled.set(_m.isDataEnabled());
 		_isLocationEnabled.set(_m.isLocationEnabled());
 		_isPowerPreferenceEnabled.set(_m.isPowerPreferenceEnabled());
+		_isTurnedOn.set(_isPowerPreferenceEnabled.get());
 		
 		if (_isDataEnabled.get()) {
 			_m.onDataEnabled();
@@ -307,9 +308,7 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		}
 		if (!_isPowerPreferenceEnabled.get()) {
 			// TODO: show power blanket button
-		}
-		
-		
+		}		
 	}
 	
 	private boolean turnOn() {
@@ -573,7 +572,6 @@ public class Shoutbreak extends MapActivity implements Colleague {
 			SBLog.i(TAG, "_enableLocationListener.onClick()");
 			Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);  
             startActivity(intent);
-			//startActivityForResult(intent, 1);
 		}
 	};
 	

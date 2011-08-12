@@ -11,9 +11,9 @@ public class ErrorManager {
 	private static final String TAG = "ErrorManager";
 
 	public static void manage(Exception ex) {
-		SBLog.i(TAG, "manage()");
+		SBLog.e(TAG, "manage()");
 		if (ex instanceof JSONException) {
-						
+				SBLog.e(TAG, ex.toString());		
 		}	
 	}
 	

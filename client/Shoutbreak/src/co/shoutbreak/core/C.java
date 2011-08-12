@@ -130,7 +130,7 @@ public class C {
 	public static final int STATE_IDLE = 30;
 	
 	// DATABASE ///////////////////////////////////////////////////////////////
-	public static final int DB_VERSION = 5;
+	public static final int DB_VERSION = 6;
 
 	public static final String DB_NAME = "sbdb";
 	public static final String DB_TABLE_DENSITY = "DENSITY";
