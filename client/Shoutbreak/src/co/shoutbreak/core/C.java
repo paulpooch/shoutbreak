@@ -12,6 +12,8 @@ public class C {
 	public static final String STRING_SHOUT_SENT = "Shout complete.";
 	public static final String STRING_SHOUT_FAILED = "Shout failed.";
 	public static final String STRING_VOTE_FAILED = "Vote failed.";
+	public static final String STRING_CREATE_ACCOUNT_FAILED = "Unable to create an account.";
+	public static final String STRING_PING_FAILED = "Unable to reach server.";
 	
 	// NOTICES ////////////////////////////////////////////////////////////////
 	public static final int NOTICE_SHOUTS_RECEIVED = 0;
@@ -19,7 +21,9 @@ public class C {
 	public static final int NOTICE_SHOUT_SENT = 2;
 	public static final int NOTICE_SHOUT_FAILED = 3;
 	public static final int NOTICE_NO_ACCOUNT = 4;
-	public static final int NOTICE_ACCOUNT_CREATED = 4;
+	public static final int NOTICE_ACCOUNT_CREATED = 5;
+	public static final int NOTICE_CREATE_ACCOUNT_FAILED = 6;
+	public static final int NOTICE_PING_FAILED = 7;
 	
 	// Organize your fucking stuff John
 	

@@ -67,7 +67,6 @@ public class Inbox implements Colleague {
 	
 	public synchronized void handleVoteFinish(String shoutId, int vote) {
 		reflectVote(shoutId, vote);
-		refreshShout(shoutId);
 	}
 	
 	public synchronized void handleInboxNewShoutSelected(Shout shout) {
@@ -76,6 +75,7 @@ public class Inbox implements Colleague {
 		
 	
 	public synchronized boolean deleteShout(String shoutID) {
+		// Database
 		SBLog.i(TAG, "new deleteShout()");
 		boolean result = false;
 		SQLiteStatement update;
@@ -90,10 +90,18 @@ public class Inbox implements Colleague {
 		} finally {
 			update.close();
 		}
+		// Memory
+		for (Shout shout : _shouts) {
+			if (shout.id.equals(shoutID)) {
+				_shouts.remove(shout);
+				break;
+			}
+		}
 		return result;
 	}
 	
 	public synchronized Long addShoutToInbox(Shout shout) {
+		// Database
 		SBLog.i(TAG, "addShoutToInbox()");
 		// (shout_id TEXT, timestamp TEXT, time_received INTEGER, txt TEXT,
 		// is_outbox INTEGER, re TEXT, vote INTEGER, hit INTEGER, open INTEGER,
@@ -123,10 +131,13 @@ public class Inbox implements Colleague {
 		} finally {
 			insert.close();
 		}
+		// Memory
+		// None.  We'll always re-pull from database in this case.
 		return 0l;
 	}
 	
 	public synchronized boolean reflectVote(String shoutID, int vote) {
+		// Database
 		SBLog.i(TAG, "reflectVote()");
 		boolean result = false;
 		String sql = "UPDATE " + C.DB_TABLE_SHOUTS + " SET ups = ups + 1, vote = ? WHERE shout_id = ?";
@@ -144,6 +155,8 @@ public class Inbox implements Colleague {
 		} finally {
 			update.close();
 		}
+		// Memory
+		refreshShout(shoutID);		
 		return result;
 	}
 	
@@ -219,6 +232,7 @@ public class Inbox implements Colleague {
 	}
 
 	public synchronized boolean markShoutAsRead(String shoutID) {
+		// Database
 		SBLog.i(TAG, "markShoutAsRead()");
 		boolean result = false;
 		SQLiteStatement update;
@@ -234,6 +248,8 @@ public class Inbox implements Colleague {
 		} finally {
 			update.close();
 		}
+		// Memory
+		refreshShout(shoutID);
 		return result;
 	}
 
@@ -298,14 +314,9 @@ public class Inbox implements Colleague {
 	}
 	
 	public List<Shout> getShoutsForUI(int start, int amount) {		
-		// TODO: is this read-only?
+		// Database 
 		SBLog.i(TAG, "getShoutsForUI()");
-		// shout_id TEXT, timestamp TEXT, time_received INTEGER, txt TEXT,
-		// is_outbox INTEGER, re TEXT, vote INTEGER, hit INTEGER, open INTEGER,
-		// ups INTEGER, downs INTEGER, pts INTEGER, approval INTEGER, state_flag
-		// INTEGER
 		ArrayList<Shout> results = new ArrayList<Shout>();
-		// String sql = "SELECT * FROM " + Vars.DB_TABLE_SHOUTS ; // OFFSET ?
 		String sql = "SELECT * FROM " + C.DB_TABLE_SHOUTS + " ORDER BY time_received DESC LIMIT ? OFFSET ? ";
 		Cursor cursor = null;
 		try {
@@ -336,7 +347,9 @@ public class Inbox implements Colleague {
 				cursor.close();
 			}
 		}
-		return results;
+		// Memory
+		_shouts = results;
+		return _shouts;
 	}
 	
 	public void refreshShout(String shoutId) {
@@ -347,52 +360,7 @@ public class Inbox implements Colleague {
 		}
 	}
 	
-}
 	/*
-	private Database _db;
-	private List<Shout> _shouts;
-	private User _user;	
-	
-	public Inbox(Database db, User user) {
-		_db = db;
-		_shouts = new ArrayList<Shout>();
-		_user = user;
-	}
-	
-	public List<Shout> getShoutsForUI() {
-		return this.getShoutsForUI(0, 50);
-	}
-	
-	public List<Shout> getShoutsForUI(int start, int amount) {
-		_shouts = _db.getShouts(start, amount);
-		return _shouts;
-	}
-	
-	// update ListView if the ui exists right now
-//	protected void updateDisplay(List<Shout> shouts) {
-//		ShoutbreakUI uiRef = _app.getUIReference().get();
-//		if (uiRef != null) {
-//			uiRef.getInboxListViewAdapter().updateDisplay(shouts);
-//		}
-//	}
-	
-//	public void refresh() {
-//		_shouts = _db.getShouts(0, 50);
-//		//updateDisplay(_shouts);
-//	}
-	
-
-	
-	public ArrayList<String> getOpenShoutIDs() {
-		ArrayList<String> result = new ArrayList<String>();
-		for (Shout shout : _shouts) {
-			if (shout.open) {
-				result.add(shout.id);
-			}
-		}
-		return result;
-	}
-	
 	public ArrayList<String> getNewShoutIDs() {
 		ArrayList<String> result = new ArrayList<String>();
 		for (Shout shout : _shouts) {
@@ -402,32 +370,6 @@ public class Inbox implements Colleague {
 		}
 		return result;
 	}
-	
-	public synchronized void reflectVote(String shoutID, int vote) {
-		_db.reflectVote(shoutID, vote);
-		refreshShout(shoutID);
-	}
-	
-	public synchronized void markShoutAsRead(String shoutID) {
-		_db.markShoutAsRead(shoutID);
-		refreshShout(shoutID);
-		//updateDisplay(_shouts);
-	}
-	
-	public synchronized void deleteShout(String shoutID) {
-		_db.deleteShout(shoutID);
-		for (Shout shout : _shouts) {
-			if (shout.id.equals(shoutID)) {
-				_shouts.remove(shout);
-				break;
-			}
-		}
-		//updateDisplay(_shouts);
-		//ShoutbreakUI uiRef = _service.getUIReference().get();
-		//if (uiRef != null) {
-		//	uiRef.giveNotice("shout deleted");
-		//}
-	}
 	*/
 	
-
+}

@@ -50,6 +50,7 @@ public class Shoutbreak extends MapActivity implements Colleague {
 	public UserLocationOverlay overlay;
 	public ImageButton shoutBtn;
 	public EditText shoutInputEt;
+	public DialogBuilder dialogBuilder;
 	
 	private ImageButton _powerBtn;
 	private ImageButton _composeTabBtn;
@@ -60,7 +61,6 @@ public class Shoutbreak extends MapActivity implements Colleague {
 	private LinearLayout _composeViewLl;
 	private LinearLayout _inboxViewLl;
 	private LinearLayout _profileViewLl;
-	private DialogBuilder _dialogBuilder;
 	private CustomMapView _map;
 	private ListView _inboxListView;
 	private ListView _noticeListView;
@@ -139,7 +139,7 @@ public class Shoutbreak extends MapActivity implements Colleague {
 			startService(_serviceIntent);
 			
 			overlay = new UserLocationOverlay(Shoutbreak.this, _map);
-			_dialogBuilder = new DialogBuilder(Shoutbreak.this);
+			dialogBuilder = new DialogBuilder(Shoutbreak.this);
 			
 			noticeListViewAdapter = new NoticeListViewAdapter(Shoutbreak.this);
 			_noticeListView.setAdapter(noticeListViewAdapter);

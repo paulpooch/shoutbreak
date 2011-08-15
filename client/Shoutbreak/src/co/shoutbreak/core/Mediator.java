@@ -14,12 +14,9 @@ import co.shoutbreak.core.utils.DialogBuilder;
 import co.shoutbreak.core.utils.Flag;
 import co.shoutbreak.core.utils.Notifier;
 import co.shoutbreak.core.utils.SBLog;
+import co.shoutbreak.polling.CrossThreadPacket;
 import co.shoutbreak.polling.ThreadLauncher;
-import co.shoutbreak.ui.InboxListViewAdapter;
-import co.shoutbreak.ui.NoticeListViewAdapter;
-import co.shoutbreak.ui.NoticeTab;
 import co.shoutbreak.ui.Shoutbreak;
-import co.shoutbreak.ui.UserLocationOverlay;
 import co.shoutbreak.user.CellDensity;
 import co.shoutbreak.user.Database;
 import co.shoutbreak.user.DeviceInformation;
@@ -31,8 +28,6 @@ import co.shoutbreak.user.User;
 import android.content.Context;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Message;
-import android.widget.EditText;
-import android.widget.ImageButton;
 
 public class Mediator {
 	
@@ -224,6 +219,19 @@ public class Mediator {
 			_threadLauncher.stopPolling();
 		} else {
 			SBLog.i(TAG, "service is not polling, unable to call stopPolling()");
+		}
+	}
+	
+	private void possiblyStopPolling(Message message) {
+		if (message != null && message.obj != null) {
+			CrossThreadPacket xPacket = (CrossThreadPacket)message.obj;
+			if (xPacket.purpose == C.PURPOSE_LOOP_FROM_UI || xPacket.purpose == C.PURPOSE_LOOP_FROM_UI_DELAYED) {
+				// The Polling loop just crashed.
+				stopPolling();
+			}
+		} else {
+			// Something really bad happened
+			stopPolling();
 		}
 	}
 	
@@ -433,24 +441,25 @@ public class Mediator {
 			createNotice(C.NOTICE_SHOUT_SENT, C.STRING_SHOUT_SENT, null);
 		}
 		
-		public void shoutFailed() {
+		public void shoutFailed(Message message) {
 			if (_isUIAlive.get()) {
 				_uiGateway.handleShoutFailed();
 			}
 			createNotice(C.NOTICE_SHOUT_FAILED, C.STRING_SHOUT_FAILED, null);
 			_uiGateway.handleServerFailure();
+			possiblyStopPolling(message);
 		}
 		
 		public void voteFinish(String shoutId, int vote) {
 			SBLog.i(TAG, "voteFinish()");
 			_inbox.handleVoteFinish(shoutId, vote);
-			_uiGateway.refreshInbox(_inbox.getShoutsForUI());
 		}
 		
-		public void voteFailed(String shoutId, int vote) {
+		public void voteFailed(Message message, String shoutId, int vote) {
 			_uiGateway.handleVoteFailed(shoutId, vote);
 			createNotice(C.NOTICE_SHOUT_FAILED, C.STRING_VOTE_FAILED, null);
 			_uiGateway.handleServerFailure();
+			possiblyStopPolling(message);
 		}
 		
 		public void accountCreated(String uid, String password) {
@@ -458,6 +467,19 @@ public class Mediator {
 			createNotice(C.NOTICE_ACCOUNT_CREATED, C.STRING_ACCOUNT_CREATED, null);
 			_user.handleAccountCreated(uid, password);
 			// Maybe we should do something in the UI?
+		}
+		
+
+		public void createAccountFailed(Message message) {
+			createNotice(C.NOTICE_CREATE_ACCOUNT_FAILED, C.STRING_CREATE_ACCOUNT_FAILED, null);
+			_uiGateway.handleServerFailure();
+			possiblyStopPolling(message);
+		}
+		
+		public void pingFailed(Message message) {
+			createNotice(C.NOTICE_PING_FAILED, C.STRING_PING_FAILED, null);
+			_uiGateway.handleServerFailure();
+			possiblyStopPolling(message);
 		}
 		
 		public boolean userHasAccount() {
@@ -534,6 +556,7 @@ public class Mediator {
 			SBLog.i(TAG, "getNetworkOperator()");
 			return _device.getNetworkOperator();
 		}
+
 	}
 	
 	// UI GATEWAY /////////////////////////////////////////////////////////////
@@ -543,12 +566,11 @@ public class Mediator {
 	}
 	
 	private class UiGateway {
-		private DialogBuilder _dialogBuilder;
 		
 		public UiGateway() {
 			
 		}
-		
+
 		public void handleShoutSent() {
 			if (_isUIAlive.get()) {
 				SBLog.i(TAG, "handleShoutSent()");
@@ -573,7 +595,7 @@ public class Mediator {
 				_ui.inboxListViewAdapter.undoVote(shoutId, vote);
 			}
 		}
-
+		
 		public void refreshUiComponents() {	
 			refreshInbox(_inbox.getShoutsForUI());
 			refreshNoticeTab(_user.getNoticesForUI());
@@ -632,7 +654,7 @@ public class Mediator {
 		
 		public void handleServerFailure() {
 			if (_isUIAlive.get()) {
-				_dialogBuilder.showDialog(DialogBuilder.DIALOG_SERVER_DOWN);
+				_ui.dialogBuilder.showDialog(DialogBuilder.DIALOG_SERVER_DOWN);
 			}
 		}
 		

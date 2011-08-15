@@ -85,7 +85,7 @@
 				android:layout_height="fill_parent" android:background="#ff000000"
 				android:orientation="vertical">
 				<ListView android:id="@+id/inboxLv" android:layout_width="fill_parent"
-					android:cacheColorHint="#ff000000" android:layout_height="fill_parent" />
+					android:cacheColorHint="#ff000000" android:layout_height="fill_parent" android:layout_marginTop="34px"/>
 			</LinearLayout>
 
 			<!-- Profile -->

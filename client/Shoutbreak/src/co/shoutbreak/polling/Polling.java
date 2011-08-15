@@ -101,7 +101,7 @@ public class Polling {
 						break;
 					}
 					case C.HTTP_DID_ERROR: {
-						// TODO: do something
+						_safeM.pingFailed(message);
 					}
 				}
 			}
@@ -183,7 +183,7 @@ public class Polling {
 						break;
 					}
 					case C.HTTP_DID_ERROR: {
-						_safeM.shoutFailed();
+						_safeM.shoutFailed(message);
 					}
 				}
 			}
@@ -217,7 +217,7 @@ public class Polling {
 						break;
 					}
 					case C.HTTP_DID_ERROR: {
-						_safeM.voteFailed(shoutId, vote);
+						_safeM.voteFailed(message, shoutId, vote);
 					}
 				}
 			}
@@ -241,7 +241,7 @@ public class Polling {
 						break;
 					}
 					case C.HTTP_DID_ERROR: {
-						// TODO: do something
+						_safeM.createAccountFailed(message);
 					}
 				}
 			}
@@ -269,7 +269,7 @@ public class Polling {
 						break;
 					}
 					case C.HTTP_DID_ERROR: {
-						// TODO: do something
+						_safeM.createAccountFailed(message);
 					}
 				}
 			}
