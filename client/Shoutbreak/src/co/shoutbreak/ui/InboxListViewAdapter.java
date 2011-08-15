@@ -66,6 +66,10 @@ public class InboxListViewAdapter extends BaseAdapter implements Colleague {
         }
     }
     
+    public void undoVote(String shoutId, int vote) {
+    	_cacheVoteTemporary.remove(shoutId);
+    }
+    
     public InboxListViewAdapter(Shoutbreak ui, Mediator mediator) {
     	_m = mediator;
         _displayedShouts = new ArrayList<Shout>();
@@ -236,6 +240,8 @@ public class InboxListViewAdapter extends BaseAdapter implements Colleague {
         		holder.btnVoteUp.setImageResource(R.drawable.inbox_up_lit);
         	}
         }
+        
+        SBLog.i(TAG, entry.text + " | isVotingAllowed = " + isVotingAllowed);
         
         if (isVotingAllowed) {
         	holder.btnVoteUp.setEnabled(_isInputAllowed);

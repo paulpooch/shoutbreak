@@ -5,6 +5,7 @@
 class Config {
 	
 	public static $SHOUTBREAK_SCORING_COEFFECIENT = 1.8;
+	public static $SHOUTBREAK_SCORING_WORK_AT_LEVEL_1 = 10;
 	public static $USER_INITIAL_LEVEL = 1;
 	public static $USER_INITIAL_POINTS = 0;
 	public static $USER_INITIAL_PENDING_LEVEL_UP = 1;
@@ -63,9 +64,19 @@ class Config {
 		return pow($level, Config::$SHOUTBREAK_SCORING_COEFFECIENT); 
 	}
 	
+	public static function workRequiredForLevel($level) {
+		//return pow($level, Config::$SHOUTBREAK_SCORING_COEFFECIENT); 
+		if ($level == 1) {
+			return Config::$SHOUTBREAK_SCORING_WORK_AT_LEVEL_1;
+		} else {
+			return Config::$SHOUTBREAK_SCORING_COEFFECIENT * Config::workRequiredForLevel($level - 1);
+		}
+	}
+	
 	public static function pointsRequiredForLevel($level) {
+		//$result = round(Config::actionsRequiredForLevel($level) * Config::reachAtLevel($level));
 		e("pointsRequiredForLevel $level");
-		$result = round(Config::actionsRequiredForLevel($level) * Config::reachAtLevel($level));
+		$result = round(Config::workRequiredForLevel($level) * Config::reachAtLevel($level));
 		e("pointsRequired = $result");
 		return $result;
 	}

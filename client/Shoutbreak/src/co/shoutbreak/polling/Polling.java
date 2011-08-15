@@ -100,6 +100,9 @@ public class Polling {
 						}
 						break;
 					}
+					case C.HTTP_DID_ERROR: {
+						// TODO: do something
+					}
 				}
 			}
 		};
@@ -179,6 +182,9 @@ public class Polling {
 						//_uiThreadHandler.sendMessage(Message.obtain(_uiThreadHandler, C.STATE_IDLE, xPacket)); // STATE doesn't matter - going to die
 						break;
 					}
+					case C.HTTP_DID_ERROR: {
+						_safeM.shoutFailed();
+					}
 				}
 			}
 		};
@@ -210,6 +216,9 @@ public class Polling {
 						//_uiThreadHandler.sendMessage(Message.obtain(_uiThreadHandler, C.STATE_IDLE, xPacket)); // STATE doesn't matter - going to die
 						break;
 					}
+					case C.HTTP_DID_ERROR: {
+						_safeM.voteFailed(shoutId, vote);
+					}
 				}
 			}
 		};
@@ -223,12 +232,16 @@ public class Polling {
 	}
 	
 	public void createAccount(Message message) {
+		_safeM.createNotice(C.NOTICE_NO_ACCOUNT, C.STRING_NO_ACCOUNT, null);
 		Handler httpHandler = new Handler() {
 			public void handleMessage(Message message) {
 				switch (message.what) {
 					case C.HTTP_DID_SUCCEED: {
 						_uiThreadHandler.sendMessage(Message.obtain(_uiThreadHandler, C.STATE_CREATE_ACCOUNT_2, message.obj));
 						break;
+					}
+					case C.HTTP_DID_ERROR: {
+						// TODO: do something
 					}
 				}
 			}
@@ -254,6 +267,9 @@ public class Polling {
 							ErrorManager.manage(ex);
 						}
 						break;
+					}
+					case C.HTTP_DID_ERROR: {
+						// TODO: do something
 					}
 				}
 			}

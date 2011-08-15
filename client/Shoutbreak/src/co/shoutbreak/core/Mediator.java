@@ -3,16 +3,23 @@
 package co.shoutbreak.core;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import co.shoutbreak.R;
 import co.shoutbreak.core.utils.DataListener;
+import co.shoutbreak.core.utils.DialogBuilder;
 import co.shoutbreak.core.utils.Flag;
 import co.shoutbreak.core.utils.Notifier;
 import co.shoutbreak.core.utils.SBLog;
 import co.shoutbreak.polling.ThreadLauncher;
+import co.shoutbreak.ui.InboxListViewAdapter;
+import co.shoutbreak.ui.NoticeListViewAdapter;
+import co.shoutbreak.ui.NoticeTab;
 import co.shoutbreak.ui.Shoutbreak;
+import co.shoutbreak.ui.UserLocationOverlay;
 import co.shoutbreak.user.CellDensity;
 import co.shoutbreak.user.Database;
 import co.shoutbreak.user.DeviceInformation;
@@ -22,13 +29,17 @@ import co.shoutbreak.user.PreferenceManager;
 import co.shoutbreak.user.User;
 
 import android.content.Context;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Message;
+import android.widget.EditText;
+import android.widget.ImageButton;
 
 public class Mediator {
 	
 	private static final String TAG = "Mediator";
 	
 	// colleagues
+	private Mediator _self;
 	private ShoutbreakService _service;
 	private Shoutbreak _ui;
 	private User _user;
@@ -50,10 +61,14 @@ public class Mediator {
 	private Flag _isDataEnabled = new Flag("m:_isDataEnabled");
 	private Flag _isPowerPreferenceEnabled = new Flag("m:_isPowerPreferenceEnabled");		// is power preference set to on
 	
+	private UiGateway _uiGateway;
+	
 	/* Mediator Lifecycle */
 	
 	public Mediator(ShoutbreakService service) {
     	SBLog.i(TAG, "new Mediator()");
+    	_self = this;
+    	
 		// add colleagues
 		_service = service;
 		_preferences = new PreferenceManager(this, _service.getSharedPreferences(C.PREFERENCE_FILE, Context.MODE_PRIVATE));
@@ -65,9 +80,15 @@ public class Mediator {
 		_user = new User(this, _db);
 		_inbox = new Inbox(this, _db);
 		_threadLauncher = new ThreadLauncher(this);
+		_uiGateway = new UiGateway();
 		
-		// initialize state
-		_isPollingAlive.set(false);
+		// Initialize State.
+		
+		// Polling has already been set and launched from DataListener calling onDataEnabled.
+		// Make sure we don't launch a second one.
+		if (!_isPollingAlive.isInitialized()) {
+			_isPollingAlive.set(false);
+		}
 		_isUIAlive.set(false);
 		
 		_isDataEnabled.set(isDataEnabled());
@@ -157,7 +178,6 @@ public class Mediator {
 	public void onServiceStart() {
 		SBLog.i(TAG, "onServiceStart()");
 		_isServiceStarted.set(true);
-		_isPollingAlive.set(false);
 	}
 	
 	public void appLaunchedFromUI() {
@@ -175,10 +195,11 @@ public class Mediator {
 	public void startPolling() {
 		SBLog.i(TAG, "startPolling()");
 		if (!_isPollingAlive.get()) {
-			if (_isPowerPreferenceEnabled.get() && _isLocationEnabled.get() && _isDataEnabled.get()) {
+			if (_isPowerPreferenceEnabled.get() && _isLocationEnabled.get() && _isDataEnabled.get() && _isServiceStarted.get()) {
 				SBLog.i(TAG, "app fully functional");
 				_isPollingAlive.set(true);
 				_threadLauncher.startPolling();
+				_uiGateway.enableInputs();
 			} else {
 				if (!_isPowerPreferenceEnabled.get()) {
 					SBLog.e(TAG, "unable to start service, power preference set to off");
@@ -198,6 +219,7 @@ public class Mediator {
 	public void stopPolling() {
 		SBLog.i(TAG, "stopPolling()");
 		if (_isPollingAlive.get()) {
+			_uiGateway.disableInputs();
 			_isPollingAlive.set(false);
 			_threadLauncher.stopPolling();
 		} else {
@@ -283,17 +305,11 @@ public class Mediator {
 	
 	private void createNotice(int noticeType, String noticeText, String noticeRef) {
 		_user.saveNotice(noticeType, noticeText, noticeRef);
-		_ui.giveNotice(_user.getNoticesForUI());
-	}
-	
-	public void createDebugNotice(String noticeText) {
-		_user.saveNotice(C.NOTICE_DEBUG, noticeText, null);
-		_ui.giveNotice(_user.getNoticesForUI());
+		_uiGateway.giveNotice(_user.getNoticesForUI());
 	}
 	
 	public void checkLocationProviderStatus() {
-		SBLog.i(TAG, "checkLocationProviderStatus()");
-		createDebugNotice("Mediator.checkLocationProviderStatus = " + _location.isLocationEnabled());		
+		SBLog.i(TAG, "checkLocationProviderStatus()");	
 		if (_location.isLocationEnabled()) {
 			onLocationEnabled();
 		} else {
@@ -331,9 +347,7 @@ public class Mediator {
 	public void deleteShout(String shoutId) {
 		SBLog.i(TAG, "deleteShout()");
 		_inbox.deleteShout(shoutId);
-		if (_isUIAlive.get()) {
-			_ui.refreshInbox(_inbox.getShoutsForUI());
-		}
+		_uiGateway.refreshInbox(_inbox.getShoutsForUI());
 	}
 	
 	public void launchPollingThread(Message message) {
@@ -356,9 +370,7 @@ public class Mediator {
 	public void pointsChange(int additionalPoints) {
 		SBLog.i(TAG, "pointsChange()");
 		_user.handlePointsChange(additionalPoints);
-		if (_isUIAlive.get()) {
-			_ui.handlePointsChange(_user.getPoints());
-		}
+		_uiGateway.handlePointsChange(_user.getPoints());
 	}
 	
 	public void voteStart(String shoutId, int vote) {
@@ -375,64 +387,75 @@ public class Mediator {
 			SBLog.i(TAG, "new ThreadSafeMediator()");
 		}
 		
+		public void createNotice(int noticeType, String noticeText, String noticeRef) {
+			_self.createNotice(noticeType, noticeText, noticeRef);
+		}
+		
 		public void densityChange(double density) {
 			SBLog.i(TAG, "densityChange()");
 			// Note: The order in these matters.
 			_user.handleDensityChange(density);
-			if (_isUIAlive.get()) {
-				_ui.handleDensityChange(density, _user.getLevel());
-			}
+			_uiGateway.handleDensityChange(density, _user.getLevel());
 		}
 	
 		public void shoutsReceived(JSONArray shouts) {
 			SBLog.i(TAG, "shoutsReceived()");
 			_inbox.handleShoutsReceived(shouts);
 			if (_isUIAlive.get()) {
-				_ui.handleShoutsReceived(_inbox.getShoutsForUI(), shouts.length());
+				_uiGateway.handleShoutsReceived(_inbox.getShoutsForUI(), shouts.length());
 			} else {
 				_notifier.handleShoutsReceived(shouts.length());				
 			}
 			String pluralShout = "shout" + (shouts.length() > 1 ? "s" : "");
-			String notice = "just heard " + shouts.length() + " new " + pluralShout;
+			String notice = "Just heard " + shouts.length() + " new " + pluralShout + ".";
 			createNotice(C.NOTICE_SHOUTS_RECEIVED, notice, null);
 		}
 		
 		public void scoresReceived(JSONArray scores) {
 			SBLog.i(TAG, "scoresReceived()");
 			_inbox.handleScoresReceived(scores);
-			if (_isUIAlive.get()) {
-				_ui.refreshInbox(_inbox.getShoutsForUI());
-			}
+			_uiGateway.refreshInbox(_inbox.getShoutsForUI());
 		}
 			
 		public void levelUp(JSONObject levelInfo) {
 			SBLog.i(TAG, "levelUp()");
 			_user.handleLevelUp(levelInfo);
-			if (_isUIAlive.get()) {
-				_ui.handleLevelUp(_user.getCellDensity().density, _user.getLevel());
-				_ui.handlePointsChange(_user.getPoints());
-			}
-			createNotice(C.NOTICE_LEVEL_UP, "You leveled up! You're now level " + _user.getLevel(), null);
+			_uiGateway.handleLevelUp(_user.getCellDensity().density, _user.getLevel());
+			_uiGateway.handlePointsChange(_user.getPoints());
+			createNotice(C.NOTICE_LEVEL_UP, C.STRING_LEVEL_UP_1 + _user.getLevel() + "\n" + C.STRING_LEVEL_UP_2 + (C.CONFIG_PEOPLE_PER_LEVEL * _user.getLevel()) + " people.", null);
 		}
 		
 		public void shoutSent() {
 			SBLog.i(TAG, "shoutSent()");
 			if (_isUIAlive.get()) {
-				_ui.handleShoutSent();
+				_uiGateway.handleShoutSent();
 			}
-			createNotice(C.NOTICE_SHOUT_SENT, "shout sent", null);
+			createNotice(C.NOTICE_SHOUT_SENT, C.STRING_SHOUT_SENT, null);
+		}
+		
+		public void shoutFailed() {
+			if (_isUIAlive.get()) {
+				_uiGateway.handleShoutFailed();
+			}
+			createNotice(C.NOTICE_SHOUT_FAILED, C.STRING_SHOUT_FAILED, null);
+			_uiGateway.handleServerFailure();
 		}
 		
 		public void voteFinish(String shoutId, int vote) {
 			SBLog.i(TAG, "voteFinish()");
 			_inbox.handleVoteFinish(shoutId, vote);
-			if (_isUIAlive.get()) {
-				_ui.refreshInbox(_inbox.getShoutsForUI());
-			}
+			_uiGateway.refreshInbox(_inbox.getShoutsForUI());
+		}
+		
+		public void voteFailed(String shoutId, int vote) {
+			_uiGateway.handleVoteFailed(shoutId, vote);
+			createNotice(C.NOTICE_SHOUT_FAILED, C.STRING_VOTE_FAILED, null);
+			_uiGateway.handleServerFailure();
 		}
 		
 		public void accountCreated(String uid, String password) {
 			SBLog.i(TAG, "accountCreated()");
+			createNotice(C.NOTICE_ACCOUNT_CREATED, C.STRING_ACCOUNT_CREATED, null);
 			_user.handleAccountCreated(uid, password);
 			// Maybe we should do something in the UI?
 		}
@@ -512,4 +535,125 @@ public class Mediator {
 			return _device.getNetworkOperator();
 		}
 	}
+	
+	// UI GATEWAY /////////////////////////////////////////////////////////////
+	
+	public void refreshUiComponents() {
+		_uiGateway.refreshUiComponents();
+	}
+	
+	private class UiGateway {
+		private DialogBuilder _dialogBuilder;
+		
+		public UiGateway() {
+			
+		}
+		
+		public void handleShoutSent() {
+			if (_isUIAlive.get()) {
+				SBLog.i(TAG, "handleShoutSent()");
+				AnimationDrawable shoutButtonAnimation = (AnimationDrawable) _ui.shoutBtn.getDrawable();
+				shoutButtonAnimation.stop();
+				_ui.shoutBtn.setImageResource(R.drawable.shout_button_up);
+				_ui.shoutInputEt.setText("");
+			}
+		}
+		
+		public void handleShoutFailed() {
+			if (_isUIAlive.get()) {
+				SBLog.i(TAG, "handleShoutFailed()");
+				AnimationDrawable shoutButtonAnimation = (AnimationDrawable) _ui.shoutBtn.getDrawable();
+				shoutButtonAnimation.stop();
+				_ui.shoutBtn.setImageResource(R.drawable.shout_button_up);
+			}
+		}
+
+		public void handleVoteFailed(String shoutId, int vote) {
+			if (_isUIAlive.get()) {
+				_ui.inboxListViewAdapter.undoVote(shoutId, vote);
+			}
+		}
+
+		public void refreshUiComponents() {	
+			refreshInbox(_inbox.getShoutsForUI());
+			refreshNoticeTab(_user.getNoticesForUI());
+		}
+		
+		public void giveNotice(List<Notice> noticeContent) {
+			if (_isUIAlive.get()) {
+				SBLog.i(TAG, "giveNotice()");
+				_ui.noticeListViewAdapter.refresh(noticeContent);
+				_ui.noticeTab.showOneLine();
+			}
+		}
+		
+		public void handleShoutsReceived(List<Shout> inboxContent, int newShouts) {
+			if (_isUIAlive.get()) {
+				SBLog.i(TAG, "handleShoutsReceived()");
+				_ui.inboxListViewAdapter.refresh(inboxContent);
+			}
+		}
+		
+
+		public void handleDensityChange(double newDensity, int level) {
+			if (_isUIAlive.get()) {
+				SBLog.i(TAG, "handleDensityChange()");
+				_ui.overlay.handleDensityChange(newDensity, level);
+			}
+		}
+
+		public void handleLevelUp(double cellDensity, int newLevel) {
+			if (_isUIAlive.get()) {
+				SBLog.i(TAG, "handleLevelUp()");
+				_ui.overlay.handleLevelUp(cellDensity, newLevel);
+			}
+		}
+
+		public void handlePointsChange(int newPoints) {
+			if (_isUIAlive.get()) {
+				SBLog.i(TAG, "handlePointsChange()");
+				// TODO: something probably should be updated... stats page?
+			}
+		}
+		
+		public void refreshInbox(List<Shout> inboxContent) {
+			if (_isUIAlive.get()) {
+				SBLog.i(TAG, "refreshInbox()");
+				_ui.inboxListViewAdapter.refresh(inboxContent);
+			}
+		}
+		
+		public void refreshNoticeTab(List<Notice> noticeContent) {
+			if (_isUIAlive.get()) {
+				SBLog.i(TAG, "refreshNoticeTab()");
+				_ui.noticeListViewAdapter.refresh(noticeContent);
+			}
+		}
+		
+		public void handleServerFailure() {
+			if (_isUIAlive.get()) {
+				_dialogBuilder.showDialog(DialogBuilder.DIALOG_SERVER_DOWN);
+			}
+		}
+		
+		public void enableInputs() {
+			if (_isUIAlive.get()) {
+				_ui.shoutBtn.setEnabled(true);
+				_ui.shoutInputEt.setEnabled(true);
+				//_cShoutText.setText("");
+				_ui.inboxListViewAdapter.setInputAllowed(true);
+			}
+		}
+		
+		public void disableInputs() {
+			if (_isUIAlive.get()) {
+				_ui.shoutBtn.setEnabled(false);
+				_ui.shoutInputEt.setEnabled(false);
+				//_cShoutText.setText("   Turn on power to shout...");
+				_ui.inboxListViewAdapter.setInputAllowed(false);
+			}
+		}
+		
+	}
+	
 }

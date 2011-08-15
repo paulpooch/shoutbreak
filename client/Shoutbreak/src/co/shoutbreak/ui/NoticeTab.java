@@ -1,5 +1,6 @@
 package co.shoutbreak.ui;
 
+import co.shoutbreak.core.C;
 import co.shoutbreak.core.utils.SBLog;
 import android.content.Context;
 import android.util.AttributeSet;
@@ -75,6 +76,27 @@ public class NoticeTab extends LinearLayout implements IGestureCapable {
 	        });
 		}
 	}
+	
+	public void hide() {
+		if (this.getHeight() <= _minHeight) {
+			// already closed
+			
+		} else {
+			long duration = 400;
+		    _isDirectionDown = false;
+		    _overshootInterpolator = new OvershootInterpolator();
+	        _startTime = System.currentTimeMillis();
+	        _endTime = _startTime + duration;
+	        _totalAnimDy = _minHeight - this.getHeight();
+	        post(new Runnable() {
+	            @Override
+	            public void run() {
+	                onAnimateStep();
+	            }
+	        });
+	        
+		}
+	}
 
 	@Override
 	public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
@@ -105,6 +127,14 @@ public class NoticeTab extends LinearLayout implements IGestureCapable {
  		int newHeight = (int)(this.getHeight() + curDy);
  		if (_isDirectionDown && newHeight > _maxHeight) {
  			this.adjustTabHeight(_maxHeight);
+ 			if (_maxHeight == _oneLineHeight) {
+ 				 postDelayed(new Runnable() {
+ 		            @Override
+ 		            public void run() {
+ 		                hide();
+ 		            }
+ 		        }, C.CONFIG_NOTICE_DISPLAY_TIME);
+ 			}
  			return;
  		} else if (!_isDirectionDown && newHeight < _minHeight) {
  			this.adjustTabHeight(_minHeight);

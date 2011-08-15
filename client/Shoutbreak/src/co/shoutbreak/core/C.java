@@ -3,11 +3,23 @@ package co.shoutbreak.core;
 // Constants
 public class C {
 
+	// STRINGS ////////////////////////////////////////////////////////////////
+	public static final String STRING_SERVER_DOWN = "Sorry, our server is not playing nice right now.\nWould you like to check our website to see what's going or yell at us?";
+	public static final String STRING_NO_ACCOUNT = "Welcome to Shoutbreak!\nNo account detected, creating one now...";
+	public static final String STRING_ACCOUNT_CREATED = "Account created successfully.\nYou can now send and receive shouts!";
+	public static final String STRING_LEVEL_UP_1 = "You leveled up! You're now level ";
+	public static final String STRING_LEVEL_UP_2 = "Your shouts will reach ";
+	public static final String STRING_SHOUT_SENT = "Shout complete.";
+	public static final String STRING_SHOUT_FAILED = "Shout failed.";
+	public static final String STRING_VOTE_FAILED = "Vote failed.";
+	
 	// NOTICES ////////////////////////////////////////////////////////////////
 	public static final int NOTICE_SHOUTS_RECEIVED = 0;
 	public static final int NOTICE_LEVEL_UP = 1;
 	public static final int NOTICE_SHOUT_SENT = 2;
-	public static final int NOTICE_DEBUG = 100;
+	public static final int NOTICE_SHOUT_FAILED = 3;
+	public static final int NOTICE_NO_ACCOUNT = 4;
+	public static final int NOTICE_ACCOUNT_CREATED = 4;
 	
 	// Organize your fucking stuff John
 	
@@ -18,6 +30,7 @@ public class C {
 
 	// CONFIG /////////////////////////////////////////////////////////////////
 	public static final String CONFIG_CRASH_REPORT_ADDRESS = "http://app.shoutbreak.co/crash_reports/upload.php";
+	public static final String CONFIG_SUPPORT_ADDRESS = "http://shoutbreak.com/support";
 	public static final long CONFIG_DENSITY_EXPIRATION = (long) 4.32E8; // 5 days
 	public static final int CONFIG_DENSITY_GRID_X_GRANULARITY = 129600; // 10 second cells
 	public static final int CONFIG_DENSITY_GRID_Y_GRANULARITY = 64800; // 10 second cells
@@ -28,6 +41,7 @@ public class C {
 	public static final long CONFIG_IDLE_LOOP_TIME_WITH_UI_OPEN = 20000; // 60 seconds
 	public static final int CONFIG_PEOPLE_PER_LEVEL = 5;
 	public static final double CONFIG_SHOUT_SCORING_DEFAULT_POWER = 0.10; //  0.10 to have a 95% chance that your lower bound is correct
+	public static final long CONFIG_NOTICE_DISPLAY_TIME = 5000; // 5 seconds
 	
 	public static final double NORMAL_DIST_B[] = { 1.570796288, 0.03706987906, -0.8364353589e-3, -0.2250947176e-3,
 		0.6841218299e-5, 0.5824238515e-5, -0.104527497e-5, 0.8360937017e-7, -0.3231081277e-8, 0.3657763036e-10,
@@ -130,7 +144,7 @@ public class C {
 	public static final int STATE_IDLE = 30;
 	
 	// DATABASE ///////////////////////////////////////////////////////////////
-	public static final int DB_VERSION = 6;
+	public static final int DB_VERSION = 7;
 
 	public static final String DB_NAME = "sbdb";
 	public static final String DB_TABLE_DENSITY = "DENSITY";

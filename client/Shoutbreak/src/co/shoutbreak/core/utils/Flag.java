@@ -45,4 +45,9 @@ public class Flag {
 			return false;
 		}
 	}
+	
+	public boolean isInitialized() {
+		return _isInitialized;
+	}
+	
 }

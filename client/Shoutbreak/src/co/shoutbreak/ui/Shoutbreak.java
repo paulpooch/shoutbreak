@@ -1,7 +1,5 @@
 package co.shoutbreak.ui;
 
-import java.util.List;
-
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapController;
@@ -10,10 +8,10 @@ import co.shoutbreak.R;
 import co.shoutbreak.core.C;
 import co.shoutbreak.core.Colleague;
 import co.shoutbreak.core.Mediator;
-import co.shoutbreak.core.Notice;
 import co.shoutbreak.core.ServiceBridgeInterface;
 import co.shoutbreak.core.Shout;
 import co.shoutbreak.core.ShoutbreakService;
+import co.shoutbreak.core.utils.DialogBuilder;
 import co.shoutbreak.core.utils.Flag;
 import co.shoutbreak.core.utils.SBLog;
 
@@ -45,23 +43,25 @@ public class Shoutbreak extends MapActivity implements Colleague {
 	private Mediator _m;
 	private Intent _serviceIntent;
 	private ServiceBridgeInterface _serviceBridge;
+	
+	public InboxListViewAdapter inboxListViewAdapter;
+	public NoticeListViewAdapter noticeListViewAdapter;
+	public NoticeTab noticeTab;
+	public UserLocationOverlay overlay;
+	public ImageButton shoutBtn;
+	public EditText shoutInputEt;
+	
 	private ImageButton _powerBtn;
 	private ImageButton _composeTabBtn;
 	private ImageButton _inboxTabBtn;
 	private ImageButton _profileTabBtn;
-	private ImageButton _shoutBtn;
 	private ImageButton _enableLocationBtn;
-	private EditText _shoutInputEt;
 	private LinearLayout _splashLl;
 	private LinearLayout _composeViewLl;
 	private LinearLayout _inboxViewLl;
 	private LinearLayout _profileViewLl;
-	private NoticeTab _noticeTab;
-
+	private DialogBuilder _dialogBuilder;
 	private CustomMapView _map;
-	private UserLocationOverlay _overlay;
-	private InboxListViewAdapter _inboxListViewAdapter;
-	private NoticeListViewAdapter _noticeListViewAdapter;
 	private ListView _inboxListView;
 	private ListView _noticeListView;
 		
@@ -88,12 +88,12 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		_profileTabBtn.setOnClickListener(_profileTabListener);
 		_powerBtn = (ImageButton) findViewById(R.id.powerBtn);
 		_powerBtn.setOnClickListener(_powerButtonListener);
-		_shoutBtn = (ImageButton) findViewById(R.id.shoutBtn);
-		_shoutBtn.setOnClickListener(_shoutButtonListener);
-		_shoutInputEt = (EditText) findViewById(R.id.shoutInputEt);
+		shoutBtn = (ImageButton) findViewById(R.id.shoutBtn);
+		shoutBtn.setOnClickListener(_shoutButtonListener);
+		shoutInputEt = (EditText) findViewById(R.id.shoutInputEt);
 		_inboxListView = (ListView) findViewById(R.id.inboxLv);
 		_noticeListView = (ListView) findViewById(R.id.noticeLv);
-		_noticeTab = (NoticeTab) findViewById(R.id.noticeTab);
+		noticeTab = (NoticeTab) findViewById(R.id.noticeTab);
 		_splashLl = (LinearLayout) findViewById(R.id.splashLl);
 		_composeViewLl = (LinearLayout) findViewById(R.id.composeViewLl);
 		_inboxViewLl = (LinearLayout) findViewById(R.id.inboxViewLl);
@@ -138,15 +138,16 @@ public class Shoutbreak extends MapActivity implements Colleague {
 			_serviceIntent.putExtra(C.APP_LAUNCHED_FROM_UI, true);
 			startService(_serviceIntent);
 			
-			_overlay = new UserLocationOverlay(Shoutbreak.this, _map);
+			overlay = new UserLocationOverlay(Shoutbreak.this, _map);
+			_dialogBuilder = new DialogBuilder(Shoutbreak.this);
 			
-			_noticeListViewAdapter = new NoticeListViewAdapter(Shoutbreak.this);
-			_noticeListView.setAdapter(_noticeListViewAdapter);
+			noticeListViewAdapter = new NoticeListViewAdapter(Shoutbreak.this);
+			_noticeListView.setAdapter(noticeListViewAdapter);
 			
 			refreshFlags();
 			
-			_inboxListViewAdapter = new InboxListViewAdapter(Shoutbreak.this, _m);
-			_inboxListView.setAdapter(_inboxListViewAdapter);
+			inboxListViewAdapter = new InboxListViewAdapter(Shoutbreak.this, _m);
+			_inboxListView.setAdapter(inboxListViewAdapter);
 			_inboxListView.setItemsCanFocus(false);
 			_inboxListView.setOnItemClickListener(new ListView.OnItemClickListener() {
 				public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
@@ -154,14 +155,16 @@ public class Shoutbreak extends MapActivity implements Colleague {
 					String shoutId = holder.shoutId;
 					holder.collapsed.setVisibility(View.GONE);
 					holder.expanded.setVisibility(View.VISIBLE);
-					Shout shout = (Shout) _inboxListViewAdapter.getItem(position);
+					Shout shout = (Shout) inboxListViewAdapter.getItem(position);
 					if (shout.state_flag == C.SHOUT_STATE_NEW) {
 						_m.inboxNewShoutSelected(shout);
-						_inboxListViewAdapter.notifyDataSetChanged();
+						inboxListViewAdapter.notifyDataSetChanged();
 					}
-					_inboxListViewAdapter.getCacheExpandState().put(shoutId, true);
+					inboxListViewAdapter.getCacheExpandState().put(shoutId, true);
 				}
 			});
+			
+			_m.refreshUiComponents();
 			
 			hideSplash();
 			checkForReferral();
@@ -209,7 +212,6 @@ public class Shoutbreak extends MapActivity implements Colleague {
 			_m.onPowerPreferenceDisabled();
 		}
 	}
-	
 	
 	private void hideSplash() {
 		SBLog.i(TAG, "hideSplash()");
@@ -401,24 +403,23 @@ public class Shoutbreak extends MapActivity implements Colleague {
 	private void enableMapAndOverlay() {
 		SBLog.i(TAG, "enableMapAndOverlay()");
 		if (_map.getOverlays().size() == 0) {
-			_map.getOverlays().add(_overlay);
+			_map.getOverlays().add(overlay);
 		}
 		MapController mapController = _map.getController();
 		mapController.setZoom(C.DEFAULT_ZOOM_LEVEL);
 		_map.setClickable(true);
 		_map.setEnabled(true);
-		_map.setUserLocationOverlay(_overlay);
+		_map.setUserLocationOverlay(overlay);
 		_map.postInvalidate();
 
-		// Don't fucking remove this.
-		_overlay.runOnFirstFix(new Runnable() {
+		overlay.runOnFirstFix(new Runnable() {
 			public void run() {
-				GeoPoint loc = _overlay.getMyLocation();
+				GeoPoint loc = overlay.getMyLocation();
 				MapController mapController = _map.getController();
 				mapController.animateTo(loc);
 			}
 		});
-		_overlay.enableMyLocation();
+		overlay.enableMyLocation();
 	}
 	
 	private void disableMapAndOverlay() {
@@ -457,46 +458,7 @@ public class Shoutbreak extends MapActivity implements Colleague {
 	public void hideKeyboard() {
 		SBLog.i(TAG, "hideKeyboard()");
 		InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-		imm.hideSoftInputFromWindow(_shoutInputEt.getWindowToken(), 0);
-	}
-
-	public void giveNotice(List<Notice> noticeContent) {
-		SBLog.i(TAG, "giveNotice()");
-		_noticeListViewAdapter.refresh(noticeContent);
-		_noticeTab.showOneLine();
-	}
-	
-	public void handleShoutsReceived(List<Shout> inboxContent, int newShouts) {
-		SBLog.i(TAG, "handleShoutsReceived()");
-		_inboxListViewAdapter.refresh(inboxContent);
-	}
-
-	public void handleDensityChange(double newDensity, int level) {
-		SBLog.i(TAG, "handleDensityChange()");
-		_overlay.handleDensityChange(newDensity, level);
-	}
-
-	public void handleLevelUp(double cellDensity, int newLevel) {
-		SBLog.i(TAG, "handleLevelUp()");
-		_overlay.handleLevelUp(cellDensity, newLevel);
-	}
-
-	public void handlePointsChange(int newPoints) {
-		SBLog.i(TAG, "handlePointsChange()");
-		// TODO: something probably should be updated... stats page?
-	}
-
-	public void handleShoutSent() {
-		SBLog.i(TAG, "handleShoutSent()");
-		AnimationDrawable shoutButtonAnimation = (AnimationDrawable) _shoutBtn.getDrawable();
-		shoutButtonAnimation.stop();
-		_shoutBtn.setImageResource(R.drawable.shout_button_up);
-		_shoutInputEt.setText("");
-	}
-
-	public void refreshInbox(List<Shout> inboxContent) {
-		SBLog.i(TAG, "refreshInbox()");
-		_inboxListViewAdapter.refresh(inboxContent);
+		imm.hideSoftInputFromWindow(shoutInputEt.getWindowToken(), 0);
 	}
 	
 	private OnClickListener _composeTabListener = new OnClickListener() {
@@ -548,7 +510,7 @@ public class Shoutbreak extends MapActivity implements Colleague {
 	private OnClickListener _shoutButtonListener = new OnClickListener() {
 		public void onClick(View v) {
 			SBLog.i(TAG, "_shoutButtonListener.onClick()");
-			CharSequence text = _shoutInputEt.getText();
+			CharSequence text = shoutInputEt.getText();
 
 			if (text.length() == 0) {
 				Toast.makeText(Shoutbreak.this, "cannot shout blanks",
@@ -556,12 +518,12 @@ public class Shoutbreak extends MapActivity implements Colleague {
 			} else {
 				// TODO: filter all text going to server
 
-				_shoutBtn.setImageResource(R.anim.shout_button_down);
-				AnimationDrawable shoutButtonAnimation = (AnimationDrawable) _shoutBtn
+				shoutBtn.setImageResource(R.anim.shout_button_down);
+				AnimationDrawable shoutButtonAnimation = (AnimationDrawable) shoutBtn
 						.getDrawable();
 				shoutButtonAnimation.start();
 
-				_m.shoutStart(text.toString(), _overlay.getCurrentPower());
+				_m.shoutStart(text.toString(), overlay.getCurrentPower());
 				hideKeyboard();
 			}
 		}

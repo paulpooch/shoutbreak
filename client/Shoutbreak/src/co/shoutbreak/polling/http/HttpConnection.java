@@ -138,7 +138,9 @@ public class HttpConnection implements Runnable {
 			Message message = Message.obtain(_handler, C.HTTP_DID_SUCCEED, _xPacket);
 			_handler.sendMessage(message);
 			
-		} catch (JSONException ex) {
+		} catch (JSONException ex) {		
+			Message message = Message.obtain(_handler, C.HTTP_DID_ERROR, _xPacket);
+			_handler.sendMessage(message);
 			ErrorManager.manage(ex);
 		} finally {
 			if (bufferedReader != null) {
