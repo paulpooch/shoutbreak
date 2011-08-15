@@ -48,9 +48,9 @@ public class ShoutbreakService extends Service implements Colleague {
 		Bundle extras = intent.getExtras();
 		if (extras != null && !extras.isEmpty()) {
 			// determine what launched the app
-			if (extras.getBoolean(C.APP_LAUNCHED_FROM_UI)) {
+			if (extras.getBoolean(C.NOTIFICATION_LAUNCHED_FROM_UI)) {
 				_m.appLaunchedFromUI();
-			} else if (extras.getBoolean(C.APP_LAUNCHED_FROM_ALARM)) {
+			} else if (extras.getBoolean(C.NOTIFICATION_LAUNCHED_FROM_ALARM)) {
 				_m.appLaunchedFromAlarm();
 			}
 		} else {

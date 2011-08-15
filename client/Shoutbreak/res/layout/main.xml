@@ -32,9 +32,14 @@
 				android:layout_height="wrap_content" android:background="#ff000000"
 				android:orientation="vertical">
 
-				<!--  Enable Location -->
+				<!--  Compose Blanket -->
 				<ImageButton
 					android:id="@+id/enableLocationBtn" android:background="@drawable/enable_location"
+					android:layout_width="fill_parent" android:layout_height="fill_parent" 
+					android:layout_alignParentTop="true" android:visibility="gone">
+				</ImageButton>
+				<ImageButton
+					android:id="@+id/turnOnBtn" android:background="@drawable/turn_on"
 					android:layout_width="fill_parent" android:layout_height="fill_parent" 
 					android:layout_alignParentTop="true" android:visibility="gone">
 				</ImageButton>

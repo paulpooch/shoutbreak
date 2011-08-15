@@ -17,7 +17,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 	public void onReceive(Context context, Intent intent) {
 		SBLog.i(TAG, "onReceive()");
 		Intent newIntent = new Intent(context, ShoutbreakService.class);
-		newIntent.putExtra(C.APP_LAUNCHED_FROM_ALARM, true);
+		newIntent.putExtra(C.NOTIFICATION_LAUNCHED_FROM_ALARM, true);
 		newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		context.startService(newIntent);
 	}

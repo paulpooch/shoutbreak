@@ -25,13 +25,6 @@ public class C {
 	public static final int NOTICE_CREATE_ACCOUNT_FAILED = 6;
 	public static final int NOTICE_PING_FAILED = 7;
 	
-	// Organize your fucking stuff John
-	
-	public static final String POWER_STATE_PREF = "power_state_pref";
-	public static final String APP_LAUNCHED_FROM_UI = "app_launched_from_ui";
-	public static final String APP_LAUNCHED_FROM_ALARM = "app_launched_from_alarm";
-	public static final String APP_LAUNCHED_FROM_NOTIFICATION = "app_launched_from_notification";
-
 	// CONFIG /////////////////////////////////////////////////////////////////
 	public static final String CONFIG_CRASH_REPORT_ADDRESS = "http://app.shoutbreak.co/crash_reports/upload.php";
 	public static final String CONFIG_SUPPORT_ADDRESS = "http://shoutbreak.com/support";
@@ -62,6 +55,9 @@ public class C {
 	public static final String NOTIFICATION_REFERRAL_ID = "NOTIFICATION_REFERRAL_ID";
 	public static final int APP_NOTIFICATION_ID = 0;
 	public static final String EXTRA_REFERRED_FROM_NOTIFICATION = "rfn";
+	public static final String NOTIFICATION_LAUNCHED_FROM_UI = "app_launched_from_ui";
+	public static final String NOTIFICATION_LAUNCHED_FROM_ALARM = "app_launched_from_alarm";
+	public static final String NOTIFICATION_LAUNCHED_FROM_NOTIFICATION = "app_launched_from_notification";
 	
 	// HTTP CODES /////////////////////////////////////////////////////////////
 	public static final int HTTP_DID_START = 20;
@@ -168,8 +164,11 @@ public class C {
 	
 	// PREFERENCES ////////////////////////////////////////////////////////////
 	public static final String PREFERENCE_FILE = "preferences";
+	public static final String PREFERENCE_POWER_STATE = "power_state_pref";
 	//public static final String PREFS_NAMESPACE = "shoutbreak";
 	
+	// ACTIVITY RESULTS ///////////////////////////////////////////////////////
+	public static final int ACTIVITY_RESULT_LOCATION = 1;
 //	
 //	
 //	// alarm manager

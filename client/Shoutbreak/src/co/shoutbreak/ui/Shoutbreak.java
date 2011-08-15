@@ -57,6 +57,7 @@ public class Shoutbreak extends MapActivity implements Colleague {
 	private ImageButton _inboxTabBtn;
 	private ImageButton _profileTabBtn;
 	private ImageButton _enableLocationBtn;
+	private ImageButton _turnOnBtn;
 	private LinearLayout _splashLl;
 	private LinearLayout _composeViewLl;
 	private LinearLayout _inboxViewLl;
@@ -100,6 +101,8 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		_profileViewLl = (LinearLayout) findViewById(R.id.profileViewLl);
 		_enableLocationBtn = (ImageButton) findViewById(R.id.enableLocationBtn);
 		_enableLocationBtn.setOnClickListener(_enableLocationListener);
+		_turnOnBtn = (ImageButton) findViewById(R.id.turnOnBtn);
+		_turnOnBtn.setOnClickListener(_turnOnListener);
 		_map = (CustomMapView) findViewById(R.id.mapCmv);
 		
 		// bind to service, initializes mediator
@@ -135,7 +138,7 @@ public class Shoutbreak extends MapActivity implements Colleague {
 			_serviceBridge.registerUIWithMediator(Shoutbreak.this);
 			_m.onServiceConnected();
 			
-			_serviceIntent.putExtra(C.APP_LAUNCHED_FROM_UI, true);
+			_serviceIntent.putExtra(C.NOTIFICATION_LAUNCHED_FROM_UI, true);
 			startService(_serviceIntent);
 			
 			overlay = new UserLocationOverlay(Shoutbreak.this, _map);
@@ -192,7 +195,7 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		_isDataEnabled.set(_m.isDataEnabled());
 		_isLocationEnabled.set(_m.isLocationEnabled());
 		_isPowerPreferenceEnabled.set(_m.isPowerPreferenceEnabled());
-		_isTurnedOn.set(_isPowerPreferenceEnabled.get());
+		_isTurnedOn.set(false);
 		
 		if (_isDataEnabled.get()) {
 			_m.onDataEnabled();
@@ -229,7 +232,7 @@ public class Shoutbreak extends MapActivity implements Colleague {
 	private void checkForReferral() {
 		SBLog.i(TAG, "checkForReferral()");
 		Bundle extras = getIntent().getExtras();
-		if (extras != null && extras.getBoolean(C.APP_LAUNCHED_FROM_NOTIFICATION)) {
+		if (extras != null && extras.getBoolean(C.NOTIFICATION_LAUNCHED_FROM_NOTIFICATION)) {
 			showInbox();	// app launched from notification
 		} else {
 			showCompose();
@@ -276,16 +279,21 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		SBLog.i(TAG, "enableComposeView()");
 		boolean removeBlanket = true;
 		if (!_isLocationEnabled.get()) {
-			// TODO: hide blanket location button
 			removeBlanket = false;
+		} else {
+			// TODO: hide blanket location button
+			findViewById(R.id.enableLocationBtn).setVisibility(View.GONE);
 		}
 		if (!_isDataEnabled.get()) {
-			// TODO: hide blanket data button
 			removeBlanket = false;
+		} else {
+			// TODO: hide blanket data button
 		}
 		if (!_isPowerPreferenceEnabled.get()) {
-			// TODO: hide blanket power button
 			removeBlanket = false;
+		} else {
+			// TODO: hide blanket power button
+			findViewById(R.id.turnOnBtn).setVisibility(View.GONE);
 		}
 		
 		if (removeBlanket) {
@@ -304,12 +312,15 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		
 		if (!_isLocationEnabled.get()) {
 			// TODO: show location blanket button
+			findViewById(R.id.enableLocationBtn).setVisibility(View.VISIBLE);
+			
 		}
 		if (!_isDataEnabled.get()) {
 			// TODO: show data blanket button
 		}
 		if (!_isPowerPreferenceEnabled.get()) {
 			// TODO: show power blanket button
+			findViewById(R.id.turnOnBtn).setVisibility(View.VISIBLE);
 		}		
 	}
 	
@@ -364,7 +375,6 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		SBLog.i(TAG, "showComposeBlanket()");
 		findViewById(R.id.mapRl).setVisibility(View.GONE);
 		findViewById(R.id.inputRl).setVisibility(View.GONE);
-		findViewById(R.id.enableLocationBtn).setVisibility(View.VISIBLE);
 	}
 	
 	private void hideComposeBlanket() {
@@ -411,15 +421,15 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		_map.setEnabled(true);
 		_map.setUserLocationOverlay(overlay);
 		_map.postInvalidate();
-
+		overlay.enableMyLocation();
 		overlay.runOnFirstFix(new Runnable() {
+			// may take some time if location provider was just enabled 
 			public void run() {
 				GeoPoint loc = overlay.getMyLocation();
 				MapController mapController = _map.getController();
 				mapController.animateTo(loc);
 			}
 		});
-		overlay.enableMyLocation();
 	}
 	
 	private void disableMapAndOverlay() {
@@ -533,8 +543,30 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		public void onClick(View v) {
 			SBLog.i(TAG, "_enableLocationListener.onClick()");
 			Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);  
-            startActivity(intent);
+            startActivityForResult(intent, C.ACTIVITY_RESULT_LOCATION);
 		}
 	};
+	
+	private OnClickListener _turnOnListener = new OnClickListener() {
+		public void onClick(View v) {
+			SBLog.i(TAG, "_turnOnListener.onClick()");
+			_m.setPowerPreferenceToOn();
+		}
+	};
+	
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		switch (requestCode) {
+			case C.ACTIVITY_RESULT_LOCATION: {		// returning from location provider activity
+				if (_m.isLocationEnabled()) {		// update location status
+					_m.onLocationEnabled();
+				} else {
+					_m.onLocationDisabled();
+				}
+				break;
+			}
+		}
+	}
 	
 }

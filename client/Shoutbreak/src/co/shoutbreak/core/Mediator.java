@@ -8,6 +8,8 @@ import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.google.android.maps.GeoPoint;
+
 import co.shoutbreak.R;
 import co.shoutbreak.core.utils.DataListener;
 import co.shoutbreak.core.utils.DialogBuilder;
@@ -27,6 +29,7 @@ import co.shoutbreak.user.User;
 
 import android.content.Context;
 import android.graphics.drawable.AnimationDrawable;
+import android.location.Location;
 import android.os.Message;
 
 public class Mediator {
@@ -314,15 +317,6 @@ public class Mediator {
 	private void createNotice(int noticeType, String noticeText, String noticeRef) {
 		_user.saveNotice(noticeType, noticeText, noticeRef);
 		_uiGateway.giveNotice(_user.getNoticesForUI());
-	}
-	
-	public void checkLocationProviderStatus() {
-		SBLog.i(TAG, "checkLocationProviderStatus()");	
-		if (_location.isLocationEnabled()) {
-			onLocationEnabled();
-		} else {
-			onLocationDisabled();
-		}
 	}
 	
 	public void shoutStart(String text, int power) {
