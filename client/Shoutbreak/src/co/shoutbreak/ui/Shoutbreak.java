@@ -25,6 +25,8 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.provider.Settings;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.animation.AnimationUtils;
@@ -438,6 +440,20 @@ public class Shoutbreak extends MapActivity implements Colleague {
 			_map.setEnabled(false);
 			// TODO: disable overlay
 		}
+	}
+	
+	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		menu.clear();
+	    MenuInflater inflater = getMenuInflater();
+	    if (_isComposeShowing.get()) {
+	    	inflater.inflate(R.menu.compose_menu, menu);
+	    } else if (_isInboxShowing.get()) {
+	    	inflater.inflate(R.menu.inbox_menu, menu);
+	    } else if (_isProfileShowing.get()) {
+	    	inflater.inflate(R.menu.profile_menu, menu);
+	    }
+	    return super.onPrepareOptionsMenu(menu);
 	}
 	
 	@Override
