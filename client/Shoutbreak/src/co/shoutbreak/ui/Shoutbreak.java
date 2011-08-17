@@ -34,6 +34,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class Shoutbreak extends MapActivity implements Colleague {
@@ -51,6 +52,7 @@ public class Shoutbreak extends MapActivity implements Colleague {
 	public ImageButton shoutBtn;
 	public EditText shoutInputEt;
 	public DialogBuilder dialogBuilder;
+	public TextView noticeTabTv;
 	
 	private ImageButton _powerBtn;
 	private ImageButton _composeTabBtn;
@@ -98,8 +100,10 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		_composeViewLl = (LinearLayout) findViewById(R.id.composeViewLl);
 		_inboxViewLl = (LinearLayout) findViewById(R.id.inboxViewLl);
 		_profileViewLl = (LinearLayout) findViewById(R.id.profileViewLl);
+		noticeTabTv = (TextView) findViewById(R.id.noticeTabTv);
 		_enableLocationBtn = (ImageButton) findViewById(R.id.enableLocationBtn);
 		_enableLocationBtn.setOnClickListener(_enableLocationListener);
+		
 		_map = (CustomMapView) findViewById(R.id.mapCmv);
 		
 		// bind to service, initializes mediator

@@ -8,6 +8,9 @@ import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import android.content.Context;
+import android.graphics.drawable.AnimationDrawable;
+import android.os.Message;
 import co.shoutbreak.R;
 import co.shoutbreak.core.utils.DataListener;
 import co.shoutbreak.core.utils.DialogBuilder;
@@ -20,14 +23,9 @@ import co.shoutbreak.ui.Shoutbreak;
 import co.shoutbreak.user.CellDensity;
 import co.shoutbreak.user.Database;
 import co.shoutbreak.user.DeviceInformation;
-import co.shoutbreak.user.Inbox;
 import co.shoutbreak.user.LocationTracker;
 import co.shoutbreak.user.PreferenceManager;
-import co.shoutbreak.user.User;
-
-import android.content.Context;
-import android.graphics.drawable.AnimationDrawable;
-import android.os.Message;
+import co.shoutbreak.user.Storage;
 
 public class Mediator {
 	
@@ -36,15 +34,14 @@ public class Mediator {
 	// colleagues
 	private Mediator _self;
 	private ShoutbreakService _service;
+	private Database _db;
 	private Shoutbreak _ui;
-	private User _user;
-	private Inbox _inbox;
+	private Storage _storage;
 	private PreferenceManager _preferences;
 	private DeviceInformation _device;
 	private Notifier _notifier;
 	private LocationTracker _location;
 	private DataListener _data;
-	private Database _db;
 	private ThreadLauncher _threadLauncher;
 	
 	// state flags
@@ -72,8 +69,8 @@ public class Mediator {
 		_location = new LocationTracker(this);
 		_data = new DataListener(this);
 		_db = new Database(_service);
-		_user = new User(this, _db);
-		_inbox = new Inbox(this, _db);
+		_storage = new Storage(this, _db, getCurrentCell());
+
 		_threadLauncher = new ThreadLauncher(this);
 		_uiGateway = new UiGateway();
 		
@@ -149,8 +146,8 @@ public class Mediator {
 		_data.unsetMediator();
 		_data = null;
 		_db = null;
-		_inbox.unsetMediator();
-		_inbox = null;
+		_storage.unsetMediator();
+		_storage = null;
 		_threadLauncher.unsetMediator();
 		_threadLauncher = null;
 	}
@@ -222,6 +219,7 @@ public class Mediator {
 		}
 	}
 	
+	// TODO: This should call something better than stopPolling()
 	private void possiblyStopPolling(Message message) {
 		if (message != null && message.obj != null) {
 			CrossThreadPacket xPacket = (CrossThreadPacket)message.obj;
@@ -312,8 +310,8 @@ public class Mediator {
 	}
 	
 	private void createNotice(int noticeType, String noticeText, String noticeRef) {
-		_user.saveNotice(noticeType, noticeText, noticeRef);
-		_uiGateway.giveNotice(_user.getNoticesForUI());
+		_storage.saveNotice(noticeType, noticeText, noticeRef);
+		_uiGateway.giveNotice(_storage.getNoticesForUI());
 	}
 	
 	public void checkLocationProviderStatus() {
@@ -354,8 +352,8 @@ public class Mediator {
 	
 	public void deleteShout(String shoutId) {
 		SBLog.i(TAG, "deleteShout()");
-		_inbox.deleteShout(shoutId);
-		_uiGateway.refreshInbox(_inbox.getShoutsForUI());
+		_storage.deleteShout(shoutId);
+		_uiGateway.refreshInbox(_storage.getShoutsForUI());
 	}
 	
 	public void launchPollingThread(Message message) {
@@ -371,14 +369,14 @@ public class Mediator {
 	// EVENTS /////////////////////////////////////////////////////////////////
 	
 	public void inboxNewShoutSelected(Shout shout) {
-		_inbox.handleInboxNewShoutSelected(shout);
+		_storage.handleInboxNewShoutSelected(shout);
 	}
 		
 	// Triggered from a Shout close.  Have user save earned points.
 	public void pointsChange(int additionalPoints) {
 		SBLog.i(TAG, "pointsChange()");
-		_user.handlePointsChange(additionalPoints);
-		_uiGateway.handlePointsChange(_user.getPoints());
+		_storage.handlePointsChange(additionalPoints);
+		_uiGateway.handlePointsChange(_storage.getUserPoints());
 	}
 	
 	public void voteStart(String shoutId, int vote) {
@@ -402,15 +400,15 @@ public class Mediator {
 		public void densityChange(double density) {
 			SBLog.i(TAG, "densityChange()");
 			// Note: The order in these matters.
-			_user.handleDensityChange(density);
-			_uiGateway.handleDensityChange(density, _user.getLevel());
+			_storage.handleDensityChange(density, getCurrentCell());
+			_uiGateway.handleDensityChange(density, _storage.getUserLevel());
 		}
 	
 		public void shoutsReceived(JSONArray shouts) {
 			SBLog.i(TAG, "shoutsReceived()");
-			_inbox.handleShoutsReceived(shouts);
+			_storage.handleShoutsReceived(shouts);
 			if (_isUIAlive.get()) {
-				_uiGateway.handleShoutsReceived(_inbox.getShoutsForUI(), shouts.length());
+				_uiGateway.handleShoutsReceived(_storage.getShoutsForUI(), shouts.length());
 			} else {
 				_notifier.handleShoutsReceived(shouts.length());				
 			}
@@ -421,16 +419,16 @@ public class Mediator {
 		
 		public void scoresReceived(JSONArray scores) {
 			SBLog.i(TAG, "scoresReceived()");
-			_inbox.handleScoresReceived(scores);
-			_uiGateway.refreshInbox(_inbox.getShoutsForUI());
+			_storage.handleScoresReceived(scores);
+			_uiGateway.refreshInbox(_storage.getShoutsForUI());
 		}
 			
 		public void levelUp(JSONObject levelInfo) {
 			SBLog.i(TAG, "levelUp()");
-			_user.handleLevelUp(levelInfo);
-			_uiGateway.handleLevelUp(_user.getCellDensity().density, _user.getLevel());
-			_uiGateway.handlePointsChange(_user.getPoints());
-			createNotice(C.NOTICE_LEVEL_UP, C.STRING_LEVEL_UP_1 + _user.getLevel() + "\n" + C.STRING_LEVEL_UP_2 + (C.CONFIG_PEOPLE_PER_LEVEL * _user.getLevel()) + " people.", null);
+			_storage.handleLevelUp(levelInfo);
+			_uiGateway.handleLevelUp(_storage.getCellDensity(getCurrentCell()).density, _storage.getUserLevel());
+			_uiGateway.handlePointsChange(_storage.getUserPoints());
+			createNotice(C.NOTICE_LEVEL_UP, C.STRING_LEVEL_UP_1 + _storage.getUserLevel() + "\n" + C.STRING_LEVEL_UP_2 + (C.CONFIG_PEOPLE_PER_LEVEL * _storage.getUserLevel()) + " people.", null);
 		}
 		
 		public void shoutSent() {
@@ -452,7 +450,7 @@ public class Mediator {
 		
 		public void voteFinish(String shoutId, int vote) {
 			SBLog.i(TAG, "voteFinish()");
-			_inbox.handleVoteFinish(shoutId, vote);
+			_storage.handleVoteFinish(shoutId, vote);
 		}
 		
 		public void voteFailed(Message message, String shoutId, int vote) {
@@ -465,7 +463,7 @@ public class Mediator {
 		public void accountCreated(String uid, String password) {
 			SBLog.i(TAG, "accountCreated()");
 			createNotice(C.NOTICE_ACCOUNT_CREATED, C.STRING_ACCOUNT_CREATED, null);
-			_user.handleAccountCreated(uid, password);
+			_storage.handleAccountCreated(uid, password);
 			// Maybe we should do something in the UI?
 		}
 		
@@ -477,34 +475,37 @@ public class Mediator {
 		}
 		
 		public void pingFailed(Message message) {
-			createNotice(C.NOTICE_PING_FAILED, C.STRING_PING_FAILED, null);
+			// This has proven to be really damn annoying since every once in a while network access dissappears.
+			// Users will think our app sucks.
+			// For now let's just ignore ping failure.
+			//createNotice(C.NOTICE_PING_FAILED, C.STRING_PING_FAILED, null);
 			_uiGateway.handleServerFailure();
 			possiblyStopPolling(message);
 		}
 		
 		public boolean userHasAccount() {
 			SBLog.i(TAG, "userHasAccount()");
-			return _user.hasAccount();
+			return _storage.getUserHasAccount();
 		}
 		
 		public String getUserId() {
 			SBLog.i(TAG, "getUserId()");
-			return _user.getUserId();
+			return _storage.getUserId();
 		}
 		
 		public ArrayList<String> getOpenShoutIds() {
 			SBLog.i(TAG, "getOpenShoutIds()");
-			return _inbox.getOpenShoutIDs();
+			return _storage.getOpenShoutIDs();
 		}
 		
 		public String getAuth() {
 			SBLog.i(TAG, "getAuth()");
-			return _user.getAuth();
+			return _storage.getUserAuth();
 		}
 		
 		public CellDensity getCellDensity() {
 			SBLog.i(TAG, "getCellDensity()");
-			return _user.getCellDensity();
+			return _storage.getCellDensity(getCurrentCell());
 		}
 		
 		public double getLongitude() {
@@ -519,22 +520,22 @@ public class Mediator {
 		
 		public boolean getLevelUpOccurred() {
 			SBLog.i(TAG, "getLevelUpOccurred()");
-			return _user.getLevelUpOccured();
+			return _storage.getLevelUpOccured();
 		}
 		
 		public int getLevel() {
 			SBLog.i(TAG, "getLevel()");
-			return _user.getLevel();
+			return _storage.getUserLevel();
 		}
 		
 		public void updateAuth(String nonce) {
 			SBLog.i(TAG, "updateAuth()");
-			_user.updateAuth(nonce);
+			_storage.updateAuth(nonce);
 		}
 		
 		public void updateScore(JSONObject jsonScore) {
 			SBLog.i(TAG, "updateScore()");
-			_inbox.updateScore(jsonScore);
+			_storage.updateScore(jsonScore);
 		}
 		
 		public final String getAndroidId() {
@@ -597,14 +598,14 @@ public class Mediator {
 		}
 		
 		public void refreshUiComponents() {	
-			refreshInbox(_inbox.getShoutsForUI());
-			refreshNoticeTab(_user.getNoticesForUI());
+			refreshInbox(_storage.getShoutsForUI());
+			refreshNoticeTab(_storage.getNoticesForUI());
 		}
 		
 		public void giveNotice(List<Notice> noticeContent) {
 			if (_isUIAlive.get()) {
 				SBLog.i(TAG, "giveNotice()");
-				_ui.noticeListViewAdapter.refresh(noticeContent);
+				refreshNoticeTab(noticeContent);
 				_ui.noticeTab.showOneLine();
 			}
 		}
@@ -648,6 +649,13 @@ public class Mediator {
 		public void refreshNoticeTab(List<Notice> noticeContent) {
 			if (_isUIAlive.get()) {
 				SBLog.i(TAG, "refreshNoticeTab()");
+				int unreadCount = 0;
+				for (Notice notice : noticeContent) {
+					if (notice.state_flag == C.SHOUT_STATE_NEW) {
+						unreadCount++;
+					}
+				}
+				_ui.noticeTabTv.setText(Integer.toString(unreadCount));				
 				_ui.noticeListViewAdapter.refresh(noticeContent);
 			}
 		}

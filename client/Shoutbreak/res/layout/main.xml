@@ -124,11 +124,14 @@
 	<!-- Notice Tab -->
 	<RelativeLayout android:id="@+id/noticeTabRl" android:layout_marginTop="48px"
 		android:layout_width="fill_parent" android:layout_height="fill_parent">
-		<co.shoutbreak.ui.NoticeTab android:id="@+id/noticeTab" android:background="@drawable/notice_tab_bg" android:minHeight="47px" android:layout_alignParentTop="true" android:layout_height="47px" android:layout_width="fill_parent">
-			<LinearLayout android:layout_height="fill_parent" android:layout_width="fill_parent" android:background="#ffffffff" android:layout_marginBottom="47px">
+		<co.shoutbreak.ui.NoticeTab android:id="@+id/noticeTab" android:orientation="vertical" android:background="@drawable/notice_tab_bg" android:minHeight="47px" android:layout_alignParentTop="true" android:layout_height="47px" android:layout_width="fill_parent">
+			<LinearLayout android:layout_weight="1" android:layout_height="wrap_content" android:layout_width="fill_parent" android:background="#ffffffff">
 				<ListView android:id="@+id/noticeLv" android:layout_width="fill_parent"
 				android:cacheColorHint="#ffffffff" android:layout_height="fill_parent" />
 			</LinearLayout>
+			<RelativeLayout android:layout_weight="0" android:layout_height="47px" android:orientation="horizontal" android:layout_width="fill_parent">
+				<TextView android:id="@+id/noticeTabTv" android:layout_width="wrap_content" android:layout_centerHorizontal="true" android:layout_height="fill_parent" android:layout_alignParentTop="true" android:textColor="#ff00e664" android:textSize="24dp" android:textStyle="bold" />
+			</RelativeLayout>
 		</co.shoutbreak.ui.NoticeTab>
 	</RelativeLayout>
 	

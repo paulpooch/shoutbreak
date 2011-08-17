@@ -4,7 +4,7 @@ package co.shoutbreak.core;
 public class C {
 
 	// STRINGS ////////////////////////////////////////////////////////////////
-	public static final String STRING_SERVER_DOWN = "Sorry, our server is not playing nice right now.\nWould you like to check our website to see what's going or yell at us?";
+	public static final String STRING_SERVER_DOWN = "Sorry, our server is not playing nice right now.\nWant to check our site for a downtime notice?";
 	public static final String STRING_NO_ACCOUNT = "Welcome to Shoutbreak!\nNo account detected, creating one now...";
 	public static final String STRING_ACCOUNT_CREATED = "Account created successfully.\nYou can now send and receive shouts!";
 	public static final String STRING_LEVEL_UP_1 = "You leveled up! You're now level ";
