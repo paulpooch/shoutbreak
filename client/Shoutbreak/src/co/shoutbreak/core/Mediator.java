@@ -11,6 +11,8 @@ import org.json.JSONObject;
 import android.content.Context;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Message;
+import com.google.android.maps.GeoPoint;
+
 import co.shoutbreak.R;
 import co.shoutbreak.core.utils.DataListener;
 import co.shoutbreak.core.utils.DialogBuilder;
@@ -26,6 +28,15 @@ import co.shoutbreak.user.DeviceInformation;
 import co.shoutbreak.user.LocationTracker;
 import co.shoutbreak.user.PreferenceManager;
 import co.shoutbreak.user.Storage;
+
+import android.content.Context;
+import android.graphics.drawable.AnimationDrawable;
+import android.os.Message;
+
+import android.content.Context;
+import android.graphics.drawable.AnimationDrawable;
+import android.location.Location;
+import android.os.Message;
 
 public class Mediator {
 	
@@ -315,7 +326,6 @@ public class Mediator {
 		_uiGateway.giveNotice(_storage.getNoticesForUI());
 	}
 	
-	/*
 	public void checkLocationProviderStatus() {
 		SBLog.i(TAG, "checkLocationProviderStatus()");	
 		if (_location.isLocationEnabled()) {
@@ -324,7 +334,6 @@ public class Mediator {
 			onLocationDisabled();
 		}
 	}
-	*/
 	
 	public void shoutStart(String text, int power) {
 		SBLog.i(TAG, "shout()");

@@ -27,7 +27,7 @@ public class Notifier {
 		NotificationManager notificationManager = (NotificationManager) _service.getSystemService(Context.NOTIFICATION_SERVICE);
 		Intent intent = new Intent(_service, Shoutbreak.class);
 		intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-		intent.putExtra(C.APP_LAUNCHED_FROM_NOTIFICATION, true);
+		intent.putExtra(C.NOTIFICATION_LAUNCHED_FROM_NOTIFICATION, true);
 	    Notification notification = new Notification(R.drawable.notification_icon, tickerText, System.currentTimeMillis());
 	    notification.setLatestEventInfo(_service, title, message, PendingIntent.getActivity(_service, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT));
 	    notification.flags |= Notification.FLAG_AUTO_CANCEL;

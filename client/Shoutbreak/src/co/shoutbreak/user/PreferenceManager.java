@@ -36,16 +36,16 @@ public class PreferenceManager {
 	}
 	
 	public void setPowerPreferenceToOn() {
-		putBoolean(C.POWER_STATE_PREF, true);
+		putBoolean(C.PREFERENCE_POWER_STATE, true);
 		_m.onPowerPreferenceEnabled();
 	}
 	
 	public void setPowerPreferenceToOff() {
-		putBoolean(C.POWER_STATE_PREF, false);
+		putBoolean(C.PREFERENCE_POWER_STATE, false);
 		_m.onPowerPreferenceDisabled();
 	}
 	
 	public boolean isPowerPreferenceSetToOn() {
-		return getBoolean(C.POWER_STATE_PREF, true);
+		return getBoolean(C.PREFERENCE_POWER_STATE, true);
 	}
 }
