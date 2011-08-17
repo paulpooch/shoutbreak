@@ -69,7 +69,7 @@ public class Mediator {
 		_location = new LocationTracker(this);
 		_data = new DataListener(this);
 		_db = new Database(_service);
-		_storage = new Storage(this, _db, getCurrentCell());
+		_storage = new Storage(this, _db);
 
 		_threadLauncher = new ThreadLauncher(this);
 		_uiGateway = new UiGateway();
@@ -275,6 +275,7 @@ public class Mediator {
 		if (_isUIAlive.get()) {
 			_ui.onLocationEnabled();
 		}
+		_storage.initializeDensity(getCurrentCell());
 		startPolling();
 	}
 	
@@ -314,6 +315,7 @@ public class Mediator {
 		_uiGateway.giveNotice(_storage.getNoticesForUI());
 	}
 	
+	/*
 	public void checkLocationProviderStatus() {
 		SBLog.i(TAG, "checkLocationProviderStatus()");	
 		if (_location.isLocationEnabled()) {
@@ -322,6 +324,7 @@ public class Mediator {
 			onLocationDisabled();
 		}
 	}
+	*/
 	
 	public void shoutStart(String text, int power) {
 		SBLog.i(TAG, "shout()");

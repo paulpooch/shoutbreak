@@ -28,7 +28,7 @@ public class User {
 	private int _points;
 	private int _nextLevelAt;
 	
-	public User(Database db, CellDensity currentCell) {
+	public User(Database db) {
 		
 		_db = db;
 		_passwordExists = false;
@@ -36,6 +36,7 @@ public class User {
 		_level = 0;
 		_points = 0;
 		_auth = "default"; // we don't have auth yet... just give us nonce
+		_cellDensity = null;
 		
 		HashMap<String, String> userSettings = getUserSettings();
 		if (userSettings.containsKey(C.KEY_USER_PW)) {
@@ -50,8 +51,7 @@ public class User {
 		if (userSettings.containsKey(C.KEY_USER_NEXT_LEVEL_AT)) {
 			_nextLevelAt = Integer.parseInt(userSettings.get(C.KEY_USER_NEXT_LEVEL_AT));
 		}
-		initializePoints();
-		_cellDensity = getCellDensity(currentCell);		
+		initializePoints();	
 	}
 
 	// STATICS ////////////////////////////////////////////////////////////////
@@ -91,6 +91,10 @@ public class User {
 	
 	public boolean getLevelUpOccured() {
 		return _levelUpOccured;
+	}
+	
+	public void initializeDensity(CellDensity currentCell) {
+		_cellDensity = getCellDensity(currentCell);
 	}
 	
 	public CellDensity getDensityAtCell(CellDensity cell) {

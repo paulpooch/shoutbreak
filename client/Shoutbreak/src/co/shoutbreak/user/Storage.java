@@ -28,10 +28,10 @@ public class Storage implements Colleague {
 	private User _user;
 	private Inbox _inbox;
 	
-	public Storage(Mediator mediator, Database db, CellDensity currentCell) {
+	public Storage(Mediator mediator, Database db) {
 		_m = mediator;
 		_db = db;
-		_user = new User(_db, currentCell);
+		_user = new User(_db);
 		_inbox = new Inbox(_db);	
 	}
 
@@ -164,6 +164,10 @@ public class Storage implements Colleague {
 	
 	public int getUserLevel() {
 		return _user.getLevel();
+	}
+	
+	public void initializeDensity(CellDensity currentCell) {
+		_user.initializeDensity(currentCell);
 	}
 	
 	public CellDensity getCellDensity(CellDensity currentCell) {
