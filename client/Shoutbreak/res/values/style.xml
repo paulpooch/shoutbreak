@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<color name="color_background">#88000000</color>
+	<style name="txtAppearance">
+		<item name="android:textSize">18sp</item>
+		<item name="android:textStyle">normal</item>
+		<item name="android:textColor">#ffffff</item>
+	</style>
+	<style name="dialogWindowTitle">
+		<item name="android:maxLines">1</item>
+		<item name="android:scrollHorizontally">true</item>
+		<item name="android:textAppearance">@style/txtAppearance</item>
+	</style>
+	<style name="popupStyle">
+		<item name="android:windowFrame">@null</item>
+		<item name="android:windowTitleStyle">@style/dialogWindowTitle</item>
+		<item name="android:windowIsFloating">true</item>
+		<item name="android:windowContentOverlay">@null</item>
+		<item name="android:windowAnimationStyle">@style/dialogAnimation</item>
+		<item name="android:windowSoftInputMode">stateUnspecified|adjustPan</item>
+		<item name="android:windowBackground">@color/color_background</item>
+	</style>
+	    <style name="dialogAnimation">
+        <item name="android:windowEnterAnimation">@android:anim/bounce_interpolator</item>
+        <item name="android:windowExitAnimation">@android:anim/slide_out_right</item>
+    </style>
+</resources>

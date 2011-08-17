@@ -310,6 +310,11 @@ public class Mediator {
 		stopPolling();
 	}
 	
+	public boolean isFirstRun() {
+		SBLog.i(TAG, "isFirstRun()");
+		boolean isFirstRun = _preferences.getBoolean(C.PREFERENCE_IS_FIRST_RUN, true);
+		_preferences.putBoolean(C.PREFERENCE_IS_FIRST_RUN, false);
+		return isFirstRun;
 	private void createNotice(int noticeType, String noticeText, String noticeRef) {
 		_storage.saveNotice(noticeType, noticeText, noticeRef);
 		_uiGateway.giveNotice(_storage.getNoticesForUI());
@@ -601,6 +606,7 @@ public class Mediator {
 		public void refreshUiComponents() {	
 			refreshInbox(_storage.getShoutsForUI());
 			refreshNoticeTab(_storage.getNoticesForUI());
+			refreshProfile(_storage.getLevel(), _storage.getPoints(), _storage.getNextLevelAt());
 		}
 		
 		public void giveNotice(List<Notice> noticeContent) {
@@ -630,13 +636,14 @@ public class Mediator {
 			if (_isUIAlive.get()) {
 				SBLog.i(TAG, "handleLevelUp()");
 				_ui.overlay.handleLevelUp(cellDensity, newLevel);
+				_ui.profileViewAdapter.refresh(_user.getLevel(), _user.getPoints(), _user.getNextLevelAt());
 			}
 		}
 
 		public void handlePointsChange(int newPoints) {
 			if (_isUIAlive.get()) {
 				SBLog.i(TAG, "handlePointsChange()");
-				// TODO: something probably should be updated... stats page?
+				_ui.profileViewAdapter.refresh(_user.getLevel(), _user.getPoints(), _user.getNextLevelAt());
 			}
 		}
 		
@@ -658,6 +665,13 @@ public class Mediator {
 				}
 				_ui.noticeTabTv.setText(Integer.toString(unreadCount));				
 				_ui.noticeListViewAdapter.refresh(noticeContent);
+			}
+		}
+		
+		public void refreshProfile(int level, int points, int nextLevelAt) {
+			if (_isUIAlive.get()) {
+				SBLog.i(TAG, "refreshProfile()");
+				_ui.profileViewAdapter.refresh(level, points, nextLevelAt);
 			}
 		}
 		

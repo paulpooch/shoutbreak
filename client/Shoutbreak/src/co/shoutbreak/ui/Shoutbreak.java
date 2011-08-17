@@ -27,6 +27,7 @@ import android.os.Message;
 import android.provider.Settings;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.animation.AnimationUtils;
@@ -49,6 +50,7 @@ public class Shoutbreak extends MapActivity implements Colleague {
 	
 	public InboxListViewAdapter inboxListViewAdapter;
 	public NoticeListViewAdapter noticeListViewAdapter;
+	public ProfileViewAdapter profileViewAdapter;
 	public NoticeTab noticeTab;
 	public UserLocationOverlay overlay;
 	public ImageButton shoutBtn;
@@ -153,6 +155,8 @@ public class Shoutbreak extends MapActivity implements Colleague {
 			noticeListViewAdapter = new NoticeListViewAdapter(Shoutbreak.this);
 			_noticeListView.setAdapter(noticeListViewAdapter);
 			
+			profileViewAdapter = new ProfileViewAdapter(Shoutbreak.this);
+			
 			refreshFlags();
 			
 			inboxListViewAdapter = new InboxListViewAdapter(Shoutbreak.this, _m);
@@ -229,6 +233,7 @@ public class Shoutbreak extends MapActivity implements Colleague {
 			public void handleMessage(Message message) {
 		        _splashLl.startAnimation(AnimationUtils.loadAnimation(Shoutbreak.this, android.R.anim.fade_out));
 				_splashLl.setVisibility(View.GONE);
+				handleFirstRun();
 				super.handleMessage(message);
 			}
 		};
@@ -242,6 +247,14 @@ public class Shoutbreak extends MapActivity implements Colleague {
 			showInbox();	// app launched from notification
 		} else {
 			showCompose();
+		}
+	}
+	
+	private void handleFirstRun() {
+		if (_m.isFirstRun()) {
+			// TODO: tutorial goes here
+			TutorialDialog tut = new TutorialDialog(this);
+	        tut.show();
 		}
 	}
 	
@@ -364,7 +377,7 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		_powerBtn.setImageResource(R.drawable.power_button_off);
 	}
 	
-	private void showCompose() {
+	public void showCompose() {
 		SBLog.i(TAG, "showCompose()");
 		_isComposeShowing.set(true);
 		_isInboxShowing.set(false);
@@ -390,7 +403,7 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		findViewById(R.id.enableLocationBtn).setVisibility(View.GONE);
 	}
 
-	private void showInbox() {
+	public void showInbox() {
 		SBLog.i(TAG, "showInbox()");
 		_isComposeShowing.set(false);
 		_isInboxShowing.set(true);
@@ -403,7 +416,7 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		_profileViewLl.setVisibility(View.GONE);
 	}
 
-	private void showProfile() {
+	public void showProfile() {
 		SBLog.i(TAG, "showProfile()");
 		_isComposeShowing.set(false);
 		_isInboxShowing.set(false);
@@ -461,10 +474,26 @@ public class Shoutbreak extends MapActivity implements Colleague {
 	}
 	
 	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+	    switch (item.getItemId()) {
+	    case R.id.clear_notices:
+	        // TODO: clear notices
+	        return true;
+	    case R.id.empty_inbox:
+	        // TODO: empty inbox
+	        return true;
+	    default:
+	        return super.onOptionsItemSelected(item);
+	    }
+	}
+	
+	@Override
 	public void onDestroy() {
 		SBLog.i(TAG, "onDestroy()");
-		_m.unregisterUI(false);
-		_m = null;
+		if (_m != null) {
+			_m.unregisterUI(false);
+			_m = null;
+		}
 		super.onDestroy();
 	}
 
