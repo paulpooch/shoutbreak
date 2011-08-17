@@ -42,7 +42,7 @@ public class NoticeTab extends LinearLayout implements IGestureCapable {
 		}
 		return _gestures.onTouchEvent(event);
 	}
-
+	
 	@Override
 	public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
 		int newHeight = (int) (e2.getY());

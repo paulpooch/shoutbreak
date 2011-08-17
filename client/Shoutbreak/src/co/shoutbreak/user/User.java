@@ -369,6 +369,10 @@ public class User implements Colleague {
 		return _points;
 	}
 	
+	public int getNextLevelAt() {
+		return _nextLevelAt;
+	}
+	
 	public static int calculatePower(int people) {
 		return (int)Math.ceil((float)people / (float)C.CONFIG_PEOPLE_PER_LEVEL);
 	}

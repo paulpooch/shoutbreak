@@ -98,8 +98,21 @@
 				android:visibility="invisible" android:layout_width="fill_parent"
 				android:layout_height="fill_parent" android:background="#ff000000"
 				android:orientation="vertical">
-				<TextView android:text="Profile View" android:layout_width="fill_parent"
-					android:layout_height="wrap_content" />
+				<TextView android:layout_height="wrap_content" android:id="@+id/userLevelTv"
+						android:layout_width="wrap_content" android:textColor="#ffffff"
+						android:textSize="20dp" />
+				<TextView android:layout_height="wrap_content" android:id="@+id/userPointsTv"
+						android:layout_width="wrap_content" android:textColor="#ffffff"
+						android:textSize="20dp" />
+				<TextView android:layout_height="wrap_content" android:id="@+id/userNextLevelAtTv"
+						android:layout_width="wrap_content" android:textColor="#ffffff"
+						android:textSize="20dp" />
+        		<ProgressBar android:id="@+id/userProgressPb"
+         			android:layout_width="fill_parent"
+         			android:layout_height="wrap_content"
+         			android:progressDrawable="@layout/progress_bar_states"
+         			style="@android:style/Widget.ProgressBar.Horizontal"
+         			android:layout_marginRight="5dp" />
 			</LinearLayout>
 
 		</RelativeLayout>
@@ -130,7 +143,7 @@
 	<RelativeLayout android:id="@+id/noticeTabRl" android:layout_marginTop="48px"
 		android:layout_width="fill_parent" android:layout_height="fill_parent">
 		<co.shoutbreak.ui.NoticeTab android:id="@+id/noticeTab" android:background="@drawable/notice_tab_bg" android:minHeight="47px" android:layout_alignParentTop="true" android:layout_height="47px" android:layout_width="fill_parent">
-			<LinearLayout android:layout_height="fill_parent" android:layout_width="fill_parent" android:background="#ffffffff" android:layout_marginBottom="47px">
+			<LinearLayout android:layout_height="wrap_content" android:layout_width="fill_parent" android:background="#ffffffff" android:layout_marginBottom="47px">
 				<ListView android:id="@+id/noticeLv" android:layout_width="fill_parent"
 				android:cacheColorHint="#ffffffff" android:layout_height="fill_parent" />
 			</LinearLayout>

@@ -165,7 +165,7 @@ public class C {
 	// PREFERENCES ////////////////////////////////////////////////////////////
 	public static final String PREFERENCE_FILE = "preferences";
 	public static final String PREFERENCE_POWER_STATE = "power_state_pref";
-	//public static final String PREFS_NAMESPACE = "shoutbreak";
+	public static final String PREFERENCE_IS_FIRST_RUN = "is_first_run";
 	
 	// ACTIVITY RESULTS ///////////////////////////////////////////////////////
 	public static final int ACTIVITY_RESULT_LOCATION = 1;
