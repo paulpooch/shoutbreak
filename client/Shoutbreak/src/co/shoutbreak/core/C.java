@@ -24,6 +24,7 @@ public class C {
 	public static final int NOTICE_ACCOUNT_CREATED = 5;
 	public static final int NOTICE_CREATE_ACCOUNT_FAILED = 6;
 	public static final int NOTICE_PING_FAILED = 7;
+	public static final int NOTICE_VOTE_FAILED = 8;
 	
 	// CONFIG /////////////////////////////////////////////////////////////////
 	public static final String CONFIG_CRASH_REPORT_ADDRESS = "http://app.shoutbreak.co/crash_reports/upload.php";
@@ -129,6 +130,9 @@ public class C {
 	public static final int SHOUT_VOTE_UP = 1;
 	public static final int SHOUT_VOTE_DOWN = -1;	
 	
+	public static final int NOTICE_STATE_NEW = 1;
+	public static final int NOTICE_STATE_READ = 0;
+	
 	// ALARM MANAGER //////////////////////////////////////////////////////////
 	public static final String ALARM_START_FROM_UI = "start_from_ui";
 	
@@ -144,7 +148,7 @@ public class C {
 	public static final int STATE_IDLE = 30;
 	
 	// DATABASE ///////////////////////////////////////////////////////////////
-	public static final int DB_VERSION = 7;
+	public static final int DB_VERSION = 8;
 
 	public static final String DB_NAME = "sbdb";
 	public static final String DB_TABLE_DENSITY = "DENSITY";

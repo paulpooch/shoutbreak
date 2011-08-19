@@ -122,8 +122,8 @@ public class Polling {
 		}
 		
 		// acknowledge any level up packets
-		if (_safeM.getLevelUpOccurred()) {
-			postData.add(C.JSON_LEVEL, Integer.toString(_safeM.getLevel()));
+		if (_safeM.getUserLevelUpOccurred()) {
+			postData.add(C.JSON_LEVEL, Integer.toString(_safeM.getUserLevel()));
 		}
 		
 		if (scoresToRequest.size() > 0) {
@@ -232,7 +232,7 @@ public class Polling {
 	}
 	
 	public void createAccount(Message message) {
-		_safeM.createNotice(C.NOTICE_NO_ACCOUNT, C.STRING_NO_ACCOUNT, null);
+		_safeM.handleCreateAccountStarted();
 		Handler httpHandler = new Handler() {
 			public void handleMessage(Message message) {
 				switch (message.what) {
@@ -241,7 +241,7 @@ public class Polling {
 						break;
 					}
 					case C.HTTP_DID_ERROR: {
-						_safeM.createAccountFailed(message);
+						_safeM.handleCreateAccountFailed(message);
 					}
 				}
 			}
@@ -269,7 +269,7 @@ public class Polling {
 						break;
 					}
 					case C.HTTP_DID_ERROR: {
-						_safeM.createAccountFailed(message);
+						_safeM.handleCreateAccountFailed(message);
 					}
 				}
 			}

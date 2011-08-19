@@ -14,6 +14,10 @@ import co.shoutbreak.core.ShoutbreakService;
 import co.shoutbreak.core.utils.DialogBuilder;
 import co.shoutbreak.core.utils.Flag;
 import co.shoutbreak.core.utils.SBLog;
+import co.shoutbreak.storage.inbox.InboxListViewAdapter;
+import co.shoutbreak.storage.inbox.InboxViewHolder;
+import co.shoutbreak.storage.noticetab.NoticeTabListViewAdapter;
+import co.shoutbreak.storage.noticetab.NoticeTabView;
 
 import android.content.ComponentName;
 import android.content.Context;
@@ -35,6 +39,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -49,14 +54,18 @@ public class Shoutbreak extends MapActivity implements Colleague {
 	private ServiceBridgeInterface _serviceBridge;
 	
 	public InboxListViewAdapter inboxListViewAdapter;
-	public NoticeListViewAdapter noticeListViewAdapter;
+	public NoticeTabListViewAdapter noticeListViewAdapter;
 	public ProfileViewAdapter profileViewAdapter;
-	public NoticeTab noticeTab;
+	public NoticeTabView noticeTab;
 	public UserLocationOverlay overlay;
 	public ImageButton shoutBtn;
 	public EditText shoutInputEt;
 	public DialogBuilder dialogBuilder;
-	public TextView noticeTabTv;
+	public ImageView noticeTabShoutsIv;
+	public ImageView noticeTabPointsIv;
+	public TextView noticeTabShoutsTv;
+	public TextView noticeTabPointsTv;	
+	public ListView noticeTabListView;
 	
 	private ImageButton _powerBtn;
 	private ImageButton _composeTabBtn;
@@ -70,7 +79,7 @@ public class Shoutbreak extends MapActivity implements Colleague {
 	private LinearLayout _profileViewLl;
 	private CustomMapView _map;
 	private ListView _inboxListView;
-	private ListView _noticeListView;
+
 		
 	private Flag _isComposeShowing = new Flag("ui:_isComposeShowing");
 	private Flag _isInboxShowing = new Flag("ui:_isInboxShowing");
@@ -99,13 +108,22 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		shoutBtn.setOnClickListener(_shoutButtonListener);
 		shoutInputEt = (EditText) findViewById(R.id.shoutInputEt);
 		_inboxListView = (ListView) findViewById(R.id.inboxLv);
-		_noticeListView = (ListView) findViewById(R.id.noticeLv);
-		noticeTab = (NoticeTab) findViewById(R.id.noticeTab);
+		noticeTabListView = (ListView) findViewById(R.id.noticeLv);
+		noticeTab = (NoticeTabView) findViewById(R.id.noticeTab);
 		_splashLl = (LinearLayout) findViewById(R.id.splashLl);
 		_composeViewLl = (LinearLayout) findViewById(R.id.composeViewLl);
 		_inboxViewLl = (LinearLayout) findViewById(R.id.inboxViewLl);
 		_profileViewLl = (LinearLayout) findViewById(R.id.profileViewLl);
-		noticeTabTv = (TextView) findViewById(R.id.noticeTabTv);
+		noticeTabShoutsIv = (ImageView) findViewById(R.id.noticeTabShoutsIv);
+		noticeTabPointsIv = (ImageView) findViewById(R.id.noticeTabPointsIv);
+		noticeTabShoutsTv = (TextView) findViewById(R.id.noticeTabShoutsTv);
+		noticeTabPointsTv = (TextView) findViewById(R.id.noticeTabPointsTv);
+		
+		noticeTabShoutsIv.setVisibility(View.INVISIBLE);
+		noticeTabPointsIv.setVisibility(View.INVISIBLE);
+		noticeTabShoutsTv.setVisibility(View.INVISIBLE);
+		noticeTabPointsTv.setVisibility(View.INVISIBLE);
+		
 		_enableLocationBtn = (ImageButton) findViewById(R.id.enableLocationBtn);
 		_enableLocationBtn.setOnClickListener(_enableLocationListener);
 		
@@ -151,9 +169,6 @@ public class Shoutbreak extends MapActivity implements Colleague {
 			
 			overlay = new UserLocationOverlay(Shoutbreak.this, _map);
 			dialogBuilder = new DialogBuilder(Shoutbreak.this);
-			
-			noticeListViewAdapter = new NoticeListViewAdapter(Shoutbreak.this);
-			_noticeListView.setAdapter(noticeListViewAdapter);
 			
 			profileViewAdapter = new ProfileViewAdapter(Shoutbreak.this);
 			

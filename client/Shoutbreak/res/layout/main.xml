@@ -142,15 +142,20 @@
 	<!-- Notice Tab -->
 	<RelativeLayout android:id="@+id/noticeTabRl" android:layout_marginTop="48px"
 		android:layout_width="fill_parent" android:layout_height="fill_parent">
-		<co.shoutbreak.ui.NoticeTab android:id="@+id/noticeTab" android:orientation="vertical" android:background="@drawable/notice_tab_bg" android:minHeight="47px" android:layout_alignParentTop="true" android:layout_height="47px" android:layout_width="fill_parent">
+		<co.shoutbreak.storage.noticetab.NoticeTabView android:id="@+id/noticeTab" android:orientation="vertical" android:background="@drawable/notice_tab_bg" android:minHeight="47px" android:layout_alignParentTop="true" android:layout_height="47px" android:layout_width="fill_parent">
 			<LinearLayout android:layout_weight="1" android:layout_height="wrap_content" android:layout_width="fill_parent" android:background="#ffffffff">
 				<ListView android:id="@+id/noticeLv" android:layout_width="fill_parent"
 				android:cacheColorHint="#ffffffff" android:layout_height="fill_parent" />
 			</LinearLayout>
 			<RelativeLayout android:layout_weight="0" android:layout_height="47px" android:orientation="horizontal" android:layout_width="fill_parent">
-				<TextView android:id="@+id/noticeTabTv" android:layout_width="wrap_content" android:layout_centerHorizontal="true" android:layout_height="fill_parent" android:layout_alignParentTop="true" android:textColor="#ff00e664" android:textSize="24dp" android:textStyle="bold" />
+				<RelativeLayout android:layout_width="168px" android:layout_height="40px" android:layout_centerHorizontal="true" android:layout_marginTop="2px">
+					<ImageView android:id="@+id/noticeTabShoutsIv" android:layout_width="83px" android:layout_height="40px" android:background="@drawable/notice_shouts" android:layout_alignParentLeft="true" android:layout_marginLeft="3px" />
+					<ImageView android:id="@+id/noticeTabPointsIv" android:layout_width="82px" android:layout_height="40px" android:background="@drawable/notice_points" android:layout_alignParentRight="true" android:layout_marginRight="-1px" />				
+					<TextView android:id="@+id/noticeTabShoutsTv" android:layout_width="60px" android:layout_height="fill_parent" android:layout_alignParentLeft="true" android:layout_marginLeft="24px" android:textColor="#ffffffff" android:shadowColor="#000000" android:shadowDx="2" android:shadowDy="2" android:shadowRadius="2" android:textSize="30px" android:textStyle="bold" />
+					<TextView android:id="@+id/noticeTabPointsTv" android:layout_width="60px" android:layout_height="fill_parent" android:layout_alignParentRight="true" android:layout_marginRight="16px" android:textColor="#ffffffff" android:shadowColor="#000000" android:shadowDx="2" android:shadowDy="2" android:shadowRadius="2" android:textSize="30px" android:textStyle="bold" />
+				</RelativeLayout>
 			</RelativeLayout>
-		</co.shoutbreak.ui.NoticeTab>
+		</co.shoutbreak.storage.noticetab.NoticeTabView>
 	</RelativeLayout>
 	
 	<!-- Splash -->

@@ -6,11 +6,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Context;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Message;
+import android.view.View;
+import android.widget.AdapterView.OnItemClickListener;
 import co.shoutbreak.R;
 import co.shoutbreak.core.utils.DataListener;
 import co.shoutbreak.core.utils.DialogBuilder;
@@ -19,23 +22,23 @@ import co.shoutbreak.core.utils.Notifier;
 import co.shoutbreak.core.utils.SBLog;
 import co.shoutbreak.polling.CrossThreadPacket;
 import co.shoutbreak.polling.ThreadLauncher;
+import co.shoutbreak.storage.CellDensity;
+import co.shoutbreak.storage.Database;
+import co.shoutbreak.storage.DeviceInformation;
+import co.shoutbreak.storage.LocationTracker;
+import co.shoutbreak.storage.PreferenceManager;
+import co.shoutbreak.storage.Storage;
+import co.shoutbreak.storage.noticetab.NoticeTabListViewAdapter;
+import co.shoutbreak.ui.IUiGateway;
 import co.shoutbreak.ui.Shoutbreak;
-import co.shoutbreak.user.CellDensity;
-import co.shoutbreak.user.Database;
-import co.shoutbreak.user.DeviceInformation;
-import co.shoutbreak.user.LocationTracker;
-import co.shoutbreak.user.PreferenceManager;
-import co.shoutbreak.user.Storage;
 
 public class Mediator {
 	
 	private static final String TAG = "Mediator";
 	
 	// colleagues
-	private Mediator _self;
 	private ShoutbreakService _service;
 	private Database _db;
-	private Shoutbreak _ui;
 	private Storage _storage;
 	private PreferenceManager _preferences;
 	private DeviceInformation _device;
@@ -43,6 +46,8 @@ public class Mediator {
 	private LocationTracker _location;
 	private DataListener _data;
 	private ThreadLauncher _threadLauncher;
+	
+	private IUiGateway _uiGateway;
 	
 	// state flags
 	private Flag _isUIAlive = new Flag("m:_isUIAlive");
@@ -52,14 +57,11 @@ public class Mediator {
 	private Flag _isLocationEnabled = new Flag("m:_isLocationEnabled");
 	private Flag _isDataEnabled = new Flag("m:_isDataEnabled");
 	private Flag _isPowerPreferenceEnabled = new Flag("m:_isPowerPreferenceEnabled");		// is power preference set to on
-	
-	private UiGateway _uiGateway;
-	
+		
 	/* Mediator Lifecycle */
 	
 	public Mediator(ShoutbreakService service) {
     	SBLog.i(TAG, "new Mediator()");
-    	_self = this;
     	
 		// add colleagues
 		_service = service;
@@ -72,7 +74,7 @@ public class Mediator {
 		_storage = new Storage(this, _db);
 
 		_threadLauncher = new ThreadLauncher(this);
-		_uiGateway = new UiGateway();
+		_uiGateway = new UiOffGateway();
 		
 		// Initialize State.
 		
@@ -111,8 +113,9 @@ public class Mediator {
 		// it must be added once the mediator is created
 		SBLog.i(TAG, "registerUI()");
 		_isUIAlive.set(true);
-		_ui = ui;
-		_ui.setMediator(this);	
+		ui.setMediator(this);	
+		_uiGateway = new UiOnGateway(ui);
+		_storage.initializeNoticeTabSystem();
 	}
 	
 	public void unregisterUI(boolean forceKillUI) {
@@ -120,16 +123,16 @@ public class Mediator {
 		SBLog.i(TAG, "unregisterUI()");
 		if (_isUIAlive.get()) {
 			_isUIAlive.set(false);
-			_ui.unsetMediator();
+			_uiGateway.unsetUiMediator();
 			if (forceKillUI) {
 				// forces UI to destroy itself if the mediator / service is killed off
 				SBLog.e(TAG, "force killed ui, service shutdown while ui running");
-				_ui.finish();
+				_uiGateway.finishUi();
 			}
-			_ui = null;
 		} else {
 			SBLog.e(TAG, "ui is not alive, unable to unregister");
 		}
+		_uiGateway = new UiOffGateway();
 	}
 	
 	public void kill() {
@@ -250,7 +253,7 @@ public class Mediator {
 		_isPowerPreferenceEnabled.set(true);
 		_service.enableAlarmReceiver();
 		if (_isUIAlive.get()) {
-			_ui.onPowerPreferenceEnabled();
+			_uiGateway.onPowerPreferenceEnabled();
 		}
 		startPolling();
 	}
@@ -260,7 +263,7 @@ public class Mediator {
 		_isPowerPreferenceEnabled.set(false);
 		_service.disableAlarmReceiver();
 		if (_isUIAlive.get()) {
-			_ui.onPowerPreferenceDisabled();
+			_uiGateway.onPowerPreferenceDisabled();
 		}
 		stopPolling();
 	}
@@ -273,7 +276,7 @@ public class Mediator {
 		SBLog.i(TAG, "onLocationEnabled()");
 		_isLocationEnabled.set(true);
 		if (_isUIAlive.get()) {
-			_ui.onLocationEnabled();
+			_uiGateway.onLocationEnabled();
 		}
 		_storage.initializeDensity(getCurrentCell());
 		startPolling();
@@ -283,7 +286,7 @@ public class Mediator {
 		SBLog.i(TAG, "onLocationDisabled()");
 		_isLocationEnabled.set(false);
 		if (_isUIAlive.get()) {
-			_ui.onLocationDisabled();
+			_uiGateway.onLocationDisabled();
 		}
 		stopPolling();
 	}
@@ -296,7 +299,7 @@ public class Mediator {
 		SBLog.i(TAG, "onDataEnabled()");
 		_isDataEnabled.set(true);
 		if (_isUIAlive.get()) {
-			_ui.onDataEnabled();
+			_uiGateway.onDataEnabled();
 		}
 		startPolling();
 	}
@@ -305,7 +308,7 @@ public class Mediator {
 		SBLog.i(TAG, "onDataDisabled()");
 		_isDataEnabled.set(false);
 		if (_isUIAlive.get()) {
-			_ui.onDataDisabled();
+			_uiGateway.onDataDisabled();
 		}
 		stopPolling();
 	}
@@ -315,10 +318,7 @@ public class Mediator {
 		boolean isFirstRun = _preferences.getBoolean(C.PREFERENCE_IS_FIRST_RUN, true);
 		_preferences.putBoolean(C.PREFERENCE_IS_FIRST_RUN, false);
 		return isFirstRun;
-	private void createNotice(int noticeType, String noticeText, String noticeRef) {
-		_storage.saveNotice(noticeType, noticeText, noticeRef);
-		_uiGateway.giveNotice(_storage.getNoticesForUI());
-	}
+	}	
 	
 	public void checkLocationProviderStatus() {
 		SBLog.i(TAG, "checkLocationProviderStatus()");	
@@ -390,6 +390,15 @@ public class Mediator {
 		_threadLauncher.handleVoteStart(shoutId, vote);
 	}
 	
+
+	public void refreshUiComponents() {
+		_uiGateway.refreshUiComponents();
+	}
+	
+	public IUiGateway getUiGateway() {
+		return _uiGateway;
+	}
+	
 	// THREAD SAFE MEDIATOR ///////////////////////////////////////////////////
 	
 	public class ThreadSafeMediator {
@@ -399,9 +408,23 @@ public class Mediator {
 			SBLog.i(TAG, "new ThreadSafeMediator()");
 		}
 		
-		public void createNotice(int noticeType, String noticeText, String noticeRef) {
-			_self.createNotice(noticeType, noticeText, noticeRef);
+		///////////////////////////////////////////////////////////////////////////
+		// HANDLE STUFF ///////////////////////////////////////////////////////////
+		///////////////////////////////////////////////////////////////////////////
+		
+		public void handleCreateAccountStarted() {
+			_storage.handleCreateAccountStarted();			
 		}
+		
+		public void handleCreateAccountFailed(Message message) {
+			_storage.handleCreateAccountFailed();
+			_uiGateway.handleCreateAccountFailed();
+			possiblyStopPolling(message);
+		}
+		
+		///////////////////////////////////////////////////////////////////////////
+		///////////////////////////////////////////////////////////////////////////
+		///////////////////////////////////////////////////////////////////////////
 		
 		public void densityChange(double density) {
 			SBLog.i(TAG, "densityChange()");
@@ -418,9 +441,6 @@ public class Mediator {
 			} else {
 				_notifier.handleShoutsReceived(shouts.length());				
 			}
-			String pluralShout = "shout" + (shouts.length() > 1 ? "s" : "");
-			String notice = "Just heard " + shouts.length() + " new " + pluralShout + ".";
-			createNotice(C.NOTICE_SHOUTS_RECEIVED, notice, null);
 		}
 		
 		public void scoresReceived(JSONArray scores) {
@@ -430,27 +450,28 @@ public class Mediator {
 		}
 			
 		public void levelUp(JSONObject levelInfo) {
+			try {
+				int newLevel = (int) levelInfo.getLong(C.JSON_LEVEL);
+				int newPoints = (int) levelInfo.getLong(C.JSON_POINTS);
+				int nextLevelAt = (int) levelInfo.getLong(C.JSON_NEXT_LEVEL_AT);
+				_storage.handleLevelUp(newLevel, newPoints, nextLevelAt);
+				_uiGateway.handleLevelUp(_storage.getCellDensity(getCurrentCell()).density, _storage.getUserLevel());
+				_uiGateway.handlePointsChange(_storage.getUserPoints());
+			} catch (JSONException e) {
+				SBLog.e(TAG, e.getMessage());
+			}
 			SBLog.i(TAG, "levelUp()");
-			_storage.handleLevelUp(levelInfo);
-			_uiGateway.handleLevelUp(_storage.getCellDensity(getCurrentCell()).density, _storage.getUserLevel());
-			_uiGateway.handlePointsChange(_storage.getUserPoints());
-			createNotice(C.NOTICE_LEVEL_UP, C.STRING_LEVEL_UP_1 + _storage.getUserLevel() + "\n" + C.STRING_LEVEL_UP_2 + (C.CONFIG_PEOPLE_PER_LEVEL * _storage.getUserLevel()) + " people.", null);
 		}
 		
 		public void shoutSent() {
 			SBLog.i(TAG, "shoutSent()");
-			if (_isUIAlive.get()) {
-				_uiGateway.handleShoutSent();
-			}
-			createNotice(C.NOTICE_SHOUT_SENT, C.STRING_SHOUT_SENT, null);
+			_storage.handleShoutSent();
+			_uiGateway.handleShoutSent();
 		}
 		
 		public void shoutFailed(Message message) {
-			if (_isUIAlive.get()) {
-				_uiGateway.handleShoutFailed();
-			}
-			createNotice(C.NOTICE_SHOUT_FAILED, C.STRING_SHOUT_FAILED, null);
-			_uiGateway.handleServerFailure();
+			_storage.handleShoutFailed();
+			_uiGateway.handleShoutFailed();
 			possiblyStopPolling(message);
 		}
 		
@@ -460,24 +481,17 @@ public class Mediator {
 		}
 		
 		public void voteFailed(Message message, String shoutId, int vote) {
+			_storage.handleVoteFailed(vote, shoutId);
 			_uiGateway.handleVoteFailed(shoutId, vote);
-			createNotice(C.NOTICE_SHOUT_FAILED, C.STRING_VOTE_FAILED, null);
 			_uiGateway.handleServerFailure();
 			possiblyStopPolling(message);
 		}
 		
 		public void accountCreated(String uid, String password) {
 			SBLog.i(TAG, "accountCreated()");
-			createNotice(C.NOTICE_ACCOUNT_CREATED, C.STRING_ACCOUNT_CREATED, null);
+
 			_storage.handleAccountCreated(uid, password);
 			// Maybe we should do something in the UI?
-		}
-		
-
-		public void createAccountFailed(Message message) {
-			createNotice(C.NOTICE_CREATE_ACCOUNT_FAILED, C.STRING_CREATE_ACCOUNT_FAILED, null);
-			_uiGateway.handleServerFailure();
-			possiblyStopPolling(message);
 		}
 		
 		public void pingFailed(Message message) {
@@ -524,12 +538,12 @@ public class Mediator {
 			return _location.getLatitude();
 		}
 		
-		public boolean getLevelUpOccurred() {
+		public boolean getUserLevelUpOccurred() {
 			SBLog.i(TAG, "getLevelUpOccurred()");
 			return _storage.getLevelUpOccured();
 		}
 		
-		public int getLevel() {
+		public int getUserLevel() {
 			SBLog.i(TAG, "getLevel()");
 			return _storage.getUserLevel();
 		}
@@ -568,136 +582,264 @@ public class Mediator {
 	
 	// UI GATEWAY /////////////////////////////////////////////////////////////
 	
-	public void refreshUiComponents() {
-		_uiGateway.refreshUiComponents();
-	}
-	
-	private class UiGateway {
+	private class UiOnGateway implements IUiGateway {
 		
-		public UiGateway() {
-			
+		private Shoutbreak _ui;
+		
+		public UiOnGateway(Shoutbreak ui) {
+			_ui = ui;
+		}
+		
+		///////////////////////////////////////////////////////////////////////////
+		// HANDLE STUFF ///////////////////////////////////////////////////////////
+		///////////////////////////////////////////////////////////////////////////
+		
+		public void handleCreateAccountFailed() {
+			this.handleServerFailure();			
 		}
 
 		public void handleShoutSent() {
-			if (_isUIAlive.get()) {
-				SBLog.i(TAG, "handleShoutSent()");
-				AnimationDrawable shoutButtonAnimation = (AnimationDrawable) _ui.shoutBtn.getDrawable();
-				shoutButtonAnimation.stop();
-				_ui.shoutBtn.setImageResource(R.drawable.shout_button_up);
-				_ui.shoutInputEt.setText("");
-			}
+			SBLog.i(TAG, "handleShoutSent()");
+			AnimationDrawable shoutButtonAnimation = (AnimationDrawable) _ui.shoutBtn.getDrawable();
+			shoutButtonAnimation.stop();
+			_ui.shoutBtn.setImageResource(R.drawable.shout_button_up);
+			_ui.shoutInputEt.setText("");
 		}
 		
 		public void handleShoutFailed() {
-			if (_isUIAlive.get()) {
-				SBLog.i(TAG, "handleShoutFailed()");
-				AnimationDrawable shoutButtonAnimation = (AnimationDrawable) _ui.shoutBtn.getDrawable();
-				shoutButtonAnimation.stop();
-				_ui.shoutBtn.setImageResource(R.drawable.shout_button_up);
-			}
+			SBLog.i(TAG, "handleShoutFailed()");
+			AnimationDrawable shoutButtonAnimation = (AnimationDrawable) _ui.shoutBtn.getDrawable();
+			shoutButtonAnimation.stop();
+			_ui.shoutBtn.setImageResource(R.drawable.shout_button_up);
+			this.handleServerFailure();
 		}
 
 		public void handleVoteFailed(String shoutId, int vote) {
-			if (_isUIAlive.get()) {
-				_ui.inboxListViewAdapter.undoVote(shoutId, vote);
-			}
-		}
-		
-		public void refreshUiComponents() {	
-			refreshInbox(_storage.getShoutsForUI());
-			refreshNoticeTab(_storage.getNoticesForUI());
-			refreshProfile(_storage.getLevel(), _storage.getPoints(), _storage.getNextLevelAt());
-		}
-		
-		public void giveNotice(List<Notice> noticeContent) {
-			if (_isUIAlive.get()) {
-				SBLog.i(TAG, "giveNotice()");
-				refreshNoticeTab(noticeContent);
-				_ui.noticeTab.showOneLine();
-			}
+			_ui.inboxListViewAdapter.undoVote(shoutId, vote);
 		}
 		
 		public void handleShoutsReceived(List<Shout> inboxContent, int newShouts) {
-			if (_isUIAlive.get()) {
-				SBLog.i(TAG, "handleShoutsReceived()");
-				_ui.inboxListViewAdapter.refresh(inboxContent);
-			}
+			SBLog.i(TAG, "handleShoutsReceived()");
+			_ui.inboxListViewAdapter.refresh(inboxContent);
 		}
 		
-
 		public void handleDensityChange(double newDensity, int level) {
-			if (_isUIAlive.get()) {
-				SBLog.i(TAG, "handleDensityChange()");
-				_ui.overlay.handleDensityChange(newDensity, level);
-			}
+			SBLog.i(TAG, "handleDensityChange()");
+			_ui.overlay.handleDensityChange(newDensity, level);
 		}
 
 		public void handleLevelUp(double cellDensity, int newLevel) {
-			if (_isUIAlive.get()) {
-				SBLog.i(TAG, "handleLevelUp()");
-				_ui.overlay.handleLevelUp(cellDensity, newLevel);
-				_ui.profileViewAdapter.refresh(_user.getLevel(), _user.getPoints(), _user.getNextLevelAt());
-			}
+			SBLog.i(TAG, "handleLevelUp()");
+			_ui.overlay.handleLevelUp(cellDensity, newLevel);
+			_ui.profileViewAdapter.refresh(_storage.getUserLevel(), _storage.getUserPoints(), _storage.getUserNextLevelAt());
 		}
 
 		public void handlePointsChange(int newPoints) {
-			if (_isUIAlive.get()) {
-				SBLog.i(TAG, "handlePointsChange()");
-				_ui.profileViewAdapter.refresh(_user.getLevel(), _user.getPoints(), _user.getNextLevelAt());
-			}
-		}
-		
-		public void refreshInbox(List<Shout> inboxContent) {
-			if (_isUIAlive.get()) {
-				SBLog.i(TAG, "refreshInbox()");
-				_ui.inboxListViewAdapter.refresh(inboxContent);
-			}
-		}
-		
-		public void refreshNoticeTab(List<Notice> noticeContent) {
-			if (_isUIAlive.get()) {
-				SBLog.i(TAG, "refreshNoticeTab()");
-				int unreadCount = 0;
-				for (Notice notice : noticeContent) {
-					if (notice.state_flag == C.SHOUT_STATE_NEW) {
-						unreadCount++;
-					}
-				}
-				_ui.noticeTabTv.setText(Integer.toString(unreadCount));				
-				_ui.noticeListViewAdapter.refresh(noticeContent);
-			}
-		}
-		
-		public void refreshProfile(int level, int points, int nextLevelAt) {
-			if (_isUIAlive.get()) {
-				SBLog.i(TAG, "refreshProfile()");
-				_ui.profileViewAdapter.refresh(level, points, nextLevelAt);
-			}
+			SBLog.i(TAG, "handlePointsChange()");
+			_ui.profileViewAdapter.refresh(_storage.getUserLevel(), _storage.getUserPoints(), _storage.getUserNextLevelAt());
 		}
 		
 		public void handleServerFailure() {
-			if (_isUIAlive.get()) {
-				_ui.dialogBuilder.showDialog(DialogBuilder.DIALOG_SERVER_DOWN);
-			}
+			_ui.dialogBuilder.showDialog(DialogBuilder.DIALOG_SERVER_DOWN);
+		}
+				
+		///////////////////////////////////////////////////////////////////////////
+		///////////////////////////////////////////////////////////////////////////
+		///////////////////////////////////////////////////////////////////////////		
+		
+		public void refreshUiComponents() {	
+			// TODO: make inbox & profile more like noticeTabSystem
+			_storage.refreshNoticeTab();
+			this.refreshInbox(_storage.getShoutsForUI());
+			this.refreshProfile(_storage.getUserLevel(), _storage.getUserPoints(), _storage.getUserNextLevelAt());
+		}
+		
+		public void refreshInbox(List<Shout> inboxContent) {
+			SBLog.i(TAG, "refreshInbox()");
+			_ui.inboxListViewAdapter.refresh(inboxContent);
+		}
+		
+		public void refreshProfile(int level, int points, int nextLevelAt) {
+			SBLog.i(TAG, "refreshProfile()");
+			_ui.profileViewAdapter.refresh(level, points, nextLevelAt);
 		}
 		
 		public void enableInputs() {
-			if (_isUIAlive.get()) {
-				_ui.shoutBtn.setEnabled(true);
-				_ui.shoutInputEt.setEnabled(true);
-				//_cShoutText.setText("");
-				_ui.inboxListViewAdapter.setInputAllowed(true);
-			}
+			_ui.shoutBtn.setEnabled(true);
+			_ui.shoutInputEt.setEnabled(true);
+			_ui.inboxListViewAdapter.setInputAllowed(true);
 		}
 		
+		
 		public void disableInputs() {
-			if (_isUIAlive.get()) {
-				_ui.shoutBtn.setEnabled(false);
-				_ui.shoutInputEt.setEnabled(false);
-				//_cShoutText.setText("   Turn on power to shout...");
-				_ui.inboxListViewAdapter.setInputAllowed(false);
-			}
+			_ui.shoutBtn.setEnabled(false);
+			_ui.shoutInputEt.setEnabled(false);
+			_ui.inboxListViewAdapter.setInputAllowed(false);
 		}
+
+		@Override
+		public void finishUi() {
+			_ui.finish();			
+		}
+
+		@Override
+		public void onDataDisabled() {
+			_ui.onDataDisabled();			
+		}
+
+		@Override
+		public void onDataEnabled() {
+			_ui.onDataEnabled();			
+		}
+
+		@Override
+		public void onLocationDisabled() {
+			_ui.onLocationDisabled();			
+		}
+
+		@Override
+		public void onLocationEnabled() {
+			_ui.onLocationEnabled();			
+		}
+
+		@Override
+		public void onPowerPreferenceDisabled() {
+			_ui.onPowerPreferenceDisabled();			
+		}
+
+		@Override
+		public void onPowerPreferenceEnabled() {
+			_ui.onPowerPreferenceEnabled();
+			
+		}
+
+		@Override
+		public void unsetUiMediator() {
+			_ui.unsetMediator();			
+		}
+
+		@Override
+		public void clearNoticeTab() {
+			_ui.noticeTabPointsTv.setVisibility(View.INVISIBLE);
+			_ui.noticeTabShoutsTv.setVisibility(View.INVISIBLE);
+			_ui.noticeTabPointsIv.setVisibility(View.INVISIBLE);
+			_ui.noticeTabShoutsIv.setVisibility(View.INVISIBLE);			
+		}
+
+		@Override
+		public void showPointsNotice(String noticeText) {
+			_ui.noticeTabPointsIv.setVisibility(View.VISIBLE);
+			_ui.noticeTabPointsTv.setVisibility(View.VISIBLE);
+			_ui.noticeTabPointsTv.setText(noticeText);
+		}
+
+		@Override
+		public void showShoutNotice(String noticeText) {
+			_ui.noticeTabShoutsIv.setVisibility(View.VISIBLE);
+			_ui.noticeTabShoutsTv.setVisibility(View.VISIBLE);
+			_ui.noticeTabShoutsTv.setText(noticeText);			
+		}
+
+		@Override
+		public void setupNoticeTabListView(NoticeTabListViewAdapter listAdapter, boolean itemsCanFocus,
+				OnItemClickListener listViewItemClickListener) {
+			_ui.noticeTabListView.setAdapter(listAdapter);
+			_ui.noticeTabListView.setItemsCanFocus(itemsCanFocus);
+			_ui.noticeTabListView.setOnItemClickListener(listViewItemClickListener);			
+		}
+
+		@Override
+		public void showTopNotice() {
+			_ui.noticeTab.showOneLine();			
+		}
+		
+	}
+	
+	private class UiOffGateway implements IUiGateway {
+
+		public UiOffGateway() {}
+		
+		@Override
+		public void disableInputs() {}
+
+		@Override
+		public void enableInputs() {}
+
+		@Override
+		public void handleCreateAccountFailed() {}
+
+		@Override
+		public void handleDensityChange(double newDensity, int level) {}
+
+		@Override
+		public void handleLevelUp(double cellDensity, int newLevel) {}
+
+		@Override
+		public void handlePointsChange(int newPoints) {}
+
+		@Override
+		public void handleServerFailure() {}
+
+		@Override
+		public void handleShoutFailed() {}
+
+		@Override
+		public void handleShoutSent() {}
+
+		@Override
+		public void handleShoutsReceived(List<Shout> inboxContent, int newShouts) {}
+
+		@Override
+		public void handleVoteFailed(String shoutId, int vote) {}
+
+		@Override
+		public void refreshInbox(List<Shout> inboxContent) {}
+
+		@Override
+		public void refreshProfile(int level, int points, int nextLevelAt) {}
+
+		@Override
+		public void refreshUiComponents() {}
+
+		@Override
+		public void finishUi() {}
+
+		@Override
+		public void onDataDisabled() {}
+
+		@Override
+		public void onDataEnabled() {}
+
+		@Override
+		public void onLocationDisabled() {}
+
+		@Override
+		public void onLocationEnabled() {}
+
+		@Override
+		public void onPowerPreferenceDisabled() {}
+
+		@Override
+		public void onPowerPreferenceEnabled() {}
+
+		@Override
+		public void unsetUiMediator() {}
+
+		@Override
+		public void clearNoticeTab() {}
+
+		@Override
+		public void showPointsNotice(String noticeText) {}
+
+		@Override
+		public void showShoutNotice(String noticeText) {}
+
+		@Override
+		public void setupNoticeTabListView(NoticeTabListViewAdapter listAdapter, boolean itemsCanFocus,
+				OnItemClickListener listViewItemClickListener) {}
+
+		@Override
+		public void showTopNotice() {}
 		
 	}
 	

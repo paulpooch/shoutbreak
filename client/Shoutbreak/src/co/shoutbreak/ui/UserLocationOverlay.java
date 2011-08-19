@@ -13,8 +13,8 @@ import android.location.Location;
 import co.shoutbreak.R;
 import co.shoutbreak.core.C;
 import co.shoutbreak.core.utils.SBLog;
+import co.shoutbreak.storage.User;
 import co.shoutbreak.ui.CustomMapView;
-import co.shoutbreak.user.User;
 
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapView;
