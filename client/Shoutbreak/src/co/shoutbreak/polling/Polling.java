@@ -151,7 +151,7 @@ public class Polling {
 			}
 			if (xPacket.json.has(C.JSON_SHOUTS)) {
 				JSONArray shouts = xPacket.json.getJSONArray(C.JSON_SHOUTS);
-				_safeM.shoutsReceived(shouts);
+				_safeM.handleShoutsReceived(shouts);
 			}
 			if (xPacket.json.has(C.JSON_SCORES)) {
 				JSONArray scores = xPacket.json.getJSONArray(C.JSON_SCORES);

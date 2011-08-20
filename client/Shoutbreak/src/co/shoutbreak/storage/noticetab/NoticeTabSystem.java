@@ -34,6 +34,7 @@ public class NoticeTabSystem implements Colleague {
 		_listViewItemClickListener = new ListView.OnItemClickListener() {
 			public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
 				markAllNoticesAsRead();
+				_m.getUiGateway().clearNoticeTab();
 				refresh();
 			}
 		};
@@ -95,7 +96,7 @@ public class NoticeTabSystem implements Colleague {
 	private List<Notice> getNoticesForUI(int start, int amount) {		
 		SBLog.i(TAG, "getNoticesForUI()");
 		ArrayList<Notice> results = new ArrayList<Notice>();
-		String sql = "SELECT rowid, type, text, ref, timestamp, state_flag FROM " + C.DB_TABLE_NOTICES + " ORDER BY timestamp DESC LIMIT ? OFFSET ? ";
+		String sql = "SELECT rowid, type, value, text, ref, timestamp, state_flag FROM " + C.DB_TABLE_NOTICES + " ORDER BY timestamp DESC LIMIT ? OFFSET ? ";
 		Cursor cursor = null;
 		try {
 			cursor = _db.rawQuery(sql, new String[] { Integer.toString(amount), Integer.toString(start) });
@@ -103,10 +104,11 @@ public class NoticeTabSystem implements Colleague {
 				Notice n = new Notice();
 				n.id = cursor.getLong(0);
 				n.type = cursor.getInt(1);
-				n.text = cursor.getString(2);
-				n.ref = cursor.getString(3);
-				n.timestamp = cursor.getLong(4);
-				n.state_flag = cursor.getInt(5);
+				n.value = cursor.getInt(2);
+				n.text = cursor.getString(3);
+				n.ref = cursor.getString(4);
+				n.timestamp = cursor.getLong(5);
+				n.state_flag = cursor.getInt(6);
 				results.add(n);
 			}
 		} catch (Exception ex) {

@@ -422,6 +422,16 @@ public class Mediator {
 			possiblyStopPolling(message);
 		}
 		
+		public void handleShoutsReceived(JSONArray shouts) {
+			SBLog.i(TAG, "shoutsReceived()");
+			_storage.handleShoutsReceived(shouts);
+			if (_isUIAlive.get()) {
+				_uiGateway.handleShoutsReceived(_storage.getShoutsForUI(), shouts.length());
+			} else {
+				_notifier.handleShoutsReceived(shouts.length());				
+			}
+		}
+		
 		///////////////////////////////////////////////////////////////////////////
 		///////////////////////////////////////////////////////////////////////////
 		///////////////////////////////////////////////////////////////////////////
@@ -431,16 +441,6 @@ public class Mediator {
 			// Note: The order in these matters.
 			_storage.handleDensityChange(density, getCurrentCell());
 			_uiGateway.handleDensityChange(density, _storage.getUserLevel());
-		}
-	
-		public void shoutsReceived(JSONArray shouts) {
-			SBLog.i(TAG, "shoutsReceived()");
-			_storage.handleShoutsReceived(shouts);
-			if (_isUIAlive.get()) {
-				_uiGateway.handleShoutsReceived(_storage.getShoutsForUI(), shouts.length());
-			} else {
-				_notifier.handleShoutsReceived(shouts.length());				
-			}
 		}
 		
 		public void scoresReceived(JSONArray scores) {
