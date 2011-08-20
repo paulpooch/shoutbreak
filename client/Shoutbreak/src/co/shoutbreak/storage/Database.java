@@ -5,7 +5,6 @@ import java.util.Date;
 
 import co.shoutbreak.core.C;
 import co.shoutbreak.core.ShoutbreakService;
-import co.shoutbreak.core.utils.ErrorManager;
 import co.shoutbreak.core.utils.SBLog;
 
 
@@ -92,23 +91,6 @@ public class Database {
 		// - note the added colon for the Timezone
 		result = result.substring(0, result.length() - 2) + ":" + result.substring(result.length() - 2);
 		return result;
-	}
-	
-	public synchronized Long savePoints(int pointsType, int pointsValue) {
-		SBLog.i(TAG, "savePoints()");
-		String sql = "INSERT INTO " + C.DB_TABLE_POINTS + " (type, value, timestamp) VALUES (?, ?, ?)";
-		SQLiteStatement insert = this._db.compileStatement(sql);
-		insert.bindLong(1, pointsType);
-		insert.bindLong(2, pointsValue);
-		insert.bindString(3, Database.getDateAsISO8601String(new Date()));
-		try {
-			return insert.executeInsert();
-		} catch (Exception ex) {
-			ErrorManager.manage(ex);
-		} finally {
-			insert.close();
-		}
-		return 0l;
 	}
 	
 }

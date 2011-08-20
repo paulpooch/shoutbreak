@@ -2,12 +2,15 @@ package co.shoutbreak.ui;
 
 
 import co.shoutbreak.core.C;
+import co.shoutbreak.core.utils.SBLog;
 
 import com.google.android.maps.MapView;
 
 import android.content.Context;
+import android.graphics.Canvas;
 import android.graphics.Point;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 
 public class CustomMapView extends MapView {
@@ -33,6 +36,21 @@ public class CustomMapView extends MapView {
 		_userLocationOverlay = userLocationOverlay;
 		_userLocationOverlay.setMapView(this);
 	}
+	
+	@Override
+    public void draw(Canvas canvas) {
+        try {
+            if(this.getZoomLevel() >= 21) {
+                this.getController().setZoom(20);
+            }
+            super.draw(canvas);
+        }
+        catch(Exception ex) {           
+            getController().setCenter(this.getMapCenter());
+            getController().setZoom(this.getZoomLevel() - 2);
+            SBLog.e("CustomMapView", "Internal error in CustomMapView:" + Log.getStackTraceString(ex));
+        }
+    }
 	
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {

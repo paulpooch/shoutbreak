@@ -3,6 +3,25 @@ package co.shoutbreak.core;
 // Constants
 public class C {
 
+	// CONFIG /////////////////////////////////////////////////////////////////
+	public static final String CONFIG_CRASH_REPORT_ADDRESS = "http://app.shoutbreak.co/crash_reports/upload.php";
+	public static final String CONFIG_SUPPORT_ADDRESS = "http://shoutbreak.com/support";
+	public static final long CONFIG_DENSITY_EXPIRATION = (long) 4.32E8; // 5 days
+	public static final int CONFIG_DENSITY_GRID_X_GRANULARITY = 129600; // 10 second cells
+	public static final int CONFIG_DENSITY_GRID_Y_GRANULARITY = 64800; // 10 second cells
+	public static final int CONFIG_GPS_MIN_UPDATE_MILLISECS = 60000; // 0 gives most frequent
+	public static final int CONFIG_GPS_MIN_UPDATE_METERS = 20; // 0 gives smallest interval
+	public static final int CONFIG_MIN_TARGETS_FOR_HIT_COUNT = 3;
+	public static final int CONFIG_MAX_SIMULTANEOUS_HTTP_CONNECTIONS = 5; // for ConnectionQueue
+	public static final String CONFIG_SERVER_ADDRESS = "http://app.shoutbreak.co";
+	public static final long CONFIG_IDLE_LOOP_TIME_WITH_UI_OPEN = 20000; // 60 seconds
+	public static final int CONFIG_PEOPLE_PER_LEVEL = 5;
+	public static final double CONFIG_SHOUT_SCORING_DEFAULT_POWER = 0.10; //  0.10 to have a 95% chance that your lower bound is correct
+	public static final long CONFIG_NOTICE_DISPLAY_TIME = 5000; // 5 seconds
+	public static final double NORMAL_DIST_B[] = { 1.570796288, 0.03706987906, -0.8364353589e-3, -0.2250947176e-3,
+		0.6841218299e-5, 0.5824238515e-5, -0.104527497e-5, 0.8360937017e-7, -0.3231081277e-8, 0.3657763036e-10,
+		0.6936233982e-12 };
+
 	// STRINGS ////////////////////////////////////////////////////////////////
 	public static final String STRING_SERVER_DOWN = "Sorry, our server is not playing nice right now.\nWant to check our site for a downtime notice?";
 	public static final String STRING_NO_ACCOUNT = "Welcome to Shoutbreak!\nNo account detected, creating one now...";
@@ -16,6 +35,7 @@ public class C {
 	public static final String STRING_PING_FAILED = "Unable to reach server.";
 	
 	// NOTICES ////////////////////////////////////////////////////////////////
+	// 0 - 19
 	public static final int NOTICE_SHOUTS_RECEIVED = 0;
 	public static final int NOTICE_LEVEL_UP = 1;
 	public static final int NOTICE_SHOUT_SENT = 2;
@@ -25,26 +45,8 @@ public class C {
 	public static final int NOTICE_CREATE_ACCOUNT_FAILED = 6;
 	public static final int NOTICE_PING_FAILED = 7;
 	public static final int NOTICE_VOTE_FAILED = 8;
+	public static final int NOTICE_POINTS = 9;
 	
-	// CONFIG /////////////////////////////////////////////////////////////////
-	public static final String CONFIG_CRASH_REPORT_ADDRESS = "http://app.shoutbreak.co/crash_reports/upload.php";
-	public static final String CONFIG_SUPPORT_ADDRESS = "http://shoutbreak.com/support";
-	public static final long CONFIG_DENSITY_EXPIRATION = (long) 4.32E8; // 5 days
-	public static final int CONFIG_DENSITY_GRID_X_GRANULARITY = 129600; // 10 second cells
-	public static final int CONFIG_DENSITY_GRID_Y_GRANULARITY = 64800; // 10 second cells
-	public static final int CONFIG_GPS_MIN_UPDATE_MILLISECS = 60000; // 0 gives most frequent
-	public static final int CONFIG_GPS_MIN_UPDATE_METERS = 20; // 0 gives smallest interval
-	public static final int CONFIG_MIN_TARGETS_FOR_HIT_COUNT = 3;
-	public static final String CONFIG_SERVER_ADDRESS = "http://app.shoutbreak.co";
-	public static final long CONFIG_IDLE_LOOP_TIME_WITH_UI_OPEN = 20000; // 60 seconds
-	public static final int CONFIG_PEOPLE_PER_LEVEL = 5;
-	public static final double CONFIG_SHOUT_SCORING_DEFAULT_POWER = 0.10; //  0.10 to have a 95% chance that your lower bound is correct
-	public static final long CONFIG_NOTICE_DISPLAY_TIME = 5000; // 5 seconds
-	
-	public static final double NORMAL_DIST_B[] = { 1.570796288, 0.03706987906, -0.8364353589e-3, -0.2250947176e-3,
-		0.6841218299e-5, 0.5824238515e-5, -0.104527497e-5, 0.8360937017e-7, -0.3231081277e-8, 0.3657763036e-10,
-		0.6936233982e-12 };
-
 	// MAP ////////////////////////////////////////////////////////////////////
 	public static final int DEFAULT_ZOOM_LEVEL = 16;
 	public static final int DEGREE_LAT_IN_METERS = 111133; // 60 nautical miles - avg'd from http://en.wikipedia.org/wiki/Latitude#Degree_length
@@ -52,15 +54,8 @@ public class C {
 	public static final int CONFIG_RESIZE_ICON_TOUCH_TOLERANCE = 100; // +/- 50 px from center
 	public static final int MIN_RADIUS_PX = 30; // user can't resize below this
 	
-	// NOTIFICATIONS //////////////////////////////////////////////////////////
-	public static final String NOTIFICATION_REFERRAL_ID = "NOTIFICATION_REFERRAL_ID";
-	public static final int APP_NOTIFICATION_ID = 0;
-	public static final String EXTRA_REFERRED_FROM_NOTIFICATION = "rfn";
-	public static final String NOTIFICATION_LAUNCHED_FROM_UI = "app_launched_from_ui";
-	public static final String NOTIFICATION_LAUNCHED_FROM_ALARM = "app_launched_from_alarm";
-	public static final String NOTIFICATION_LAUNCHED_FROM_NOTIFICATION = "app_launched_from_notification";
-	
 	// HTTP CODES /////////////////////////////////////////////////////////////
+	// 20 - 29
 	public static final int HTTP_DID_START = 20;
 	public static final int HTTP_DID_ERROR = 21;
 	public static final int HTTP_DID_SUCCEED = 22;
@@ -119,36 +114,35 @@ public class C {
 	public static final int NULL_VOTE = 0;
 		
 	// STATES /////////////////////////////////////////////////////////////////
-	public static final int STATE_CREATE_ACCOUNT_2 = 31;
-	public static final int STATE_EXPIRED_AUTH = 32;
-	public static final int STATE_RECEIVE_SHOUTS = 33;
-	public static final int STATE_SHOUT = 35;
-	public static final int STATE_VOTE = 36;
+	// 30 - 39
+	public static final int STATE_CREATE_ACCOUNT_2 = 30;
+	public static final int STATE_EXPIRED_AUTH = 31;
+	public static final int STATE_RECEIVE_SHOUTS = 32;
+	public static final int STATE_SHOUT = 33;
+	public static final int STATE_VOTE = 34;
+	public static final int STATE_IDLE = 35;
 	
-	public static final int SHOUT_STATE_NEW = 1;
-	public static final int SHOUT_STATE_READ = 0;
+	// 40 - 49
+	public static final int SHOUT_STATE_NEW = 40;
+	public static final int SHOUT_STATE_READ = 41;
 	public static final int SHOUT_VOTE_UP = 1;
 	public static final int SHOUT_VOTE_DOWN = -1;	
 	
-	public static final int NOTICE_STATE_NEW = 1;
-	public static final int NOTICE_STATE_READ = 0;
+	// 50 - 59
+	public static final int NOTICE_STATE_NEW = 50;
+	public static final int NOTICE_STATE_READ = 51;
 	
 	// ALARM MANAGER //////////////////////////////////////////////////////////
 	public static final String ALARM_START_FROM_UI = "start_from_ui";
 	
 	// PURPOSES ///////////////////////////////////////////////////////////////
-	public static final int PURPOSE_LOOP_FROM_UI = 0; // no delay
-	public static final int PURPOSE_LOOP_FROM_UI_DELAYED = 1; // delay
-	public static final int PURPOSE_DEATH = 2; // don't repeat this - just die
-	
-	// UI CODES ///////////////////////////////////////////////////////////////
-	public static final int UI_RECEIVE_SHOUTS = 10;
-	
-	// MESSAGES ///////////////////////////////////////////////////////////////
-	public static final int STATE_IDLE = 30;
+	// 60 - 69
+	public static final int PURPOSE_LOOP_FROM_UI = 60; // no delay
+	public static final int PURPOSE_LOOP_FROM_UI_DELAYED = 61; // delay
+	public static final int PURPOSE_DEATH = 62; // don't repeat this - just die
 	
 	// DATABASE ///////////////////////////////////////////////////////////////
-	public static final int DB_VERSION = 8;
+	public static final int DB_VERSION = 9;
 
 	public static final String DB_NAME = "sbdb";
 	public static final String DB_TABLE_DENSITY = "DENSITY";
@@ -163,8 +157,10 @@ public class C {
 	public static final String KEY_USER_PW = "user_pw";
 	
 	// POINTS TYPES ///////////////////////////////////////////////////////////
-	public static final int POINTS_LEVEL_CHANGE = 0;
-	public static final int POINTS_SHOUT = 1;
+	// 70 - 79
+	public static final int POINTS_LEVEL_CHANGE = 70;
+	public static final int POINTS_SHOUT = 71;
+	public static final int POINTS_VOTE = 72;
 	
 	// PREFERENCES ////////////////////////////////////////////////////////////
 	public static final String PREFERENCE_FILE = "preferences";
@@ -172,67 +168,16 @@ public class C {
 	public static final String PREFERENCE_IS_FIRST_RUN = "is_first_run";
 	
 	// ACTIVITY RESULTS ///////////////////////////////////////////////////////
-	public static final int ACTIVITY_RESULT_LOCATION = 1;
-//	
-//	
-//	// alarm manager
-//	
-//	public static final String ALARM_MESSAGE = "alarm_message";
-//	public static final int ALARM_REQUEST_CODE = 1;
-//	
-//	/* old constants */
-//	
-//	
-//	
-//	
-
-	public static final int CONFIG_MAX_SIMULTANEOUS_HTTP_CONNECTIONS = 5; // for ConnectionQueue
-
-
-
-
-//	public static final double CONFIG_SHOUT_SCORING_DEFAULT_POWER = 0.10; //  0.10 to have a 95% chance that your lower bound is correct
-
-//
-//	// map stuff
-
-//	
-//	
-//	
-
-//	public static final int SHOUT_VOTE_UP = 1;
-//	public static final int SHOUT_VOTE_DOWN = -1;	
-//	
-
-//	
-//	public static final double NORMAL_DIST_B[] = { 1.570796288, 0.03706987906, -0.8364353589e-3, -0.2250947176e-3,
-//			0.6841218299e-5, 0.5824238515e-5, -0.104527497e-5, 0.8360937017e-7, -0.3231081277e-8, 0.3657763036e-10,
-//			0.6936233982e-12 };
-//
-
-
-//	
-
-//	public static final String PREF_APP_ON_OFF_STATUS = "pref_app_on_off_status";
-//
-//	// DATABASE //////////////////////////////////////////////////////////////
-//
-
-
-//
-//	
-//	
-//	
-//	public static final String KEY_USER_POINTS = "user_points";
-//	
-//	
-//	// POINTS TYPES ///////////////////////////////////////////////////////////
-//	
-//	public static final int POINTS_SHOUT = 0;
-
-
-
-//	public static final int STATE_LEVEL_CHANGE = 34;
-
+	// 80 - 89
+	public static final int ACTIVITY_RESULT_LOCATION = 80;
+	
+	// NOTIFICATIONS //////////////////////////////////////////////////////////
+	// 90 - 99
+	public static final String NOTIFICATION_REFERRAL_ID = "NOTIFICATION_REFERRAL_ID";
+	public static final int APP_NOTIFICATION_ID = 90;
+	public static final String EXTRA_REFERRED_FROM_NOTIFICATION = "rfn";
+	public static final String NOTIFICATION_LAUNCHED_FROM_UI = "app_launched_from_ui";
+	public static final String NOTIFICATION_LAUNCHED_FROM_ALARM = "app_launched_from_alarm";
+	public static final String NOTIFICATION_LAUNCHED_FROM_NOTIFICATION = "app_launched_from_notification";
 
 }

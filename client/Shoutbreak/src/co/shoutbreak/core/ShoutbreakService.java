@@ -57,7 +57,7 @@ public class ShoutbreakService extends Service implements Colleague {
 			SBLog.e(TAG, "Service bundle must contain referral information");
 			_m.appLaunchedFromUI();
 		}
-		return START_STICKY;
+		return START_REDELIVER_INTENT;
 	}
 	
 	@Override

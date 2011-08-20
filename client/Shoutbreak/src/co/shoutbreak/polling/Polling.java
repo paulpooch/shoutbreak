@@ -101,7 +101,7 @@ public class Polling {
 						break;
 					}
 					case C.HTTP_DID_ERROR: {
-						_safeM.pingFailed(message);
+						_safeM.handlePingFailed(message);
 					}
 				}
 			}
@@ -147,7 +147,7 @@ public class Polling {
 		try {
 			if (xPacket.json.has(C.JSON_DENSITY)) {
 				double density = (double) xPacket.json.optDouble(C.JSON_DENSITY);
-				_safeM.densityChange(density);
+				_safeM.handleDensityChange(density);
 			}
 			if (xPacket.json.has(C.JSON_SHOUTS)) {
 				JSONArray shouts = xPacket.json.getJSONArray(C.JSON_SHOUTS);
@@ -155,11 +155,11 @@ public class Polling {
 			}
 			if (xPacket.json.has(C.JSON_SCORES)) {
 				JSONArray scores = xPacket.json.getJSONArray(C.JSON_SCORES);
-				_safeM.scoresReceived(scores);
+				_safeM.handleScoresReceived(scores);
 			}
 			if (xPacket.json.has(C.JSON_LEVEL_CHANGE)) {
 				JSONObject levelInfo = xPacket.json.getJSONObject(C.JSON_LEVEL_CHANGE);
-				_safeM.levelUp(levelInfo);
+				_safeM.handleLevelUp(levelInfo);
 			}
 			if (xPacket.purpose == C.PURPOSE_LOOP_FROM_UI) {
 				xPacket.purpose = C.PURPOSE_LOOP_FROM_UI_DELAYED;
@@ -176,14 +176,14 @@ public class Polling {
 			public void handleMessage(Message message) {
 				switch (message.what) {
 					case C.HTTP_DID_SUCCEED: {
-						_safeM.shoutSent();
+						_safeM.handleShoutSent();
 						// Unless shout occurs in idle thread, we don't need to sendMessage.
 						//CrossThreadPacket xPacket = (CrossThreadPacket)message.obj;
 						//_uiThreadHandler.sendMessage(Message.obtain(_uiThreadHandler, C.STATE_IDLE, xPacket)); // STATE doesn't matter - going to die
 						break;
 					}
 					case C.HTTP_DID_ERROR: {
-						_safeM.shoutFailed(message);
+						_safeM.handleShoutFailed(message);
 					}
 				}
 			}
@@ -210,14 +210,14 @@ public class Polling {
 			public void handleMessage(Message message) {
 				switch (message.what) {
 					case C.HTTP_DID_SUCCEED: {
-						_safeM.voteFinish(shoutId, vote);
+						_safeM.handleVoteFinish(shoutId, vote);
 						// Unless vote occurs in idle thread, we don't need to sendMessage.
 						//CrossThreadPacket xPacket = (CrossThreadPacket)message.obj;
 						//_uiThreadHandler.sendMessage(Message.obtain(_uiThreadHandler, C.STATE_IDLE, xPacket)); // STATE doesn't matter - going to die
 						break;
 					}
 					case C.HTTP_DID_ERROR: {
-						_safeM.voteFailed(message, shoutId, vote);
+						_safeM.handleVoteFailed(message, shoutId, vote);
 					}
 				}
 			}
@@ -261,7 +261,7 @@ public class Polling {
 							CrossThreadPacket xPacket = (CrossThreadPacket)message.obj;
 							String password = xPacket.json.getString(C.JSON_PW);
 							String uid = xPacket.sArgs[0];
-							_safeM.accountCreated(uid, password);
+							_safeM.handleAccountCreated(uid, password);
 							_uiThreadHandler.sendMessage(Message.obtain(_uiThreadHandler, C.STATE_IDLE, xPacket));
 						} catch (JSONException ex) {
 							ErrorManager.manage(ex);

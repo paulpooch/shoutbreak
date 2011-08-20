@@ -5,19 +5,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import co.shoutbreak.R;
-import co.shoutbreak.core.C;
-import co.shoutbreak.core.Colleague;
-import co.shoutbreak.core.Mediator;
-import co.shoutbreak.core.Shout;
-import co.shoutbreak.core.utils.ErrorManager;
-import co.shoutbreak.core.utils.ISO8601DateParser;
-import co.shoutbreak.core.utils.SBLog;
-import co.shoutbreak.ui.Shoutbreak;
-
-import com.ocpsoft.pretty.time.PrettyTime;
-
-import android.content.Context;
 import android.graphics.Typeface;
 import android.graphics.PorterDuff.Mode;
 import android.os.AsyncTask;
@@ -29,13 +16,23 @@ import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import co.shoutbreak.R;
+import co.shoutbreak.core.C;
+import co.shoutbreak.core.Colleague;
+import co.shoutbreak.core.Mediator;
+import co.shoutbreak.core.Shout;
+import co.shoutbreak.core.utils.ErrorManager;
+import co.shoutbreak.core.utils.ISO8601DateParser;
+import co.shoutbreak.core.utils.SBLog;
+
+import com.ocpsoft.pretty.time.PrettyTime;
 
 
 public class InboxListViewAdapter extends BaseAdapter implements Colleague {
 	
 	private static final String TAG = "InboxListViewAdapter";
 	
-    private Mediator _m;
+	private Mediator _m;
     private List<Shout> _displayedShouts;
     private LayoutInflater _inflater;
     private PrettyTime _prettyTime;
@@ -48,34 +45,12 @@ public class InboxListViewAdapter extends BaseAdapter implements Colleague {
     private HashMap<String, Integer> _cacheVoteTemporary;
     private boolean _isInputAllowed;
     
-    public HashMap<String, Boolean> getCacheExpandState() {
-    	return _cacheExpandState;
-    }
+    public InboxListViewAdapter(Mediator mediator, LayoutInflater inflater) {
         
-    private class VoteTask extends AsyncTask<Object, Void, Void> {    	
-    	// TODO: why is this an async task? all it does is fire off
-    	// a message that gets handled by a separate thread
-    	@Override
-		protected Void doInBackground(Object... params) {
-			InboxViewHolder holder = (InboxViewHolder)params[0];
-			Integer voteDirection = (Integer)params[1];
-    		_cacheVoteTemporary.put(holder.shoutId, voteDirection);
-        	_m.voteStart(holder.shoutId, voteDirection);
-			return null;
-		}
-        protected void onPostExecute(Void unused) {
-        }
-    }
-    
-    public void undoVote(String shoutId, int vote) {
-    	_cacheVoteTemporary.remove(shoutId);
-    }
-    
-    public InboxListViewAdapter(Shoutbreak ui, Mediator mediator) {
     	_m = mediator;
-        _displayedShouts = new ArrayList<Shout>();
+        _inflater = inflater;
+    	_displayedShouts = new ArrayList<Shout>();
         _prettyTime = new PrettyTime();
-        _inflater = (LayoutInflater) ui.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         _cacheExpandState = new HashMap<String, Boolean>();
         _cachePrettyTimeAgo = new HashMap<String, String>();
         _cacheVoteTemporary = new HashMap<String, Integer>();
@@ -124,25 +99,43 @@ public class InboxListViewAdapter extends BaseAdapter implements Colleague {
         };
         
     }
-
+    
 	@Override
 	public void unsetMediator() {
-		SBLog.i(TAG, "unsetMediator()");
-		_m = null;	
-	}	
+		_m = null;		
+	}
+	
+    public HashMap<String, Boolean> getCacheExpandState() {
+    	return _cacheExpandState;
+    }
+        
+    private class VoteTask extends AsyncTask<Object, Void, Void> {    	
+    	// TODO: why is this an async task? all it does is fire off
+    	// a message that gets handled by a separate thread
+    	@Override
+		protected Void doInBackground(Object... params) {
+			InboxViewHolder holder = (InboxViewHolder)params[0];
+			Integer voteDirection = (Integer)params[1];
+    		_cacheVoteTemporary.put(holder.shoutId, voteDirection);
+        	_m.handeVoteStart(holder.shoutId, voteDirection);
+			return null;
+		}
+        protected void onPostExecute(Void unused) {
+        }
+    }
     
+    public void undoVote(String shoutId, int vote) {
+    	_cacheVoteTemporary.remove(shoutId);
+    }
+
 	public void refresh(List<Shout> shouts) {
-		updateDisplay(shouts);
+    	_displayedShouts = shouts;
+    	this.notifyDataSetChanged();
 	}
     
     public void setInputAllowed(boolean b) {
     	_isInputAllowed = b;
     	notifyDataSetChanged();
-    }
-    
-    public void updateDisplay(List<Shout> list) {
-    	_displayedShouts = list;
-    	this.notifyDataSetChanged();
     }
     
     public int getCount() {
@@ -281,5 +274,5 @@ public class InboxListViewAdapter extends BaseAdapter implements Colleague {
 		
 		return convertView;
     }
-    
+
 }

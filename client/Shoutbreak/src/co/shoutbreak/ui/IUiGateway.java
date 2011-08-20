@@ -1,9 +1,7 @@
 package co.shoutbreak.ui;
 
-import java.util.List;
-
 import android.widget.AdapterView.OnItemClickListener;
-import co.shoutbreak.core.Shout;
+import co.shoutbreak.storage.inbox.InboxListViewAdapter;
 import co.shoutbreak.storage.noticetab.NoticeTabListViewAdapter;
 
 public interface IUiGateway {
@@ -15,8 +13,6 @@ public interface IUiGateway {
 	public void handleCreateAccountFailed();
 	public void handleShoutSent();
 	public void handleShoutFailed();
-	public void handleVoteFailed(String shoutId, int vote);
-	public void handleShoutsReceived(List<Shout> inboxContent, int newShouts);
 	public void handleDensityChange(double newDensity, int level);
 	public void handleLevelUp(double cellDensity, int newLevel);
 	public void handlePointsChange(int newPoints);
@@ -27,7 +23,6 @@ public interface IUiGateway {
 	///////////////////////////////////////////////////////////////////////////		
 	
 	public void refreshUiComponents();
-	public void refreshInbox(List<Shout> inboxContent);
 	public void refreshProfile(int level, int points, int nextLevelAt);
 	public void enableInputs();
 	public void disableInputs();
@@ -43,6 +38,7 @@ public interface IUiGateway {
 	public void onPowerPreferenceEnabled();
 	public void onPowerPreferenceDisabled();
 	public void setupNoticeTabListView(NoticeTabListViewAdapter listAdapter, boolean itemsCanFocus, OnItemClickListener listViewItemClickListener);	
+	public void setupInboxListView(InboxListViewAdapter listAdapter, boolean itemsCanFocus, OnItemClickListener inboxItemClickListener);
 	public void showTopNotice();
 	
 }

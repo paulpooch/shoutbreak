@@ -1,24 +1,5 @@
 package co.shoutbreak.ui;
 
-import com.google.android.maps.GeoPoint;
-import com.google.android.maps.MapActivity;
-import com.google.android.maps.MapController;
-
-import co.shoutbreak.R;
-import co.shoutbreak.core.C;
-import co.shoutbreak.core.Colleague;
-import co.shoutbreak.core.Mediator;
-import co.shoutbreak.core.ServiceBridgeInterface;
-import co.shoutbreak.core.Shout;
-import co.shoutbreak.core.ShoutbreakService;
-import co.shoutbreak.core.utils.DialogBuilder;
-import co.shoutbreak.core.utils.Flag;
-import co.shoutbreak.core.utils.SBLog;
-import co.shoutbreak.storage.inbox.InboxListViewAdapter;
-import co.shoutbreak.storage.inbox.InboxViewHolder;
-import co.shoutbreak.storage.noticetab.NoticeTabListViewAdapter;
-import co.shoutbreak.storage.noticetab.NoticeTabView;
-
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -36,7 +17,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -44,6 +24,20 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+import co.shoutbreak.R;
+import co.shoutbreak.core.C;
+import co.shoutbreak.core.Colleague;
+import co.shoutbreak.core.Mediator;
+import co.shoutbreak.core.ServiceBridgeInterface;
+import co.shoutbreak.core.ShoutbreakService;
+import co.shoutbreak.core.utils.DialogBuilder;
+import co.shoutbreak.core.utils.Flag;
+import co.shoutbreak.core.utils.SBLog;
+import co.shoutbreak.storage.noticetab.NoticeTabView;
+
+import com.google.android.maps.GeoPoint;
+import com.google.android.maps.MapActivity;
+import com.google.android.maps.MapController;
 
 public class Shoutbreak extends MapActivity implements Colleague {
 	
@@ -53,8 +47,6 @@ public class Shoutbreak extends MapActivity implements Colleague {
 	private Intent _serviceIntent;
 	private ServiceBridgeInterface _serviceBridge;
 	
-	public InboxListViewAdapter inboxListViewAdapter;
-	public NoticeTabListViewAdapter noticeListViewAdapter;
 	public ProfileViewAdapter profileViewAdapter;
 	public NoticeTabView noticeTab;
 	public UserLocationOverlay overlay;
@@ -66,6 +58,7 @@ public class Shoutbreak extends MapActivity implements Colleague {
 	public TextView noticeTabShoutsTv;
 	public TextView noticeTabPointsTv;	
 	public ListView noticeTabListView;
+	public ListView inboxListView;
 	
 	private ImageButton _powerBtn;
 	private ImageButton _composeTabBtn;
@@ -78,8 +71,6 @@ public class Shoutbreak extends MapActivity implements Colleague {
 	private LinearLayout _inboxViewLl;
 	private LinearLayout _profileViewLl;
 	private CustomMapView _map;
-	private ListView _inboxListView;
-
 		
 	private Flag _isComposeShowing = new Flag("ui:_isComposeShowing");
 	private Flag _isInboxShowing = new Flag("ui:_isInboxShowing");
@@ -95,41 +86,40 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		super.onCreate(extras);
 		setContentView(R.layout.main);
 
-		// register button listeners
-		_composeTabBtn = (ImageButton) findViewById(R.id.composeTabBtn);
-		_composeTabBtn.setOnClickListener(_composeTabListener);
-		_inboxTabBtn = (ImageButton) findViewById(R.id.inboxTabBtn);
-		_inboxTabBtn.setOnClickListener(_inboxTabListener);
-		_profileTabBtn = (ImageButton) findViewById(R.id.profileTabBtn);
-		_profileTabBtn.setOnClickListener(_profileTabListener);
-		_powerBtn = (ImageButton) findViewById(R.id.powerBtn);
-		_powerBtn.setOnClickListener(_powerButtonListener);
 		shoutBtn = (ImageButton) findViewById(R.id.shoutBtn);
-		shoutBtn.setOnClickListener(_shoutButtonListener);
 		shoutInputEt = (EditText) findViewById(R.id.shoutInputEt);
-		_inboxListView = (ListView) findViewById(R.id.inboxLv);
+		inboxListView = (ListView) findViewById(R.id.inboxLv);
 		noticeTabListView = (ListView) findViewById(R.id.noticeLv);
 		noticeTab = (NoticeTabView) findViewById(R.id.noticeTab);
-		_splashLl = (LinearLayout) findViewById(R.id.splashLl);
-		_composeViewLl = (LinearLayout) findViewById(R.id.composeViewLl);
-		_inboxViewLl = (LinearLayout) findViewById(R.id.inboxViewLl);
-		_profileViewLl = (LinearLayout) findViewById(R.id.profileViewLl);
 		noticeTabShoutsIv = (ImageView) findViewById(R.id.noticeTabShoutsIv);
 		noticeTabPointsIv = (ImageView) findViewById(R.id.noticeTabPointsIv);
 		noticeTabShoutsTv = (TextView) findViewById(R.id.noticeTabShoutsTv);
 		noticeTabPointsTv = (TextView) findViewById(R.id.noticeTabPointsTv);
 		
+		_composeTabBtn = (ImageButton) findViewById(R.id.composeTabBtn);
+		_inboxTabBtn = (ImageButton) findViewById(R.id.inboxTabBtn);
+		_profileTabBtn = (ImageButton) findViewById(R.id.profileTabBtn);
+		_powerBtn = (ImageButton) findViewById(R.id.powerBtn);
+		_splashLl = (LinearLayout) findViewById(R.id.splashLl);
+		_composeViewLl = (LinearLayout) findViewById(R.id.composeViewLl);
+		_inboxViewLl = (LinearLayout) findViewById(R.id.inboxViewLl);
+		_profileViewLl = (LinearLayout) findViewById(R.id.profileViewLl);
+		_enableLocationBtn = (ImageButton) findViewById(R.id.enableLocationBtn);
+		_turnOnBtn = (ImageButton) findViewById(R.id.turnOnBtn);
+		_map = (CustomMapView) findViewById(R.id.mapCmv);
+		
+		shoutBtn.setOnClickListener(_shoutButtonListener);
+		_composeTabBtn.setOnClickListener(_composeTabListener);
+		_inboxTabBtn.setOnClickListener(_inboxTabListener);
+		_profileTabBtn.setOnClickListener(_profileTabListener);
+		_powerBtn.setOnClickListener(_powerButtonListener);
+		_enableLocationBtn.setOnClickListener(_enableLocationListener);
+		_turnOnBtn.setOnClickListener(_turnOnListener);
+		
 		noticeTabShoutsIv.setVisibility(View.INVISIBLE);
 		noticeTabPointsIv.setVisibility(View.INVISIBLE);
 		noticeTabShoutsTv.setVisibility(View.INVISIBLE);
 		noticeTabPointsTv.setVisibility(View.INVISIBLE);
-		
-		_enableLocationBtn = (ImageButton) findViewById(R.id.enableLocationBtn);
-		_enableLocationBtn.setOnClickListener(_enableLocationListener);
-		
-		_turnOnBtn = (ImageButton) findViewById(R.id.turnOnBtn);
-		_turnOnBtn.setOnClickListener(_turnOnListener);
-		_map = (CustomMapView) findViewById(R.id.mapCmv);
 		
 		// bind to service, initializes mediator
 		_serviceIntent = new Intent(Shoutbreak.this, ShoutbreakService.class);
@@ -172,26 +162,7 @@ public class Shoutbreak extends MapActivity implements Colleague {
 			
 			profileViewAdapter = new ProfileViewAdapter(Shoutbreak.this);
 			
-			refreshFlags();
-			
-			inboxListViewAdapter = new InboxListViewAdapter(Shoutbreak.this, _m);
-			_inboxListView.setAdapter(inboxListViewAdapter);
-			_inboxListView.setItemsCanFocus(false);
-			_inboxListView.setOnItemClickListener(new ListView.OnItemClickListener() {
-				public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
-					InboxViewHolder holder = (InboxViewHolder) view.getTag();
-					String shoutId = holder.shoutId;
-					holder.collapsed.setVisibility(View.GONE);
-					holder.expanded.setVisibility(View.VISIBLE);
-					Shout shout = (Shout) inboxListViewAdapter.getItem(position);
-					if (shout.state_flag == C.SHOUT_STATE_NEW) {
-						_m.inboxNewShoutSelected(shout);
-						inboxListViewAdapter.notifyDataSetChanged();
-					}
-					inboxListViewAdapter.getCacheExpandState().put(shoutId, true);
-				}
-			});
-			
+			refreshFlags();			
 			_m.refreshUiComponents();
 			
 			hideSplash();
@@ -597,7 +568,7 @@ public class Shoutbreak extends MapActivity implements Colleague {
 						.getDrawable();
 				shoutButtonAnimation.start();
 
-				_m.shoutStart(text.toString(), overlay.getCurrentPower());
+				_m.handleShoutStart(text.toString(), overlay.getCurrentPower());
 				hideKeyboard();
 			}
 		}

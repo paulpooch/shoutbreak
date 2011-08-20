@@ -1,7 +1,6 @@
 package co.shoutbreak.storage;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -10,9 +9,8 @@ import org.json.JSONObject;
 import co.shoutbreak.core.C;
 import co.shoutbreak.core.Colleague;
 import co.shoutbreak.core.Mediator;
-import co.shoutbreak.core.Shout;
 import co.shoutbreak.core.utils.SBLog;
-import co.shoutbreak.storage.inbox.Inbox;
+import co.shoutbreak.storage.inbox.InboxSystem;
 import co.shoutbreak.storage.noticetab.NoticeTabSystem;
 
 public class Storage implements Colleague {
@@ -22,14 +20,14 @@ public class Storage implements Colleague {
 	private Mediator _m;
 	private Database _db;
 	private User _user;
-	private Inbox _inbox;
+	private InboxSystem _inboxSystem;
 	private NoticeTabSystem _noticeTabSystem;
 	
 	public Storage(Mediator mediator, Database db) {
 		_m = mediator;
 		_db = db;
 		_user = new User(_db);
-		_inbox = new Inbox(_db);	
+		_inboxSystem = new InboxSystem(_m, _db);	
 		_noticeTabSystem = new NoticeTabSystem(_m, _db);
 	}
 
@@ -39,15 +37,15 @@ public class Storage implements Colleague {
 		_m = null;
 		_db = null;
 		_user = null;
-		_inbox = null;
+		_inboxSystem = null;
 	}
 	
 	///////////////////////////////////////////////////////////////////////////
 	// HANDLE STUFF ///////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////
 	
-	public void handlePointsChange(int additonalPoints) {
-		 _user.savePoints(additonalPoints);		
+	public void handlePointsChange(int pointsType, int pointsValue) {
+		 _user.savePoints(pointsType, pointsValue);		
 	}
 	
 	public void handleDensityChange(double density, CellDensity currentCell) {
@@ -69,26 +67,23 @@ public class Storage implements Colleague {
 		_noticeTabSystem.createNotice(C.NOTICE_SHOUT_SENT, 0, C.STRING_SHOUT_SENT, null);	
 	}
 	
-	public void handleInboxNewShoutSelected(Shout shout) {
-		_inbox.markShoutAsRead(shout.id);
-	}
-	
 	public void handleScoresReceived(JSONArray scores) {
 		for (int i = 0; i < scores.length(); i++) {
 			try {
 				JSONObject jsonScore = scores.getJSONObject(i);
-				updateScore(jsonScore);
+				_inboxSystem.updateScore(jsonScore);
 			} catch (JSONException e) {
 				SBLog.e(TAG, e.getMessage());
 			}
 		}
+		_inboxSystem.refresh();
 	}
 	
 	public void handleShoutsReceived(JSONArray shouts) {
 		for (int i = 0; i < shouts.length(); i++) {
 			try {
 				JSONObject jsonShout = shouts.getJSONObject(i);
-				_inbox.addShout(jsonShout);
+				_inboxSystem.addShout(jsonShout);
 			} catch (JSONException e) {
 				SBLog.e(TAG, e.getMessage());
 			}
@@ -96,18 +91,22 @@ public class Storage implements Colleague {
 		int count = shouts.length();
 		String pluralShout = "shout" + (count > 1 ? "s" : "");
 		String notice = "Just heard " + count + " new " + pluralShout + ".";
-		_noticeTabSystem.createNotice(C.NOTICE_SHOUTS_RECEIVED, count, notice, null);		
+		_noticeTabSystem.createNotice(C.NOTICE_SHOUTS_RECEIVED, count, notice, null);
+		_inboxSystem.refresh();
 	}
 	
 	public void handleVoteFinish(String shoutId, int vote) {
-		_inbox.reflectVote(shoutId, vote);
+		_inboxSystem.reflectVote(shoutId, vote);
+		_user.savePoints(C.POINTS_VOTE, User.calculatePointsForVote(this.getUserLevel()));
+		_noticeTabSystem.createNotice(C.NOTICE_POINTS, User.calculatePointsForVote(this.getUserLevel()), "You gained " + User.calculatePointsForVote(this.getUserLevel()) + " points for voting.", shoutId);
 	}
 	
 	public void handleShoutFailed() {
 		_noticeTabSystem.createNotice(C.NOTICE_SHOUT_FAILED, 0, C.STRING_SHOUT_FAILED, null);
 	}
 		
-	public void handleVoteFailed(int vote, String shoutId) {
+	public void handleVoteFailed(String shoutId, int vote) {
+		_inboxSystem.undoVote(shoutId, vote);
 		_noticeTabSystem.createNotice(C.NOTICE_VOTE_FAILED, vote, C.STRING_VOTE_FAILED, shoutId);
 	}
 	
@@ -123,37 +122,13 @@ public class Storage implements Colleague {
 	///////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////
 	
-	public boolean deleteShout(String shoutID) {
-		return _inbox.deleteShout(shoutID);
-	}
-
-	public List<Shout> getShoutsForUI() {
-		return _inbox.getShoutsForUI();
-	}
-	
-	public void updateScore(JSONObject jsonScore) {
-		Shout shout = new Shout();
-		shout.id = jsonScore.optString(C.JSON_SHOUT_ID);
-		shout.ups = jsonScore.optInt(C.JSON_SHOUT_UPS, C.NULL_UPS);
-		shout.downs = jsonScore.optInt(C.JSON_SHOUT_DOWNS, C.NULL_DOWNS);
-		shout.hit = jsonScore.optInt(C.JSON_SHOUT_HIT, C.NULL_HIT);
-		shout.pts = C.NULL_PTS;
-		shout.approval = jsonScore.optInt(C.JSON_SHOUT_APPROVAL, C.NULL_APPROVAL);
-		shout.open = jsonScore.optInt(C.JSON_SHOUT_OPEN, 0) == 1 ? true : C.NULL_OPEN;
-		_inbox.updateScore(shout);
-		
-		// If the shout is closed, we checked if it's in our outbox.
-		// If it is, we need to save the points.
-		if (!shout.open){
-			Shout shoutFromDB = _inbox.getShout(shout.id);
-			if (shoutFromDB.is_outbox) {
-				_m.pointsChange(shout.pts);								
-			}
-		}
+	public void deleteShout(String shoutID) {
+		_inboxSystem.deleteShout(shoutID);
+		_inboxSystem.refresh();
 	}
 	
 	public ArrayList<String> getOpenShoutIds() {
-		return _inbox.getOpenShoutIDs();
+		return _inboxSystem.getOpenShoutIDs();
 	}
 	
 	public int getUserPoints() {
@@ -169,7 +144,10 @@ public class Storage implements Colleague {
 	}
 	
 	public void initializeDensity(CellDensity currentCell) {
-		_user.initializeDensity(currentCell);
+		CellDensity cellDensity = _user.getInitialDensity(currentCell);
+		if (cellDensity.isSet) {
+			_m.getUiGateway().handleDensityChange(cellDensity.density, this.getUserLevel());
+		}
 	}
 	
 	public CellDensity getCellDensity(CellDensity currentCell) {
@@ -193,19 +171,29 @@ public class Storage implements Colleague {
 	}	
 	
 	public ArrayList<String> getOpenShoutIDs() {
-		return _inbox.getOpenShoutIDs();
+		return _inboxSystem.getOpenShoutIDs();
 	}
 	
 	public void updateAuth(String nonce) {
 		_user.updateAuth(nonce);
 	}
 
-	public void refreshNoticeTab() {
+	public void refreshUiComponents() {
+		_inboxSystem.refresh();
 		_noticeTabSystem.refresh();
 	}
 
-	public void initializeNoticeTabSystem() {
+	public void initializeUiComponents() {
+		_inboxSystem.initialize();
 		_noticeTabSystem.initialize();		
+	}
+
+	public void enableInputs() {
+		_inboxSystem.enableInputs();
+	}
+
+	public void disableInputs() {
+		_inboxSystem.disableInputs();
 	}
 	
 }

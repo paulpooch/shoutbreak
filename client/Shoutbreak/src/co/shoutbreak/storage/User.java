@@ -67,6 +67,11 @@ public class User {
 		return (int)Math.ceil((float)people / (float)C.CONFIG_PEOPLE_PER_LEVEL);
 	}
 	
+	public static int calculatePointsForVote(int userLevel) {
+		// TODO: This may change to scale for level.
+		return 1;
+	}
+	
 	// NON-WRITE METHODS //////////////////////////////////////////////////////
 	
 	public int getPoints() {
@@ -97,8 +102,9 @@ public class User {
 		return _nextLevelAt;
 	}
 	
-	public void initializeDensity(CellDensity currentCell) {
+	public CellDensity getInitialDensity(CellDensity currentCell) {
 		_cellDensity = getCellDensity(currentCell);
+		return _cellDensity;
 	}
 	
 	public CellDensity getDensityAtCell(CellDensity cell) {
@@ -131,12 +137,12 @@ public class User {
 			
 	// SYNCHRONIZED WRITE METHODS /////////////////////////////////////////////
 	
-	public synchronized void savePoints(int amount) {
-		savePoints(C.POINTS_SHOUT, amount);
-		_points += amount;
+	public synchronized void savePoints(int pointsType, int pointsValue) {
+		this.storePoints(C.POINTS_SHOUT, pointsValue);
+		_points += pointsValue;
 	}
 	
-	public synchronized Long savePoints(int pointsType, int pointsValue) {
+	private synchronized Long storePoints(int pointsType, int pointsValue) {
 		SBLog.i(TAG, "savePoints()");
 		String sql = "INSERT INTO " + C.DB_TABLE_POINTS + " (type, value, timestamp) VALUES (?, ?, ?)";
 		SQLiteStatement insert = this._db.compileStatement(sql);
@@ -151,7 +157,7 @@ public class User {
 			insert.close();
 		}
 		return 0l;
-	}
+	}	
 	
 	public synchronized void saveDensity(double density, CellDensity tempCellDensity) {
 		_cellDensity.cellX = tempCellDensity.cellX;
@@ -307,6 +313,8 @@ public class User {
 		}
 		return points;	
 	}
+	
+
 	
 	public synchronized Long saveUserSetting(String key, String value) {
 		SBLog.i(TAG, "saveUserSetting()");

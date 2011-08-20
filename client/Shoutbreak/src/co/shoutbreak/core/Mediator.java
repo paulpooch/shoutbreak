@@ -3,7 +3,6 @@
 package co.shoutbreak.core;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -28,9 +27,11 @@ import co.shoutbreak.storage.DeviceInformation;
 import co.shoutbreak.storage.LocationTracker;
 import co.shoutbreak.storage.PreferenceManager;
 import co.shoutbreak.storage.Storage;
+import co.shoutbreak.storage.inbox.InboxListViewAdapter;
 import co.shoutbreak.storage.noticetab.NoticeTabListViewAdapter;
 import co.shoutbreak.ui.IUiGateway;
 import co.shoutbreak.ui.Shoutbreak;
+import co.shoutbreak.ui.UiOffGateway;
 
 public class Mediator {
 	
@@ -115,7 +116,8 @@ public class Mediator {
 		_isUIAlive.set(true);
 		ui.setMediator(this);	
 		_uiGateway = new UiOnGateway(ui);
-		_storage.initializeNoticeTabSystem();
+		_storage.initializeUiComponents();
+		
 	}
 	
 	public void unregisterUI(boolean forceKillUI) {
@@ -329,22 +331,9 @@ public class Mediator {
 		}
 	}
 	
-	public void shoutStart(String text, int power) {
-		SBLog.i(TAG, "shout()");
-		_threadLauncher.handleShoutStart(text, power);
-	}
-	
 	public Object getSystemService(String name) {
 		SBLog.i(TAG, "getSystemService()");
 		return _service.getSystemService(name);
-	}
-	
-	public void handlePollingResponse(Message message) {
-		SBLog.i(TAG, "handlePollingResponse()");
-		if (_isPollingAlive.get()) {
-			_threadLauncher.spawnNextPollingThread(message);
-		}
-		// Else polling thread dies.
 	}
 	
 	public CellDensity getCurrentCell() {
@@ -359,38 +348,51 @@ public class Mediator {
 	public void deleteShout(String shoutId) {
 		SBLog.i(TAG, "deleteShout()");
 		_storage.deleteShout(shoutId);
-		_uiGateway.refreshInbox(_storage.getShoutsForUI());
 	}
 	
-	public void launchPollingThread(Message message) {
-		SBLog.i(TAG, "launchPollingThread()");
-		_threadLauncher.launchPollingThread(message, false);
-	}
+	//public void launchPollingThread(Message message) {
+	//	SBLog.i(TAG, "launchPollingThread()");
+	//	_threadLauncher.launchPollingThread(message, false);
+	//}
 		
 	public ThreadSafeMediator getAThreadSafeMediator() {
 		SBLog.i(TAG, "getAThreadSafeMediator()");
 		return new ThreadSafeMediator();
 	}
 	
-	// EVENTS /////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////
+	// HANDLE STUFF ///////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////
 	
-	public void inboxNewShoutSelected(Shout shout) {
-		_storage.handleInboxNewShoutSelected(shout);
+	public void handlePollingResponse(Message message) {
+		SBLog.i(TAG, "handlePollingResponse()");
+		if (_isPollingAlive.get()) {
+			_threadLauncher.spawnNextPollingThread(message);
+		}
+		// Else polling thread dies.
 	}
-		
+	
+	public void handleShoutStart(String text, int power) {
+		SBLog.i(TAG, "shout()");
+		_threadLauncher.handleShoutStart(text, power);
+	}
+	
 	// Triggered from a Shout close.  Have user save earned points.
-	public void pointsChange(int additionalPoints) {
+	public void handlePointsChange(int pointsType, int pointsValue) {
 		SBLog.i(TAG, "pointsChange()");
-		_storage.handlePointsChange(additionalPoints);
+		_storage.handlePointsChange(pointsType, pointsValue);
 		_uiGateway.handlePointsChange(_storage.getUserPoints());
 	}
 	
-	public void voteStart(String shoutId, int vote) {
+	public void handeVoteStart(String shoutId, int vote) {
 		SBLog.i(TAG, "voteStart()");
 		_threadLauncher.handleVoteStart(shoutId, vote);
 	}
 	
-
+	///////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////
+		
 	public void refreshUiComponents() {
 		_uiGateway.refreshUiComponents();
 	}
@@ -424,32 +426,25 @@ public class Mediator {
 		
 		public void handleShoutsReceived(JSONArray shouts) {
 			SBLog.i(TAG, "shoutsReceived()");
-			_storage.handleShoutsReceived(shouts);
-			if (_isUIAlive.get()) {
-				_uiGateway.handleShoutsReceived(_storage.getShoutsForUI(), shouts.length());
-			} else {
+			_storage.handleShoutsReceived(shouts);			
+			if (!_isUIAlive.get()) {
 				_notifier.handleShoutsReceived(shouts.length());				
 			}
 		}
 		
-		///////////////////////////////////////////////////////////////////////////
-		///////////////////////////////////////////////////////////////////////////
-		///////////////////////////////////////////////////////////////////////////
-		
-		public void densityChange(double density) {
+		public void handleDensityChange(double density) {
 			SBLog.i(TAG, "densityChange()");
 			// Note: The order in these matters.
 			_storage.handleDensityChange(density, getCurrentCell());
 			_uiGateway.handleDensityChange(density, _storage.getUserLevel());
 		}
 		
-		public void scoresReceived(JSONArray scores) {
+		public void handleScoresReceived(JSONArray scores) {
 			SBLog.i(TAG, "scoresReceived()");
 			_storage.handleScoresReceived(scores);
-			_uiGateway.refreshInbox(_storage.getShoutsForUI());
 		}
-			
-		public void levelUp(JSONObject levelInfo) {
+		
+		public void handleLevelUp(JSONObject levelInfo) {
 			try {
 				int newLevel = (int) levelInfo.getLong(C.JSON_LEVEL);
 				int newPoints = (int) levelInfo.getLong(C.JSON_POINTS);
@@ -463,38 +458,37 @@ public class Mediator {
 			SBLog.i(TAG, "levelUp()");
 		}
 		
-		public void shoutSent() {
+		public void handleShoutSent() {
 			SBLog.i(TAG, "shoutSent()");
 			_storage.handleShoutSent();
 			_uiGateway.handleShoutSent();
 		}
 		
-		public void shoutFailed(Message message) {
+		public void handleShoutFailed(Message message) {
 			_storage.handleShoutFailed();
 			_uiGateway.handleShoutFailed();
 			possiblyStopPolling(message);
 		}
 		
-		public void voteFinish(String shoutId, int vote) {
+
+		public void handleVoteFinish(String shoutId, int vote) {
 			SBLog.i(TAG, "voteFinish()");
 			_storage.handleVoteFinish(shoutId, vote);
 		}
 		
-		public void voteFailed(Message message, String shoutId, int vote) {
-			_storage.handleVoteFailed(vote, shoutId);
-			_uiGateway.handleVoteFailed(shoutId, vote);
+		public void handleVoteFailed(Message message, String shoutId, int vote) {
+			_storage.handleVoteFailed(shoutId, vote);
 			_uiGateway.handleServerFailure();
 			possiblyStopPolling(message);
 		}
 		
-		public void accountCreated(String uid, String password) {
+		public void handleAccountCreated(String uid, String password) {
 			SBLog.i(TAG, "accountCreated()");
-
 			_storage.handleAccountCreated(uid, password);
 			// Maybe we should do something in the UI?
 		}
 		
-		public void pingFailed(Message message) {
+		public void handlePingFailed(Message message) {
 			// This has proven to be really damn annoying since every once in a while network access dissappears.
 			// Users will think our app sucks.
 			// For now let's just ignore ping failure.
@@ -503,6 +497,10 @@ public class Mediator {
 			possiblyStopPolling(message);
 		}
 		
+		///////////////////////////////////////////////////////////////////////////
+		///////////////////////////////////////////////////////////////////////////
+		///////////////////////////////////////////////////////////////////////////
+			
 		public boolean userHasAccount() {
 			SBLog.i(TAG, "userHasAccount()");
 			return _storage.getUserHasAccount();
@@ -551,11 +549,6 @@ public class Mediator {
 		public void updateAuth(String nonce) {
 			SBLog.i(TAG, "updateAuth()");
 			_storage.updateAuth(nonce);
-		}
-		
-		public void updateScore(JSONObject jsonScore) {
-			SBLog.i(TAG, "updateScore()");
-			_storage.updateScore(jsonScore);
 		}
 		
 		public final String getAndroidId() {
@@ -613,15 +606,6 @@ public class Mediator {
 			_ui.shoutBtn.setImageResource(R.drawable.shout_button_up);
 			this.handleServerFailure();
 		}
-
-		public void handleVoteFailed(String shoutId, int vote) {
-			_ui.inboxListViewAdapter.undoVote(shoutId, vote);
-		}
-		
-		public void handleShoutsReceived(List<Shout> inboxContent, int newShouts) {
-			SBLog.i(TAG, "handleShoutsReceived()");
-			_ui.inboxListViewAdapter.refresh(inboxContent);
-		}
 		
 		public void handleDensityChange(double newDensity, int level) {
 			SBLog.i(TAG, "handleDensityChange()");
@@ -649,14 +633,8 @@ public class Mediator {
 		
 		public void refreshUiComponents() {	
 			// TODO: make inbox & profile more like noticeTabSystem
-			_storage.refreshNoticeTab();
-			this.refreshInbox(_storage.getShoutsForUI());
+			_storage.refreshUiComponents();
 			this.refreshProfile(_storage.getUserLevel(), _storage.getUserPoints(), _storage.getUserNextLevelAt());
-		}
-		
-		public void refreshInbox(List<Shout> inboxContent) {
-			SBLog.i(TAG, "refreshInbox()");
-			_ui.inboxListViewAdapter.refresh(inboxContent);
 		}
 		
 		public void refreshProfile(int level, int points, int nextLevelAt) {
@@ -667,14 +645,14 @@ public class Mediator {
 		public void enableInputs() {
 			_ui.shoutBtn.setEnabled(true);
 			_ui.shoutInputEt.setEnabled(true);
-			_ui.inboxListViewAdapter.setInputAllowed(true);
+			_storage.enableInputs();
 		}
 		
 		
 		public void disableInputs() {
 			_ui.shoutBtn.setEnabled(false);
 			_ui.shoutInputEt.setEnabled(false);
-			_ui.inboxListViewAdapter.setInputAllowed(false);
+			_storage.disableInputs();
 		}
 
 		@Override
@@ -747,100 +725,23 @@ public class Mediator {
 			_ui.noticeTabListView.setItemsCanFocus(itemsCanFocus);
 			_ui.noticeTabListView.setOnItemClickListener(listViewItemClickListener);			
 		}
+		
+		@Override
+		public void setupInboxListView(InboxListViewAdapter listAdapter, boolean itemsCanFocus,
+				OnItemClickListener inboxItemClickListener) {
+			_ui.inboxListView.setAdapter(listAdapter);
+			_ui.inboxListView.setItemsCanFocus(itemsCanFocus);
+			_ui.inboxListView.setOnItemClickListener(inboxItemClickListener);		
+		}
 
 		@Override
 		public void showTopNotice() {
-			_ui.noticeTab.showOneLine();			
+			_ui.noticeTabListView.setSelection(0);
+			_ui.noticeTab.showOneLine();
 		}
-		
+
 	}
 	
-	private class UiOffGateway implements IUiGateway {
-
-		public UiOffGateway() {}
-		
-		@Override
-		public void disableInputs() {}
-
-		@Override
-		public void enableInputs() {}
-
-		@Override
-		public void handleCreateAccountFailed() {}
-
-		@Override
-		public void handleDensityChange(double newDensity, int level) {}
-
-		@Override
-		public void handleLevelUp(double cellDensity, int newLevel) {}
-
-		@Override
-		public void handlePointsChange(int newPoints) {}
-
-		@Override
-		public void handleServerFailure() {}
-
-		@Override
-		public void handleShoutFailed() {}
-
-		@Override
-		public void handleShoutSent() {}
-
-		@Override
-		public void handleShoutsReceived(List<Shout> inboxContent, int newShouts) {}
-
-		@Override
-		public void handleVoteFailed(String shoutId, int vote) {}
-
-		@Override
-		public void refreshInbox(List<Shout> inboxContent) {}
-
-		@Override
-		public void refreshProfile(int level, int points, int nextLevelAt) {}
-
-		@Override
-		public void refreshUiComponents() {}
-
-		@Override
-		public void finishUi() {}
-
-		@Override
-		public void onDataDisabled() {}
-
-		@Override
-		public void onDataEnabled() {}
-
-		@Override
-		public void onLocationDisabled() {}
-
-		@Override
-		public void onLocationEnabled() {}
-
-		@Override
-		public void onPowerPreferenceDisabled() {}
-
-		@Override
-		public void onPowerPreferenceEnabled() {}
-
-		@Override
-		public void unsetUiMediator() {}
-
-		@Override
-		public void clearNoticeTab() {}
-
-		@Override
-		public void showPointsNotice(String noticeText) {}
-
-		@Override
-		public void showShoutNotice(String noticeText) {}
-
-		@Override
-		public void setupNoticeTabListView(NoticeTabListViewAdapter listAdapter, boolean itemsCanFocus,
-				OnItemClickListener listViewItemClickListener) {}
-
-		@Override
-		public void showTopNotice() {}
-		
-	}
+	
 	
 }

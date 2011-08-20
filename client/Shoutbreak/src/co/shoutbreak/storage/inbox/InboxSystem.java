@@ -6,35 +6,75 @@ import java.util.List;
 
 import org.json.JSONObject;
 
+import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteStatement;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
 import co.shoutbreak.core.C;
+import co.shoutbreak.core.Mediator;
 import co.shoutbreak.core.Shout;
 import co.shoutbreak.core.utils.ErrorManager;
 import co.shoutbreak.core.utils.SBLog;
 import co.shoutbreak.storage.Database;
 
-public class Inbox {
+public class InboxSystem {
 	
 	private static final String TAG = "Inbox";
 	
+	private Mediator _m;
+	private InboxSystem _self;
 	private List<Shout> _shouts;
+	private InboxListViewAdapter _listAdapter;
+	private ListView.OnItemClickListener _listViewItemClickListener;
 	private Database _db;
 	
-	public Inbox(Database db) {
-		SBLog.i(TAG, "");
+	public InboxSystem(Mediator mediator, Database db) {
+		_m = mediator;
 		_db = db;
+		_self = this;
 		_shouts = new ArrayList<Shout>();
+		_listAdapter = new InboxListViewAdapter(_m, (LayoutInflater)_m.getSystemService(Context.LAYOUT_INFLATER_SERVICE));
+		_listViewItemClickListener = new ListView.OnItemClickListener() {
+			public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
+				InboxViewHolder holder = (InboxViewHolder) view.getTag();
+				String shoutId = holder.shoutId;
+				holder.collapsed.setVisibility(View.GONE);
+				holder.expanded.setVisibility(View.VISIBLE);
+				Shout shout = (Shout)_listAdapter.getItem(position);
+				if (shout.state_flag == C.SHOUT_STATE_NEW) {
+					_self.markShoutAsRead(shout.id);
+					_listAdapter.notifyDataSetChanged();
+				}
+				_listAdapter.getCacheExpandState().put(shoutId, true);
+			}
+		};
 	}
 	
 	// NON-WRITE METHODS //////////////////////////////////////////////////////
 	
-	public List<Shout> getShoutsForUI() {
+	public void initialize() {
+		_m.getUiGateway().setupInboxListView(_listAdapter, false, _listViewItemClickListener);
+	}
+	
+	public void refresh() {
+		// TODO Auto-generated method stub
+		_shouts = this.getShoutsForUI();
+		_listAdapter.refresh(_shouts);
+	}
+	
+	public void undoVote(String shoutId, int vote) {
+		_listAdapter.undoVote(shoutId, vote);
+	}
+	
+	private List<Shout> getShoutsForUI() {
 		SBLog.i(TAG, "getShoutsForUI");
 		return getShoutsForUI(0, 50);
 	}
 	
-	public List<Shout> getShoutsForUI(int start, int amount) {		
+	private List<Shout> getShoutsForUI(int start, int amount) {		
 		// Database 
 		SBLog.i(TAG, "getShoutsForUI()");
 		ArrayList<Shout> results = new ArrayList<Shout>();
@@ -94,7 +134,7 @@ public class Inbox {
 		addShoutToInbox(shout);
 	}
 	
-	public Shout getShout(String shoutID) {
+	private Shout getShout(String shoutID) {
 		SBLog.i(TAG, "getShout()");
 		String sql = "SELECT * FROM " + C.DB_TABLE_SHOUTS + " WHERE shout_id = ?";
 		Cursor cursor = null;
@@ -140,7 +180,52 @@ public class Inbox {
 		return result;
 	}
 	
+
+	
 	// SYNCHRONIZED WRITE METHODS /////////////////////////////////////////////
+	
+	private synchronized boolean markShoutAsRead(String shoutID) {
+		// Database
+		SBLog.i(TAG, "markShoutAsRead()");
+		boolean result = false;
+		SQLiteStatement update;
+		String sql = "UPDATE " + C.DB_TABLE_SHOUTS + " SET state_flag = ? WHERE shout_id = ?";
+		update = this._db.compileStatement(sql);
+		update.bindString(1, C.SHOUT_STATE_READ + "");
+		update.bindString(2, shoutID);
+		try {
+			update.execute();
+			result = true;
+		} catch (Exception ex) {
+			ErrorManager.manage(ex);
+		} finally {
+			update.close();
+		}
+		// Memory
+		refreshShout(shoutID);
+		return result;
+	}
+	
+	public synchronized void updateScore(JSONObject jsonScore) {
+		Shout shout = new Shout();
+		shout.id = jsonScore.optString(C.JSON_SHOUT_ID);
+		shout.ups = jsonScore.optInt(C.JSON_SHOUT_UPS, C.NULL_UPS);
+		shout.downs = jsonScore.optInt(C.JSON_SHOUT_DOWNS, C.NULL_DOWNS);
+		shout.hit = jsonScore.optInt(C.JSON_SHOUT_HIT, C.NULL_HIT);
+		shout.pts = C.NULL_PTS;
+		shout.approval = jsonScore.optInt(C.JSON_SHOUT_APPROVAL, C.NULL_APPROVAL);
+		shout.open = jsonScore.optInt(C.JSON_SHOUT_OPEN, 0) == 1 ? true : C.NULL_OPEN;
+		this.updateScore(shout);
+		
+		// If the shout is closed, we checked if it's in our outbox.
+		// If it is, we need to save the points.
+		if (!shout.open){
+			Shout shoutFromDB = this.getShout(shout.id);
+			if (shoutFromDB.is_outbox) {
+				_m.handlePointsChange(C.POINTS_SHOUT, shout.pts);								
+			}
+		}
+	}
 	
 	public synchronized boolean deleteShout(String shoutID) {
 		// Database
@@ -168,29 +253,7 @@ public class Inbox {
 		return result;
 	}
 	
-	public synchronized boolean markShoutAsRead(String shoutID) {
-		// Database
-		SBLog.i(TAG, "markShoutAsRead()");
-		boolean result = false;
-		SQLiteStatement update;
-		String sql = "UPDATE " + C.DB_TABLE_SHOUTS + " SET state_flag = ? WHERE shout_id = ?";
-		update = this._db.compileStatement(sql);
-		update.bindString(1, C.SHOUT_STATE_READ + "");
-		update.bindString(2, shoutID);
-		try {
-			update.execute();
-			result = true;
-		} catch (Exception ex) {
-			ErrorManager.manage(ex);
-		} finally {
-			update.close();
-		}
-		// Memory
-		refreshShout(shoutID);
-		return result;
-	}
-	
-	public synchronized Long addShoutToInbox(Shout shout) {
+	private synchronized Long addShoutToInbox(Shout shout) {
 		// Database
 		SBLog.i(TAG, "addShoutToInbox()");
 		// (shout_id TEXT, timestamp TEXT, time_received INTEGER, txt TEXT,
@@ -226,7 +289,7 @@ public class Inbox {
 		return 0l;
 	}
 	
-	public synchronized void refreshShout(String shoutId) {
+	private synchronized void refreshShout(String shoutId) {
 		for (Shout shout : _shouts) {
 			if (shout.id.equals(shoutId)) {
 				shout = getShout(shoutId);
@@ -234,11 +297,11 @@ public class Inbox {
 		}
 	}
 	
-	public synchronized void updateShoutsList(List<Shout> newList) {
+	private synchronized void updateShoutsList(List<Shout> newList) {
 		_shouts = newList;
 	}
 	
-	public synchronized boolean updateScore(Shout shout) {
+	private synchronized boolean updateScore(Shout shout) {
 		SBLog.i(TAG, "updateScore()");
 		boolean result = false;
 		SQLiteStatement update;
@@ -296,6 +359,15 @@ public class Inbox {
 		// Memory
 		refreshShout(shoutID);		
 		return result;
+	}
+
+	public void enableInputs() {
+		_listAdapter.setInputAllowed(true);
+		
+	}
+
+	public void disableInputs() {
+		_listAdapter.setInputAllowed(false);
 	}
 	
 }
