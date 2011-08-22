@@ -37,6 +37,7 @@ class App {
 		
 		$log->LogInfo("");
 		$tempLog = "";
+		$tempLog2 = "";
 		foreach($_POST as $var => $value) {
 			$tempLog .= $var . ' : ' . $value . ', ';
 		}
@@ -44,9 +45,13 @@ class App {
 		$_POST = Filter::sanitize($_POST);
 		$_POST = Filter::validate($_POST);
 		
+		foreach($_POST as $var => $value) {
+			$tempLog2 .= $var . ' : ' . $value . ', ';
+		}
+		
 		$a = empty($_POST['a']) ? null : $_POST['a'];
 		
-		$log->LogWarn("ACTION = $a     |     POST = $tempLog");
+		$log->LogWarn("ACTION = $a\nUNFILTERED = $tempLog\nFILTERED = $tempLog2");
 		
 		switch ($a) {
 			case null:
@@ -57,11 +62,12 @@ class App {
 				$androidID = empty($_POST['android_id']) ? null : $_POST['android_id'];
 				$deviceID = empty($_POST['device_id']) ? null : $_POST['device_id'];
 				$phoneNum = empty($_POST['phone_num']) ? null : $_POST['phone_num'];
-				if ($uid && $androidID && $deviceID && $phoneNum) {			
+				$carrier = empty($_POST['carrier']) ? null : $_POST['carrier'];
+				if ($uid && $androidID && $deviceID && $phoneNum && $carrier) {			
 					$hit = $mem->get(Config::$PRE_CREATE_ACCOUNT_USER_TEMP_ID . $uid);
 					if ($hit) {
 						$engine = new DBEngine();
-						$pw = $engine->addUser($uid, $androidID, $deviceID, $phoneNum);
+						$pw = $engine->addUser($uid, $androidID, $deviceID, $phoneNum, $carrier);
 						$resp = array('code' => 'create_account_1', 'pw' => $pw);
 						$this->respond($resp);
 					}

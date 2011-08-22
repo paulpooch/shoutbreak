@@ -98,7 +98,9 @@ public class Storage implements Colleague {
 	public void handleVoteFinish(String shoutId, int vote) {
 		_inboxSystem.reflectVote(shoutId, vote);
 		_user.savePoints(C.POINTS_VOTE, User.calculatePointsForVote(this.getUserLevel()));
-		_noticeTabSystem.createNotice(C.NOTICE_POINTS, User.calculatePointsForVote(this.getUserLevel()), "You gained " + User.calculatePointsForVote(this.getUserLevel()) + " points for voting.", shoutId);
+		int points = User.calculatePointsForVote(this.getUserLevel());
+		String strPoints = (points > 1) ? "points" : "point";		
+		_noticeTabSystem.createNotice(C.NOTICE_POINTS, points, "You gained " + points + " " + strPoints + " for voting.", shoutId);
 	}
 	
 	public void handleShoutFailed() {
@@ -194,6 +196,19 @@ public class Storage implements Colleague {
 
 	public void disableInputs() {
 		_inboxSystem.disableInputs();
+	}
+
+	public void markAllNoticesRead() {
+		_noticeTabSystem.markAllNoticesAsRead();		
+	}
+
+	public void refreshNoticeTab() {
+		_noticeTabSystem.refresh();		
+	}
+
+	public void jumpToShoutInInbox(String shoutId) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }

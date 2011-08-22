@@ -4,7 +4,9 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.graphics.Shader;
 import android.graphics.drawable.AnimationDrawable;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -441,6 +443,7 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		SBLog.i(TAG, "disableMapAndOverlay()");
 		if (_map != null) {
 			_map.setEnabled(false);
+			overlay.disableMyLocation();
 			// TODO: disable overlay
 		}
 	}

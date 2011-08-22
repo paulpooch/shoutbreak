@@ -80,7 +80,7 @@ class DBEngine {
 	public function __destruct() {
 	}
 	
-	public function addUser($uid, $androidID, $deviceID, $phoneNum) {
+	public function addUser($uid, $androidID, $deviceID, $phoneNum, $carrier) {
 		global $mem, $log;
 		$time = date(Config::$DATE_FORMAT);
 		$pw = Utils::generatePassword();
@@ -97,7 +97,8 @@ class DBEngine {
 				'user_pw_salt' => array('value' => $pw_salt),
 				'android_id' => array('value' => $androidID), 
 				'device_id' => array('value' => $deviceID), 
-				'phone_num' => array('value' => $phoneNum), 
+				'phone_num' => array('value' => $phoneNum),
+				'carrier' => array('value' => $carrier),
 				'creation_time' => array('value' => $time),
 				'last_activity_time' => array('value' => $time),
 				'points' => array('value' => $pointsPadded),
@@ -299,7 +300,9 @@ class DBEngine {
 	public function getScores($reqScores) {
 		// TODO: we don't need to pull the entire shout from db
 		// TODO: this should be capped to a limit of scores requested
-		$scoreIDs = json_decode($reqScores);
+		// JSON decoding done in filter now.
+		//$scoreIDs = json_decode($reqScores);
+		$scoreIDs = $reqScores;
 		$scores = array();
 		$count = 0;
 		foreach ($scoreIDs as $shoutID) {

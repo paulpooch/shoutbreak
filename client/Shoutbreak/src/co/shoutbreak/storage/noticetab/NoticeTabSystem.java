@@ -30,12 +30,10 @@ public class NoticeTabSystem implements Colleague {
 	public NoticeTabSystem(Mediator mediator, Database db) {
 		_m = mediator;
 		_db = db;
-		_listAdapter = new NoticeTabListViewAdapter((LayoutInflater)_m.getSystemService(Context.LAYOUT_INFLATER_SERVICE));		
+		_listAdapter = new NoticeTabListViewAdapter(_m, (LayoutInflater)_m.getSystemService(Context.LAYOUT_INFLATER_SERVICE));		
 		_listViewItemClickListener = new ListView.OnItemClickListener() {
 			public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
-				markAllNoticesAsRead();
-				_m.getUiGateway().clearNoticeTab();
-				refresh();
+
 			}
 		};
 	}	
@@ -54,26 +52,32 @@ public class NoticeTabSystem implements Colleague {
 		List<Notice> notices = this.getNoticesForUI();
 
 		int unreadCount = 0;
+		int points = 0;
 		boolean levelUp = false;
 				
 		for (Notice notice : notices) {
-			if (notice.state_flag == C.NOTICE_STATE_NEW) {
-										
+			if (notice.state_flag == C.NOTICE_STATE_NEW) {			
 				// level up?
 				if (notice.type == C.NOTICE_LEVEL_UP) {
-					_m.getUiGateway().showPointsNotice("LVL");
 					levelUp = true;
 				}
 				// new shouts?
 				if (notice.type == C.NOTICE_SHOUTS_RECEIVED) {
 					unreadCount += notice.value;
 				}
-				
+				if (notice.type == C.NOTICE_POINTS) {
+					points += notice.value;
+				}
 			}
 		}
 		if (unreadCount > 0) {
 			_m.getUiGateway().showShoutNotice(Integer.toString(unreadCount));
 		}
+		if (levelUp) {
+			_m.getUiGateway().showPointsNotice("LVL");
+		} else if (points > 0) {
+			_m.getUiGateway().showPointsNotice(Integer.toString(points));
+		}		
 
 		_listAdapter.refresh(notices);
 	}
@@ -123,7 +127,7 @@ public class NoticeTabSystem implements Colleague {
 	
 	// SYNCHRONIZED WRITE METHODS /////////////////////////////////////////////
 	
-	private synchronized boolean markAllNoticesAsRead() {
+	public synchronized boolean markAllNoticesAsRead() {
 		// Database
 		SBLog.i(TAG, "markAllNoticesAsRead()");
 		boolean result = false;

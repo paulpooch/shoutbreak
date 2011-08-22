@@ -82,9 +82,9 @@ public class UiOffGateway implements IUiGateway {
 	public void showTopNotice() {}
 
 	@Override
-	public void setupInboxListView(InboxListViewAdapter listAdapter, boolean itemsCanFocus, OnItemClickListener inboxItemClickListener) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void setupInboxListView(InboxListViewAdapter listAdapter, boolean itemsCanFocus, OnItemClickListener inboxItemClickListener) {}
+
+	@Override
+	public void jumpToShoutInInbox(String shoutId) {}
 	
 }

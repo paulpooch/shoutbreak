@@ -360,6 +360,13 @@ public class Mediator {
 		return new ThreadSafeMediator();
 	}
 	
+	public void markAllNoticesRead() {
+		// TODO Auto-generated method stub
+		_storage.markAllNoticesRead();
+		_uiGateway.clearNoticeTab();
+		_storage.refreshNoticeTab();
+	}
+	
 	///////////////////////////////////////////////////////////////////////////
 	// HANDLE STUFF ///////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////
@@ -703,6 +710,8 @@ public class Mediator {
 			_ui.noticeTabPointsIv.setVisibility(View.INVISIBLE);
 			_ui.noticeTabShoutsIv.setVisibility(View.INVISIBLE);			
 		}
+		
+		
 
 		@Override
 		public void showPointsNotice(String noticeText) {
@@ -736,8 +745,16 @@ public class Mediator {
 
 		@Override
 		public void showTopNotice() {
-			_ui.noticeTabListView.setSelection(0);
+			//_ui.noticeTabListView.setSelection(0);
 			_ui.noticeTab.showOneLine();
+		}
+
+		@Override
+		public void jumpToShoutInInbox(String shoutId) {
+			// TODO Auto-generated method stub
+			_ui.showInbox();
+			_ui.noticeTab.hide();
+			_storage.jumpToShoutInInbox(shoutId);
 		}
 
 	}
