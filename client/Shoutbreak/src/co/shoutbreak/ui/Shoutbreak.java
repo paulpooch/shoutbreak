@@ -4,9 +4,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.graphics.Shader;
 import android.graphics.drawable.AnimationDrawable;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -24,6 +22,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import co.shoutbreak.R;
@@ -49,7 +48,6 @@ public class Shoutbreak extends MapActivity implements Colleague {
 	private Intent _serviceIntent;
 	private ServiceBridgeInterface _serviceBridge;
 	
-	public ProfileViewAdapter profileViewAdapter;
 	public NoticeTabView noticeTab;
 	public UserLocationOverlay overlay;
 	public ImageButton shoutBtn;
@@ -61,6 +59,10 @@ public class Shoutbreak extends MapActivity implements Colleague {
 	public TextView noticeTabPointsTv;	
 	public ListView noticeTabListView;
 	public ListView inboxListView;
+	public TextView levelTv;
+	public TextView pointsTv;
+	public TextView nextLevelAtTv;
+	public ProgressBar progressPb;
 	
 	private ImageButton _powerBtn;
 	private ImageButton _composeTabBtn;
@@ -97,6 +99,10 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		noticeTabPointsIv = (ImageView) findViewById(R.id.noticeTabPointsIv);
 		noticeTabShoutsTv = (TextView) findViewById(R.id.noticeTabShoutsTv);
 		noticeTabPointsTv = (TextView) findViewById(R.id.noticeTabPointsTv);
+		levelTv = (TextView) findViewById(R.id.userLevelTv);
+		pointsTv = (TextView) findViewById(R.id.userPointsTv);
+		nextLevelAtTv = (TextView) findViewById(R.id.userNextLevelAtTv);
+		progressPb = (ProgressBar) findViewById(R.id.userProgressPb);
 		
 		_composeTabBtn = (ImageButton) findViewById(R.id.composeTabBtn);
 		_inboxTabBtn = (ImageButton) findViewById(R.id.inboxTabBtn);
@@ -161,8 +167,6 @@ public class Shoutbreak extends MapActivity implements Colleague {
 			
 			overlay = new UserLocationOverlay(Shoutbreak.this, _map);
 			dialogBuilder = new DialogBuilder(Shoutbreak.this);
-			
-			profileViewAdapter = new ProfileViewAdapter(Shoutbreak.this);
 			
 			refreshFlags();			
 			_m.refreshUiComponents();

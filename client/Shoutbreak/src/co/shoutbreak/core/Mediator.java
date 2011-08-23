@@ -622,12 +622,12 @@ public class Mediator {
 		public void handleLevelUp(double cellDensity, int newLevel) {
 			SBLog.i(TAG, "handleLevelUp()");
 			_ui.overlay.handleLevelUp(cellDensity, newLevel);
-			_ui.profileViewAdapter.refresh(_storage.getUserLevel(), _storage.getUserPoints(), _storage.getUserNextLevelAt());
+			_uiGateway.refreshProfile(_storage.getUserLevel(), _storage.getUserPoints(), _storage.getUserNextLevelAt());
 		}
 
 		public void handlePointsChange(int newPoints) {
 			SBLog.i(TAG, "handlePointsChange()");
-			_ui.profileViewAdapter.refresh(_storage.getUserLevel(), _storage.getUserPoints(), _storage.getUserNextLevelAt());
+			_uiGateway.refreshProfile(_storage.getUserLevel(), _storage.getUserPoints(), _storage.getUserNextLevelAt());
 		}
 		
 		public void handleServerFailure() {
@@ -646,7 +646,14 @@ public class Mediator {
 		
 		public void refreshProfile(int level, int points, int nextLevelAt) {
 			SBLog.i(TAG, "refreshProfile()");
-			_ui.profileViewAdapter.refresh(level, points, nextLevelAt);
+			_ui.levelTv.setText("Your level: " + level);
+			_ui.pointsTv.setText("Points earned: " + points);
+			_ui.nextLevelAtTv.setText("Next level at: " + nextLevelAt);
+			//_progressPb.setMax(100);
+			_ui.progressPb.setProgress(50);
+			if (nextLevelAt > 0) {
+				_ui.progressPb.setProgress(points / nextLevelAt);
+			}			
 		}
 		
 		public void enableInputs() {

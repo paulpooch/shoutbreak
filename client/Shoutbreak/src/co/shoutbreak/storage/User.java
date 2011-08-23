@@ -138,7 +138,7 @@ public class User {
 	// SYNCHRONIZED WRITE METHODS /////////////////////////////////////////////
 	
 	public synchronized void savePoints(int pointsType, int pointsValue) {
-		this.storePoints(C.POINTS_SHOUT, pointsValue);
+		this.storePoints(pointsType, pointsValue);
 		_points += pointsValue;
 	}
 	

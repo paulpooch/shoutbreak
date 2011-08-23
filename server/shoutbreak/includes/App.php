@@ -35,24 +35,24 @@ class App {
 			$_POST = $_GET; // DEBUGGING
 		}
 		
+		$a = empty($_POST['a']) ? null : $_POST['a'];
+				
 		$log->LogInfo("");
 		$tempLog = "";
-		$tempLog2 = "";
 		foreach($_POST as $var => $value) {
 			$tempLog .= $var . ' : ' . $value . ', ';
 		}
+		$log->LogWarn("ACTION = $a\nUNFILTERED = $tempLog");
 		
 		$_POST = Filter::sanitize($_POST);
 		$_POST = Filter::validate($_POST);
 		
-		foreach($_POST as $var => $value) {
-			$tempLog2 .= $var . ' : ' . $value . ', ';
-		}
-		
-		$a = empty($_POST['a']) ? null : $_POST['a'];
-		
-		$log->LogWarn("ACTION = $a\nUNFILTERED = $tempLog\nFILTERED = $tempLog2");
-		
+//		$tempLog2 = "";
+//		foreach($_POST as $var => $value) {
+//			$tempLog2 .= $var . ' : ' . $value . ', ';
+//		}
+//		$log->LogWarn("FILTERED = $tempLog2");
+				
 		switch ($a) {
 			case null:
 				break;

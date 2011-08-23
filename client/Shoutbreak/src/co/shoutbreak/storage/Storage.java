@@ -63,10 +63,6 @@ public class Storage implements Colleague {
 		_noticeTabSystem.createNotice(C.NOTICE_ACCOUNT_CREATED, 0, C.STRING_ACCOUNT_CREATED, null);
 	}
 	
-	public void handleShoutSent() {
-		_noticeTabSystem.createNotice(C.NOTICE_SHOUT_SENT, 0, C.STRING_SHOUT_SENT, null);	
-	}
-	
 	public void handleScoresReceived(JSONArray scores) {
 		for (int i = 0; i < scores.length(); i++) {
 			try {
@@ -99,8 +95,11 @@ public class Storage implements Colleague {
 		_inboxSystem.reflectVote(shoutId, vote);
 		_user.savePoints(C.POINTS_VOTE, User.calculatePointsForVote(this.getUserLevel()));
 		int points = User.calculatePointsForVote(this.getUserLevel());
-		String strPoints = (points > 1) ? "points" : "point";		
-		_noticeTabSystem.createNotice(C.NOTICE_POINTS, points, "You gained " + points + " " + strPoints + " for voting.", shoutId);
+		givePointsNotice(points, "voting", shoutId);
+	}
+	
+	public void handleShoutSent() {
+		_noticeTabSystem.createNotice(C.NOTICE_SHOUT_SENT, 0, C.STRING_SHOUT_SENT, null);	
 	}
 	
 	public void handleShoutFailed() {
@@ -123,6 +122,11 @@ public class Storage implements Colleague {
 	///////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////
+	
+	private void givePointsNotice(int pointsGained, String forWhat, String ref) {
+		String strPoints = (pointsGained > 1) ? "points" : "point";		
+		_noticeTabSystem.createNotice(C.NOTICE_POINTS, pointsGained, "You gained " + pointsGained + " " + strPoints + " for " + forWhat + ".", ref);
+	}
 	
 	public void deleteShout(String shoutID) {
 		_inboxSystem.deleteShout(shoutID);

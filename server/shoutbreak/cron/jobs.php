@@ -7,9 +7,12 @@ require_once("Config.php");
 require_once("App.php");
 require_once("DBEngine.php");
 require_once("Utils.php");
+
 $job = 0;
 $argv = $_SERVER['argv'];
 //$log = new KLogger("logs/log.txt", KLogger::DEBUG);
+
+$log = new KLogger($_SERVER['DOCUMENT_ROOT'] . '/logs/log.txt', KLogger::DEBUG);
 
 if (count($argv) > 0 && isset($argv[1])) {
 	$mem = new Memcache();

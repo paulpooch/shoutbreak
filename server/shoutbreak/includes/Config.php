@@ -4,7 +4,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 class Config {
 	
-	public static $SHOUTBREAK_SCORING_COEFFECIENT = 1.8;
+	public static $SHOUTBREAK_SCORING_COEFFECIENT = 1.09;
 	public static $SHOUTBREAK_SCORING_WORK_AT_LEVEL_1 = 10;
 	public static $USER_INITIAL_LEVEL = 1;
 	public static $USER_INITIAL_POINTS = 0;
@@ -60,9 +60,9 @@ class Config {
 		return Config::maxTargetsAtLevel($level);	
 	}
 	
-	public static function actionsRequiredForLevel($level) {
-		return pow($level, Config::$SHOUTBREAK_SCORING_COEFFECIENT); 
-	}
+	//public static function actionsRequiredForLevel($level) {
+	//	return pow($level, Config::$SHOUTBREAK_SCORING_COEFFECIENT); 
+	//}
 	
 	public static function workRequiredForLevel($level) {
 		//return pow($level, Config::$SHOUTBREAK_SCORING_COEFFECIENT); 

@@ -42,6 +42,7 @@ class Filter {
 		}
 		
 		if (array_key_exists('scores', $post)) {
+			// TODO: Can this be done with filter_var_array?
 			$scoresArray = json_decode($post['scores']);
 			$cleanScores = array();
 			foreach($scoresArray as $shoutId) {
@@ -49,29 +50,10 @@ class Filter {
 				if ($cleanId !== false) {
 					array_push($cleanScores, $cleanId);
 				}
-				// TODO: begin here.  also clean the validate part.  Make sure the app for reqScores if using the right datatype.
-				
-				
-				$tempLog .= $var . ' : ' . $value . ', ';
 			}
-			$log->LogWarn("UNCLEAN SCORES = " . $tempLog);
-			
-			$scores = array('scores' => $scoresArray);
-			$args = array(
-				'scores' => array(
-					'filter'	=> FILTER_SANITIZE_STRING, 
-					'flags'		=>  FILTER_FLAG_STRIP_LOW | FILTER_FLAG_STRIP_HIGH
-				)
-			);
-			$clean['scores'] = filter_var_array($scores, $args);
-			
-			$tempLog = "";
-			foreach($clean['scores'] as $var => $value) {
-				$tempLog .= $var . ' : ' . $value . ', ';
-			}
-			$log->LogWarn("CLEAN SCORES = " . $tempLog);
-			
+			$clean['scores'] = $cleanScores;
 		}
+			
 		
 		if (array_key_exists('rho', $post)) {
 			if ($post['rho'] == 1) {
@@ -92,7 +74,7 @@ class Filter {
 		}
 		
 		if (array_key_exists('shout_id', $post)) {
-			$clean['uid'] = filter_var($post['uid'], FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_LOW | FILTER_FLAG_STRIP_HIGH);	
+			$clean['shout_id'] = filter_var($post['shout_id'], FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_LOW | FILTER_FLAG_STRIP_HIGH);	
 		}
 		
 		if (array_key_exists('vote', $post)) {
@@ -193,12 +175,16 @@ class Filter {
 		}
 		
 		if (array_key_exists('scores', $post)) {
-			$v = $post['scores'];
+			$scoresArray = $post['scores'];
+			$cleanScores = array();
 			$regex = '/[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}/';
-			$v = filter_var_array($v, array('filter' => FILTER_VALIDATE_REGEXP, 'options' => array('regexp' => $regex)));
-			if ($v !== false) {
-				$clean['scores'] = $v;
+			foreach($scoresArray as $shoutId) {				
+				$cleanId = filter_var($shoutId, FILTER_VALIDATE_REGEXP, array('options' => array('regexp' => $regex)));
+				if ($cleanId !== false) {
+					array_push($cleanScores, $cleanId);
+				}
 			}
+			$clean['scores'] = $cleanScores;
 		}
 		
 		if (array_key_exists('rho', $post)) {
@@ -240,7 +226,7 @@ class Filter {
 		}
 		
 		if (array_key_exists('vote', $post)) {
-			$clean['rho'] = $post['rho']; // can only be 1 at this point
+			$clean['vote'] = $post['vote']; // can only be 1 at this point
 		}
 		
 		return $clean;
