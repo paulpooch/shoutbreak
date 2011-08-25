@@ -1090,12 +1090,12 @@ class DBEngine {
 	}
 	
 	public function admin_resetTables() {
-		$this->sdb->createDomain($this->TABLE_SHOUT_PREFIX . $this->TABLE_SHOUT_INDEX);
-		//$this->sdb->deleteDomain($this->TABLE_USERS);
-		//$this->sdb->deleteDomain($this->TABLE_LIVE);
+		//$this->sdb->createDomain($this->TABLE_SHOUT_PREFIX . $this->TABLE_SHOUT_INDEX);
+		$this->sdb->deleteDomain($this->TABLE_USERS);
+		$this->sdb->deleteDomain($this->TABLE_LIVE);
 		sleep(3);
-		//$this->sdb->createDomain($this->TABLE_USERS);
-		//$this->sdb->createDomain($this->TABLE_LIVE);
+		$this->sdb->createDomain($this->TABLE_USERS);
+		$this->sdb->createDomain($this->TABLE_LIVE);
 	}
 	
 	public function admin_cullLiveUsers() {

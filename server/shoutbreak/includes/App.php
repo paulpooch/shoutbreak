@@ -169,6 +169,35 @@ class App {
 				$engine->cron_closeShouts();
 				break;
 				
+			case 'admin_view_shouts':
+				$engine = new DBEngine();
+				$engine->admin_viewShouts();
+				break;
+			case 'admin_metadata':
+				$engine = new DBEngine();
+				$engine->admin_tableMetadata();
+				break;
+			case 'admin_view_users':
+				$engine = new DBEngine();
+				$engine->admin_viewUsers();
+				break;
+			case 'admin_view_live_users':
+				$engine = new DBEngine();
+				$engine->admin_viewLiveUsers();
+				break;	
+			case 'admin_delete_user':
+				$engine = new DBEngine();
+				$engine->admin_deleteUser($_POST['uid']);
+				break;
+			case 'admin_cull_live_users':
+				$engine = new DBEngine();
+				$engine->admin_cullLiveUsers();
+				break;
+			case 'admin_reset_tables':
+				$engine = new DBEngine();
+				$engine->admin_resetTables();
+				break;
+						
 		}
 	}
 	

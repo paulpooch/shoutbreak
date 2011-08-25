@@ -752,7 +752,7 @@ public class Mediator {
 
 		@Override
 		public void showTopNotice() {
-			//_ui.noticeTabListView.setSelection(0);
+			_ui.noticeTabListView.setSelection(0);
 			_ui.noticeTab.showOneLine();
 		}
 

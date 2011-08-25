@@ -1,5 +1,34 @@
 <?php
-require_once ('index.php');
+error_reporting(E_ALL | E_STRICT);
+ini_set('display_errors', 1);
+
+set_include_path('/home/webuser/shoutbreak/htdocs/includes/');
+require_once("SimpleDB.php");
+require_once("KLogger.php");
+require_once("Shout.php");
+require_once("Config.php");
+require_once("App.php");
+require_once("DBEngine.php");
+require_once("Utils.php");
+require_once("Filter.php");
+
+error_reporting(E_ALL | E_STRICT);
+ini_set('display_errors', 1);
+date_default_timezone_set('UTC');
+Utils::sanitizeVars();
+
+$debug = empty($_POST['debug']) ? false : true;
+function e($s) {
+	global $debug;
+	if ($debug) {
+		echo 'DEBUG: ' . $s . '<br/>';
+	}
+}
+
+$mem = null;
+$log = new KLogger($_SERVER['DOCUMENT_ROOT'] . '/logs/log.txt', KLogger::DEBUG);
+$app = new App();
+$app->handleRequest();
 ?>
 
 <html>
@@ -201,38 +230,5 @@ body { font-family: "Lucida Sans Unicode"; }
 </table>
 </form>
 <br/><br/>
-
-<?php 
-
-$engine = new DBEngine();
-if (empty($_POST['a'])) {
-	$_POST = $_GET; // DEBUGGING
-}
-$a = empty($_POST['a']) ? null : $_POST['a'];
-switch ($a) {
-	case 'admin_view_shouts':
-		$engine->admin_viewShouts();
-		break;
-	case 'admin_metadata':
-		$engine->admin_tableMetadata();
-		break;
-	case 'admin_view_users':
-		$engine->admin_viewUsers();
-		break;
-	case 'admin_view_live_users':
-		$engine->admin_viewLiveUsers();
-		break;	
-	case 'admin_delete_user':
-		$engine->admin_deleteUser($_POST['uid']);
-		break;
-	case 'admin_cull_live_users':
-		$engine->admin_cullLiveUsers();
-		break;
-	case 'admin_reset_tables':
-		$engine->admin_resetTables();
-		break;
-}
-?>
-
 </body>
 </html>

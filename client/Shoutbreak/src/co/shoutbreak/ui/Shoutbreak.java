@@ -63,6 +63,7 @@ public class Shoutbreak extends MapActivity implements Colleague {
 	public TextView pointsTv;
 	public TextView nextLevelAtTv;
 	public ProgressBar progressPb;
+	public TextView mapPeopleCountTv;
 	
 	private ImageButton _powerBtn;
 	private ImageButton _composeTabBtn;
@@ -103,6 +104,7 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		pointsTv = (TextView) findViewById(R.id.userPointsTv);
 		nextLevelAtTv = (TextView) findViewById(R.id.userNextLevelAtTv);
 		progressPb = (ProgressBar) findViewById(R.id.userProgressPb);
+		mapPeopleCountTv = (TextView) findViewById(R.id.mapPeopleCountTv);
 		
 		_composeTabBtn = (ImageButton) findViewById(R.id.composeTabBtn);
 		_inboxTabBtn = (ImageButton) findViewById(R.id.inboxTabBtn);
@@ -501,12 +503,6 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		return _map.getMeasuredHeight();
 	}
 	
-	public void setPeopleCountText(String text) {
-		SBLog.i(TAG, "setPeopleCountText()");
-		// TODO: semi transparent text box on map
-		//_titleBarTv.setText(text);
-	}
-
 	public void hideKeyboard() {
 		SBLog.i(TAG, "hideKeyboard()");
 		InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);

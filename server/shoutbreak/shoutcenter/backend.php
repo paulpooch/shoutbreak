@@ -10,6 +10,8 @@ switch ($a) {
 	case 'get_recent_shouts':
 		$engine->admin_getRecentShouts();
 		break;
+	case 'get_users':
+		$engine->admin_showUsers();
 }
 
 ?>
