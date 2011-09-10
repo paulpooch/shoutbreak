@@ -240,6 +240,10 @@ public class UserLocationOverlay extends MyLocationOverlay {
 			_ui.mapPeopleCountTv.setText(Integer.toString(_peopleCount + 1));
 		}
 	}
+	
+	public int getPeopleCount() {
+		return _peopleCount;
+	}
 
 	//public void setPopulationDensity(int level, double density) {
 	// TODO: don't hardcode level

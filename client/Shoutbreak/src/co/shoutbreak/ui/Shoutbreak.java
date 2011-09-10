@@ -4,7 +4,9 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.graphics.PorterDuff.Mode;
 import android.graphics.drawable.AnimationDrawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -71,6 +73,7 @@ public class Shoutbreak extends MapActivity implements Colleague {
 	private ImageButton _profileTabBtn;
 	private ImageButton _enableLocationBtn;
 	private ImageButton _turnOnBtn;
+	private ImageButton _mapCenterBtn;
 	private LinearLayout _splashLl;
 	private LinearLayout _composeViewLl;
 	private LinearLayout _inboxViewLl;
@@ -110,6 +113,7 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		_inboxTabBtn = (ImageButton) findViewById(R.id.inboxTabBtn);
 		_profileTabBtn = (ImageButton) findViewById(R.id.profileTabBtn);
 		_powerBtn = (ImageButton) findViewById(R.id.powerBtn);
+		_mapCenterBtn = (ImageButton) findViewById(R.id.mapCenterBtn);
 		_splashLl = (LinearLayout) findViewById(R.id.splashLl);
 		_composeViewLl = (LinearLayout) findViewById(R.id.composeViewLl);
 		_inboxViewLl = (LinearLayout) findViewById(R.id.inboxViewLl);
@@ -130,6 +134,15 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		noticeTabPointsIv.setVisibility(View.INVISIBLE);
 		noticeTabShoutsTv.setVisibility(View.INVISIBLE);
 		noticeTabPointsTv.setVisibility(View.INVISIBLE);
+		
+		_mapCenterBtn.getBackground().setColorFilter(0xAA9900FF, Mode.SRC_ATOP);
+		_mapCenterBtn.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				CenterMapTask task = new CenterMapTask();
+        		task.execute();				
+			}
+		});
 		
 		// bind to service, initializes mediator
 		_serviceIntent = new Intent(Shoutbreak.this, ShoutbreakService.class);
@@ -152,6 +165,20 @@ public class Shoutbreak extends MapActivity implements Colleague {
 	public void unsetMediator() {
 		SBLog.i(TAG, "unsetMediator()");
 		_m = null;
+	}
+	
+	private class CenterMapTask extends AsyncTask<Void, Void, Void> {    	
+		@Override
+		protected Void doInBackground(Void... params) {
+			GeoPoint loc = overlay.getMyLocation();
+			MapController mapController = _map.getController();
+			mapController.animateTo(loc);
+			return null;
+		}
+		@Override
+		protected void onPostExecute(final Void unused) {
+			_m.getUiGateway().toast("You are here.", Toast.LENGTH_SHORT);
+	    }
 	}
 	
 	private ServiceConnection _serviceConnection = new ServiceConnection() {
@@ -545,7 +572,7 @@ public class Shoutbreak extends MapActivity implements Colleague {
 					} else if (!_isDataEnabled.get()) {
 						text += "data unavailable";
 					}
-					Toast.makeText(Shoutbreak.this, text, Toast.LENGTH_SHORT).show();
+					_m.getUiGateway().toast(text, Toast.LENGTH_SHORT);
 					SBLog.i(TAG, text);
 				}
 			} else {
@@ -561,8 +588,7 @@ public class Shoutbreak extends MapActivity implements Colleague {
 			CharSequence text = shoutInputEt.getText();
 
 			if (text.length() == 0) {
-				Toast.makeText(Shoutbreak.this, "cannot shout blanks",
-						Toast.LENGTH_SHORT).show();
+				_m.getUiGateway().toast("Cannot shout blanks.",	Toast.LENGTH_SHORT);
 			} else {
 				// TODO: filter all text going to server
 

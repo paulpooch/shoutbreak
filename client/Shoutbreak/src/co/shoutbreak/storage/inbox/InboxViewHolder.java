@@ -17,5 +17,5 @@ public class InboxViewHolder {
 	ImageButton btnVoteUp;
 	ImageButton btnVoteDown;
 	ImageButton btnDelete;
-	ImageButton btnReply;
+	//ImageButton btnReply;
 }

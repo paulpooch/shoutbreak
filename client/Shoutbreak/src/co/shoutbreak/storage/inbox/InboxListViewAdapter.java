@@ -16,6 +16,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import co.shoutbreak.R;
 import co.shoutbreak.core.C;
 import co.shoutbreak.core.Colleague;
@@ -173,11 +174,11 @@ public class InboxListViewAdapter extends BaseAdapter implements Colleague {
         	holder.btnVoteDown.setOnClickListener(onVoteDownClickListener);
         	holder.btnDelete = (ImageButton) convertView.findViewById(R.id.btnDelete);
         	holder.btnDelete.setOnClickListener(onDeleteClickListener);
-        	holder.btnReply = (ImageButton) convertView.findViewById(R.id.btnReply);
+        	//holder.btnReply = (ImageButton) convertView.findViewById(R.id.btnReply);
         	holder.btnVoteUp.getBackground().setColorFilter(0xAA9900FF, Mode.SRC_ATOP);
         	holder.btnVoteDown.getBackground().setColorFilter(0xAA9900FF, Mode.SRC_ATOP);
         	holder.btnDelete.getBackground().setColorFilter(0xAA9900FF, Mode.SRC_ATOP);
-        	holder.btnReply.getBackground().setColorFilter(0xAA9900FF, Mode.SRC_ATOP);
+        	//holder.btnReply.getBackground().setColorFilter(0xAA9900FF, Mode.SRC_ATOP);
         	holder.expanded.setOnClickListener(onCollapseClickListener);
         	holder.expanded.setTag(holder);
         	convertView.setTag(holder);
@@ -270,9 +271,22 @@ public class InboxListViewAdapter extends BaseAdapter implements Colleague {
 		holder.btnDelete.setTag(holder);
 		
 		// TODO this should be setEnabled(_isPowerOn) once implemented
-		holder.btnReply.setEnabled(false); 
+		//holder.btnReply.setEnabled(false); 
 		
 		return convertView;
     }
-
+    
+    public void jumpToShoutInInbox(String shoutId) {
+    	if (_displayedShouts != null && _displayedShouts.size() > 0) {
+			for (int i = 0; i < _displayedShouts.size(); i++) {
+				Shout shout = _displayedShouts.get(i);
+				if (shout.id.equals(shoutId)) {
+					_m.getUiGateway().scrollInboxToPosition(i);
+					return;
+				}
+			}
+		}		
+		_m.getUiGateway().toast("Sorry, shout not found in inbox.", Toast.LENGTH_LONG);
+    }
+    
 }

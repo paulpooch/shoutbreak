@@ -86,5 +86,14 @@ public class UiOffGateway implements IUiGateway {
 
 	@Override
 	public void jumpToShoutInInbox(String shoutId) {}
+
+	@Override
+	public void scrollInboxToPosition(int position) {}
+
+	@Override
+	public void toast(String text, int duration) {}
+
+	@Override
+	public void hideNoticeTab() {}
 	
 }

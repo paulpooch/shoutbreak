@@ -12,6 +12,7 @@ import android.content.Context;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Message;
 import android.view.View;
+import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import co.shoutbreak.R;
 import co.shoutbreak.core.utils.DataListener;
@@ -347,6 +348,7 @@ public class Mediator {
 	
 	public void deleteShout(String shoutId) {
 		SBLog.i(TAG, "deleteShout()");
+		_uiGateway.toast("Shout deleted.", Toast.LENGTH_SHORT);
 		_storage.deleteShout(shoutId);
 	}
 	
@@ -480,6 +482,11 @@ public class Mediator {
 
 		public void handleVoteFinish(String shoutId, int vote) {
 			SBLog.i(TAG, "voteFinish()");
+			if (vote == 1) {
+				_uiGateway.toast("You helped the sender get louder.", Toast.LENGTH_LONG);
+			} else if (vote == -1) {
+				_uiGateway.toast("You made the sender quieter.", Toast.LENGTH_LONG);
+			}
 			_storage.handleVoteFinish(shoutId, vote);
 		}
 		
@@ -759,13 +766,30 @@ public class Mediator {
 		@Override
 		public void jumpToShoutInInbox(String shoutId) {
 			// TODO Auto-generated method stub
-			_ui.showInbox();
-			_ui.noticeTab.hide();
-			_storage.jumpToShoutInInbox(shoutId);
+			if (shoutId != null && !shoutId.equals("")) {
+				_ui.showInbox();
+				_ui.noticeTab.hide();
+				_storage.jumpToShoutInInbox(shoutId);
+			} else {
+				toast("Sorry, shout not found in inbox.", Toast.LENGTH_SHORT);
+			}
+		}
+
+		@Override
+		public void scrollInboxToPosition(int position) {
+			_ui.inboxListView.setSelection(position);			
+		}
+
+		@Override
+		public void toast(String text, int duration) {
+			Toast.makeText(_ui, text, duration).show();
+		}
+
+		@Override
+		public void hideNoticeTab() {
+			_ui.noticeTab.hide();			
 		}
 
 	}
-	
-	
 	
 }

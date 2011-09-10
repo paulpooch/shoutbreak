@@ -6,10 +6,9 @@
 		android:layout_height="wrap_content" android:layout_alignParentLeft="true"
 		android:layout_alignParentTop="true" />
 	<ImageButton android:id="@+id/linkBtn"
-		android:layout_alignParentRight="true" android:layout_marginRight="5dp"
-		android:layout_alignParentTop="true" android:layout_width="wrap_content"
-		android:layout_height="wrap_content" android:src="@drawable/notice_button_zoom"
-		android:background="@drawable/notice_button" />
+		android:layout_alignParentRight="true" android:layout_marginRight="2dp" android:layout_marginTop="2dp"
+		android:layout_centerInParent="true" android:layout_width="41dp"
+		android:layout_height="41dp" android:src="@drawable/notice_button_zoom" />
 	<TextView android:id="@+id/textTv" android:layout_width="fill_parent"
 		android:layout_height="wrap_content" android:layout_toRightOf="@id/iconIv"
 		android:layout_marginLeft="10dp" android:textColor="#ff3c056e"

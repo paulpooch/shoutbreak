@@ -6,6 +6,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.widget.Toast;
+
 import co.shoutbreak.core.C;
 import co.shoutbreak.core.Colleague;
 import co.shoutbreak.core.Mediator;
@@ -76,18 +78,22 @@ public class Storage implements Colleague {
 	}
 	
 	public void handleShoutsReceived(JSONArray shouts) {
-		for (int i = 0; i < shouts.length(); i++) {
-			try {
+		String noticeRef = "";
+		try {
+			for (int i = 0; i < shouts.length(); i++) {
 				JSONObject jsonShout = shouts.getJSONObject(i);
 				_inboxSystem.addShout(jsonShout);
-			} catch (JSONException e) {
-				SBLog.e(TAG, e.getMessage());
+				if (i == 0) {
+					noticeRef = jsonShout.optString(C.JSON_SHOUT_ID);
+				}
 			}
+		} catch (JSONException e) {
+			SBLog.e(TAG, e.getMessage());
 		}
 		int count = shouts.length();
 		String pluralShout = "shout" + (count > 1 ? "s" : "");
 		String notice = "Just heard " + count + " new " + pluralShout + ".";
-		_noticeTabSystem.createNotice(C.NOTICE_SHOUTS_RECEIVED, count, notice, null);
+		_noticeTabSystem.createNotice(C.NOTICE_SHOUTS_RECEIVED, count, notice, noticeRef);
 		_inboxSystem.refresh();
 	}
 	
@@ -100,6 +106,7 @@ public class Storage implements Colleague {
 	
 	public void handleShoutSent() {
 		_noticeTabSystem.createNotice(C.NOTICE_SHOUT_SENT, 0, C.STRING_SHOUT_SENT, null);	
+		_m.getUiGateway().toast("Shout successful.", Toast.LENGTH_SHORT);
 	}
 	
 	public void handleShoutFailed() {
@@ -210,9 +217,9 @@ public class Storage implements Colleague {
 		_noticeTabSystem.refresh();		
 	}
 
+	// Assumes shout is in the inbox using Storage.isShoutInInbox(shoutId)
 	public void jumpToShoutInInbox(String shoutId) {
-		// TODO Auto-generated method stub
-		
+		_inboxSystem.jumpToShoutInInbox(shoutId);
 	}
 	
 }

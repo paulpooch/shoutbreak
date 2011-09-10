@@ -40,6 +40,9 @@ public interface IUiGateway {
 	public void setupNoticeTabListView(NoticeTabListViewAdapter listAdapter, boolean itemsCanFocus, OnItemClickListener listViewItemClickListener);	
 	public void setupInboxListView(InboxListViewAdapter listAdapter, boolean itemsCanFocus, OnItemClickListener inboxItemClickListener);
 	public void showTopNotice();
+	public void hideNoticeTab();
 	public void jumpToShoutInInbox(String shoutId);
+	public void scrollInboxToPosition(int position);
+	public void toast(String text, int duration);
 	
 }

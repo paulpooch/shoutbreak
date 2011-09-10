@@ -369,5 +369,9 @@ public class InboxSystem {
 	public void disableInputs() {
 		_listAdapter.setInputAllowed(false);
 	}
+
+	public void jumpToShoutInInbox(String shoutId) {
+		_listAdapter.jumpToShoutInInbox(shoutId);
+	}
 	
 }

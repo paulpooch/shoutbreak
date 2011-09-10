@@ -37,7 +37,7 @@ public class Flag {
 		if (_isInitialized) {
 			return _value == 1;
 		} else {
-			if (_name != "") {
+			if (!_name.equals("")) {
 				SBLog.e(TAG, "Flag '" + _name + "' never initialized, must call set()!");	
 			} else {
 				SBLog.e(TAG, "Flag never initialized, must call set()!");

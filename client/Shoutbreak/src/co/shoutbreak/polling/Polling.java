@@ -176,11 +176,17 @@ public class Polling {
 			public void handleMessage(Message message) {
 				switch (message.what) {
 					case C.HTTP_DID_SUCCEED: {
-						_safeM.handleShoutSent();
-						// Unless shout occurs in idle thread, we don't need to sendMessage.
-						//CrossThreadPacket xPacket = (CrossThreadPacket)message.obj;
-						//_uiThreadHandler.sendMessage(Message.obtain(_uiThreadHandler, C.STATE_IDLE, xPacket)); // STATE doesn't matter - going to die
-						break;
+						CrossThreadPacket xPacket = (CrossThreadPacket)message.obj;
+						String code = xPacket.json.optString(C.JSON_CODE);
+						if (code.equals(C.JSON_CODE_EXPIRED_AUTH)) {
+							_safeM.handleShoutFailed(message);
+						} else {
+							_safeM.handleShoutSent();
+							// Unless shout occurs in idle thread, we don't need to sendMessage.
+							//CrossThreadPacket xPacket = (CrossThreadPacket)message.obj;
+							//_uiThreadHandler.sendMessage(Message.obtain(_uiThreadHandler, C.STATE_IDLE, xPacket)); // STATE doesn't matter - going to die
+							break;
+						}
 					}
 					case C.HTTP_DID_ERROR: {
 						_safeM.handleShoutFailed(message);

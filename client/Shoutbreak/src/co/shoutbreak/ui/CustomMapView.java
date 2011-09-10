@@ -12,6 +12,7 @@ import android.graphics.Point;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
+import android.widget.Toast;
 
 public class CustomMapView extends MapView {
 
@@ -110,6 +111,8 @@ public class CustomMapView extends MapView {
 	        } else if (action == MotionEvent.ACTION_UP) {
 	        	if (_isBeingResized) {
 	        		_isBeingResized = false;
+	        		// We really shouldn't use makeText directly but if this class exists, we can assume UI will exist.
+	        		Toast.makeText(_ui, (_userLocationOverlay.getPeopleCount() + 1) + " users will hear your shout.", Toast.LENGTH_LONG).show();
 	        	}
 	        }
 	        if (this.getZoomLevel() != _lastZoomLevel) {

@@ -92,6 +92,10 @@ public class NoticeTabSystem implements Colleague {
 		_m.getUiGateway().showTopNotice();
 	}
 	
+	public void hideNoticeTab() {
+		_m.getUiGateway().hideNoticeTab();
+	}
+	
 	private List<Notice> getNoticesForUI() {
 		SBLog.i(TAG, "getNoticesForUI()");
 		return getNoticesForUI(0, 50);

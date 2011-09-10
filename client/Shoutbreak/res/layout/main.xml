@@ -52,10 +52,15 @@
 						android:id="@+id/mapCmv" android:layout_width="fill_parent"
 						android:layout_height="wrap_content" android:clickable="true"
 						android:apiKey="@string/maps_api_key" />
-					<LinearLayout android:layout_height="wrap_content"
+					<ImageButton android:id="@+id/mapCenterBtn"
+						android:layout_width="wrap_content" android:layout_height="wrap_content"
+						android:layout_alignParentBottom="true" android:padding="7dp"
+						android:layout_alignParentRight="true" android:layout_marginRight="4dp" android:layout_marginBottom="4dp"
+					    android:src="@drawable/map_center" />
+					<LinearLayout android:layout_height="wrap_content" android:layout_marginBottom="4dp"
 						android:id="@+id/mapOptionsRl" android:layout_width="wrap_content"
-						android:layout_alignParentBottom="true"
-						android:layout_alignParentRight="true" android:orientation="horizontal">
+						android:layout_alignParentBottom="true" android:layout_marginRight="0dp"
+						android:layout_toLeftOf="@id/mapCenterBtn" android:orientation="horizontal">
 						<TextView android:layout_width="wrap_content" android:id="@+id/mapPeopleCountTv"
 							android:layout_height="wrap_content" android:textColor="#ff2d005a"
 							android:shadowColor="#ffffff" android:shadowDx="2"
@@ -65,6 +70,7 @@
 							android:layout_marginRight="6dp" android:src="@drawable/map_person_icon"
 							android:layout_width="wrap_content" android:layout_height="wrap_content" />
 					</LinearLayout>
+
 				</RelativeLayout>
 
 				<!-- Input -->

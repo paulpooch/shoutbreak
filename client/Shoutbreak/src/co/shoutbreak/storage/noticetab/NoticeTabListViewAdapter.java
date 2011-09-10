@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.graphics.Typeface;
+import android.graphics.PorterDuff.Mode;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,8 +43,9 @@ public class NoticeTabListViewAdapter extends BaseAdapter implements Colleague {
 			public void onClick(View view) {
 				NoticeViewHolder holder = (NoticeViewHolder) view.getTag();
 				switch (holder.type) {
-					case C.NOTICE_SHOUT_SENT: {
+					case C.NOTICE_SHOUTS_RECEIVED: {
 						_m.getUiGateway().jumpToShoutInInbox(holder.ref);
+						_m.getUiGateway().hideNoticeTab();
 						break;
 					}
 				}
@@ -72,6 +74,7 @@ public class NoticeTabListViewAdapter extends BaseAdapter implements Colleague {
 			holder.icon = (ImageView) convertView.findViewById(R.id.iconIv);
 			holder.linkBtn = (ImageButton) convertView.findViewById(R.id.linkBtn);
 			holder.linkBtn.setOnClickListener(_linkButtonClickListener);
+        	holder.linkBtn.getBackground().setColorFilter(0xAA9900FF, Mode.SRC_ATOP);
 			
 			holder.linkBtn.setTag(holder);
 			convertView.setTag(holder);
@@ -98,6 +101,7 @@ public class NoticeTabListViewAdapter extends BaseAdapter implements Colleague {
 			}
 			case C.NOTICE_SHOUTS_RECEIVED: {
 				holder.icon.setBackgroundResource(R.drawable.notice_icon_shout);
+				holder.isLinkable = true;
 				break;
 			}
 			case C.NOTICE_ACCOUNT_CREATED:
@@ -112,7 +116,6 @@ public class NoticeTabListViewAdapter extends BaseAdapter implements Colleague {
 			}
 			case C.NOTICE_SHOUT_SENT: {
 				holder.icon.setBackgroundResource(R.drawable.notice_icon_shout_sent);
-				holder.isLinkable = true;
 				break;
 			}
 			case C.NOTICE_NO_ACCOUNT: {
