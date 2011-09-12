@@ -4,6 +4,7 @@ package co.shoutbreak.core;
 public class C {
 
 	// CONFIG /////////////////////////////////////////////////////////////////
+	public static final String MODEL_DROID_X = "DROIDX";
 	public static final String CONFIG_CRASH_REPORT_ADDRESS = "http://app.shoutbreak.co/crash_reports/upload.php";
 	public static final String CONFIG_SUPPORT_ADDRESS = "http://shoutbreak.com/support";
 	public static final long CONFIG_DENSITY_EXPIRATION = (long) 4.32E8; // 5 days

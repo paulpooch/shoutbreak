@@ -24,7 +24,6 @@ import co.shoutbreak.core.Mediator;
 import co.shoutbreak.core.Shout;
 import co.shoutbreak.core.utils.ErrorManager;
 import co.shoutbreak.core.utils.ISO8601DateParser;
-import co.shoutbreak.core.utils.SBLog;
 
 import com.ocpsoft.pretty.time.PrettyTime;
 
@@ -212,40 +211,49 @@ public class InboxListViewAdapter extends BaseAdapter implements Colleague {
        			ErrorManager.manage(ex);
        		}
         }
-
+        
+        holder.btnVoteUp.getBackground().setAlpha(255);
         holder.btnVoteUp.setImageResource(R.drawable.vote_up_button);
+        holder.btnVoteDown.getBackground().setAlpha(255);
         holder.btnVoteDown.setImageResource(R.drawable.vote_down_button);
-        
-        // Can shout be voted on?
-        boolean isVotingAllowed = true;
-        if (!entry.open) {
-        	isVotingAllowed = false;
-        }
-        
+		
         int vote = entry.vote;
         if (_cacheVoteTemporary.containsKey(entry.id)) {
         	vote |= _cacheVoteTemporary.get(entry.id);
         }
+       
         if (vote != C.NULL_VOTE) {
-        	isVotingAllowed = false;
-        	//holder.voteLabelE.setText("ALREADY VOTED" + entry.open +" | "+vote);
+        	
+        	// If user voted already...
         	if (vote == C.SHOUT_VOTE_DOWN) {
+        		holder.btnVoteUp.setVisibility(View.GONE);
+        		holder.btnVoteDown.setVisibility(View.VISIBLE);
         		holder.btnVoteDown.setImageResource(R.drawable.inbox_down_lit);
+        		holder.btnVoteDown.getBackground().setAlpha(0);
+        		holder.btnVoteDown.setEnabled(false);
         	} else {
+        		holder.btnVoteUp.setVisibility(View.VISIBLE);
+        		holder.btnVoteDown.setVisibility(View.GONE);
         		holder.btnVoteUp.setImageResource(R.drawable.inbox_up_lit);
+        		holder.btnVoteUp.getBackground().setAlpha(0);
+        		holder.btnVoteUp.setEnabled(false);
         	}
-        }
-        
-        SBLog.i(TAG, entry.text + " | isVotingAllowed = " + isVotingAllowed);
-        
-        if (isVotingAllowed) {
-        	holder.btnVoteUp.setEnabled(_isInputAllowed);
-        	holder.btnVoteUp.setTag(holder);
-        	holder.btnVoteDown.setEnabled(_isInputAllowed);
-        	holder.btnVoteDown.setTag(holder);
+
         } else {
-        	holder.btnVoteUp.setEnabled(false);
-        	holder.btnVoteDown.setEnabled(false);
+
+        	if (entry.open) {
+                holder.btnVoteUp.setVisibility(View.VISIBLE);
+            	holder.btnVoteUp.setEnabled(_isInputAllowed);
+            	holder.btnVoteUp.setTag(holder);
+            	holder.btnVoteDown.setVisibility(View.VISIBLE);
+            	holder.btnVoteDown.setEnabled(_isInputAllowed);
+            	holder.btnVoteDown.setTag(holder);
+            } else {
+            	//holder.btnVoteUp.setEnabled(false);
+            	//holder.btnVoteDown.setEnabled(false);
+            	holder.btnVoteUp.setVisibility(View.GONE);
+            	holder.btnVoteDown.setVisibility(View.GONE);
+            }
         }
         
         // Is there a score?

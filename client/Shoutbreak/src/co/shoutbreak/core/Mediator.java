@@ -669,7 +669,6 @@ public class Mediator {
 			_storage.enableInputs();
 		}
 		
-		
 		public void disableInputs() {
 			_ui.shoutBtn.setEnabled(false);
 			_ui.shoutInputEt.setEnabled(false);
@@ -708,8 +707,7 @@ public class Mediator {
 
 		@Override
 		public void onPowerPreferenceEnabled() {
-			_ui.onPowerPreferenceEnabled();
-			
+			_ui.onPowerPreferenceEnabled();	
 		}
 
 		@Override

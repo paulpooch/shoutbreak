@@ -1,6 +1,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="fill_parent" android:layout_height="fill_parent"
-	android:background="@drawable/app_background">
+	android:background="#ff000000">
 
 	<LinearLayout android:layout_width="fill_parent"
 		android:layout_height="fill_parent" android:orientation="vertical">
@@ -33,16 +33,48 @@
 				android:orientation="vertical">
 
 				<!--  Compose Blanket -->
-				<ImageButton android:id="@+id/enableLocationBtn"
-					android:background="@drawable/enable_location"
-					android:layout_width="fill_parent" android:layout_height="fill_parent"
-					android:layout_alignParentTop="true" android:visibility="gone">
-				</ImageButton>
-				<ImageButton android:id="@+id/turnOnBtn"
-					android:background="@drawable/turn_on" android:layout_width="fill_parent"
-					android:layout_height="fill_parent" android:layout_alignParentTop="true"
-					android:visibility="gone">
-				</ImageButton>
+				<LinearLayout android:id="@+id/composeBlanketLl"
+					android:layout_weight="1" android:layout_width="fill_parent"
+					android:layout_height="wrap_content" android:background="#ff000000"
+					android:layout_marginTop="50dp" android:orientation="vertical">
+					<RelativeLayout android:id="@+id/blanketDataRl"
+						android:layout_marginTop="40dp" android:orientation="vertical"
+						android:layout_width="fill_parent" android:layout_height="40dp">
+						<TextView android:layout_width="wrap_content"
+							android:layout_alignParentTop="true"
+							android:layout_centerHorizontal="true" android:layout_height="wrap_content"
+							android:text="You must have data service to shout." />
+					</RelativeLayout>
+					<RelativeLayout android:id="@+id/blanketLocationRl"
+						android:layout_marginTop="40dp" android:orientation="vertical"
+						android:layout_width="fill_parent" android:layout_height="80dp">
+						<TextView android:layout_width="wrap_content"
+							android:layout_alignParentTop="true"
+							android:layout_centerHorizontal="true" android:layout_height="wrap_content"
+							android:text="Your location is required to send shouts." />
+						<Button android:id="@+id/enableLocationBtn"
+							android:layout_centerHorizontal="true" android:textSize="18dp"
+							android:textStyle="bold" android:textColor="#ffffffff"
+							android:layout_width="220dp" android:layout_height="wrap_content"
+							android:layout_alignParentBottom="true" android:text="Enable Location"
+							android:shadowColor="#1e003c" android:shadowDx="2"
+							android:shadowDy="2" android:shadowRadius="2" />
+					</RelativeLayout>
+					<RelativeLayout android:id="@+id/blanketPowerRl"
+						android:layout_marginTop="40dp" android:orientation="vertical"
+						android:layout_width="fill_parent" android:layout_height="80dp">
+						<TextView android:layout_width="wrap_content"
+							android:layout_alignParentTop="true"
+							android:layout_centerHorizontal="true" android:layout_height="wrap_content"
+							android:text="Power switch must be on in order to shout." />
+						<Button android:id="@+id/turnOnBtn" android:layout_width="220dp"
+							android:layout_alignParentBottom="true" android:textSize="18dp"
+							android:textStyle="bold" android:textColor="#ffffffff"
+							android:layout_centerHorizontal="true" android:layout_height="wrap_content"
+							android:text="Turn On Power Switch" android:shadowColor="#1e003c"
+							android:shadowDx="2" android:shadowDy="2" android:shadowRadius="2" />
+					</RelativeLayout>
+				</LinearLayout>
 
 				<!-- Map -->
 				<RelativeLayout android:id="@+id/mapRl"
@@ -52,15 +84,11 @@
 						android:id="@+id/mapCmv" android:layout_width="fill_parent"
 						android:layout_height="wrap_content" android:clickable="true"
 						android:apiKey="@string/maps_api_key" />
-					<ImageButton android:id="@+id/mapCenterBtn"
-						android:layout_width="wrap_content" android:layout_height="wrap_content"
-						android:layout_alignParentBottom="true" android:padding="7dp"
-						android:layout_alignParentRight="true" android:layout_marginRight="4dp" android:layout_marginBottom="4dp"
-					    android:src="@drawable/map_center" />
-					<LinearLayout android:layout_height="wrap_content" android:layout_marginBottom="4dp"
-						android:id="@+id/mapOptionsRl" android:layout_width="wrap_content"
-						android:layout_alignParentBottom="true" android:layout_marginRight="0dp"
-						android:layout_toLeftOf="@id/mapCenterBtn" android:orientation="horizontal">
+					<LinearLayout android:layout_height="wrap_content"
+						android:layout_marginBottom="4dp" android:id="@+id/mapOptionsLl"
+						android:layout_width="wrap_content" android:layout_marginRight="4dp"
+						android:layout_alignParentRight="true"
+						android:layout_alignParentBottom="true" android:orientation="horizontal">
 						<TextView android:layout_width="wrap_content" android:id="@+id/mapPeopleCountTv"
 							android:layout_height="wrap_content" android:textColor="#ff2d005a"
 							android:shadowColor="#ffffff" android:shadowDx="2"
@@ -69,8 +97,10 @@
 						<ImageView android:layout_marginLeft="4dp"
 							android:layout_marginRight="6dp" android:src="@drawable/map_person_icon"
 							android:layout_width="wrap_content" android:layout_height="wrap_content" />
+						<ImageButton android:id="@+id/mapCenterBtn"
+							android:layout_width="wrap_content" android:layout_height="wrap_content"
+							android:padding="7dp" android:src="@drawable/map_center" />
 					</LinearLayout>
-
 				</RelativeLayout>
 
 				<!-- Input -->
@@ -100,7 +130,7 @@
 				android:orientation="vertical">
 				<ListView android:id="@+id/inboxLv" android:layout_width="fill_parent"
 					android:cacheColorHint="#ff000000" android:layout_height="fill_parent"
-					android:layout_marginTop="34px" />
+					android:layout_marginTop="34px" android:divider="#00000000" />
 			</LinearLayout>
 
 			<!-- Profile -->
@@ -161,7 +191,8 @@
 				android:layout_height="wrap_content" android:layout_width="fill_parent"
 				android:background="#ffffffff">
 				<ListView android:id="@+id/noticeLv" android:layout_width="fill_parent"
-					android:cacheColorHint="#ffffffff" android:layout_height="fill_parent" />
+					android:divider="#00000000" android:cacheColorHint="#ffffffff"
+					android:layout_height="fill_parent" />
 			</LinearLayout>
 			<RelativeLayout android:layout_weight="0"
 				android:layout_height="47px" android:orientation="horizontal"

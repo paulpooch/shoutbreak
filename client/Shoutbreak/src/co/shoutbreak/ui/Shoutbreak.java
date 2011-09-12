@@ -19,12 +19,14 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import co.shoutbreak.R;
@@ -67,18 +69,24 @@ public class Shoutbreak extends MapActivity implements Colleague {
 	public ProgressBar progressPb;
 	public TextView mapPeopleCountTv;
 	
+	private RelativeLayout _inputLayoutRl;
+	private LinearLayout _composeBlanketLl;
+	private RelativeLayout _blanketDataRl;
+	private RelativeLayout _blanketLocationRl;
+	private RelativeLayout _blanketPowerRl;
 	private ImageButton _powerBtn;
 	private ImageButton _composeTabBtn;
 	private ImageButton _inboxTabBtn;
 	private ImageButton _profileTabBtn;
-	private ImageButton _enableLocationBtn;
-	private ImageButton _turnOnBtn;
+	private Button _enableLocationBtn;
+	private Button _turnOnBtn;
 	private ImageButton _mapCenterBtn;
 	private LinearLayout _splashLl;
 	private LinearLayout _composeViewLl;
 	private LinearLayout _inboxViewLl;
 	private LinearLayout _profileViewLl;
 	private CustomMapView _map;
+	private LinearLayout _mapOptionsLl;
 		
 	private Flag _isComposeShowing = new Flag("ui:_isComposeShowing");
 	private Flag _isInboxShowing = new Flag("ui:_isInboxShowing");
@@ -109,6 +117,11 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		progressPb = (ProgressBar) findViewById(R.id.userProgressPb);
 		mapPeopleCountTv = (TextView) findViewById(R.id.mapPeopleCountTv);
 		
+		_inputLayoutRl = (RelativeLayout) findViewById(R.id.inputRl);
+		_composeBlanketLl = (LinearLayout) findViewById(R.id.composeBlanketLl);
+		_blanketDataRl = (RelativeLayout) findViewById(R.id.blanketDataRl);
+		_blanketLocationRl = (RelativeLayout) findViewById(R.id.blanketLocationRl);
+		_blanketPowerRl = (RelativeLayout) findViewById(R.id.blanketPowerRl);
 		_composeTabBtn = (ImageButton) findViewById(R.id.composeTabBtn);
 		_inboxTabBtn = (ImageButton) findViewById(R.id.inboxTabBtn);
 		_profileTabBtn = (ImageButton) findViewById(R.id.profileTabBtn);
@@ -118,9 +131,10 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		_composeViewLl = (LinearLayout) findViewById(R.id.composeViewLl);
 		_inboxViewLl = (LinearLayout) findViewById(R.id.inboxViewLl);
 		_profileViewLl = (LinearLayout) findViewById(R.id.profileViewLl);
-		_enableLocationBtn = (ImageButton) findViewById(R.id.enableLocationBtn);
-		_turnOnBtn = (ImageButton) findViewById(R.id.turnOnBtn);
 		_map = (CustomMapView) findViewById(R.id.mapCmv);
+		_enableLocationBtn = (Button) findViewById(R.id.enableLocationBtn);
+		_turnOnBtn = (Button) findViewById(R.id.turnOnBtn);
+		_mapOptionsLl = (LinearLayout) findViewById(R.id.mapOptionsLl);
 		
 		shoutBtn.setOnClickListener(_shoutButtonListener);
 		_composeTabBtn.setOnClickListener(_composeTabListener);
@@ -128,7 +142,9 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		_profileTabBtn.setOnClickListener(_profileTabListener);
 		_powerBtn.setOnClickListener(_powerButtonListener);
 		_enableLocationBtn.setOnClickListener(_enableLocationListener);
+		_enableLocationBtn.getBackground().setColorFilter(0xAA9900FF, Mode.SRC_ATOP);
 		_turnOnBtn.setOnClickListener(_turnOnListener);
+		_turnOnBtn.getBackground().setColorFilter(0xAA9900FF, Mode.SRC_ATOP);
 		
 		noticeTabShoutsIv.setVisibility(View.INVISIBLE);
 		noticeTabPointsIv.setVisibility(View.INVISIBLE);
@@ -154,6 +170,11 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		SBLog.i(TAG, "onResume()");
 		super.onResume();
 		//refreshFlags();
+	}
+	 
+	@Override
+	public void onPause() {
+		super.onPause();
 	}
 	
 	public void setMediator(Mediator mediator) {
@@ -315,6 +336,81 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		turnOff();
 	}
 	
+	private boolean turnOn() {
+		SBLog.i(TAG, "turnOn()");
+		if (canAppTurnOn()) {
+			if (!_isTurnedOn.get()) {
+				setPowerSwitchButtonToOn();
+				_isTurnedOn.set(true);
+			}
+			return true;
+		} else {
+			turnOff();
+			return false;
+		}
+	}
+	
+	private void turnOff() {
+		SBLog.i(TAG, "turnOff()");
+		setPowerSwitchButtonToOff();
+		_isTurnedOn.set(false);
+		//_m.stopPolling();
+		showComposeBlanket();
+		canAppTurnOn();
+	}
+	
+	private boolean canAppTurnOn() {
+		boolean canTurnOn = true;
+		
+		if (!_isDataEnabled.get()) {
+			canTurnOn = false;
+			_blanketDataRl.setVisibility(View.VISIBLE);
+		} else {
+			_blanketDataRl.setVisibility(View.GONE);
+		}
+		
+		if (!_isLocationEnabled.get()) {
+			canTurnOn = false;
+			_blanketLocationRl.setVisibility(View.VISIBLE);
+		} else {
+			_blanketLocationRl.setVisibility(View.GONE);
+		}
+		
+		if (!_isPowerPreferenceEnabled.get()) {
+			canTurnOn = false;
+			_blanketPowerRl.setVisibility(View.VISIBLE);
+		} else {
+			_blanketPowerRl.setVisibility(View.GONE);
+		}
+		
+		if (canTurnOn) {
+			hideComposeBlanket();
+		} else {
+			showComposeBlanket();
+		}
+		
+		return canTurnOn;		
+	}
+	
+	private void showComposeBlanket() {
+		SBLog.i(TAG, "showComposeBlanket()");
+		_composeBlanketLl.setVisibility(View.VISIBLE);
+		_map.setVisibility(View.GONE);
+		_mapOptionsLl.setVisibility(View.GONE);
+		_inputLayoutRl.setVisibility(View.GONE);
+		disableMapAndOverlay();
+	}
+	
+	private void hideComposeBlanket() {
+		SBLog.i(TAG, "hideComposeBlanket()");
+		_composeBlanketLl.setVisibility(View.GONE);
+		_map.setVisibility(View.VISIBLE);
+		_mapOptionsLl.setVisibility(View.VISIBLE);
+		_inputLayoutRl.setVisibility(View.VISIBLE);
+		enableMapAndOverlay();
+	}
+	
+	/*
 	private void enableComposeView() {
 		SBLog.i(TAG, "enableComposeView()");
 		boolean removeBlanket = true;
@@ -387,6 +483,7 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		//_m.stopPolling();
 		_isTurnedOn.set(false);
 	}
+	*/
 	
 	private void setPowerSwitchButtonToOn() {
 		SBLog.i(TAG, "setPowerSwitchButtonToOn()");
@@ -409,19 +506,6 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		_composeViewLl.setVisibility(View.VISIBLE);
 		_inboxViewLl.setVisibility(View.GONE);
 		_profileViewLl.setVisibility(View.GONE);
-	}
-	
-	private void showComposeBlanket() {
-		SBLog.i(TAG, "showComposeBlanket()");
-		findViewById(R.id.mapRl).setVisibility(View.GONE);
-		findViewById(R.id.inputRl).setVisibility(View.GONE);
-	}
-	
-	private void hideComposeBlanket() {
-		SBLog.i(TAG, "hideComposeBlanket()");
-		findViewById(R.id.mapRl).setVisibility(View.VISIBLE);
-		findViewById(R.id.inputRl).setVisibility(View.VISIBLE);
-		findViewById(R.id.enableLocationBtn).setVisibility(View.GONE);
 	}
 
 	public void showInbox() {
@@ -530,6 +614,7 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		return _map.getMeasuredHeight();
 	}
 	
+	// http://stackoverflow.com/questions/2150078/android-is-software-keyboard-shown
 	public void hideKeyboard() {
 		SBLog.i(TAG, "hideKeyboard()");
 		InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);

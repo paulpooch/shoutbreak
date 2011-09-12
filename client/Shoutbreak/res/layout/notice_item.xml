@@ -1,17 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="fill_parent" android:layout_height="wrap_content"
-	android:padding="5dp" android:background="@drawable/notice_bg_x">
-	<ImageView android:id="@+id/iconIv" android:layout_width="wrap_content"
-		android:layout_height="wrap_content" android:layout_alignParentLeft="true"
-		android:layout_alignParentTop="true" />
+	android:background="#ffffffff">
+	<LinearLayout android:background="@drawable/notice_bg_x"
+		android:layout_height="80px" android:layout_width="fill_parent"
+		android:layout_alignParentBottom="true" />
+	<ImageView android:id="@+id/iconIv" android:layout_width="wrap_content" android:layout_marginLeft="4dp"
+		android:layout_height="wrap_content" android:layout_centerVertical="true"
+		android:layout_alignParentLeft="true" />
 	<ImageButton android:id="@+id/linkBtn"
-		android:layout_alignParentRight="true" android:layout_marginRight="2dp" android:layout_marginTop="2dp"
-		android:layout_centerInParent="true" android:layout_width="41dp"
-		android:layout_height="41dp" android:src="@drawable/notice_button_zoom" />
+		android:layout_alignParentRight="true" android:layout_marginRight="3dp"
+		android:layout_centerVertical="true" android:layout_width="40dp"
+		android:layout_height="40dp" android:src="@drawable/notice_button_zoom" />
 	<TextView android:id="@+id/textTv" android:layout_width="fill_parent"
 		android:layout_height="wrap_content" android:layout_toRightOf="@id/iconIv"
 		android:layout_marginLeft="10dp" android:textColor="#ff3c056e"
-		android:layout_alignParentTop="true" android:textSize="14dp" android:layout_marginRight="10dp"
-		android:layout_toLeftOf="@id/linkBtn" />
+		android:layout_centerVertical="true" android:textSize="14dp"
+		android:layout_marginRight="10dp" android:layout_toLeftOf="@id/linkBtn" />
 </RelativeLayout>
