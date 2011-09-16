@@ -98,7 +98,7 @@ public class NoticeTabSystem implements Colleague {
 	
 	private List<Notice> getNoticesForUI() {
 		SBLog.i(TAG, "getNoticesForUI()");
-		return getNoticesForUI(0, 50);
+		return getNoticesForUI(0, C.CONFIG_NOTICES_DISPLAYED_IN_TAB);
 	}
 	
 	private List<Notice> getNoticesForUI(int start, int amount) {		

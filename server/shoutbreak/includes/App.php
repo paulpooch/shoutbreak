@@ -125,6 +125,9 @@ class App {
 								}
 							}
 							$this->respond($resp);
+						} else {
+							$resp = array('code' => 'ping_ok');
+							$this->respond($resp);
 						}
 					}
 				}
@@ -153,7 +156,12 @@ class App {
 				if ($uid && $auth && $shoutID && $vote) {
 					if ($this->authIsValid($uid, $auth)) {
 						$engine = new DBEngine();
-						$engine->vote($uid, $shoutID, $vote);	
+						if ($engine->vote($uid, $shoutID, $vote)) {
+							$resp = array('code' => 'vote_ok');
+						} else {
+							$resp = array('code' => 'vote_fail');
+						}
+						$this->respond($resp);
 					}
 				}
 				break;

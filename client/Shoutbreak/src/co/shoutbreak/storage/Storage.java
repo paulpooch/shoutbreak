@@ -158,9 +158,7 @@ public class Storage implements Colleague {
 	
 	public void initializeDensity(CellDensity currentCell) {
 		CellDensity cellDensity = _user.getInitialDensity(currentCell);
-		if (cellDensity.isSet) {
-			_m.getUiGateway().handleDensityChange(cellDensity.density, this.getUserLevel());
-		}
+		_m.getUiGateway().handleDensityChange(cellDensity.isSet, cellDensity.density, this.getUserLevel());
 	}
 	
 	public CellDensity getCellDensity(CellDensity currentCell) {

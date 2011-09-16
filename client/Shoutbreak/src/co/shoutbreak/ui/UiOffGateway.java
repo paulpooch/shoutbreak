@@ -18,7 +18,7 @@ public class UiOffGateway implements IUiGateway {
 	public void handleCreateAccountFailed() {}
 
 	@Override
-	public void handleDensityChange(double newDensity, int level) {}
+	public void handleDensityChange(boolean isDensitySet, double newDensity, int level) {}
 
 	@Override
 	public void handleLevelUp(double cellDensity, int newLevel) {}
@@ -95,5 +95,8 @@ public class UiOffGateway implements IUiGateway {
 
 	@Override
 	public void hideNoticeTab() {}
+
+	@Override
+	public void jumpToProfile() {}
 	
 }

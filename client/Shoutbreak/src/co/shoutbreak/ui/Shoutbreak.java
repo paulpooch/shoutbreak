@@ -72,9 +72,11 @@ public class Shoutbreak extends MapActivity implements Colleague {
 	private RelativeLayout _inputLayoutRl;
 	private LinearLayout _composeBlanketLl;
 	private RelativeLayout _blanketDataRl;
+	private RelativeLayout _blanketDensityRl;
 	private RelativeLayout _blanketLocationRl;
 	private RelativeLayout _blanketPowerRl;
 	private ImageButton _powerBtn;
+	private ImageButton _powerExtensionBtn;
 	private ImageButton _composeTabBtn;
 	private ImageButton _inboxTabBtn;
 	private ImageButton _profileTabBtn;
@@ -120,12 +122,14 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		_inputLayoutRl = (RelativeLayout) findViewById(R.id.inputRl);
 		_composeBlanketLl = (LinearLayout) findViewById(R.id.composeBlanketLl);
 		_blanketDataRl = (RelativeLayout) findViewById(R.id.blanketDataRl);
+		_blanketDensityRl = (RelativeLayout) findViewById(R.id.blanketDensityRl);
 		_blanketLocationRl = (RelativeLayout) findViewById(R.id.blanketLocationRl);
 		_blanketPowerRl = (RelativeLayout) findViewById(R.id.blanketPowerRl);
 		_composeTabBtn = (ImageButton) findViewById(R.id.composeTabBtn);
 		_inboxTabBtn = (ImageButton) findViewById(R.id.inboxTabBtn);
 		_profileTabBtn = (ImageButton) findViewById(R.id.profileTabBtn);
 		_powerBtn = (ImageButton) findViewById(R.id.powerBtn);
+		_powerExtensionBtn = (ImageButton) findViewById(R.id.powerExtensionBtn);
 		_mapCenterBtn = (ImageButton) findViewById(R.id.mapCenterBtn);
 		_splashLl = (LinearLayout) findViewById(R.id.splashLl);
 		_composeViewLl = (LinearLayout) findViewById(R.id.composeViewLl);
@@ -140,7 +144,7 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		_composeTabBtn.setOnClickListener(_composeTabListener);
 		_inboxTabBtn.setOnClickListener(_inboxTabListener);
 		_profileTabBtn.setOnClickListener(_profileTabListener);
-		_powerBtn.setOnClickListener(_powerButtonListener);
+		_powerExtensionBtn.setOnClickListener(_powerButtonListener);
 		_enableLocationBtn.setOnClickListener(_enableLocationListener);
 		_enableLocationBtn.getBackground().setColorFilter(0xAA9900FF, Mode.SRC_ATOP);
 		_turnOnBtn.setOnClickListener(_turnOnListener);
@@ -156,7 +160,8 @@ public class Shoutbreak extends MapActivity implements Colleague {
 			@Override
 			public void onClick(View v) {
 				CenterMapTask task = new CenterMapTask();
-        		task.execute();				
+				// true = do show toast
+        		task.execute(true);				
 			}
 		});
 		
@@ -168,12 +173,21 @@ public class Shoutbreak extends MapActivity implements Colleague {
 	@Override
 	public void onResume() {
 		SBLog.i(TAG, "onResume()");
+		if (_m != null) {
+			// This is not a cold start.
+			_m.setIsUIInForeground(true);
+			checkForReferral();
+		}
 		super.onResume();
 		//refreshFlags();
 	}
 	 
 	@Override
 	public void onPause() {
+		SBLog.i(TAG, "onPause()");
+		if (_m != null) {
+			_m.setIsUIInForeground(false);
+		}
 		super.onPause();
 	}
 	
@@ -188,18 +202,28 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		_m = null;
 	}
 	
-	private class CenterMapTask extends AsyncTask<Void, Void, Void> {    	
+	private class CenterMapTask extends AsyncTask<Boolean, Void, Boolean> {    	
 		@Override
-		protected Void doInBackground(Void... params) {
+		protected Boolean doInBackground(Boolean... showToast) {
 			GeoPoint loc = overlay.getMyLocation();
 			MapController mapController = _map.getController();
 			mapController.animateTo(loc);
-			return null;
+			return showToast[0];
 		}
 		@Override
-		protected void onPostExecute(final Void unused) {
-			_m.getUiGateway().toast("You are here.", Toast.LENGTH_SHORT);
+		protected void onPostExecute(Boolean showToast) {
+			if (showToast) {
+				// this from user pressing centerMap button
+				_m.getUiGateway().toast("You are here.", Toast.LENGTH_SHORT);
+			}
 	    }
+	}
+	
+	public void centerMapOnUser() {
+		if (_isTurnedOn.get() && _map != null && overlay != null && _map.getOverlays().size() > 0 && overlay.isMyLocationEnabled()) {
+			CenterMapTask task = new CenterMapTask();
+			task.execute(false);
+		}
 	}
 	
 	private ServiceConnection _serviceConnection = new ServiceConnection() {
@@ -234,14 +258,21 @@ public class Shoutbreak extends MapActivity implements Colleague {
 	
 	@Override
 	public void onNewIntent(Intent intent) {
+		// Triggered when a notification tries to launch a new intent and app is set to SINGLE_TOP.
+		// In our case this happens when user doesn't kill app, and then returns.
+		// Like hitting home button, then clicking a notification.
 		SBLog.i(TAG, "onNewIntent()");
 		super.onNewIntent(intent);
-		// triggered when a notification tries to launch a new intent
-		// and app is set to SINGLE_TOP
+		
+		// checkForReferral() will check the ORIGINAL intent which has no extras,
+		// even though we may now be coming from a notification, so let's forward those extras before checkForReferral()
+		Bundle extras = intent.getExtras();
+		if (extras != null) {
+			getIntent().putExtras(extras);		
+		}
 		checkForReferral();
 	}
-	
-	
+		
 	private void refreshFlags() {
 		SBLog.i(TAG, "refreshFlags()");
 		_isDataEnabled.set(_m.isDataEnabled());
@@ -289,6 +320,11 @@ public class Shoutbreak extends MapActivity implements Colleague {
 			showInbox();	// app launched from notification
 		} else {
 			showCompose();
+		}
+		// Let's clear the extras now so they don't haunt us.  
+		// Remember if app is OnResume()'d without being destroyed we could have stale extras.
+		if (extras != null) {
+			extras.clear();
 		}
 	}
 	
@@ -359,11 +395,15 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		canAppTurnOn();
 	}
 	
-	private boolean canAppTurnOn() {
+	public boolean canAppTurnOn() {
 		boolean canTurnOn = true;
+		boolean showBlanket = false;
+		boolean suppressPowerButtonError = false;
 		
 		if (!_isDataEnabled.get()) {
 			canTurnOn = false;
+			showBlanket = true;
+			suppressPowerButtonError = true;
 			_blanketDataRl.setVisibility(View.VISIBLE);
 		} else {
 			_blanketDataRl.setVisibility(View.GONE);
@@ -371,6 +411,8 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		
 		if (!_isLocationEnabled.get()) {
 			canTurnOn = false;
+			showBlanket = true;
+			suppressPowerButtonError = true;
 			_blanketLocationRl.setVisibility(View.VISIBLE);
 		} else {
 			_blanketLocationRl.setVisibility(View.GONE);
@@ -378,15 +420,31 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		
 		if (!_isPowerPreferenceEnabled.get()) {
 			canTurnOn = false;
-			_blanketPowerRl.setVisibility(View.VISIBLE);
+			showBlanket = true;
+			if (!suppressPowerButtonError) {
+				_blanketPowerRl.setVisibility(View.VISIBLE);
+			} else {
+				_blanketPowerRl.setVisibility(View.GONE);
+			}
 		} else {
 			_blanketPowerRl.setVisibility(View.GONE);
 		}
 		
 		if (canTurnOn) {
-			hideComposeBlanket();
+			if (!overlay.isDensitySet()) {
+				showBlanket = true;
+				_blanketDensityRl.setVisibility(View.VISIBLE);
+			} else {
+				_blanketDensityRl.setVisibility(View.GONE);
+			}
 		} else {
+			_blanketDensityRl.setVisibility(View.GONE);
+		}
+			
+		if (showBlanket) {
 			showComposeBlanket();
+		} else {
+			hideComposeBlanket();
 		}
 		
 		return canTurnOn;		
@@ -536,11 +594,11 @@ public class Shoutbreak extends MapActivity implements Colleague {
 
 	private void enableMapAndOverlay() {
 		SBLog.i(TAG, "enableMapAndOverlay()");
+		MapController mapController = _map.getController();
 		if (_map.getOverlays().size() == 0) {
 			_map.getOverlays().add(overlay);
+			mapController.setZoom(C.DEFAULT_ZOOM_LEVEL);
 		}
-		MapController mapController = _map.getController();
-		mapController.setZoom(C.DEFAULT_ZOOM_LEVEL);
 		_map.setClickable(true);
 		_map.setEnabled(true);
 		_map.setUserLocationOverlay(overlay);
@@ -596,8 +654,7 @@ public class Shoutbreak extends MapActivity implements Colleague {
 	@Override
 	public void onDestroy() {
 		SBLog.i(TAG, "onDestroy()");
-		if (_m != null) {
-			_m.unregisterUI(false);
+		if (_m != null) {			_m.unregisterUI(false);;
 			_m = null;
 		}
 		super.onDestroy();

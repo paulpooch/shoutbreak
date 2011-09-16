@@ -111,7 +111,7 @@ public class User {
 		SBLog.i(TAG, "getDensityAtCell()");
 		CellDensity result = new CellDensity();
 		result.isSet = false;
-		String sql = "SELECT density, last_updated FROM " + C.DB_TABLE_DENSITY + " WHERE cell_x = ? AND cell_y = ?";
+		String sql = "SELECT density, last_updated FROM " + C.DB_TABLE_DENSITY + " WHERE cell_x = ? AND cell_y = ? ORDER BY last_updated DESC";
 		Cursor cursor = null;
 		try {
 			cursor = _db.rawQuery(sql, new String[] { Integer.toString(cell.cellX), Integer.toString(cell.cellY) });
@@ -216,6 +216,31 @@ public class User {
 	
 	public synchronized CellDensity getCellDensity(CellDensity currentCell) {
 		SBLog.i(TAG, "getCellDensity()");
+		
+		if (_cellDensity != null && _cellDensity.cellX == currentCell.cellX && _cellDensity.cellY == currentCell.cellY) {
+			// Are we still in the same cell?
+			return _cellDensity;
+		} else {
+			// Different cell, let's make a new CellDensity object
+			_cellDensity = new CellDensity();
+			_cellDensity.cellX = currentCell.cellX;
+			_cellDensity.cellY = currentCell.cellY;
+		
+			// Let's see if the database has a value for this cell
+			CellDensity tempCellDensity = getDensityAtCell(_cellDensity);
+			if (tempCellDensity.isSet) {
+				_cellDensity.density = tempCellDensity.density;
+				_cellDensity.isSet = true;
+			}
+			
+			// This will only be isSet if database had a usable value
+			return _cellDensity;
+		}
+	}
+	
+	/* OLD VERSION
+	public synchronized CellDensity getCellDensity(CellDensity currentCell) {
+		SBLog.i(TAG, "getCellDensity()");
 		if (_cellDensity == null) {
 			_cellDensity = new CellDensity();
 		} else {
@@ -237,6 +262,7 @@ public class User {
 		}
 		return _cellDensity;
 	}
+	*/
 	
 	public synchronized void updateAuth(String nonce) {
 		String pw = "";

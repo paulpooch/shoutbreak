@@ -53,6 +53,7 @@ public class Mediator {
 	
 	// state flags
 	private Flag _isUIAlive = new Flag("m:_isUIAlive");
+	private Flag _isUIInForeground = new Flag("m:_isUIInForeground");
 	private Flag _isPollingAlive = new Flag("m:_isPollingAlive");
 	private Flag _isServiceConnected = new Flag("m:_isServiceConnected");
 	private Flag _isServiceStarted = new Flag("m:_isServiceStarted");
@@ -86,6 +87,7 @@ public class Mediator {
 			_isPollingAlive.set(false);
 		}
 		_isUIAlive.set(false);
+		_isUIInForeground.set(false);
 		
 		_isDataEnabled.set(isDataEnabled());
 		_isLocationEnabled.set(isLocationEnabled());
@@ -115,6 +117,7 @@ public class Mediator {
 		// it must be added once the mediator is created
 		SBLog.i(TAG, "registerUI()");
 		_isUIAlive.set(true);
+		_isUIInForeground.set(true);
 		ui.setMediator(this);	
 		_uiGateway = new UiOnGateway(ui);
 		_storage.initializeUiComponents();
@@ -188,6 +191,10 @@ public class Mediator {
 		SBLog.i(TAG, "appLaunchedFromAlarm()");
 		_isServiceStarted.set(true);
 		startPolling();
+	}
+	
+	public void setIsUIInForeground(boolean isUiInForeground) {
+		_isUIInForeground.set(isUiInForeground);
 	}
 	
 	public void startPolling() {
@@ -436,7 +443,7 @@ public class Mediator {
 		public void handleShoutsReceived(JSONArray shouts) {
 			SBLog.i(TAG, "shoutsReceived()");
 			_storage.handleShoutsReceived(shouts);			
-			if (!_isUIAlive.get()) {
+			if (!_isUIInForeground.get()) {
 				_notifier.handleShoutsReceived(shouts.length());				
 			}
 		}
@@ -445,7 +452,7 @@ public class Mediator {
 			SBLog.i(TAG, "densityChange()");
 			// Note: The order in these matters.
 			_storage.handleDensityChange(density, getCurrentCell());
-			_uiGateway.handleDensityChange(density, _storage.getUserLevel());
+			_uiGateway.handleDensityChange(true, density, _storage.getUserLevel());
 		}
 		
 		public void handleScoresReceived(JSONArray scores) {
@@ -621,9 +628,9 @@ public class Mediator {
 			this.handleServerFailure();
 		}
 		
-		public void handleDensityChange(double newDensity, int level) {
+		public void handleDensityChange(boolean isDensitySet, double newDensity, int level) {
 			SBLog.i(TAG, "handleDensityChange()");
-			_ui.overlay.handleDensityChange(newDensity, level);
+			_ui.overlay.handleDensityChange(isDensitySet, newDensity, level);
 		}
 
 		public void handleLevelUp(double cellDensity, int newLevel) {
@@ -786,6 +793,11 @@ public class Mediator {
 		@Override
 		public void hideNoticeTab() {
 			_ui.noticeTab.hide();			
+		}
+
+		@Override
+		public void jumpToProfile() {
+			_ui.showProfile();			
 		}
 
 	}
