@@ -3,6 +3,7 @@
 	android:background="#ff000000">
 
 	<LinearLayout android:layout_width="fill_parent"
+		android:id="@+id/parentLl"
 		android:layout_height="fill_parent" android:orientation="vertical">
 
 		<!-- Title Bar -->

@@ -4,6 +4,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.graphics.Rect;
 import android.graphics.PorterDuff.Mode;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.AsyncTask;
@@ -15,6 +16,7 @@ import android.provider.Settings;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.TouchDelegate;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.animation.AnimationUtils;
@@ -157,6 +159,29 @@ public class Shoutbreak extends MapActivity implements Colleague {
 			public void onClick(View v) {
 				CenterMapTask task = new CenterMapTask();
         		task.execute();				
+			}
+		});
+
+		
+		View parent = findViewById(R.id.parentLl); // power button parent
+
+		// post a runnable to the parent view's message queue so its run after
+		// the view is drawn
+		parent.post(new Runnable() {
+			@Override
+			public void run() {
+				Rect delegateArea = new Rect();
+				_powerBtn.getHitRect(delegateArea);
+				delegateArea.top -= 200;
+				delegateArea.left -= 500;
+				delegateArea.right += 100;
+				delegateArea.bottom += 800;
+				TouchDelegate expandedArea = new TouchDelegate(delegateArea,_powerBtn);
+				// give the delegate to an ancestor of the view we're delegating the area to
+				if (View.class.isInstance(_powerBtn.getParent())) {
+					((View) _powerBtn.getParent())
+							.setTouchDelegate(expandedArea);
+				}
 			}
 		});
 		
