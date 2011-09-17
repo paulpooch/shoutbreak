@@ -37,7 +37,7 @@ public class Notifier {
 	public void handleShoutsReceived(int newShouts) {
 		if (newShouts > 0) {
 			String pluralShout = "shout" + (newShouts > 1 ? "s" : "");
-			notify(newShouts + " " + pluralShout + " received", "Shoutbreak", "you have " + newShouts + " new " + pluralShout);
+			notify(newShouts + " " + pluralShout + " received", "Shoutbreak", "You have " + newShouts + " new " + pluralShout + ".");
 		}
 	}
 }

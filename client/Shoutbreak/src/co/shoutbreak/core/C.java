@@ -4,7 +4,7 @@ package co.shoutbreak.core;
 public class C {
 
 	// CONFIG /////////////////////////////////////////////////////////////////
-	public static final String MODEL_DROID_X = "DROIDX";
+	public static final int CONFIG_NOTICES_DISPLAYED_IN_TAB = 50;
 	public static final String CONFIG_CRASH_REPORT_ADDRESS = "http://app.shoutbreak.co/crash_reports/upload.php";
 	public static final String CONFIG_SUPPORT_ADDRESS = "http://shoutbreak.com/support";
 	public static final long CONFIG_DENSITY_EXPIRATION = (long) 4.32E8; // 5 days
@@ -73,6 +73,8 @@ public class C {
 	public static final String JSON_CODE_INVALID_UID = "invalid_uid";
 	public static final String JSON_CODE_PING_OK = "ping_ok";
 	public static final String JSON_CODE_SHOUTS = "shouts";
+	public static final String JSON_CODE_VOTE_OK = "vote_ok";
+	public static final String JSON_CODE_VOTE_FAIL = "vote_fail";
 	
 	public static final String JSON_ANDROID_ID = "android_id";
 	public static final String JSON_AUTH = "auth";
@@ -143,7 +145,7 @@ public class C {
 	public static final int PURPOSE_DEATH = 62; // don't repeat this - just die
 	
 	// DATABASE ///////////////////////////////////////////////////////////////
-	public static final int DB_VERSION = 3;
+	public static final int DB_VERSION = 1;
 
 	public static final String DB_NAME = "sbdb";
 	public static final String DB_TABLE_DENSITY = "DENSITY";

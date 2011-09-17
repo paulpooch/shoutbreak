@@ -59,8 +59,16 @@ public class UserLocationOverlay extends MyLocationOverlay {
 	private int _latRadiusLatForPeopleCount;
 	private int _peopleCount;
 
-	public void handleDensityChange(double newDensity, int newLevel) {
+	private boolean _isDensitySet;
+	
+	public void handleDensityChange(boolean isDensitySet, double newDensity, int newLevel) {
+		_isDensitySet = isDensitySet;
 		handleRadiusChange(newDensity, newLevel);
+		_ui.canAppTurnOn();
+	}
+	
+	public boolean isDensitySet() {
+		return _isDensitySet;
 	}
 	
 	public void handleLevelUp(double newDensity, int newLevel) {
@@ -79,49 +87,11 @@ public class UserLocationOverlay extends MyLocationOverlay {
     	//}	
 	}
 	
-	/* TODO: not sure what to do with this
-	public void update(Observable observable, Object data) {
-		/* TODO: not sure what to do with this
-		StateManager stateManager = (StateManager)observable;
-		StateEvent e = (StateEvent)data;
-		if (e.locationTurnedOn) {
-			// TODO: toggleLocationTracker in Service
-			enableMyLocation();
-			stateManager.setIsUserOverlayUsingGPS(true);
-		}
-		if (e.locationTurnedOff) {
-			disableMyLocation();
-			stateManager.setIsUserOverlayUsingGPS(false);
-		}		
-		if (e.densityChanged || e.levelChanged) {
-			_density = _ui.getUser().getCellDensity().density;
-			_baseRadiusMeters = User.calculateRadius(_ui.getUser().getLevel(), _density);
-			_calibrateZoomLevelForRadiusSize = true;
-			_baseRadiusPxIsWrong = true;
-			_resizeAdjustmentPx = 0;
-			// this calls draw() immediately rather than wait for next interval
-			//if (_canvas != null && _mapView != null) {
-			//_mapView.draw(_canvas);
-			//}	
-		}
-	}*/
-
-	//public void updateUserInfo(int level, CellDensity cellDensity) {
-	//	_baseRadiusPxIsWrong = true;
-	//	_baseRadiusMeters = User.calculateRadius(level, _density);
-	//	_calibrateZoomLevelForRadiusSize = true;
-	//	_resizeAdjustmentPx = 0;
-	//	if (cellDensity.isSet) {
-	//		setPopulationDensity(level, cellDensity.density);
-	//	}
-	//	// int people = _ui.getUserInfo().getLevel() * C.CONFIG_PEOPLE_PER_LEVEL;
-	//	// _baseRadiusMeters = (float) Math.sqrt(people / (_density * Math.PI));
-	//}
-
 	public UserLocationOverlay(Shoutbreak ui, MapView map) {
 		super(ui, map);
 		SBLog.i(TAG, "new UserLocationOverlay()");
-		_ui = ui;		
+		_ui = ui;
+		_isDensitySet = false;
 		_baseRadiusPx = -1;
 		_baseRadiusMeters = 0;
 		_zoomLevel = C.DEFAULT_ZOOM_LEVEL;
@@ -145,6 +115,12 @@ public class UserLocationOverlay extends MyLocationOverlay {
 		_resizeIcon = Bitmap.createBitmap(resizeBitmap, 0, 0, _resizeIconSize.x, _resizeIconSize.y);
 	}
 
+	@Override
+	public void onLocationChanged(Location location) {
+		_ui.centerMapOnUser();
+		super.onLocationChanged(location);
+	}
+	
 	@Override 
 	protected void drawMyLocation(Canvas canvas, MapView mapView, Location lastFix, GeoPoint myLocation, long when) {
 		// called every time map is redrawn....   don't do anything heavy here
@@ -285,6 +261,7 @@ public class UserLocationOverlay extends MyLocationOverlay {
 
 		// TODO: fancy smooth zooming
 		// TODO: can we use zoom to show a given lat/long span
+		// _map.getController().zoomToSpan(latSpanE6, lonSpanE6);
 
 		_map.getController().setZoom(_zoomLevel);
 		_calibrateZoomLevelForRadiusSize = false;

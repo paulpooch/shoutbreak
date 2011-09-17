@@ -216,16 +216,28 @@ public class Polling {
 			public void handleMessage(Message message) {
 				switch (message.what) {
 					case C.HTTP_DID_SUCCEED: {
-						_safeM.handleVoteFinish(shoutId, vote);
-						// Unless vote occurs in idle thread, we don't need to sendMessage.
-						//CrossThreadPacket xPacket = (CrossThreadPacket)message.obj;
-						//_uiThreadHandler.sendMessage(Message.obtain(_uiThreadHandler, C.STATE_IDLE, xPacket)); // STATE doesn't matter - going to die
+						CrossThreadPacket xPacket = (CrossThreadPacket)message.obj;
+						try {
+							String code = xPacket.json.getString(C.JSON_CODE);
+							if (code.equals(C.JSON_CODE_VOTE_OK)) {
+								_safeM.handleVoteFinish(shoutId, vote);
+							} else if (code.equals(C.JSON_CODE_VOTE_FAIL)) {
+								// server knows it failed
+								_safeM.handleVoteFailed(message, shoutId, vote);
+							} else {
+								// something horrible happened
+								_safeM.handleVoteFailed(message, shoutId, vote);
+							}
+						} catch (JSONException ex) {
+							SBLog.e(TAG, ex.getMessage());
+							_safeM.handleVoteFailed(message, shoutId, vote);
+						}
 						break;
 					}
 					case C.HTTP_DID_ERROR: {
 						_safeM.handleVoteFailed(message, shoutId, vote);
 					}
-				}
+				}				
 			}
 		};
 		PostData postData = new PostData();

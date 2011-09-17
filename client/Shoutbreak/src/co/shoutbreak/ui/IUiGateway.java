@@ -13,7 +13,7 @@ public interface IUiGateway {
 	public void handleCreateAccountFailed();
 	public void handleShoutSent();
 	public void handleShoutFailed();
-	public void handleDensityChange(double newDensity, int level);
+	public void handleDensityChange(boolean isDensitySet, double newDensity, int level);
 	public void handleLevelUp(double cellDensity, int newLevel);
 	public void handlePointsChange(int newPoints);
 	public void handleServerFailure();
@@ -44,5 +44,6 @@ public interface IUiGateway {
 	public void jumpToShoutInInbox(String shoutId);
 	public void scrollInboxToPosition(int position);
 	public void toast(String text, int duration);
+	public void jumpToProfile();
 	
 }

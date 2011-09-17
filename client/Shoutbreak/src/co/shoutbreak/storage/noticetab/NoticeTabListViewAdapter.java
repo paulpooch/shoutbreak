@@ -48,6 +48,11 @@ public class NoticeTabListViewAdapter extends BaseAdapter implements Colleague {
 						_m.getUiGateway().hideNoticeTab();
 						break;
 					}
+					case C.NOTICE_ACCOUNT_CREATED: {
+						_m.getUiGateway().jumpToProfile();
+						_m.getUiGateway().hideNoticeTab();
+						break;
+					}
 				}
 			}
 		};
@@ -104,7 +109,11 @@ public class NoticeTabListViewAdapter extends BaseAdapter implements Colleague {
 				holder.isLinkable = true;
 				break;
 			}
-			case C.NOTICE_ACCOUNT_CREATED:
+			case C.NOTICE_ACCOUNT_CREATED: {
+				holder.icon.setBackgroundResource(R.drawable.notice_icon_user);
+				holder.isLinkable = true;
+				break;
+			}
 			case C.NOTICE_LEVEL_UP: {
 				holder.icon.setBackgroundResource(R.drawable.notice_icon_user);
 				break;

@@ -38,20 +38,42 @@
 					android:layout_weight="1" android:layout_width="fill_parent"
 					android:layout_height="wrap_content" android:background="#ff000000"
 					android:layout_marginTop="50dp" android:orientation="vertical">
-					<RelativeLayout android:id="@+id/blanketDataRl"
+					<RelativeLayout android:id="@+id/blanketDataRl" android:layout_marginRight="20dp"
 						android:layout_marginTop="40dp" android:orientation="vertical"
+						android:layout_marginLeft="20dp"
 						android:layout_width="fill_parent" android:layout_height="40dp">
-						<TextView android:layout_width="wrap_content"
-							android:layout_alignParentTop="true"
-							android:layout_centerHorizontal="true" android:layout_height="wrap_content"
+						<ImageView android:id="@+id/warning1"
+							android:layout_height="wrap_content" android:layout_width="wrap_content"
+							android:layout_alignParentLeft="true"
+							android:layout_alignParentTop="true" android:src="@drawable/notice_icon_warning" />
+						<TextView android:layout_width="wrap_content" android:layout_marginLeft="10dp"
+							android:layout_toRightOf="@id/warning1" android:layout_marginTop="6dp"
+							android:layout_alignParentTop="true" android:layout_height="wrap_content"
 							android:text="You must have data service to shout." />
 					</RelativeLayout>
-					<RelativeLayout android:id="@+id/blanketLocationRl"
-						android:layout_marginTop="40dp" android:orientation="vertical"
-						android:layout_width="fill_parent" android:layout_height="80dp">
-						<TextView android:layout_width="wrap_content"
+					<RelativeLayout android:id="@+id/blanketDensityRl" android:layout_marginRight="20dp"
+						android:layout_marginTop="40dp" android:orientation="vertical" android:layout_marginLeft="20dp"
+						android:layout_width="fill_parent" android:layout_height="40dp">
+						<ImageView android:id="@+id/warning2"
+							android:layout_height="wrap_content" android:layout_width="wrap_content"
+							android:layout_alignParentLeft="true"
+							android:layout_alignParentTop="true" android:src="@drawable/notice_icon_warning" />
+						<TextView android:layout_width="wrap_content" android:layout_toRightOf="@id/warning2"
 							android:layout_alignParentTop="true"
-							android:layout_centerHorizontal="true" android:layout_height="wrap_content"
+							android:layout_height="wrap_content" android:layout_marginLeft="10dp" android:layout_marginRight="20dp" 
+							android:text="Please wait while we determine the user density of your location." />
+					</RelativeLayout>
+					<RelativeLayout android:id="@+id/blanketLocationRl" android:layout_marginRight="20dp"
+						android:layout_marginTop="40dp" android:orientation="vertical" android:layout_marginLeft="20dp"
+						android:layout_width="fill_parent" android:layout_height="110dp">
+						<ImageView android:id="@+id/warning3"
+							android:layout_height="wrap_content" android:layout_width="wrap_content"
+							android:layout_alignParentLeft="true"
+							android:layout_alignParentTop="true" android:src="@drawable/notice_icon_warning" />
+						<TextView android:layout_width="wrap_content"
+							android:layout_toRightOf="@id/warning3"
+							android:layout_alignParentTop="true" android:layout_marginLeft="10dp"
+							android:layout_height="wrap_content" android:layout_marginTop="6dp"
 							android:text="Your location is required to send shouts." />
 						<Button android:id="@+id/enableLocationBtn"
 							android:layout_centerHorizontal="true" android:textSize="18dp"
@@ -61,13 +83,17 @@
 							android:shadowColor="#1e003c" android:shadowDx="2"
 							android:shadowDy="2" android:shadowRadius="2" />
 					</RelativeLayout>
-					<RelativeLayout android:id="@+id/blanketPowerRl"
+					<RelativeLayout android:id="@+id/blanketPowerRl" android:layout_marginLeft="20dp" android:layout_marginRight="20dp"
 						android:layout_marginTop="40dp" android:orientation="vertical"
-						android:layout_width="fill_parent" android:layout_height="80dp">
+						android:layout_width="fill_parent" android:layout_height="110dp">
+						<ImageView android:id="@+id/warning4"
+							android:layout_height="wrap_content" android:layout_width="wrap_content"
+							android:layout_alignParentLeft="true"
+							android:layout_alignParentTop="true" android:src="@drawable/notice_icon_warning" />
 						<TextView android:layout_width="wrap_content"
-							android:layout_alignParentTop="true"
-							android:layout_centerHorizontal="true" android:layout_height="wrap_content"
-							android:text="Power switch must be on in order to shout." />
+							android:layout_alignParentTop="true" android:layout_marginLeft="10dp"
+							android:layout_toRightOf="@id/warning4" android:layout_height="wrap_content"
+							android:text="Power switch must be on in order to send &amp; receive shouts." />
 						<Button android:id="@+id/turnOnBtn" android:layout_width="220dp"
 							android:layout_alignParentBottom="true" android:textSize="18dp"
 							android:textStyle="bold" android:textColor="#ffffffff"
@@ -96,8 +122,9 @@
 							android:textStyle="bold" android:shadowDy="2"
 							android:shadowRadius="4" android:textSize="50px" />
 						<ImageView android:layout_marginLeft="4dp"
-							android:layout_marginRight="6dp" android:src="@drawable/map_person_icon"
-							android:layout_width="wrap_content" android:layout_height="wrap_content" />
+							android:layout_marginTop="4dp" android:layout_marginRight="6dp"
+							android:src="@drawable/map_person_icon" android:layout_width="wrap_content"
+							android:layout_height="wrap_content" />
 						<ImageButton android:id="@+id/mapCenterBtn"
 							android:layout_width="wrap_content" android:layout_height="wrap_content"
 							android:padding="7dp" android:src="@drawable/map_center" />
@@ -130,7 +157,8 @@
 				android:layout_height="fill_parent" android:background="#ff000000"
 				android:orientation="vertical">
 				<ListView android:id="@+id/inboxLv" android:layout_width="fill_parent"
-					android:cacheColorHint="#ff000000" android:layout_height="fill_parent"
+					android:background="#ff000000"
+					android:cacheColorHint="#ff000000" android:layout_height="wrap_content"
 					android:layout_marginTop="34px" android:divider="#00000000" />
 			</LinearLayout>
 
@@ -193,7 +221,7 @@
 				android:background="#ffffffff">
 				<ListView android:id="@+id/noticeLv" android:layout_width="fill_parent"
 					android:divider="#00000000" android:cacheColorHint="#ffffffff"
-					android:layout_height="fill_parent" />
+					android:layout_height="wrap_content" />
 			</LinearLayout>
 			<RelativeLayout android:layout_weight="0"
 				android:layout_height="47px" android:orientation="horizontal"
@@ -233,5 +261,11 @@
 		android:layout_width="fill_parent" android:layout_height="fill_parent"
 		android:background="@drawable/splash" android:orientation="vertical">
 	</LinearLayout>
+
+	<!--  Power Button Extension -->
+	<ImageButton android:id="@+id/powerExtensionBtn"
+		android:layout_alignParentTop="true" android:layout_alignParentRight="true"
+		android:background="@null" android:layout_width="100dp"
+		android:layout_height="40dp" />
 
 </RelativeLayout>
