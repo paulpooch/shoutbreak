@@ -16,10 +16,19 @@ public class Notifier {
 	private static final String TAG = "Notifier";
 	
 	private ShoutbreakService _service;
-	
+	// Note this number is new shouts since last application open.
+	// It's not unread count of inbox.
+	// It is also not unacknowledged noticeTab shout notices.
+	private int _newShoutsSinceLastOpen;
+
 	public Notifier(Mediator mediator, ShoutbreakService service) {
 		SBLog.i(TAG, "new Notifier()");
 		_service = service;
+		_newShoutsSinceLastOpen = 0;
+	}
+	
+	public void resetNotifierShoutCount() {
+		_newShoutsSinceLastOpen = 0;
 	}
 	
 	public void notify(String tickerText, String title, String message) {
@@ -36,8 +45,9 @@ public class Notifier {
 	
 	public void handleShoutsReceived(int newShouts) {
 		if (newShouts > 0) {
-			String pluralShout = "shout" + (newShouts > 1 ? "s" : "");
-			notify(newShouts + " " + pluralShout + " received", "Shoutbreak", "You have " + newShouts + " new " + pluralShout + ".");
+			_newShoutsSinceLastOpen += newShouts;
+			String pluralShout = "shout" + (_newShoutsSinceLastOpen > 1 ? "s" : "");
+			notify(_newShoutsSinceLastOpen + " " + pluralShout + " received", "Shoutbreak", "You have " + _newShoutsSinceLastOpen + " new " + pluralShout + ".");
 		}
 	}
 }

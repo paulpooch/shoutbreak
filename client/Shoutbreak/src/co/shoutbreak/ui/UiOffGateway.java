@@ -57,12 +57,6 @@ public class UiOffGateway implements IUiGateway {
 	public void onLocationEnabled() {}
 
 	@Override
-	public void onPowerPreferenceDisabled() {}
-
-	@Override
-	public void onPowerPreferenceEnabled() {}
-
-	@Override
 	public void unsetUiMediator() {}
 
 	@Override
@@ -98,5 +92,11 @@ public class UiOffGateway implements IUiGateway {
 
 	@Override
 	public void jumpToProfile() {}
+
+	@Override
+	public void onPowerPreferenceDisabled(boolean onUiThread) {}
+
+	@Override
+	public void onPowerPreferenceEnabled(boolean onUiThread) {}
 	
 }

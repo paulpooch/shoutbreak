@@ -64,7 +64,7 @@ public class UserLocationOverlay extends MyLocationOverlay {
 	public void handleDensityChange(boolean isDensitySet, double newDensity, int newLevel) {
 		_isDensitySet = isDensitySet;
 		handleRadiusChange(newDensity, newLevel);
-		_ui.canAppTurnOn();
+		_ui.canAppTurnOn(true, false);
 	}
 	
 	public boolean isDensitySet() {

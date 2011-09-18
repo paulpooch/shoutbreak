@@ -35,8 +35,8 @@ public interface IUiGateway {
 	public void onDataDisabled();
 	public void onLocationEnabled();
 	public void onLocationDisabled();
-	public void onPowerPreferenceEnabled();
-	public void onPowerPreferenceDisabled();
+	public void onPowerPreferenceEnabled(boolean onUiThread);
+	public void onPowerPreferenceDisabled(boolean onUiThread);
 	public void setupNoticeTabListView(NoticeTabListViewAdapter listAdapter, boolean itemsCanFocus, OnItemClickListener listViewItemClickListener);	
 	public void setupInboxListView(InboxListViewAdapter listAdapter, boolean itemsCanFocus, OnItemClickListener inboxItemClickListener);
 	public void showTopNotice();

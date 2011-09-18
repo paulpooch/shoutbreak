@@ -15,7 +15,7 @@ public class C {
 	public static final int CONFIG_MIN_TARGETS_FOR_HIT_COUNT = 3;
 	public static final int CONFIG_MAX_SIMULTANEOUS_HTTP_CONNECTIONS = 5; // for ConnectionQueue
 	public static final String CONFIG_SERVER_ADDRESS = "http://app.shoutbreak.co";
-	public static final long CONFIG_IDLE_LOOP_TIME_WITH_UI_OPEN = 20000; // 60 seconds
+	public static final long CONFIG_IDLE_LOOP_TIME_WITH_UI_OPEN = 60000; // 60 seconds
 	public static final int CONFIG_PEOPLE_PER_LEVEL = 5;
 	public static final double CONFIG_SHOUT_SCORING_DEFAULT_POWER = 0.10; //  0.10 to have a 95% chance that your lower bound is correct
 	public static final long CONFIG_NOTICE_DISPLAY_TIME = 5000; // 5 seconds
@@ -145,7 +145,7 @@ public class C {
 	public static final int PURPOSE_DEATH = 62; // don't repeat this - just die
 	
 	// DATABASE ///////////////////////////////////////////////////////////////
-	public static final int DB_VERSION = 1;
+	public static final int DB_VERSION = 6;
 
 	public static final String DB_NAME = "sbdb";
 	public static final String DB_TABLE_DENSITY = "DENSITY";

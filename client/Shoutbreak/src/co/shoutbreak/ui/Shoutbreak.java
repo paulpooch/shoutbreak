@@ -205,10 +205,15 @@ public class Shoutbreak extends MapActivity implements Colleague {
 	private class CenterMapTask extends AsyncTask<Boolean, Void, Boolean> {    	
 		@Override
 		protected Boolean doInBackground(Boolean... showToast) {
-			GeoPoint loc = overlay.getMyLocation();
-			MapController mapController = _map.getController();
-			mapController.animateTo(loc);
-			return showToast[0];
+			if (overlay != null) {
+				GeoPoint loc = overlay.getMyLocation();
+				if (loc != null) {
+					MapController mapController = _map.getController();
+					mapController.animateTo(loc);
+					return showToast[0];
+				}
+			}
+			return false;
 		}
 		@Override
 		protected void onPostExecute(Boolean showToast) {
@@ -293,9 +298,9 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		}
 		
 		if (_isPowerPreferenceEnabled.get()) {
-			_m.onPowerPreferenceEnabled();
+			_m.onPowerPreferenceEnabled(true);
 		} else {
-			_m.onPowerPreferenceDisabled();
+			_m.onPowerPreferenceDisabled(true);
 		}
 	}
 	
@@ -317,6 +322,9 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		SBLog.i(TAG, "checkForReferral()");
 		Bundle extras = getIntent().getExtras();
 		if (extras != null && extras.getBoolean(C.NOTIFICATION_LAUNCHED_FROM_NOTIFICATION)) {
+			if (_m != null) {
+				_m.resetNotifierShoutCount();
+			}
 			showInbox();	// app launched from notification
 		} else {
 			showCompose();
@@ -331,123 +339,33 @@ public class Shoutbreak extends MapActivity implements Colleague {
 	private void handleFirstRun() {
 		if (_m.isFirstRun()) {
 			// TODO: tutorial goes here
-			TutorialDialog tut = new TutorialDialog(this);
-	        tut.show();
+			//TutorialDialog tut = new TutorialDialog(this);
+	        //tut.show();
 		}
 	}
 	
 	public void onLocationEnabled() {
 		SBLog.i(TAG, "onLocationEnabled()");
 		_isLocationEnabled.set(true);
-		turnOn();
+		turnOn(true);
 	}
 	
 	public void onLocationDisabled() {
 		SBLog.i(TAG, "onLocationDisabled()");
 		_isLocationEnabled.set(false);
-		turnOff();
+		turnOff(true);
 	}
 	
 	public void onDataEnabled() {
 		SBLog.i(TAG, "onDataEnabled()");
 		_isDataEnabled.set(true);
-		turnOn();
+		turnOn(true);
 	}
 	
 	public void onDataDisabled() {
 		SBLog.i(TAG, "onDataDisabled()");
 		_isDataEnabled.set(false);
-		turnOff();
-	}
-	
-	public void onPowerPreferenceEnabled() {
-		SBLog.i(TAG, "onPowerPreferenceEnabled()");
-		_isPowerPreferenceEnabled.set(true);
-		turnOn();
-	}
-	
-	public void onPowerPreferenceDisabled() {
-		SBLog.i(TAG, "onPowerPreferenceDisabled()");
-		_isPowerPreferenceEnabled.set(false);
-		turnOff();
-	}
-	
-	private boolean turnOn() {
-		SBLog.i(TAG, "turnOn()");
-		if (canAppTurnOn()) {
-			if (!_isTurnedOn.get()) {
-				setPowerSwitchButtonToOn();
-				_isTurnedOn.set(true);
-			}
-			return true;
-		} else {
-			turnOff();
-			return false;
-		}
-	}
-	
-	private void turnOff() {
-		SBLog.i(TAG, "turnOff()");
-		setPowerSwitchButtonToOff();
-		_isTurnedOn.set(false);
-		//_m.stopPolling();
-		showComposeBlanket();
-		canAppTurnOn();
-	}
-	
-	public boolean canAppTurnOn() {
-		boolean canTurnOn = true;
-		boolean showBlanket = false;
-		boolean suppressPowerButtonError = false;
-		
-		if (!_isDataEnabled.get()) {
-			canTurnOn = false;
-			showBlanket = true;
-			suppressPowerButtonError = true;
-			_blanketDataRl.setVisibility(View.VISIBLE);
-		} else {
-			_blanketDataRl.setVisibility(View.GONE);
-		}
-		
-		if (!_isLocationEnabled.get()) {
-			canTurnOn = false;
-			showBlanket = true;
-			suppressPowerButtonError = true;
-			_blanketLocationRl.setVisibility(View.VISIBLE);
-		} else {
-			_blanketLocationRl.setVisibility(View.GONE);
-		}
-		
-		if (!_isPowerPreferenceEnabled.get()) {
-			canTurnOn = false;
-			showBlanket = true;
-			if (!suppressPowerButtonError) {
-				_blanketPowerRl.setVisibility(View.VISIBLE);
-			} else {
-				_blanketPowerRl.setVisibility(View.GONE);
-			}
-		} else {
-			_blanketPowerRl.setVisibility(View.GONE);
-		}
-		
-		if (canTurnOn) {
-			if (!overlay.isDensitySet()) {
-				showBlanket = true;
-				_blanketDensityRl.setVisibility(View.VISIBLE);
-			} else {
-				_blanketDensityRl.setVisibility(View.GONE);
-			}
-		} else {
-			_blanketDensityRl.setVisibility(View.GONE);
-		}
-			
-		if (showBlanket) {
-			showComposeBlanket();
-		} else {
-			hideComposeBlanket();
-		}
-		
-		return canTurnOn;		
+		turnOff(true);
 	}
 	
 	private void showComposeBlanket() {
@@ -701,29 +619,192 @@ public class Shoutbreak extends MapActivity implements Colleague {
 
 	private OnClickListener _powerButtonListener = new OnClickListener() {
 		public void onClick(View v) {
+			if (!_isTurnedOn.get()) {
+				setPowerSwitchButtonToOn();
+			} else {
+				setPowerSwitchButtonToOff();
+			}
+			PowerButtonTask task = new PowerButtonTask();
+			task.execute();
+//			SBLog.i(TAG, "_powerButtonListener.onClick()");
+//			// only change the power preference when they press the on/off switch
+//			if (!_isTurnedOn.get()) {
+//				_m.setPowerPreferenceToOn();
+//				if (!turnOn()) {
+//					String text = "unable to turn on app, ";
+//					if (!_isLocationEnabled.get() && !_isDataEnabled.get()) {
+//						text += "location and data connection unavailable";
+//					} else if (!_isLocationEnabled.get()) {
+//						text += "location unavailable";
+//					} else if (!_isDataEnabled.get()) {
+//						text += "data unavailable";
+//					}
+//					_m.getUiGateway().toast(text, Toast.LENGTH_SHORT);
+//					SBLog.i(TAG, text);
+//				}
+//			} else {
+//				_m.setPowerPreferenceToOff();
+//				turnOff();
+//			}
+		}
+	};
+	
+	// This is the call stack of how this works:
+	//
+	// _mediator.setPowerPreferenceToOn(onUiThread)		->
+	// _preferences.setPowerPreferenceToOn(onUiThread)	->
+	// _m.onPowerPreferenceEnabled(onUiThread)			->
+	// _uiGateway.onPowerPreferenceEnabled(onUiThread)  ->
+	// _ui.onPowerPreferenceEnabled(onUiThread)			->
+	// onPowerPreferenceEnabled(onUiThread) [right under this function]
+	private class PowerButtonTask extends AsyncTask<Void, Void, Void> {    	
+		@Override
+		protected Void doInBackground(Void... unused) {
 			SBLog.i(TAG, "_powerButtonListener.onClick()");
 			// only change the power preference when they press the on/off switch
 			if (!_isTurnedOn.get()) {
-				_m.setPowerPreferenceToOn();
-				if (!turnOn()) {
-					String text = "unable to turn on app, ";
-					if (!_isLocationEnabled.get() && !_isDataEnabled.get()) {
-						text += "location and data connection unavailable";
-					} else if (!_isLocationEnabled.get()) {
-						text += "location unavailable";
-					} else if (!_isDataEnabled.get()) {
-						text += "data unavailable";
-					}
-					_m.getUiGateway().toast(text, Toast.LENGTH_SHORT);
-					SBLog.i(TAG, text);
+				// Turn On.
+				if (canAppTurnOn(false, true)) {
+					_m.setPowerPreferenceToOn(false);
 				}
 			} else {
-				_m.setPowerPreferenceToOff();
-				turnOff();
+				// Turn Off.
+				_m.setPowerPreferenceToOff(false);	
+			}
+			return null;
+		}
+		@Override
+		protected void onPostExecute(Void unused) {
+			// Now we're on the Ui Thread, just see what the outcome of callback city was and set button to reflect that outcome.
+			if (!_isTurnedOn.get()) {
+				canAppTurnOn(true, false);
+				_m.getUiGateway().disableInputs();
+				setPowerSwitchButtonToOff();
+			} else {
+				canAppTurnOn(true, false);
+				_m.getUiGateway().enableInputs();
+				setPowerSwitchButtonToOn();
+				
+			}
+	    }
+	}
+
+	public void onPowerPreferenceEnabled(boolean onUiThread) {
+		SBLog.i(TAG, "onPowerPreferenceEnabled()");
+		_isPowerPreferenceEnabled.set(true);
+		turnOn(onUiThread);
+	}
+	
+	public void onPowerPreferenceDisabled(boolean onUiThread) {
+		SBLog.i(TAG, "onPowerPreferenceDisabled()");
+		_isPowerPreferenceEnabled.set(false);
+		turnOff(onUiThread);
+	}
+	
+	private boolean turnOn(boolean onUiThread) {
+		SBLog.i(TAG, "turnOn()");
+		if (canAppTurnOn(onUiThread, false)) {
+			if (!_isTurnedOn.get()) {
+				if (onUiThread) {
+					setPowerSwitchButtonToOn();
+				}
+				_isTurnedOn.set(true);
+			}
+			return true;
+		} else {
+			turnOff(onUiThread);
+			return false;
+		}
+	}
+	
+	private void turnOff(boolean onUiThread) {
+		SBLog.i(TAG, "turnOff()");
+		if (onUiThread) {
+			setPowerSwitchButtonToOff();
+		}
+		_isTurnedOn.set(false);
+		//_m.stopPolling();
+		//showComposeBlanket();
+		canAppTurnOn(onUiThread, false);
+	}
+	
+	public boolean canAppTurnOn(boolean onUiThread, boolean causedByPowerButton) {
+		boolean canTurnOn = true;
+		boolean showBlanket = false;
+		boolean suppressPowerButtonError = false;
+		
+		if (!_isDataEnabled.get()) {
+			canTurnOn = false;
+			showBlanket = true;
+			suppressPowerButtonError = true;
+			if (onUiThread) {
+				_blanketDataRl.setVisibility(View.VISIBLE);
+			}
+		} else {
+			if (onUiThread) {
+				_blanketDataRl.setVisibility(View.GONE);
 			}
 		}
-	};
-
+		
+		if (!_isLocationEnabled.get()) {
+			canTurnOn = false;
+			showBlanket = true;
+			suppressPowerButtonError = true;
+			if (onUiThread) {
+				_blanketLocationRl.setVisibility(View.VISIBLE);
+			}
+		} else {
+			if (onUiThread) {
+				_blanketLocationRl.setVisibility(View.GONE);
+			}
+		}
+		
+		if (!causedByPowerButton && !_isPowerPreferenceEnabled.get()) {
+			canTurnOn = false;
+			showBlanket = true;
+			if (!suppressPowerButtonError) {
+				if (onUiThread) {
+					_blanketPowerRl.setVisibility(View.VISIBLE);
+				}
+			} else {
+				if (onUiThread) {
+					_blanketPowerRl.setVisibility(View.GONE);
+				}
+			}
+		} else {
+			if (onUiThread) {
+				_blanketPowerRl.setVisibility(View.GONE);
+			}
+		}
+		
+		if (canTurnOn) {
+			if (!overlay.isDensitySet()) {
+				showBlanket = true;
+				if (onUiThread) {
+					_blanketDensityRl.setVisibility(View.VISIBLE);
+				}
+			} else {
+				if (onUiThread) {
+					_blanketDensityRl.setVisibility(View.GONE);
+				}
+			}
+		} else {
+			if (onUiThread) {
+				_blanketDensityRl.setVisibility(View.GONE);
+			}
+		}
+			
+		if (onUiThread) {
+			if (showBlanket) {
+				showComposeBlanket();
+			} else {
+				hideComposeBlanket();
+			}
+		}
+		
+		return canTurnOn;		
+	}
+	
 	private OnClickListener _shoutButtonListener = new OnClickListener() {
 		public void onClick(View v) {
 			SBLog.i(TAG, "_shoutButtonListener.onClick()");
@@ -756,7 +837,7 @@ public class Shoutbreak extends MapActivity implements Colleague {
 	private OnClickListener _turnOnListener = new OnClickListener() {
 		public void onClick(View v) {
 			SBLog.i(TAG, "_turnOnListener.onClick()");
-			_m.setPowerPreferenceToOn();
+			_m.setPowerPreferenceToOn(true);
 		}
 	};
 	

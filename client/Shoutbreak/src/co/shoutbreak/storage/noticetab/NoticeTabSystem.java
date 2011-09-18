@@ -45,7 +45,6 @@ public class NoticeTabSystem implements Colleague {
 	@Override
 	public void unsetMediator() {
 		_m = null;
-
 	}
 	
 	public void refresh() {

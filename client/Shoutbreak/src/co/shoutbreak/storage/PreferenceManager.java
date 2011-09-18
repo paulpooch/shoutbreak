@@ -35,14 +35,14 @@ public class PreferenceManager {
 		return _preferences.getBoolean(key, defaultValue);
 	}
 	
-	public void setPowerPreferenceToOn() {
+	public void setPowerPreferenceToOn(boolean onUiThread) {
 		putBoolean(C.PREFERENCE_POWER_STATE, true);
-		_m.onPowerPreferenceEnabled();
+		_m.onPowerPreferenceEnabled(onUiThread);
 	}
 	
-	public void setPowerPreferenceToOff() {
+	public void setPowerPreferenceToOff(boolean onUiThread) {
 		putBoolean(C.PREFERENCE_POWER_STATE, false);
-		_m.onPowerPreferenceDisabled();
+		_m.onPowerPreferenceDisabled(onUiThread);
 	}
 	
 	public boolean isPowerPreferenceSetToOn() {

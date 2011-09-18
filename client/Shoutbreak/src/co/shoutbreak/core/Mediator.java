@@ -106,9 +106,9 @@ public class Mediator {
 		}
 		
 		if (_isPowerPreferenceEnabled.get()) {
-			onPowerPreferenceEnabled();
+			onPowerPreferenceEnabled(true);
 		} else {
-			onPowerPreferenceDisabled();
+			onPowerPreferenceDisabled(true);
 		}
 	}
 	
@@ -184,27 +184,33 @@ public class Mediator {
 	public void appLaunchedFromUI() {
 		SBLog.i(TAG, "appLaunchedFromUI()");
 		_isServiceStarted.set(true);
-		startPolling();
+		startPolling(true);
 	}
 	
 	public void appLaunchedFromAlarm() {
 		SBLog.i(TAG, "appLaunchedFromAlarm()");
 		_isServiceStarted.set(true);
-		startPolling();
+		startPolling(true);
 	}
 	
 	public void setIsUIInForeground(boolean isUiInForeground) {
 		_isUIInForeground.set(isUiInForeground);
 	}
 	
-	public void startPolling() {
+	public void resetNotifierShoutCount() {
+		_notifier.resetNotifierShoutCount();
+	}
+	
+	public void startPolling(boolean onUiThread) {
 		SBLog.i(TAG, "startPolling()");
 		if (!_isPollingAlive.get()) {
 			if (_isPowerPreferenceEnabled.get() && _isLocationEnabled.get() && _isDataEnabled.get() && _isServiceStarted.get()) {
 				SBLog.i(TAG, "app fully functional");
 				_isPollingAlive.set(true);
 				_threadLauncher.startPolling();
-				_uiGateway.enableInputs();
+				if (onUiThread) {
+					_uiGateway.enableInputs();
+				}
 			} else {
 				if (!_isPowerPreferenceEnabled.get()) {
 					SBLog.e(TAG, "unable to start service, power preference set to off");
@@ -221,10 +227,15 @@ public class Mediator {
 		}
 	}
 	
-	public void stopPolling() {
+	
+	public void stopPolling(boolean onUiThread) {
 		SBLog.i(TAG, "stopPolling()");
 		if (_isPollingAlive.get()) {
-			_uiGateway.disableInputs();
+			if (onUiThread) {
+				// This method normally will disable inputs.
+				// If called from PowerButtonTask (power button click), then you must manually disable on your own.
+				_uiGateway.disableInputs();
+			}
 			_isPollingAlive.set(false);
 			_threadLauncher.stopPolling();
 		} else {
@@ -238,44 +249,44 @@ public class Mediator {
 			CrossThreadPacket xPacket = (CrossThreadPacket)message.obj;
 			if (xPacket.purpose == C.PURPOSE_LOOP_FROM_UI || xPacket.purpose == C.PURPOSE_LOOP_FROM_UI_DELAYED) {
 				// The Polling loop just crashed.
-				stopPolling();
+				stopPolling(true);
 			}
 		} else {
 			// Something really bad happened
-			stopPolling();
+			stopPolling(true);
 		}
 	}
 	
-	public void setPowerPreferenceToOn() {
-		_preferences.setPowerPreferenceToOn();
+	public void setPowerPreferenceToOn(boolean onUiThread) {
+		_preferences.setPowerPreferenceToOn(onUiThread);
 	}
 	
-	public void setPowerPreferenceToOff() {
-		_preferences.setPowerPreferenceToOff();
+	public void setPowerPreferenceToOff(boolean onUiThread) {
+		_preferences.setPowerPreferenceToOff(onUiThread);
 	}
 	
 	public boolean isPowerPreferenceEnabled() {
 		return _preferences.isPowerPreferenceSetToOn();
 	}
 	
-	public void onPowerPreferenceEnabled() {
+	public void onPowerPreferenceEnabled(boolean onUiThread) {
 		SBLog.i(TAG, "onPowerEnabled()");
 		_isPowerPreferenceEnabled.set(true);
 		_service.enableAlarmReceiver();
 		if (_isUIAlive.get()) {
-			_uiGateway.onPowerPreferenceEnabled();
+			_uiGateway.onPowerPreferenceEnabled(onUiThread);
 		}
-		startPolling();
+		startPolling(onUiThread);
 	}
 	
-	public void onPowerPreferenceDisabled() {
+	public void onPowerPreferenceDisabled(boolean onUiThread) {
 		SBLog.i(TAG, "onPowerDisabled()");
 		_isPowerPreferenceEnabled.set(false);
 		_service.disableAlarmReceiver();
 		if (_isUIAlive.get()) {
-			_uiGateway.onPowerPreferenceDisabled();
+			_uiGateway.onPowerPreferenceDisabled(onUiThread);
 		}
-		stopPolling();
+		stopPolling(onUiThread);
 	}
 	
 	public boolean isLocationEnabled() {
@@ -289,7 +300,7 @@ public class Mediator {
 			_uiGateway.onLocationEnabled();
 		}
 		_storage.initializeDensity(getCurrentCell());
-		startPolling();
+		startPolling(true);
 	}
 	
 	public void onLocationDisabled() {
@@ -298,7 +309,7 @@ public class Mediator {
 		if (_isUIAlive.get()) {
 			_uiGateway.onLocationDisabled();
 		}
-		stopPolling();
+		stopPolling(true);
 	}
 	
 	public boolean isDataEnabled() {
@@ -311,7 +322,7 @@ public class Mediator {
 		if (_isUIAlive.get()) {
 			_uiGateway.onDataEnabled();
 		}
-		startPolling();
+		startPolling(true);
 	}
 	
 	public void onDataDisabled() {
@@ -320,7 +331,7 @@ public class Mediator {
 		if (_isUIAlive.get()) {
 			_uiGateway.onDataDisabled();
 		}
-		stopPolling();
+		stopPolling(true);
 	}
 	
 	public boolean isFirstRun() {
@@ -708,13 +719,13 @@ public class Mediator {
 		}
 
 		@Override
-		public void onPowerPreferenceDisabled() {
-			_ui.onPowerPreferenceDisabled();			
+		public void onPowerPreferenceDisabled(boolean onUiThread) {
+			_ui.onPowerPreferenceDisabled(onUiThread);			
 		}
 
 		@Override
-		public void onPowerPreferenceEnabled() {
-			_ui.onPowerPreferenceEnabled();	
+		public void onPowerPreferenceEnabled(boolean onUiThread) {
+			_ui.onPowerPreferenceEnabled(onUiThread);	
 		}
 
 		@Override
