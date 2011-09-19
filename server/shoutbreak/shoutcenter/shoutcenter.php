@@ -81,7 +81,30 @@ var ShoutCenter = (function() {
 		$('#shout_form #ups').val(shout.ups);
 		$('#shout_form #downs').val(shout.downs);
 		$('#shout_form #hit').val(shout.hit);
-	}
+	};
+
+	var displayShouts = function(data) {
+		$('#shouts').remove();
+		lastJson = data;
+		var items = [];
+		$.each(lastJson, function(key, val) {
+			var shout = new Shout(val);
+			var html = '<div class="row"><div class="col">' + shout.time + '</div><div class="col code shout_id">' + shout.shout_id + '</div><div class="col">' + shout.txt + '</div><div class="col">' + shout.lat 
+					+ '</div><div class="col">' + shout.long + '</div><div class="col">' + shout.open + '</div><div class="col">' + shout.power
+					+ '</div><div class="col">' + shout.user_id + '</div><div class="col">' + shout.ups + '</div><div class="col">' + shout.downs + '</div><div class="col">' + shout.hit + '</div></div>';
+			items.push(html);
+		});
+		$('<div/>', {
+			'id': 'shouts',
+			html: items.join('')
+		}).insertAfter('#shout_table .header.row');
+		$('#shouts .row').click(function() {
+			var shoutId = $(this).find('.shout_id').text();
+			var shout = shouts[shoutId];
+			populateShoutForm(shout);
+			$('#shout_table #detailrow').insertAfter($(this)).show();
+		});
+	};
 	
 	$(document).ready(function() {
 	
@@ -89,7 +112,7 @@ var ShoutCenter = (function() {
 			var items = [];
 			$.each(lastJson, function(key, val) {
 				var shout = new Shout(val);
-				var html = '<div class="row"><div class="col">' + shout.time + '</div><div class="col code shout_id">' + shout.shout_id + '</div><div class="col">' + shout.text + '</div><div class="col">' + shout.lat 
+				var html = '<div class="row"><div class="col">' + shout.time + '</div><div class="col code shout_id">' + shout.shout_id + '</div><div class="col">' + shout.txt + '</div><div class="col">' + shout.lat 
 						+ '</div><div class="col">' + shout.long + '</div><div class="col">' + shout.open + '</div><div class="col">' + shout.power
 						+ '</div><div class="col">' + shout.user_id + '</div><div class="col">' + shout.ups + '</div><div class="col">' + shout.downs + '</div><div class="col">' + shout.hit + '</div></div>';
 				items.push(html);
@@ -101,16 +124,26 @@ var ShoutCenter = (function() {
 			.appendTo('body');
 		}
 		
-		
-		
 		$('#recent_shouts').click(function() {
 			$.getJSON('/shoutcenter/backend.php?a=get_recent_shouts', function(data) {
+				displayShouts(data);				
+			});
+		});
+
+		$('#all_shouts').click(function() {
+			$.getJSON('/shoutcenter/backend.php?a=get_all_shouts', function(data) {
+				displayShouts(data);				
+			});
+		});
+
+		$('#show_users').click(function() {
+			$.getJSON('/shoutcenter/backend.php?a=get_users', function(data) {
 
 				lastJson = data;
 				var items = [];
 				$.each(lastJson, function(key, val) {
 					var shout = new Shout(val);
-					var html = '<div class="row"><div class="col">' + shout.time + '</div><div class="col code shout_id">' + shout.shout_id + '</div><div class="col">' + shout.text + '</div><div class="col">' + shout.lat 
+					var html = '<div class="row"><div class="col">' + shout.time + '</div><div class="col code shout_id">' + shout.shout_id + '</div><div class="col">' + shout.txt + '</div><div class="col">' + shout.lat 
 							+ '</div><div class="col">' + shout.long + '</div><div class="col">' + shout.open + '</div><div class="col">' + shout.power
 							+ '</div><div class="col">' + shout.user_id + '</div><div class="col">' + shout.ups + '</div><div class="col">' + shout.downs + '</div><div class="col">' + shout.hit + '</div></div>';
 					items.push(html);
@@ -130,30 +163,13 @@ var ShoutCenter = (function() {
 			});
 		});
 
-		$('#show_users').click(function() {
-			$.getJSON('/shoutcenter/backend.php?a=get_users', function(data) {
-
-				lastJson = data;
-				var items = [];
-				$.each(lastJson, function(key, val) {
-					var shout = new Shout(val);
-					var html = '<div class="row"><div class="col">' + shout.time + '</div><div class="col code shout_id">' + shout.shout_id + '</div><div class="col">' + shout.text + '</div><div class="col">' + shout.lat 
-							+ '</div><div class="col">' + shout.long + '</div><div class="col">' + shout.open + '</div><div class="col">' + shout.power
-							+ '</div><div class="col">' + shout.user_id + '</div><div class="col">' + shout.ups + '</div><div class="col">' + shout.downs + '</div><div class="col">' + shout.hit + '</div></div>';
-					items.push(html);
+		$('#cron_close_shouts').click(function(data) {
+			$.getJSON('/shoutcenter/backend.php?a=cron_close_shouts', function(data) {
+				var resultCode = "";
+				$.each(data, function(key, val) {
+					resultCode += key + " : " + val;
 				});
-				$('<div/>', {
-					'id': 'shouts',
-					html: items.join('')
-				}).insertAfter('.header.row');
-
-				$('#shouts .row').click(function() {
-					var shoutId = $(this).find('.shout_id').text();
-					var shout = shouts[shoutId];
-					populateShoutForm(shout);
-					$('#detailrow').insertAfter($(this)).show();
-				});
-				
+				alert(resultCode);
 			});
 		});
 		
@@ -166,12 +182,17 @@ var ShoutCenter = (function() {
 </script>
 </head>
 <body>
+
 <div id="header">
 	<a href="http://app.shoutbreak.co/logs/log.txt">log</a>
 	<a href="#" id="recent_shouts">recent shouts</a>
+	<a href="#" id="all_shouts">all shouts (use sparingly please)</a>
 	<a href="#" id="show_users">show users</a>
+	<a href="#" id="cron_close_shouts">trigger close shout cron</a>
 </div>
+
 <div id="content">
+
 	<div id="shout_table">	
 		<div class="header row">
 			<div class="col">time</div>
@@ -237,12 +258,79 @@ var ShoutCenter = (function() {
 						<input type="submit" value="Submit" />
 					</div>
 				</div>
-				<div style="float: left">
-					<input type="button" value="Close">"
+			</form>
+		</div>
+	</div>
+
+	<div id="user_table">	
+		<div class="header row">
+			<div class="col">last_activity_time</div>
+			<div class="col">level</div>
+			<div class="col">pending_level_up</div>
+			<div class="col">phone_num</div>
+			<div class="col">points</div>
+			<div class="col">android_id</div>
+			<div class="col">carrier</div>
+			<div class="col">device_id</div>
+			<div class="col code">user_id</div>
+			<div class="col">user_pw_hash</div>
+			<div class="col">user_pw_salt</div>
+		</div>
+		<div id="detailrow">
+			<form id="user_form" class="cssform" action="">
+				<div style="float: left;">
+					<p>
+						<label for="last_activity_time">last_activity_time</label>
+						<input id="last_activity_time" type="text" value="" />
+					</p>
+					<p>
+						<label for="level">level</label>
+						<input id="level" type="text" value="" />
+					</p>
+					<p>
+						<label for="pending_level_up">pending_level_up</label>
+						<input id="pending_level_up" type="text" value="" />
+					</p>
+					<p>
+						<label for="phone_num">phone_num</label>
+						<input id="phone_num" type="text" value="" />
+					</p>
+					<p>
+						<label for="points">points</label>
+						<input id="points" type="text" value="" />
+					</p>
+					<p>
+						<label for="android_id">android_id</label>
+						<input id="android_id" type="text" value="" />
+					</p>
+					<p>
+						<label for="carrier">carrier</label>
+						<input id="carrier" type="text" value="" />
+					</p>
+					<p>
+						<label for="device_id">device_id</label>
+						<input id="device_id" type="text" value="" />
+					</p>
+					<p>
+						<label for="user_id">user_id</label>
+						<input id="user_id" type="text" value="" />
+					</p>
+					<p>
+						<label for="user_pw_hash">user_pw_hash</label>
+						<input id="user_pw_hash" type="text" value="" />
+					</p>
+					<p>
+						<label for="user_pw_salt">user_pw_salt</label>
+						<input id="user_pw_salt" type="text" value="" />
+					</p>
+					<div style="margin-left: 150px;">
+						<input type="submit" value="Submit" />
+					</div>
 				</div>
 			</form>
 		</div>
 	</div>
+	
 </div>
 </body>
 </html>

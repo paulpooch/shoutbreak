@@ -43,6 +43,7 @@ public class NoticeTabListViewAdapter extends BaseAdapter implements Colleague {
 			public void onClick(View view) {
 				NoticeViewHolder holder = (NoticeViewHolder) view.getTag();
 				switch (holder.type) {
+					case C.NOTICE_POINTS_SHOUT:
 					case C.NOTICE_SHOUTS_RECEIVED: {
 						_m.getUiGateway().jumpToShoutInInbox(holder.ref);
 						_m.getUiGateway().hideNoticeTab();
@@ -96,7 +97,10 @@ public class NoticeTabListViewAdapter extends BaseAdapter implements Colleague {
 		}
 		
 		switch (entry.type) {
-			case C.NOTICE_POINTS: {
+			case C.NOTICE_POINTS_SHOUT:
+				holder.isLinkable = true;
+				// No break... fall into NOTICE_POINTS_VOTING. Intentional.
+			case C.NOTICE_POINTS_VOTING: {
 				if (entry.value > 0) {
 					holder.icon.setBackgroundResource(R.drawable.notice_icon_points);
 				} else {
@@ -118,6 +122,7 @@ public class NoticeTabListViewAdapter extends BaseAdapter implements Colleague {
 				holder.icon.setBackgroundResource(R.drawable.notice_icon_user);
 				break;
 			}
+			case C.NOTICE_VOTE_FAILED:
 			case C.NOTICE_CREATE_ACCOUNT_FAILED:
 			case C.NOTICE_SHOUT_FAILED: {
 				holder.icon.setBackgroundResource(R.drawable.notice_icon_warning);

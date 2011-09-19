@@ -64,7 +64,7 @@ public class NoticeTabSystem implements Colleague {
 				if (notice.type == C.NOTICE_SHOUTS_RECEIVED) {
 					unreadCount += notice.value;
 				}
-				if (notice.type == C.NOTICE_POINTS) {
+				if (notice.type == C.NOTICE_POINTS_SHOUT || notice.type == C.NOTICE_POINTS_VOTING) {
 					points += notice.value;
 				}
 			}

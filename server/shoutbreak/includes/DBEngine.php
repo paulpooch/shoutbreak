@@ -949,10 +949,30 @@ class DBEngine {
 	public function admin_getRecentShouts() {
 		global $app;
 		$shoutTable = $this->TABLE_SHOUT_PREFIX . $this->TABLE_SHOUT_INDEX;
-		$shouts = $this->sdb->select($shoutTable, "SELECT * FROM $shoutTable WHERE time IS NOT NULL ORDER BY time LIMIT 50");
+		$shouts = $this->sdb->select($shoutTable, "SELECT * FROM $shoutTable WHERE time IS NOT NULL ORDER BY time DESC LIMIT 50");
 		if (count($shouts) > 0) {
 			$app->respond($shouts);
 		}
+	}
+	
+	public function admin_getAllShouts() {
+		global $app;
+		$results = array();
+		$moreExist = true;
+		$shoutTable = $this->TABLE_SHOUT_PREFIX . $this->TABLE_SHOUT_INDEX;
+		$shouts = $this->sdb->select($shoutTable, "SELECT * FROM $shoutTable WHERE time IS NOT NULL ORDER BY time DESC");
+		while (count($shouts) > 0 && $moreExist) {
+			foreach ($shouts as $shout) {
+				array_push($results, $shout);
+			}
+			if ($this->sdb->NextToken != null) {
+				$moreExist = true;
+				$shouts = $this->sdb->select($shoutTable, "SELECT * FROM $shoutTable WHERE time IS NOT NULL ORDER BY time DESC", $this->sdb->NextToken);
+			} else {
+				$moreExist = false;
+			}
+		}
+		$app->respond($results);
 	}
 	
 	public function countLiveUsers() {

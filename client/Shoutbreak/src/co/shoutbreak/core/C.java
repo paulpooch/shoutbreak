@@ -15,7 +15,7 @@ public class C {
 	public static final int CONFIG_MIN_TARGETS_FOR_HIT_COUNT = 3;
 	public static final int CONFIG_MAX_SIMULTANEOUS_HTTP_CONNECTIONS = 5; // for ConnectionQueue
 	public static final String CONFIG_SERVER_ADDRESS = "http://app.shoutbreak.co";
-	public static final long CONFIG_IDLE_LOOP_TIME_WITH_UI_OPEN = 60000; // 60 seconds
+	public static final long CONFIG_IDLE_LOOP_TIME_WITH_UI_OPEN = 20000; // 60 seconds
 	public static final int CONFIG_PEOPLE_PER_LEVEL = 5;
 	public static final double CONFIG_SHOUT_SCORING_DEFAULT_POWER = 0.10; //  0.10 to have a 95% chance that your lower bound is correct
 	public static final long CONFIG_NOTICE_DISPLAY_TIME = 5000; // 5 seconds
@@ -31,7 +31,7 @@ public class C {
 	public static final String STRING_LEVEL_UP_2 = "Your shouts will reach ";
 	public static final String STRING_SHOUT_SENT = "Shout complete.";
 	public static final String STRING_SHOUT_FAILED = "Shout failed.";
-	public static final String STRING_VOTE_FAILED = "Vote failed.";
+	public static final String STRING_VOTE_FAILED = "Vote failed.  Shout is too old.";
 	public static final String STRING_CREATE_ACCOUNT_FAILED = "Unable to create an account.";
 	public static final String STRING_PING_FAILED = "Unable to reach server.";
 	
@@ -46,7 +46,8 @@ public class C {
 	public static final int NOTICE_CREATE_ACCOUNT_FAILED = 6;
 	public static final int NOTICE_PING_FAILED = 7;
 	public static final int NOTICE_VOTE_FAILED = 8;
-	public static final int NOTICE_POINTS = 9;
+	public static final int NOTICE_POINTS_VOTING = 9;
+	public static final int NOTICE_POINTS_SHOUT = 10;
 	
 	// MAP ////////////////////////////////////////////////////////////////////
 	public static final int DEFAULT_ZOOM_LEVEL = 16;

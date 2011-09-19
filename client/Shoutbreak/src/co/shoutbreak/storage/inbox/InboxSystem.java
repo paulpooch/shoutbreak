@@ -212,7 +212,7 @@ public class InboxSystem {
 		shout.ups = jsonScore.optInt(C.JSON_SHOUT_UPS, C.NULL_UPS);
 		shout.downs = jsonScore.optInt(C.JSON_SHOUT_DOWNS, C.NULL_DOWNS);
 		shout.hit = jsonScore.optInt(C.JSON_SHOUT_HIT, C.NULL_HIT);
-		shout.pts = C.NULL_PTS;
+		shout.pts = jsonScore.optInt(C.JSON_POINTS, C.NULL_PTS);
 		shout.approval = jsonScore.optInt(C.JSON_SHOUT_APPROVAL, C.NULL_APPROVAL);
 		shout.open = jsonScore.optInt(C.JSON_SHOUT_OPEN, 0) == 1 ? true : C.NULL_OPEN;
 		this.updateScore(shout);
@@ -222,7 +222,7 @@ public class InboxSystem {
 		if (!shout.open){
 			Shout shoutFromDB = this.getShout(shout.id);
 			if (shoutFromDB.is_outbox) {
-				_m.handlePointsChange(C.POINTS_SHOUT, shout.pts);								
+				_m.handlePointsForShout(C.POINTS_SHOUT, shout.pts, shout.id);								
 			}
 		}
 	}

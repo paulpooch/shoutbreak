@@ -10,8 +10,17 @@ switch ($a) {
 	case 'get_recent_shouts':
 		$engine->admin_getRecentShouts();
 		break;
+	case 'get_all_shouts':
+		$engine->admin_getAllShouts();
+		break;
 	case 'get_users':
 		$engine->admin_showUsers();
+		break;
+	case 'cron_close_shouts':
+		$engine->cron_closeShouts();
+		$resp = array('code' => 'done');
+		$app->respond($resp);
+		break;
 }
 
 ?>

@@ -405,9 +405,9 @@ public class Mediator {
 	}
 	
 	// Triggered from a Shout close.  Have user save earned points.
-	public void handlePointsChange(int pointsType, int pointsValue) {
+	public void handlePointsForShout(int pointsType, int pointsValue, String shoutId) {
 		SBLog.i(TAG, "pointsChange()");
-		_storage.handlePointsChange(pointsType, pointsValue);
+		_storage.handlePointsForShout(pointsType, pointsValue, shoutId);
 		_uiGateway.handlePointsChange(_storage.getUserPoints());
 	}
 	
@@ -510,8 +510,8 @@ public class Mediator {
 		
 		public void handleVoteFailed(Message message, String shoutId, int vote) {
 			_storage.handleVoteFailed(shoutId, vote);
-			_uiGateway.handleServerFailure();
-			possiblyStopPolling(message);
+			//_uiGateway.handleServerFailure();
+			//possiblyStopPolling(message);
 		}
 		
 		public void handleAccountCreated(String uid, String password) {

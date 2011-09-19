@@ -46,8 +46,10 @@ public class Storage implements Colleague {
 	// HANDLE STUFF ///////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////
 	
-	public void handlePointsChange(int pointsType, int pointsValue) {
-		 _user.savePoints(pointsType, pointsValue);		
+	public void handlePointsForShout(int pointsType, int pointsValue, String shoutId) {
+		 _user.savePoints(pointsType, pointsValue);
+		 String strPoints = (pointsValue > 1 || pointsValue < -1) ? "points" : "point";		
+		_noticeTabSystem.createNotice(C.NOTICE_POINTS_SHOUT, pointsValue, "Your shout earned " + pointsValue + " " + strPoints + ".", shoutId);
 	}
 	
 	public void handleDensityChange(double density, CellDensity currentCell) {
@@ -101,7 +103,8 @@ public class Storage implements Colleague {
 		_inboxSystem.reflectVote(shoutId, vote);
 		_user.savePoints(C.POINTS_VOTE, User.calculatePointsForVote(this.getUserLevel()));
 		int points = User.calculatePointsForVote(this.getUserLevel());
-		givePointsNotice(points, "voting", shoutId);
+		String strPoints = (points > 1 || points < -1) ? "points" : "point";		
+		_noticeTabSystem.createNotice(C.NOTICE_POINTS_VOTING, points, "You gained " + points + " " + strPoints + " for voting.", shoutId);
 	}
 	
 	public void handleShoutSent() {
@@ -129,11 +132,6 @@ public class Storage implements Colleague {
 	///////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////
-	
-	private void givePointsNotice(int pointsGained, String forWhat, String ref) {
-		String strPoints = (pointsGained > 1) ? "points" : "point";		
-		_noticeTabSystem.createNotice(C.NOTICE_POINTS, pointsGained, "You gained " + pointsGained + " " + strPoints + " for " + forWhat + ".", ref);
-	}
 	
 	public void deleteShout(String shoutID) {
 		_inboxSystem.deleteShout(shoutID);
