@@ -675,9 +675,9 @@ public class Mediator {
 			_ui.pointsTv.setText("Points earned: " + points);
 			_ui.nextLevelAtTv.setText("Next level at: " + nextLevelAt);
 			//_progressPb.setMax(100);
-			_ui.progressPb.setProgress(50);
+			//_ui.progressPb.setProgress(50);
 			if (nextLevelAt > 0) {
-				_ui.progressPb.setProgress(points / nextLevelAt);
+				//_ui.progressPb.setProgress(points / nextLevelAt);
 			}			
 		}
 		

@@ -25,7 +25,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -66,7 +65,6 @@ public class Shoutbreak extends MapActivity implements Colleague {
 	public TextView levelTv;
 	public TextView pointsTv;
 	public TextView nextLevelAtTv;
-	public ProgressBar progressPb;
 	public TextView mapPeopleCountTv;
 	
 	private RelativeLayout _inputLayoutRl;
@@ -116,7 +114,6 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		levelTv = (TextView) findViewById(R.id.userLevelTv);
 		pointsTv = (TextView) findViewById(R.id.userPointsTv);
 		nextLevelAtTv = (TextView) findViewById(R.id.userNextLevelAtTv);
-		progressPb = (ProgressBar) findViewById(R.id.userProgressPb);
 		mapPeopleCountTv = (TextView) findViewById(R.id.mapPeopleCountTv);
 		
 		_inputLayoutRl = (RelativeLayout) findViewById(R.id.inputRl);

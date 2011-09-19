@@ -1,8 +1,10 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:myNamespace="http://schemas.android.com/apk/res/co.shoutbreak"
 	android:layout_width="fill_parent" android:layout_height="fill_parent"
 	android:background="#ff000000">
 
 	<LinearLayout android:layout_width="fill_parent"
+		android:id="@+id/parentLl"
 		android:layout_height="fill_parent" android:orientation="vertical">
 
 		<!-- Title Bar -->
@@ -24,7 +26,7 @@
 		<!-- Views -->
 		<RelativeLayout android:id="@+id/viewContainerRl"
 			android:visibility="visible" android:layout_width="fill_parent"
-			android:layout_height="wrap_content" android:layout_weight="1">
+			android:layout_height="fill_parent" android:layout_weight="1">
 
 			<!-- Compose -->
 			<LinearLayout android:id="@+id/composeViewLl"
@@ -166,20 +168,63 @@
 				android:visibility="invisible" android:layout_width="fill_parent"
 				android:layout_height="fill_parent" android:background="#ff000000"
 				android:orientation="vertical">
-				<TextView android:layout_height="wrap_content" android:id="@+id/userLevelTv"
-					android:layout_width="wrap_content" android:textColor="#ffffff"
-					android:textSize="20dp" />
-				<TextView android:layout_height="wrap_content" android:id="@+id/userPointsTv"
-					android:layout_width="wrap_content" android:textColor="#ffffff"
-					android:textSize="20dp" />
-				<TextView android:layout_height="wrap_content" android:id="@+id/userNextLevelAtTv"
-					android:layout_width="wrap_content" android:textColor="#ffffff"
-					android:textSize="20dp" />
-				<ProgressBar android:id="@+id/userProgressPb"
-					android:layout_width="fill_parent" android:layout_height="wrap_content"
-					android:progressDrawable="@layout/progress_bar_states"
-					style="@android:style/Widget.ProgressBar.Horizontal"
-					android:layout_marginRight="5dp" />
+				<RelativeLayout android:background="#000000" android:layout_width="fill_parent" android:layout_weight="0"
+					android:layout_height="fill_parent">
+					<RelativeLayout android:id="@+id/stats_header_background"
+						android:layout_alignParentTop="true" 
+						android:background="@drawable/stats_header_background"
+						android:layout_width="fill_parent"
+						android:layout_height="wrap_content"
+						android:layout_marginTop="85dp" />
+					<TextView android:layout_height="wrap_content"
+						android:layout_width="wrap_content"
+						android:textColor="#ffffff"
+						android:textSize="40dp"
+						android:layout_above="@id/stats_header_background"
+						android:text="User Stats" />
+					<TextView android:layout_height="wrap_content" android:id="@+id/userLevelTv"
+						android:layout_width="wrap_content" android:textColor="#ffffff"
+						android:textSize="20dp" />
+					<TextView android:layout_height="wrap_content" android:id="@+id/userPointsTv"
+						android:layout_width="wrap_content" android:textColor="#ffffff"
+						android:textSize="20dp" />
+					<TextView android:layout_height="wrap_content" android:id="@+id/userNextLevelAtTv"
+						android:layout_width="wrap_content" android:textColor="#ffffff"
+						android:textSize="20dp" />
+					<RelativeLayout android:id="@+id/levelRl" android:layout_alignParentBottom="true" 
+						android:background="@drawable/shout_input_bg" android:layout_width="fill_parent"
+						android:layout_height="wrap_content">
+						<co.shoutbreak.ui.RoundProgress
+					        android:id="@+id/levelProgressBar"
+					        android:layout_width="fill_parent"
+					        android:layout_height="30px"
+					        android:layout_marginTop="12px"
+					        android:layout_gravity="center_horizontal"
+					        android:layout_alignParentTop="true"
+					        myNamespace:max="100"
+					        myNamespace:progress="35"
+					        myNamespace:progressDrawable="@drawable/progress_clip"
+					        myNamespace:track="@drawable/progress_bar_bg" />
+						<LinearLayout
+							android:orientation="horizontal"
+						    android:layout_width="fill_parent"
+						    android:layout_height="wrap_content">
+						    <ImageView android:src="@drawable/stats_person_decrease"
+								android:layout_gravity="left"
+								android:layout_width="wrap_content"
+								android:layout_height="wrap_content"
+								android:layout_weight="1"
+								android:layout_marginTop="5dp" />
+						    <ImageView android:src="@drawable/stats_person_increase"
+								android:layout_gravity="right"
+								android:layout_width="wrap_content"
+								android:layout_height="wrap_content"
+								android:layout_weight="1"
+								android:layout_marginTop="5dp" />
+						</LinearLayout>
+					</RelativeLayout>
+					
+				</RelativeLayout>
 			</LinearLayout>
 
 		</RelativeLayout>
