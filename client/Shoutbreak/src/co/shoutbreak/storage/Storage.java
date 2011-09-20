@@ -48,7 +48,7 @@ public class Storage implements Colleague {
 	
 	public void handlePointsForShout(int pointsType, int pointsValue, String shoutId) {
 		 _user.savePoints(pointsType, pointsValue);
-		 String strPoints = (pointsValue == 1 || pointsValue == -1) ? "points" : "point";		
+		 String strPoints = (pointsValue == 1 || pointsValue == -1) ? "point" : "points";		
 		_noticeTabSystem.createNotice(C.NOTICE_POINTS_SHOUT, pointsValue, "Your shout earned " + pointsValue + " " + strPoints + ".", shoutId);
 	}
 	
@@ -103,7 +103,7 @@ public class Storage implements Colleague {
 		_inboxSystem.reflectVote(shoutId, vote);
 		_user.savePoints(C.POINTS_VOTE, User.calculatePointsForVote(this.getUserLevel()));
 		int points = User.calculatePointsForVote(this.getUserLevel());
-		String strPoints = (points == 1 || points == -1) ? "points" : "point";		
+		String strPoints = (points == 1 || points == -1) ? "point" : "points";		
 		_noticeTabSystem.createNotice(C.NOTICE_POINTS_VOTING, points, "You gained " + points + " " + strPoints + " for voting.", shoutId);
 	}
 	
