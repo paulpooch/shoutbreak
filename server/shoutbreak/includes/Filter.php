@@ -205,10 +205,11 @@ class Filter {
 				$clean['txt'] = $v;
 			}
 		}
-		
+
+		// TODO: Set max_range back to 9999 when done fucking around.
 		if (array_key_exists('power', $post)) {
 			$v = $post['power'];
-			$v = filter_var($v, FILTER_VALIDATE_INT, array('options' => array('min_range' => 0, 'max_range' => 9999)));
+			$v = filter_var($v, FILTER_VALIDATE_INT, array('options' => array('min_range' => 0, 'max_range' => 99999)));
 			if ($v !== false) { // we don't want 0 seeming false
 				$clean['power'] = $v;
 			}

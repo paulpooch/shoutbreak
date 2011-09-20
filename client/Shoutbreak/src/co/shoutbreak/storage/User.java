@@ -72,6 +72,10 @@ public class User {
 		return 1;
 	}
 	
+	public static int calculateShoutreach(int level) {
+		return level * C.CONFIG_PEOPLE_PER_LEVEL;
+	}
+	
 	// NON-WRITE METHODS //////////////////////////////////////////////////////
 	
 	public int getPoints() {

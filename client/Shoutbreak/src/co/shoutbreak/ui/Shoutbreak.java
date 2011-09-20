@@ -62,10 +62,13 @@ public class Shoutbreak extends MapActivity implements Colleague {
 	public TextView noticeTabPointsTv;	
 	public ListView noticeTabListView;
 	public ListView inboxListView;
-	public TextView levelTv;
-	public TextView pointsTv;
-	public TextView nextLevelAtTv;
 	public TextView mapPeopleCountTv;
+	public TextView userStatsParagraphTv;
+	public TextView userCurrentShoutreachTv;
+	public TextView userPointsTv;
+	public TextView userNextLevelAtTv;
+	public TextView userNextShoutreachTv;
+	public RoundProgress userLevelUpProgessRp;
 	
 	private RelativeLayout _inputLayoutRl;
 	private LinearLayout _composeBlanketLl;
@@ -111,10 +114,13 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		noticeTabPointsIv = (ImageView) findViewById(R.id.noticeTabPointsIv);
 		noticeTabShoutsTv = (TextView) findViewById(R.id.noticeTabShoutsTv);
 		noticeTabPointsTv = (TextView) findViewById(R.id.noticeTabPointsTv);
-		levelTv = (TextView) findViewById(R.id.userLevelTv);
-		pointsTv = (TextView) findViewById(R.id.userPointsTv);
-		nextLevelAtTv = (TextView) findViewById(R.id.userNextLevelAtTv);
 		mapPeopleCountTv = (TextView) findViewById(R.id.mapPeopleCountTv);
+		userStatsParagraphTv = (TextView) findViewById(R.id.userStatsParagraphTv);
+		userCurrentShoutreachTv = (TextView) findViewById(R.id.userCurrentShoutreachTv);
+		userPointsTv = (TextView) findViewById(R.id.userPointsTv);
+		userNextLevelAtTv = (TextView) findViewById(R.id.userNextLevelAtTv);
+		userNextShoutreachTv = (TextView) findViewById(R.id.userNextShoutreachTv);
+		userLevelUpProgessRp = (RoundProgress) findViewById(R.id.userLevelUpProgressRp);
 		
 		_inputLayoutRl = (RelativeLayout) findViewById(R.id.inputRl);
 		_composeBlanketLl = (LinearLayout) findViewById(R.id.composeBlanketLl);
@@ -174,7 +180,8 @@ public class Shoutbreak extends MapActivity implements Colleague {
 			// This is not a cold start.
 			_m.setIsUIInForeground(true);
 			checkForReferral();
-		}
+			reflectPowerState();
+		}		
 		super.onResume();
 		//refreshFlags();
 	}
@@ -308,6 +315,7 @@ public class Shoutbreak extends MapActivity implements Colleague {
 			public void handleMessage(Message message) {
 		        _splashLl.startAnimation(AnimationUtils.loadAnimation(Shoutbreak.this, android.R.anim.fade_out));
 				_splashLl.setVisibility(View.GONE);
+				showCompose();
 				handleFirstRun();
 				super.handleMessage(message);
 			}
@@ -324,7 +332,8 @@ public class Shoutbreak extends MapActivity implements Colleague {
 			}
 			showInbox();	// app launched from notification
 		} else {
-			showCompose();
+			// Do we want to force them into compose view if their phone idles out?
+			//showCompose();
 		}
 		// Let's clear the extras now so they don't haunt us.  
 		// Remember if app is OnResume()'d without being destroyed we could have stale extras.
@@ -673,19 +682,20 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		@Override
 		protected void onPostExecute(Void unused) {
 			// Now we're on the Ui Thread, just see what the outcome of callback city was and set button to reflect that outcome.
-			if (!_isTurnedOn.get()) {
-				canAppTurnOn(true, false);
-				_m.getUiGateway().disableInputs();
-				setPowerSwitchButtonToOff();
-			} else {
-				canAppTurnOn(true, false);
-				_m.getUiGateway().enableInputs();
-				setPowerSwitchButtonToOn();
-				
-			}
+			reflectPowerState();
 	    }
 	}
 
+	public void reflectPowerState() {
+		if (!_isTurnedOn.get()) {
+			canAppTurnOn(true, false);
+			setPowerSwitchButtonToOff();
+		} else {
+			canAppTurnOn(true, false);
+			setPowerSwitchButtonToOn();				
+		}
+	}
+	
 	public void onPowerPreferenceEnabled(boolean onUiThread) {
 		SBLog.i(TAG, "onPowerPreferenceEnabled()");
 		_isPowerPreferenceEnabled.set(true);
@@ -794,8 +804,14 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		if (onUiThread) {
 			if (showBlanket) {
 				showComposeBlanket();
+				if (_m != null) {			
+					_m.getUiGateway().disableInputs();
+				}
 			} else {
 				hideComposeBlanket();
+				if (_m != null) {			
+					_m.getUiGateway().enableInputs();
+				}
 			}
 		}
 		

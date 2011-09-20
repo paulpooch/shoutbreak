@@ -28,6 +28,7 @@ import co.shoutbreak.storage.DeviceInformation;
 import co.shoutbreak.storage.LocationTracker;
 import co.shoutbreak.storage.PreferenceManager;
 import co.shoutbreak.storage.Storage;
+import co.shoutbreak.storage.User;
 import co.shoutbreak.storage.inbox.InboxListViewAdapter;
 import co.shoutbreak.storage.noticetab.NoticeTabListViewAdapter;
 import co.shoutbreak.ui.IUiGateway;
@@ -671,14 +672,21 @@ public class Mediator {
 		
 		public void refreshProfile(int level, int points, int nextLevelAt) {
 			SBLog.i(TAG, "refreshProfile()");
-			_ui.levelTv.setText("Your level: " + level);
-			_ui.pointsTv.setText("Points earned: " + points);
-			_ui.nextLevelAtTv.setText("Next level at: " + nextLevelAt);
-			//_progressPb.setMax(100);
-			//_ui.progressPb.setProgress(50);
-			if (nextLevelAt > 0) {
-				//_ui.progressPb.setProgress(points / nextLevelAt);
-			}			
+			_ui.userCurrentShoutreachTv.setText(Integer.toString(User.calculateShoutreach(level)));
+			_ui.userNextShoutreachTv.setText(Integer.toString(User.calculateShoutreach(level + 1)));
+			_ui.userPointsTv.setText(Integer.toString(points));
+			_ui.userNextLevelAtTv.setText(Integer.toString(nextLevelAt));
+			_ui.userStatsParagraphTv.setText("You have earned "
+					+ points 
+					+ " points,\nso your shouts will reach " 
+					+ User.calculateShoutreach(level) 
+					+ " people.\nYou will reach " 
+					+ User.calculateShoutreach(level + 1) 
+					+ " people at " 
+					+ nextLevelAt 
+					+ " points.");
+			_ui.userLevelUpProgessRp.setMax(nextLevelAt);
+			_ui.userLevelUpProgessRp.setProgress(points);		
 		}
 		
 		public void enableInputs() {
