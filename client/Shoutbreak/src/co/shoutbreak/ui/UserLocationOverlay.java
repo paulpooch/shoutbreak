@@ -117,7 +117,7 @@ public class UserLocationOverlay extends MyLocationOverlay {
 
 	@Override
 	public void onLocationChanged(Location location) {
-		_ui.centerMapOnUser();
+		_ui.centerMapOnUser(false);
 		super.onLocationChanged(location);
 	}
 	

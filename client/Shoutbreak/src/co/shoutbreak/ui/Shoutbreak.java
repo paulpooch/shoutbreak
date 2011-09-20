@@ -162,9 +162,10 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		_mapCenterBtn.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				CenterMapTask task = new CenterMapTask();
-				// true = do show toast
-        		task.execute(true);				
+//				CenterMapTask task = new CenterMapTask();
+//				// true = do show toast
+//        		task.execute(true);		
+				centerMapOnUser(true);
 			}
 		});
 		
@@ -206,15 +207,18 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		_m = null;
 	}
 	
+	/*
 	private class CenterMapTask extends AsyncTask<Boolean, Void, Boolean> {    	
 		@Override
 		protected Boolean doInBackground(Boolean... showToast) {
-			if (overlay != null) {
+			if (overlay != null && _map != null) {
 				GeoPoint loc = overlay.getMyLocation();
 				if (loc != null) {
 					MapController mapController = _map.getController();
-					mapController.animateTo(loc);
-					return showToast[0];
+					if (mapController != null) {
+						mapController.animateTo(loc);
+						return showToast[0];
+					}
 				}
 			}
 			return false;
@@ -227,11 +231,27 @@ public class Shoutbreak extends MapActivity implements Colleague {
 			}
 	    }
 	}
+	*/
 	
-	public void centerMapOnUser() {
+	public void centerMapOnUser(boolean showToast) {
 		if (_isTurnedOn.get() && _map != null && overlay != null && _map.getOverlays().size() > 0 && overlay.isMyLocationEnabled()) {
-			CenterMapTask task = new CenterMapTask();
-			task.execute(false);
+			
+			// Old
+			//CenterMapTask task = new CenterMapTask();
+			//task.execute(false);		
+			
+			// New
+			GeoPoint loc = overlay.getMyLocation();
+			if (loc != null) {
+				MapController mapController = _map.getController();
+				if (mapController != null) {
+					mapController.animateTo(loc);
+					if (showToast) {
+						_m.getUiGateway().toast("You are here.", Toast.LENGTH_SHORT);
+					}
+				}
+			}
+			
 		}
 	}
 	
@@ -392,81 +412,6 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		enableMapAndOverlay();
 	}
 	
-	/*
-	private void enableComposeView() {
-		SBLog.i(TAG, "enableComposeView()");
-		boolean removeBlanket = true;
-		if (!_isLocationEnabled.get()) {
-			removeBlanket = false;
-		} else {
-			// TODO: hide blanket location button
-			findViewById(R.id.enableLocationBtn).setVisibility(View.GONE);
-		}
-		if (!_isDataEnabled.get()) {
-			removeBlanket = false;
-		} else {
-			// TODO: hide blanket data button
-		}
-		if (!_isPowerPreferenceEnabled.get()) {
-			removeBlanket = false;
-		} else {
-			// TODO: hide blanket power button
-			findViewById(R.id.turnOnBtn).setVisibility(View.GONE);
-		}
-		
-		if (removeBlanket) {
-			SBLog.i(TAG, "compose view successfully re-enabled");
-			hideComposeBlanket();
-			enableMapAndOverlay();
-		} else {
-			SBLog.i(TAG, "unable to enable compose view");
-		}
-	}
-	
-	private void disableComposeView() {
-		SBLog.i(TAG, "disableComposeView()");
-		showComposeBlanket();
-		disableMapAndOverlay();
-		
-		if (!_isLocationEnabled.get()) {
-			// TODO: show location blanket button
-			findViewById(R.id.enableLocationBtn).setVisibility(View.VISIBLE);
-			
-		}
-		if (!_isDataEnabled.get()) {
-			// TODO: show data blanket button
-		}
-		if (!_isPowerPreferenceEnabled.get()) {
-			// TODO: show power blanket button
-			findViewById(R.id.turnOnBtn).setVisibility(View.VISIBLE);
-		}		
-	}
-	
-	private boolean turnOn() {
-		SBLog.i(TAG, "turnOn()");
-		if (_isPowerPreferenceEnabled.get() && _isLocationEnabled.get() && _isDataEnabled.get()) {
-			if (!_isTurnedOn.get()) {
-				setPowerSwitchButtonToOn();
-				enableComposeView();
-				//_m.startPolling();
-				_isTurnedOn.set(true);
-			}
-			return true;
-		} else {
-			turnOff();
-			return false;
-		}
-	}
-	
-	private void turnOff() {
-		SBLog.i(TAG, "turnOff()");
-		setPowerSwitchButtonToOff();
-		disableComposeView();
-		//_m.stopPolling();
-		_isTurnedOn.set(false);
-	}
-	*/
-	
 	private void setPowerSwitchButtonToOn() {
 		SBLog.i(TAG, "setPowerSwitchButtonToOn()");
 		_powerBtn.setImageResource(R.drawable.power_button_on);
@@ -528,14 +473,15 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		_map.setUserLocationOverlay(overlay);
 		_map.postInvalidate();
 		overlay.enableMyLocation();
-		overlay.runOnFirstFix(new Runnable() {
-			// may take some time if location provider was just enabled 
-			public void run() {
-				GeoPoint loc = overlay.getMyLocation();
-				MapController mapController = _map.getController();
-				mapController.animateTo(loc);
-			}
-		});
+		// Pretty sure this becomes redundant with onLocationChanged() calling centerMapOnUser()
+//		overlay.runOnFirstFix(new Runnable() {
+//			// may take some time if location provider was just enabled 
+//			public void run() {
+//				GeoPoint loc = overlay.getMyLocation();
+//				MapController mapController = _map.getController();
+//				mapController.animateTo(loc);
+//			}
+//		});
 	}
 	
 	private void disableMapAndOverlay() {
@@ -632,26 +578,6 @@ public class Shoutbreak extends MapActivity implements Colleague {
 			}
 			PowerButtonTask task = new PowerButtonTask();
 			task.execute();
-//			SBLog.i(TAG, "_powerButtonListener.onClick()");
-//			// only change the power preference when they press the on/off switch
-//			if (!_isTurnedOn.get()) {
-//				_m.setPowerPreferenceToOn();
-//				if (!turnOn()) {
-//					String text = "unable to turn on app, ";
-//					if (!_isLocationEnabled.get() && !_isDataEnabled.get()) {
-//						text += "location and data connection unavailable";
-//					} else if (!_isLocationEnabled.get()) {
-//						text += "location unavailable";
-//					} else if (!_isDataEnabled.get()) {
-//						text += "data unavailable";
-//					}
-//					_m.getUiGateway().toast(text, Toast.LENGTH_SHORT);
-//					SBLog.i(TAG, text);
-//				}
-//			} else {
-//				_m.setPowerPreferenceToOff();
-//				turnOff();
-//			}
 		}
 	};
 	

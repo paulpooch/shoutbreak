@@ -507,6 +507,7 @@ public class Mediator {
 				_uiGateway.toast("You made the sender quieter.", Toast.LENGTH_LONG);
 			}
 			_storage.handleVoteFinish(shoutId, vote);
+			_uiGateway.handlePointsChange(_storage.getUserPoints());
 		}
 		
 		public void handleVoteFailed(Message message, String shoutId, int vote) {
