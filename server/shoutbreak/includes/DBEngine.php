@@ -151,7 +151,8 @@ class DBEngine {
 				// See if user recently leveled up - put in memcache
 				$pendingLevelUp = (int)$row['pending_level_up'];
 				if ($pendingLevelUp) {
-					$levelUpInfo = array('level' => $pendingLevelUp, 'pts' => (int)$row['points']);
+					// Just changed
+					$levelUpInfo = array('level' => (int)$row['level'], 'pts' => (int)$row['points']);
 					$replaced = $mem->replace(Config::$PRE_USER_PENDING_LEVEL_UP . $uid, $levelUpInfo, false, Config::$TIMEOUT_USER_PENDING_LEVEL_UP);
 					if (!$replaced) {
 						$replaced = $mem->set(Config::$PRE_USER_PENDING_LEVEL_UP . $uid, $levelUpInfo, false, Config::$TIMEOUT_USER_PENDING_LEVEL_UP);

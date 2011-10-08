@@ -98,5 +98,11 @@ public class UiOffGateway implements IUiGateway {
 
 	@Override
 	public void onPowerPreferenceEnabled(boolean onUiThread) {}
+
+	@Override
+	public void handleServerAnnouncementCode(String text) {}
+
+	@Override
+	public void handleServerErrorCode(String text) {}
 	
 }

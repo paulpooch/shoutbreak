@@ -47,11 +47,11 @@ class App {
 		$_POST = Filter::sanitize($_POST);
 		$_POST = Filter::validate($_POST);
 		
-//		$tempLog2 = "";
-//		foreach($_POST as $var => $value) {
-//			$tempLog2 .= $var . ' : ' . $value . ', ';
-//		}
-//		$log->LogWarn("FILTERED = $tempLog2");
+		$tempLog2 = "";
+		foreach($_POST as $var => $value) {
+			$tempLog2 .= $var . ' : ' . $value . ', ';
+		}
+		$log->LogWarn("FILTERED = $tempLog2");
 				
 		switch ($a) {
 			case null:

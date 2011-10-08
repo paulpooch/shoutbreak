@@ -4,6 +4,8 @@ package co.shoutbreak.core;
 public class C {
 
 	// CONFIG /////////////////////////////////////////////////////////////////
+	// Match this to the $version in index.php
+	public static final String CONFIG_SERVER_ADDRESS = "http://app.shoutbreak.co/001/";
 	public static final int CONFIG_NOTICES_DISPLAYED_IN_TAB = 50;
 	public static final String CONFIG_CRASH_REPORT_ADDRESS = "http://app.shoutbreak.co/crash_reports/upload.php";
 	public static final String CONFIG_SUPPORT_ADDRESS = "http://shoutbreak.com/support";
@@ -14,7 +16,6 @@ public class C {
 	public static final int CONFIG_GPS_MIN_UPDATE_METERS = 20; // 0 gives smallest interval
 	public static final int CONFIG_MIN_TARGETS_FOR_HIT_COUNT = 3;
 	public static final int CONFIG_MAX_SIMULTANEOUS_HTTP_CONNECTIONS = 5; // for ConnectionQueue
-	public static final String CONFIG_SERVER_ADDRESS = "http://app.shoutbreak.co";
 	public static final long CONFIG_IDLE_LOOP_TIME_WITH_UI_OPEN = 20000; // 60 seconds
 	public static final int CONFIG_PEOPLE_PER_LEVEL = 5;
 	public static final double CONFIG_SHOUT_SCORING_DEFAULT_POWER = 0.10; //  0.10 to have a 95% chance that your lower bound is correct
@@ -22,6 +23,9 @@ public class C {
 	public static final double NORMAL_DIST_B[] = { 1.570796288, 0.03706987906, -0.8364353589e-3, -0.2250947176e-3,
 		0.6841218299e-5, 0.5824238515e-5, -0.104527497e-5, 0.8360937017e-7, -0.3231081277e-8, 0.3657763036e-10,
 		0.6936233982e-12 };
+	
+	// PHONE MODELS FOR HACKY FIXES ///////////////////////////////////////////
+	public static final String PHONE_DROID_X = "DROIDX";
 
 	// STRINGS ////////////////////////////////////////////////////////////////
 	public static final String STRING_SERVER_DOWN = "Sorry, our server is not playing nice right now.\nWant to check our site for a downtime notice?";
@@ -69,7 +73,9 @@ public class C {
 	public static final String JSON_ACTION_USER_PING = "user_ping";
 	public static final String JSON_ACTION_VOTE = "vote";
 	
-	public static final String JSON_CODE = "code";	
+	public static final String JSON_CODE = "code";
+	public static final String JSON_CODE_ANNOUNCEMENT = "announcement";
+	public static final String JSON_CODE_ERROR = "error";
 	public static final String JSON_CODE_EXPIRED_AUTH = "expired_auth";
 	public static final String JSON_CODE_INVALID_UID = "invalid_uid";
 	public static final String JSON_CODE_PING_OK = "ping_ok";
@@ -146,7 +152,7 @@ public class C {
 	public static final int PURPOSE_DEATH = 62; // don't repeat this - just die
 	
 	// DATABASE ///////////////////////////////////////////////////////////////
-	public static final int DB_VERSION = 6;
+	public static final int DB_VERSION = 3;
 
 	public static final String DB_NAME = "sbdb";
 	public static final String DB_TABLE_DENSITY = "DENSITY";

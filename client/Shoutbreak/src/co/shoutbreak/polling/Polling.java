@@ -75,33 +75,36 @@ public class Polling {
 			public void handleMessage(Message message) {
 				switch (message.what) {
 					case C.HTTP_DID_SUCCEED: {
-						CrossThreadPacket xPacket = (CrossThreadPacket)message.obj;
-						try {
-							String code = xPacket.json.getString(C.JSON_CODE);
-												
-							if (code.equals(C.JSON_CODE_PING_OK)) {
-								// if normal ping, introduce delay
-								if (xPacket.purpose == C.PURPOSE_LOOP_FROM_UI) {
-									xPacket.purpose = C.PURPOSE_LOOP_FROM_UI_DELAYED;
+						if (_safeM.isResponseClean(message)) {						
+							CrossThreadPacket xPacket = (CrossThreadPacket)message.obj;
+							try {
+								String code = xPacket.json.getString(C.JSON_CODE);
+													
+								if (code.equals(C.JSON_CODE_PING_OK)) {
+									// if normal ping, introduce delay
+									if (xPacket.purpose == C.PURPOSE_LOOP_FROM_UI) {
+										xPacket.purpose = C.PURPOSE_LOOP_FROM_UI_DELAYED;
+									}
+									_uiThreadHandler.sendMessage(Message.obtain(_uiThreadHandler, C.STATE_IDLE, xPacket));
+								} else if (code.equals(C.JSON_CODE_SHOUTS)) {
+									_uiThreadHandler.sendMessage(Message.obtain(_uiThreadHandler, C.STATE_RECEIVE_SHOUTS, xPacket));
+								} else if (code.equals(C.JSON_CODE_EXPIRED_AUTH)) {
+									_uiThreadHandler.sendMessage(Message.obtain(_uiThreadHandler, C.STATE_EXPIRED_AUTH, xPacket));
+								} else if (code.equals(C.JSON_CODE_INVALID_UID)) {
+									
+								} else {
+									// some invalid response from server, do anything?
 								}
-								_uiThreadHandler.sendMessage(Message.obtain(_uiThreadHandler, C.STATE_IDLE, xPacket));
-							} else if (code.equals(C.JSON_CODE_SHOUTS)) {
-								_uiThreadHandler.sendMessage(Message.obtain(_uiThreadHandler, C.STATE_RECEIVE_SHOUTS, xPacket));
-							} else if (code.equals(C.JSON_CODE_EXPIRED_AUTH)) {
-								_uiThreadHandler.sendMessage(Message.obtain(_uiThreadHandler, C.STATE_EXPIRED_AUTH, xPacket));
-							} else if (code.equals(C.JSON_CODE_INVALID_UID)) {
-								
-							} else {
-								// some invalid response from server, do anything?
+							} catch (JSONException ex) {
+								// TODO: Manage exception
+								SBLog.e(TAG, ex.getMessage());
 							}
-						} catch (JSONException ex) {
-							// TODO: Manage exception
-							SBLog.e(TAG, ex.getMessage());
 						}
 						break;
 					}
 					case C.HTTP_DID_ERROR: {
 						_safeM.handlePingFailed(message);
+						break;
 					}
 				}
 			}
@@ -176,20 +179,23 @@ public class Polling {
 			public void handleMessage(Message message) {
 				switch (message.what) {
 					case C.HTTP_DID_SUCCEED: {
-						CrossThreadPacket xPacket = (CrossThreadPacket)message.obj;
-						String code = xPacket.json.optString(C.JSON_CODE);
-						if (code.equals(C.JSON_CODE_EXPIRED_AUTH)) {
-							_safeM.handleShoutFailed(message);
-						} else {
-							_safeM.handleShoutSent();
-							// Unless shout occurs in idle thread, we don't need to sendMessage.
-							//CrossThreadPacket xPacket = (CrossThreadPacket)message.obj;
-							//_uiThreadHandler.sendMessage(Message.obtain(_uiThreadHandler, C.STATE_IDLE, xPacket)); // STATE doesn't matter - going to die
-							break;
+						if (_safeM.isResponseClean(message)) {
+							CrossThreadPacket xPacket = (CrossThreadPacket)message.obj;
+							String code = xPacket.json.optString(C.JSON_CODE);
+							if (code.equals(C.JSON_CODE_EXPIRED_AUTH)) {
+								_safeM.handleShoutFailed(message);
+							} else {
+								_safeM.handleShoutSent();
+								// Unless shout occurs in idle thread, we don't need to sendMessage.
+								//CrossThreadPacket xPacket = (CrossThreadPacket)message.obj;
+								//_uiThreadHandler.sendMessage(Message.obtain(_uiThreadHandler, C.STATE_IDLE, xPacket)); // STATE doesn't matter - going to die
+							}
 						}
+						break;
 					}
 					case C.HTTP_DID_ERROR: {
 						_safeM.handleShoutFailed(message);
+						break;
 					}
 				}
 			}
@@ -216,26 +222,29 @@ public class Polling {
 			public void handleMessage(Message message) {
 				switch (message.what) {
 					case C.HTTP_DID_SUCCEED: {
-						CrossThreadPacket xPacket = (CrossThreadPacket)message.obj;
-						try {
-							String code = xPacket.json.getString(C.JSON_CODE);
-							if (code.equals(C.JSON_CODE_VOTE_OK)) {
-								_safeM.handleVoteFinish(shoutId, vote);
-							} else if (code.equals(C.JSON_CODE_VOTE_FAIL)) {
-								// server knows it failed
-								_safeM.handleVoteFailed(message, shoutId, vote);
-							} else {
-								// something horrible happened
+						if (_safeM.isResponseClean(message)) {
+							CrossThreadPacket xPacket = (CrossThreadPacket)message.obj;
+							try {
+								String code = xPacket.json.getString(C.JSON_CODE);
+								if (code.equals(C.JSON_CODE_VOTE_OK)) {
+									_safeM.handleVoteFinish(shoutId, vote);
+								} else if (code.equals(C.JSON_CODE_VOTE_FAIL)) {
+									// server knows it failed
+									_safeM.handleVoteFailed(message, shoutId, vote);
+								} else {
+									// something horrible happened
+									_safeM.handleVoteFailed(message, shoutId, vote);
+								}
+							} catch (JSONException ex) {
+								SBLog.e(TAG, ex.getMessage());
 								_safeM.handleVoteFailed(message, shoutId, vote);
 							}
-						} catch (JSONException ex) {
-							SBLog.e(TAG, ex.getMessage());
-							_safeM.handleVoteFailed(message, shoutId, vote);
 						}
 						break;
 					}
 					case C.HTTP_DID_ERROR: {
 						_safeM.handleVoteFailed(message, shoutId, vote);
+						break;
 					}
 				}				
 			}
@@ -255,11 +264,14 @@ public class Polling {
 			public void handleMessage(Message message) {
 				switch (message.what) {
 					case C.HTTP_DID_SUCCEED: {
-						_uiThreadHandler.sendMessage(Message.obtain(_uiThreadHandler, C.STATE_CREATE_ACCOUNT_2, message.obj));
+						if (_safeM.isResponseClean(message)) {
+							_uiThreadHandler.sendMessage(Message.obtain(_uiThreadHandler, C.STATE_CREATE_ACCOUNT_2, message.obj));
+						}
 						break;
 					}
 					case C.HTTP_DID_ERROR: {
 						_safeM.handleCreateAccountFailed(message);
+						break;
 					}
 				}
 			}
@@ -274,20 +286,23 @@ public class Polling {
 		Handler httpHandler = new Handler() {
 			public void handleMessage(Message message) {
 				switch (message.what) {
-					case C.HTTP_DID_SUCCEED: {			
-						try {
-							CrossThreadPacket xPacket = (CrossThreadPacket)message.obj;
-							String password = xPacket.json.getString(C.JSON_PW);
-							String uid = xPacket.sArgs[0];
-							_safeM.handleAccountCreated(uid, password);
-							_uiThreadHandler.sendMessage(Message.obtain(_uiThreadHandler, C.STATE_IDLE, xPacket));
-						} catch (JSONException ex) {
-							ErrorManager.manage(ex);
+					case C.HTTP_DID_SUCCEED: {
+						if (_safeM.isResponseClean(message)) {
+							try {
+								CrossThreadPacket xPacket = (CrossThreadPacket)message.obj;
+								String password = xPacket.json.getString(C.JSON_PW);
+								String uid = xPacket.sArgs[0];
+								_safeM.handleAccountCreated(uid, password);
+								_uiThreadHandler.sendMessage(Message.obtain(_uiThreadHandler, C.STATE_IDLE, xPacket));
+							} catch (JSONException ex) {
+								ErrorManager.manage(ex);
+							}
 						}
 						break;
 					}
 					case C.HTTP_DID_ERROR: {
 						_safeM.handleCreateAccountFailed(message);
+						break;
 					}
 				}
 			}

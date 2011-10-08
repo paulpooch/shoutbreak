@@ -534,7 +534,26 @@ public class Mediator {
 		///////////////////////////////////////////////////////////////////////////
 		///////////////////////////////////////////////////////////////////////////
 		///////////////////////////////////////////////////////////////////////////
-			
+		
+		public boolean isResponseClean(Message message) {
+			boolean isClean = true;
+			if (message != null) {
+				CrossThreadPacket xPacket = (CrossThreadPacket)message.obj;
+				if (xPacket != null) {
+					String code = xPacket.json.optString(C.JSON_CODE);
+					String text = xPacket.json.optString(C.JSON_SHOUT_TEXT);
+					if (code != null) {
+						if (code.equals(C.JSON_CODE_ANNOUNCEMENT)) {
+							_uiGateway.handleServerAnnouncementCode(text);
+						} else if (code.equals(C.JSON_CODE_ERROR)) {
+							_uiGateway.handleServerErrorCode(text);
+						}
+					}
+				}
+			}
+			return isClean;
+		}
+		
 		public boolean userHasAccount() {
 			SBLog.i(TAG, "userHasAccount()");
 			return _storage.getUserHasAccount();
@@ -658,7 +677,7 @@ public class Mediator {
 		}
 		
 		public void handleServerFailure() {
-			_ui.dialogBuilder.showDialog(DialogBuilder.DIALOG_SERVER_DOWN);
+			_ui.dialogBuilder.showDialog(DialogBuilder.DIALOG_SERVER_DOWN, "");
 		}
 				
 		///////////////////////////////////////////////////////////////////////////
@@ -818,6 +837,16 @@ public class Mediator {
 		@Override
 		public void jumpToProfile() {
 			_ui.showProfile();			
+		}
+
+		@Override
+		public void handleServerAnnouncementCode(String text) {
+			_ui.dialogBuilder.showDialog(DialogBuilder.DIALOG_SERVER_ANNOUNCEMENT, text);
+		}
+
+		@Override
+		public void handleServerErrorCode(String text) {
+			_ui.dialogBuilder.showDialog(DialogBuilder.DIALOG_SERVER_ERROR, text);
 		}
 
 	}

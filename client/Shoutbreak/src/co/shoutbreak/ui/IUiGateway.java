@@ -11,6 +11,8 @@ public interface IUiGateway {
 	///////////////////////////////////////////////////////////////////////////
 	
 	public void handleCreateAccountFailed();
+	public void handleServerErrorCode(String text);
+	public void handleServerAnnouncementCode(String text);
 	public void handleShoutSent();
 	public void handleShoutFailed();
 	public void handleDensityChange(boolean isDensitySet, double newDensity, int level);

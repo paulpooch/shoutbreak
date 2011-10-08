@@ -17,6 +17,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnFocusChangeListener;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -169,6 +170,18 @@ public class Shoutbreak extends MapActivity implements Colleague {
 			}
 		});
 		
+		if (android.os.Build.MODEL.equals(C.PHONE_DROID_X)) {
+			shoutInputEt.setOnFocusChangeListener(new OnFocusChangeListener() {
+				@Override
+				public void onFocusChange(View v, boolean hasFocus) {
+					String text = shoutInputEt.getText().toString();
+					text = "\n\n" + text.trim();
+					shoutInputEt.setText(text);
+					shoutInputEt.setSelection(text.length());				
+				}
+			});
+		}
+		
 		// bind to service, initializes mediator
 		_serviceIntent = new Intent(Shoutbreak.this, ShoutbreakService.class);
 		bindService(_serviceIntent, _serviceConnection, Context.BIND_AUTO_CREATE);
@@ -180,7 +193,7 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		if (_m != null) {
 			// This is not a cold start.
 			_m.setIsUIInForeground(true);
-			checkForReferral();
+			wasLaunchFromReferral();
 			reflectPowerState();
 		}		
 		super.onResume();
@@ -274,8 +287,11 @@ public class Shoutbreak extends MapActivity implements Colleague {
 			refreshFlags();			
 			_m.refreshUiComponents();
 			
-			hideSplash();
-			checkForReferral();
+			if (wasLaunchFromReferral()) {
+				hideSplash(false);
+			} else {
+				hideSplash(true);
+			}
 		}
 
 		@Override
@@ -299,7 +315,7 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		if (extras != null) {
 			getIntent().putExtras(extras);		
 		}
-		checkForReferral();
+		wasLaunchFromReferral();
 	}
 		
 	private void refreshFlags() {
@@ -328,14 +344,22 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		}
 	}
 	
-	private void hideSplash() {
+	private void hideSplash(boolean showCompose) {
+		// This uses a timer to hide the splash, then show compose screen.
+		// Because of timer, even if we showInbox after this is called, compose will end up displayed when timer triggers.
+		// So we gotta pass in showCompose in case launch was from a referral and should end up in inbox after we hide splash.		
 		SBLog.i(TAG, "hideSplash()");
+		final boolean showComposeScreen = showCompose;
 		Handler splashHandler = new Handler() {
 			@Override
 			public void handleMessage(Message message) {
 		        _splashLl.startAnimation(AnimationUtils.loadAnimation(Shoutbreak.this, android.R.anim.fade_out));
 				_splashLl.setVisibility(View.GONE);
-				showCompose();
+				if (showComposeScreen) {
+					showCompose();
+				} else {
+					showInbox();
+				}
 				handleFirstRun();
 				super.handleMessage(message);
 			}
@@ -343,14 +367,16 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		splashHandler.sendMessageDelayed(new Message(), 2000);
 	}
 	
-	private void checkForReferral() {
+	private boolean wasLaunchFromReferral() {
 		SBLog.i(TAG, "checkForReferral()");
+		boolean wasFromReferral = false;
 		Bundle extras = getIntent().getExtras();
 		if (extras != null && extras.getBoolean(C.NOTIFICATION_LAUNCHED_FROM_NOTIFICATION)) {
 			if (_m != null) {
 				_m.resetNotifierShoutCount();
 			}
 			showInbox();	// app launched from notification
+			wasFromReferral = true;
 		} else {
 			// Do we want to force them into compose view if their phone idles out?
 			//showCompose();
@@ -360,6 +386,7 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		if (extras != null) {
 			extras.clear();
 		}
+		return wasFromReferral;
 	}
 	
 	private void handleFirstRun() {
@@ -747,7 +774,7 @@ public class Shoutbreak extends MapActivity implements Colleague {
 	private OnClickListener _shoutButtonListener = new OnClickListener() {
 		public void onClick(View v) {
 			SBLog.i(TAG, "_shoutButtonListener.onClick()");
-			CharSequence text = shoutInputEt.getText();
+			CharSequence text = shoutInputEt.getText().toString().trim();
 
 			if (text.length() == 0) {
 				_m.getUiGateway().toast("Cannot shout blanks.",	Toast.LENGTH_SHORT);

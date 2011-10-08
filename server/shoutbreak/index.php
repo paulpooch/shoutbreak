@@ -14,7 +14,8 @@
  * 
  */
 
-set_include_path('/home/webuser/shoutbreak/htdocs/includes/');
+$version = '001';
+set_include_path('/home/webuser/shoutbreak/htdocs/' . $version . '/includes/');
 require_once("SimpleDB.php");
 require_once("KLogger.php");
 require_once("Shout.php");

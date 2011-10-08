@@ -1,4 +1,5 @@
 <?php
+
 set_include_path('/home/webuser/shoutbreak/htdocs/includes/');
 require_once("SimpleDB.php");
 require_once("KLogger.php");

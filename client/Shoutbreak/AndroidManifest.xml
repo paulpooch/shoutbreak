@@ -6,7 +6,7 @@
 
     <application android:icon="@drawable/icon" android:label="Shoutbreak" android:debuggable="true">
 		<!-- Launcher -->
-        <activity android:name=".ui.Shoutbreak" android:label="Shoutbreak" android:screenOrientation="portrait" android:launchMode="singleTop" android:theme="@android:style/Theme.NoTitleBar.Fullscreen" android:windowSoftInputMode="stateHidden">
+        <activity android:name=".ui.Shoutbreak" android:label="Shoutbreak" android:screenOrientation="portrait" android:launchMode="singleTop" android:theme="@android:style/Theme.NoTitleBar.Fullscreen" android:windowSoftInputMode="stateHidden|adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
