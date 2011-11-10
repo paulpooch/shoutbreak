@@ -21,11 +21,9 @@
 		</service>
 		
 		<!--  Alarm Manager -->
-		<receiver android:name=".polling.AlarmReceiver" android:exported="true">
+		<receiver android:name=".polling.OnBootAlarmReceiver">
 			<intent-filter>
-				<action android:name="co.shoutbreak.polling.AlarmReceiver" />
 				<action android:name="android.intent.action.BOOT_COMPLETED" />
-				<action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
 			</intent-filter>
 		</receiver>
 		
@@ -40,4 +38,5 @@
 	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 	<uses-permission android:name="android.permission.SET_DEBUG_APP" />
+	<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 </manifest>

@@ -1,7 +1,7 @@
 package co.shoutbreak.core;
 
 import co.shoutbreak.core.utils.SBLog;
-import co.shoutbreak.polling.AlarmReceiver;
+import co.shoutbreak.polling.OnBootAlarmReceiver;
 import co.shoutbreak.ui.Shoutbreak;
 import android.app.Service;
 import android.content.ComponentName;
@@ -84,16 +84,16 @@ public class ShoutbreakService extends Service implements Colleague {
 	
 	}
 	
-	public void enableAlarmReceiver() {
-		SBLog.i(TAG, "enableAlarmReceiver()");
-		ComponentName component = new ComponentName(ShoutbreakService.this, AlarmReceiver.class);
+	public void enableOnBootAlarmReceiver() {
+		SBLog.i(TAG, "enableOnBootAlarmReceiver()");
+		ComponentName component = new ComponentName(ShoutbreakService.this, OnBootAlarmReceiver.class);
 		int state = PackageManager.COMPONENT_ENABLED_STATE_ENABLED;
 		getPackageManager().setComponentEnabledSetting(component, state, PackageManager.DONT_KILL_APP);	
 	}
 	
-	public void disableAlarmReceiver() {
-		SBLog.i(TAG, "disableAlarmReceiver()");
-		ComponentName component = new ComponentName(ShoutbreakService.this, AlarmReceiver.class);
+	public void disableOnBootAlarmReceiver() {
+		SBLog.i(TAG, "disableOnBootAlarmReceiver()");
+		ComponentName component = new ComponentName(ShoutbreakService.this, OnBootAlarmReceiver.class);
 		int state = PackageManager.COMPONENT_ENABLED_STATE_DISABLED;
 		getPackageManager().setComponentEnabledSetting(component, state, PackageManager.DONT_KILL_APP);		
 	}

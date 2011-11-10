@@ -91,7 +91,11 @@ public class DialogBuilder {
 					        	return;
 					        }
 					});
-					_waitForMapToHaveLocationDialog.show();					
+					// We need dumb isFinishing check for Android bug.
+					// http://vinnysoft.blogspot.com/2010/11/androidviewwindowmanagerbadtokenexcepti.html
+					if (!_ui.isFinishing()) {
+						_waitForMapToHaveLocationDialog.show();			
+					}	
 				}
 				break;
 			}

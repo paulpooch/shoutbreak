@@ -9,11 +9,11 @@ public class PollingAlgorithm {
 	private static final int SECONDS_TILL_MAX_DELAY = 600; // 10 mins
 	
 	private Date _lastActivity;
-	private double _delayPerSecondElapsed;
+	private float _delayPerSecondElapsed;
 	
 	public PollingAlgorithm() {
 		_lastActivity = new Date();
-		_delayPerSecondElapsed = (DELAY_MAX_SECS - DELAY_MIN_SECS) / SECONDS_TILL_MAX_DELAY;
+		_delayPerSecondElapsed = (float)(DELAY_MAX_SECS - DELAY_MIN_SECS) / (float)SECONDS_TILL_MAX_DELAY;
 	}
 	
 	public synchronized void resetPollingDelay() {

@@ -10,9 +10,14 @@ import org.json.JSONObject;
 
 import com.google.android.maps.GeoPoint;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.app.Service;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Message;
+import android.os.SystemClock;
 import android.view.View;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
@@ -54,6 +59,7 @@ public class Mediator {
 	private ThreadLauncher _threadLauncher;
 	private PollingAlgorithm _pollingAlgorithm;
 	
+	private PendingIntent _intervalAlarmIntent;
 	private IUiGateway _uiGateway;
 	
 	// state flags
@@ -118,6 +124,26 @@ public class Mediator {
 		}
 	}
 	
+	private void enableIntervalAlarm() {
+		Intent alarmIntent = new Intent(_service, ShoutbreakService.class);
+		alarmIntent.putExtra(C.NOTIFICATION_LAUNCHED_FROM_ALARM, true);
+		alarmIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		_intervalAlarmIntent = PendingIntent.getService(_service, 0, alarmIntent, 0);
+		AlarmManager am = (AlarmManager)_service.getSystemService(Service.ALARM_SERVICE);
+		am.cancel(_intervalAlarmIntent);
+		am.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, 
+				SystemClock.elapsedRealtime() + AlarmManager.INTERVAL_FIFTEEN_MINUTES, 
+				AlarmManager.INTERVAL_FIFTEEN_MINUTES,
+				_intervalAlarmIntent);
+	}
+	
+	private void disableIntervalAlarm() {
+		if (_intervalAlarmIntent != null) {
+			AlarmManager am = (AlarmManager)_service.getSystemService(Service.ALARM_SERVICE);
+			am.cancel(_intervalAlarmIntent);
+		}
+	}
+
 	public void registerUI(Shoutbreak ui) {
 		// ui is created before the mediator exists
 		// it must be added once the mediator is created
@@ -151,6 +177,7 @@ public class Mediator {
 		// removes all colleague references to the mediator
 		// called by service's onDestroy() method
     	SBLog.i(TAG, "kill()");
+    	_threadLauncher.stopPolling();
 		_service = null;
 		unregisterUI(true);
 		_preferences = null;
@@ -282,7 +309,8 @@ public class Mediator {
 	public void onPowerPreferenceEnabled(boolean onUiThread) {
 		SBLog.i(TAG, "onPowerEnabled()");
 		_isPowerPreferenceEnabled.set(true);
-		_service.enableAlarmReceiver();
+		enableIntervalAlarm();
+		_service.enableOnBootAlarmReceiver();
 		if (_isUIAlive.get()) {
 			_uiGateway.onPowerPreferenceEnabled(onUiThread);
 		}
@@ -292,7 +320,8 @@ public class Mediator {
 	public void onPowerPreferenceDisabled(boolean onUiThread) {
 		SBLog.i(TAG, "onPowerDisabled()");
 		_isPowerPreferenceEnabled.set(false);
-		_service.disableAlarmReceiver();
+		disableIntervalAlarm();
+		_service.disableOnBootAlarmReceiver();
 		if (_isUIAlive.get()) {
 			_uiGateway.onPowerPreferenceDisabled(onUiThread);
 		}
