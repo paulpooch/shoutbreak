@@ -68,7 +68,7 @@ public class LocationTracker implements LocationListener, Colleague {
 		return false;
 	}
 	
-	public Location getLocation() {
+	public synchronized Location getLocation() {
 		return _location;
 	}
 	
@@ -162,7 +162,7 @@ public class LocationTracker implements LocationListener, Colleague {
 	     return provider1.equals(provider2);
 	 }
 	 
-	 public static GeoPoint LocationToGeoPoint(Location location) {
+	 public static GeoPoint locationToGeoPoint(Location location) {
 		 return new GeoPoint((int)(location.getLatitude() * 1e6), (int)(location.getLongitude() * 1e6));
 	 }
 	 
@@ -181,13 +181,17 @@ public class LocationTracker implements LocationListener, Colleague {
 	@Override
 	public void onProviderEnabled(String provider) {
 		SBLog.i(TAG, "onProviderEnabled()");
-		_m.onLocationEnabled();
+		//_m.onLocationEnabled();
+		_m.checkLocationProviderStatus();
 	}
 
 	@Override
 	public void onProviderDisabled(String provider) {
 		SBLog.i(TAG, "onProviderDisabled()");
-		_m.onLocationDisabled();
+		// One provider can be disabled without making location unavailable.
+		// I.E. Kill GPS but location (via cell tower) still enabled.
+		//_m.onLocationDisabled();
+		_m.checkLocationProviderStatus();
 	}
 
 	@Override

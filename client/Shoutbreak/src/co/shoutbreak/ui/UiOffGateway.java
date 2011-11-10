@@ -1,8 +1,8 @@
 package co.shoutbreak.ui;
 
-import android.widget.AdapterView.OnItemClickListener;
 import co.shoutbreak.storage.inbox.InboxListViewAdapter;
 import co.shoutbreak.storage.noticetab.NoticeTabListViewAdapter;
+import android.widget.AdapterView.OnItemClickListener;
 
 public class UiOffGateway implements IUiGateway {
 

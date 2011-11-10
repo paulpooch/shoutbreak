@@ -8,6 +8,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.google.android.maps.GeoPoint;
+
 import android.content.Context;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Message;
@@ -21,6 +23,7 @@ import co.shoutbreak.core.utils.Flag;
 import co.shoutbreak.core.utils.Notifier;
 import co.shoutbreak.core.utils.SBLog;
 import co.shoutbreak.polling.CrossThreadPacket;
+import co.shoutbreak.polling.PollingAlgorithm;
 import co.shoutbreak.polling.ThreadLauncher;
 import co.shoutbreak.storage.CellDensity;
 import co.shoutbreak.storage.Database;
@@ -49,6 +52,7 @@ public class Mediator {
 	private LocationTracker _location;
 	private DataListener _data;
 	private ThreadLauncher _threadLauncher;
+	private PollingAlgorithm _pollingAlgorithm;
 	
 	private IUiGateway _uiGateway;
 	
@@ -76,6 +80,7 @@ public class Mediator {
 		_data = new DataListener(this);
 		_db = new Database(_service);
 		_storage = new Storage(this, _db);
+		_pollingAlgorithm = new PollingAlgorithm();
 
 		_threadLauncher = new ThreadLauncher(this);
 		_uiGateway = new UiOffGateway();
@@ -256,6 +261,10 @@ public class Mediator {
 			// Something really bad happened
 			stopPolling(true);
 		}
+	}
+	
+	public long getPollingDelay() {
+		return _pollingAlgorithm.getPollingDelay();
 	}
 	
 	public void setPowerPreferenceToOn(boolean onUiThread) {
@@ -554,6 +563,10 @@ public class Mediator {
 			return isClean;
 		}
 		
+		public void resetPollingDelay() {
+			_pollingAlgorithm.resetPollingDelay();
+		}
+		
 		public boolean userHasAccount() {
 			SBLog.i(TAG, "userHasAccount()");
 			return _storage.getUserHasAccount();
@@ -587,6 +600,11 @@ public class Mediator {
 		public double getLatitude() {
 			SBLog.i(TAG, "getLatitude()");
 			return _location.getLatitude();
+		}
+		
+		public GeoPoint getLocationAsGeoPoint() {
+			SBLog.i(TAG, "getLocation()");
+			return LocationTracker.locationToGeoPoint(_location.getLocation());
 		}
 		
 		public boolean getUserLevelUpOccurred() {

@@ -10,10 +10,12 @@ public class ThreadLauncher implements Colleague {
 
 	private Mediator _m;
 	private Handler _uiThreadHandler;
+	private PollingThread _loopingThread; // we need to track this so we can un-post it if app turns off....
+									      // The problem case is:
+									      // postDelayed a ping loop, location dies, ping tries to run, latitude is null, problem
 	
 	public ThreadLauncher(Mediator mediator) {
 		_m = mediator;
-		
 		_uiThreadHandler = new Handler() {
 			@Override
 			public void handleMessage(Message message) {				
@@ -63,7 +65,8 @@ public class ThreadLauncher implements Colleague {
 	public void launchPollingThread(Message message, boolean delayed) {
 		PollingThread thread = new PollingThread(_m.getAThreadSafeMediator(), _uiThreadHandler, message);
 		if (delayed) {
-			_uiThreadHandler.postDelayed(thread, C.CONFIG_IDLE_LOOP_TIME_WITH_UI_OPEN);
+			_loopingThread = thread;
+			_uiThreadHandler.postDelayed(thread, _m.getPollingDelay());
 		} else {
 			_uiThreadHandler.post(thread);
 		}
@@ -79,7 +82,11 @@ public class ThreadLauncher implements Colleague {
 	}
 	
 	public void stopPolling() {
-		// I don't think there's anything to do here.
+		if (_loopingThread != null) {
+			// Remove any threads that are about to be run because they were postDelayed.
+			// We no longer have all requirements to run service, so they shouldn't run.
+			_uiThreadHandler.removeCallbacks(_loopingThread);
+		}
 	}
 	
 	public void handleShoutStart(String text, int power) {

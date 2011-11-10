@@ -35,6 +35,7 @@ import co.shoutbreak.core.Colleague;
 import co.shoutbreak.core.Mediator;
 import co.shoutbreak.core.ServiceBridgeInterface;
 import co.shoutbreak.core.ShoutbreakService;
+import co.shoutbreak.core.Mediator.ThreadSafeMediator;
 import co.shoutbreak.core.utils.DialogBuilder;
 import co.shoutbreak.core.utils.Flag;
 import co.shoutbreak.core.utils.SBLog;
@@ -99,6 +100,8 @@ public class Shoutbreak extends MapActivity implements Colleague {
 	private Flag _isLocationEnabled = new Flag("ui:_isLocationEnabled");
 	private Flag _isDataEnabled = new Flag("ui:_isDataEnabled");
 	private Flag _isPowerPreferenceEnabled = new Flag("ui:_isPowerPreferenceEnabled");		// is power preference set to on
+	// This flag isn't critical but may be nice to have one day.
+	private Flag _doesMapKnowLocation = new Flag("ui:_doesMapKnowLocation"); 
 	
 	@Override
 	public void onCreate(Bundle extras) {
@@ -221,6 +224,7 @@ public class Shoutbreak extends MapActivity implements Colleague {
 	}
 	
 	/*
+	// Map centering occurs on the UIThread.  Therefore pointless to be Async.
 	private class CenterMapTask extends AsyncTask<Boolean, Void, Boolean> {    	
 		@Override
 		protected Boolean doInBackground(Boolean... showToast) {
@@ -249,21 +253,37 @@ public class Shoutbreak extends MapActivity implements Colleague {
 	public void centerMapOnUser(boolean showToast) {
 		if (_isTurnedOn.get() && _map != null && overlay != null && _map.getOverlays().size() > 0 && overlay.isMyLocationEnabled()) {
 			
-			// Old
 			//CenterMapTask task = new CenterMapTask();
 			//task.execute(false);		
 			
-			// New
-			GeoPoint loc = overlay.getMyLocation();
+			// MyLocationOverlay is ghetto.  The below line does not work.
+			// GeoPoint loc = overlay.getMyLocation();
+			// We do this elaborate crap instead.
+			GeoPoint loc = null;
+			if (_m != null) {
+				ThreadSafeMediator threadSafeMediator = _m.getAThreadSafeMediator();
+				loc = threadSafeMediator.getLocationAsGeoPoint();
+				
+				// Best place to show 'User has screen open' even if they're not touching anything.
+				threadSafeMediator.resetPollingDelay();
+			}
+			
 			if (loc != null) {
 				MapController mapController = _map.getController();
 				if (mapController != null) {
 					mapController.animateTo(loc);
+					_doesMapKnowLocation.set(true);
+					dialogBuilder.showDialog(DialogBuilder.DISMISS_DIALOG_WAIT_FOR_MAP_TO_HAVE_LOCATION, "");
 					if (showToast) {
 						_m.getUiGateway().toast("You are here.", Toast.LENGTH_SHORT);
 					}
 				}
+			} else {
+				_doesMapKnowLocation.set(false);
+				dialogBuilder.showDialog(DialogBuilder.DIALOG_WAIT_FOR_MAP_TO_HAVE_LOCATION,  "Hold on while we find you...");
 			}
+			
+			
 			
 		}
 	}
@@ -509,6 +529,11 @@ public class Shoutbreak extends MapActivity implements Colleague {
 //				mapController.animateTo(loc);
 //			}
 //		});
+		
+		// This is sort of irrelevant, but this is just a convenient place for this code chunk.
+		if (!_doesMapKnowLocation.get()) {
+			dialogBuilder.showDialog(DialogBuilder.DIALOG_WAIT_FOR_MAP_TO_HAVE_LOCATION,  "Hold on while we find you...");
+		}
 	}
 	
 	private void disableMapAndOverlay() {
