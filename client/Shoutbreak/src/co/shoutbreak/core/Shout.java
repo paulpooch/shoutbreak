@@ -17,7 +17,6 @@ public class Shout {
 	public int ups;
 	public int downs;
 	public int pts;
-	public int approval;
 	public int state_flag;
 	public int score;
 
@@ -39,7 +38,6 @@ public class Shout {
 		this.ups = 0;
 		this.downs = 0;
 		this.pts = 0;
-		this.approval = 0;
 		this.state_flag = C.SHOUT_STATE_NEW;
 		this.score = -1;
 	}
@@ -47,11 +45,7 @@ public class Shout {
 	public void calculateScore() {
 		// begin here:
 		// http://www.derivante.com/2009/09/01/php-content-rating-confidence/
-		if (hit > C.CONFIG_MIN_TARGETS_FOR_HIT_COUNT) {
-			score = ratingAverage(ups, ups + downs);
-		} else {
-			score = approval;
-		}
+		score = ratingAverage(ups, ups + downs);
 	}
 
 	public static int ratingAverage(int positive, int total) {

@@ -816,8 +816,6 @@ public class Mediator {
 			_ui.noticeTabShoutsIv.setVisibility(View.INVISIBLE);			
 		}
 		
-		
-
 		@Override
 		public void showPointsNotice(String noticeText) {
 			_ui.noticeTabPointsIv.setVisibility(View.VISIBLE);

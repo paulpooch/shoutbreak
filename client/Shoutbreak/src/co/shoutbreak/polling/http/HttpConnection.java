@@ -22,6 +22,7 @@ import org.json.JSONObject;
 import co.shoutbreak.core.C;
 import co.shoutbreak.core.utils.CrashReportingExceptionHandler;
 import co.shoutbreak.core.utils.ErrorManager;
+import co.shoutbreak.core.utils.SBLog;
 import co.shoutbreak.polling.CrossThreadPacket;
 
 import android.os.*;
@@ -30,6 +31,8 @@ import android.os.*;
 // http://masl.cis.gvsu.edu/2010/04/05/android-code-sample-asynchronous-http-connections/
 public class HttpConnection implements Runnable {
 
+	private static final String TAG = "HttpConnection";
+	
 	private static final int GET = 0;
 	private static final int POST = 1;
 
@@ -82,16 +85,18 @@ public class HttpConnection implements Runnable {
 	public void run() {
 		_handler.sendMessage(Message.obtain(_handler, C.HTTP_DID_START));
 		httpClient = new DefaultHttpClient();
-		HttpConnectionParams.setSoTimeout(httpClient.getParams(), 25000);
+		HttpConnectionParams.setSoTimeout(httpClient.getParams(), C.CONFIG_HTTP_TIMEOUT);
 		try {
 			HttpResponse response = null;
 			switch (_method) {
 				case GET:
+					SBLog.httpGet(_url);
 					response = httpClient.execute(new HttpGet(_url));
 					break;
 				case POST:
 					HttpPost httpPost = new HttpPost(_url);
 					httpPost.setEntity(new UrlEncodedFormEntity(_data));
+					SBLog.httpPost(_url, _data);
 					response = httpClient.execute(httpPost);				
 					break;
 			}
@@ -99,6 +104,7 @@ public class HttpConnection implements Runnable {
 				processEntity(response.getEntity());
 			}
 		} catch (Exception e) {
+			SBLog.e(TAG, e);
 			_xPacket.exception = e;
 			_handler.sendMessage(Message.obtain(_handler, C.HTTP_DID_ERROR, _xPacket));
 		} finally {
@@ -124,7 +130,8 @@ public class HttpConnection implements Runnable {
 			String line, result = "";
 			while ((line = bufferedReader.readLine()) != null) {
 				result += line;
-			}				
+			}
+			SBLog.httpResponse(result);
 			if (result.length() > 0) {
 				json = new JSONObject(result);
 				json = Filter.filterJSON(json);

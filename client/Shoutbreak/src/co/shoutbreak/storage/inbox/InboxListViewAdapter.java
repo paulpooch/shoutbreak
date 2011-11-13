@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -168,6 +169,8 @@ public class InboxListViewAdapter extends BaseAdapter implements Colleague {
         	holder.collapsed = (RelativeLayout) convertView.findViewById(R.id.rlCollapsed);
         	holder.expanded = (RelativeLayout) convertView.findViewById(R.id.rlExpanded);
         	holder.btnVoteUp = (ImageButton) convertView.findViewById(R.id.btnVoteUp);
+        	holder.hitCount = (TextView) convertView.findViewById(R.id.hitCountTv);
+        	holder.hitCountIcon = (ImageView) convertView.findViewById(R.id.hitCountIconIv);
         	holder.btnVoteUp.setOnClickListener(onVoteUpClickListener);
         	holder.btnVoteDown = (ImageButton) convertView.findViewById(R.id.btnVoteDown);
         	holder.btnVoteDown.setOnClickListener(onVoteDownClickListener);
@@ -180,6 +183,7 @@ public class InboxListViewAdapter extends BaseAdapter implements Colleague {
         	//holder.btnReply.getBackground().setColorFilter(0xAA9900FF, Mode.SRC_ATOP);
         	holder.expanded.setOnClickListener(onCollapseClickListener);
         	holder.expanded.setTag(holder);
+
         	convertView.setTag(holder);
         } else {
         	holder = (InboxViewHolder) convertView.getTag();
@@ -258,8 +262,18 @@ public class InboxListViewAdapter extends BaseAdapter implements Colleague {
         
         // Is there a score?
         String score = Integer.toString(entry.score);
-        if (entry.score == C.NULL_APPROVAL || entry.score == C.NULL_SCORE) {
+        if (entry.score == C.NULL_SCORE) {
         	score = "?";
+        	if (isExpanded) {
+	        	holder.hitCount.setVisibility(View.INVISIBLE);
+	        	holder.hitCountIcon.setVisibility(View.INVISIBLE);
+        	}
+        } else {
+        	if (isExpanded) {
+	        	holder.hitCount.setVisibility(View.VISIBLE);
+	        	holder.hitCountIcon.setVisibility(View.VISIBLE);
+	        	holder.hitCount.setText(Integer.toString(entry.hit));
+        	}
         }
         
         // Mark shout as read/unread
@@ -279,6 +293,7 @@ public class InboxListViewAdapter extends BaseAdapter implements Colleague {
 		holder.btnDelete.setTag(holder);
 		
 		// TODO this should be setEnabled(_isPowerOn) once implemented
+		//								  _isInputAllowed actually
 		//holder.btnReply.setEnabled(false); 
 		
 		return convertView;

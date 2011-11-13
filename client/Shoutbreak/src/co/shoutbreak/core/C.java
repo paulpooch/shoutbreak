@@ -5,7 +5,8 @@ public class C {
 
 	// CONFIG /////////////////////////////////////////////////////////////////
 	// Match this to the $version in index.php
-	public static final String CONFIG_SERVER_ADDRESS = "http://app.shoutbreak.co/001/";
+	public static final String CONFIG_SERVER_ADDRESS = "http://app.shoutbreak.co/002/";
+	public static final int CONFIG_HTTP_TIMEOUT = 25000;
 	public static final int CONFIG_NOTICES_DISPLAYED_IN_TAB = 50;
 	public static final String CONFIG_CRASH_REPORT_ADDRESS = "http://app.shoutbreak.co/crash_reports/upload.php";
 	public static final String CONFIG_SUPPORT_ADDRESS = "http://shoutbreak.com/support";
@@ -14,7 +15,6 @@ public class C {
 	public static final int CONFIG_DENSITY_GRID_Y_GRANULARITY = 64800; // 10 second cells
 	public static final int CONFIG_GPS_MIN_UPDATE_MILLISECS = 60000; // 0 gives most frequent
 	public static final int CONFIG_GPS_MIN_UPDATE_METERS = 20; // 0 gives smallest interval
-	public static final int CONFIG_MIN_TARGETS_FOR_HIT_COUNT = 3;
 	public static final int CONFIG_MAX_SIMULTANEOUS_HTTP_CONNECTIONS = 5; // for ConnectionQueue
 	public static final int CONFIG_PEOPLE_PER_LEVEL = 5;
 	public static final double CONFIG_SHOUT_SCORING_DEFAULT_POWER = 0.10; //  0.10 to have a 95% chance that your lower bound is correct
@@ -97,7 +97,6 @@ public class C {
 	public static final String JSON_POINTS = "pts";
 	public static final String JSON_PW = "pw";
 	public static final String JSON_SCORES = "scores";
-	public static final String JSON_SHOUT_APPROVAL = "approval";
 	public static final String JSON_SHOUT_DOWNS = "downs";
 	public static final String JSON_SHOUT_HIT = "hit";
 	public static final String JSON_SHOUT_ID = "shout_id";
@@ -112,8 +111,7 @@ public class C {
 	public static final String JSON_VOTE = "vote";
 	
 	// JSON FALLBACKS 
-	// what we assume if value not returned by server	
-	public static final int NULL_APPROVAL = -1;
+	// what we assume if value not returned by server
 	public static final int NULL_DOWNS = 0;
 	public static final int NULL_HIT = 0;
 	public static final boolean NULL_OPEN = false;

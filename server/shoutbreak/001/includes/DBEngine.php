@@ -363,9 +363,7 @@ class DBEngine {
 		$backOffTimer = $this->BACKOFF_INITIAL;
 		while ($attempts > 0) {
 			e("SELECT user_id FROM $this->TABLE_LIVE WHERE lat BETWEEN '$lat1' AND '$lat2' AND long BETWEEN '$long1' AND '$long2' LIMIT $maxTargets");
-			//$targets = $this->sdb->select($this->TABLE_LIVE, "SELECT user_id FROM $this->TABLE_LIVE WHERE lat BETWEEN '$lat1' AND '$lat2' AND long BETWEEN '$long1' AND '$long2' LIMIT $maxTargets" );
-            // Removed limit, all in circle will be hit.
-            $targets = $this->sdb->select($this->TABLE_LIVE, "SELECT user_id FROM $this->TABLE_LIVE WHERE lat BETWEEN '$lat1' AND '$lat2' AND long BETWEEN '$long1' AND '$long2'" );
+			$targets = $this->sdb->select($this->TABLE_LIVE, "SELECT user_id FROM $this->TABLE_LIVE WHERE lat BETWEEN '$lat1' AND '$lat2' AND long BETWEEN '$long1' AND '$long2' LIMIT $maxTargets" );
 			$log->LogInfo(count($targets) . " targets");		
 			if ($targets) {
 				$wasSenderHit = false;				

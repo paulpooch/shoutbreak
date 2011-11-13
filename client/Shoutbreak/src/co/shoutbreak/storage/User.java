@@ -30,17 +30,22 @@ public class User {
 	
 	public User(Database db) {
 		
+		SBLog.logic("User instantiated.");
+		
 		_db = db;
 		_passwordExists = false;
 		_userSettingsAreStale = true;
 		_level = 0;
 		_points = 0;
 		_auth = "default"; // we don't have auth yet... just give us nonce
-		_cellDensity = null;
+		_cellDensity = null;		
 		
 		HashMap<String, String> userSettings = getUserSettings();
 		if (userSettings.containsKey(C.KEY_USER_PW)) {
 			_passwordExists = true;
+			SBLog.logic("User has an account.");
+		} else {
+			SBLog.logic("User does not have an account.");
 		}
 		if (userSettings.containsKey(C.KEY_USER_ID)) {
 			_uid = userSettings.get(C.KEY_USER_ID);

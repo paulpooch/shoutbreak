@@ -104,5 +104,5 @@ public class UiOffGateway implements IUiGateway {
 
 	@Override
 	public void handleServerErrorCode(String text) {}
-	
+
 }

@@ -9,14 +9,14 @@ class Config {
 	public static $USER_INITIAL_LEVEL = 6;
 	public static $USER_INITIAL_POINTS = 0;
 	public static $USER_INITIAL_PENDING_LEVEL_UP = 1;
-	public static $DEFAULT_POPULATION_DENSITY = .00001; // NYC = .0106 / m^2, but that's PEOPLE not USERS
+	public static $DEFAULT_POPULATION_DENSITY = .0001; // NYC = .0106 / m^2, but that's PEOPLE not USERS
 	public static $DATE_FORMAT = DATE_ISO8601;
 	public static $PAD_USER_LEVEL = 4;
 	public static $PAD_USER_POINTS = 10;
 	public static $PAD_COORDS = 8;
 	public static $OFFSET_LAT = 90;
 	public static $OFFSET_LONG = 180; 
-	public static $MIN_TARGETS_FOR_HIT_COUNT = 0;
+	public static $MIN_TARGETS_FOR_HIT_COUNT = 3;
 	public static $VOTING_WINDOW = 300; // 5 minutes
 	public static $SCORE_REQUEST_LIMIT = 10;
 	public static $SIMPLEDB_MAX_NUMBER_OF_ITEMS = 2500;

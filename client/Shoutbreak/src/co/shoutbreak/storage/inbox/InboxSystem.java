@@ -96,8 +96,7 @@ public class InboxSystem {
 				s.ups = cursor.getInt(9);
 				s.downs = cursor.getInt(10);
 				s.pts = cursor.getInt(11);
-				s.approval = cursor.getInt(12);
-				s.state_flag = cursor.getInt(13);
+				s.state_flag = cursor.getInt(12);
 				s.calculateScore();
 				results.add(s);
 			}
@@ -128,7 +127,6 @@ public class InboxSystem {
 		shout.ups = jsonShout.optInt(C.JSON_SHOUT_UPS, C.NULL_UPS);
 		shout.downs = jsonShout.optInt(C.JSON_SHOUT_DOWNS, C.NULL_DOWNS);
 		shout.pts = C.NULL_PTS;
-		shout.approval = jsonShout.optInt(C.JSON_SHOUT_APPROVAL, C.NULL_APPROVAL);
 		shout.state_flag = C.SHOUT_STATE_NEW;
 		shout.score = C.NULL_SCORE;		
 		addShoutToInbox(shout);
@@ -154,8 +152,7 @@ public class InboxSystem {
 				s.ups = cursor.getInt(9);
 				s.downs = cursor.getInt(10);
 				s.pts = cursor.getInt(11);
-				s.approval = cursor.getInt(12);
-				s.state_flag = cursor.getInt(13);
+				s.state_flag = cursor.getInt(12);
 				s.calculateScore();
 				return s;
 			}
@@ -213,7 +210,6 @@ public class InboxSystem {
 		shout.downs = jsonScore.optInt(C.JSON_SHOUT_DOWNS, C.NULL_DOWNS);
 		shout.hit = jsonScore.optInt(C.JSON_SHOUT_HIT, C.NULL_HIT);
 		shout.pts = jsonScore.optInt(C.JSON_POINTS, C.NULL_PTS);
-		shout.approval = jsonScore.optInt(C.JSON_SHOUT_APPROVAL, C.NULL_APPROVAL);
 		shout.open = jsonScore.optInt(C.JSON_SHOUT_OPEN, 0) == 1 ? true : C.NULL_OPEN;
 		this.updateScore(shout);
 		
@@ -222,9 +218,10 @@ public class InboxSystem {
 		if (!shout.open){
 			Shout shoutFromDB = this.getShout(shout.id);
 			if (shoutFromDB.is_outbox) {
-				_m.handlePointsForShout(C.POINTS_SHOUT, shout.pts, shout.id);								
+				_m.handlePointsForShout(C.POINTS_SHOUT, shout.pts, shout.id);
 			}
 		}
+	
 	}
 	
 	public synchronized boolean deleteShout(String shoutID) {
@@ -256,12 +253,9 @@ public class InboxSystem {
 	private synchronized Long addShoutToInbox(Shout shout) {
 		// Database
 		SBLog.i(TAG, "addShoutToInbox()");
-		// (shout_id TEXT, timestamp TEXT, time_received INTEGER, txt TEXT,
-		// is_outbox INTEGER, re TEXT, vote INTEGER, hit INTEGER, open INTEGER,
-		// ups INTEGER, downs INTEGER, pts INTEGER, approval INTEGER)
 		String sql = "INSERT INTO "
 				+ C.DB_TABLE_SHOUTS
-				+ " (shout_id, timestamp, time_received, txt, is_outbox, re, vote, hit, open, ups, downs, pts, approval, state_flag) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+				+ " (shout_id, timestamp, time_received, txt, is_outbox, re, vote, hit, open, ups, downs, pts, state_flag) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		SQLiteStatement insert = this._db.compileStatement(sql);
 		insert.bindString(1, shout.id); // 1-indexed
 		insert.bindString(2, shout.timestamp);
@@ -275,8 +269,7 @@ public class InboxSystem {
 		insert.bindLong(10, shout.ups);
 		insert.bindLong(11, shout.downs);
 		insert.bindLong(12, shout.pts);
-		insert.bindLong(13, shout.approval);
-		insert.bindLong(14, shout.state_flag);
+		insert.bindLong(13, shout.state_flag);
 		try {
 			return insert.executeInsert();
 		} catch (Exception ex) {
@@ -306,26 +299,16 @@ public class InboxSystem {
 		boolean result = false;
 		SQLiteStatement update;
 		// do we have hit count?
-		if (shout.hit != C.NULL_HIT) {
-			String sql = "UPDATE " + C.DB_TABLE_SHOUTS
-					+ " SET ups = ?, downs = ?, hit = ?, pts = ?, open = ? WHERE shout_id = ?";
-			update = _db.compileStatement(sql);
-			update.bindLong(1, shout.ups);
-			update.bindLong(2, shout.downs);
-			update.bindLong(3, shout.hit);
-			update.bindLong(4, shout.pts);
-			int isOpen = (shout.open) ? 1 : 0;
-			update.bindLong(5, isOpen);
-			update.bindString(6, shout.id);
-		} else {
-			String sql = "UPDATE " + C.DB_TABLE_SHOUTS + " SET pts = ?, approval = ?, open = ? WHERE shout_id = ?";
-			update = _db.compileStatement(sql);
-			update.bindLong(1, shout.pts);
-			update.bindLong(2, shout.approval);
-			int isOpen = (shout.open) ? 1 : 0;
-			update.bindLong(3, isOpen);
-			update.bindString(4, shout.id);
-		}
+		String sql = "UPDATE " + C.DB_TABLE_SHOUTS
+				+ " SET ups = ?, downs = ?, hit = ?, pts = ?, open = ? WHERE shout_id = ?";
+		update = _db.compileStatement(sql);
+		update.bindLong(1, shout.ups);
+		update.bindLong(2, shout.downs);
+		update.bindLong(3, shout.hit);
+		update.bindLong(4, shout.pts);
+		int isOpen = (shout.open) ? 1 : 0;
+		update.bindLong(5, isOpen);
+		update.bindString(6, shout.id);
 		try {
 			update.execute();			
 			result = true;

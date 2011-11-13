@@ -237,12 +237,12 @@
 									android:layout_alignParentTop="true" android:layout_marginTop="-4dp"
 									android:shadowDx="2" android:shadowDy="2" android:shadowRadius="2"
 									android:textSize="30dp" android:textStyle="bold" />
-								<TextView
-									android:layout_width="wrap_content" android:layout_height="wrap_content"
-									android:textColor="#ffd75edc" android:shadowColor="#1e003c"
-									android:layout_alignParentTop="true" android:layout_marginTop="-4dp"
-									android:shadowDx="2" android:shadowDy="2" android:shadowRadius="2"
-									android:textSize="30dp" android:textStyle="bold" android:text=" / "/>
+								<TextView android:layout_width="wrap_content"
+									android:layout_height="wrap_content" android:textColor="#ffd75edc"
+									android:shadowColor="#1e003c" android:layout_alignParentTop="true"
+									android:layout_marginTop="-4dp" android:shadowDx="2"
+									android:shadowDy="2" android:shadowRadius="2" android:textSize="30dp"
+									android:textStyle="bold" android:text=" / " />
 								<TextView android:id="@+id/userNextLevelAtTv"
 									android:layout_width="wrap_content" android:layout_height="wrap_content"
 									android:textColor="#ffffffff" android:shadowColor="#1e003c"
@@ -287,7 +287,7 @@
 
 	</LinearLayout>
 
-	<!-- Notice Tab -->
+
 	<RelativeLayout android:id="@+id/noticeTabRl"
 		android:layout_marginTop="48px" android:layout_width="fill_parent"
 		android:layout_height="fill_parent">

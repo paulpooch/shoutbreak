@@ -33,26 +33,32 @@ public class Polling {
 		SBLog.i(TAG, "go()");
 		switch (message.what) {
 			case C.STATE_IDLE: {
+				SBLog.logic("Polling - idle");
 				idle(message);
 				break;
 			}
 			case C.STATE_RECEIVE_SHOUTS: {
+				SBLog.logic("Polling - receiveShouts");
 				receiveShouts(message);
 				break;
 			}
 			case C.STATE_VOTE: {
+				SBLog.logic("Polling - vote");
 				vote(message);
 				break;
 			}
 			case C.STATE_SHOUT: {
+				SBLog.logic("Polling - shout");
 				shout(message);
 				break;
 			}
 			case C.STATE_EXPIRED_AUTH: {
+				SBLog.logic("Polling - expiredAuth");
 				expiredAuth(message);
 				break;
 			}
 			case C.STATE_CREATE_ACCOUNT_2: {
+				SBLog.logic("Polling - createAccountStep2");
 				createAccountStep2(message);
 				break;
 			}
