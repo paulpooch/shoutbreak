@@ -69,7 +69,7 @@ public class SBLog {
 		if (DEBUG_MODE) {
 			StringBuffer params = new StringBuffer("\nPOSTDATA\n");
 			for (NameValuePair nvp : postData) {
-				params.append(nvp.getName() + " = " + nvp.getValue());
+				params.append(nvp.getName() + " = " + nvp.getValue() + "\n");
 			}
 			Log.d("SB HTTP POST", "URL = " + url + params);
 		}

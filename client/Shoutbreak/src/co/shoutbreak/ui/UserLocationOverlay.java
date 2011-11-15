@@ -33,6 +33,9 @@ public class UserLocationOverlay extends MyLocationOverlay {
 	private Paint _circleFillPaint;
 	private Paint _circleBorderPaint;
 	private Bitmap _resizeIcon;
+	private Bitmap _resizeIconMax;
+	private boolean _isResizeIconMaxed;
+	private int _maxShoutreach;
 	private double _density;
 
 	private boolean _baseRadiusPxIsWrong;				// is the radius calculation based on the current zoom level? or is the pixel value wrong?
@@ -81,6 +84,7 @@ public class UserLocationOverlay extends MyLocationOverlay {
 		_calibrateZoomLevelForRadiusSize = true;
     	_baseRadiusPxIsWrong = true;
     	_resizeAdjustmentPx = 0;
+    	_maxShoutreach = User.calculateShoutreach(newLevel);
     	// this calls draw() immediately rather than wait for next interval
     	//if (_canvas != null && _mapView != null) {
     		//_mapView.draw(_canvas);
@@ -110,9 +114,12 @@ public class UserLocationOverlay extends MyLocationOverlay {
 		_circleBorderPaint.setStyle(Style.STROKE);
 		_circleBorderPaint.setStrokeWidth(4);
 		Bitmap resizeBitmap = BitmapFactory.decodeResource(_ui.getResources(), R.drawable.resize_icon);
+		Bitmap resizeBitmapMax = BitmapFactory.decodeResource(_ui.getResources(), R.drawable.resize_icon_max);
 		_resizeIconSize = new Point(resizeBitmap.getWidth(), resizeBitmap.getHeight());
 		_resizeIconLocation = new Point();
 		_resizeIcon = Bitmap.createBitmap(resizeBitmap, 0, 0, _resizeIconSize.x, _resizeIconSize.y);
+		_resizeIconMax = Bitmap.createBitmap(resizeBitmapMax, 0, 0, _resizeIconSize.x, _resizeIconSize.y);
+		_isResizeIconMaxed = false;
 	}
 
 	@Override
@@ -143,8 +150,10 @@ public class UserLocationOverlay extends MyLocationOverlay {
 		double iconXYOffset = _currentRadiusPx / SQRT2;
 		_resizeIconLocation.x = (int) (_userLocationPx.x - iconXYOffset - (_resizeIconSize.x / 2));
 		_resizeIconLocation.y = (int) (_userLocationPx.y + iconXYOffset - (_resizeIconSize.y / 2));
+		
+		Bitmap currentIcon = (_isResizeIconMaxed) ? _resizeIconMax : _resizeIcon;
 		canvas.drawBitmap(
-				_resizeIcon,
+				currentIcon,
 				_resizeIconLocation.x,
 				_resizeIconLocation.y, 
 				null
@@ -179,17 +188,31 @@ public class UserLocationOverlay extends MyLocationOverlay {
 			_baseRadiusPx = _userLocationPx.y - topRadiusPx.y; // downward y axis
 			_resizeAdjustmentPx = 0;
 			calculateCurrentRadius();
+			updatePeopleCount(true);
 		}
 	}
 
 	// called when user drags resize icon
 	public void resize(int radiusChangePx) {
+		SBLog.e("CHANGE", "radiusChange = " + radiusChangePx);
 		_resizeAdjustmentPx += radiusChangePx;
 
+//		if (_baseRadiusPx + _resizeAdjustmentPx < C.MIN_RADIUS_PX) {
+//			_resizeAdjustmentPx = (int) (C.MIN_RADIUS_PX - _baseRadiusPx);
+//		}
+		
+		SBLog.e("BEFORE RAD", "current = " + _currentRadiusPx + " | resize = " + _resizeAdjustmentPx + " | base = " + _baseRadiusPx);
 		// force minimum radius size
-		if (_baseRadiusPx + _resizeAdjustmentPx < C.MIN_RADIUS_PX) {
+		if ( _baseRadiusPx + _resizeAdjustmentPx <= C.MIN_RADIUS_PX) {
 			_resizeAdjustmentPx = (int) (C.MIN_RADIUS_PX - _baseRadiusPx);
 		}
+		
+		// force maximum radius size
+		if (!C.CONFIG_ADMIN_SUPERPOWERS && _resizeAdjustmentPx > 0) {
+			_resizeAdjustmentPx = 0;
+		}
+		SBLog.e("AFTER RAD", "current = " + _currentRadiusPx + " | resize = " + _resizeAdjustmentPx + " | base = " + _baseRadiusPx);
+			
 		calculateCurrentRadius();
 	}
 
@@ -200,8 +223,12 @@ public class UserLocationOverlay extends MyLocationOverlay {
 	}
 
 	protected void updatePeopleCount() {
+		updatePeopleCount(false);
+	}
+	
+	protected void updatePeopleCount(boolean fromZoomChange) {
 		// prevents us from doing this way too often - let's only care every 50 microdegrees
-		if (Math.abs(_lastTopRadiusGeoPoint.getLatitudeE6() - _latRadiusLatForPeopleCount) > 50) {
+		if (fromZoomChange || Math.abs(_lastTopRadiusGeoPoint.getLatitudeE6() - _latRadiusLatForPeopleCount) > 50) {
 			_latRadiusLatForPeopleCount = _lastTopRadiusGeoPoint.getLatitudeE6();
 			Location l1 = new Location("GPS");
 			l1.setLatitude(_lastTopRadiusGeoPoint.getLatitudeE6() / 1E6);
@@ -214,7 +241,14 @@ public class UserLocationOverlay extends MyLocationOverlay {
 			// Tack an extra person on to display cuz it looks better.
 			// It's usually a little low - but we don't want people trying to shout beyond their level so leave it low.
 			_ui.mapPeopleCountTv.setText(Integer.toString(_peopleCount + 1));
+			if (_peopleCount + 1 >= _maxShoutreach) {
+				_isResizeIconMaxed = true;			
+			} else {
+				_isResizeIconMaxed = false;
+			}
 		}
+		// TODO
+		// peoplecount vs old radius should be consistent
 	}
 	
 	public int getPeopleCount() {
