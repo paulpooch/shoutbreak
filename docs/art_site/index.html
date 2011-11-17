@@ -19,6 +19,12 @@ footer { position: absolute; bottom: 8px; width: 100%; text-align: center; font-
 #logo {  position: absolute: left: 0px; top: 0px; width: 439px; height: 100px; background: transparent url('shoutbreak.png') 0px 17px no-repeat; }
 #white { padding: 35px; }
 
+.left { float: left; }
+.right { float: right; }
+.bullet { position: relative; float: left; width: 13px; height: 13px; margin: 2px; background: transparent url('bullet_off.png') no-repeat; }
+.bullet:hover { position: relative; float: left; width: 13px; height: 13px; margin: 2px; background: transparent url('bullet_on.png') no-repeat; }
+
+
 .button {
 	-moz-box-shadow:inset 0px 1px 0px 0px #d066e6;
 	-webkit-box-shadow:inset 0px 1px 0px 0px #d066e6;
@@ -94,6 +100,7 @@ footer { position: absolute; bottom: 8px; width: 100%; text-align: center; font-
 	<div id="layer3">
 		<div id="main">
 			<div id="logo"></div>
+			<img src="screen.png"><br><div class="bullet"></div><div class="bullet"></div><div class="bullet"></div><div class="bullet"></div>
 			<! -- put shit that goes on top of the blue here -->
 		</div>
 		<div id="white">
