@@ -23,20 +23,20 @@ public class Database {
 	private static SimpleDateFormat ISO8601FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
 
 	public Database(ShoutbreakService service) {
-		SBLog.i(TAG, "new Database()");
+		SBLog.constructor(TAG);
 		_service = service;
 		_openHelper = new OpenHelper(_service);
 		open();
 	}
 	
 	public void open() {
-		SBLog.i(TAG, "open()");
+		SBLog.method(TAG, "open()");
 		_db = _openHelper.getWritableDatabase();
 		_db.setLockingEnabled(true);
 	}
 
 	public void close() {
-		SBLog.i(TAG, "close()");
+		SBLog.method(TAG, "close()");
 		_db.close();
 	}
 
@@ -56,12 +56,10 @@ public class Database {
 
 		OpenHelper(ShoutbreakService service) {
 			super(service, C.DB_NAME, null, C.DB_VERSION);
-			SBLog.i(TAG, "new OpenHelper()");
 		}
 
 		@Override
 		public void onCreate(SQLiteDatabase db) {
-			SBLog.i(TAG, "onCreate()");
 			db.execSQL("CREATE TABLE " + C.DB_TABLE_USER_SETTINGS + " (setting_key TEXT, setting_value TEXT)");
 			db.execSQL("CREATE TABLE " + C.DB_TABLE_DENSITY
 					+ " (cell_x INTEGER, cell_y INTEGER, density REAL, last_updated TEXT)");
@@ -74,7 +72,6 @@ public class Database {
 
 		@Override
 		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-			SBLog.i(TAG, "onUpgrade()");
 			db.execSQL("DROP TABLE IF EXISTS " + C.DB_TABLE_USER_SETTINGS);
 			db.execSQL("DROP TABLE IF EXISTS " + C.DB_TABLE_DENSITY);
 			db.execSQL("DROP TABLE IF EXISTS " + C.DB_TABLE_SHOUTS);
@@ -85,7 +82,6 @@ public class Database {
 	}
 
 	public static String getDateAsISO8601String(Date date) {
-		SBLog.i(TAG, "getDateAsISO8601String()");
 		String result = ISO8601FORMAT.format(date);
 		// convert YYYYMMDDTHH:mm:ss+HH00 into YYYYMMDDTHH:mm:ss+HH:00
 		// - note the added colon for the Timezone

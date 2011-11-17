@@ -2,8 +2,6 @@ package co.shoutbreak.core.utils;
 
 import java.security.MessageDigest;
 
-
-
 public class Hash {
 
 	private static String convertToHex(byte[] data) {

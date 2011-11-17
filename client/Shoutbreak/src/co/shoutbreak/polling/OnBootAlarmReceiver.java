@@ -22,7 +22,7 @@ public class OnBootAlarmReceiver extends BroadcastReceiver {
 	
 	@Override
 	public void onReceive(Context context, Intent intent) {		
-		SBLog.i(TAG, "onReceive()");
+		SBLog.lifecycle(TAG, "onReceive()");
 		Intent currentIntent = new Intent(context, ShoutbreakService.class);
 		currentIntent.putExtra(C.NOTIFICATION_LAUNCHED_FROM_ALARM, true);
 		currentIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

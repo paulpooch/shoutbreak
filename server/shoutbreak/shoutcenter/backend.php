@@ -14,7 +14,7 @@ switch ($a) {
 		$engine->admin_getAllShouts();
 		break;
 	case 'get_users':
-		$engine->admin_showUsers();
+		$engine->admin_getUsers();
 		break;
 	case 'cron_close_shouts':
 		$engine->cron_closeShouts();

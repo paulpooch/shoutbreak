@@ -28,6 +28,7 @@ public class NoticeTabSystem implements Colleague {
 	private Database _db;
 	
 	public NoticeTabSystem(Mediator mediator, Database db) {
+		SBLog.constructor(TAG);
 		_m = mediator;
 		_db = db;
 		_listAdapter = new NoticeTabListViewAdapter(_m, (LayoutInflater)_m.getSystemService(Context.LAYOUT_INFLATER_SERVICE));		
@@ -96,12 +97,12 @@ public class NoticeTabSystem implements Colleague {
 	}
 	
 	private List<Notice> getNoticesForUI() {
-		SBLog.i(TAG, "getNoticesForUI()");
+		SBLog.method(TAG, "getNoticesForUI()");
 		return getNoticesForUI(0, C.CONFIG_NOTICES_DISPLAYED_IN_TAB);
 	}
 	
 	private List<Notice> getNoticesForUI(int start, int amount) {		
-		SBLog.i(TAG, "getNoticesForUI()");
+		SBLog.method(TAG, "getNoticesForUI()");
 		ArrayList<Notice> results = new ArrayList<Notice>();
 		String sql = "SELECT rowid, type, value, text, ref, timestamp, state_flag FROM " + C.DB_TABLE_NOTICES + " ORDER BY timestamp DESC LIMIT ? OFFSET ? ";
 		Cursor cursor = null;
@@ -132,7 +133,7 @@ public class NoticeTabSystem implements Colleague {
 	
 	public synchronized boolean markAllNoticesAsRead() {
 		// Database
-		SBLog.i(TAG, "markAllNoticesAsRead()");
+		SBLog.method(TAG, "markAllNoticesAsRead()");
 		boolean result = false;
 		SQLiteStatement update;
 		String sql = "UPDATE " + C.DB_TABLE_NOTICES + " SET state_flag = ? WHERE state_flag = ?";
@@ -151,9 +152,9 @@ public class NoticeTabSystem implements Colleague {
 	}
 	
 	private synchronized Long saveNotice(int noticeType, int noticeValue, String noticeText, String noticeRef) {
+		SBLog.method(TAG, "saveNotice()");
 		noticeRef = (noticeRef == null) ? "" : noticeRef;
 		Date date = new Date();
-		SBLog.i(TAG, "addNotice()");
 		String sql = "INSERT INTO " + C.DB_TABLE_NOTICES + " (type, value, text, ref, timestamp, state_flag) VALUES (?, ?, ?, ?, ?, ?)";
 		SQLiteStatement insert = this._db.compileStatement(sql);
 		insert.bindLong(1, noticeType);

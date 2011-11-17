@@ -29,9 +29,6 @@ import java.util.TimeZone;
  * @version $Id: ISO8601DateParser.java,v 1.2 2005/06/03 20:25:29 snoopdave Exp $
  */
 public class ISO8601DateParser {
-	
-	private static final String TAG = "ISO8601DateParser";
-
     // 2004-06-14T19:GMT20:30Z
     // 2004-06-20T06:GMT22:01Z
 
@@ -78,7 +75,6 @@ public class ISO8601DateParser {
     //      s    = one or more digits representing a decimal fraction of a second
     //      TZD  = time zone designator (Z or +hh:mm or -hh:mm)
     public static Date parse( String input ) throws java.text.ParseException {
-    	SBLog.i(TAG, "parse()");
         //NOTE: SimpleDateFormat uses GMT[-+]hh:mm for the TZ which breaks
         //things a bit.  Before we go on we have to repair this.
         SimpleDateFormat df = new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ssz" );
@@ -100,7 +96,6 @@ public class ISO8601DateParser {
     }
 
     public static String toString( Date date ) {
-    	SBLog.i(TAG, "toString()");
         SimpleDateFormat df = new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ssz" );
         
         TimeZone tz = TimeZone.getTimeZone( "UTC" );

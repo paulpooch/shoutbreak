@@ -26,6 +26,7 @@ public class LocationTracker implements LocationListener, Colleague {
 	private Criteria _criteria;	
 	
 	public LocationTracker(Mediator mediator) {
+		SBLog.constructor(TAG);
 		_m = mediator;
 		_locationManager = (LocationManager)_m.getSystemService(Context.LOCATION_SERVICE);
 		//_location = _locationManager.getLastKnownLocation(_provider);
@@ -172,7 +173,7 @@ public class LocationTracker implements LocationListener, Colleague {
         
 	@Override
 	public void onLocationChanged(Location location) {
-		SBLog.i(TAG, "onLocationChanged()");
+		SBLog.method(TAG, "onLocationChanged()");
 		if (isBetterLocation(location, _location)) {
 			_location = location;
 		}
@@ -180,14 +181,14 @@ public class LocationTracker implements LocationListener, Colleague {
 
 	@Override
 	public void onProviderEnabled(String provider) {
-		SBLog.i(TAG, "onProviderEnabled()");
+		SBLog.method(TAG, "onProviderEnabled()");
 		//_m.onLocationEnabled();
 		_m.checkLocationProviderStatus();
 	}
 
 	@Override
 	public void onProviderDisabled(String provider) {
-		SBLog.i(TAG, "onProviderDisabled()");
+		SBLog.method(TAG, "onProviderDisabled()");
 		// One provider can be disabled without making location unavailable.
 		// I.E. Kill GPS but location (via cell tower) still enabled.
 		//_m.onLocationDisabled();
@@ -196,7 +197,7 @@ public class LocationTracker implements LocationListener, Colleague {
 
 	@Override
 	public void onStatusChanged(String provider, int status, Bundle extras) {
-		SBLog.i(TAG, "onStatusChange()");
+		SBLog.method(TAG, "onStatusChange()");
 		//_provider = _locationManager.getBestProvider(_criteria, true);
 		//_locationManager.requestLocationUpdates(_provider, C.CONFIG_GPS_MIN_UPDATE_MILLISECS, C.CONFIG_GPS_MIN_UPDATE_METERS, LocationTracker.this);
 		if (status == LocationProvider.AVAILABLE) {

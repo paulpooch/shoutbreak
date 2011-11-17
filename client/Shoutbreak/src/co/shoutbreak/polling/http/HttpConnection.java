@@ -45,6 +45,7 @@ public class HttpConnection implements Runnable {
 
 	public HttpConnection() {
 		this(new Handler());
+		SBLog.constructor(TAG);
 		// TODO: remove this once we know it's not crashing - probably hurting performance
 		Thread.setDefaultUncaughtExceptionHandler(new CrashReportingExceptionHandler(C.CONFIG_CRASH_REPORT_ADDRESS));
 	}

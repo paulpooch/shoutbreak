@@ -75,7 +75,8 @@ public class Mediator {
 	/* Mediator Lifecycle */
 	
 	public Mediator(ShoutbreakService service) {
-    	SBLog.i(TAG, "new Mediator()");
+    	SBLog.lifecycle(TAG, "Mediator()");
+    	SBLog.constructor(TAG);
     	
 		// add colleagues
 		_service = service;
@@ -147,7 +148,7 @@ public class Mediator {
 	public void registerUI(Shoutbreak ui) {
 		// ui is created before the mediator exists
 		// it must be added once the mediator is created
-		SBLog.i(TAG, "registerUI()");
+		SBLog.lifecycle(TAG, "registerUI()");
 		_isUIAlive.set(true);
 		_isUIInForeground.set(true);
 		ui.setMediator(this);	
@@ -158,17 +159,17 @@ public class Mediator {
 	
 	public void unregisterUI(boolean forceKillUI) {
 		// called by ui's onDestroy() method
-		SBLog.i(TAG, "unregisterUI()");
+		SBLog.lifecycle(TAG, "unregisterUI()");
 		if (_isUIAlive.get()) {
 			_isUIAlive.set(false);
 			_uiGateway.unsetUiMediator();
 			if (forceKillUI) {
 				// forces UI to destroy itself if the mediator / service is killed off
-				SBLog.e(TAG, "force killed ui, service shutdown while ui running");
+				SBLog.error(TAG, "force killed ui, service shutdown while ui running");
 				_uiGateway.finishUi();
 			}
 		} else {
-			SBLog.e(TAG, "ui is not alive, unable to unregister");
+			SBLog.error(TAG, "ui is not alive, unable to unregister");
 		}
 		_uiGateway = new UiOffGateway();
 	}
@@ -176,7 +177,7 @@ public class Mediator {
 	public void kill() {
 		// removes all colleague references to the mediator
 		// called by service's onDestroy() method
-    	SBLog.i(TAG, "kill()");
+    	SBLog.lifecycle(TAG, "kill()");
     	_threadLauncher.stopPolling();
 		_service = null;
 		unregisterUI(true);
@@ -198,30 +199,30 @@ public class Mediator {
 	
 	public void onServiceConnected() {
 		// called when service handler binds ui and service
-		SBLog.i(TAG, "onServiceConnected()");
+		SBLog.lifecycle(TAG, "onServiceConnected()");
 		_isServiceConnected.set(true);
 	}
 	
 	public void onServiceDisconnected() {
 		// called when ui unbinds from the service
 		// shouldn't ever be called
-		SBLog.i(TAG, "onServiceDisconnected()");
+		SBLog.lifecycle(TAG, "onServiceDisconnected()");
 		_isServiceConnected.set(false);
 	}
 	
 	public void onServiceStart() {
-		SBLog.i(TAG, "onServiceStart()");
+		SBLog.lifecycle(TAG, "onServiceStart()");
 		_isServiceStarted.set(true);
 	}
 	
 	public void appLaunchedFromUI() {
-		SBLog.i(TAG, "appLaunchedFromUI()");
+		SBLog.lifecycle(TAG, "appLaunchedFromUI()");
 		_isServiceStarted.set(true);
 		startPolling(true);
 	}
 	
 	public void appLaunchedFromAlarm() {
-		SBLog.i(TAG, "appLaunchedFromAlarm()");
+		SBLog.lifecycle(TAG, "appLaunchedFromAlarm()");
 		_isServiceStarted.set(true);
 		startPolling(true);
 	}
@@ -235,10 +236,10 @@ public class Mediator {
 	}
 	
 	public void startPolling(boolean onUiThread) {
-		SBLog.i(TAG, "startPolling()");
+		SBLog.lifecycle(TAG, "startPolling()");
 		if (!_isPollingAlive.get()) {
 			if (_isPowerPreferenceEnabled.get() && _isLocationEnabled.get() && _isDataEnabled.get() && _isServiceStarted.get()) {
-				SBLog.i(TAG, "app fully functional");
+				SBLog.logic("startPolling - app fully functional");
 				_isPollingAlive.set(true);
 				_threadLauncher.startPolling();
 				if (onUiThread) {
@@ -246,23 +247,23 @@ public class Mediator {
 				}
 			} else {
 				if (!_isPowerPreferenceEnabled.get()) {
-					SBLog.e(TAG, "unable to start service, power preference set to off");
+					SBLog.error(TAG, "unable to start service, power preference set to off");
 				}
 				if (!_isLocationEnabled.get()) {
-					SBLog.e(TAG, "unable to start service, location unavailable");
+					SBLog.error(TAG, "unable to start service, location unavailable");
 				}
 				if (!_isDataEnabled.get()) {
-					SBLog.e(TAG, "unable to start service, data unavailable");
+					SBLog.error(TAG, "unable to start service, data unavailable");
 				}
 			}
 		} else {
-			SBLog.i(TAG, "service is already polling, unable to call startPolling()");
+			SBLog.logic("startPolling - service is already polling, unable to call startPolling()");
 		}
 	}
 	
 	
 	public void stopPolling(boolean onUiThread) {
-		SBLog.i(TAG, "stopPolling()");
+		SBLog.lifecycle(TAG, "stopPolling()");
 		if (_isPollingAlive.get()) {
 			if (onUiThread) {
 				// This method normally will disable inputs.
@@ -272,12 +273,13 @@ public class Mediator {
 			_isPollingAlive.set(false);
 			_threadLauncher.stopPolling();
 		} else {
-			SBLog.i(TAG, "service is not polling, unable to call stopPolling()");
+			SBLog.logic("stopPolling - service is not polling, unable to call stopPolling()");
 		}
 	}
 	
 	// TODO: This should call something better than stopPolling()
 	private void possiblyStopPolling(Message message) {
+		SBLog.logic("possiblyStopPolling()");
 		if (message != null && message.obj != null) {
 			CrossThreadPacket xPacket = (CrossThreadPacket)message.obj;
 			if (xPacket.purpose == C.PURPOSE_LOOP_FROM_UI || xPacket.purpose == C.PURPOSE_LOOP_FROM_UI_DELAYED) {
@@ -307,7 +309,7 @@ public class Mediator {
 	}
 	
 	public void onPowerPreferenceEnabled(boolean onUiThread) {
-		SBLog.i(TAG, "onPowerEnabled()");
+		SBLog.method(TAG, "onPowerEnabled()");
 		_isPowerPreferenceEnabled.set(true);
 		enableIntervalAlarm();
 		_service.enableOnBootAlarmReceiver();
@@ -318,7 +320,7 @@ public class Mediator {
 	}
 	
 	public void onPowerPreferenceDisabled(boolean onUiThread) {
-		SBLog.i(TAG, "onPowerDisabled()");
+		SBLog.method(TAG, "onPowerDisabled()");
 		_isPowerPreferenceEnabled.set(false);
 		disableIntervalAlarm();
 		_service.disableOnBootAlarmReceiver();
@@ -333,7 +335,7 @@ public class Mediator {
 	}
 	
 	public void onLocationEnabled() {
-		SBLog.i(TAG, "onLocationEnabled()");
+		SBLog.method(TAG, "onLocationEnabled()");
 		_isLocationEnabled.set(true);
 		if (_isUIAlive.get()) {
 			_uiGateway.onLocationEnabled();
@@ -343,7 +345,7 @@ public class Mediator {
 	}
 	
 	public void onLocationDisabled() {
-		SBLog.i(TAG, "onLocationDisabled()");
+		SBLog.method(TAG, "onLocationDisabled()");
 		_isLocationEnabled.set(false);
 		if (_isUIAlive.get()) {
 			_uiGateway.onLocationDisabled();
@@ -356,7 +358,7 @@ public class Mediator {
 	}
 	
 	public void onDataEnabled() {
-		SBLog.i(TAG, "onDataEnabled()");
+		SBLog.method(TAG, "onDataEnabled()");
 		_isDataEnabled.set(true);
 		if (_isUIAlive.get()) {
 			_uiGateway.onDataEnabled();
@@ -365,7 +367,7 @@ public class Mediator {
 	}
 	
 	public void onDataDisabled() {
-		SBLog.i(TAG, "onDataDisabled()");
+		SBLog.method(TAG, "onDataDisabled()");
 		_isDataEnabled.set(false);
 		if (_isUIAlive.get()) {
 			_uiGateway.onDataDisabled();
@@ -374,14 +376,14 @@ public class Mediator {
 	}
 	
 	public boolean isFirstRun() {
-		SBLog.i(TAG, "isFirstRun()");
+		SBLog.method(TAG, "isFirstRun()");
 		boolean isFirstRun = _preferences.getBoolean(C.PREFERENCE_IS_FIRST_RUN, true);
 		_preferences.putBoolean(C.PREFERENCE_IS_FIRST_RUN, false);
 		return isFirstRun;
 	}	
 	
 	public void checkLocationProviderStatus() {
-		SBLog.i(TAG, "checkLocationProviderStatus()");	
+		SBLog.method(TAG, "checkLocationProviderStatus()");	
 		if (_location.isLocationEnabled()) {
 			onLocationEnabled();
 		} else {
@@ -390,21 +392,20 @@ public class Mediator {
 	}
 	
 	public Object getSystemService(String name) {
-		SBLog.i(TAG, "getSystemService()");
 		return _service.getSystemService(name);
 	}
 	
 	public CellDensity getCurrentCell() {
 		// TODO: should this be moved to ThreadSafeMediator?
-		SBLog.i(TAG, "getCurrentCell()");
+		SBLog.method(TAG, "getCurrentCell()");
 		if (!_isLocationEnabled.get()) {
-			SBLog.e(TAG, "location is unavailable, unable to get current cell");
+			SBLog.error(TAG, "location is unavailable, unable to get current cell");
 		}
 		return _location.getCurrentCell();
 	}
 	
 	public void deleteShout(String shoutId) {
-		SBLog.i(TAG, "deleteShout()");
+		SBLog.method(TAG, "deleteShout()");
 		_uiGateway.toast("Shout deleted.", Toast.LENGTH_SHORT);
 		_storage.deleteShout(shoutId);
 	}
@@ -415,7 +416,7 @@ public class Mediator {
 	//}
 		
 	public ThreadSafeMediator getAThreadSafeMediator() {
-		SBLog.i(TAG, "getAThreadSafeMediator()");
+		SBLog.method(TAG, "getAThreadSafeMediator()");
 		return new ThreadSafeMediator();
 	}
 	
@@ -431,7 +432,7 @@ public class Mediator {
 	///////////////////////////////////////////////////////////////////////////
 	
 	public void handlePollingResponse(Message message) {
-		SBLog.i(TAG, "handlePollingResponse()");
+		SBLog.method(TAG, "handlePollingResponse()");
 		if (_isPollingAlive.get()) {
 			_threadLauncher.spawnNextPollingThread(message);
 		}
@@ -439,19 +440,19 @@ public class Mediator {
 	}
 	
 	public void handleShoutStart(String text, int power) {
-		SBLog.i(TAG, "shout()");
+		SBLog.method(TAG, "shout()");
 		_threadLauncher.handleShoutStart(text, power);
 	}
 	
 	// Triggered from a Shout close.  Have user save earned points.
 	public void handlePointsForShout(int pointsType, int pointsValue, String shoutId) {
-		SBLog.i(TAG, "pointsChange()");
+		SBLog.method(TAG, "pointsChange()");
 		_storage.handlePointsForShout(pointsType, pointsValue, shoutId);
 		_uiGateway.handlePointsChange(_storage.getUserPoints());
 	}
 	
 	public void handeVoteStart(String shoutId, int vote) {
-		SBLog.i(TAG, "voteStart()");
+		SBLog.method(TAG, "voteStart()");
 		_threadLauncher.handleVoteStart(shoutId, vote);
 	}
 	
@@ -473,7 +474,7 @@ public class Mediator {
 		// Methods of any other classes called from here should be synchronized or read only.
 		
 		public ThreadSafeMediator() {
-			SBLog.i(TAG, "new ThreadSafeMediator()");
+			SBLog.method(TAG, "ThreadSafeMediator()");
 		}
 		
 		///////////////////////////////////////////////////////////////////////////
@@ -491,7 +492,7 @@ public class Mediator {
 		}
 		
 		public void handleShoutsReceived(JSONArray shouts) {
-			SBLog.i(TAG, "shoutsReceived()");
+			SBLog.method(TAG, "shoutsReceived()");
 			_storage.handleShoutsReceived(shouts);			
 			if (!_isUIInForeground.get()) {
 				_notifier.handleShoutsReceived(shouts.length());				
@@ -499,18 +500,19 @@ public class Mediator {
 		}
 		
 		public void handleDensityChange(double density) {
-			SBLog.i(TAG, "densityChange()");
+			SBLog.method(TAG, "densityChange()");
 			// Note: The order in these matters.
 			_storage.handleDensityChange(density, getCurrentCell());
 			_uiGateway.handleDensityChange(true, density, _storage.getUserLevel());
 		}
 		
 		public void handleScoresReceived(JSONArray scores) {
-			SBLog.i(TAG, "scoresReceived()");
+			SBLog.method(TAG, "scoresReceived()");
 			_storage.handleScoresReceived(scores);
 		}
 		
 		public void handleLevelUp(JSONObject levelInfo) {
+			SBLog.method(TAG, "handleLevelUp()");
 			try {
 				int newLevel = (int) levelInfo.getLong(C.JSON_LEVEL);
 				int newPoints = (int) levelInfo.getLong(C.JSON_POINTS);
@@ -519,13 +521,12 @@ public class Mediator {
 				_uiGateway.handleLevelUp(_storage.getCellDensity(getCurrentCell()).density, _storage.getUserLevel());
 				_uiGateway.handlePointsChange(_storage.getUserPoints());
 			} catch (JSONException e) {
-				SBLog.e(TAG, e.getMessage());
+				SBLog.error(TAG, e.getMessage());
 			}
-			SBLog.i(TAG, "levelUp()");
 		}
 		
 		public void handleShoutSent() {
-			SBLog.i(TAG, "shoutSent()");
+			SBLog.method(TAG, "handleShoutSent()");
 			_storage.handleShoutSent();
 			_uiGateway.handleShoutSent();
 		}
@@ -538,7 +539,7 @@ public class Mediator {
 		
 
 		public void handleVoteFinish(String shoutId, int vote) {
-			SBLog.i(TAG, "voteFinish()");
+			SBLog.method(TAG, "handleVoteFinish()");
 			if (vote == 1) {
 				_uiGateway.toast("You helped the sender get louder.", Toast.LENGTH_LONG);
 			} else if (vote == -1) {
@@ -549,18 +550,20 @@ public class Mediator {
 		}
 		
 		public void handleVoteFailed(Message message, String shoutId, int vote) {
+			SBLog.method(TAG, "handleVoteFailed()");
 			_storage.handleVoteFailed(shoutId, vote);
 			//_uiGateway.handleServerFailure();
 			//possiblyStopPolling(message);
 		}
 		
 		public void handleAccountCreated(String uid, String password) {
-			SBLog.i(TAG, "accountCreated()");
+			SBLog.method(TAG, "handleAccountCreated()");
 			_storage.handleAccountCreated(uid, password);
 			// Maybe we should do something in the UI?
 		}
 		
 		public void handlePingFailed(Message message) {
+			SBLog.method(TAG, "handlePingFailed()");
 			// This has proven to be really damn annoying since every once in a while network access dissappears.
 			// Users will think our app sucks.
 			// For now let's just ignore ping failure.
@@ -597,77 +600,77 @@ public class Mediator {
 		}
 		
 		public boolean userHasAccount() {
-			SBLog.i(TAG, "userHasAccount()");
+			SBLog.method(TAG, "userHasAccount()");
 			return _storage.getUserHasAccount();
 		}
 		
 		public String getUserId() {
-			SBLog.i(TAG, "getUserId()");
+			SBLog.method(TAG, "getUserId()");
 			return _storage.getUserId();
 		}
 		
 		public ArrayList<String> getOpenShoutIds() {
-			SBLog.i(TAG, "getOpenShoutIds()");
+			SBLog.method(TAG, "getOpenShoutIds()");
 			return _storage.getOpenShoutIDs();
 		}
 		
 		public String getAuth() {
-			SBLog.i(TAG, "getAuth()");
+			SBLog.method(TAG, "getAuth()");
 			return _storage.getUserAuth();
 		}
 		
 		public CellDensity getCellDensity() {
-			SBLog.i(TAG, "getCellDensity()");
+			SBLog.method(TAG, "getCellDensity()");
 			return _storage.getCellDensity(getCurrentCell());
 		}
 		
 		public double getLongitude() {
-			SBLog.i(TAG, "getLongitude()");
+			SBLog.method(TAG, "getLongitude()");
 			return _location.getLongitude();
 		}
 		
 		public double getLatitude() {
-			SBLog.i(TAG, "getLatitude()");
+			SBLog.method(TAG, "getLatitude()");
 			return _location.getLatitude();
 		}
 		
 		public GeoPoint getLocationAsGeoPoint() {
-			SBLog.i(TAG, "getLocation()");
+			SBLog.method(TAG, "getLocation()");
 			return LocationTracker.locationToGeoPoint(_location.getLocation());
 		}
 		
 		public boolean getUserLevelUpOccurred() {
-			SBLog.i(TAG, "getLevelUpOccurred()");
+			SBLog.method(TAG, "getLevelUpOccurred()");
 			return _storage.getLevelUpOccured();
 		}
 		
 		public int getUserLevel() {
-			SBLog.i(TAG, "getLevel()");
+			SBLog.method(TAG, "getLevel()");
 			return _storage.getUserLevel();
 		}
 		
 		public void updateAuth(String nonce) {
-			SBLog.i(TAG, "updateAuth()");
+			SBLog.method(TAG, "updateAuth()");
 			_storage.updateAuth(nonce);
 		}
 		
 		public final String getAndroidId() {
-			SBLog.i(TAG, "getAndroidId()");
+			SBLog.method(TAG, "getAndroidId()");
 			return _device.getAndroidId();
 		}
 		
 		public final String getDeviceId() {
-			SBLog.i(TAG, "getDeviceId()");
+			SBLog.method(TAG, "getDeviceId()");
 			return _device.getDeviceId();
 		}
 		
 		public final String getPhoneNumber() {
-			SBLog.i(TAG, "getPhoneNumber()");
+			SBLog.method(TAG, "getPhoneNumber()");
 			return _device.getPhoneNumber();
 		}
 		
 		public final String getNetworkOperator() {
-			SBLog.i(TAG, "getNetworkOperator()");
+			SBLog.method(TAG, "getNetworkOperator()");
 			return _device.getNetworkOperator();
 		}
 
@@ -692,7 +695,7 @@ public class Mediator {
 		}
 
 		public void handleShoutSent() {
-			SBLog.i(TAG, "handleShoutSent()");
+			SBLog.method(TAG, "handleShoutSent()");
 			AnimationDrawable shoutButtonAnimation = (AnimationDrawable) _ui.shoutBtn.getDrawable();
 			shoutButtonAnimation.stop();
 			_ui.shoutBtn.setImageResource(R.drawable.shout_button_up);
@@ -700,7 +703,7 @@ public class Mediator {
 		}
 		
 		public void handleShoutFailed() {
-			SBLog.i(TAG, "handleShoutFailed()");
+			SBLog.method(TAG, "handleShoutFailed()");
 			AnimationDrawable shoutButtonAnimation = (AnimationDrawable) _ui.shoutBtn.getDrawable();
 			shoutButtonAnimation.stop();
 			_ui.shoutBtn.setImageResource(R.drawable.shout_button_up);
@@ -708,22 +711,23 @@ public class Mediator {
 		}
 		
 		public void handleDensityChange(boolean isDensitySet, double newDensity, int level) {
-			SBLog.i(TAG, "handleDensityChange()");
+			SBLog.method(TAG, "handleDensityChange()");
 			_ui.overlay.handleDensityChange(isDensitySet, newDensity, level);
 		}
 
 		public void handleLevelUp(double cellDensity, int newLevel) {
-			SBLog.i(TAG, "handleLevelUp()");
+			SBLog.method(TAG, "handleLevelUp()");
 			_ui.overlay.handleLevelUp(cellDensity, newLevel);
 			_uiGateway.refreshProfile(_storage.getUserLevel(), _storage.getUserPoints(), _storage.getUserNextLevelAt());
 		}
 
 		public void handlePointsChange(int newPoints) {
-			SBLog.i(TAG, "handlePointsChange()");
+			SBLog.method(TAG, "handlePointsChange()");
 			_uiGateway.refreshProfile(_storage.getUserLevel(), _storage.getUserPoints(), _storage.getUserNextLevelAt());
 		}
 		
 		public void handleServerFailure() {
+			SBLog.method(TAG, "handleServerFailure()");
 			_ui.dialogBuilder.showDialog(DialogBuilder.DIALOG_SERVER_DOWN, "");
 		}
 				
@@ -738,7 +742,7 @@ public class Mediator {
 		}
 		
 		public void refreshProfile(int level, int points, int nextLevelAt) {
-			SBLog.i(TAG, "refreshProfile()");
+			SBLog.method(TAG, "refreshProfile()");
 			_ui.userCurrentShoutreachTv.setText(Integer.toString(User.calculateShoutreach(level)));
 			_ui.userNextShoutreachTv.setText(Integer.toString(User.calculateShoutreach(level + 1)));
 			_ui.userPointsTv.setText(Integer.toString(points));
@@ -757,12 +761,14 @@ public class Mediator {
 		}
 		
 		public void enableInputs() {
+			SBLog.method(TAG, "enableInputs()");
 			_ui.shoutBtn.setEnabled(true);
 			_ui.shoutInputEt.setEnabled(true);
 			_storage.enableInputs();
 		}
 		
 		public void disableInputs() {
+			SBLog.method(TAG, "disableInputs()");
 			_ui.shoutBtn.setEnabled(false);
 			_ui.shoutInputEt.setEnabled(false);
 			_storage.disableInputs();

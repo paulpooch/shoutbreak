@@ -1,12 +1,17 @@
 package co.shoutbreak.ui;
 
+import co.shoutbreak.core.utils.SBLog;
 import co.shoutbreak.storage.inbox.InboxListViewAdapter;
 import co.shoutbreak.storage.noticetab.NoticeTabListViewAdapter;
 import android.widget.AdapterView.OnItemClickListener;
 
 public class UiOffGateway implements IUiGateway {
 
-	public UiOffGateway() {}
+	private static final String TAG = "UiOffGateway";
+	
+	public UiOffGateway() {
+		SBLog.constructor(TAG);
+	}
 	
 	@Override
 	public void disableInputs() {}

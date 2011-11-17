@@ -11,15 +11,14 @@ public class ErrorManager {
 	private static final String TAG = "ErrorManager";
 
 	public static void manage(Exception ex) {
-		SBLog.e(TAG, "manage()");
+		SBLog.error(TAG, "manage()");
 		if (ex instanceof JSONException) {
-			SBLog.e(TAG, ex.getMessage());
+			SBLog.error(TAG, ex.getMessage());
 			ex.printStackTrace();
 		}	
 	}
 	
 	public static void warnUser(Context context, String s) {
-		SBLog.i(TAG, "warnUser()");
 		Toast.makeText(context, s, Toast.LENGTH_SHORT).show();
 	}
 }

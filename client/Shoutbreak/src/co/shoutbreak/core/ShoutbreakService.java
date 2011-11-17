@@ -19,31 +19,32 @@ public class ShoutbreakService extends Service implements Colleague {
 	private boolean _isStarted;
 	
 	public ShoutbreakService() {
-		
+    	SBLog.lifecycle(TAG, "ShoutbreakService()");
+    	SBLog.constructor(TAG);
 	}
 
 	@Override
 	public void unsetMediator() {
-		SBLog.e(TAG, "unsetMediator()");
+		SBLog.error(TAG, "unsetMediator()");
 		// should never be called /
 	}
 	
 	@Override
 	public void onCreate() {
-    	SBLog.i(TAG, "onCreate()");
+    	SBLog.lifecycle(TAG, "onCreate()");
 		super.onCreate();
 		_m = new Mediator(ShoutbreakService.this);
 	}
 	
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
-		SBLog.i(TAG, "onStartCommand()");
+		SBLog.lifecycle(TAG, "onStartCommand()");
 		super.onStartCommand(intent, flags, startId);
 		if (!_isStarted) {
 			_isStarted = true;
 			_m.onServiceStart();
 		} else {
-			SBLog.i(TAG, "service already started");
+			SBLog.error(TAG, "service already started");
 		}
 		Bundle extras = intent.getExtras();
 		if (extras != null && !extras.isEmpty()) {
@@ -54,7 +55,7 @@ public class ShoutbreakService extends Service implements Colleague {
 				_m.appLaunchedFromAlarm();
 			}
 		} else {
-			SBLog.e(TAG, "Service bundle must contain referral information");
+			SBLog.error(TAG, "Service bundle must contain referral information");
 			_m.appLaunchedFromUI();
 		}
 		return START_REDELIVER_INTENT;
@@ -62,13 +63,13 @@ public class ShoutbreakService extends Service implements Colleague {
 	
 	@Override
 	public IBinder onBind(Intent intent) {
-    	SBLog.i(TAG, "onBind()");
+    	SBLog.lifecycle(TAG, "onBind()");
 		return new ServiceBridge();
 	}
 	
 	@Override
 	public void onDestroy() {
-		SBLog.i(TAG, "onDestroy()");
+		SBLog.lifecycle(TAG, "onDestroy()");
 		_m.kill(); // this can only be called here
 		_m = null;
 		super.onDestroy();
@@ -78,21 +79,21 @@ public class ShoutbreakService extends Service implements Colleague {
 
 		@Override
 		public void registerUIWithMediator(Shoutbreak ui) {
-			SBLog.i(TAG, "registerUIWithMediator()");
+			SBLog.lifecycle(TAG, "registerUIWithMediator()");
 			_m.registerUI(ui);
 		}
 	
 	}
 	
 	public void enableOnBootAlarmReceiver() {
-		SBLog.i(TAG, "enableOnBootAlarmReceiver()");
+		SBLog.lifecycle(TAG, "enableOnBootAlarmReceiver()");
 		ComponentName component = new ComponentName(ShoutbreakService.this, OnBootAlarmReceiver.class);
 		int state = PackageManager.COMPONENT_ENABLED_STATE_ENABLED;
 		getPackageManager().setComponentEnabledSetting(component, state, PackageManager.DONT_KILL_APP);	
 	}
 	
 	public void disableOnBootAlarmReceiver() {
-		SBLog.i(TAG, "disableOnBootAlarmReceiver()");
+		SBLog.lifecycle(TAG, "disableOnBootAlarmReceiver()");
 		ComponentName component = new ComponentName(ShoutbreakService.this, OnBootAlarmReceiver.class);
 		int state = PackageManager.COMPONENT_ENABLED_STATE_DISABLED;
 		getPackageManager().setComponentEnabledSetting(component, state, PackageManager.DONT_KILL_APP);		

@@ -22,7 +22,7 @@ public class Notifier {
 	private int _newShoutsSinceLastOpen;
 
 	public Notifier(Mediator mediator, ShoutbreakService service) {
-		SBLog.i(TAG, "new Notifier()");
+    	SBLog.constructor(TAG);
 		_service = service;
 		_newShoutsSinceLastOpen = 0;
 	}
@@ -32,7 +32,7 @@ public class Notifier {
 	}
 	
 	public void notify(String tickerText, String title, String message) {
-		SBLog.i(TAG, "notify()");
+		SBLog.method(TAG, "notify()");
 		NotificationManager notificationManager = (NotificationManager) _service.getSystemService(Context.NOTIFICATION_SERVICE);
 		Intent intent = new Intent(_service, Shoutbreak.class);
 		intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);

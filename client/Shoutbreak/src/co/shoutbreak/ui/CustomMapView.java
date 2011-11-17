@@ -16,6 +16,8 @@ import android.widget.Toast;
 
 public class CustomMapView extends MapView {
 
+	private static final String TAG = "CustomMapView";
+	
 	private Shoutbreak _ui;
 	private UserLocationOverlay _userLocationOverlay;
 	private boolean _isBeingResized;
@@ -26,7 +28,8 @@ public class CustomMapView extends MapView {
 	
 	// TODO: is getting context leaking service?  We don't really have a choice
 	public CustomMapView(Context context, AttributeSet attrs) {
-		super(context, attrs);
+		super(context, attrs);		
+		SBLog.constructor(TAG);
 		_ui = (Shoutbreak) context;
 		_isBeingResized = false;
 		_lastZoomLevel = -1;
@@ -49,7 +52,7 @@ public class CustomMapView extends MapView {
         catch(Exception ex) {           
             getController().setCenter(this.getMapCenter());
             getController().setZoom(this.getZoomLevel() - 2);
-            SBLog.e("CustomMapView", "Internal error in CustomMapView:" + Log.getStackTraceString(ex));
+            SBLog.error("CustomMapView", "Internal error in CustomMapView:" + Log.getStackTraceString(ex));
         }
     }
 	

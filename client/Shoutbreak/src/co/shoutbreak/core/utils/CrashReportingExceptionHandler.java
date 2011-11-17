@@ -21,6 +21,7 @@ import org.apache.http.protocol.HTTP;
 // http://stackoverflow.com/questions/601503/how-do-i-obtain-crash-data-from-my-android-application
 public class CrashReportingExceptionHandler implements UncaughtExceptionHandler {
 
+	private static final String TAG = "CrashReportingExceptionHandler";
     private UncaughtExceptionHandler defaultUEH;
     private String url;
 
@@ -29,6 +30,7 @@ public class CrashReportingExceptionHandler implements UncaughtExceptionHandler 
      * will not be used 
      */
     public CrashReportingExceptionHandler(String url) {
+    	SBLog.constructor(TAG);
         this.url = url;
         this.defaultUEH = Thread.getDefaultUncaughtExceptionHandler();
     }

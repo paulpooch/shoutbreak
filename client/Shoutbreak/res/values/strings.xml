@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<string name="maps_api_key">0lLmkCXVk9yD5LpfqqmAw9kMr2orIej8Y3aw2Dw</string>
-	<!-- john's debug 0lLmkCXVk9yD5LpfqqmAw9kMr2orIej8Y3aw2Dw -->
+	<string name="maps_api_key">0D9gVcQxZ-ihbS2t_012bUHYWdS21lRVuJb28Wg</string>
+	<!-- john's debug         0lLmkCXVk9yD5LpfqqmAw9kMr2orIej8Y3aw2Dw -->
 	<!-- paul's desktop debug 0D9gVcQxZ-ijg3QikhBogqhXdsjzHAAPZWJ6vLw -->
 	<!-- paul's laptop debug  0D9gVcQxZ-ihbS2t_012bUHYWdS21lRVuJb28Wg -->
-	<!-- release 0D9gVcQxZ-igLZVT8x5P_y1YjYjVIiMJEi7ygjw -->
+	<!-- release              0D9gVcQxZ-igLZVT8x5P_y1YjYjVIiMJEi7ygjw -->
 </resources>

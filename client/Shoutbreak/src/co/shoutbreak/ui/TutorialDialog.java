@@ -1,6 +1,7 @@
 package co.shoutbreak.ui;
 
 import co.shoutbreak.R;
+import co.shoutbreak.core.utils.SBLog;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.widget.Button;
@@ -9,6 +10,8 @@ import android.view.View;
 
 public class TutorialDialog extends Dialog {
 
+	private static final String TAG = "TutorialDialog";
+	
 	private final int NUMBER_OF_SLIDES = 3;
 	
 	private Shoutbreak _ui;
@@ -21,6 +24,7 @@ public class TutorialDialog extends Dialog {
 
     public TutorialDialog(Shoutbreak ui) {
         super(ui, R.style.popupStyle);
+		SBLog.constructor(TAG);
         setContentView(R.layout.tutorial_dialog);
         _ui = ui;
         _slide = 0;

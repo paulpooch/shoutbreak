@@ -1,6 +1,7 @@
 package co.shoutbreak.ui;
 
 import co.shoutbreak.R;
+import co.shoutbreak.core.utils.SBLog;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.ClipDrawable;
@@ -10,10 +11,21 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 public class RoundProgress extends RelativeLayout {
+	
+	private static final String TAG = "RoundProgress";
+	
 	private ImageView progressDrawableImageView;
 	private ImageView trackDrawableImageView;
 	private double max = 100;
 
+	public RoundProgress(Context context, AttributeSet attrs) {
+		super(context, attrs);
+		SBLog.constructor(TAG);
+		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		inflater.inflate(R.layout.round_progress, this);
+		setup(context, attrs);
+	}
+	
 	public int getMax() {
 		Double d = new Double(max);
 		return d.intValue();
@@ -33,13 +45,6 @@ public class RoundProgress extends RelativeLayout {
 		this.max = max;
 	}
 
-	public RoundProgress(Context context, AttributeSet attrs) {
-		super(context, attrs);
-		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		inflater.inflate(R.layout.round_progress, this);
-		setup(context, attrs);
-	}
-
 	protected void setup(Context context, AttributeSet attrs) {
 		TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.RoundProgress);
 
@@ -57,7 +62,7 @@ public class RoundProgress extends RelativeLayout {
 		int max = attrs.getAttributeIntValue(xmlns, "max", 100);
 		setMax(max);
 
-		int numTicks = attrs.getAttributeIntValue(xmlns, "numTicks", 0);
+		//int numTicks = attrs.getAttributeIntValue(xmlns, "numTicks", 0);
 
 		a.recycle();
 	}

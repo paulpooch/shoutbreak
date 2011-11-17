@@ -29,8 +29,7 @@ public class User {
 	private int _nextLevelAt;
 	
 	public User(Database db) {
-		
-		SBLog.logic("User instantiated.");
+		SBLog.constructor(TAG);
 		
 		_db = db;
 		_passwordExists = false;
@@ -117,7 +116,7 @@ public class User {
 	}
 	
 	public CellDensity getDensityAtCell(CellDensity cell) {
-		SBLog.i(TAG, "getDensityAtCell()");
+		SBLog.method(TAG, "getDensityAtCell()");
 		CellDensity result = new CellDensity();
 		result.isSet = false;
 		String sql = "SELECT density, last_updated FROM " + C.DB_TABLE_DENSITY + " WHERE cell_x = ? AND cell_y = ? ORDER BY last_updated DESC";
@@ -152,7 +151,7 @@ public class User {
 	}
 	
 	private synchronized Long storePoints(int pointsType, int pointsValue) {
-		SBLog.i(TAG, "savePoints()");
+		SBLog.method(TAG, "storePoints()");
 		String sql = "INSERT INTO " + C.DB_TABLE_POINTS + " (type, value, timestamp) VALUES (?, ?, ?)";
 		SQLiteStatement insert = this._db.compileStatement(sql);
 		insert.bindLong(1, pointsType);
@@ -178,7 +177,7 @@ public class User {
 	}
 	
 	public synchronized Long saveCellDensity(CellDensity cellDensity) {
-		SBLog.i(TAG, "saveCellDensity()");
+		SBLog.method(TAG, "saveCellDensity()");
 		String sql = "INSERT INTO " + C.DB_TABLE_DENSITY
 				+ " (cell_x, cell_y, density, last_updated) VALUES (?, ?, ?, ?)";
 		SQLiteStatement insert = this._db.compileStatement(sql);
@@ -224,7 +223,7 @@ public class User {
 	}
 	
 	public synchronized CellDensity getCellDensity(CellDensity currentCell) {
-		SBLog.i(TAG, "getCellDensity()");
+		SBLog.method(TAG, "getCellDensity()");
 		
 		if (_cellDensity != null && _cellDensity.cellX == currentCell.cellX && _cellDensity.cellY == currentCell.cellY) {
 			// Are we still in the same cell?
@@ -285,7 +284,7 @@ public class User {
 	}
 	
 	public synchronized HashMap<String, String> getUserSettings() {
-		SBLog.i(TAG, "getUserSettings()");
+		SBLog.method(TAG, "getUserSettings()");
 		if (_userSettingsAreStale) {
 			_userSettings = new HashMap<String, String>();
 			Cursor cursor = null;
@@ -296,7 +295,7 @@ public class User {
 				}
 				_userSettingsAreStale = false;
 			} catch (Exception ex) {
-				SBLog.e(TAG, "getUserSettings()");
+				SBLog.error(TAG, "getUserSettings()");
 			} finally {
 				if (cursor != null && !cursor.isClosed()) {
 					cursor.close();
@@ -311,7 +310,7 @@ public class User {
 	}
 	
 	public synchronized int calculateUsersPoints() {
-		SBLog.i(TAG, "calculateUserPoints()");
+		SBLog.method(TAG, "calculateUserPoints()");
 		String sql = "SELECT value, timestamp FROM " + C.DB_TABLE_POINTS + " WHERE type = ? ORDER BY timestamp DESC";
 		Cursor cursor = null;
 		String cutoffDate = null;
@@ -352,7 +351,7 @@ public class User {
 
 	
 	public synchronized Long saveUserSetting(String key, String value) {
-		SBLog.i(TAG, "saveUserSetting()");
+		SBLog.method(TAG, "saveUserSetting()");
 		_userSettingsAreStale = true;
 		String sql = "INSERT INTO " + C.DB_TABLE_USER_SETTINGS + " (setting_key, setting_value) VALUES (?, ?)";
 		SQLiteStatement insert = _db.compileStatement(sql);
@@ -361,7 +360,7 @@ public class User {
 		try {
 			return insert.executeInsert();
 		} catch (Exception ex) {
-			SBLog.e(TAG, "saveUserSettings()");
+			SBLog.error(TAG, "saveUserSettings()");
 		} finally {
 			insert.close();
 		}

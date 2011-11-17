@@ -32,6 +32,7 @@ public class InboxSystem {
 	private Database _db;
 	
 	public InboxSystem(Mediator mediator, Database db) {
+		SBLog.constructor(TAG);
 		_m = mediator;
 		_db = db;
 		_self = this;
@@ -70,13 +71,13 @@ public class InboxSystem {
 	}
 	
 	private List<Shout> getShoutsForUI() {
-		SBLog.i(TAG, "getShoutsForUI");
+		SBLog.method(TAG, "getShoutsForUI()");
 		return getShoutsForUI(0, 50);
 	}
 	
 	private List<Shout> getShoutsForUI(int start, int amount) {		
 		// Database 
-		SBLog.i(TAG, "getShoutsForUI()");
+		SBLog.method(TAG, "getShoutsForUI()");
 		ArrayList<Shout> results = new ArrayList<Shout>();
 		String sql = "SELECT * FROM " + C.DB_TABLE_SHOUTS + " ORDER BY time_received DESC LIMIT ? OFFSET ? ";
 		Cursor cursor = null;
@@ -133,7 +134,7 @@ public class InboxSystem {
 	}
 	
 	private Shout getShout(String shoutID) {
-		SBLog.i(TAG, "getShout()");
+		SBLog.method(TAG, "getShout()");
 		String sql = "SELECT * FROM " + C.DB_TABLE_SHOUTS + " WHERE shout_id = ?";
 		Cursor cursor = null;
 		try {
@@ -167,7 +168,7 @@ public class InboxSystem {
 	}
 	
 	public ArrayList<String> getOpenShoutIDs() {
-		SBLog.i(TAG, "getOpenShoutIDs");
+		SBLog.method(TAG, "getOpenShoutIDs");
 		ArrayList<String> result = new ArrayList<String>();
 		for (Shout shout : _shouts) {
 			if (shout.open) {
@@ -183,7 +184,7 @@ public class InboxSystem {
 	
 	private synchronized boolean markShoutAsRead(String shoutID) {
 		// Database
-		SBLog.i(TAG, "markShoutAsRead()");
+		SBLog.method(TAG, "markShoutAsRead()");
 		boolean result = false;
 		SQLiteStatement update;
 		String sql = "UPDATE " + C.DB_TABLE_SHOUTS + " SET state_flag = ? WHERE shout_id = ?";
@@ -226,7 +227,7 @@ public class InboxSystem {
 	
 	public synchronized boolean deleteShout(String shoutID) {
 		// Database
-		SBLog.i(TAG, "new deleteShout()");
+		SBLog.method(TAG, "deleteShout()");
 		boolean result = false;
 		SQLiteStatement update;
 		String sql = "DELETE FROM " + C.DB_TABLE_SHOUTS + " WHERE shout_id = ?";
@@ -252,7 +253,7 @@ public class InboxSystem {
 	
 	private synchronized Long addShoutToInbox(Shout shout) {
 		// Database
-		SBLog.i(TAG, "addShoutToInbox()");
+		SBLog.method(TAG, "addShoutToInbox()");
 		String sql = "INSERT INTO "
 				+ C.DB_TABLE_SHOUTS
 				+ " (shout_id, timestamp, time_received, txt, is_outbox, re, vote, hit, open, ups, downs, pts, state_flag) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -295,7 +296,7 @@ public class InboxSystem {
 	}
 	
 	private synchronized boolean updateScore(Shout shout) {
-		SBLog.i(TAG, "updateScore()");
+		SBLog.method(TAG, "updateScore()");
 		boolean result = false;
 		SQLiteStatement update;
 		// do we have hit count?
@@ -322,7 +323,7 @@ public class InboxSystem {
 
 	public synchronized boolean reflectVote(String shoutID, int vote) {
 		// Database
-		SBLog.i(TAG, "reflectVote()");
+		SBLog.method(TAG, "reflectVote()");
 		boolean result = false;
 		String sql = "UPDATE " + C.DB_TABLE_SHOUTS + " SET ups = ups + 1, vote = ? WHERE shout_id = ?";
 		if (vote < 0) {

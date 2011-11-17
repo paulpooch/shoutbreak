@@ -1,5 +1,6 @@
 package co.shoutbreak.ui;
 
+import co.shoutbreak.core.utils.SBLog;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 
@@ -13,7 +14,8 @@ public class GestureListener implements GestureDetector.OnGestureListener {
 	String TAG = "gesture";
 	
 	 public GestureListener(IGestureCapable view) {
-	     this.view = view;
+		SBLog.constructor(TAG);
+		this.view = view;
 	 }
 	
 	 @Override

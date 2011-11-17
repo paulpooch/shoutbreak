@@ -26,6 +26,7 @@ public class Storage implements Colleague {
 	private NoticeTabSystem _noticeTabSystem;
 	
 	public Storage(Mediator mediator, Database db) {
+		SBLog.constructor(TAG);
 		_m = mediator;
 		_db = db;
 		_user = new User(_db);
@@ -73,7 +74,7 @@ public class Storage implements Colleague {
 				JSONObject jsonScore = scores.getJSONObject(i);
 				_inboxSystem.updateScore(jsonScore);
 			} catch (JSONException e) {
-				SBLog.e(TAG, e.getMessage());
+				SBLog.error(TAG, e.getMessage());
 			}
 		}
 		_inboxSystem.refresh();
@@ -90,7 +91,7 @@ public class Storage implements Colleague {
 				}
 			}
 		} catch (JSONException e) {
-			SBLog.e(TAG, e.getMessage());
+			SBLog.error(TAG, e.getMessage());
 		}
 		int count = shouts.length();
 		String pluralShout = "shout" + (count > 1 ? "s" : "");

@@ -14,7 +14,7 @@ public class DataListener implements Colleague {
 	private TelephonyManager _telephonyManager;
 	
 	public DataListener(Mediator mediator) {
-		SBLog.i(TAG, "new DataListener()");
+    	SBLog.constructor(TAG);
 		_m = mediator;
 		_telephonyManager = (TelephonyManager) _m.getSystemService(Context.TELEPHONY_SERVICE);
 		_telephonyManager.listen(_phoneStateListener, PhoneStateListener.LISTEN_DATA_CONNECTION_STATE);
@@ -22,19 +22,19 @@ public class DataListener implements Colleague {
 
 	@Override
 	public void unsetMediator() {
-		SBLog.i(TAG, "unsetMediator()");
+		SBLog.lifecycle(TAG, "unsetMediator()");
 		_m = null;	
 	}
 	
 	public boolean isDataEnabled() {
-		SBLog.i(TAG, "isDataEnabled");
+		SBLog.method(TAG, "isDataEnabled");
 		return _telephonyManager.getDataState() == TelephonyManager.DATA_CONNECTED;
 	}
 	
 	private PhoneStateListener _phoneStateListener = new PhoneStateListener() {
 		@Override
 		public void onDataConnectionStateChanged(int state) {
-			SBLog.i(TAG, "onDataConnectionStateChanged()");
+			SBLog.method(TAG, "onDataConnectionStateChanged()");
 			if (state == TelephonyManager.DATA_CONNECTED) {
 				_m.onDataEnabled();
 			} else if (state == TelephonyManager.DATA_SUSPENDED || state == TelephonyManager.DATA_DISCONNECTED) {

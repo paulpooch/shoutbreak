@@ -25,6 +25,7 @@ import co.shoutbreak.core.Mediator;
 import co.shoutbreak.core.Shout;
 import co.shoutbreak.core.utils.ErrorManager;
 import co.shoutbreak.core.utils.ISO8601DateParser;
+import co.shoutbreak.core.utils.SBLog;
 
 import com.ocpsoft.pretty.time.PrettyTime;
 
@@ -47,6 +48,7 @@ public class InboxListViewAdapter extends BaseAdapter implements Colleague {
     private boolean _isInputAllowed;
     
     public InboxListViewAdapter(Mediator mediator, LayoutInflater inflater) {
+        SBLog.constructor(TAG);
         
     	_m = mediator;
         _inflater = inflater;

@@ -13,6 +13,7 @@ public class Flag {
 	private String _name = "";
 	
 	public Flag() {
+    	SBLog.constructor(TAG);
 		_isInitialized = false;
 	}
 	
@@ -38,9 +39,9 @@ public class Flag {
 			return _value == 1;
 		} else {
 			if (!_name.equals("")) {
-				SBLog.e(TAG, "Flag '" + _name + "' never initialized, must call set()!");	
+				SBLog.error(TAG, "Flag '" + _name + "' never initialized, must call set()!");	
 			} else {
-				SBLog.e(TAG, "Flag never initialized, must call set()!");
+				SBLog.error(TAG, "Flag never initialized, must call set()!");
 			}
 			return false;
 		}

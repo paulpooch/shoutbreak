@@ -2,9 +2,7 @@ package co.shoutbreak.core;
 
 import java.util.Date;
 
-
-public class Shout {
-
+public class Shout {	
 	public String id;
 	public String timestamp;
 	public String text;

@@ -1,6 +1,7 @@
 package co.shoutbreak.storage;
 
 import co.shoutbreak.core.ShoutbreakService;
+import co.shoutbreak.core.utils.SBLog;
 import android.content.Context;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
@@ -13,6 +14,7 @@ public class DeviceInformation {
 	private String _androidId;
 	
 	public DeviceInformation(ShoutbreakService service) {
+		SBLog.constructor(TAG);
 		_tm = (TelephonyManager) service.getSystemService(Context.TELEPHONY_SERVICE);
 		_androidId = Settings.Secure.getString(service.getContentResolver(), Settings.Secure.ANDROID_ID);
 	}

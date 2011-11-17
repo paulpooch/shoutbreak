@@ -3,11 +3,14 @@ package co.shoutbreak.polling;
 import co.shoutbreak.core.C;
 import co.shoutbreak.core.Colleague;
 import co.shoutbreak.core.Mediator;
+import co.shoutbreak.core.utils.SBLog;
 import android.os.Handler;
 import android.os.Message;
 
 public class ThreadLauncher implements Colleague {
 
+	private static final String TAG = "ThreadLauncher";
+	
 	private Mediator _m;
 	private Handler _uiThreadHandler;
 	private PollingThread _loopingThread; // we need to track this so we can un-post it if app turns off....
@@ -15,6 +18,7 @@ public class ThreadLauncher implements Colleague {
 									      // postDelayed a ping loop, location dies, ping tries to run, latitude is null, problem
 	
 	public ThreadLauncher(Mediator mediator) {
+		SBLog.constructor(TAG);
 		_m = mediator;
 		_uiThreadHandler = new Handler() {
 			@Override

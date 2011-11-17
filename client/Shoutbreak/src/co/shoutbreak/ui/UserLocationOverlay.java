@@ -64,36 +64,9 @@ public class UserLocationOverlay extends MyLocationOverlay {
 
 	private boolean _isDensitySet;
 	
-	public void handleDensityChange(boolean isDensitySet, double newDensity, int newLevel) {
-		_isDensitySet = isDensitySet;
-		handleRadiusChange(newDensity, newLevel);
-		_ui.canAppTurnOn(true, false);
-	}
-	
-	public boolean isDensitySet() {
-		return _isDensitySet;
-	}
-	
-	public void handleLevelUp(double newDensity, int newLevel) {
-		handleRadiusChange(newDensity, newLevel);
-	}
-	
-	private void handleRadiusChange(double newDensity, int newLevel) {
-		_density = newDensity;
-		_baseRadiusMeters = User.calculateRadius(newLevel, newDensity);
-		_calibrateZoomLevelForRadiusSize = true;
-    	_baseRadiusPxIsWrong = true;
-    	_resizeAdjustmentPx = 0;
-    	_maxShoutreach = User.calculateShoutreach(newLevel);
-    	// this calls draw() immediately rather than wait for next interval
-    	//if (_canvas != null && _mapView != null) {
-    		//_mapView.draw(_canvas);
-    	//}	
-	}
-	
 	public UserLocationOverlay(Shoutbreak ui, MapView map) {
 		super(ui, map);
-		SBLog.i(TAG, "new UserLocationOverlay()");
+		SBLog.constructor(TAG);
 		_ui = ui;
 		_isDensitySet = false;
 		_baseRadiusPx = -1;
@@ -120,6 +93,33 @@ public class UserLocationOverlay extends MyLocationOverlay {
 		_resizeIcon = Bitmap.createBitmap(resizeBitmap, 0, 0, _resizeIconSize.x, _resizeIconSize.y);
 		_resizeIconMax = Bitmap.createBitmap(resizeBitmapMax, 0, 0, _resizeIconSize.x, _resizeIconSize.y);
 		_isResizeIconMaxed = false;
+	}
+	
+	public void handleDensityChange(boolean isDensitySet, double newDensity, int newLevel) {
+		_isDensitySet = isDensitySet;
+		handleRadiusChange(newDensity, newLevel);
+		_ui.canAppTurnOn(true, false);
+	}
+	
+	public boolean isDensitySet() {
+		return _isDensitySet;
+	}
+	
+	public void handleLevelUp(double newDensity, int newLevel) {
+		handleRadiusChange(newDensity, newLevel);
+	}
+	
+	private void handleRadiusChange(double newDensity, int newLevel) {
+		_density = newDensity;
+		_baseRadiusMeters = User.calculateRadius(newLevel, newDensity);
+		_calibrateZoomLevelForRadiusSize = true;
+    	_baseRadiusPxIsWrong = true;
+    	_resizeAdjustmentPx = 0;
+    	_maxShoutreach = User.calculateShoutreach(newLevel);
+    	// this calls draw() immediately rather than wait for next interval
+    	//if (_canvas != null && _mapView != null) {
+    		//_mapView.draw(_canvas);
+    	//}	
 	}
 
 	@Override
@@ -183,36 +183,39 @@ public class UserLocationOverlay extends MyLocationOverlay {
 
 	// called after zoom occurs
 	public void handleZoomLevelChange() {
-		if (_lastTopRadiusGeoPoint != null) {	
-			Point topRadiusPx = _map.getProjection().toPixels(_lastTopRadiusGeoPoint, null);
-			_baseRadiusPx = _userLocationPx.y - topRadiusPx.y; // downward y axis
-			_resizeAdjustmentPx = 0;
-			calculateCurrentRadius();
-			updatePeopleCount(true);
-		}
+		// OLD LOGIC
+		// This kept circle constant by nailing down the top GeoPoint of the cirlce.
+//		if (_lastTopRadiusGeoPoint != null) {	
+//			Point topRadiusPx = _map.getProjection().toPixels(_lastTopRadiusGeoPoint, null);
+//			_baseRadiusPx = _userLocationPx.y - topRadiusPx.y; // downward y axis
+//			_resizeAdjustmentPx = 0;
+//			calculateCurrentRadius();
+//			updatePeopleCount(true);
+//		}
+		
+		// NEW LOGIC
+		// Let's use _peopleCount and keep Area constant.
+		double area = (double)_peopleCount / _density;
+		double radius = Math.sqrt(area / Math.PI);
+		_baseRadiusMeters = (float) radius;
+		_baseRadiusPxIsWrong = true;
+		_resizeAdjustmentPx = 0;
 	}
 
 	// called when user drags resize icon
 	public void resize(int radiusChangePx) {
-		SBLog.e("CHANGE", "radiusChange = " + radiusChangePx);
-		_resizeAdjustmentPx += radiusChangePx;
-
-//		if (_baseRadiusPx + _resizeAdjustmentPx < C.MIN_RADIUS_PX) {
-//			_resizeAdjustmentPx = (int) (C.MIN_RADIUS_PX - _baseRadiusPx);
-//		}
-		
-		SBLog.e("BEFORE RAD", "current = " + _currentRadiusPx + " | resize = " + _resizeAdjustmentPx + " | base = " + _baseRadiusPx);
+		SBLog.error("CHANGE", "radiusChange = " + radiusChangePx);
+		_resizeAdjustmentPx += radiusChangePx;		
+		SBLog.error("BEFORE RAD", "current = " + _currentRadiusPx + " | resize = " + _resizeAdjustmentPx + " | base = " + _baseRadiusPx);
 		// force minimum radius size
 		if ( _baseRadiusPx + _resizeAdjustmentPx <= C.MIN_RADIUS_PX) {
 			_resizeAdjustmentPx = (int) (C.MIN_RADIUS_PX - _baseRadiusPx);
 		}
-		
 		// force maximum radius size
 		if (!C.CONFIG_ADMIN_SUPERPOWERS && _resizeAdjustmentPx > 0) {
 			_resizeAdjustmentPx = 0;
 		}
-		SBLog.e("AFTER RAD", "current = " + _currentRadiusPx + " | resize = " + _resizeAdjustmentPx + " | base = " + _baseRadiusPx);
-			
+		SBLog.error("AFTER RAD", "current = " + _currentRadiusPx + " | resize = " + _resizeAdjustmentPx + " | base = " + _baseRadiusPx);
 		calculateCurrentRadius();
 	}
 
@@ -223,12 +226,8 @@ public class UserLocationOverlay extends MyLocationOverlay {
 	}
 
 	protected void updatePeopleCount() {
-		updatePeopleCount(false);
-	}
-	
-	protected void updatePeopleCount(boolean fromZoomChange) {
 		// prevents us from doing this way too often - let's only care every 50 microdegrees
-		if (fromZoomChange || Math.abs(_lastTopRadiusGeoPoint.getLatitudeE6() - _latRadiusLatForPeopleCount) > 50) {
+		if (Math.abs(_lastTopRadiusGeoPoint.getLatitudeE6() - _latRadiusLatForPeopleCount) > 50) {
 			_latRadiusLatForPeopleCount = _lastTopRadiusGeoPoint.getLatitudeE6();
 			Location l1 = new Location("GPS");
 			l1.setLatitude(_lastTopRadiusGeoPoint.getLatitudeE6() / 1E6);
@@ -247,8 +246,6 @@ public class UserLocationOverlay extends MyLocationOverlay {
 				_isResizeIconMaxed = false;
 			}
 		}
-		// TODO
-		// peoplecount vs old radius should be consistent
 	}
 	
 	public int getPeopleCount() {
@@ -303,7 +300,7 @@ public class UserLocationOverlay extends MyLocationOverlay {
 	}
 	
 	public int getCurrentPower() {
-		SBLog.i(TAG, "getCurrentPower()");
+		SBLog.method(TAG, "getCurrentPower()");
 		return User.calculatePower(_peopleCount);
 	}
 

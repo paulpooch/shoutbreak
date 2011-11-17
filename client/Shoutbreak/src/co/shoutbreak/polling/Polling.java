@@ -18,19 +18,19 @@ import android.os.Message;
 
 public class Polling {
 	
-	private static final String TAG = "ProtocolGateway";
+	private static final String TAG = "Polling";
 	
 	private ThreadSafeMediator _safeM;
     private Handler _uiThreadHandler;
     
     public Polling(ThreadSafeMediator threadSafeMediator, Handler uiThreadHandler) {
-    	SBLog.i(TAG, "new ProtocolGateway()");
+    	SBLog.constructor(TAG);
     	_safeM = threadSafeMediator;
     	_uiThreadHandler = uiThreadHandler;
     }
 	
 	public void go(Message message) {
-		SBLog.i(TAG, "go()");
+		SBLog.logic("Polling - go");
 		switch (message.what) {
 			case C.STATE_IDLE: {
 				SBLog.logic("Polling - idle");
@@ -66,7 +66,7 @@ public class Polling {
 	}
     
 	public void idle(Message message) {
-		SBLog.i(TAG, "idle()");
+		SBLog.logic("Polling - idle");
 		if (!_safeM.userHasAccount()) {
 			createAccount(message);
 			return;
@@ -76,7 +76,7 @@ public class Polling {
 	}
 	
 	public void ping(Message message) {
-		SBLog.i(TAG, "ping()");
+		SBLog.method(TAG, "ping()");
 		Handler httpHandler = new Handler() {
 			public void handleMessage(Message message) {
 				switch (message.what) {
@@ -103,7 +103,7 @@ public class Polling {
 								}
 							} catch (JSONException ex) {
 								// TODO: Manage exception
-								SBLog.e(TAG, ex.getMessage());
+								SBLog.error(TAG, ex.getMessage());
 							}
 						}
 						break;
@@ -242,7 +242,7 @@ public class Polling {
 									_safeM.handleVoteFailed(message, shoutId, vote);
 								}
 							} catch (JSONException ex) {
-								SBLog.e(TAG, ex.getMessage());
+								SBLog.error(TAG, ex.getMessage());
 								_safeM.handleVoteFailed(message, shoutId, vote);
 							}
 						}

@@ -988,14 +988,15 @@ class DBEngine {
 		$results = array();
 		$moreExist = true;
 		$shoutTable = $this->TABLE_SHOUT_PREFIX . $this->TABLE_SHOUT_INDEX;
-		$shouts = $this->sdb->select($shoutTable, "SELECT * FROM $shoutTable WHERE time IS NOT NULL ORDER BY time DESC");
+		$query = "SELECT * FROM $shoutTable WHERE time IS NOT NULL ORDER BY time DESC";
+		$shouts = $this->sdb->select($shoutTable, $query);
 		while (count($shouts) > 0 && $moreExist) {
 			foreach ($shouts as $shout) {
 				array_push($results, $shout);
 			}
 			if ($this->sdb->NextToken != null) {
 				$moreExist = true;
-				$shouts = $this->sdb->select($shoutTable, "SELECT * FROM $shoutTable WHERE time IS NOT NULL ORDER BY time DESC", $this->sdb->NextToken);
+				$shouts = $this->sdb->select($shoutTable, $query, $this->sdb->NextToken);
 			} else {
 				$moreExist = false;
 			}
@@ -1003,6 +1004,27 @@ class DBEngine {
 		$app->respond($results);
 	}
 	
+	public function admin_getUsers() {
+		global $app;
+		$results = array();
+		$moreExist = true;
+		$query = "SELECT * FROM $this->TABLE_USERS";
+		$users = $this->sdb->select($this->TABLE_USERS, $query);
+		while (count($users) > 0 && $moreExist) {
+			foreach ($users as $user) {
+				array_push($results, $user);
+			}
+			if ($this->sdb->NextToken != null) {
+				$moreExist = true;
+				$user = $this->sdb->select($this->TABLE_USERS, $query, $this->sdb->NextToken);
+			} else {
+				$moreExist = false;
+			}
+		}
+		$app->respond($results);
+	}
+	
+	/*
 	public function countLiveUsers() {
 		$results = $this->sdb->select($this->TABLE_LIVE, "SELECT COUNT(*) FROM $this->TABLE_LIVE");
 		$numUsers = $results[0]['Attributes']['Count'];
@@ -1021,32 +1043,7 @@ class DBEngine {
 		exit;
 	}
 	
-	public function admin_viewUsers() {
-		echo '<table border="1" cellpadding="3">';
-		echo '<tr><th>USERS</th></tr>';
-		$users = $this->sdb->select($this->TABLE_USERS, "SELECT * FROM $this->TABLE_USERS");
-		if (count($users) > 0) {
-			$i = 0;
-			foreach ($users as $user) {
-				$arr = $user['Attributes'];
-				if ($i++ == 0) {
-					echo '<tr>';
-					foreach ($arr as $key => $val) {
-						echo '<td>' . $key . '</td>';
-					}
-					echo '</tr>';
-				}
-				echo '<tr>';
-				foreach ($arr as $key => $val) {
-					echo '<td>' . $val . '</td>';
-				}
-				$uid = $user['Attributes']['user_id'];
-				echo '<td><form><input type="hidden" name="a" value="admin_delete_user"/><input type="hidden" name="uid" value="' . $uid . '"/><input type="submit" value="delete"/></form></td>';
-				echo '</tr>';
-			}
-		}
-		echo '</table><br/><br/>';
-	}
+	
 	
 	public function admin_viewLiveUsers() {
 		echo '<table border="1" cellpadding="3">';
@@ -1155,6 +1152,7 @@ class DBEngine {
 		}
 	}
 	
+	*/
 //	public function startCreateAccount() {
 //		$userID = Utils::uuid ();
 //		$response = array ('user_id' => $userID );

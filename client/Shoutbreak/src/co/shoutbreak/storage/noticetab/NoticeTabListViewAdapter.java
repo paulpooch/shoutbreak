@@ -17,9 +17,12 @@ import co.shoutbreak.R;
 import co.shoutbreak.core.C;
 import co.shoutbreak.core.Colleague;
 import co.shoutbreak.core.Mediator;
+import co.shoutbreak.core.utils.SBLog;
 
 public class NoticeTabListViewAdapter extends BaseAdapter implements Colleague {
 
+	private static final String TAG = "NoticeTabListViewAdapter";
+	
 	private Mediator _m;
 	private List<Notice> _displayedNotices;
 	private LayoutInflater _inflater;
@@ -27,6 +30,7 @@ public class NoticeTabListViewAdapter extends BaseAdapter implements Colleague {
 	private OnClickListener _linkButtonClickListener;
 	
 	public NoticeTabListViewAdapter(Mediator mediator, LayoutInflater inflater) {
+		SBLog.constructor(TAG);
 		
 		_m = mediator;
 		_displayedNotices = new ArrayList<Notice>();

@@ -18,6 +18,8 @@ public class NoticeTabView extends LinearLayout implements IGestureCapable {
 	// TODO: sharing these variables is dumb.
 	// Queue them up as their own TabAnimationObjects.
 	
+	private static final String TAG = "NoticeTabView";
+	
 	private Shoutbreak _ui;
 	private GestureDetector _gestures;
     private OvershootInterpolator _overshootInterpolator;
@@ -32,6 +34,7 @@ public class NoticeTabView extends LinearLayout implements IGestureCapable {
     
 	public NoticeTabView(Context context) {
 		super(context);
+		SBLog.constructor(TAG);
 		_ui = (Shoutbreak) context;
 		_gestures = new GestureDetector(context, new GestureListener(this));
 	}
@@ -115,7 +118,7 @@ public class NoticeTabView extends LinearLayout implements IGestureCapable {
         _startTime = System.currentTimeMillis();
         _endTime = _startTime + duration;
         _totalAnimDy = totalDy;
-        SBLog.e("D", "total anim dy = " + totalDy);
+        SBLog.error("D", "total anim dy = " + totalDy);
         post(new Runnable() {
             @Override
             public void run() {

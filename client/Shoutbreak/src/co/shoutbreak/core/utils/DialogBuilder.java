@@ -10,6 +10,8 @@ import co.shoutbreak.ui.Shoutbreak;
 
 public class DialogBuilder {
 
+	private static final String TAG = "DialogBuilder";
+	
 	public static final int DIALOG_SERVER_DOWN = 0; // server down is unknown problem
 	public static final int DIALOG_SERVER_ANNOUNCEMENT = 1;
 	public static final int DIALOG_SERVER_ERROR = 2; // server error is the server giving us {code: error}
@@ -22,6 +24,7 @@ public class DialogBuilder {
 	private Shoutbreak _ui;
 
 	public DialogBuilder(Shoutbreak ui) {
+    	SBLog.constructor(TAG);
 		_ui = ui;
 		_isDialogAlreadyShowing = false;
 	}
