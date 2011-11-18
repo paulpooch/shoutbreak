@@ -3,11 +3,22 @@
 <head>
 <title>Shoutbreak.com</title>
 <script type="text/javascript" src="js/jquery-1.6.2.min.js"></script>
+<script type="text/javascript" src="js/easySlider1.7.js"></script>
+<script type="text/javascript">
+	$(document).ready(function() {	
+		$("#slider").easySlider({
+			auto: true, 
+			continuous: true,
+			numeric: true
+		});
+	});
+</script>
 <style type="text/css">
 
 html { position: relative; width: 100%; height: 100%; margin: 0px; padding: 0px; background: #fff url('bg_1.png') 0px 0px repeat-x; }
 body { position: relative; width: 100%; height: 100%; margin: 0px; padding: 0px; font-family: "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Verdana, Tahoma, sans-serif; }
 footer { position: absolute; bottom: 8px; width: 100%; text-align: center; font-size: .8em; color: #000; }
+ol { list-style: none; }
 
 #layer1 { position: absolute; z-index: -1; width: 100%; height: 745px; margin: 0px; padding: 0px; text-align:center; }
 #circle { position: relative; width: 1040px; height: 745px; margin: 0px auto; }
@@ -18,14 +29,10 @@ footer { position: absolute; bottom: 8px; width: 100%; text-align: center; font-
 #main { position: relative; width: 1040px; height: 745px; margin: 0px auto; }
 #logo {  position: absolute: left: 0px; top: 0px; width: 439px; height: 100px; background: transparent url('shoutbreak.png') 0px 17px no-repeat; }
 #white { padding: 35px; }
-#bullets { position: absolute; bottom: 0px; width: 100%; margin: 8px; }
 
 .center { position: relative; margin: 0 auto; width: 90px; text-align: center; }
 .left { float: left; }
 .right { float: right; }
-.bullet { position: relative; float: left; width: 13px; height: 13px; margin: 2px; background: transparent url('bullet_off.png') no-repeat; }
-.bullet:hover { position: relative; float: left; width: 13px; height: 13px; margin: 2px; background: transparent url('bullet_on.png') no-repeat; }
-
 
 .button {
 	-moz-box-shadow:inset 0px 1px 0px 0px #d066e6;
@@ -57,37 +64,18 @@ footer { position: absolute; bottom: 8px; width: 100%; text-align: center; font-
 	top:1px;
 }
 
-#scenarios { position: absolute; left: 0px; top: 745px; width: 100%; margin: 0px; padding: 0px; }
-#scenario1 { border: 4px solid rgba(0, 230, 100, .8); }
-#scenario2 { border: 4px solid rgba(255, 255, 100, .8); }
-#scenario3 { border: 4px solid rgba(0, 145, 255, .8); }
-#scenario4 { border: 4px solid rgba(255, 128, 255, .8); }
-#scenario5 { border: 4px solid rgba(255, 120, 30, .8); }
-.scenario { position: relative; width: 1040px; height: 240px; margin: 0px auto; padding: 8px; text-align: left; border-radius: 20px 0px 20px 0px;
-	box-shadow: 
-	1px 2px 6px rgba(0, 0, 0, 1), /* drop shadow */
-	0 1px rgba(255, 255, 255, .3) inset, /* thin white line on top */
-	0 10px rgba(255, 255, 255, .1) inset,  /* thick white stripe */
-	0 10px 20px rgba(255, 255, 255, .25) inset, /* inner white glow */
-	0 -3px 30px rgba(0,0,0, .3); /* outer top black glow */ 
-}
-.scenario h1 { font-family: helvetica; font-size: 2.7em; letter-spacing: -0.1em; }
+#slider{ width: 100%; height: 600px; }	
+#slider ul, #slider li { position: relative; margin: 0 auto; width: 90px; text-align: center; list-style: none; }
+#slider li { width: 800px; height: 600px; overflow: hidden; }
+#controls { width: 100px; margin: 8px; }
+#controls a { display: block; width: 12px; height: 13px; margin: 0px; padding: 0px; }
+#controls li { position: relative; float: left; width: 12px; height: 13px; margin: 5px; padding: 0px; background: transparent url('bullet_off.png') no-repeat; }
+#controls .current { background: transparent url('bullet_on.png') no-repeat; }
+#prevBtn, #nextBtn {  display: block; margin: 0; overflow: hidden; text-indent: -8000px; width: 30px; height: 77px; position: absolute; left: -30px; top: -160px; }	
+#nextBtn { left: 696px; }														
+#prevBtn a, #nextBtn a { display: block; width: 30px;	height:77px; background:url(images/btn_prev.gif) no-repeat 0 0; }	
+#nextBtn a { background:url(images/btn_next.gif) no-repeat 0 0;	}
 
-.features {  }
-.title { letter-spacing: -1px; font-family: Helvetica, "Hoefler Text", Garamond, Baskerville, "Baskerville Old Face", "Times New Roman", serif; }
-.feature { letter-spacing: 0.1em; margin-top: 50px; color: #fff; padding: 20px; background: rgba(0, 0, 0, .2); border-radius: 20px 0px 20px 0px; font-size: .9em; text-shadow: 1px 1px 1px #000;
-	box-shadow: 
-	1px 2px 6px rgba(0, 0, 0, 1), /* drop shadow */
-	0 1px rgba(255, 255, 255, .3) inset, /* thin white line on top */
-	0 10px rgba(255, 255, 255, .1) inset,  /* thick white stripe */
-	0 10px 20px rgba(255, 255, 255, .25) inset, /* inner white glow */
-	0 -3px 30px rgba(0,0,0, .3); /* outer top black glow */ 
-	}
-
-/*box-shadow: 2px 2px 10px rgba(0, 0, 0, 1) inset; }*/
-.feature .title {  font-size: 2.7em; }
-.feature ul { margin-left: 25px; }
-.feature li { margin-top: 5px;}
 
 </style>
 </head>
@@ -102,12 +90,15 @@ footer { position: absolute; bottom: 8px; width: 100%; text-align: center; font-
 	<div id="layer3">
 		<div id="main">
 			<div id="logo"></div>
-			<img src="screen.png">
-			<div id="bullets">
-				<div class="center">
-					<div class="bullet"></div><div class="bullet"></div><div class="bullet"></div><div class="bullet"></div>
-				</div>
+			<div id="slider">
+				<ul>				
+					<li><img src="screen.png"></li>
+					<li><img src="screen.png"></li>
+					<li><img src="screen.png"></li>
+					<li><img src="screen.png"></li>			
+				</ul>
 			</div>
+
 			<! -- put shit that goes on top of the blue here -->
 		</div>
 		<div id="white">
