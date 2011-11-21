@@ -11,11 +11,11 @@ public class SBLog {
 
 	private static final boolean DEBUG_MODE = true;
 	
-//	public static void d(String tag, String message) {
-//		if (DEBUG_MODE) {
-//			Log.d("SB DEBUG", tag + " : " + message);
-//		}
-//	}
+	public static void d(String tag, String message) {
+		if (DEBUG_MODE) {
+			Log.d("SB DEBUG", tag + " : " + message);
+		}
+	}
 //	
 //
 //	public static void i(String tag, String message) {

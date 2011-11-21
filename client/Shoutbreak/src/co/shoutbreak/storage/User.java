@@ -60,9 +60,8 @@ public class User {
 
 	// STATICS ////////////////////////////////////////////////////////////////
 
-	public static float calculateRadius(int power, double density) {
-		int maxPeople = power * C.CONFIG_PEOPLE_PER_LEVEL;
-		double area = maxPeople / density;
+	public static float calculateRadius(int targets, double density) {
+		double area = targets / density;
 		float radius = (float) Math.sqrt(area / Math.PI);
 		return radius;
 	}
