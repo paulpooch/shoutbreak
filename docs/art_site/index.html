@@ -6,29 +6,48 @@
 <script type="text/javascript" src="js/easySlider1.7.js"></script>
 <script type="text/javascript">
 	$(document).ready(function() {	
+		$('#slider li').css('width', $(window).width() + 'px');
 		$("#slider").easySlider({
 			auto: true, 
 			continuous: true,
 			numeric: true
 		});
 	});
+
+	$(window).resize(function() {
+
+	});
 </script>
 <style type="text/css">
 
-html { position: relative; width: 100%; height: 100%; margin: 0px; padding: 0px; background: #fff url('bg_1.png') 0px 0px repeat-x; }
-body { position: relative; width: 100%; height: 100%; margin: 0px; padding: 0px; font-family: "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Verdana, Tahoma, sans-serif; }
-footer { position: absolute; bottom: 8px; width: 100%; text-align: center; font-size: .8em; color: #000; }
-ol { list-style: none; }
+@font-face {
+	font-family: 'Droid Sans';
+	src: url('DroidSans.ttf');
+}
+
+@font-face {
+	font-family: 'Droid Sans Bold';
+	src: url('DroidSansBold.ttf');
+}
+
+html { position: relative; width: 100%; height: 100%; margin: 0px; padding: 0px; background: #fff url('bg_1.jpg') 0px 0px repeat-x; }
+body { position: relative; width: 100%; height: 100%; margin: 0px; padding: 0px; font-family: "Droid Sans", "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Verdana, Tahoma, sans-serif; }
+footer { position: absolute; bottom: 4px; left: 0px;  width: 100%; margin: 0px; padding: 0px; text-align: center; font-size: .8em; color: #555; }
+ol { margin: 0px; padding: 0px; list-style: none; }
+ul { margin: 0px; padding: 0px; list-style: none; }
 
 #layer1 { position: absolute; z-index: -1; width: 100%; height: 745px; margin: 0px; padding: 0px; text-align:center; }
 #circle { position: relative; width: 1040px; height: 745px; margin: 0px auto; }
-#left_hemi { position: relative; width: 520px; height: 745px; margin: 0px; float: left; background: transparent url('bg_2.jpg') left 0px no-repeat; }
-#right_hemi { position: relative; width: 520px; height: 745px; margin: 0px; float: right; background: transparent url('bg_2.jpg') 0px 0px no-repeat; -moz-transform: scaleX(-1); -o-transform: scaleX(-1); -webkit-transform: scaleX(-1); transform: scaleX(-1); filter: FlipH; -ms-filter: "FlipH"; }
-#layer2 { position: absolute: left: 0px; top: 0px; z-index: 1; width: 100%; height: 745px; margin: 0px; padding: 0px; background: transparent url('diag.png') 0px 0px repeat;-moz-transform: scaleX(-1); -o-transform: scaleX(-1); -webkit-transform: scaleX(-1); transform: scaleX(-1); filter: FlipH; -ms-filter: "FlipH"; }
+#left_hemi { position: relative; width: 520px; height: 745px; margin: 0px; float: left; background: url('bg_2.jpg') left 0px no-repeat; }
+#right_hemi { position: relative; width: 520px; height: 745px; margin: 0px; float: right; background: url('bg_2.jpg') 0px 0px no-repeat; -moz-transform: scaleX(-1); -o-transform: scaleX(-1); -webkit-transform: scaleX(-1); transform: scaleX(-1); filter: FlipH; -ms-filter: "FlipH"; }
+#layer2 { position: absolute; left: 0px; top: 0px; z-index: 1; width: 100%; height: 745px; margin: 0px; padding: 0px; background: transparent url('diag.png') 0px 0px repeat;-moz-transform: scaleX(-1); -o-transform: scaleX(-1); -webkit-transform: scaleX(-1); transform: scaleX(-1); filter: FlipH; -ms-filter: "FlipH"; }
 #layer3 { position: absolute; left: 0px; top: 0px; z-index: 2; width: 100%; margin: 0px; padding: 0px; text-align:center; }
 #main { position: relative; width: 1040px; height: 745px; margin: 0px auto; }
-#logo {  position: absolute: left: 0px; top: 0px; width: 439px; height: 100px; background: transparent url('shoutbreak.png') 0px 17px no-repeat; }
+#logo {  position: absolute; left: 0px; top: 17px; width: 439px; height: 100px; background: transparent url('shoutbreak_s.png') no-repeat; }
+#android {  position: fixed; right: 40px; top: 0px; z-index: 5; width: 188px; height: 74px; background: transparent url('android.png') no-repeat; }
+#android:hover {  background: transparent url('android_only.png') no-repeat; }
 #white { padding: 35px; }
+#layer4 { position: absolute; top: 0px; left: 0px; z-index: 3; width: 100%; text-align: center; }	
 
 .center { position: relative; margin: 0 auto; width: 90px; text-align: center; }
 .left { float: left; }
@@ -64,19 +83,26 @@ ol { list-style: none; }
 	top:1px;
 }
 
-#slider{ width: 100%; height: 600px; }	
-#slider ul, #slider li { position: relative; margin: 0 auto; width: 90px; text-align: center; list-style: none; }
-#slider li { width: 800px; height: 600px; overflow: hidden; }
-#controls { width: 100px; margin: 8px; }
+#slider { margin: 108px 0 0 0; width: 100%; }	
+#slider ul, #slider li { position: relative; margin: 0 auto; text-align: center; }
+#slider li { height: 600px; overflow: hidden; color: #fff; text-shadow: 0px 0px 2px #000; }
+#slider h1 { margin: 0; padding: 0; font-family: 'Droid Sans Bold'; text-align: left; text-shadow: 0px 0px 5px #000; }
+#slider p { float: left; text-align: left; }
+#controls { }
 #controls a { display: block; width: 12px; height: 13px; margin: 0px; padding: 0px; }
-#controls li { position: relative; float: left; width: 12px; height: 13px; margin: 5px; padding: 0px; background: transparent url('bullet_off.png') no-repeat; }
-#controls .current { background: transparent url('bullet_on.png') no-repeat; }
-#prevBtn, #nextBtn {  display: block; margin: 0; overflow: hidden; text-indent: -8000px; width: 30px; height: 77px; position: absolute; left: -30px; top: -160px; }	
-#nextBtn { left: 696px; }														
-#prevBtn a, #nextBtn a { display: block; width: 30px;	height:77px; background:url(images/btn_prev.gif) no-repeat 0 0; }	
-#nextBtn a { background:url(images/btn_next.gif) no-repeat 0 0;	}
+#controls li { position: relative; float: left; width: 25%; height: 13px; margin: 0px; padding: 0px; background: transparent url('bullet_off.png') center no-repeat; }
+#controls .current { background: transparent url('bullet_on.png') center no-repeat; }
 
-
+.scenario { margin: auto; padding: 0px; width: 800px; height: 100%; }
+.description { width: 515px; height: 70%; float: left; margin: 8px; padding: 15px; border-top: 1px solid #7a4ec5; -moz-border-radius: 16px; border-radius: 15px;
+background: -moz-linear-gradient(top,  rgba(54,9,121,0.5) 0%, rgba(0,0,0,0) 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(54,9,121,0.5)), color-stop(100%,rgba(0,0,0,0))); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top,  rgba(54,9,121,0.5) 0%,rgba(0,0,0,0) 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top,  rgba(54,9,121,0.5) 0%,rgba(0,0,0,0) 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top,  rgba(54,9,121,0.5) 0%,rgba(0,0,0,0) 100%); /* IE10+ */
+background: linear-gradient(top,  rgba(54,9,121,0.5) 0%,rgba(0,0,0,0) 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#80360979', endColorstr='#00000000',GradientType=0 ); /* IE6-9 */
+ }
 </style>
 </head>
 <body>
@@ -90,22 +116,46 @@ ol { list-style: none; }
 	<div id="layer3">
 		<div id="main">
 			<div id="logo"></div>
-			<div id="slider">
-				<ul>				
-					<li><img src="screen.png"></li>
-					<li><img src="screen.png"></li>
-					<li><img src="screen.png"></li>
-					<li><img src="screen.png"></li>			
-				</ul>
-			</div>
-
 			<! -- put shit that goes on top of the blue here -->
 		</div>
 		<div id="white">
-			<a href="#" class="button">Download</a>
-			<a href="#" class="button">View Live Shouts</a>
+			<a href="#" class="button"><img src="download.png" /></a>
+			<a href="#" class="button"><img src="live.png" /></a>
+			<footer>
+				Copyright 2011, ProjectLoud
+			</footer>
 		</div>
 	</div>
-	<footer>Copyright 2011, Virtuability LLC</footer>
+	<div id="layer4">
+		<div id="slider">
+			<ul>			
+				<li>
+					<div class="scenario">
+						<div class="description"><h1>Scenario 1</h1><p>Hello, world!</p></div>
+						<img class="right" src="screen.png">
+					</div>
+				</li>
+				<li>
+					<div class="scenario">
+						<div class="description"><h1>Scenario 2</h1><p>Hello, world!</p></div>
+						<img class="right" src="screen.png">
+					</div>
+				</li>
+				<li>
+					<div class="scenario">
+						<div class="description"><h1>Scenario 3</h1><p>Hello, world!</p></div>
+						<img class="right" src="screen.png">
+					</div>
+				</li>
+				<li>
+					<div class="scenario">
+						<div class="description"><h1>Scenario 4</h1><p>Hello, world!</p></div>
+						<img class="right" src="screen.png">
+					</div>
+				</li>
+			</ul>
+		</div>
+	</div>
+	<a href="#" id="android"></a>
 </body>
 </html>
