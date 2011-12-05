@@ -78,12 +78,12 @@
 							android:layout_toRightOf="@id/warning3"
 							android:layout_alignParentTop="true" android:layout_marginLeft="10dp"
 							android:layout_height="wrap_content" android:layout_marginTop="6dp"
-							android:text="Your location is required to send shouts." />
+							android:text="You must enable &quot;Google location services&quot; to send shouts." />
 						<Button android:id="@+id/enableLocationBtn"
 							android:layout_centerHorizontal="true" android:textSize="18dp"
 							android:textStyle="bold" android:textColor="#ffffffff"
 							android:layout_width="220dp" android:layout_height="wrap_content"
-							android:layout_alignParentBottom="true" android:text="Enable Location"
+							android:layout_alignParentBottom="true" android:text="Enable Google\nLocation Services"
 							android:shadowColor="#1e003c" android:shadowDx="2"
 							android:shadowDy="2" android:shadowRadius="2" />
 					</RelativeLayout>

@@ -5,7 +5,7 @@ public class C {
 
 	// CONFIG /////////////////////////////////////////////////////////////////
 	// Match this to the $version in index.php
-	public static final boolean CONFIG_ADMIN_SUPERPOWERS = false;
+	public static final boolean CONFIG_ADMIN_SUPERPOWERS = true;
 	public static final String CONFIG_SERVER_ADDRESS = "http://app.shoutbreak.co/002/";
 	public static final int CONFIG_HTTP_TIMEOUT = 25000;
 	public static final int CONFIG_NOTICES_DISPLAYED_IN_TAB = 50;

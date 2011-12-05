@@ -202,7 +202,10 @@ public class Shoutbreak extends MapActivity implements Colleague {
 			_m.setIsUIInForeground(true);
 			wasLaunchFromReferral();
 			reflectPowerState();
-		}		
+			
+			ThreadSafeMediator threadSafeMediator = _m.getAThreadSafeMediator();
+			threadSafeMediator.resetPollingDelay();
+		}
 		super.onResume();
 		//refreshFlags();
 	}
@@ -415,7 +418,7 @@ public class Shoutbreak extends MapActivity implements Colleague {
 	
 	private void handleFirstRun() {
 		SBLog.method(TAG, "handleFirstRun()");
-		if (_m.isFirstRun()) {
+		if (_m != null && _m.isFirstRun()) {
 			// TODO: tutorial goes here
 			//TutorialDialog tut = new TutorialDialog(this);
 	        //tut.show();

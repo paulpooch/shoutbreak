@@ -39,16 +39,19 @@ public class Polling {
 			}
 			case C.STATE_RECEIVE_SHOUTS: {
 				SBLog.logic("Polling - receiveShouts");
+				_safeM.resetPollingDelay();				
 				receiveShouts(message);
 				break;
 			}
 			case C.STATE_VOTE: {
 				SBLog.logic("Polling - vote");
+				_safeM.resetPollingDelay();				
 				vote(message);
 				break;
 			}
 			case C.STATE_SHOUT: {
 				SBLog.logic("Polling - shout");
+				_safeM.resetPollingDelay();				
 				shout(message);
 				break;
 			}
