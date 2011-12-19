@@ -109,5 +109,12 @@ public class SBLog {
 			Log.d("SB HTTP RESPONSE", response);
 		}
 	}
+
+	// For tracking polling delay
+	public static void polling(long delay) {
+		if (DEBUG_MODE) {
+			Log.w("SB POLLING DELAY", Long.toString(delay));
+		}
+	}
 	
 }

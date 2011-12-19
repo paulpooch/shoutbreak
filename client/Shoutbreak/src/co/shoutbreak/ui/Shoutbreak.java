@@ -36,6 +36,7 @@ import co.shoutbreak.core.Mediator;
 import co.shoutbreak.core.ServiceBridgeInterface;
 import co.shoutbreak.core.ShoutbreakService;
 import co.shoutbreak.core.Mediator.ThreadSafeMediator;
+import co.shoutbreak.core.utils.CrashReportingExceptionHandler;
 import co.shoutbreak.core.utils.DialogBuilder;
 import co.shoutbreak.core.utils.Flag;
 import co.shoutbreak.core.utils.SBLog;
@@ -46,13 +47,13 @@ import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapController;
 
 public class Shoutbreak extends MapActivity implements Colleague {
-	
+
 	private static String TAG = "Shoutbreak";
 
 	private Mediator _m;
 	private Intent _serviceIntent;
 	private ServiceBridgeInterface _serviceBridge;
-	
+
 	public NoticeTabView noticeTab;
 	public UserLocationOverlay overlay;
 	public ImageButton shoutBtn;
@@ -61,7 +62,7 @@ public class Shoutbreak extends MapActivity implements Colleague {
 	public ImageView noticeTabShoutsIv;
 	public ImageView noticeTabPointsIv;
 	public TextView noticeTabShoutsTv;
-	public TextView noticeTabPointsTv;	
+	public TextView noticeTabPointsTv;
 	public ListView noticeTabListView;
 	public ListView inboxListView;
 	public TextView mapPeopleCountTv;
@@ -71,7 +72,7 @@ public class Shoutbreak extends MapActivity implements Colleague {
 	public TextView userNextLevelAtTv;
 	public TextView userNextShoutreachTv;
 	public RoundProgress userLevelUpProgessRp;
-	
+
 	private RelativeLayout _inputLayoutRl;
 	private LinearLayout _composeBlanketLl;
 	private RelativeLayout _blanketDataRl;
@@ -92,25 +93,33 @@ public class Shoutbreak extends MapActivity implements Colleague {
 	private LinearLayout _profileViewLl;
 	private CustomMapView _map;
 	private LinearLayout _mapOptionsLl;
-		
+
 	private Flag _isComposeShowing = new Flag("ui:_isComposeShowing");
 	private Flag _isInboxShowing = new Flag("ui:_isInboxShowing");
 	private Flag _isProfileShowing = new Flag("ui:_isProfileShowing");
 	private Flag _isTurnedOn = new Flag("ui:_isTurnedOn");
 	private Flag _isLocationEnabled = new Flag("ui:_isLocationEnabled");
 	private Flag _isDataEnabled = new Flag("ui:_isDataEnabled");
-	private Flag _isPowerPreferenceEnabled = new Flag("ui:_isPowerPreferenceEnabled");		// is power preference set to on
+	private Flag _isPowerPreferenceEnabled = new Flag("ui:_isPowerPreferenceEnabled"); // is
+																																											// power
+																																											// preference
+																																											// set
+																																											// to
+																																											// on
 	// This flag isn't critical but may be nice to have one day.
-	private Flag _doesMapKnowLocation = new Flag("ui:_doesMapKnowLocation"); 
-	
+	private Flag _doesMapKnowLocation = new Flag("ui:_doesMapKnowLocation");
+
 	@Override
 	public void onCreate(Bundle extras) {
-    	SBLog.lifecycle(TAG, "onCreate()");
-    	SBLog.constructor(TAG);
-    	
+		SBLog.lifecycle(TAG, "onCreate()");
+		SBLog.constructor(TAG);
+
 		super.onCreate(extras);
 		setContentView(R.layout.main);
 
+		// TODO: give this the log or some shit.
+		Thread.setDefaultUncaughtExceptionHandler(new CrashReportingExceptionHandler(C.CONFIG_CRASH_REPORT_ADDRESS));
+		
 		shoutBtn = (ImageButton) findViewById(R.id.shoutBtn);
 		shoutInputEt = (EditText) findViewById(R.id.shoutInputEt);
 		inboxListView = (ListView) findViewById(R.id.inboxLv);
@@ -127,7 +136,7 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		userNextLevelAtTv = (TextView) findViewById(R.id.userNextLevelAtTv);
 		userNextShoutreachTv = (TextView) findViewById(R.id.userNextShoutreachTv);
 		userLevelUpProgessRp = (RoundProgress) findViewById(R.id.userLevelUpProgressRp);
-		
+
 		_inputLayoutRl = (RelativeLayout) findViewById(R.id.inputRl);
 		_composeBlanketLl = (LinearLayout) findViewById(R.id.composeBlanketLl);
 		_blanketDataRl = (RelativeLayout) findViewById(R.id.blanketDataRl);
@@ -148,7 +157,7 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		_enableLocationBtn = (Button) findViewById(R.id.enableLocationBtn);
 		_turnOnBtn = (Button) findViewById(R.id.turnOnBtn);
 		_mapOptionsLl = (LinearLayout) findViewById(R.id.mapOptionsLl);
-		
+
 		shoutBtn.setOnClickListener(_shoutButtonListener);
 		_composeTabBtn.setOnClickListener(_composeTabListener);
 		_inboxTabBtn.setOnClickListener(_inboxTabListener);
@@ -158,24 +167,24 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		_enableLocationBtn.getBackground().setColorFilter(0xAA9900FF, Mode.SRC_ATOP);
 		_turnOnBtn.setOnClickListener(_turnOnListener);
 		_turnOnBtn.getBackground().setColorFilter(0xAA9900FF, Mode.SRC_ATOP);
-		
+
 		noticeTabShoutsIv.setVisibility(View.INVISIBLE);
 		noticeTabPointsIv.setVisibility(View.INVISIBLE);
 		noticeTabShoutsTv.setVisibility(View.INVISIBLE);
 		noticeTabPointsTv.setVisibility(View.INVISIBLE);
-		
+
 		_mapCenterBtn.getBackground().setColorFilter(0xAA9900FF, Mode.SRC_ATOP);
 		_mapCenterBtn.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				SBLog.userAction("_mapCenterBtn.onClick");
-//				CenterMapTask task = new CenterMapTask();
-//				// true = do show toast
-//        		task.execute(true);		
+				// CenterMapTask task = new CenterMapTask();
+				// // true = do show toast
+				// task.execute(true);
 				centerMapOnUser(true);
 			}
 		});
-		
+
 		if (android.os.Build.MODEL.equals(C.PHONE_DROID_X)) {
 			shoutInputEt.setOnFocusChangeListener(new OnFocusChangeListener() {
 				@Override
@@ -184,16 +193,16 @@ public class Shoutbreak extends MapActivity implements Colleague {
 					String text = shoutInputEt.getText().toString();
 					text = "\n\n" + text.trim();
 					shoutInputEt.setText(text);
-					shoutInputEt.setSelection(text.length());				
+					shoutInputEt.setSelection(text.length());
 				}
 			});
 		}
-		
+
 		// bind to service, initializes mediator
 		_serviceIntent = new Intent(Shoutbreak.this, ShoutbreakService.class);
 		bindService(_serviceIntent, _serviceConnection, Context.BIND_AUTO_CREATE);
 	}
-	
+
 	@Override
 	public void onResume() {
 		SBLog.lifecycle(TAG, "onResume()");
@@ -202,14 +211,14 @@ public class Shoutbreak extends MapActivity implements Colleague {
 			_m.setIsUIInForeground(true);
 			wasLaunchFromReferral();
 			reflectPowerState();
-			
+
 			ThreadSafeMediator threadSafeMediator = _m.getAThreadSafeMediator();
 			threadSafeMediator.resetPollingDelay();
 		}
 		super.onResume();
-		//refreshFlags();
+		// refreshFlags();
 	}
-	 
+
 	@Override
 	public void onPause() {
 		SBLog.lifecycle(TAG, "onPause()");
@@ -218,9 +227,10 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		}
 		super.onPause();
 	}
-	
+
 	public void setMediator(Mediator mediator) {
-		SBLog.lifecycle(TAG, "setMediator()");;
+		SBLog.lifecycle(TAG, "setMediator()");
+		;
 		_m = mediator;
 	}
 
@@ -229,52 +239,41 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		SBLog.lifecycle(TAG, "unsetMediator()");
 		_m = null;
 	}
-	
+
 	/*
-	// Map centering occurs on the UIThread.  Therefore pointless to be Async.
-	private class CenterMapTask extends AsyncTask<Boolean, Void, Boolean> {    	
-		@Override
-		protected Boolean doInBackground(Boolean... showToast) {
-			if (overlay != null && _map != null) {
-				GeoPoint loc = overlay.getMyLocation();
-				if (loc != null) {
-					MapController mapController = _map.getController();
-					if (mapController != null) {
-						mapController.animateTo(loc);
-						return showToast[0];
-					}
-				}
-			}
-			return false;
-		}
-		@Override
-		protected void onPostExecute(Boolean showToast) {
-			if (showToast) {
-				// this from user pressing centerMap button
-				_m.getUiGateway().toast("You are here.", Toast.LENGTH_SHORT);
-			}
-	    }
-	}
-	*/
-	
+	 * // Map centering occurs on the UIThread. Therefore pointless to be Async.
+	 * private class CenterMapTask extends AsyncTask<Boolean, Void, Boolean> {
+	 * 
+	 * @Override protected Boolean doInBackground(Boolean... showToast) { if
+	 * (overlay != null && _map != null) { GeoPoint loc = overlay.getMyLocation();
+	 * if (loc != null) { MapController mapController = _map.getController(); if
+	 * (mapController != null) { mapController.animateTo(loc); return
+	 * showToast[0]; } } } return false; }
+	 * 
+	 * @Override protected void onPostExecute(Boolean showToast) { if (showToast)
+	 * { // this from user pressing centerMap button
+	 * _m.getUiGateway().toast("You are here.", Toast.LENGTH_SHORT); } } }
+	 */
+
 	public void centerMapOnUser(boolean showToast) {
 		if (_isTurnedOn.get() && _map != null && overlay != null && _map.getOverlays().size() > 0 && overlay.isMyLocationEnabled()) {
-			
-			//CenterMapTask task = new CenterMapTask();
-			//task.execute(false);		
-			
-			// MyLocationOverlay is ghetto.  The below line does not work.
+
+			// CenterMapTask task = new CenterMapTask();
+			// task.execute(false);
+
+			// MyLocationOverlay is ghetto. The below line does not work.
 			// GeoPoint loc = overlay.getMyLocation();
 			// We do this elaborate crap instead.
 			GeoPoint loc = null;
 			if (_m != null) {
 				ThreadSafeMediator threadSafeMediator = _m.getAThreadSafeMediator();
 				loc = threadSafeMediator.getLocationAsGeoPoint();
-				
-				// Best place to show 'User has screen open' even if they're not touching anything.
+
+				// Best place to show 'User has screen open' even if they're not
+				// touching anything.
 				threadSafeMediator.resetPollingDelay();
 			}
-			
+
 			if (loc != null) {
 				MapController mapController = _map.getController();
 				if (mapController != null) {
@@ -287,14 +286,12 @@ public class Shoutbreak extends MapActivity implements Colleague {
 				}
 			} else {
 				_doesMapKnowLocation.set(false);
-				dialogBuilder.showDialog(DialogBuilder.DIALOG_WAIT_FOR_MAP_TO_HAVE_LOCATION,  "Hold on while we find you...");
+				dialogBuilder.showDialog(DialogBuilder.DIALOG_WAIT_FOR_MAP_TO_HAVE_LOCATION, "Hold on while we find you...");
 			}
-			
-			
-			
+
 		}
 	}
-	
+
 	private ServiceConnection _serviceConnection = new ServiceConnection() {
 
 		@Override
@@ -304,16 +301,16 @@ public class Shoutbreak extends MapActivity implements Colleague {
 			_serviceBridge = (ServiceBridgeInterface) service;
 			_serviceBridge.registerUIWithMediator(Shoutbreak.this);
 			_m.onServiceConnected();
-			
+
 			_serviceIntent.putExtra(C.NOTIFICATION_LAUNCHED_FROM_UI, true);
 			startService(_serviceIntent);
-			
+
 			overlay = new UserLocationOverlay(Shoutbreak.this, _map);
 			dialogBuilder = new DialogBuilder(Shoutbreak.this);
-			
-			refreshFlags();			
+
+			refreshFlags();
 			_m.refreshUiComponents();
-			
+
 			if (wasLaunchFromReferral()) {
 				hideSplash(false);
 			} else {
@@ -327,60 +324,64 @@ public class Shoutbreak extends MapActivity implements Colleague {
 			_m.onServiceDisconnected();
 		}
 	};
-	
+
 	@Override
 	public void onNewIntent(Intent intent) {
-		// Triggered when a notification tries to launch a new intent and app is set to SINGLE_TOP.
+		// Triggered when a notification tries to launch a new intent and app is set
+		// to SINGLE_TOP.
 		// In our case this happens when user doesn't kill app, and then returns.
 		// Like hitting home button, then clicking a notification.
 		SBLog.lifecycle(TAG, "onNewIntent()");
 		super.onNewIntent(intent);
-		
+
 		// checkForReferral() will check the ORIGINAL intent which has no extras,
-		// even though we may now be coming from a notification, so let's forward those extras before checkForReferral()
+		// even though we may now be coming from a notification, so let's forward
+		// those extras before checkForReferral()
 		Bundle extras = intent.getExtras();
 		if (extras != null) {
-			getIntent().putExtras(extras);		
+			getIntent().putExtras(extras);
 		}
 		wasLaunchFromReferral();
 	}
-		
+
 	private void refreshFlags() {
 		SBLog.method(TAG, "refreshFlags()");
 		_isDataEnabled.set(_m.isDataEnabled());
 		_isLocationEnabled.set(_m.isLocationEnabled());
 		_isPowerPreferenceEnabled.set(_m.isPowerPreferenceEnabled());
 		_isTurnedOn.set(false);
-		
+
 		if (_isDataEnabled.get()) {
 			_m.onDataEnabled();
 		} else {
 			_m.onDataDisabled();
 		}
-		
+
 		if (_isLocationEnabled.get()) {
 			_m.onLocationEnabled();
 		} else {
 			_m.onLocationDisabled();
 		}
-		
+
 		if (_isPowerPreferenceEnabled.get()) {
 			_m.onPowerPreferenceEnabled(true);
 		} else {
 			_m.onPowerPreferenceDisabled(true);
 		}
 	}
-	
+
 	private void hideSplash(boolean showCompose) {
 		// This uses a timer to hide the splash, then show compose screen.
-		// Because of timer, even if we showInbox after this is called, compose will end up displayed when timer triggers.
-		// So we gotta pass in showCompose in case launch was from a referral and should end up in inbox after we hide splash.		
+		// Because of timer, even if we showInbox after this is called, compose will
+		// end up displayed when timer triggers.
+		// So we gotta pass in showCompose in case launch was from a referral and
+		// should end up in inbox after we hide splash.
 		SBLog.lifecycle(TAG, "hideSplash()");
 		final boolean showComposeScreen = showCompose;
 		Handler splashHandler = new Handler() {
 			@Override
 			public void handleMessage(Message message) {
-		        _splashLl.startAnimation(AnimationUtils.loadAnimation(Shoutbreak.this, android.R.anim.fade_out));
+				_splashLl.startAnimation(AnimationUtils.loadAnimation(Shoutbreak.this, android.R.anim.fade_out));
 				_splashLl.setVisibility(View.GONE);
 				if (showComposeScreen) {
 					showCompose();
@@ -393,7 +394,7 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		};
 		splashHandler.sendMessageDelayed(new Message(), 2000);
 	}
-	
+
 	private boolean wasLaunchFromReferral() {
 		SBLog.lifecycle(TAG, "wasLaunchFromReferral()");
 		boolean wasFromReferral = false;
@@ -402,53 +403,54 @@ public class Shoutbreak extends MapActivity implements Colleague {
 			if (_m != null) {
 				_m.resetNotifierShoutCount();
 			}
-			showInbox();	// app launched from notification
+			showInbox(); // app launched from notification
 			wasFromReferral = true;
 		} else {
 			// Do we want to force them into compose view if their phone idles out?
-			//showCompose();
+			// showCompose();
 		}
-		// Let's clear the extras now so they don't haunt us.  
-		// Remember if app is OnResume()'d without being destroyed we could have stale extras.
+		// Let's clear the extras now so they don't haunt us.
+		// Remember if app is OnResume()'d without being destroyed we could have
+		// stale extras.
 		if (extras != null) {
 			extras.clear();
 		}
 		return wasFromReferral;
 	}
-	
+
 	private void handleFirstRun() {
 		SBLog.method(TAG, "handleFirstRun()");
 		if (_m != null && _m.isFirstRun()) {
 			// TODO: tutorial goes here
-			//TutorialDialog tut = new TutorialDialog(this);
-	        //tut.show();
+			// TutorialDialog tut = new TutorialDialog(this);
+			// tut.show();
 		}
 	}
-	
+
 	public void onLocationEnabled() {
 		SBLog.method(TAG, "onLocationEnabled()");
 		_isLocationEnabled.set(true);
 		turnOn(true);
 	}
-	
+
 	public void onLocationDisabled() {
 		SBLog.method(TAG, "onLocationDisabled()");
 		_isLocationEnabled.set(false);
 		turnOff(true);
 	}
-	
+
 	public void onDataEnabled() {
 		SBLog.method(TAG, "onDataEnabled()");
 		_isDataEnabled.set(true);
 		turnOn(true);
 	}
-	
+
 	public void onDataDisabled() {
 		SBLog.method(TAG, "onDataDisabled()");
 		_isDataEnabled.set(false);
 		turnOff(true);
 	}
-	
+
 	private void showComposeBlanket() {
 		SBLog.method(TAG, "showComposeBlanket()");
 		_composeBlanketLl.setVisibility(View.VISIBLE);
@@ -457,7 +459,7 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		_inputLayoutRl.setVisibility(View.GONE);
 		disableMapAndOverlay();
 	}
-	
+
 	private void hideComposeBlanket() {
 		SBLog.method(TAG, "hideComposeBlanket()");
 		_composeBlanketLl.setVisibility(View.GONE);
@@ -466,17 +468,17 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		_inputLayoutRl.setVisibility(View.VISIBLE);
 		enableMapAndOverlay();
 	}
-	
+
 	private void setPowerSwitchButtonToOn() {
 		SBLog.method(TAG, "setPowerSwitchButtonToOn()");
 		_powerBtn.setImageResource(R.drawable.power_button_on);
 	}
-	
+
 	private void setPowerSwitchButtonToOff() {
 		SBLog.method(TAG, "setPowerSwitchButtonToOff()");
 		_powerBtn.setImageResource(R.drawable.power_button_off);
 	}
-	
+
 	public void showCompose() {
 		SBLog.method(TAG, "showCompose()");
 		_isComposeShowing.set(true);
@@ -528,22 +530,24 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		_map.setUserLocationOverlay(overlay);
 		_map.postInvalidate();
 		overlay.enableMyLocation();
-		// Pretty sure this becomes redundant with onLocationChanged() calling centerMapOnUser()
-//		overlay.runOnFirstFix(new Runnable() {
-//			// may take some time if location provider was just enabled 
-//			public void run() {
-//				GeoPoint loc = overlay.getMyLocation();
-//				MapController mapController = _map.getController();
-//				mapController.animateTo(loc);
-//			}
-//		});
-		
-		// This is sort of irrelevant, but this is just a convenient place for this code chunk.
+		// Pretty sure this becomes redundant with onLocationChanged() calling
+		// centerMapOnUser()
+		// overlay.runOnFirstFix(new Runnable() {
+		// // may take some time if location provider was just enabled
+		// public void run() {
+		// GeoPoint loc = overlay.getMyLocation();
+		// MapController mapController = _map.getController();
+		// mapController.animateTo(loc);
+		// }
+		// });
+
+		// This is sort of irrelevant, but this is just a convenient place for this
+		// code chunk.
 		if (!_doesMapKnowLocation.get()) {
-			dialogBuilder.showDialog(DialogBuilder.DIALOG_WAIT_FOR_MAP_TO_HAVE_LOCATION,  "Hold on while we find you...");
+			dialogBuilder.showDialog(DialogBuilder.DIALOG_WAIT_FOR_MAP_TO_HAVE_LOCATION, "Hold on while we find you...");
 		}
 	}
-	
+
 	private void disableMapAndOverlay() {
 		SBLog.method(TAG, "disableMapAndOverlay()");
 		if (_map != null) {
@@ -552,41 +556,43 @@ public class Shoutbreak extends MapActivity implements Colleague {
 			// TODO: disable overlay
 		}
 	}
-	
+
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		SBLog.method(TAG, "onPrepareOptionsMenu()");
 		menu.clear();
-	    MenuInflater inflater = getMenuInflater();
-	    if (_isComposeShowing.get()) {
-	    	inflater.inflate(R.menu.compose_menu, menu);
-	    } else if (_isInboxShowing.get()) {
-	    	inflater.inflate(R.menu.inbox_menu, menu);
-	    } else if (_isProfileShowing.get()) {
-	    	inflater.inflate(R.menu.profile_menu, menu);
-	    }
-	    return super.onPrepareOptionsMenu(menu);
+		MenuInflater inflater = getMenuInflater();
+		if (_isComposeShowing.get()) {
+			inflater.inflate(R.menu.compose_menu, menu);
+		} else if (_isInboxShowing.get()) {
+			inflater.inflate(R.menu.inbox_menu, menu);
+		} else if (_isProfileShowing.get()) {
+			inflater.inflate(R.menu.profile_menu, menu);
+		}
+		return super.onPrepareOptionsMenu(menu);
 	}
-	
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		SBLog.method(TAG, "onOptionsItemSelected()");
-	    switch (item.getItemId()) {
-	    case R.id.clear_notices:
-	        // TODO: clear notices
-	        return true;
-	    case R.id.empty_inbox:
-	        // TODO: empty inbox
-	        return true;
-	    default:
-	        return super.onOptionsItemSelected(item);
-	    }
+		switch (item.getItemId()) {
+		case R.id.clear_notices:
+			// TODO: clear notices
+			return true;
+		case R.id.empty_inbox:
+			// TODO: empty inbox
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
+		}
 	}
-	
+
 	@Override
 	public void onDestroy() {
 		SBLog.lifecycle(TAG, "onDestroy()");
-		if (_m != null) {			_m.unregisterUI(false);;
+		if (_m != null) {
+			_m.unregisterUI(false);
+			;
 			_m = null;
 		}
 		super.onDestroy();
@@ -596,18 +602,18 @@ public class Shoutbreak extends MapActivity implements Colleague {
 	protected boolean isRouteDisplayed() {
 		return false;
 	}
-	
+
 	public int getMapHeight() {
 		return _map.getMeasuredHeight();
 	}
-	
+
 	// http://stackoverflow.com/questions/2150078/android-is-software-keyboard-shown
 	public void hideKeyboard() {
 		SBLog.method(TAG, "hideKeyboard()");
 		InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 		imm.hideSoftInputFromWindow(shoutInputEt.getWindowToken(), 0);
 	}
-	
+
 	private OnClickListener _composeTabListener = new OnClickListener() {
 		public void onClick(View v) {
 			SBLog.userAction("_composeTabListener.onClick()");
@@ -641,16 +647,16 @@ public class Shoutbreak extends MapActivity implements Colleague {
 			task.execute();
 		}
 	};
-	
+
 	// This is the call stack of how this works:
 	//
-	// _mediator.setPowerPreferenceToOn(onUiThread)		->
-	// _preferences.setPowerPreferenceToOn(onUiThread)	->
-	// _m.onPowerPreferenceEnabled(onUiThread)			->
-	// _uiGateway.onPowerPreferenceEnabled(onUiThread)  ->
-	// _ui.onPowerPreferenceEnabled(onUiThread)			->
+	// _mediator.setPowerPreferenceToOn(onUiThread) ->
+	// _preferences.setPowerPreferenceToOn(onUiThread) ->
+	// _m.onPowerPreferenceEnabled(onUiThread) ->
+	// _uiGateway.onPowerPreferenceEnabled(onUiThread) ->
+	// _ui.onPowerPreferenceEnabled(onUiThread) ->
 	// onPowerPreferenceEnabled(onUiThread) [right under this function]
-	private class PowerButtonTask extends AsyncTask<Void, Void, Void> {    	
+	private class PowerButtonTask extends AsyncTask<Void, Void, Void> {
 		@Override
 		protected Void doInBackground(Void... unused) {
 			SBLog.method(TAG, "PowerButtonTask.doInBackground()");
@@ -662,15 +668,17 @@ public class Shoutbreak extends MapActivity implements Colleague {
 				}
 			} else {
 				// Turn Off.
-				_m.setPowerPreferenceToOff(false);	
+				_m.setPowerPreferenceToOff(false);
 			}
 			return null;
 		}
+
 		@Override
 		protected void onPostExecute(Void unused) {
-			// Now we're on the Ui Thread, just see what the outcome of callback city was and set button to reflect that outcome.
+			// Now we're on the Ui Thread, just see what the outcome of callback city
+			// was and set button to reflect that outcome.
 			reflectPowerState();
-	    }
+		}
 	}
 
 	public void reflectPowerState() {
@@ -680,22 +688,22 @@ public class Shoutbreak extends MapActivity implements Colleague {
 			setPowerSwitchButtonToOff();
 		} else {
 			canAppTurnOn(true, false);
-			setPowerSwitchButtonToOn();				
+			setPowerSwitchButtonToOn();
 		}
 	}
-	
+
 	public void onPowerPreferenceEnabled(boolean onUiThread) {
 		SBLog.method(TAG, "onPowerPreferenceEnabled()");
 		_isPowerPreferenceEnabled.set(true);
 		turnOn(onUiThread);
 	}
-	
+
 	public void onPowerPreferenceDisabled(boolean onUiThread) {
 		SBLog.method(TAG, "onPowerPreferenceDisabled()");
 		_isPowerPreferenceEnabled.set(false);
 		turnOff(onUiThread);
 	}
-	
+
 	private boolean turnOn(boolean onUiThread) {
 		SBLog.method(TAG, "turnOn()");
 		if (canAppTurnOn(onUiThread, false)) {
@@ -711,25 +719,25 @@ public class Shoutbreak extends MapActivity implements Colleague {
 			return false;
 		}
 	}
-	
+
 	private void turnOff(boolean onUiThread) {
 		SBLog.method(TAG, "turnOff()");
 		if (onUiThread) {
 			setPowerSwitchButtonToOff();
 		}
 		_isTurnedOn.set(false);
-		//_m.stopPolling();
-		//showComposeBlanket();
+		// _m.stopPolling();
+		// showComposeBlanket();
 		canAppTurnOn(onUiThread, false);
 	}
-	
+
 	public boolean canAppTurnOn(boolean onUiThread, boolean causedByPowerButton) {
 		SBLog.method(TAG, "canAppTurnOn()");
-		
+
 		boolean canTurnOn = true;
 		boolean showBlanket = false;
 		boolean suppressPowerButtonError = false;
-		
+
 		if (!_isDataEnabled.get()) {
 			canTurnOn = false;
 			showBlanket = true;
@@ -742,7 +750,7 @@ public class Shoutbreak extends MapActivity implements Colleague {
 				_blanketDataRl.setVisibility(View.GONE);
 			}
 		}
-		
+
 		if (!_isLocationEnabled.get()) {
 			canTurnOn = false;
 			showBlanket = true;
@@ -755,7 +763,7 @@ public class Shoutbreak extends MapActivity implements Colleague {
 				_blanketLocationRl.setVisibility(View.GONE);
 			}
 		}
-		
+
 		if (!causedByPowerButton && !_isPowerPreferenceEnabled.get()) {
 			canTurnOn = false;
 			showBlanket = true;
@@ -773,7 +781,7 @@ public class Shoutbreak extends MapActivity implements Colleague {
 				_blanketPowerRl.setVisibility(View.GONE);
 			}
 		}
-		
+
 		if (canTurnOn) {
 			if (!overlay.isDensitySet()) {
 				showBlanket = true;
@@ -790,37 +798,36 @@ public class Shoutbreak extends MapActivity implements Colleague {
 				_blanketDensityRl.setVisibility(View.GONE);
 			}
 		}
-			
+
 		if (onUiThread) {
 			if (showBlanket) {
 				showComposeBlanket();
-				if (_m != null) {			
+				if (_m != null) {
 					_m.getUiGateway().disableInputs();
 				}
 			} else {
 				hideComposeBlanket();
-				if (_m != null) {			
+				if (_m != null) {
 					_m.getUiGateway().enableInputs();
 				}
 			}
 		}
-		
-		return canTurnOn;		
+
+		return canTurnOn;
 	}
-	
+
 	private OnClickListener _shoutButtonListener = new OnClickListener() {
 		public void onClick(View v) {
 			SBLog.userAction("_shoutButtonListener.onClick()");
 			CharSequence text = shoutInputEt.getText().toString().trim();
 
 			if (text.length() == 0) {
-				_m.getUiGateway().toast("Cannot shout blanks.",	Toast.LENGTH_SHORT);
+				_m.getUiGateway().toast("Cannot shout blanks.", Toast.LENGTH_SHORT);
 			} else {
 				// TODO: filter all text going to server
 
 				shoutBtn.setImageResource(R.anim.shout_button_down);
-				AnimationDrawable shoutButtonAnimation = (AnimationDrawable) shoutBtn
-						.getDrawable();
+				AnimationDrawable shoutButtonAnimation = (AnimationDrawable) shoutBtn.getDrawable();
 				shoutButtonAnimation.start();
 
 				_m.handleShoutStart(text.toString(), overlay.getCurrentPower());
@@ -828,36 +835,37 @@ public class Shoutbreak extends MapActivity implements Colleague {
 			}
 		}
 	};
-	
+
 	private OnClickListener _enableLocationListener = new OnClickListener() {
 		public void onClick(View v) {
 			SBLog.userAction("_enableLocationListener.onClick()");
-			Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);  
-            startActivityForResult(intent, C.ACTIVITY_RESULT_LOCATION);
+			Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+			startActivityForResult(intent, C.ACTIVITY_RESULT_LOCATION);
 		}
 	};
-	
+
 	private OnClickListener _turnOnListener = new OnClickListener() {
 		public void onClick(View v) {
 			SBLog.userAction("_turnOnListener.onClick()");
 			_m.setPowerPreferenceToOn(true);
 		}
 	};
-	
+
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		SBLog.method(TAG, "onActivityResult()");
 		super.onActivityResult(requestCode, resultCode, data);
 		switch (requestCode) {
-			case C.ACTIVITY_RESULT_LOCATION: {		// returning from location provider activity
-				if (_m.isLocationEnabled()) {		// update location status
-					_m.onLocationEnabled();
-				} else {
-					_m.onLocationDisabled();
-				}
-				break;
+		case C.ACTIVITY_RESULT_LOCATION: { // returning from location provider
+																				// activity
+			if (_m.isLocationEnabled()) { // update location status
+				_m.onLocationEnabled();
+			} else {
+				_m.onLocationDisabled();
 			}
+			break;
+		}
 		}
 	}
-	
+
 }

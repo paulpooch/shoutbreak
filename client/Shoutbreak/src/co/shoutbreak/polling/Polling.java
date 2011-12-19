@@ -85,6 +85,7 @@ public class Polling {
 				switch (message.what) {
 					case C.HTTP_DID_SUCCEED: {
 						if (_safeM.isResponseClean(message)) {						
+							_safeM.handlePingSuccess();
 							CrossThreadPacket xPacket = (CrossThreadPacket)message.obj;
 							try {
 								String code = xPacket.json.getString(C.JSON_CODE);

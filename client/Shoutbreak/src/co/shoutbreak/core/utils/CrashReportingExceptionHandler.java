@@ -41,7 +41,7 @@ public class CrashReportingExceptionHandler implements UncaughtExceptionHandler 
     	final Writer result = new StringWriter();
         final PrintWriter printWriter = new PrintWriter(result);
         e.printStackTrace(printWriter);
-        String stacktrace = result.toString();
+        String stacktrace = result.toString();        
         printWriter.close();
         String filename = timestamp + ".stacktrace";
         

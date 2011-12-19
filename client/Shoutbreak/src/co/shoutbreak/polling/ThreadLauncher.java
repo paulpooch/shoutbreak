@@ -85,7 +85,7 @@ public class ThreadLauncher implements Colleague {
 		launchPollingThread(message, false);
 	}
 	
-	public void stopPolling() {
+	public void stopLaunchingPollingThreads() {
 		if (_loopingThread != null) {
 			// Remove any threads that are about to be run because they were postDelayed.
 			// We no longer have all requirements to run service, so they shouldn't run.
