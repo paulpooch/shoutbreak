@@ -9,7 +9,7 @@ class Config {
 	public static $USER_INITIAL_LEVEL = 6;
 	public static $USER_INITIAL_POINTS = 0;
 	public static $USER_INITIAL_PENDING_LEVEL_UP = 1;
-	public static $DEFAULT_POPULATION_DENSITY = .00001; // NYC = .0106 / m^2, but that's PEOPLE not USERS
+	public static $DEFAULT_POPULATION_DENSITY = .0000001; // NYC = .0106 / m^2, but that's PEOPLE not USERS
 	public static $DATE_FORMAT = DATE_ISO8601;
 	public static $PAD_USER_LEVEL = 4;
 	public static $PAD_USER_POINTS = 10;

@@ -80,6 +80,16 @@ class DBEngine {
 	public function __destruct() {
 	}
 	
+	private function getShoutTableIndex() {
+		global $mem, $log;
+		$shoutTableIndex = $mem->get(Config::$PRE_SHOUT_TABLE_INDEX);
+		if ($shoutTableIndex == null) {
+			$shoutTableIndex = $this->TABLE_SHOUT_INDEX;
+			$mem->set(Config::$PRE_SHOUT_TABLE_INDEX, $shoutTableIndex, false, Config::$TIMEOUT_SHOUT_TABLE_INDEX);
+		}
+		return $shoutTableIndex;		
+	}
+
 	public function addUser($uid, $androidID, $deviceID, $phoneNum, $carrier) {
 		global $mem, $log;
 		$time = date(Config::$DATE_FORMAT);
@@ -269,7 +279,7 @@ class DBEngine {
 			//$log->LogInfo("shout returned from memcached = " . $shout->open);
 			return $shout;
 		} else {
-			$shoutTableIndex = $mem->get(Config::$PRE_SHOUT_TABLE_INDEX);
+			$shoutTableIndex = $this->getShoutTableIndex();
 			$shoutTable = $this->TABLE_SHOUT_PREFIX . $shoutTableIndex;
 			$attempts = $this->SAFE_GET_ATTEMPTS;
 			$backOffTimer = $this->BACKOFF_INITIAL;
@@ -436,11 +446,7 @@ class DBEngine {
 		}	
 		if ($putShoutIntoDB) {
 			$attrs = $shout->toSimpleDBAttrs();
-			$shoutTableIndex = $mem->get(Config::$PRE_SHOUT_TABLE_INDEX);
-			if ($shoutTableIndex == null) {
-				$shoutTableIndex = $this->TABLE_SHOUT_INDEX;
-				$mem->set(Config::$PRE_SHOUT_TABLE_INDEX, $shoutTableIndex, false, Config::$TIMEOUT_SHOUT_TABLE_INDEX);
-			}
+			$shoutTableIndex = $this->getShoutTableIndex();
 			$shoutTable = $this->TABLE_SHOUT_PREFIX . $shoutTableIndex;
 			$domainWasFull = false;
 			$attempts = $this->SAFE_PUT_ATTEMPTS;
@@ -591,7 +597,7 @@ class DBEngine {
 			if ($shout->open == 1) {
 				$diff = time() - strtotime($shout->time);
 				e("shout is $diff seconds old");
-				$shoutTableIndex = $mem->get(Config::$PRE_SHOUT_TABLE_INDEX);
+				$shoutTableIndex = $this->getShoutTableIndex();
 				$shoutTable = $this->TABLE_SHOUT_PREFIX . $shoutTableIndex;
 				// should shout be closed? (too old)
 				if ($diff < Config::$VOTING_WINDOW) {
@@ -921,11 +927,7 @@ class DBEngine {
 		global $mem, $log;
 		$log->LogInfo("CRON CLOSE SHOUTS");
 		$result = true;
-		$shoutTableIndex = $mem->get(Config::$PRE_SHOUT_TABLE_INDEX);
-		if ($shoutTableIndex == null) {
-			$shoutTableIndex = $this->TABLE_SHOUT_INDEX;
-			$mem->set(Config::$PRE_SHOUT_TABLE_INDEX, $shoutTableIndex, false, Config::$TIMEOUT_SHOUT_TABLE_INDEX);
-		}
+		$shoutTableIndex = $this->getShoutTableIndex();
 		$shoutTable = $this->TABLE_SHOUT_PREFIX . $shoutTableIndex;
 		$attempts = $this->SAFE_SELECT_ATTEMPTS;
 		$backOffTimer = $this->BACKOFF_INITIAL;
@@ -1022,6 +1024,32 @@ class DBEngine {
 			}
 		}
 		$app->respond($results);
+	}
+	
+	public function admin_getLiveUsers() {
+		global $app;
+		$results = array();
+		$moreExist = true;
+		$query = "SELECT * FROM $this->TABLE_LIVE";
+		$users = $this->sdb->select($this->TABLE_LIVE, $query);
+		while (count($users) > 0 && $moreExist) {
+			foreach ($users as $user) {
+				array_push($results, $user);
+			}
+			if ($this->sdb->NextToken != null) {
+				$moreExist = true;
+				$user = $this->sdb->select($this->TABLE_LIVE, $query, $this->sdb->NextToken);
+			} else {
+				$moreExist = false;
+			}
+		}
+		$app->respond($results);
+	}
+	
+	public function admin_deleteUser($uid) {
+		global $app;
+		$deleted = $this->sdb->deleteAttributes($this->TABLE_USERS, $uid);
+		return $deleted;
 	}
 	
 	/*
