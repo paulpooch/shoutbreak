@@ -1,351 +1,672 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:sb="http://schemas.android.com/apk/res/co.shoutbreak"
-	android:layout_width="fill_parent" android:layout_height="fill_parent"
-	android:background="#ff000000">
+    xmlns:sb="http://schemas.android.com/apk/res/co.shoutbreak"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#ff000000" >
 
-	<LinearLayout android:layout_width="fill_parent"
-		android:id="@+id/parentLl" android:layout_height="fill_parent"
-		android:orientation="vertical">
+    <LinearLayout
+        android:id="@+id/parentLl"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical" >
 
-		<!-- Title Bar -->
-		<RelativeLayout android:background="@drawable/top_bg"
-			android:id="@+id/titleBarRl" android:layout_width="fill_parent"
-			android:layout_height="wrap_content" android:layout_weight="0">
-			<TextView android:id="@+id/titleBarTv"
-				android:layout_height="wrap_content" android:layout_width="wrap_content"
-				android:layout_centerVertical="true" android:layout_alignParentLeft="true"
-				android:layout_marginLeft="40dp" android:textSize="15dp"
-				android:textColor="#ffffffff" android:text="Shoutbreak" />
-			<ImageButton android:id="@+id/powerBtn" android:text="power"
-				android:layout_centerVertical="true" android:background="#00000000"
-				android:layout_alignParentRight="true" android:layout_width="wrap_content"
-				android:layout_marginTop="5dp" android:layout_marginRight="5dp"
-				android:src="@drawable/power_button_on" android:layout_height="wrap_content" />
-		</RelativeLayout>
+        <!-- Title Bar -->
 
-		<!-- Views -->
-		<RelativeLayout android:id="@+id/viewContainerRl"
-			android:visibility="visible" android:layout_width="fill_parent"
-			android:layout_height="fill_parent" android:layout_weight="1">
+        <RelativeLayout
+            android:id="@+id/titleBarRl"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:background="@drawable/top_bg" >
 
-			<!-- Compose -->
-			<LinearLayout android:id="@+id/composeViewLl"
-				android:visibility="invisible" android:layout_width="fill_parent"
-				android:layout_height="wrap_content" android:background="#ff000000"
-				android:orientation="vertical">
+            <TextView
+                android:id="@+id/titleBarTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="40dp"
+                android:text="Shoutbreak"
+                android:textColor="#ffffffff"
+                android:textSize="15dp" />
 
-				<!--  Compose Blanket -->
-				<LinearLayout android:id="@+id/composeBlanketLl"
-					android:layout_weight="1" android:layout_width="fill_parent"
-					android:layout_height="wrap_content" android:background="#ff000000"
-					android:layout_marginTop="50dp" android:orientation="vertical">
-					<RelativeLayout android:id="@+id/blanketDataRl"
-						android:layout_marginRight="20dp" android:layout_marginTop="40dp"
-						android:orientation="vertical" android:layout_marginLeft="20dp"
-						android:layout_width="fill_parent" android:layout_height="40dp">
-						<ImageView android:id="@+id/warning1"
-							android:layout_height="wrap_content" android:layout_width="wrap_content"
-							android:layout_alignParentLeft="true"
-							android:layout_alignParentTop="true" android:src="@drawable/notice_icon_warning" />
-						<TextView android:layout_width="wrap_content"
-							android:layout_marginLeft="10dp" android:layout_toRightOf="@id/warning1"
-							android:layout_marginTop="6dp" android:layout_alignParentTop="true"
-							android:layout_height="wrap_content" android:text="You must have data service to shout." />
-					</RelativeLayout>
-					<RelativeLayout android:id="@+id/blanketDensityRl"
-						android:layout_marginRight="20dp" android:layout_marginTop="40dp"
-						android:orientation="vertical" android:layout_marginLeft="20dp"
-						android:layout_width="fill_parent" android:layout_height="40dp">
-						<ImageView android:id="@+id/warning2"
-							android:layout_height="wrap_content" android:layout_width="wrap_content"
-							android:layout_alignParentLeft="true"
-							android:layout_alignParentTop="true" android:src="@drawable/notice_icon_warning" />
-						<TextView android:layout_width="wrap_content"
-							android:layout_toRightOf="@id/warning2"
-							android:layout_alignParentTop="true" android:layout_height="wrap_content"
-							android:layout_marginLeft="10dp" android:layout_marginRight="20dp"
-							android:text="Please wait while we determine the user density of your location." />
-					</RelativeLayout>
-					<RelativeLayout android:id="@+id/blanketLocationRl"
-						android:layout_marginRight="20dp" android:layout_marginTop="40dp"
-						android:orientation="vertical" android:layout_marginLeft="20dp"
-						android:layout_width="fill_parent" android:layout_height="110dp">
-						<ImageView android:id="@+id/warning3"
-							android:layout_height="wrap_content" android:layout_width="wrap_content"
-							android:layout_alignParentLeft="true"
-							android:layout_alignParentTop="true" android:src="@drawable/notice_icon_warning" />
-						<TextView android:layout_width="wrap_content"
-							android:layout_toRightOf="@id/warning3"
-							android:layout_alignParentTop="true" android:layout_marginLeft="10dp"
-							android:layout_height="wrap_content" android:layout_marginTop="6dp"
-							android:text="You must enable &quot;Google location services&quot; to send shouts." />
-						<Button android:id="@+id/enableLocationBtn"
-							android:layout_centerHorizontal="true" android:textSize="18dp"
-							android:textStyle="bold" android:textColor="#ffffffff"
-							android:layout_width="220dp" android:layout_height="wrap_content"
-							android:layout_alignParentBottom="true" android:text="Enable Google\nLocation Services"
-							android:shadowColor="#1e003c" android:shadowDx="2"
-							android:shadowDy="2" android:shadowRadius="2" />
-					</RelativeLayout>
-					<RelativeLayout android:id="@+id/blanketPowerRl"
-						android:layout_marginLeft="20dp" android:layout_marginRight="20dp"
-						android:layout_marginTop="40dp" android:orientation="vertical"
-						android:layout_width="fill_parent" android:layout_height="110dp">
-						<ImageView android:id="@+id/warning4"
-							android:layout_height="wrap_content" android:layout_width="wrap_content"
-							android:layout_alignParentLeft="true"
-							android:layout_alignParentTop="true" android:src="@drawable/notice_icon_warning" />
-						<TextView android:layout_width="wrap_content"
-							android:layout_alignParentTop="true" android:layout_marginLeft="10dp"
-							android:layout_toRightOf="@id/warning4" android:layout_height="wrap_content"
-							android:text="Power switch must be on in order to send &amp; receive shouts." />
-						<Button android:id="@+id/turnOnBtn" android:layout_width="220dp"
-							android:layout_alignParentBottom="true" android:textSize="18dp"
-							android:textStyle="bold" android:textColor="#ffffffff"
-							android:layout_centerHorizontal="true" android:layout_height="wrap_content"
-							android:text="Turn On Power Switch" android:shadowColor="#1e003c"
-							android:shadowDx="2" android:shadowDy="2" android:shadowRadius="2" />
-					</RelativeLayout>
-				</LinearLayout>
+            <ImageButton
+                android:id="@+id/powerBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="5dp"
+                android:background="#00000000"
+                android:src="@drawable/power_button_on"
+                android:text="power" />
+        </RelativeLayout>
 
-				<!-- Map -->
-				<RelativeLayout android:id="@+id/mapRl"
-					android:layout_width="fill_parent" android:layout_height="wrap_content"
-					android:layout_weight="1">
-					<co.shoutbreak.ui.CustomMapView
-						android:id="@+id/mapCmv" android:layout_width="fill_parent"
-						android:layout_height="wrap_content" android:clickable="true"
-						android:apiKey="@string/maps_api_key" />
-					<LinearLayout android:layout_height="wrap_content"
-						android:layout_marginBottom="4dp" android:id="@+id/mapOptionsLl"
-						android:layout_width="wrap_content" android:layout_marginRight="4dp"
-						android:layout_alignParentRight="true"
-						android:layout_alignParentBottom="true" android:orientation="horizontal">
-						<TextView android:layout_width="wrap_content" android:id="@+id/mapPeopleCountTv"
-							android:layout_height="wrap_content" android:textColor="#ff2d005a"
-							android:shadowColor="#ffffff" android:shadowDx="2"
-							android:textStyle="bold" android:shadowDy="2"
-							android:shadowRadius="4" android:textSize="50px" />
-						<ImageView android:layout_marginLeft="4dp"
-							android:layout_marginTop="4dp" android:layout_marginRight="6dp"
-							android:src="@drawable/map_person_icon" android:layout_width="wrap_content"
-							android:layout_height="wrap_content" />
-						<ImageButton android:id="@+id/mapCenterBtn"
-							android:layout_width="wrap_content" android:layout_height="wrap_content"
-							android:padding="7dp" android:src="@drawable/map_center" />
-					</LinearLayout>
-				</RelativeLayout>
+        <!-- Views -->
 
-				<!-- Input -->
-				<RelativeLayout android:id="@+id/inputRl"
-					android:background="@drawable/shout_input_bg" android:layout_width="fill_parent"
-					android:layout_height="wrap_content" android:layout_weight="0">
-					<ImageButton android:id="@+id/shoutBtn" android:text="shout"
-						android:layout_centerVertical="true" android:background="#00000000"
-						android:layout_alignParentRight="true" android:layout_width="wrap_content"
-						android:layout_marginTop="6dp" android:layout_marginRight="2dp"
-						android:src="@drawable/shout_button_up" android:layout_height="wrap_content" />
-					<EditText android:id="@+id/shoutInputEt"
-						android:maxLength="256" android:layout_width="fill_parent"
-						android:layout_marginRight="3dp" android:layout_marginLeft="4dp"
-						android:padding="4dp" android:layout_toLeftOf="@id/shoutBtn"
-						android:layout_height="wrap_content" android:background="@drawable/textbox"
-						android:gravity="top" android:layout_centerVertical="true"
-						android:imeOptions="actionSend" android:inputType="textLongMessage|textMultiLine" />
-				</RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/viewContainerRl"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:visibility="visible" >
 
-			</LinearLayout>
+            <!-- Compose -->
 
-			<!-- Inbox -->
-			<LinearLayout android:id="@+id/inboxViewLl"
-				android:visibility="invisible" android:layout_width="fill_parent"
-				android:layout_height="fill_parent" android:background="#ff000000"
-				android:orientation="vertical">
-				<ListView android:id="@+id/inboxLv" android:layout_width="fill_parent"
-					android:background="#ff000000" android:cacheColorHint="#ff000000"
-					android:layout_height="wrap_content" android:layout_marginTop="34px"
-					android:divider="#00000000" />
-			</LinearLayout>
+            <LinearLayout
+                android:id="@+id/composeViewLl"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="#ff000000"
+                android:orientation="vertical"
+                android:visibility="invisible" >
 
-			<!-- Profile -->
-			<LinearLayout android:id="@+id/profileViewLl"
-				android:visibility="invisible" android:layout_width="fill_parent"
-				android:layout_height="fill_parent" android:background="#ff000000"
-				android:orientation="vertical">
-				<RelativeLayout android:background="#000000"
-					android:layout_width="fill_parent" android:layout_height="fill_parent">
+                <!-- Compose Blanket -->
 
-					<RelativeLayout android:id="@+id/userHeaderRl"
-						android:layout_alignParentTop="true" android:layout_width="fill_parent"
-						android:layout_height="wrap_content" android:layout_marginTop="85dp">
-						<TextView android:id="@+id/userHeaderTv"
-							android:layout_width="fill_parent" android:layout_height="wrap_content"
-							android:layout_alignParentTop="true" android:textColor="#ffffffff"
-							android:shadowColor="#1e003c" android:shadowDx="2"
-							android:shadowDy="2" android:shadowRadius="2" android:textSize="40dp"
-							android:textStyle="bold" android:text="User Stats" />
-						<LinearLayout android:background="@drawable/user_stats_bg"
-							android:layout_height="45px" android:layout_width="fill_parent"
-							android:layout_below="@id/userHeaderTv" />
-					</RelativeLayout>
+                <LinearLayout
+                    android:id="@+id/composeBlanketLl"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="50dp"
+                    android:layout_weight="1"
+                    android:background="#ff000000"
+                    android:orientation="vertical" >
 
-					<TextView android:layout_height="wrap_content"
-						android:id="@+id/userStatsParagraphTv" android:layout_width="wrap_content"
-						android:textColor="#ffffff" android:layout_below="@id/userHeaderRl"
-						android:textSize="18dp" />
+                    <RelativeLayout
+                        android:id="@+id/blanketDataRl"
+                        android:layout_width="fill_parent"
+                        android:layout_height="40dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:layout_marginTop="40dp"
+                        android:orientation="vertical" >
 
-					<LinearLayout android:id="@+id/levelRl"
-						android:layout_alignParentBottom="true" android:background="@drawable/shout_input_bg"
-						android:layout_width="fill_parent" android:layout_height="wrap_content"
-						android:orientation="vertical">
-						<LinearLayout android:layout_width="fill_parent"
-							android:layout_height="wrap_content" android:orientation="horizontal">
-							<ImageView android:src="@drawable/user_person_decrease"
-								android:layout_marginLeft="5dp" android:layout_marginRight="5dp"
-								android:layout_width="wrap_content" android:layout_height="wrap_content"
-								android:layout_weight="0" android:layout_marginTop="8dp" />
-							<co.shoutbreak.ui.RoundProgress
-								android:id="@+id/userLevelUpProgressRp" android:layout_width="fill_parent"
-								android:layout_height="30px" android:layout_marginTop="12dp"
-								android:layout_weight="1" sb:max="100" sb:progress="35"
-								sb:progressDrawable="@drawable/progress_clip" sb:track="@drawable/progress_bar_bg" />
-							<ImageView android:src="@drawable/user_person_increase"
-								android:layout_width="wrap_content" android:layout_height="wrap_content"
-								android:layout_weight="0" android:layout_marginTop="5dp"
-								android:layout_marginLeft="5dp" android:layout_marginRight="5dp" />
-						</LinearLayout>
-						<RelativeLayout android:layout_width="fill_parent"
-							android:layout_height="wrap_content">
-							<TextView android:id="@+id/userCurrentShoutreachTv"
-								android:layout_width="wrap_content" android:layout_height="wrap_content"
-								android:layout_alignParentTop="true"
-								android:layout_alignParentLeft="true" android:layout_marginLeft="8dp"
-								android:textColor="#ffffffff" android:shadowColor="#1e003c"
-								android:shadowDx="2" android:shadowDy="2" android:shadowRadius="2"
-								android:textSize="20dp" android:textStyle="bold" />
-							<LinearLayout android:layout_width="wrap_content"
-								android:layout_height="wrap_content"
-								android:layout_alignParentTop="true"
-								android:layout_centerHorizontal="true">
-								<ImageView android:src="@drawable/notice_icon_points"
-									android:layout_alignParentTop="true" android:layout_marginTop="6dp"
-									android:layout_width="wrap_content" android:layout_height="26dp"
-									android:layout_marginRight="3dp" />
-								<TextView android:id="@+id/userPointsTv"
-									android:layout_width="wrap_content" android:layout_height="wrap_content"
-									android:textColor="#ffffffff" android:shadowColor="#1e003c"
-									android:layout_alignParentTop="true" android:layout_marginTop="-4dp"
-									android:shadowDx="2" android:shadowDy="2" android:shadowRadius="2"
-									android:textSize="30dp" android:textStyle="bold" />
-								<TextView android:layout_width="wrap_content"
-									android:layout_height="wrap_content" android:textColor="#ffd75edc"
-									android:shadowColor="#1e003c" android:layout_alignParentTop="true"
-									android:layout_marginTop="-4dp" android:shadowDx="2"
-									android:shadowDy="2" android:shadowRadius="2" android:textSize="30dp"
-									android:textStyle="bold" android:text=" / " />
-								<TextView android:id="@+id/userNextLevelAtTv"
-									android:layout_width="wrap_content" android:layout_height="wrap_content"
-									android:textColor="#ffffffff" android:shadowColor="#1e003c"
-									android:layout_alignParentTop="true" android:layout_marginTop="-4dp"
-									android:shadowDx="2" android:shadowDy="2" android:shadowRadius="2"
-									android:textSize="30dp" android:textStyle="bold" />
-							</LinearLayout>
-							<TextView android:id="@+id/userNextShoutreachTv"
-								android:layout_width="wrap_content" android:layout_height="wrap_content"
-								android:layout_alignParentTop="true"
-								android:layout_alignParentRight="true"
-								android:layout_marginRight="12dp" android:textColor="#ffffffff"
-								android:shadowColor="#1e003c" android:shadowDx="2"
-								android:shadowDy="2" android:shadowRadius="2" android:textSize="20dp"
-								android:textStyle="bold" />
-						</RelativeLayout>
-					</LinearLayout>
-				</RelativeLayout>
-			</LinearLayout>
+                        <ImageView
+                            android:id="@+id/warning1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentTop="true"
+                            android:src="@drawable/notice_icon_warning" />
 
-		</RelativeLayout>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentTop="true"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginTop="6dp"
+                            android:layout_toRightOf="@id/warning1"
+                            android:text="You must have data service to shout." />
+                    </RelativeLayout>
 
-		<!-- Tabs -->
-		<RelativeLayout android:layout_width="fill_parent"
-			android:layout_alignParentBottom="true" android:background="@drawable/tab_bg"
-			android:layout_height="wrap_content" android:layout_weight="0">
-			<ImageButton android:layout_centerInParent="true"
-				android:layout_width="149px" android:layout_height="99px"
-				android:id="@+id/inboxTabBtn" android:background="#00000000"
-				android:src="@drawable/tab_inbox" />
-			<ImageButton android:layout_toLeftOf="@id/inboxTabBtn"
-				android:layout_width="149px" android:layout_height="99px"
-				android:layout_marginRight="5dp" android:layout_centerVertical="true"
-				android:id="@+id/composeTabBtn" android:background="#00000000"
-				android:src="@drawable/tab_shouting" />
-			<ImageButton android:layout_toRightOf="@id/inboxTabBtn"
-				android:layout_width="149px" android:layout_height="99px"
-				android:layout_marginLeft="5dp" android:layout_centerVertical="true"
-				android:id="@+id/profileTabBtn" android:background="#00000000"
-				android:src="@drawable/tab_user" />
-		</RelativeLayout>
+                    <RelativeLayout
+                        android:id="@+id/blanketDensityRl"
+                        android:layout_width="fill_parent"
+                        android:layout_height="40dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:layout_marginTop="40dp"
+                        android:orientation="vertical" >
 
-	</LinearLayout>
+                        <ImageView
+                            android:id="@+id/warning2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentTop="true"
+                            android:src="@drawable/notice_icon_warning" />
 
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentTop="true"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="20dp"
+                            android:layout_toRightOf="@id/warning2"
+                            android:text="Please wait while we determine the user density of your location." />
+                    </RelativeLayout>
 
-	<RelativeLayout android:id="@+id/noticeTabRl"
-		android:layout_marginTop="48px" android:layout_width="fill_parent"
-		android:layout_height="fill_parent">
-		<co.shoutbreak.storage.noticetab.NoticeTabView
-			android:id="@+id/noticeTab" android:orientation="vertical"
-			android:background="@drawable/notice_tab_bg" android:minHeight="47px"
-			android:layout_alignParentTop="true" android:layout_height="47px"
-			android:layout_width="fill_parent">
-			<LinearLayout android:layout_weight="1"
-				android:layout_height="wrap_content" android:layout_width="fill_parent"
-				android:background="#ffffffff">
-				<ListView android:id="@+id/noticeLv" android:layout_width="fill_parent"
-					android:divider="#00000000" android:cacheColorHint="#ffffffff"
-					android:layout_height="wrap_content" />
-			</LinearLayout>
-			<RelativeLayout android:layout_weight="0"
-				android:layout_height="47px" android:orientation="horizontal"
-				android:layout_width="fill_parent">
-				<RelativeLayout android:layout_width="168px"
-					android:layout_height="40px" android:layout_centerHorizontal="true"
-					android:layout_marginTop="2px">
-					<ImageView android:id="@+id/noticeTabShoutsIv"
-						android:layout_width="83px" android:layout_height="40px"
-						android:background="@drawable/notice_shouts"
-						android:layout_alignParentLeft="true" android:layout_marginLeft="3px" />
-					<ImageView android:id="@+id/noticeTabPointsIv"
-						android:layout_width="82px" android:layout_height="40px"
-						android:background="@drawable/notice_points"
-						android:layout_alignParentRight="true" android:layout_marginRight="-1px" />
-					<TextView android:id="@+id/noticeTabShoutsTv"
-						android:layout_marginTop="-3px" android:layout_width="60px"
-						android:layout_height="fill_parent"
-						android:layout_alignParentLeft="true" android:layout_marginLeft="24px"
-						android:textColor="#ffffffff" android:shadowColor="#1e003c"
-						android:shadowDx="2" android:shadowDy="2" android:shadowRadius="2"
-						android:textSize="30px" android:textStyle="bold" />
-					<TextView android:id="@+id/noticeTabPointsTv"
-						android:layout_marginTop="-3px" android:layout_width="60px"
-						android:layout_height="fill_parent"
-						android:layout_alignParentRight="true" android:layout_marginRight="16px"
-						android:textColor="#ffffffff" android:shadowColor="#1e003c"
-						android:shadowDx="2" android:shadowDy="2" android:shadowRadius="2"
-						android:textSize="30px" android:textStyle="bold" />
-				</RelativeLayout>
-			</RelativeLayout>
-		</co.shoutbreak.storage.noticetab.NoticeTabView>
-	</RelativeLayout>
+                    <RelativeLayout
+                        android:id="@+id/blanketLocationRl"
+                        android:layout_width="fill_parent"
+                        android:layout_height="110dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:layout_marginTop="40dp"
+                        android:orientation="vertical" >
 
-	<!-- Splash -->
-	<LinearLayout android:id="@+id/splashLl"
-		android:layout_width="fill_parent" android:layout_height="fill_parent"
-		android:background="@drawable/splash" android:orientation="vertical">
-	</LinearLayout>
+                        <ImageView
+                            android:id="@+id/warning3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentTop="true"
+                            android:src="@drawable/notice_icon_warning" />
 
-	<!--  Power Button Extension -->
-	<ImageButton android:id="@+id/powerExtensionBtn"
-		android:layout_alignParentTop="true" android:layout_alignParentRight="true"
-		android:background="@null" android:layout_width="100dp"
-		android:layout_height="40dp" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentTop="true"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginTop="6dp"
+                            android:layout_toRightOf="@id/warning3"
+                            android:text="You must enable &quot;Google location services&quot; to send shouts." />
+
+                        <Button
+                            android:id="@+id/enableLocationBtn"
+                            android:layout_width="220dp"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentBottom="true"
+                            android:layout_centerHorizontal="true"
+                            android:shadowColor="#1e003c"
+                            android:shadowDx="2"
+                            android:shadowDy="2"
+                            android:shadowRadius="2"
+                            android:text="Enable Google\nLocation Services"
+                            android:textColor="#ffffffff"
+                            android:textSize="18dp"
+                            android:textStyle="bold" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/blanketPowerRl"
+                        android:layout_width="fill_parent"
+                        android:layout_height="110dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:layout_marginTop="40dp"
+                        android:orientation="vertical" >
+
+                        <ImageView
+                            android:id="@+id/warning4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentTop="true"
+                            android:src="@drawable/notice_icon_warning" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentTop="true"
+                            android:layout_marginLeft="10dp"
+                            android:layout_toRightOf="@id/warning4"
+                            android:text="Power switch must be on in order to send &amp; receive shouts." />
+
+                        <Button
+                            android:id="@+id/turnOnBtn"
+                            android:layout_width="220dp"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentBottom="true"
+                            android:layout_centerHorizontal="true"
+                            android:shadowColor="#1e003c"
+                            android:shadowDx="2"
+                            android:shadowDy="2"
+                            android:shadowRadius="2"
+                            android:text="Turn On Power Switch"
+                            android:textColor="#ffffffff"
+                            android:textSize="18dp"
+                            android:textStyle="bold" />
+                    </RelativeLayout>
+                </LinearLayout>
+
+                <!-- Map -->
+
+                <RelativeLayout
+                    android:id="@+id/mapRl"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" >
+
+                    <co.shoutbreak.ui.CustomMapView
+                        android:id="@+id/mapCmv"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:apiKey="@string/maps_api_key"
+                        android:clickable="true" />
+
+                    <LinearLayout
+                        android:id="@+id/mapOptionsLl"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginBottom="4dp"
+                        android:layout_marginRight="4dp"
+                        android:orientation="horizontal" >
+
+                        <TextView
+                            android:id="@+id/mapPeopleCountTv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:shadowColor="#ffffff"
+                            android:shadowDx="2"
+                            android:shadowDy="2"
+                            android:shadowRadius="4"
+                            android:textColor="#ff2d005a"
+                            android:textSize="50px"
+                            android:textStyle="bold" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="4dp"
+                            android:layout_marginRight="6dp"
+                            android:layout_marginTop="4dp"
+                            android:src="@drawable/map_person_icon" />
+
+                        <ImageButton
+                            android:id="@+id/mapCenterBtn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="7dp"
+                            android:src="@drawable/map_center" />
+                    </LinearLayout>
+                </RelativeLayout>
+
+                <!-- Input -->
+
+                <RelativeLayout
+                    android:id="@+id/inputRl"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0"
+                    android:background="@drawable/shout_input_bg" >
+
+                    <ImageButton
+                        android:id="@+id/shoutBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="2dp"
+                        android:layout_marginTop="6dp"
+                        android:background="#00000000"
+                        android:src="@drawable/shout_button_up"
+                        android:text="shout" />
+
+                    <EditText
+                        android:id="@+id/shoutInputEt"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="4dp"
+                        android:layout_marginRight="3dp"
+                        android:layout_toLeftOf="@id/shoutBtn"
+                        android:background="@drawable/textbox"
+                        android:gravity="top"
+                        android:imeOptions="actionSend"
+                        android:inputType="textLongMessage|textMultiLine"
+                        android:maxLength="256"
+                        android:padding="4dp" />
+                </RelativeLayout>
+            </LinearLayout>
+
+            <!-- Inbox -->
+
+            <LinearLayout
+                android:id="@+id/inboxViewLl"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:background="#ff000000"
+                android:orientation="vertical"
+                android:visibility="invisible" >
+
+                <ListView
+                    android:id="@+id/inboxLv"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#ff000000"
+                    android:cacheColorHint="#ff000000"
+                    android:divider="#00000000" />
+            </LinearLayout>
+
+            <!-- Profile -->
+
+            <LinearLayout
+                android:id="@+id/profileViewLl"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:background="#ff000000"
+                android:orientation="vertical"
+                android:visibility="invisible" >
+
+                <RelativeLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:background="#000000" >
+
+                    <RelativeLayout
+                        android:id="@+id/userHeaderRl"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginTop="85dp" >
+
+                        <TextView
+                            android:id="@+id/userHeaderTv"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentTop="true"
+                            android:shadowColor="#1e003c"
+                            android:shadowDx="2"
+                            android:shadowDy="2"
+                            android:shadowRadius="2"
+                            android:text="User Stats"
+                            android:textColor="#ffffffff"
+                            android:textSize="40dp"
+                            android:textStyle="bold" />
+
+                        <LinearLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="45px"
+                            android:layout_below="@id/userHeaderTv"
+                            android:background="@drawable/user_stats_bg" />
+                    </RelativeLayout>
+
+                    <TextView
+                        android:id="@+id/userStatsParagraphTv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/userHeaderRl"
+                        android:textColor="#ffffff"
+                        android:textSize="18dp" />
+
+                    <LinearLayout
+                        android:id="@+id/levelRl"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:background="@drawable/shout_input_bg"
+                        android:orientation="vertical" >
+
+                        <LinearLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal" >
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="5dp"
+                                android:layout_marginRight="5dp"
+                                android:layout_marginTop="8dp"
+                                android:layout_weight="0"
+                                android:src="@drawable/user_person_decrease" />
+
+                            <co.shoutbreak.ui.RoundProgress
+                                android:id="@+id/userLevelUpProgressRp"
+                                android:layout_width="fill_parent"
+                                android:layout_height="30px"
+                                android:layout_marginTop="12dp"
+                                android:layout_weight="1"
+                                sb:max="100"
+                                sb:progress="35"
+                                sb:progressDrawable="@drawable/progress_clip"
+                                sb:track="@drawable/progress_bar_bg" />
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="5dp"
+                                android:layout_marginRight="5dp"
+                                android:layout_marginTop="5dp"
+                                android:layout_weight="0"
+                                android:src="@drawable/user_person_increase" />
+                        </LinearLayout>
+
+                        <RelativeLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content" >
+
+                            <TextView
+                                android:id="@+id/userCurrentShoutreachTv"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentLeft="true"
+                                android:layout_alignParentTop="true"
+                                android:layout_marginLeft="8dp"
+                                android:shadowColor="#1e003c"
+                                android:shadowDx="2"
+                                android:shadowDy="2"
+                                android:shadowRadius="2"
+                                android:textColor="#ffffffff"
+                                android:textSize="20dp"
+                                android:textStyle="bold" />
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentTop="true"
+                                android:layout_centerHorizontal="true" >
+
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="26dp"
+                                    android:layout_alignParentTop="true"
+                                    android:layout_marginRight="3dp"
+                                    android:layout_marginTop="6dp"
+                                    android:src="@drawable/notice_icon_points" />
+
+                                <TextView
+                                    android:id="@+id/userPointsTv"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentTop="true"
+                                    android:layout_marginTop="-4dp"
+                                    android:shadowColor="#1e003c"
+                                    android:shadowDx="2"
+                                    android:shadowDy="2"
+                                    android:shadowRadius="2"
+                                    android:textColor="#ffffffff"
+                                    android:textSize="30dp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentTop="true"
+                                    android:layout_marginTop="-4dp"
+                                    android:shadowColor="#1e003c"
+                                    android:shadowDx="2"
+                                    android:shadowDy="2"
+                                    android:shadowRadius="2"
+                                    android:text=" / "
+                                    android:textColor="#ffd75edc"
+                                    android:textSize="30dp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:id="@+id/userNextLevelAtTv"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentTop="true"
+                                    android:layout_marginTop="-4dp"
+                                    android:shadowColor="#1e003c"
+                                    android:shadowDx="2"
+                                    android:shadowDy="2"
+                                    android:shadowRadius="2"
+                                    android:textColor="#ffffffff"
+                                    android:textSize="30dp"
+                                    android:textStyle="bold" />
+                            </LinearLayout>
+
+                            <TextView
+                                android:id="@+id/userNextShoutreachTv"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:layout_alignParentTop="true"
+                                android:layout_marginRight="12dp"
+                                android:shadowColor="#1e003c"
+                                android:shadowDx="2"
+                                android:shadowDy="2"
+                                android:shadowRadius="2"
+                                android:textColor="#ffffffff"
+                                android:textSize="20dp"
+                                android:textStyle="bold" />
+                        </RelativeLayout>
+                    </LinearLayout>
+                </RelativeLayout>
+            </LinearLayout>
+        </RelativeLayout>
+
+        <!-- ////////////////////////////////////////////////////////////// -->
+        <!-- TABS -->
+        <!-- ////////////////////////////////////////////////////////////// -->
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_weight="0"
+            android:orientation="vertical" >
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/tab_bg" >
+
+                <ImageButton
+                    android:id="@+id/inboxTabBtn"
+                    android:layout_width="149px"
+                    android:layout_height="99px"
+                    android:layout_centerInParent="true"
+                    android:background="#00000000"
+                    android:src="@drawable/tab_inbox" />
+
+                <ImageButton
+                    android:id="@+id/composeTabBtn"
+                    android:layout_width="149px"
+                    android:layout_height="99px"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="5dp"
+                    android:layout_toLeftOf="@id/inboxTabBtn"
+                    android:background="#00000000"
+                    android:src="@drawable/tab_shouting" />
+
+                <ImageButton
+                    android:id="@+id/profileTabBtn"
+                    android:layout_width="149px"
+                    android:layout_height="99px"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="5dp"
+                    android:layout_toRightOf="@id/inboxTabBtn"
+                    android:background="#00000000"
+                    android:src="@drawable/tab_user" />
+            </RelativeLayout>
+
+            <!-- Height must match Drawer height -->
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="52dp" >
+            </RelativeLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/noticeTabRl"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginTop="48px" >
+    </RelativeLayout>
+
+    <!-- Power Button Extension -->
+
+    <ImageButton
+        android:id="@+id/powerExtensionBtn"
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:background="@null" />
+
+    <!-- ////////////////////////////////////////////////////////////////// -->
+    <!-- DRAWER -->
+    <!-- ////////////////////////////////////////////////////////////////// -->
+
+    <LinearLayout
+        android:id="@+id/noticeDrawerLl"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+
+        <co.shoutbreak.storage.noticetab.MultiDirectionSlidingDrawer
+            android:id="@+id/noticeDrawerSd"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:content="@+id/drawerContentLl"
+            sb:content="@+id/drawerContentLl"
+            sb:direction="bottomToTop"
+            android:handle="@+id/drawerHandleRl"
+            sb:handle="@+id/drawerHandleRl"
+            sb:topOffset="48px" >
+
+            <RelativeLayout
+                android:id="@+id/drawerHandleRl"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:background="@drawable/drawer_bg" >
+
+                <TextView
+                    android:id="@+id/noticeTabShoutsTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginTop="12dp"
+                    android:shadowColor="#1e003c"
+                    android:shadowDx="2"
+                    android:shadowDy="2"
+                    android:shadowRadius="2"
+                    android:textColor="#ffffffff"
+                    android:textSize="15dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/noticeTabPointsTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginRight="12dp"
+                    android:layout_marginTop="12dp"
+                    android:shadowColor="#1e003c"
+                    android:shadowDx="2"
+                    android:shadowDy="2"
+                    android:shadowRadius="2"
+                    android:textColor="#ffffffff"
+                    android:textSize="15dp"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/drawerContentLl"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:orientation="vertical" >
+
+                <ListView
+                    android:id="@+id/noticeLv"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:cacheColorHint="#ffffffff"
+                    android:divider="#00000000" />
+            </LinearLayout>
+        </co.shoutbreak.storage.noticetab.MultiDirectionSlidingDrawer>
+    </LinearLayout>
+
+    <!-- Splash -->
+
+    <LinearLayout
+        android:id="@+id/splashLl"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@drawable/splash"
+        android:orientation="vertical" >
+    </LinearLayout>
 
 </RelativeLayout>

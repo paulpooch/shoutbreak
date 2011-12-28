@@ -53,6 +53,7 @@ public class C {
 	public static final int NOTICE_VOTE_FAILED = 8;
 	public static final int NOTICE_POINTS_VOTING = 9;
 	public static final int NOTICE_POINTS_SHOUT = 10;
+	public static final int LEVEL_UP_NOTICE = Integer.MIN_VALUE;
 	
 	// MAP ////////////////////////////////////////////////////////////////////
 	public static final int DEFAULT_ZOOM_LEVEL = 16;

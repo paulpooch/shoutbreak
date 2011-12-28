@@ -71,12 +71,12 @@ public class NoticeTabSystem implements Colleague {
 			}
 		}
 		if (unreadCount > 0) {
-			_m.getUiGateway().showShoutNotice(Integer.toString(unreadCount));
+			_m.getUiGateway().showShoutNotice(unreadCount);
 		}
 		if (levelUp) {
-			_m.getUiGateway().showPointsNotice("LVL");
-		} else if (points > 0) {
-			_m.getUiGateway().showPointsNotice(Integer.toString(points));
+			_m.getUiGateway().showPointsNotice(C.LEVEL_UP_NOTICE);
+		} else if (points != 0) {
+			_m.getUiGateway().showPointsNotice(points);
 		}		
 
 		_listAdapter.refresh(notices);
@@ -90,10 +90,6 @@ public class NoticeTabSystem implements Colleague {
 	
 	public void showOneLine() {
 		_m.getUiGateway().showTopNotice();
-	}
-	
-	public void hideNoticeTab() {
-		_m.getUiGateway().hideNoticeTab();
 	}
 	
 	private List<Notice> getNoticesForUI() {

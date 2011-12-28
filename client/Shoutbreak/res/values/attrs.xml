@@ -1,8 +1,25 @@
 <resources>
+
     <declare-styleable name="RoundProgress">
-      <attr name="progress" format="integer" />
-      <attr name="max" format="integer" />
-      <attr name="progressDrawable" format="integer" />
-      <attr name="track" format="integer" />
+        <attr format="integer" name="progress" />
+        <attr format="integer" name="max" />
+        <attr format="integer" name="progressDrawable" />
+        <attr format="integer" name="track" />
     </declare-styleable>
+    <declare-styleable name="MultiDirectionSlidingDrawer">
+        <attr format="reference" name="handle" />
+        <attr format="reference" name="content" />
+        <attr name="direction" />
+        <attr format="dimension" name="bottomOffset" />
+        <attr format="dimension" name="topOffset" />
+        <attr format="boolean" name="allowSingleTap" />
+        <attr format="boolean" name="animateOnClick" />
+        <attr name="direction">
+            <enum name="rightToLeft" value="0" />
+            <enum name="bottomToTop" value="1" />
+            <enum name="leftToRight" value="2" />
+            <enum name="topToBottom" value="3" />
+        </attr>
+    </declare-styleable>
+
 </resources>

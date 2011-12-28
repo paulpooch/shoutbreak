@@ -824,21 +824,29 @@ public class Mediator {
 		public void clearNoticeTab() {
 			_ui.noticeTabPointsTv.setVisibility(View.INVISIBLE);
 			_ui.noticeTabShoutsTv.setVisibility(View.INVISIBLE);
-			_ui.noticeTabPointsIv.setVisibility(View.INVISIBLE);
-			_ui.noticeTabShoutsIv.setVisibility(View.INVISIBLE);
+			//_ui.noticeTabPointsIv.setVisibility(View.INVISIBLE);
+			//_ui.noticeTabShoutsIv.setVisibility(View.INVISIBLE);
 		}
 
 		@Override
-		public void showPointsNotice(String noticeText) {
-			_ui.noticeTabPointsIv.setVisibility(View.VISIBLE);
+		public void showPointsNotice(int newPoints) {
+			//_ui.noticeTabPointsIv.setVisibility(View.VISIBLE);
 			_ui.noticeTabPointsTv.setVisibility(View.VISIBLE);
-			_ui.noticeTabPointsTv.setText(noticeText);
+			String noticeText = "";
+			if (newPoints == C.LEVEL_UP_NOTICE) {
+				noticeText = "you leveled up!";
+			} else {
+				noticeText = (newPoints > 0) ? "+" : "-";
+				noticeText += Integer.toString(newPoints) + " point" + ((Math.abs(newPoints) > 1) ? "s" : "");
+			}
+			_ui.noticeTabPointsTv.setText(noticeText);	
 		}
 
 		@Override
-		public void showShoutNotice(String noticeText) {
-			_ui.noticeTabShoutsIv.setVisibility(View.VISIBLE);
+		public void showShoutNotice(int newShouts) {
+			//_ui.noticeTabShoutsIv.setVisibility(View.VISIBLE);
 			_ui.noticeTabShoutsTv.setVisibility(View.VISIBLE);
+			String noticeText = newShouts + " new shout" + ((newShouts > 1) ? "s" : "");
 			_ui.noticeTabShoutsTv.setText(noticeText);
 		}
 
@@ -859,7 +867,7 @@ public class Mediator {
 		@Override
 		public void showTopNotice() {
 			_ui.noticeTabListView.setSelection(0);
-			_ui.noticeTab.showOneLine();
+			_ui.noticeTabSd.showOneLine();
 		}
 
 		@Override
@@ -867,7 +875,7 @@ public class Mediator {
 			// TODO Auto-generated method stub
 			if (shoutId != null && !shoutId.equals("")) {
 				_ui.showInbox();
-				_ui.noticeTab.hide();
+				_ui.noticeTabSd.animateClose();
 				_storage.jumpToShoutInInbox(shoutId);
 			} else {
 				toast("Sorry, shout not found in inbox.", Toast.LENGTH_SHORT);
@@ -886,7 +894,7 @@ public class Mediator {
 
 		@Override
 		public void hideNoticeTab() {
-			_ui.noticeTab.hide();
+			_ui.noticeTabSd.animateClose();
 		}
 
 		@Override

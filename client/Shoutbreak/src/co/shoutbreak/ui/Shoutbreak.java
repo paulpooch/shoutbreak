@@ -23,6 +23,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+// Don't remove this import.  The warning is wrong.
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -40,7 +41,7 @@ import co.shoutbreak.core.utils.CrashReportingExceptionHandler;
 import co.shoutbreak.core.utils.DialogBuilder;
 import co.shoutbreak.core.utils.Flag;
 import co.shoutbreak.core.utils.SBLog;
-import co.shoutbreak.storage.noticetab.NoticeTabView;
+import co.shoutbreak.storage.noticetab.MultiDirectionSlidingDrawer;
 
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapActivity;
@@ -54,13 +55,11 @@ public class Shoutbreak extends MapActivity implements Colleague {
 	private Intent _serviceIntent;
 	private ServiceBridgeInterface _serviceBridge;
 
-	public NoticeTabView noticeTab;
 	public UserLocationOverlay overlay;
 	public ImageButton shoutBtn;
 	public EditText shoutInputEt;
 	public DialogBuilder dialogBuilder;
-	public ImageView noticeTabShoutsIv;
-	public ImageView noticeTabPointsIv;
+	public MultiDirectionSlidingDrawer noticeTabSd;
 	public TextView noticeTabShoutsTv;
 	public TextView noticeTabPointsTv;
 	public ListView noticeTabListView;
@@ -123,10 +122,8 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		shoutBtn = (ImageButton) findViewById(R.id.shoutBtn);
 		shoutInputEt = (EditText) findViewById(R.id.shoutInputEt);
 		inboxListView = (ListView) findViewById(R.id.inboxLv);
+		noticeTabSd = (MultiDirectionSlidingDrawer) findViewById(R.id.noticeDrawerSd);
 		noticeTabListView = (ListView) findViewById(R.id.noticeLv);
-		noticeTab = (NoticeTabView) findViewById(R.id.noticeTab);
-		noticeTabShoutsIv = (ImageView) findViewById(R.id.noticeTabShoutsIv);
-		noticeTabPointsIv = (ImageView) findViewById(R.id.noticeTabPointsIv);
 		noticeTabShoutsTv = (TextView) findViewById(R.id.noticeTabShoutsTv);
 		noticeTabPointsTv = (TextView) findViewById(R.id.noticeTabPointsTv);
 		mapPeopleCountTv = (TextView) findViewById(R.id.mapPeopleCountTv);
@@ -168,11 +165,11 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		_turnOnBtn.setOnClickListener(_turnOnListener);
 		_turnOnBtn.getBackground().setColorFilter(0xAA9900FF, Mode.SRC_ATOP);
 
-		noticeTabShoutsIv.setVisibility(View.INVISIBLE);
-		noticeTabPointsIv.setVisibility(View.INVISIBLE);
+		//noticeTabShoutsIv.setVisibility(View.INVISIBLE);
+		//noticeTabPointsIv.setVisibility(View.INVISIBLE);
 		noticeTabShoutsTv.setVisibility(View.INVISIBLE);
 		noticeTabPointsTv.setVisibility(View.INVISIBLE);
-
+		
 		_mapCenterBtn.getBackground().setColorFilter(0xAA9900FF, Mode.SRC_ATOP);
 		_mapCenterBtn.setOnClickListener(new OnClickListener() {
 			@Override
