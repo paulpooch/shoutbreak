@@ -147,6 +147,10 @@ public class Storage implements Colleague {
 		return _user.getPoints();
 	}
 	
+	public int getUserLevelBeginPoints() {
+		return _user.getLevelBeginPoints();
+	}
+	
 	public int getUserLevel() {
 		return _user.getLevel();
 	}

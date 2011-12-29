@@ -32,7 +32,7 @@ public class UiOffGateway implements IUiGateway {
 	public void handlePointsChange(int newPoints) {}
 
 	@Override
-	public void handleServerFailure() {}
+	public void handleInvalidServerResponse() {}
 
 	@Override
 	public void handleShoutFailed() {}
@@ -41,7 +41,7 @@ public class UiOffGateway implements IUiGateway {
 	public void handleShoutSent() {}
 
 	@Override
-	public void refreshProfile(int level, int points, int nextLevelAt) {}
+	public void refreshProfile(int level, int levelBeginPoints, int currentPoints, int levelEndPoints) {}
 
 	@Override
 	public void refreshUiComponents() {}
@@ -108,6 +108,9 @@ public class UiOffGateway implements IUiGateway {
 	public void handleServerAnnouncementCode(String text) {}
 
 	@Override
-	public void handleServerErrorCode(String text) {}
+	public void handleServerDowntimeCode(String text) {}
+
+	@Override
+	public void handleServerHttpError() {}
 
 }

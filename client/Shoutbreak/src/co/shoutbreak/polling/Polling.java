@@ -108,12 +108,20 @@ public class Polling {
 							} catch (JSONException ex) {
 								// TODO: Manage exception
 								SBLog.error(TAG, ex.getMessage());
+								_safeM.handlePingFailed(message);
 							}
+						} else {
+							_safeM.handlePingFailed(message);
 						}
 						break;
 					}
-					case C.HTTP_DID_ERROR: {
+					case C.HTTP_DID_EXCEPTION: {
 						_safeM.handlePingFailed(message);
+						break;
+					}
+					case C.HTTP_DID_STATUS_CODE_ERROR: {
+						_safeM.handlePingFailed(message);
+						_safeM.handleServerHttpError();
 						break;
 					}
 				}
@@ -200,11 +208,18 @@ public class Polling {
 								//CrossThreadPacket xPacket = (CrossThreadPacket)message.obj;
 								//_uiThreadHandler.sendMessage(Message.obtain(_uiThreadHandler, C.STATE_IDLE, xPacket)); // STATE doesn't matter - going to die
 							}
+						} else {
+							_safeM.handleShoutFailed(message);
 						}
 						break;
 					}
-					case C.HTTP_DID_ERROR: {
+					case C.HTTP_DID_EXCEPTION: {
 						_safeM.handleShoutFailed(message);
+						break;
+					}
+					case C.HTTP_DID_STATUS_CODE_ERROR: {
+						_safeM.handleShoutFailed(message);
+						_safeM.handleServerHttpError();
 						break;
 					}
 				}
@@ -249,11 +264,18 @@ public class Polling {
 								SBLog.error(TAG, ex.getMessage());
 								_safeM.handleVoteFailed(message, shoutId, vote);
 							}
+						} else {
+							_safeM.handleVoteFailed(message, shoutId, vote);
 						}
 						break;
 					}
-					case C.HTTP_DID_ERROR: {
+					case C.HTTP_DID_EXCEPTION: {
 						_safeM.handleVoteFailed(message, shoutId, vote);
+						break;
+					}
+					case C.HTTP_DID_STATUS_CODE_ERROR: {
+						_safeM.handleVoteFailed(message, shoutId, vote);
+						_safeM.handleServerHttpError();
 						break;
 					}
 				}				
@@ -276,11 +298,18 @@ public class Polling {
 					case C.HTTP_DID_SUCCEED: {
 						if (_safeM.isResponseClean(message)) {
 							_uiThreadHandler.sendMessage(Message.obtain(_uiThreadHandler, C.STATE_CREATE_ACCOUNT_2, message.obj));
+						} else {
+							_safeM.handleCreateAccountFailed(message);
 						}
 						break;
 					}
-					case C.HTTP_DID_ERROR: {
+					case C.HTTP_DID_EXCEPTION: {
 						_safeM.handleCreateAccountFailed(message);
+						break;
+					}
+					case C.HTTP_DID_STATUS_CODE_ERROR: {
+						_safeM.handleCreateAccountFailed(message);
+						_safeM.handleServerHttpError();
 						break;
 					}
 				}
@@ -306,12 +335,20 @@ public class Polling {
 								_uiThreadHandler.sendMessage(Message.obtain(_uiThreadHandler, C.STATE_IDLE, xPacket));
 							} catch (JSONException ex) {
 								ErrorManager.manage(ex);
+								_safeM.handleCreateAccountFailed(message);
 							}
+						} else {
+							_safeM.handleCreateAccountFailed(message);
 						}
 						break;
 					}
-					case C.HTTP_DID_ERROR: {
+					case C.HTTP_DID_EXCEPTION: {
 						_safeM.handleCreateAccountFailed(message);
+						break;
+					}
+					case C.HTTP_DID_STATUS_CODE_ERROR: {
+						_safeM.handleCreateAccountFailed(message);
+						_safeM.handleServerHttpError();
 						break;
 					}
 				}

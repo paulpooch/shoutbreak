@@ -632,7 +632,6 @@
                     android:layout_height="fill_parent"
                     android:layout_alignParentRight="true"
                     android:layout_alignParentTop="true"
-                    android:layout_marginRight="12dp"
                     android:layout_marginTop="12dp"
                     android:shadowColor="#1e003c"
                     android:shadowDx="2"
@@ -652,7 +651,7 @@
                 <ListView
                     android:id="@+id/noticeLv"
                     android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="fill_parent"
                     android:cacheColorHint="#ffffffff"
                     android:divider="#00000000" />
             </LinearLayout>

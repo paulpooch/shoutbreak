@@ -25,6 +25,7 @@ public class User {
 	private String _uid;
 	private String _auth;
 	private int _level;
+	private int _levelBeginPoints;
 	private int _points;
 	private int _nextLevelAt;
 	
@@ -87,6 +88,10 @@ public class User {
 	
 	public int getLevel() {
 		return _level;
+	}
+	
+	public int getLevelBeginPoints() {
+		return _levelBeginPoints;
 	}
 	
 	public boolean hasAccount() {
@@ -306,6 +311,27 @@ public class User {
 	
 	private synchronized void initializePoints() {
 		_points = calculateUsersPoints();
+		_levelBeginPoints = calculateLevelBeginPoints();
+	}
+	
+	public synchronized int calculateLevelBeginPoints() {
+		int result = 0;
+		String sql = "SELECT value, timestamp FROM " + C.DB_TABLE_POINTS + " WHERE type = " + C.POINTS_LEVEL_CHANGE + " ORDER BY timestamp DESC LIMIT 1";
+		Cursor cursor = null;
+		try {
+			cursor = _db.rawQuery(sql, null);
+			if (cursor.moveToFirst()) {
+				result = cursor.getInt(0);
+			}
+			cursor.close();
+		} catch (Exception ex) {
+			ErrorManager.manage(ex);
+		} finally {
+			if (cursor != null && !cursor.isClosed()) {
+				cursor.close();
+			}
+		}
+		return result;
 	}
 	
 	public synchronized int calculateUsersPoints() {

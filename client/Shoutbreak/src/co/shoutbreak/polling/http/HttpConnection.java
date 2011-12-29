@@ -9,6 +9,7 @@ import java.util.List;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -20,7 +21,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import co.shoutbreak.core.C;
-import co.shoutbreak.core.utils.CrashReportingExceptionHandler;
 import co.shoutbreak.core.utils.ErrorManager;
 import co.shoutbreak.core.utils.SBLog;
 import co.shoutbreak.polling.CrossThreadPacket;
@@ -43,12 +43,14 @@ public class HttpConnection implements Runnable {
 	private HttpClient httpClient;
 	private CrossThreadPacket _xPacket;
 
+	/*
 	public HttpConnection() {
 		this(new Handler());
 		SBLog.constructor(TAG);
 		// TODO: remove this once we know it's not crashing - probably hurting performance
 		Thread.setDefaultUncaughtExceptionHandler(new CrashReportingExceptionHandler(C.CONFIG_CRASH_REPORT_ADDRESS));
 	}
+	*/
 
 	public HttpConnection(Handler handler) {
 		_handler = handler;
@@ -98,16 +100,20 @@ public class HttpConnection implements Runnable {
 					HttpPost httpPost = new HttpPost(_url);
 					httpPost.setEntity(new UrlEncodedFormEntity(_data));
 					SBLog.httpPost(_url, _data);
-					response = httpClient.execute(httpPost);				
+					response = httpClient.execute(httpPost);	
 					break;
 			}
 			if (_method == GET || _method == POST) {
-				processEntity(response.getEntity());
+				if (response.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
+					_handler.sendMessage(Message.obtain(_handler, C.HTTP_DID_STATUS_CODE_ERROR, _xPacket));
+				} else {
+					processEntity(response.getEntity());
+				}					
 			}
 		} catch (Exception e) {
 			SBLog.e(TAG, e);
 			_xPacket.exception = e;
-			_handler.sendMessage(Message.obtain(_handler, C.HTTP_DID_ERROR, _xPacket));
+			_handler.sendMessage(Message.obtain(_handler, C.HTTP_DID_EXCEPTION, _xPacket));
 		} finally {
 			ConnectionQueue.getInstance().didComplete(this);
 		}
@@ -137,17 +143,14 @@ public class HttpConnection implements Runnable {
 				json = new JSONObject(result);
 				json = Filter.filterJSON(json);
 			} else {
-				// blank response - ping ok
 				json = new JSONObject();
-				json.put("code",  C.JSON_CODE_PING_OK);
 			}
-			
 			_xPacket.json = json;			
 			Message message = Message.obtain(_handler, C.HTTP_DID_SUCCEED, _xPacket);
 			_handler.sendMessage(message);
 			
 		} catch (JSONException ex) {		
-			Message message = Message.obtain(_handler, C.HTTP_DID_ERROR, _xPacket);
+			Message message = Message.obtain(_handler, C.HTTP_DID_EXCEPTION, _xPacket);
 			_handler.sendMessage(message);
 			ErrorManager.manage(ex);
 		} finally {

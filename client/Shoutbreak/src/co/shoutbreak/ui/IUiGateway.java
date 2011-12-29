@@ -11,21 +11,22 @@ public interface IUiGateway {
 	///////////////////////////////////////////////////////////////////////////
 	
 	public void handleCreateAccountFailed();
-	public void handleServerErrorCode(String text);
+	public void handleServerDowntimeCode(String text);
+	public void handleServerHttpError();
 	public void handleServerAnnouncementCode(String text);
 	public void handleShoutSent();
 	public void handleShoutFailed();
 	public void handleDensityChange(boolean isDensitySet, double newDensity, int level);
 	public void handleLevelUp(double cellDensity, int newLevel);
 	public void handlePointsChange(int newPoints);
-	public void handleServerFailure();
+	public void handleInvalidServerResponse();
 			
 	///////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////		
 	
 	public void refreshUiComponents();
-	public void refreshProfile(int level, int points, int nextLevelAt);
+	public void refreshProfile(int level, int levelBeginPoints, int currentPoints, int levelEndPoints);
 	public void enableInputs();
 	public void disableInputs();
 	public void clearNoticeTab();

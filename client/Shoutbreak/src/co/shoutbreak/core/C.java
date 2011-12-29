@@ -29,7 +29,6 @@ public class C {
 	public static final String PHONE_DROID_X = "DROIDX";
 
 	// STRINGS ////////////////////////////////////////////////////////////////
-	public static final String STRING_SERVER_DOWN = "Sorry, our server is not playing nice right now.\nWant to check our site for a downtime notice?";
 	public static final String STRING_NO_ACCOUNT = "Welcome to Shoutbreak!\nNo account detected, creating one now...";
 	public static final String STRING_ACCOUNT_CREATED = "Account created successfully.\nYou can now send and receive shouts!";
 	public static final String STRING_LEVEL_UP_1 = "You leveled up! You're now level ";
@@ -65,8 +64,9 @@ public class C {
 	// HTTP CODES /////////////////////////////////////////////////////////////
 	// 20 - 29
 	public static final int HTTP_DID_START = 20;
-	public static final int HTTP_DID_ERROR = 21;
-	public static final int HTTP_DID_SUCCEED = 22;
+	public static final int HTTP_DID_EXCEPTION = 21;
+	public static final int HTTP_DID_STATUS_CODE_ERROR = 22;
+	public static final int HTTP_DID_SUCCEED = 23;
 	
 	// JSON KEYS //////////////////////////////////////////////////////////////
 	public static final String JSON_ACTION = "a";

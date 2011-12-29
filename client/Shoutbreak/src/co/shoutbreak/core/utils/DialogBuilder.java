@@ -12,12 +12,13 @@ public class DialogBuilder {
 
 	private static final String TAG = "DialogBuilder";
 	
-	public static final int DIALOG_SERVER_DOWN = 0; // server down is unknown problem
-	public static final int DIALOG_SERVER_ANNOUNCEMENT = 1;
-	public static final int DIALOG_SERVER_ERROR = 2; // server error is the server giving us {code: error}
+	public static final int DIALOG_SERVER_ANNOUNCEMENT = 0;
+	public static final int DIALOG_SERVER_DOWNTIME = 1; // server error is the server giving us {code: error}
+	public static final int DIALOG_SERVER_INVALID_RESPONSE = 2; // server giving garbage data back
+	public static final int DIALOG_SERVER_HTTP_ERROR = 3; // server is giving http status errors
 	
-	public static final int DIALOG_WAIT_FOR_MAP_TO_HAVE_LOCATION = 3;
-	public static final int DISMISS_DIALOG_WAIT_FOR_MAP_TO_HAVE_LOCATION = 4;
+	public static final int DIALOG_WAIT_FOR_MAP_TO_HAVE_LOCATION = 4;
+	public static final int DISMISS_DIALOG_WAIT_FOR_MAP_TO_HAVE_LOCATION = 5;
 	
 	private static ProgressDialog _waitForMapToHaveLocationDialog;
 	private boolean _isDialogAlreadyShowing;
@@ -31,12 +32,16 @@ public class DialogBuilder {
 
 	public void showDialog(int whichDialog, String text) {
 
+		String msg = "";
 		switch (whichDialog) {
-			case DIALOG_SERVER_DOWN: {
+			case DIALOG_SERVER_INVALID_RESPONSE:
+				msg = "Sorry, our server is freaking out.\nWant to check our site for a downtime notice?";
+			case DIALOG_SERVER_HTTP_ERROR: {
+				msg = "Sorry, our server is not responding.\nWant to check our site for a downtime notice?";
 				if (!_isDialogAlreadyShowing) {
 					_isDialogAlreadyShowing = true;
 					AlertDialog.Builder builder = new AlertDialog.Builder(_ui);
-					builder.setMessage(C.STRING_SERVER_DOWN)
+					builder.setMessage(msg)
 							.setCancelable(false).setPositiveButton("Yes", new DialogInterface.OnClickListener() {
 								public void onClick(DialogInterface dialog, int id) {
 									// Intent intent = new
@@ -64,7 +69,7 @@ public class DialogBuilder {
 			}
 			
 			case DIALOG_SERVER_ANNOUNCEMENT:
-			case DIALOG_SERVER_ERROR: {
+			case DIALOG_SERVER_DOWNTIME: {
 				if (!_isDialogAlreadyShowing) {
 					_isDialogAlreadyShowing = true;
 					AlertDialog.Builder builder = new AlertDialog.Builder(_ui);

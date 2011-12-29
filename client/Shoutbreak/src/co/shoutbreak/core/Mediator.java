@@ -575,7 +575,7 @@ public class Mediator {
 			// Users will think our app sucks.
 			// For now let's just ignore ping failure.
 			// createNotice(C.NOTICE_PING_FAILED, C.STRING_PING_FAILED, null);
-			_uiGateway.handleServerFailure();
+			_uiGateway.handleInvalidServerResponse();
 			possiblyStopPolling(message);
 		}
 
@@ -594,18 +594,28 @@ public class Mediator {
 				if (xPacket != null) {
 					String code = xPacket.json.optString(C.JSON_CODE);
 					String text = xPacket.json.optString(C.JSON_SHOUT_TEXT);
-					if (code != null) {
+					if (code != null && !code.equals("")) {
 						if (code.equals(C.JSON_CODE_ANNOUNCEMENT)) {
+							isClean = false;
 							_uiGateway.handleServerAnnouncementCode(text);
 						} else if (code.equals(C.JSON_CODE_ERROR)) {
-							_uiGateway.handleServerErrorCode(text);
+							isClean = false;
+							_uiGateway.handleServerDowntimeCode(text);
 						}
+					} else {
+						isClean = false;
 					}
+				} else {
+					isClean = false;
 				}
 			}
 			return isClean;
 		}
 
+		public void handleServerHttpError() {
+			_uiGateway.handleServerHttpError();
+		}
+		
 		public void resetPollingDelay() {
 			_pollingAlgorithm.resetPollingDelay();
 		}
@@ -702,7 +712,7 @@ public class Mediator {
 		// /////////////////////////////////////////////////////////////////////////
 
 		public void handleCreateAccountFailed() {
-			this.handleServerFailure();
+			this.handleInvalidServerResponse();
 		}
 
 		public void handleShoutSent() {
@@ -718,7 +728,7 @@ public class Mediator {
 			AnimationDrawable shoutButtonAnimation = (AnimationDrawable) _ui.shoutBtn.getDrawable();
 			shoutButtonAnimation.stop();
 			_ui.shoutBtn.setImageResource(R.drawable.shout_button_up);
-			this.handleServerFailure();
+			this.handleInvalidServerResponse();
 		}
 
 		public void handleDensityChange(boolean isDensitySet, double newDensity, int level) {
@@ -729,19 +739,24 @@ public class Mediator {
 		public void handleLevelUp(double cellDensity, int newLevel) {
 			SBLog.method(TAG, "handleLevelUp()");
 			_ui.overlay.handleLevelUp(cellDensity, newLevel);
-			_uiGateway.refreshProfile(_storage.getUserLevel(), _storage.getUserPoints(), _storage.getUserNextLevelAt());
+			_uiGateway.refreshProfile(_storage.getUserLevel(), _storage.getUserLevelBeginPoints(), _storage.getUserPoints(), _storage.getUserNextLevelAt());
 		}
 
 		public void handlePointsChange(int newPoints) {
 			SBLog.method(TAG, "handlePointsChange()");
-			_uiGateway.refreshProfile(_storage.getUserLevel(), _storage.getUserPoints(), _storage.getUserNextLevelAt());
+			_uiGateway.refreshProfile(_storage.getUserLevel(), _storage.getUserLevelBeginPoints(), _storage.getUserPoints(), _storage.getUserNextLevelAt());
 		}
 
-		public void handleServerFailure() {
-			SBLog.method(TAG, "handleServerFailure()");
+		public void handleInvalidServerResponse() {
+			SBLog.method(TAG, "handleInvalidServerResponse()");
 			if (PollingAlgorithm.isDropCountAtLimit()) {
-				_ui.dialogBuilder.showDialog(DialogBuilder.DIALOG_SERVER_DOWN, "");
+				_ui.dialogBuilder.showDialog(DialogBuilder.DIALOG_SERVER_INVALID_RESPONSE, "");
 			}
+		}
+		
+		public void handleServerHttpError() {
+			SBLog.method(TAG, "handleServerErrorCode()");
+			_ui.dialogBuilder.showDialog(DialogBuilder.DIALOG_SERVER_HTTP_ERROR, "");
 		}
 
 		// /////////////////////////////////////////////////////////////////////////
@@ -751,19 +766,19 @@ public class Mediator {
 		public void refreshUiComponents() {
 			// TODO: make inbox & profile more like noticeTabSystem
 			_storage.refreshUiComponents();
-			this.refreshProfile(_storage.getUserLevel(), _storage.getUserPoints(), _storage.getUserNextLevelAt());
+			this.refreshProfile(_storage.getUserLevel(), _storage.getUserLevelBeginPoints(), _storage.getUserPoints(), _storage.getUserNextLevelAt());
 		}
 
-		public void refreshProfile(int level, int points, int nextLevelAt) {
+		public void refreshProfile(int level, int levelBeginPoints, int currentPoints, int levelEndPoints) {
 			SBLog.method(TAG, "refreshProfile()");
 			_ui.userCurrentShoutreachTv.setText(Integer.toString(User.calculateShoutreach(level)));
 			_ui.userNextShoutreachTv.setText(Integer.toString(User.calculateShoutreach(level + 1)));
-			_ui.userPointsTv.setText(Integer.toString(points));
-			_ui.userNextLevelAtTv.setText(Integer.toString(nextLevelAt));
-			_ui.userStatsParagraphTv.setText("You have earned " + points + " points,\nso your shouts will reach " + User.calculateShoutreach(level)
-					+ " people.\nYou will reach " + User.calculateShoutreach(level + 1) + " people at " + nextLevelAt + " points.");
-			_ui.userLevelUpProgessRp.setMax(nextLevelAt);
-			_ui.userLevelUpProgessRp.setProgress(points);
+			_ui.userPointsTv.setText(Integer.toString(currentPoints));
+			_ui.userNextLevelAtTv.setText(Integer.toString(levelEndPoints));
+			_ui.userStatsParagraphTv.setText("You have earned " + currentPoints + " points,\nso your shouts will reach " + User.calculateShoutreach(level)
+					+ " people.\nYou will reach " + User.calculateShoutreach(level + 1) + " people at " + levelEndPoints + " points.");
+			_ui.userLevelUpProgessRp.setMax(levelEndPoints - levelBeginPoints);
+			_ui.userLevelUpProgessRp.setProgress(currentPoints - levelBeginPoints);
 		}
 
 		public void enableInputs() {
@@ -834,10 +849,10 @@ public class Mediator {
 			_ui.noticeTabPointsTv.setVisibility(View.VISIBLE);
 			String noticeText = "";
 			if (newPoints == C.LEVEL_UP_NOTICE) {
-				noticeText = "you leveled up!";
+				noticeText = "you leveled up!  ";
 			} else {
 				noticeText = (newPoints > 0) ? "+" : "-";
-				noticeText += Integer.toString(newPoints) + " point" + ((Math.abs(newPoints) > 1) ? "s" : "");
+				noticeText += Integer.toString(newPoints) + " point" + ((Math.abs(newPoints) > 1) ? "s  " : "  ");
 			}
 			_ui.noticeTabPointsTv.setText(noticeText);	
 		}
@@ -908,8 +923,8 @@ public class Mediator {
 		}
 
 		@Override
-		public void handleServerErrorCode(String text) {
-			_ui.dialogBuilder.showDialog(DialogBuilder.DIALOG_SERVER_ERROR, text);
+		public void handleServerDowntimeCode(String text) {
+			_ui.dialogBuilder.showDialog(DialogBuilder.DIALOG_SERVER_DOWNTIME, text);
 		}
 
 	}

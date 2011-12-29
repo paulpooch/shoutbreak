@@ -1,18 +1,6 @@
 package co.shoutbreak.storage.noticetab;
 
-import co.shoutbreak.core.C;
-import co.shoutbreak.core.utils.SBLog;
-import co.shoutbreak.ui.GestureListener;
-import co.shoutbreak.ui.IGestureCapable;
-import co.shoutbreak.ui.Shoutbreak;
-import android.content.Context;
-import android.util.AttributeSet;
-import android.view.GestureDetector;
-import android.view.MotionEvent;
-import android.view.animation.OvershootInterpolator;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-
+/*
 public class NoticeTabView extends LinearLayout implements IGestureCapable {
 
 	// TODO: sharing these variables is dumb.
@@ -163,3 +151,4 @@ public class NoticeTabView extends LinearLayout implements IGestureCapable {
      }
 
 }
+*/
