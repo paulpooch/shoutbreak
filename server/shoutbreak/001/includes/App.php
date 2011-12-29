@@ -47,11 +47,11 @@ class App {
 		$_POST = Filter::sanitize($_POST);
 		$_POST = Filter::validate($_POST);
 		
-		$tempLog2 = "";
-		foreach($_POST as $var => $value) {
-			$tempLog2 .= $var . ' : ' . $value . ', ';
-		}
-		$log->LogWarn("FILTERED = $tempLog2");
+		//$tempLog2 = "";
+		//foreach($_POST as $var => $value) {
+		//	$tempLog2 .= $var . ' : ' . $value . ', ';
+		//}
+		//$log->LogWarn("FILTERED = $tempLog2");
 				
 		switch ($a) {
 			case null:
@@ -249,14 +249,14 @@ class App {
 			}
 		}
 		if (!$validAuth) {
-			$log->LogInfo("invalid auth");	
+			//$log->LogInfo("invalid auth");	
 			// expired auth
 			// TODO: cap the amount of nonce challenges we'll send
 			$engine = new DBEngine();
 			$nonce = $engine->generateNonce($uid);
 			if ($nonce) {
 				$resp = array('code' => 'expired_auth', 'nonce' => $nonce);
-				$log->LogInfo("expired auth. nonce = $nonce | real auth is $hit | given auth is $auth | uid is $uid");	
+				//$log->LogInfo("expired auth. nonce = $nonce | real auth is $hit | given auth is $auth | uid is $uid");	
 				$this->respond($resp);
 			}
 			return false;

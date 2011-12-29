@@ -80,16 +80,6 @@ class DBEngine {
 	public function __destruct() {
 	}
 	
-	private function getShoutTableIndex() {
-		global $mem, $log;
-		$shoutTableIndex = $mem->get(Config::$PRE_SHOUT_TABLE_INDEX);
-		if ($shoutTableIndex == null) {
-			$shoutTableIndex = $this->TABLE_SHOUT_INDEX;
-			$mem->set(Config::$PRE_SHOUT_TABLE_INDEX, $shoutTableIndex, false, Config::$TIMEOUT_SHOUT_TABLE_INDEX);
-		}
-		return $shoutTableIndex;		
-	}
-
 	public function addUser($uid, $androidID, $deviceID, $phoneNum, $carrier) {
 		global $mem, $log;
 		$time = date(Config::$DATE_FORMAT);
@@ -279,7 +269,7 @@ class DBEngine {
 			//$log->LogInfo("shout returned from memcached = " . $shout->open);
 			return $shout;
 		} else {
-			$shoutTableIndex = $this->getShoutTableIndex();
+			$shoutTableIndex = $mem->get(Config::$PRE_SHOUT_TABLE_INDEX);
 			$shoutTable = $this->TABLE_SHOUT_PREFIX . $shoutTableIndex;
 			$attempts = $this->SAFE_GET_ATTEMPTS;
 			$backOffTimer = $this->BACKOFF_INITIAL;
@@ -371,50 +361,40 @@ class DBEngine {
 		$putShoutIntoDB = false;
 		$attempts = $this->SAFE_SELECT_ATTEMPTS;
 		$backOffTimer = $this->BACKOFF_INITIAL;
-
 		while ($attempts > 0) {
 			e("SELECT user_id FROM $this->TABLE_LIVE WHERE lat BETWEEN '$lat1' AND '$lat2' AND long BETWEEN '$long1' AND '$long2' LIMIT $maxTargets");
-			//$targets = $this->sdb->select($this->TABLE_LIVE, "SELECT user_id FROM $this->TABLE_LIVE WHERE lat BETWEEN '$lat1' AND '$lat2' AND long BETWEEN '$long1' AND '$long2' LIMIT $maxTargets" );
-            // Removed limit, all in circle will be hit.
-			$query = "SELECT user_id FROM $this->TABLE_LIVE WHERE lat BETWEEN '$lat1' AND '$lat2' AND long BETWEEN '$long1' AND '$long2'";
-            $targets = $this->sdb->select($this->TABLE_LIVE, $query);
+			$targets = $this->sdb->select($this->TABLE_LIVE, "SELECT user_id FROM $this->TABLE_LIVE WHERE lat BETWEEN '$lat1' AND '$lat2' AND long BETWEEN '$long1' AND '$long2' LIMIT $maxTargets" );
 			$log->LogInfo(count($targets) . " targets");		
 			if ($targets) {
+				$wasSenderHit = false;				
+				
 				e("COUNT USERS " . count($targets));
 				// offset negatives
 				$lat += Config::$OFFSET_LAT;
 				$long += Config::$OFFSET_LONG;
 				$lat = Utils::pad(round($lat, 5) * 100000, Config::$PAD_COORDS);
 				$long = Utils::pad(round($long, 5) * 100000, Config::$PAD_COORDS);
-								//($shout_id, $uid, $time, $txt, $lat, $long, $power, $hit, $open = null, $ups = null, $downs = null)
+						        //($shout_id, $uid, $time, $txt, $lat, $long, $power, $hit, $open = null, $ups = null, $downs = null)
 				$shout = new Shout($shoutID, $uid, $shoutTime, $txt, $lat, $long, $power, count($targets), 1, 1, 0);
 				$mem->set(Config::$PRE_SHOUT . $shoutID, $shout, false, Config::$TIMEOUT_SHOUT);				
 				e("SET $shoutID for $uid");
-				$wasSenderHit = false;							
-				$moreExist = true;
-				while(count($targets) > 0 && $moreExist) {
-					$moreExist = false;
-					foreach ($targets as $target) {
-						$targetUID = $target['Attributes']['user_id'];
-						if ($targetUID == $uid) {
-							$wasSenderHit = true;
-						}
-						//$log->LogInfo("targets = $targetUID");		
-						$inbox = $mem->get(Config::$PRE_INBOX . $targetUID);
-						if (!$inbox) {
-							$inbox = array();	
-						}
-						array_push($inbox, $shoutID);
-						$replaced = $mem->replace(Config::$PRE_INBOX . $targetUID, $inbox, false, Config::$TIMEOUT_INBOX);
-						if (!$replaced) {
-							$replaced = $mem->set(Config::$PRE_INBOX . $targetUID, $inbox, false, Config::$TIMEOUT_INBOX);
-						}				
+				foreach ($targets as $target) {
+					$targetUID = $target['Attributes']['user_id'];
+					if ($targetUID == $uid) {
+						$wasSenderHit = true;
 					}
-					if ($this->sdb->NextToken != null) {
-						$moreExist = true;
-						$targets = $this->sdb->select($this->TABLE_LIVE, $query, $this->sdb->NextToken);
+					//$log->LogInfo("targets = $targetUID");		
+					$inbox = $mem->get(Config::$PRE_INBOX . $targetUID);
+					if (!$inbox) {
+						$inbox = array();	
 					}
+					array_push($inbox, $shoutID);
+					$replaced = $mem->replace(Config::$PRE_INBOX . $targetUID, $inbox, false, Config::$TIMEOUT_INBOX);
+					if (!$replaced) {
+						$replaced = $mem->set(Config::$PRE_INBOX . $targetUID, $inbox, false, Config::$TIMEOUT_INBOX);
+					}				
 				}
+				
 				if (!$wasSenderHit) {
 					$targetUID = $uid;
 					$inbox = $mem->get(Config::$PRE_INBOX . $targetUID);
@@ -427,6 +407,7 @@ class DBEngine {
 						$replaced = $mem->set(Config::$PRE_INBOX . $targetUID, $inbox, false, Config::$TIMEOUT_INBOX);
 					}							
 				}
+				
 				$putShoutIntoDB = true;
 				break;
 			} else {
@@ -446,7 +427,11 @@ class DBEngine {
 		}	
 		if ($putShoutIntoDB) {
 			$attrs = $shout->toSimpleDBAttrs();
-			$shoutTableIndex = $this->getShoutTableIndex();
+			$shoutTableIndex = $mem->get(Config::$PRE_SHOUT_TABLE_INDEX);
+			if ($shoutTableIndex == null) {
+				$shoutTableIndex = $this->TABLE_SHOUT_INDEX;
+				$mem->set(Config::$PRE_SHOUT_TABLE_INDEX, $shoutTableIndex, false, Config::$TIMEOUT_SHOUT_TABLE_INDEX);
+			}
 			$shoutTable = $this->TABLE_SHOUT_PREFIX . $shoutTableIndex;
 			$domainWasFull = false;
 			$attempts = $this->SAFE_PUT_ATTEMPTS;
@@ -597,7 +582,7 @@ class DBEngine {
 			if ($shout->open == 1) {
 				$diff = time() - strtotime($shout->time);
 				e("shout is $diff seconds old");
-				$shoutTableIndex = $this->getShoutTableIndex();
+				$shoutTableIndex = $mem->get(Config::$PRE_SHOUT_TABLE_INDEX);
 				$shoutTable = $this->TABLE_SHOUT_PREFIX . $shoutTableIndex;
 				// should shout be closed? (too old)
 				if ($diff < Config::$VOTING_WINDOW) {
@@ -907,19 +892,10 @@ class DBEngine {
 		global $log;
 		$log->LogInfo("CRON CULL LIVE USERS");
 		$lastAcceptableCheckInTime = date(Config::$DATE_FORMAT, time() - $this->LIVE_USERS_TIMEOUT);
-		$query = "SELECT user_id, ping_time FROM $this->TABLE_LIVE WHERE ping_time < '$lastAcceptableCheckInTime'";
-		$timedOutUsers = $this->sdb->select($this->TABLE_LIVE, $query);
+		$timedOutUsers = $this->sdb->select($this->TABLE_LIVE, "SELECT user_id, ping_time FROM $this->TABLE_LIVE WHERE ping_time < '$lastAcceptableCheckInTime'");
 		// perhaps it's cheaper to find people still online?  that is select online rather than delete offline?
-		$moreExist = true;
-		while(count($timedOutUsers) > 0 && $moreExist) {
-			$moreExist = false;
-			foreach ($timedOutUsers as $user) {
-				$this->sdb->deleteAttributes($this->TABLE_LIVE, $user['Attributes']['user_id']);
-			}
-			if ($this->sdb->NextToken != null) {
-				$moreExist = true;
-				$timedOutUsers = $this->sdb->select($this->TABLE_LIVE, $query, $this->sdb->NextToken);
-			}
+		foreach ($timedOutUsers as $user) {
+			$this->sdb->deleteAttributes($this->TABLE_LIVE, $user['Attributes']['user_id']);
 		}
 	}
 	
@@ -927,30 +903,25 @@ class DBEngine {
 		global $mem, $log;
 		$log->LogInfo("CRON CLOSE SHOUTS");
 		$result = true;
-		$shoutTableIndex = $this->getShoutTableIndex();
+		$shoutTableIndex = $mem->get(Config::$PRE_SHOUT_TABLE_INDEX);
+		if ($shoutTableIndex == null) {
+			$shoutTableIndex = $this->TABLE_SHOUT_INDEX;
+			$mem->set(Config::$PRE_SHOUT_TABLE_INDEX, $shoutTableIndex, false, Config::$TIMEOUT_SHOUT_TABLE_INDEX);
+		}
 		$shoutTable = $this->TABLE_SHOUT_PREFIX . $shoutTableIndex;
 		$attempts = $this->SAFE_SELECT_ATTEMPTS;
 		$backOffTimer = $this->BACKOFF_INITIAL;
-		$moreExist = true;
-		$shoutIDsToClose = array();
-		$query = "SELECT shout_id, time FROM $shoutTable WHERE open = '1'";
 		while ($attempts > 0) {
-			$openShouts = $this->sdb->select($shoutTable, $query);
+			$openShouts = $this->sdb->select($shoutTable, "SELECT shout_id, time FROM $shoutTable WHERE open = '1'");
 			if ($openShouts) {
-				while (count($openShouts) > 0 && $moreExist) {
-					$moreExist = false;				
-					foreach ($openShouts as $shout) {
-						$shoutID = $shout['Attributes']['shout_id'];
-						$shoutTime = $shout['Attributes']['time'];
-						$diff = time() - strtotime($shoutTime);
-						// should shout be closed? (too old)
-						if ($diff > Config::$VOTING_WINDOW) {
-							array_push($shoutIDsToClose, $shoutID);
-						}
-					}
-					if ($this->sdb->NextToken != null) {
-						$moreExist = true;
-						$openShouts = $this->sdb->select($shoutTable, $query, $this->sdb->NextToken);
+				$shoutIDsToClose = array();
+				foreach ($openShouts as $shout) {
+					$shoutID = $shout['Attributes']['shout_id'];
+					$shoutTime = $shout['Attributes']['time'];
+					$diff = time() - strtotime($shoutTime);
+					// should shout be closed? (too old)
+					if ($diff > Config::$VOTING_WINDOW) {
+						array_push($shoutIDsToClose, $shoutID);
 					}
 				}
 			 	if (!$this->closeShouts($shoutIDsToClose, $shoutTable)) { // if a close fails
@@ -990,15 +961,14 @@ class DBEngine {
 		$results = array();
 		$moreExist = true;
 		$shoutTable = $this->TABLE_SHOUT_PREFIX . $this->TABLE_SHOUT_INDEX;
-		$query = "SELECT * FROM $shoutTable WHERE time IS NOT NULL ORDER BY time DESC";
-		$shouts = $this->sdb->select($shoutTable, $query);
+		$shouts = $this->sdb->select($shoutTable, "SELECT * FROM $shoutTable WHERE time IS NOT NULL ORDER BY time DESC");
 		while (count($shouts) > 0 && $moreExist) {
 			foreach ($shouts as $shout) {
 				array_push($results, $shout);
 			}
 			if ($this->sdb->NextToken != null) {
 				$moreExist = true;
-				$shouts = $this->sdb->select($shoutTable, $query, $this->sdb->NextToken);
+				$shouts = $this->sdb->select($shoutTable, "SELECT * FROM $shoutTable WHERE time IS NOT NULL ORDER BY time DESC", $this->sdb->NextToken);
 			} else {
 				$moreExist = false;
 			}
@@ -1006,53 +976,6 @@ class DBEngine {
 		$app->respond($results);
 	}
 	
-	public function admin_getUsers() {
-		global $app;
-		$results = array();
-		$moreExist = true;
-		$query = "SELECT * FROM $this->TABLE_USERS";
-		$users = $this->sdb->select($this->TABLE_USERS, $query);
-		while (count($users) > 0 && $moreExist) {
-			foreach ($users as $user) {
-				array_push($results, $user);
-			}
-			if ($this->sdb->NextToken != null) {
-				$moreExist = true;
-				$user = $this->sdb->select($this->TABLE_USERS, $query, $this->sdb->NextToken);
-			} else {
-				$moreExist = false;
-			}
-		}
-		$app->respond($results);
-	}
-	
-	public function admin_getLiveUsers() {
-		global $app;
-		$results = array();
-		$moreExist = true;
-		$query = "SELECT * FROM $this->TABLE_LIVE";
-		$users = $this->sdb->select($this->TABLE_LIVE, $query);
-		while (count($users) > 0 && $moreExist) {
-			foreach ($users as $user) {
-				array_push($results, $user);
-			}
-			if ($this->sdb->NextToken != null) {
-				$moreExist = true;
-				$user = $this->sdb->select($this->TABLE_LIVE, $query, $this->sdb->NextToken);
-			} else {
-				$moreExist = false;
-			}
-		}
-		$app->respond($results);
-	}
-	
-	public function admin_deleteUser($uid) {
-		global $app;
-		$deleted = $this->sdb->deleteAttributes($this->TABLE_USERS, $uid);
-		return $deleted;
-	}
-	
-	/*
 	public function countLiveUsers() {
 		$results = $this->sdb->select($this->TABLE_LIVE, "SELECT COUNT(*) FROM $this->TABLE_LIVE");
 		$numUsers = $results[0]['Attributes']['Count'];
@@ -1071,7 +994,32 @@ class DBEngine {
 		exit;
 	}
 	
-	
+	public function admin_viewUsers() {
+		echo '<table border="1" cellpadding="3">';
+		echo '<tr><th>USERS</th></tr>';
+		$users = $this->sdb->select($this->TABLE_USERS, "SELECT * FROM $this->TABLE_USERS");
+		if (count($users) > 0) {
+			$i = 0;
+			foreach ($users as $user) {
+				$arr = $user['Attributes'];
+				if ($i++ == 0) {
+					echo '<tr>';
+					foreach ($arr as $key => $val) {
+						echo '<td>' . $key . '</td>';
+					}
+					echo '</tr>';
+				}
+				echo '<tr>';
+				foreach ($arr as $key => $val) {
+					echo '<td>' . $val . '</td>';
+				}
+				$uid = $user['Attributes']['user_id'];
+				echo '<td><form><input type="hidden" name="a" value="admin_delete_user"/><input type="hidden" name="uid" value="' . $uid . '"/><input type="submit" value="delete"/></form></td>';
+				echo '</tr>';
+			}
+		}
+		echo '</table><br/><br/>';
+	}
 	
 	public function admin_viewLiveUsers() {
 		echo '<table border="1" cellpadding="3">';
@@ -1171,7 +1119,7 @@ class DBEngine {
 		$this->sdb->createDomain($this->TABLE_LIVE);
 	}
 	
-	public function admin_cullLiveUsers() {		
+	public function admin_cullLiveUsers() {
 		$lastAcceptableCheckInTime = date(Config::$DATE_FORMAT, time() - $this->LIVE_USERS_TIMEOUT);
 		$timedOutUsers = $this->sdb->select($this->TABLE_LIVE, "SELECT user_id, ping_time FROM $this->TABLE_LIVE WHERE ping_time < '$lastAcceptableCheckInTime'");
 		// perhaps it's cheaper to find people still online?  that is select online rather than delete offline?
@@ -1180,7 +1128,6 @@ class DBEngine {
 		}
 	}
 	
-	*/
 //	public function startCreateAccount() {
 //		$userID = Utils::uuid ();
 //		$response = array ('user_id' => $userID );

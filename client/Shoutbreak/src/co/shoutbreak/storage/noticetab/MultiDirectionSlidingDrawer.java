@@ -1091,10 +1091,12 @@ public class MultiDirectionSlidingDrawer extends ViewGroup {
 					_openOneLineCount--;
 					if (_openOneLineCount <= 0) {
 						_openOneLineCount = 0;
-						int position = mVertical ? mHandle.getTop() : mHandle.getLeft();
-						prepareTracking(position);
 						mTopOffset = _topOffset;
-						performFling(position, mMaximumAcceleration, true);
+						if (isOpened()) {
+							int position = mVertical ? mHandle.getTop() : mHandle.getLeft();
+							prepareTracking(position);
+							performFling(position, mMaximumAcceleration, true);
+						}
 					}
 					break;
 			}

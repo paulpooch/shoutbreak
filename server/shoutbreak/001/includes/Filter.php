@@ -66,7 +66,7 @@ class Filter {
 		}
 		
 		if (array_key_exists('txt', $post)) {
-			$clean['txt'] = filter_var($post['txt'], FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_LOW | FILTER_FLAG_STRIP_HIGH);	
+			$clean['txt'] = filter_var($post['txt'], FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_LOW | FILTER_FLAG_STRIP_HIGH | FILTER_FLAG_NO_ENCODE_QUOTES);	
 		}
 		
 		if (array_key_exists('power', $post)) {
