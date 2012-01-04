@@ -110,7 +110,9 @@ public class Shoutbreak extends MapActivity implements Colleague {
 
 		super.onCreate(extras);
 		// Crittercism crash reporting.
-		Crittercism.init(getApplicationContext(), "4efcb1a6b093157faa0000bf", "4efcb1a6b093157faa0000bfrh8c36ab", "fpylqvhcbkz9e3dvaouixtwfgnjrpocu");
+		// We run it without the secondary service. https://www.crittercism.com/developers/docs-optional-android
+		boolean crittercismServiceDisabled = true;
+		Crittercism.init(getApplicationContext(), "4efcb1a6b093157faa0000bf", "4efcb1a6b093157faa0000bfrh8c36ab", "fpylqvhcbkz9e3dvaouixtwfgnjrpocu", crittercismServiceDisabled);
 		setContentView(R.layout.main);
 
 		shoutBtn = (ImageButton) findViewById(R.id.shoutBtn);

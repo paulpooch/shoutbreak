@@ -110,7 +110,7 @@ public class Storage implements Colleague {
 	
 	public void handleShoutSent() {
 		_noticeTabSystem.createNotice(C.NOTICE_SHOUT_SENT, 0, C.STRING_SHOUT_SENT, null);	
-		_m.getUiGateway().toast("Shout successful.", Toast.LENGTH_SHORT);
+		//_m.getUiGateway().toast("Shout successful.", Toast.LENGTH_SHORT);
 	}
 	
 	public void handleShoutFailed() {
