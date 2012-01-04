@@ -1,10 +1,12 @@
 package co.shoutbreak.core.utils;
 
-import co.shoutbreak.core.Colleague;
-import co.shoutbreak.core.Mediator;
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
+import co.shoutbreak.core.Colleague;
+import co.shoutbreak.core.Mediator;
 
 public class DataListener implements Colleague {
 
@@ -12,11 +14,13 @@ public class DataListener implements Colleague {
 	
 	private Mediator _m;
 	private TelephonyManager _telephonyManager;
+	private ConnectivityManager _connectivityManager;
 	
 	public DataListener(Mediator mediator) {
     	SBLog.constructor(TAG);
 		_m = mediator;
 		_telephonyManager = (TelephonyManager) _m.getSystemService(Context.TELEPHONY_SERVICE);
+		_connectivityManager = (ConnectivityManager) _m.getSystemService(Context.CONNECTIVITY_SERVICE);
 		_telephonyManager.listen(_phoneStateListener, PhoneStateListener.LISTEN_DATA_CONNECTION_STATE);
 	}
 
@@ -28,18 +32,26 @@ public class DataListener implements Colleague {
 	
 	public boolean isDataEnabled() {
 		SBLog.method(TAG, "isDataEnabled");
-		return _telephonyManager.getDataState() == TelephonyManager.DATA_CONNECTED;
+		NetworkInfo info = _connectivityManager.getActiveNetworkInfo();
+		boolean cellData = (_telephonyManager.getDataState() == TelephonyManager.DATA_CONNECTED);
+		boolean wifiWimaxData = (info != null && info.isConnected());
+		return (cellData || wifiWimaxData);
+	}
+	
+	public void checkDataStateAndPushEvents() {
+		if (isDataEnabled()) {
+			_m.onDataEnabled();
+		} else {
+			_m.onDataDisabled();
+		}
 	}
 	
 	private PhoneStateListener _phoneStateListener = new PhoneStateListener() {
 		@Override
 		public void onDataConnectionStateChanged(int state) {
 			SBLog.method(TAG, "onDataConnectionStateChanged()");
-			if (state == TelephonyManager.DATA_CONNECTED) {
-				_m.onDataEnabled();
-			} else if (state == TelephonyManager.DATA_SUSPENDED || state == TelephonyManager.DATA_DISCONNECTED) {
-				_m.onDataDisabled();
-			}
+			checkDataStateAndPushEvents();
 		}
 	};
+	
 }

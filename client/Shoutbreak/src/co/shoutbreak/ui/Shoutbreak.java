@@ -37,12 +37,12 @@ import co.shoutbreak.core.Mediator;
 import co.shoutbreak.core.ServiceBridgeInterface;
 import co.shoutbreak.core.ShoutbreakService;
 import co.shoutbreak.core.Mediator.ThreadSafeMediator;
-import co.shoutbreak.core.utils.CrashReportingExceptionHandler;
 import co.shoutbreak.core.utils.DialogBuilder;
 import co.shoutbreak.core.utils.Flag;
 import co.shoutbreak.core.utils.SBLog;
 import co.shoutbreak.storage.noticetab.MultiDirectionSlidingDrawer;
 
+import com.crittercism.app.Crittercism;
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapController;
@@ -99,12 +99,7 @@ public class Shoutbreak extends MapActivity implements Colleague {
 	private Flag _isTurnedOn = new Flag("ui:_isTurnedOn");
 	private Flag _isLocationEnabled = new Flag("ui:_isLocationEnabled");
 	private Flag _isDataEnabled = new Flag("ui:_isDataEnabled");
-	private Flag _isPowerPreferenceEnabled = new Flag("ui:_isPowerPreferenceEnabled"); // is
-																																											// power
-																																											// preference
-																																											// set
-																																											// to
-																																											// on
+	private Flag _isPowerPreferenceEnabled = new Flag("ui:_isPowerPreferenceEnabled");
 	// This flag isn't critical but may be nice to have one day.
 	private Flag _doesMapKnowLocation = new Flag("ui:_doesMapKnowLocation");
 
@@ -114,11 +109,10 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		SBLog.constructor(TAG);
 
 		super.onCreate(extras);
+		// Crittercism crash reporting.
+		Crittercism.init(getApplicationContext(), "4efcb1a6b093157faa0000bf", "4efcb1a6b093157faa0000bfrh8c36ab", "fpylqvhcbkz9e3dvaouixtwfgnjrpocu");
 		setContentView(R.layout.main);
 
-		// TODO: give this the log or some shit.
-		Thread.setDefaultUncaughtExceptionHandler(new CrashReportingExceptionHandler(C.CONFIG_CRASH_REPORT_ADDRESS));
-		
 		shoutBtn = (ImageButton) findViewById(R.id.shoutBtn);
 		shoutInputEt = (EditText) findViewById(R.id.shoutInputEt);
 		inboxListView = (ListView) findViewById(R.id.inboxLv);
@@ -704,12 +698,12 @@ public class Shoutbreak extends MapActivity implements Colleague {
 	private boolean turnOn(boolean onUiThread) {
 		SBLog.method(TAG, "turnOn()");
 		if (canAppTurnOn(onUiThread, false)) {
-			if (!_isTurnedOn.get()) {
+			//if (!_isTurnedOn.get()) {
 				if (onUiThread) {
 					setPowerSwitchButtonToOn();
 				}
 				_isTurnedOn.set(true);
-			}
+			//}
 			return true;
 		} else {
 			turnOff(onUiThread);
@@ -741,6 +735,7 @@ public class Shoutbreak extends MapActivity implements Colleague {
 			suppressPowerButtonError = true;
 			if (onUiThread) {
 				_blanketDataRl.setVisibility(View.VISIBLE);
+				SBLog.logic("Data Blanket - isDataEnabled = false");
 			}
 		} else {
 			if (onUiThread) {
@@ -754,6 +749,7 @@ public class Shoutbreak extends MapActivity implements Colleague {
 			suppressPowerButtonError = true;
 			if (onUiThread) {
 				_blanketLocationRl.setVisibility(View.VISIBLE);
+				SBLog.logic("Location Blanket - isLocationEnabled = false");
 			}
 		} else {
 			if (onUiThread) {
@@ -767,6 +763,7 @@ public class Shoutbreak extends MapActivity implements Colleague {
 			if (!suppressPowerButtonError) {
 				if (onUiThread) {
 					_blanketPowerRl.setVisibility(View.VISIBLE);
+					SBLog.logic("Power Blanket - isPowerPreferenceEnabled = false");
 				}
 			} else {
 				if (onUiThread) {

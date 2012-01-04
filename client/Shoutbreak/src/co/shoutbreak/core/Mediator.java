@@ -15,13 +15,16 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.drawable.AnimationDrawable;
+import android.net.ConnectivityManager;
 import android.os.Message;
 import android.os.SystemClock;
 import android.view.View;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import co.shoutbreak.R;
+import co.shoutbreak.core.utils.ConnectivityReceiver;
 import co.shoutbreak.core.utils.DataListener;
 import co.shoutbreak.core.utils.DialogBuilder;
 import co.shoutbreak.core.utils.Flag;
@@ -55,13 +58,15 @@ public class Mediator {
 	private DeviceInformation _device;
 	private Notifier _notifier;
 	private LocationTracker _location;
-	private DataListener _data;
+	private DataListener _dataListener;
 	private ThreadLauncher _threadLauncher;
 	private PollingAlgorithm _pollingAlgorithm;
 
 	private PendingIntent _intervalAlarmIntent;
 	private IUiGateway _uiGateway;
-
+	
+	private ConnectivityReceiver _connectivityReceiver;
+	
 	// state flags
 	private Flag _isUIAlive = new Flag("m:_isUIAlive");
 	private Flag _isUIInForeground = new Flag("m:_isUIInForeground");
@@ -84,11 +89,13 @@ public class Mediator {
 		_device = new DeviceInformation(_service);
 		_notifier = new Notifier(this, _service);
 		_location = new LocationTracker(this);
-		_data = new DataListener(this);
+		_dataListener = new DataListener(this);
 		_db = new Database(_service);
 		_storage = new Storage(this, _db);
 		_pollingAlgorithm = new PollingAlgorithm();
 
+		_connectivityReceiver = new ConnectivityReceiver(_dataListener);
+		_service.registerReceiver(_connectivityReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
 		_threadLauncher = new ThreadLauncher(this);
 		_uiGateway = new UiOffGateway();
 
@@ -177,6 +184,7 @@ public class Mediator {
 		// removes all colleague references to the mediator
 		// called by service's onDestroy() method
 		SBLog.lifecycle(TAG, "kill()");
+		_service.unregisterReceiver(_connectivityReceiver);
 		_threadLauncher.stopLaunchingPollingThreads();
 		_service = null;
 		unregisterUI(true);
@@ -185,8 +193,8 @@ public class Mediator {
 		_notifier = null;
 		_location.unsetMediator();
 		_location = null;
-		_data.unsetMediator();
-		_data = null;
+		_dataListener.unsetMediator();
+		_dataListener = null;
 		_db = null;
 		_storage.unsetMediator();
 		_storage = null;
@@ -246,13 +254,13 @@ public class Mediator {
 				}
 			} else {
 				if (!_isPowerPreferenceEnabled.get()) {
-					SBLog.error(TAG, "unable to start service, power preference set to off");
+					SBLog.error(TAG, "unable to start service because power preference is set to off");
 				}
 				if (!_isLocationEnabled.get()) {
-					SBLog.error(TAG, "unable to start service, location unavailable");
+					SBLog.error(TAG, "unable to start service because location is unavailable");
 				}
 				if (!_isDataEnabled.get()) {
-					SBLog.error(TAG, "unable to start service, data unavailable");
+					SBLog.error(TAG, "unable to start service because data unavailable");
 				}
 			}
 		} else {
@@ -260,22 +268,14 @@ public class Mediator {
 		}
 	}
 
-	public void stopPolling(boolean onUiThread) {
+	public void stopPolling() {
 		SBLog.lifecycle(TAG, "stopPolling()");
 		if (_isPollingAlive.get()) {
-			if (onUiThread) {
-				// This method normally will disable inputs.
-				// If called from PowerButtonTask (power button click), then you must
-				// manually disable on your own.
-
-				// Let's really turn everything off.
-				// _uiGateway.disableInputs();
-				this.setPowerPreferenceToOff(true);
-			}
+			// This must be called before setPowerPreferenceToOff or infinite loop occurs.
 			_isPollingAlive.set(false);
 			_threadLauncher.stopLaunchingPollingThreads();
 		} else {
-			SBLog.logic("stopPolling - service is not polling, unable to call stopPolling()");
+			SBLog.logic("stopPolling was called, but isPollingAlive is already false.");
 		}
 	}
 
@@ -294,7 +294,7 @@ public class Mediator {
 			}
 		} else {
 			// Something really bad happened
-			stopPolling(true);
+			stopPolling();
 		}
 	}
 
@@ -333,7 +333,7 @@ public class Mediator {
 		if (_isUIAlive.get()) {
 			_uiGateway.onPowerPreferenceDisabled(onUiThread);
 		}
-		stopPolling(onUiThread);
+		stopPolling();
 	}
 
 	public boolean isLocationEnabled() {
@@ -356,11 +356,11 @@ public class Mediator {
 		if (_isUIAlive.get()) {
 			_uiGateway.onLocationDisabled();
 		}
-		stopPolling(true);
+		stopPolling();
 	}
 
 	public boolean isDataEnabled() {
-		return _data.isDataEnabled();
+		return _dataListener.isDataEnabled();
 	}
 
 	public void onDataEnabled() {
@@ -378,7 +378,7 @@ public class Mediator {
 		if (_isUIAlive.get()) {
 			_uiGateway.onDataDisabled();
 		}
-		stopPolling(true);
+		stopPolling();
 	}
 
 	public boolean isFirstRun() {

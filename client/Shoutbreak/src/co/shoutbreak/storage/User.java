@@ -3,6 +3,11 @@ package co.shoutbreak.storage;
 import java.util.Date;
 import java.util.HashMap;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import com.crittercism.app.Crittercism;
+
 import android.database.Cursor;
 import android.database.sqlite.SQLiteStatement;
 import android.util.Log;
@@ -38,7 +43,8 @@ public class User {
 		_level = 0;
 		_points = 0;
 		_auth = "default"; // we don't have auth yet... just give us nonce
-		_cellDensity = null;		
+		_cellDensity = null;
+		JSONObject crittercismMetadata = new JSONObject();
 		
 		HashMap<String, String> userSettings = getUserSettings();
 		if (userSettings.containsKey(C.KEY_USER_PW)) {
@@ -49,14 +55,23 @@ public class User {
 		}
 		if (userSettings.containsKey(C.KEY_USER_ID)) {
 			_uid = userSettings.get(C.KEY_USER_ID);
+			Crittercism.setUsername(_uid);
 		}
 		if (userSettings.containsKey(C.KEY_USER_LEVEL)) {
 			_level = Integer.parseInt(userSettings.get(C.KEY_USER_LEVEL));
+			try {
+				crittercismMetadata.put("user level", _level);
+			} catch (JSONException e) {
+				SBLog.e(TAG, e);
+			}
 		}
 		if (userSettings.containsKey(C.KEY_USER_NEXT_LEVEL_AT)) {
 			_nextLevelAt = Integer.parseInt(userSettings.get(C.KEY_USER_NEXT_LEVEL_AT));
 		}
-		initializePoints();	
+		initializePoints();
+		
+		// send metadata to crittercism (asynchronously)
+		Crittercism.setMetadata(crittercismMetadata);
 	}
 
 	// STATICS ////////////////////////////////////////////////////////////////

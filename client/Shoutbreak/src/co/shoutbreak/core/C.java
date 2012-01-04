@@ -6,11 +6,10 @@ public class C {
 	// CONFIG /////////////////////////////////////////////////////////////////
 	// Match this to the $version in index.php
 	public static final boolean CONFIG_ADMIN_SUPERPOWERS = false;
-	public static final String CONFIG_SERVER_ADDRESS = "http://app.shoutbreak.co/004/";
+	public static final String CONFIG_SERVER_ADDRESS = "http://app.shoutbreak.co/001/";
 	public static final int CONFIG_HTTP_TIMEOUT = 25000;
 	public static final int CONFIG_DROPPED_PACKET_LIMIT = 5;
 	public static final int CONFIG_NOTICES_DISPLAYED_IN_TAB = 50;
-	public static final String CONFIG_CRASH_REPORT_ADDRESS = "http://app.shoutbreak.co/crash_reports/upload.php";
 	public static final String CONFIG_SUPPORT_ADDRESS = "http://shoutbreak.com/support";
 	public static final long CONFIG_DENSITY_EXPIRATION = (long) 4.32E8; // 5 days
 	public static final int CONFIG_DENSITY_GRID_X_GRANULARITY = 129600; // 10 second cells
@@ -151,7 +150,7 @@ public class C {
 	public static final int PURPOSE_DEATH = 62; // don't repeat this - just die
 	
 	// DATABASE ///////////////////////////////////////////////////////////////
-	public static final int DB_VERSION = 1;
+	public static final int DB_VERSION = 4;
 
 	public static final String DB_NAME = "sbdb";
 	public static final String DB_TABLE_DENSITY = "DENSITY";
