@@ -298,6 +298,10 @@ public class Mediator {
 		}
 	}
 
+	public void resetPollingToNow() {
+		_threadLauncher.resetPollingToNow();
+	}
+	
 	public long getPollingDelay() {
 		return _pollingAlgorithm.getPollingDelay();
 	}
@@ -617,7 +621,7 @@ public class Mediator {
 		}
 		
 		public void resetPollingDelay() {
-			_pollingAlgorithm.resetPollingDelay();
+			_pollingAlgorithm.resetPollingDelay(Mediator.this);
 		}
 
 		public boolean userHasAccount() {
@@ -733,12 +737,12 @@ public class Mediator {
 
 		public void handleDensityChange(boolean isDensitySet, double newDensity, int level) {
 			SBLog.method(TAG, "handleDensityChange()");
-			_ui.overlay.handleDensityChange(isDensitySet, newDensity, level);
+			_ui.userLocationOverlay.handleDensityChange(isDensitySet, newDensity, level);
 		}
 
 		public void handleLevelUp(double cellDensity, int newLevel) {
 			SBLog.method(TAG, "handleLevelUp()");
-			_ui.overlay.handleLevelUp(cellDensity, newLevel);
+			_ui.userLocationOverlay.handleLevelUp(cellDensity, newLevel);
 			_uiGateway.refreshProfile(_storage.getUserLevel(), _storage.getUserLevelBeginPoints(), _storage.getUserPoints(), _storage.getUserNextLevelAt());
 		}
 

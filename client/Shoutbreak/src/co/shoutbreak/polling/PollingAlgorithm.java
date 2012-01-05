@@ -3,6 +3,7 @@ package co.shoutbreak.polling;
 import java.util.Date;
 
 import co.shoutbreak.core.C;
+import co.shoutbreak.core.Mediator;
 import co.shoutbreak.core.utils.SBLog;
 
 public class PollingAlgorithm {
@@ -12,6 +13,7 @@ public class PollingAlgorithm {
 	private static final long DELAY_MIN_SECS = 20; // 20 secs
 	private static final long DELAY_MAX_SECS = 1200; // 20 mins
 	private static final long SECONDS_TILL_MAX_DELAY = 600; // 10 mins
+	private static final long RESET_POLLING_DELAY_TO_IMMEDIATELY_TOLERANCE_MILLISEC = 3000; // 3 seconds
 	
 	private static int consecutiveDroppedPackets = 0;
 	
@@ -24,8 +26,13 @@ public class PollingAlgorithm {
 		_delayPerSecondElapsed = (float)(DELAY_MAX_SECS - DELAY_MIN_SECS) / (float)SECONDS_TILL_MAX_DELAY;
 	}
 	
-	public synchronized void resetPollingDelay() {
-		_lastActivity = new Date();
+	public synchronized void resetPollingDelay(Mediator mediator) {
+		Date now = new Date();
+		long elapsedMilliseconds = now.getTime() - _lastActivity.getTime();
+		if (elapsedMilliseconds > RESET_POLLING_DELAY_TO_IMMEDIATELY_TOLERANCE_MILLISEC) {
+			mediator.resetPollingToNow();
+		}
+		_lastActivity = now;
 	}
 	
 	// returns milliseconds

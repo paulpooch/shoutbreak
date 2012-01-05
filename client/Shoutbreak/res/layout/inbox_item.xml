@@ -11,7 +11,7 @@
 			android:id="@+id/llScoreC" android:layout_height="wrap_content"
 			android:layout_alignParentRight="true" android:background="@drawable/inbox_score">
 			<TextView android:id="@+id/tvScoreC" android:layout_width="fill_parent"
-				android:layout_height="wrap_content" android:layout_centerInParent="true"
+				android:layout_height="wrap_content"
 				android:textColor="#ffffffff" android:textSize="25dp"
 				android:gravity="center" />
 		</LinearLayout>
@@ -41,7 +41,7 @@
 			android:layout_marginTop="5dp" android:layout_marginRight="5dp"
 			android:background="@drawable/inbox_score">
 			<TextView android:id="@+id/tvScoreE" android:layout_width="fill_parent"
-				android:layout_height="wrap_content" android:layout_centerInParent="true"
+				android:layout_height="wrap_content"
 				android:textColor="#ffffffff" android:textSize="25dp"
 				android:gravity="center" />
 		</LinearLayout>

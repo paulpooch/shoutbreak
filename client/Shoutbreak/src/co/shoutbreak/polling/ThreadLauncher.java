@@ -92,6 +92,11 @@ public class ThreadLauncher implements Colleague {
 			_uiThreadHandler.removeCallbacks(_loopingThread);
 		}
 	}
+
+	public void resetPollingToNow() {
+		stopLaunchingPollingThreads();
+		startPolling();		
+	}	
 	
 	public void handleShoutStart(String text, int power) {
 		Message message = new Message();
@@ -113,5 +118,6 @@ public class ThreadLauncher implements Colleague {
 		message.obj = xPacket;
 		message.what = C.STATE_VOTE;
 		launchPollingThread(message, false);
-	}	
+	}
+
 }

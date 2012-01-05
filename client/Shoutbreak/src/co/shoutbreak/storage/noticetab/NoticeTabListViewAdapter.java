@@ -49,6 +49,7 @@ public class NoticeTabListViewAdapter extends BaseAdapter implements Colleague {
 				switch (holder.type) {
 					case C.NOTICE_POINTS_SHOUT:
 					case C.NOTICE_SHOUTS_RECEIVED: {
+						_m.markAllNoticesRead();
 						_m.getUiGateway().jumpToShoutInInbox(holder.ref);
 						_m.getUiGateway().hideNoticeTab();
 						break;

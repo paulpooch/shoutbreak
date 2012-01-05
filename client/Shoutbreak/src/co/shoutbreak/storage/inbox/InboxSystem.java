@@ -46,7 +46,10 @@ public class InboxSystem {
 				holder.expanded.setVisibility(View.VISIBLE);
 				Shout shout = (Shout)_listAdapter.getItem(position);
 				if (shout.state_flag == C.SHOUT_STATE_NEW) {
+					// This updates the database.
 					_self.markShoutAsRead(shout.id);
+					// This updates the temporary _shouts entry.
+					shout.state_flag = C.SHOUT_STATE_READ;
 					_listAdapter.notifyDataSetChanged();
 				}
 				_listAdapter.getCacheExpandState().put(shoutId, true);

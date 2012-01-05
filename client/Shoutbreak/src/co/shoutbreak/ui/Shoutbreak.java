@@ -55,7 +55,7 @@ public class Shoutbreak extends MapActivity implements Colleague {
 	private Intent _serviceIntent;
 	private ServiceBridgeInterface _serviceBridge;
 
-	public UserLocationOverlay overlay;
+	public UserLocationOverlay userLocationOverlay;
 	public ImageButton shoutBtn;
 	public EditText shoutInputEt;
 	public DialogBuilder dialogBuilder;
@@ -208,6 +208,7 @@ public class Shoutbreak extends MapActivity implements Colleague {
 			ThreadSafeMediator threadSafeMediator = _m.getAThreadSafeMediator();
 			threadSafeMediator.resetPollingDelay();
 		}
+		enableMapAndOverlay();
 		super.onResume();
 		// refreshFlags();
 	}
@@ -218,6 +219,7 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		if (_m != null) {
 			_m.setIsUIInForeground(false);
 		}
+		disableMapAndOverlay();
 		super.onPause();
 	}
 
@@ -249,7 +251,7 @@ public class Shoutbreak extends MapActivity implements Colleague {
 	 */
 
 	public void centerMapOnUser(boolean showToast) {
-		if (_isTurnedOn.get() && _map != null && overlay != null && _map.getOverlays().size() > 0 && overlay.isMyLocationEnabled()) {
+		if (_isTurnedOn.get() && _map != null && userLocationOverlay != null && _map.getOverlays().size() > 0 && userLocationOverlay.isMyLocationEnabled()) {
 
 			// CenterMapTask task = new CenterMapTask();
 			// task.execute(false);
@@ -298,7 +300,7 @@ public class Shoutbreak extends MapActivity implements Colleague {
 			_serviceIntent.putExtra(C.NOTIFICATION_LAUNCHED_FROM_UI, true);
 			startService(_serviceIntent);
 
-			overlay = new UserLocationOverlay(Shoutbreak.this, _map);
+			userLocationOverlay = new UserLocationOverlay(Shoutbreak.this, _map);
 			dialogBuilder = new DialogBuilder(Shoutbreak.this);
 
 			refreshFlags();
@@ -513,39 +515,36 @@ public class Shoutbreak extends MapActivity implements Colleague {
 
 	private void enableMapAndOverlay() {
 		SBLog.method(TAG, "enableMapAndOverlay()");
-		MapController mapController = _map.getController();
-		if (_map.getOverlays().size() == 0) {
-			_map.getOverlays().add(overlay);
-			mapController.setZoom(C.DEFAULT_ZOOM_LEVEL);
+	
+		// Make sure this isn't initial bootup.
+		if (userLocationOverlay != null) {
+			
+			MapController mapController = _map.getController();
+			if (_map.getOverlays().size() == 0) {
+				_map.getOverlays().add(userLocationOverlay);
+				mapController.setZoom(C.DEFAULT_ZOOM_LEVEL);
+			}
+			_map.setClickable(true);
+			_map.setEnabled(true);
+			_map.setUserLocationOverlay(userLocationOverlay);
+			_map.postInvalidate();
+			userLocationOverlay.enableMyLocation();
+			
+			// This is sort of irrelevant, but this is just a convenient place for this
+			// code chunk.
+			if (!_doesMapKnowLocation.get()) {
+				dialogBuilder.showDialog(DialogBuilder.DIALOG_WAIT_FOR_MAP_TO_HAVE_LOCATION, "Hold on while we find you...");
+			}
 		}
-		_map.setClickable(true);
-		_map.setEnabled(true);
-		_map.setUserLocationOverlay(overlay);
-		_map.postInvalidate();
-		overlay.enableMyLocation();
-		// Pretty sure this becomes redundant with onLocationChanged() calling
-		// centerMapOnUser()
-		// overlay.runOnFirstFix(new Runnable() {
-		// // may take some time if location provider was just enabled
-		// public void run() {
-		// GeoPoint loc = overlay.getMyLocation();
-		// MapController mapController = _map.getController();
-		// mapController.animateTo(loc);
-		// }
-		// });
-
-		// This is sort of irrelevant, but this is just a convenient place for this
-		// code chunk.
-		if (!_doesMapKnowLocation.get()) {
-			dialogBuilder.showDialog(DialogBuilder.DIALOG_WAIT_FOR_MAP_TO_HAVE_LOCATION, "Hold on while we find you...");
-		}
+		
 	}
 
 	private void disableMapAndOverlay() {
 		SBLog.method(TAG, "disableMapAndOverlay()");
-		if (_map != null) {
+		// Make sure this isn't initial bootup.
+		if (_map != null && userLocationOverlay != null) {
 			_map.setEnabled(false);
-			overlay.disableMyLocation();
+			userLocationOverlay.disableMyLocation();
 			// TODO: disable overlay
 		}
 	}
@@ -779,7 +778,7 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		}
 
 		if (canTurnOn) {
-			if (!overlay.isDensitySet()) {
+			if (!userLocationOverlay.isDensitySet()) {
 				showBlanket = true;
 				if (onUiThread) {
 					_blanketDensityRl.setVisibility(View.VISIBLE);
@@ -826,7 +825,7 @@ public class Shoutbreak extends MapActivity implements Colleague {
 				AnimationDrawable shoutButtonAnimation = (AnimationDrawable) shoutBtn.getDrawable();
 				shoutButtonAnimation.start();
 
-				_m.handleShoutStart(text.toString(), overlay.getCurrentPower());
+				_m.handleShoutStart(text.toString(), userLocationOverlay.getCurrentPower());
 				hideKeyboard();
 			}
 		}
