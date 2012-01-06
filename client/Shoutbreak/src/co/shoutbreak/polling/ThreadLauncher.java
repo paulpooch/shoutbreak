@@ -1,5 +1,7 @@
 package co.shoutbreak.polling;
 
+import java.util.UUID;
+
 import co.shoutbreak.core.C;
 import co.shoutbreak.core.Colleague;
 import co.shoutbreak.core.Mediator;
@@ -16,6 +18,7 @@ public class ThreadLauncher implements Colleague {
 	private PollingThread _loopingThread; // we need to track this so we can un-post it if app turns off....
 									      // The problem case is:
 									      // postDelayed a ping loop, location dies, ping tries to run, latitude is null, problem
+	private UUID _currentKeyForLife;
 	
 	public ThreadLauncher(Mediator mediator) {
 		SBLog.constructor(TAG);
@@ -50,10 +53,15 @@ public class ThreadLauncher implements Colleague {
 		// A lot of times we need immediate follow-up loop.
 		if (oldThreadPurpose == C.PURPOSE_LOOP_FROM_UI || oldThreadPurpose == C.PURPOSE_LOOP_FROM_UI_DELAYED) {
 			newXPacket.purpose = C.PURPOSE_LOOP_FROM_UI;
+		
+			if (message.what == C.STATE_IDLE && oldXPacket.keyForLife.compareTo(_currentKeyForLife) != 0) {
+				return;
+			}
+		
 		}
 		newMessage.obj = newXPacket;
 
-		// Do we return to Logic?
+		// Do we return to Polling?
 		switch (oldThreadPurpose) {
 			case C.PURPOSE_LOOP_FROM_UI: {
 				launchPollingThread(newMessage, false);
@@ -63,11 +71,17 @@ public class ThreadLauncher implements Colleague {
 				launchPollingThread(newMessage, true);
 				break;
 			}
+			default:
+				break;
 		}
 	}
 	
 	public void launchPollingThread(Message message, boolean delayed) {
-		PollingThread thread = new PollingThread(_m.getAThreadSafeMediator(), _uiThreadHandler, message);
+		launchPollingThread(message, delayed, UUID.randomUUID());
+	}
+	
+	public void launchPollingThread(Message message, boolean delayed, UUID keyForLife) {
+		PollingThread thread = new PollingThread(_m.getAThreadSafeMediator(), _uiThreadHandler, message, keyForLife);
 		if (delayed) {
 			_loopingThread = thread;
 			_uiThreadHandler.postDelayed(thread, _m.getPollingDelay());
@@ -82,7 +96,8 @@ public class ThreadLauncher implements Colleague {
 		xPacket.purpose = C.PURPOSE_LOOP_FROM_UI;
 		message.obj = xPacket;
 		message.what = C.STATE_IDLE;
-		launchPollingThread(message, false);
+		_currentKeyForLife = UUID.randomUUID();
+		launchPollingThread(message, false, _currentKeyForLife);
 	}
 	
 	public void stopLaunchingPollingThreads() {
@@ -94,6 +109,8 @@ public class ThreadLauncher implements Colleague {
 	}
 
 	public void resetPollingToNow() {
+		// How do we do this without creating a bunch of polling threads simultaneously?
+		// Should only launch if one is postDelayed and we can kill it.
 		stopLaunchingPollingThreads();
 		startPolling();		
 	}	

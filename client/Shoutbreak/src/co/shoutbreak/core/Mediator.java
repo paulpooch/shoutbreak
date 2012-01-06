@@ -287,14 +287,12 @@ public class Mediator {
 			if (xPacket.purpose == C.PURPOSE_LOOP_FROM_UI || xPacket.purpose == C.PURPOSE_LOOP_FROM_UI_DELAYED) {
 				if (PollingAlgorithm.isDropCountAtLimit()) {
 					// The Polling loop just crashed.
-					
-					// We are disabling this.  We don't want to lose a user over 1 timeout.  Need people online.
-					// stopPolling(true);
+					setPowerPreferenceToOff(true);
 				}
 			}
 		} else {
 			// Something really bad happened
-			stopPolling();
+			setPowerPreferenceToOff(true);
 		}
 	}
 

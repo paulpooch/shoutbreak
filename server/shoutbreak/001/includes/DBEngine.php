@@ -472,7 +472,7 @@ class DBEngine {
 							$this->sdb->createDomain($shoutTable);
 							$attempts++;
 							$domainWasFull = true;	
-							sleep(3);				
+							sleep(10);				
 						} else {
 							$this->error();
 							break;
@@ -542,7 +542,7 @@ class DBEngine {
 				} else if ($this->sdb->ErrorCode == 'NoSuchDomain') {
 					$this->sdb->createDomain($tableName);
 					$attempts++;	
-					sleep(3);
+					sleep(10);
 					break;
 				} else if ($this->sdb->ErrorCode == 'ServiceUnavailable' || $this->sdb->ErrorCode == 'InternalError') {
 					sleep($backOffTimer);
@@ -855,51 +855,6 @@ class DBEngine {
 		}
 		return false;
 	}
-	
-	/*
-	public function closeShout($shoutID, $shoutTable) {
-		global $mem;
-		$attrs = array(
-			'open' => array('value' => 0, 'replace' => 'true'));
-		$attempts = $this->SAFE_PUT_ATTEMPTS;
-		$backOffTimer = $this->BACKOFF_INITIAL;
-		$continue = false;
-		while ($attempts > 0) {
-			$put = $this->sdb->putAttributes($shoutTable, $shoutID, $attrs);
-			if ($put) {
-				// TODO: should this just be memcache?
-				$shout = $mem->get(Config::$PRE_SHOUT . $shoutID);
-				if ($shout) {
-					$shout->open = 0;
-					$mem->set(Config::$PRE_SHOUT . $shoutID, $shout, false, Config::$TIMEOUT_SHOUT);
-				}
-				$continue = true;
-			} else {
-				if ($this->sdb->ErrorCode == 'ServiceUnavailable' || $this->sdb->ErrorCode == 'InternalError') {
-					sleep($backOffTimer);
-					$backOffTimer *= $this->BACKOFF_FACTOR;				
-				} else {
-					$this->error();
-					break;
-				}
-			}
-			$attempts--;
-		}
-		
-		if ($continue) {
-			
-		}
-		
-		$shout = $this->getShout($shoutID);
-				
-				// give user pts
-				
-				
-				// did user level up?
-		
-		return false;
-	}
-	*/
 	
 	// CRON JOBS //////////////////////////////////////////////////////////////
 	

@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <string name="maps_api_key">0D9gVcQxZ-ihLwDWC3oj--dfHUntK8OOe7a2L9g</string>
     <string name="appTitle">Shoutbreak</string>
     <string name="powerBlanket">Power switch must be on in order to send &amp; receive shouts.</string>
     <string name="dataBlanket">You must have data service to shout.</string>
@@ -13,13 +15,14 @@ Location Services</string>
     <string name="back">Back</string>
     <string name="next">Next</string>
     <string name="finish">Finish</string>
-    <string name="maps_api_key">0D9gVcQxZ-ihLwDWC3oj--dfHUntK8OOe7a2L9g</string>
+    <string name="serverInvalidResponse">Sorry, our server is freaking out.
+	Want to check our site for a downtime notice?</string>
+    <string name="serverHttpError">Sorry, our server is not responding.
+Want to check our site for a downtime notice?</string>
 
-</resources>
-<!--
-
+</resources><!--
 john's debug         0lLmkCXVk9yD5LpfqqmAw9kMr2orIej8Y3aw2Dw
 paul's desktop debug 0D9gVcQxZ-ihLwDWC3oj- -dfHUntK8OOe7a2L9g REMOVE THE SPACE
 paul's laptop debug  0D9gVcQxZ-ihbS2t_012bUHYWdS21lRVuJb28Wg
-release              0D9gVcQxZ-igCC4AmcJ1sNuzauE1tUQ74OO0dXA
+release              0D9gVcQxZ-igCC4AmcJ1sNuzauE1tUQ74OO0dXA
 -->

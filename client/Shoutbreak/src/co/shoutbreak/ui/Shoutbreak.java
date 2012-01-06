@@ -425,7 +425,7 @@ public class Shoutbreak extends MapActivity implements Colleague {
 	public void onLocationEnabled() {
 		SBLog.method(TAG, "onLocationEnabled()");
 		_isLocationEnabled.set(true);
-		turnOn(true);
+		tryToTurnOn(true);
 	}
 
 	public void onLocationDisabled() {
@@ -437,7 +437,7 @@ public class Shoutbreak extends MapActivity implements Colleague {
 	public void onDataEnabled() {
 		SBLog.method(TAG, "onDataEnabled()");
 		_isDataEnabled.set(true);
-		turnOn(true);
+		tryToTurnOn(true);
 	}
 
 	public void onDataDisabled() {
@@ -462,17 +462,7 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		_mapOptionsLl.setVisibility(View.VISIBLE);
 		_inputLayoutRl.setVisibility(View.VISIBLE);
 		enableMapAndOverlay();
-	}
-
-	private void setPowerSwitchButtonToOn() {
-		SBLog.method(TAG, "setPowerSwitchButtonToOn()");
-		_powerBtn.setImageResource(R.drawable.power_button_on);
-	}
-
-	private void setPowerSwitchButtonToOff() {
-		SBLog.method(TAG, "setPowerSwitchButtonToOff()");
-		_powerBtn.setImageResource(R.drawable.power_button_off);
-	}
+	}	
 
 	public void showCompose() {
 		SBLog.method(TAG, "showCompose()");
@@ -594,135 +584,7 @@ public class Shoutbreak extends MapActivity implements Colleague {
 	protected boolean isRouteDisplayed() {
 		return false;
 	}
-
-	public int getMapHeight() {
-		return _map.getMeasuredHeight();
-	}
-
-	// http://stackoverflow.com/questions/2150078/android-is-software-keyboard-shown
-	public void hideKeyboard() {
-		SBLog.method(TAG, "hideKeyboard()");
-		InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-		imm.hideSoftInputFromWindow(shoutInputEt.getWindowToken(), 0);
-	}
-
-	private OnClickListener _composeTabListener = new OnClickListener() {
-		public void onClick(View v) {
-			SBLog.userAction("_composeTabListener.onClick()");
-			showCompose();
-		}
-	};
-
-	private OnClickListener _inboxTabListener = new OnClickListener() {
-		public void onClick(View v) {
-			SBLog.userAction("_inboxTabListener.onClick()");
-			showInbox();
-		}
-	};
-
-	private OnClickListener _profileTabListener = new OnClickListener() {
-		public void onClick(View v) {
-			SBLog.userAction("_profileTabListener.onClick()");
-			showProfile();
-		}
-	};
-
-	private OnClickListener _powerButtonListener = new OnClickListener() {
-		public void onClick(View v) {
-			SBLog.userAction("_powerButtonListener.onClick()");
-			if (!_isTurnedOn.get()) {
-				setPowerSwitchButtonToOn();
-			} else {
-				setPowerSwitchButtonToOff();
-			}
-			PowerButtonTask task = new PowerButtonTask();
-			task.execute();
-		}
-	};
-
-	// This is the call stack of how this works:
-	//
-	// _mediator.setPowerPreferenceToOn(onUiThread) ->
-	// _preferences.setPowerPreferenceToOn(onUiThread) ->
-	// _m.onPowerPreferenceEnabled(onUiThread) ->
-	// _uiGateway.onPowerPreferenceEnabled(onUiThread) ->
-	// _ui.onPowerPreferenceEnabled(onUiThread) ->
-	// onPowerPreferenceEnabled(onUiThread) [right under this function]
-	private class PowerButtonTask extends AsyncTask<Void, Void, Void> {
-		@Override
-		protected Void doInBackground(Void... unused) {
-			SBLog.method(TAG, "PowerButtonTask.doInBackground()");
-			// only change the power preference when they press the on/off switch
-			if (!_isTurnedOn.get()) {
-				// Turn On.
-				if (canAppTurnOn(false, true)) {
-					_m.setPowerPreferenceToOn(false);
-				}
-			} else {
-				// Turn Off.
-				_m.setPowerPreferenceToOff(false);
-			}
-			return null;
-		}
-
-		@Override
-		protected void onPostExecute(Void unused) {
-			// Now we're on the Ui Thread, just see what the outcome of callback city
-			// was and set button to reflect that outcome.
-			reflectPowerState();
-		}
-	}
-
-	public void reflectPowerState() {
-		SBLog.method(TAG, "reflectPowerState()");
-		if (!_isTurnedOn.get()) {
-			canAppTurnOn(true, false);
-			setPowerSwitchButtonToOff();
-		} else {
-			canAppTurnOn(true, false);
-			setPowerSwitchButtonToOn();
-		}
-	}
-
-	public void onPowerPreferenceEnabled(boolean onUiThread) {
-		SBLog.method(TAG, "onPowerPreferenceEnabled()");
-		_isPowerPreferenceEnabled.set(true);
-		turnOn(onUiThread);
-	}
-
-	public void onPowerPreferenceDisabled(boolean onUiThread) {
-		SBLog.method(TAG, "onPowerPreferenceDisabled()");
-		_isPowerPreferenceEnabled.set(false);
-		turnOff(onUiThread);
-	}
-
-	private boolean turnOn(boolean onUiThread) {
-		SBLog.method(TAG, "turnOn()");
-		if (canAppTurnOn(onUiThread, false)) {
-			//if (!_isTurnedOn.get()) {
-				if (onUiThread) {
-					setPowerSwitchButtonToOn();
-				}
-				_isTurnedOn.set(true);
-			//}
-			return true;
-		} else {
-			turnOff(onUiThread);
-			return false;
-		}
-	}
-
-	private void turnOff(boolean onUiThread) {
-		SBLog.method(TAG, "turnOff()");
-		if (onUiThread) {
-			setPowerSwitchButtonToOff();
-		}
-		_isTurnedOn.set(false);
-		// _m.stopPolling();
-		// showComposeBlanket();
-		canAppTurnOn(onUiThread, false);
-	}
-
+	
 	public boolean canAppTurnOn(boolean onUiThread, boolean causedByPowerButton) {
 		SBLog.method(TAG, "canAppTurnOn()");
 
@@ -811,6 +673,38 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		return canTurnOn;
 	}
 
+	public int getMapHeight() {
+		return _map.getMeasuredHeight();
+	}
+
+	// http://stackoverflow.com/questions/2150078/android-is-software-keyboard-shown
+	public void hideKeyboard() {
+		SBLog.method(TAG, "hideKeyboard()");
+		InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+		imm.hideSoftInputFromWindow(shoutInputEt.getWindowToken(), 0);
+	}
+
+	private OnClickListener _composeTabListener = new OnClickListener() {
+		public void onClick(View v) {
+			SBLog.userAction("_composeTabListener.onClick()");
+			showCompose();
+		}
+	};
+
+	private OnClickListener _inboxTabListener = new OnClickListener() {
+		public void onClick(View v) {
+			SBLog.userAction("_inboxTabListener.onClick()");
+			showInbox();
+		}
+	};
+
+	private OnClickListener _profileTabListener = new OnClickListener() {
+		public void onClick(View v) {
+			SBLog.userAction("_profileTabListener.onClick()");
+			showProfile();
+		}
+	};
+
 	private OnClickListener _shoutButtonListener = new OnClickListener() {
 		public void onClick(View v) {
 			SBLog.userAction("_shoutButtonListener.onClick()");
@@ -839,13 +733,6 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		}
 	};
 
-	private OnClickListener _turnOnListener = new OnClickListener() {
-		public void onClick(View v) {
-			SBLog.userAction("_turnOnListener.onClick()");
-			_m.setPowerPreferenceToOn(true);
-		}
-	};
-
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		SBLog.method(TAG, "onActivityResult()");
@@ -863,4 +750,107 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		}
 	}
 
+	/////////////////////////////////////////////////////////////////////////////
+	// POWER SYSTEM
+	/////////////////////////////////////////////////////////////////////////////
+	
+	// Power button listener.
+	private OnClickListener _powerButtonListener = new OnClickListener() {
+		public void onClick(View v) {
+			SBLog.userAction("_powerButtonListener.onClick()");
+			PowerButtonTask task = new PowerButtonTask();
+			task.execute();
+		}
+	};
+	
+	// From power blanket.
+	private OnClickListener _turnOnListener = new OnClickListener() {
+		public void onClick(View v) {
+			SBLog.userAction("_turnOnListener.onClick()");
+			_m.setPowerPreferenceToOn(true);
+		}
+	};
+
+	// This is the call stack of how this works:
+	//
+	// _mediator.setPowerPreferenceToOn(onUiThread) ->
+	// _preferences.setPowerPreferenceToOn(onUiThread) ->
+	// _m.onPowerPreferenceEnabled(onUiThread) ->
+	// _uiGateway.onPowerPreferenceEnabled(onUiThread) ->
+	// _ui.onPowerPreferenceEnabled(onUiThread) ->
+	// onPowerPreferenceEnabled(onUiThread) [right under this function]
+	private class PowerButtonTask extends AsyncTask<Void, Void, Void> {
+		@Override
+		protected Void doInBackground(Void... unused) {
+			SBLog.method(TAG, "PowerButtonTask.doInBackground()");
+			// only change the power preference when they press the on/off switch
+			if (!_isTurnedOn.get()) {
+				// Turn On.
+				if (canAppTurnOn(false, true)) {
+					_m.setPowerPreferenceToOn(false);
+				}
+			} else {
+				// Turn Off.
+				_m.setPowerPreferenceToOff(false);
+			}
+			return null;
+		}
+
+		@Override
+		protected void onPostExecute(Void unused) {
+			// Now we're on the Ui Thread, just see what the outcome of callback city
+			// was and set button to reflect that outcome.
+			reflectPowerState();
+		}
+	}
+	
+	public void reflectPowerState() {
+		SBLog.method(TAG, "reflectPowerState()");
+		canAppTurnOn(true, false);
+		refreshPowerButtonImage();
+	}
+
+	public void onPowerPreferenceEnabled(boolean onUiThread) {
+		SBLog.method(TAG, "onPowerPreferenceEnabled()");
+		_isPowerPreferenceEnabled.set(true);
+		tryToTurnOn(onUiThread);
+	}
+
+	public void onPowerPreferenceDisabled(boolean onUiThread) {
+		SBLog.method(TAG, "onPowerPreferenceDisabled()");
+		_isPowerPreferenceEnabled.set(false);
+		turnOff(onUiThread);
+	}
+
+	private boolean tryToTurnOn(boolean onUiThread) {
+		SBLog.method(TAG, "turnOn()");
+		if (canAppTurnOn(onUiThread, false)) {
+			_isTurnedOn.set(true);
+			if (onUiThread) {
+				refreshPowerButtonImage();
+			}
+			return true;
+		} else {
+			turnOff(onUiThread);
+	 		return false;
+		}
+	}
+
+	private void turnOff(boolean onUiThread) {
+		SBLog.method(TAG, "turnOff()");
+		_isTurnedOn.set(false);
+		if (onUiThread) {
+			refreshPowerButtonImage();
+		}
+		canAppTurnOn(onUiThread, false);
+	}
+	
+	private void refreshPowerButtonImage() {
+		if (_isTurnedOn.get()) {
+			_powerBtn.setImageResource(R.drawable.power_button_on);
+		} else {
+			_powerBtn.setImageResource(R.drawable.power_button_off);
+		}
+	}
+	
 }

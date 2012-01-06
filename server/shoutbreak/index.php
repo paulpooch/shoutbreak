@@ -14,6 +14,11 @@
  * 
  */
 
+/* On version change, update:
+-this
+-cron/jobs.php
+*/
+
 $version = '001';
 set_include_path('/home/webuser/shoutbreak/htdocs/' . $version . '/includes/');
 require_once("SimpleDB.php");

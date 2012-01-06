@@ -1,0 +1,241 @@
+2012-01-05 23:53:48 - WARN  --> BANNING IP 174.252.23.59 
+2012-01-05 23:54:03 - WARN  --> BANNING IP 174.252.23.59 
+2012-01-05 23:54:17 - WARN  --> BANNING IP 174.252.23.59 
+2012-01-05 23:54:22 - WARN  --> BANNING IP 174.252.23.59 
+2012-01-05 23:54:38 - WARN  --> BANNING IP 174.252.23.59 
+2012-01-05 23:54:52 - WARN  --> BANNING IP 174.252.23.59 
+2012-01-05 23:55:08 - WARN  --> BANNING IP 174.252.23.59 
+2012-01-05 23:55:12 - WARN  --> BANNING IP 174.252.23.59 
+2012-01-05 23:55:27 - WARN  --> BANNING IP 174.252.23.59 
+2012-01-05 23:55:42 - WARN  --> BANNING IP 174.252.23.59 
+2012-01-05 23:55:57 - WARN  --> BANNING IP 174.252.23.59 
+2012-01-05 23:56:02 - WARN  --> BANNING IP 174.252.23.59 
+2012-01-05 23:56:18 - WARN  --> BANNING IP 174.252.23.59 
+2012-01-05 23:56:32 - WARN  --> BANNING IP 174.252.23.59 
+2012-01-05 23:56:48 - WARN  --> BANNING IP 174.252.23.59 
+2012-01-05 23:56:52 - WARN  --> BANNING IP 174.252.23.59 
+2012-01-05 23:57:07 - WARN  --> BANNING IP 174.252.23.59 
+2012-01-05 23:57:23 - WARN  --> BANNING IP 174.252.23.59 
+2012-01-05 23:57:38 - WARN  --> BANNING IP 174.252.23.59 
+2012-01-05 23:57:42 - WARN  --> BANNING IP 174.252.23.59 
+2012-01-05 23:57:58 - WARN  --> BANNING IP 174.252.23.59 
+2012-01-05 23:58:13 - WARN  --> BANNING IP 174.252.23.59 
+2012-01-05 23:58:28 - WARN  --> BANNING IP 174.252.23.59 
+2012-01-05 23:58:32 - WARN  --> BANNING IP 174.252.23.59 
+2012-01-05 23:58:48 - WARN  --> BANNING IP 174.252.23.59 
+2012-01-05 23:59:03 - WARN  --> BANNING IP 174.252.23.59 
+2012-01-05 23:59:19 - WARN  --> BANNING IP 174.252.23.59 
+2012-01-05 23:59:36 - WARN  --> BANNING IP 174.252.23.59 
+2012-01-05 23:59:51 - WARN  --> BANNING IP 174.252.23.59 
+2012-01-06 0:00:06 - WARN  --> BANNING IP 174.252.23.59 
+2012-01-06 0:00:33 - WARN  --> BANNING IP 174.252.23.59 
+2012-01-06 0:00:33 - WARN  --> BANNING IP 174.252.23.59 
+2012-01-06 0:00:47 - WARN  --> BANNING IP 174.252.23.59 
+2012-01-06 0:01:03 - WARN  --> BANNING IP 174.252.23.59 
+2012-01-06 0:01:15 - WARN  --> BANNING IP 174.252.23.59 
+2012-01-06 0:01:28 - WARN  --> BANNING IP 174.252.23.59 
+2012-01-06 0:01:43 - WARN  --> BANNING IP 174.252.23.59 
+2012-01-06 0:58:06 - INFO  -->  
+2012-01-06 0:58:06 - WARN  --> ACTION = user_ping
+UNFILTERED = a : user_ping, uid : c582a145-b195-61b9-8081-1fe2f7bb50ed, auth : default, lat : 40.7414, long : -74.03396, scores : ["e484fcbe-0469-5754-8953-6f28baffb7e6", "71e5e224-6f3c-92c4-e872-187ba4cf2cec", "63c41953-5cad-20b5-f96f-b81e9f821af2", "d6e32b10-4c1f-798b-1cc1-a78314146216"],  
+2012-01-06 0:58:06 - INFO  -->  
+2012-01-06 0:58:06 - WARN  --> ACTION = user_ping
+UNFILTERED = a : user_ping, uid : c582a145-b195-61b9-8081-1fe2f7bb50ed, auth : default, lat : 40.7414, long : -74.03396, scores : ["e484fcbe-0469-5754-8953-6f28baffb7e6", "71e5e224-6f3c-92c4-e872-187ba4cf2cec", "63c41953-5cad-20b5-f96f-b81e9f821af2", "d6e32b10-4c1f-798b-1cc1-a78314146216"],  
+2012-01-06 0:58:06 - WARN  --> {"code":"expired_auth","nonce":"6Ca-3(I\/59\/NkF9rmNISNn+C\/psPTN4!QGy8dT@!"} 
+2012-01-06 0:58:06 - WARN  --> {"code":"expired_auth","nonce":"qR0mDM5tU\/y(4QQDpX6$7w=arXvrQ03MtVxA@yA9"} 
+2012-01-06 0:58:06 - INFO  -->  
+2012-01-06 0:58:06 - WARN  --> ACTION = user_ping
+UNFILTERED = a : user_ping, uid : c582a145-b195-61b9-8081-1fe2f7bb50ed, auth : wBqUjp$+Q95bUpg_Q2kV+@OnPIrMy1M)bf115daa99613229ec6ab91bf2d7fb0715912bcfc4ecc1c2c3b84b47b9879a2c8acff41ca97fba9062e7dab391bae2a232a1fcb02e34fcf864a0ff32f3af7141, lat : 40.7414, long : -74.03396, scores : ["e484fcbe-0469-5754-8953-6f28baffb7e6", "71e5e224-6f3c-92c4-e872-187ba4cf2cec", "63c41953-5cad-20b5-f96f-b81e9f821af2", "d6e32b10-4c1f-798b-1cc1-a78314146216"],  
+2012-01-06 0:58:06 - INFO  -->  
+2012-01-06 0:58:06 - WARN  --> ACTION = user_ping
+UNFILTERED = a : user_ping, uid : c582a145-b195-61b9-8081-1fe2f7bb50ed, auth : wBqUjp$+Q95bUpg_Q2kV+@OnPIrMy1M)be2948f69377304ad6a4ab19c2e7f1ac92085da17298f5c685c1d345bc37a2b0d34f44cdd339415578a81a699666bee74266a3caf13f3f2d832fd51903ff2293, lat : 40.7414, long : -74.03396, scores : ["e484fcbe-0469-5754-8953-6f28baffb7e6", "71e5e224-6f3c-92c4-e872-187ba4cf2cec", "63c41953-5cad-20b5-f96f-b81e9f821af2", "d6e32b10-4c1f-798b-1cc1-a78314146216"],  
+2012-01-06 0:58:06 - WARN  --> {"code":"shouts","scores":[{"shout_id":"e484fcbe-0469-5754-8953-6f28baffb7e6","ups":"2","downs":0,"hit":"1","pts":2,"open":0},{"shout_id":"71e5e224-6f3c-92c4-e872-187ba4cf2cec","ups":"2","downs":0,"hit":"1","pts":2,"open":0},{"shout_id":"63c41953-5cad-20b5-f96f-b81e9f821af2","ups":"1","downs":0,"hit":"3","pts":1,"open":0},{"shout_id":"d6e32b10-4c1f-798b-1cc1-a78314146216","ups":"1","downs":0,"hit":"3","pts":1,"open":0}]} 
+2012-01-06 0:58:07 - WARN  --> {"code":"expired_auth","nonce":"1B!%T#akdw*w#axj-G@5rqvRnX-Qg9YyRwgR-KPU"} 
+2012-01-06 0:58:07 - INFO  -->  
+2012-01-06 0:58:07 - WARN  --> ACTION = user_ping
+UNFILTERED = a : user_ping, uid : c582a145-b195-61b9-8081-1fe2f7bb50ed, auth : wBqUjp$+Q95bUpg_Q2kV+@OnPIrMy1M)b4e97fe18c0465dd49049adc34b13c6636a27b46cf6448712914b796368d7019f492073ef76ab6b32a575582adf5a0e4feaaceaa64b7ef6a0d832d87b509ce59, lat : 40.7414, long : -74.03396, scores : ["e484fcbe-0469-5754-8953-6f28baffb7e6", "71e5e224-6f3c-92c4-e872-187ba4cf2cec", "63c41953-5cad-20b5-f96f-b81e9f821af2", "d6e32b10-4c1f-798b-1cc1-a78314146216"],  
+2012-01-06 0:58:07 - WARN  --> {"code":"shouts","scores":[{"shout_id":"e484fcbe-0469-5754-8953-6f28baffb7e6","ups":"2","downs":0,"hit":"1","pts":2,"open":0},{"shout_id":"71e5e224-6f3c-92c4-e872-187ba4cf2cec","ups":"2","downs":0,"hit":"1","pts":2,"open":0},{"shout_id":"63c41953-5cad-20b5-f96f-b81e9f821af2","ups":"1","downs":0,"hit":"3","pts":1,"open":0},{"shout_id":"d6e32b10-4c1f-798b-1cc1-a78314146216","ups":"1","downs":0,"hit":"3","pts":1,"open":0}]} 
+2012-01-06 0:58:09 - INFO  -->  
+2012-01-06 0:58:09 - WARN  --> ACTION = user_ping
+UNFILTERED = a : user_ping, uid : c582a145-b195-61b9-8081-1fe2f7bb50ed, auth : wBqUjp$+Q95bUpg_Q2kV+@OnPIrMy1M)b4e97fe18c0465dd49049adc34b13c6636a27b46cf6448712914b796368d7019f492073ef76ab6b32a575582adf5a0e4feaaceaa64b7ef6a0d832d87b509ce59, lat : 40.7414, long : -74.03396,  
+2012-01-06 0:58:09 - WARN  --> {"code":"ping_ok"} 
+2012-01-06 0:58:13 - INFO  -->  
+2012-01-06 0:58:13 - WARN  --> ACTION = user_ping
+UNFILTERED = a : user_ping, uid : c582a145-b195-61b9-8081-1fe2f7bb50ed, auth : wBqUjp$+Q95bUpg_Q2kV+@OnPIrMy1M)b4e97fe18c0465dd49049adc34b13c6636a27b46cf6448712914b796368d7019f492073ef76ab6b32a575582adf5a0e4feaaceaa64b7ef6a0d832d87b509ce59, lat : 40.7414, long : -74.03396,  
+2012-01-06 0:58:13 - WARN  --> {"code":"ping_ok"} 
+2012-01-06 0:58:28 - INFO  -->  
+2012-01-06 0:58:28 - WARN  --> ACTION = user_ping
+UNFILTERED = a : user_ping, uid : c582a145-b195-61b9-8081-1fe2f7bb50ed, auth : wBqUjp$+Q95bUpg_Q2kV+@OnPIrMy1M)b4e97fe18c0465dd49049adc34b13c6636a27b46cf6448712914b796368d7019f492073ef76ab6b32a575582adf5a0e4feaaceaa64b7ef6a0d832d87b509ce59, lat : 40.7414, long : -74.03396,  
+2012-01-06 0:58:28 - WARN  --> {"code":"ping_ok"} 
+2012-01-06 0:58:32 - INFO  -->  
+2012-01-06 0:58:32 - WARN  --> ACTION = user_ping
+UNFILTERED = a : user_ping, uid : c582a145-b195-61b9-8081-1fe2f7bb50ed, auth : wBqUjp$+Q95bUpg_Q2kV+@OnPIrMy1M)b4e97fe18c0465dd49049adc34b13c6636a27b46cf6448712914b796368d7019f492073ef76ab6b32a575582adf5a0e4feaaceaa64b7ef6a0d832d87b509ce59, lat : 40.7414, long : -74.03396,  
+2012-01-06 0:58:32 - INFO  -->  
+2012-01-06 0:58:32 - WARN  --> ACTION = user_ping
+UNFILTERED = a : user_ping, uid : c582a145-b195-61b9-8081-1fe2f7bb50ed, auth : wBqUjp$+Q95bUpg_Q2kV+@OnPIrMy1M)b4e97fe18c0465dd49049adc34b13c6636a27b46cf6448712914b796368d7019f492073ef76ab6b32a575582adf5a0e4feaaceaa64b7ef6a0d832d87b509ce59, lat : 40.7414, long : -74.03396,  
+2012-01-06 0:58:32 - WARN  --> {"code":"ping_ok"} 
+2012-01-06 0:58:32 - WARN  --> {"code":"ping_ok"} 
+2012-01-06 0:58:45 - INFO  -->  
+2012-01-06 0:58:45 - WARN  --> ACTION = user_ping
+UNFILTERED = a : user_ping, uid : c582a145-b195-61b9-8081-1fe2f7bb50ed, auth : wBqUjp$+Q95bUpg_Q2kV+@OnPIrMy1M)b4e97fe18c0465dd49049adc34b13c6636a27b46cf6448712914b796368d7019f492073ef76ab6b32a575582adf5a0e4feaaceaa64b7ef6a0d832d87b509ce59, lat : 40.7414, long : -74.03396,  
+2012-01-06 0:58:45 - WARN  --> {"code":"ping_ok"} 
+2012-01-06 0:58:49 - INFO  -->  
+2012-01-06 0:58:49 - WARN  --> ACTION = user_ping
+UNFILTERED = a : user_ping, uid : c582a145-b195-61b9-8081-1fe2f7bb50ed, auth : wBqUjp$+Q95bUpg_Q2kV+@OnPIrMy1M)b4e97fe18c0465dd49049adc34b13c6636a27b46cf6448712914b796368d7019f492073ef76ab6b32a575582adf5a0e4feaaceaa64b7ef6a0d832d87b509ce59, lat : 40.7414, long : -74.03396,  
+2012-01-06 0:58:49 - WARN  --> {"code":"ping_ok"} 
+2012-01-06 0:59:00 - INFO  -->  
+2012-01-06 0:59:00 - WARN  --> ACTION = user_ping
+UNFILTERED = a : user_ping, uid : c582a145-b195-61b9-8081-1fe2f7bb50ed, auth : wBqUjp$+Q95bUpg_Q2kV+@OnPIrMy1M)b4e97fe18c0465dd49049adc34b13c6636a27b46cf6448712914b796368d7019f492073ef76ab6b32a575582adf5a0e4feaaceaa64b7ef6a0d832d87b509ce59, lat : 40.7414, long : -74.03396,  
+2012-01-06 0:59:00 - WARN  --> {"code":"ping_ok"} 
+2012-01-06 1:00:56 - INFO  -->  
+2012-01-06 1:00:56 - WARN  --> ACTION = user_ping
+UNFILTERED = a : user_ping, uid : c582a145-b195-61b9-8081-1fe2f7bb50ed, auth : wBqUjp$+Q95bUpg_Q2kV+@OnPIrMy1M)b4e97fe18c0465dd49049adc34b13c6636a27b46cf6448712914b796368d7019f492073ef76ab6b32a575582adf5a0e4feaaceaa64b7ef6a0d832d87b509ce59, lat : 40.74866, long : -74.03178,  
+2012-01-06 1:00:56 - INFO  -->  
+2012-01-06 1:00:56 - WARN  --> ACTION = user_ping
+UNFILTERED = a : user_ping, uid : c582a145-b195-61b9-8081-1fe2f7bb50ed, auth : wBqUjp$+Q95bUpg_Q2kV+@OnPIrMy1M)b4e97fe18c0465dd49049adc34b13c6636a27b46cf6448712914b796368d7019f492073ef76ab6b32a575582adf5a0e4feaaceaa64b7ef6a0d832d87b509ce59, lat : 40.74866, long : -74.03178,  
+2012-01-06 1:00:56 - WARN  --> {"code":"ping_ok"} 
+2012-01-06 1:00:56 - WARN  --> {"code":"ping_ok"} 
+2012-01-06 1:01:11 - INFO  -->  
+2012-01-06 1:01:11 - WARN  --> ACTION = user_ping
+UNFILTERED = a : user_ping, uid : c582a145-b195-61b9-8081-1fe2f7bb50ed, auth : wBqUjp$+Q95bUpg_Q2kV+@OnPIrMy1M)b4e97fe18c0465dd49049adc34b13c6636a27b46cf6448712914b796368d7019f492073ef76ab6b32a575582adf5a0e4feaaceaa64b7ef6a0d832d87b509ce59, lat : 40.74866, long : -74.03178,  
+2012-01-06 1:01:11 - WARN  --> {"code":"ping_ok"} 
+2012-01-06 1:01:16 - INFO  -->  
+2012-01-06 1:01:16 - WARN  --> ACTION = user_ping
+UNFILTERED = a : user_ping, uid : c582a145-b195-61b9-8081-1fe2f7bb50ed, auth : wBqUjp$+Q95bUpg_Q2kV+@OnPIrMy1M)b4e97fe18c0465dd49049adc34b13c6636a27b46cf6448712914b796368d7019f492073ef76ab6b32a575582adf5a0e4feaaceaa64b7ef6a0d832d87b509ce59, lat : 40.74866, long : -74.03178,  
+2012-01-06 1:01:16 - WARN  --> {"code":"ping_ok"} 
+2012-01-06 1:01:25 - INFO  -->  
+2012-01-06 1:01:25 - WARN  --> ACTION = user_ping
+UNFILTERED = a : user_ping, uid : c582a145-b195-61b9-8081-1fe2f7bb50ed, auth : wBqUjp$+Q95bUpg_Q2kV+@OnPIrMy1M)b4e97fe18c0465dd49049adc34b13c6636a27b46cf6448712914b796368d7019f492073ef76ab6b32a575582adf5a0e4feaaceaa64b7ef6a0d832d87b509ce59, lat : 40.74866, long : -74.03178,  
+2012-01-06 1:01:25 - WARN  --> {"code":"ping_ok"} 
+2012-01-06 1:01:35 - INFO  -->  
+2012-01-06 1:01:35 - WARN  --> ACTION = user_ping
+UNFILTERED = a : user_ping, uid : c582a145-b195-61b9-8081-1fe2f7bb50ed, auth : wBqUjp$+Q95bUpg_Q2kV+@OnPIrMy1M)b4e97fe18c0465dd49049adc34b13c6636a27b46cf6448712914b796368d7019f492073ef76ab6b32a575582adf5a0e4feaaceaa64b7ef6a0d832d87b509ce59, lat : 40.74866, long : -74.03178,  
+2012-01-06 1:01:35 - WARN  --> {"code":"ping_ok"} 
+2012-01-06 1:01:46 - INFO  -->  
+2012-01-06 1:01:46 - WARN  --> ACTION = user_ping
+UNFILTERED = a : user_ping, uid : c582a145-b195-61b9-8081-1fe2f7bb50ed, auth : wBqUjp$+Q95bUpg_Q2kV+@OnPIrMy1M)b4e97fe18c0465dd49049adc34b13c6636a27b46cf6448712914b796368d7019f492073ef76ab6b32a575582adf5a0e4feaaceaa64b7ef6a0d832d87b509ce59, lat : 40.74866, long : -74.03178,  
+2012-01-06 1:01:46 - WARN  --> {"code":"ping_ok"} 
+2012-01-06 1:01:59 - INFO  -->  
+2012-01-06 1:01:59 - WARN  --> ACTION = user_ping
+UNFILTERED = a : user_ping, uid : c582a145-b195-61b9-8081-1fe2f7bb50ed, auth : wBqUjp$+Q95bUpg_Q2kV+@OnPIrMy1M)b4e97fe18c0465dd49049adc34b13c6636a27b46cf6448712914b796368d7019f492073ef76ab6b32a575582adf5a0e4feaaceaa64b7ef6a0d832d87b509ce59, lat : 40.7414, long : -74.03396,  
+2012-01-06 1:01:59 - WARN  --> {"code":"ping_ok"} 
+2012-01-06 1:02:04 - INFO  -->  
+2012-01-06 1:02:04 - WARN  --> ACTION = user_ping
+UNFILTERED = a : user_ping, uid : c582a145-b195-61b9-8081-1fe2f7bb50ed, auth : wBqUjp$+Q95bUpg_Q2kV+@OnPIrMy1M)b4e97fe18c0465dd49049adc34b13c6636a27b46cf6448712914b796368d7019f492073ef76ab6b32a575582adf5a0e4feaaceaa64b7ef6a0d832d87b509ce59, lat : 40.7414, long : -74.03396,  
+2012-01-06 1:02:05 - WARN  --> {"code":"ping_ok"} 
+2012-01-06 1:02:25 - INFO  -->  
+2012-01-06 1:02:25 - WARN  --> ACTION = user_ping
+UNFILTERED = a : user_ping, uid : c582a145-b195-61b9-8081-1fe2f7bb50ed, auth : wBqUjp$+Q95bUpg_Q2kV+@OnPIrMy1M)b4e97fe18c0465dd49049adc34b13c6636a27b46cf6448712914b796368d7019f492073ef76ab6b32a575582adf5a0e4feaaceaa64b7ef6a0d832d87b509ce59, lat : 40.7414, long : -74.03396,  
+2012-01-06 1:02:25 - WARN  --> {"code":"ping_ok"} 
+2012-01-06 1:02:33 - INFO  -->  
+2012-01-06 1:02:33 - WARN  --> ACTION = user_ping
+UNFILTERED = a : user_ping, uid : c582a145-b195-61b9-8081-1fe2f7bb50ed, auth : wBqUjp$+Q95bUpg_Q2kV+@OnPIrMy1M)b4e97fe18c0465dd49049adc34b13c6636a27b46cf6448712914b796368d7019f492073ef76ab6b32a575582adf5a0e4feaaceaa64b7ef6a0d832d87b509ce59, lat : 40.7414, long : -74.03396,  
+2012-01-06 1:02:33 - WARN  --> {"code":"ping_ok"} 
+2012-01-06 1:02:46 - INFO  -->  
+2012-01-06 1:02:46 - WARN  --> ACTION = user_ping
+UNFILTERED = a : user_ping, uid : c582a145-b195-61b9-8081-1fe2f7bb50ed, auth : wBqUjp$+Q95bUpg_Q2kV+@OnPIrMy1M)b4e97fe18c0465dd49049adc34b13c6636a27b46cf6448712914b796368d7019f492073ef76ab6b32a575582adf5a0e4feaaceaa64b7ef6a0d832d87b509ce59, lat : 40.7414, long : -74.03396,  
+2012-01-06 1:02:46 - WARN  --> {"code":"ping_ok"} 
+2012-01-06 1:02:48 - INFO  -->  
+2012-01-06 1:02:48 - WARN  --> ACTION = user_ping
+UNFILTERED = a : user_ping, uid : c582a145-b195-61b9-8081-1fe2f7bb50ed, auth : wBqUjp$+Q95bUpg_Q2kV+@OnPIrMy1M)b4e97fe18c0465dd49049adc34b13c6636a27b46cf6448712914b796368d7019f492073ef76ab6b32a575582adf5a0e4feaaceaa64b7ef6a0d832d87b509ce59, lat : 40.7414, long : -74.03396,  
+2012-01-06 1:02:48 - WARN  --> {"code":"ping_ok"} 
+2012-01-06 1:02:56 - INFO  -->  
+2012-01-06 1:02:56 - WARN  --> ACTION = user_ping
+UNFILTERED = a : user_ping, uid : c582a145-b195-61b9-8081-1fe2f7bb50ed, auth : wBqUjp$+Q95bUpg_Q2kV+@OnPIrMy1M)b4e97fe18c0465dd49049adc34b13c6636a27b46cf6448712914b796368d7019f492073ef76ab6b32a575582adf5a0e4feaaceaa64b7ef6a0d832d87b509ce59, lat : 40.7414, long : -74.03396,  
+2012-01-06 1:02:56 - WARN  --> {"code":"ping_ok"} 
+2012-01-06 1:03:11 - INFO  -->  
+2012-01-06 1:03:11 - WARN  --> ACTION = user_ping
+UNFILTERED = a : user_ping, uid : c582a145-b195-61b9-8081-1fe2f7bb50ed, auth : wBqUjp$+Q95bUpg_Q2kV+@OnPIrMy1M)b4e97fe18c0465dd49049adc34b13c6636a27b46cf6448712914b796368d7019f492073ef76ab6b32a575582adf5a0e4feaaceaa64b7ef6a0d832d87b509ce59, lat : 40.7414, long : -74.03396,  
+2012-01-06 1:03:11 - WARN  --> {"code":"ping_ok"} 
+2012-01-06 1:03:16 - INFO  -->  
+2012-01-06 1:03:16 - WARN  --> ACTION = user_ping
+UNFILTERED = a : user_ping, uid : c582a145-b195-61b9-8081-1fe2f7bb50ed, auth : wBqUjp$+Q95bUpg_Q2kV+@OnPIrMy1M)b4e97fe18c0465dd49049adc34b13c6636a27b46cf6448712914b796368d7019f492073ef76ab6b32a575582adf5a0e4feaaceaa64b7ef6a0d832d87b509ce59, lat : 40.7414, long : -74.03396,  
+2012-01-06 1:03:16 - WARN  --> {"code":"ping_ok"} 
+2012-01-06 1:03:32 - INFO  -->  
+2012-01-06 1:03:32 - WARN  --> ACTION = user_ping
+UNFILTERED = a : user_ping, uid : c582a145-b195-61b9-8081-1fe2f7bb50ed, auth : wBqUjp$+Q95bUpg_Q2kV+@OnPIrMy1M)b4e97fe18c0465dd49049adc34b13c6636a27b46cf6448712914b796368d7019f492073ef76ab6b32a575582adf5a0e4feaaceaa64b7ef6a0d832d87b509ce59, lat : 40.7414, long : -74.03396,  
+2012-01-06 1:03:32 - WARN  --> {"code":"ping_ok"} 
+2012-01-06 1:03:34 - INFO  -->  
+2012-01-06 1:03:34 - WARN  --> ACTION = user_ping
+UNFILTERED = a : user_ping, uid : c582a145-b195-61b9-8081-1fe2f7bb50ed, auth : wBqUjp$+Q95bUpg_Q2kV+@OnPIrMy1M)b4e97fe18c0465dd49049adc34b13c6636a27b46cf6448712914b796368d7019f492073ef76ab6b32a575582adf5a0e4feaaceaa64b7ef6a0d832d87b509ce59, lat : 40.7414, long : -74.03396,  
+2012-01-06 1:03:34 - WARN  --> {"code":"ping_ok"} 
+2012-01-06 1:03:46 - INFO  -->  
+2012-01-06 1:03:46 - WARN  --> ACTION = user_ping
+UNFILTERED = a : user_ping, uid : c582a145-b195-61b9-8081-1fe2f7bb50ed, auth : wBqUjp$+Q95bUpg_Q2kV+@OnPIrMy1M)b4e97fe18c0465dd49049adc34b13c6636a27b46cf6448712914b796368d7019f492073ef76ab6b32a575582adf5a0e4feaaceaa64b7ef6a0d832d87b509ce59, lat : 40.7414, long : -74.03396,  
+2012-01-06 1:03:47 - WARN  --> {"code":"ping_ok"} 
+2012-01-06 1:03:53 - INFO  -->  
+2012-01-06 1:03:53 - WARN  --> ACTION = user_ping
+UNFILTERED = a : user_ping, uid : c582a145-b195-61b9-8081-1fe2f7bb50ed, auth : wBqUjp$+Q95bUpg_Q2kV+@OnPIrMy1M)b4e97fe18c0465dd49049adc34b13c6636a27b46cf6448712914b796368d7019f492073ef76ab6b32a575582adf5a0e4feaaceaa64b7ef6a0d832d87b509ce59, lat : 40.7414, long : -74.03396,  
+2012-01-06 1:03:54 - WARN  --> {"code":"ping_ok"} 
+2012-01-06 1:04:01 - INFO  -->  
+2012-01-06 1:04:01 - WARN  --> ACTION = user_ping
+UNFILTERED = a : user_ping, uid : c582a145-b195-61b9-8081-1fe2f7bb50ed, auth : wBqUjp$+Q95bUpg_Q2kV+@OnPIrMy1M)b4e97fe18c0465dd49049adc34b13c6636a27b46cf6448712914b796368d7019f492073ef76ab6b32a575582adf5a0e4feaaceaa64b7ef6a0d832d87b509ce59, lat : 40.7414, long : -74.03396,  
+2012-01-06 1:04:01 - WARN  --> {"code":"ping_ok"} 
+2012-01-06 1:04:07 - INFO  -->  
+2012-01-06 1:04:07 - WARN  --> ACTION = user_ping
+UNFILTERED = a : user_ping, uid : c582a145-b195-61b9-8081-1fe2f7bb50ed, auth : wBqUjp$+Q95bUpg_Q2kV+@OnPIrMy1M)b4e97fe18c0465dd49049adc34b13c6636a27b46cf6448712914b796368d7019f492073ef76ab6b32a575582adf5a0e4feaaceaa64b7ef6a0d832d87b509ce59, lat : 40.7414, long : -74.03396,  
+2012-01-06 1:04:07 - WARN  --> {"code":"ping_ok"} 
+2012-01-06 1:04:22 - INFO  -->  
+2012-01-06 1:04:22 - WARN  --> ACTION = user_ping
+UNFILTERED = a : user_ping, uid : c582a145-b195-61b9-8081-1fe2f7bb50ed, auth : wBqUjp$+Q95bUpg_Q2kV+@OnPIrMy1M)b4e97fe18c0465dd49049adc34b13c6636a27b46cf6448712914b796368d7019f492073ef76ab6b32a575582adf5a0e4feaaceaa64b7ef6a0d832d87b509ce59, lat : 40.7414, long : -74.03396,  
+2012-01-06 1:04:22 - WARN  --> {"code":"ping_ok"} 
+2012-01-06 1:04:40 - INFO  -->  
+2012-01-06 1:04:40 - WARN  --> ACTION = user_ping
+UNFILTERED = a : user_ping, uid : c582a145-b195-61b9-8081-1fe2f7bb50ed, auth : wBqUjp$+Q95bUpg_Q2kV+@OnPIrMy1M)b4e97fe18c0465dd49049adc34b13c6636a27b46cf6448712914b796368d7019f492073ef76ab6b32a575582adf5a0e4feaaceaa64b7ef6a0d832d87b509ce59, lat : 40.7414, long : -74.03396,  
+2012-01-06 1:04:40 - WARN  --> {"code":"ping_ok"} 
+2012-01-06 1:05:13 - INFO  -->  
+2012-01-06 1:05:13 - WARN  --> ACTION = user_ping
+UNFILTERED = a : user_ping, uid : c582a145-b195-61b9-8081-1fe2f7bb50ed, auth : wBqUjp$+Q95bUpg_Q2kV+@OnPIrMy1M)b4e97fe18c0465dd49049adc34b13c6636a27b46cf6448712914b796368d7019f492073ef76ab6b32a575582adf5a0e4feaaceaa64b7ef6a0d832d87b509ce59, lat : 40.7414, long : -74.03396,  
+2012-01-06 1:05:13 - WARN  --> {"code":"ping_ok"} 
+2012-01-06 1:05:22 - INFO  -->  
+2012-01-06 1:05:22 - WARN  --> ACTION = user_ping
+UNFILTERED = a : user_ping, uid : c582a145-b195-61b9-8081-1fe2f7bb50ed, auth : wBqUjp$+Q95bUpg_Q2kV+@OnPIrMy1M)b4e97fe18c0465dd49049adc34b13c6636a27b46cf6448712914b796368d7019f492073ef76ab6b32a575582adf5a0e4feaaceaa64b7ef6a0d832d87b509ce59, lat : 40.7414, long : -74.03396,  
+2012-01-06 1:05:22 - WARN  --> {"code":"ping_ok"} 
+2012-01-06 1:05:35 - INFO  -->  
+2012-01-06 1:05:35 - WARN  --> ACTION = user_ping
+UNFILTERED = a : user_ping, uid : c582a145-b195-61b9-8081-1fe2f7bb50ed, auth : wBqUjp$+Q95bUpg_Q2kV+@OnPIrMy1M)b4e97fe18c0465dd49049adc34b13c6636a27b46cf6448712914b796368d7019f492073ef76ab6b32a575582adf5a0e4feaaceaa64b7ef6a0d832d87b509ce59, lat : 40.7414, long : -74.03396,  
+2012-01-06 1:05:35 - WARN  --> {"code":"ping_ok"} 
+2012-01-06 1:06:03 - INFO  -->  
+2012-01-06 1:06:03 - WARN  --> ACTION = user_ping
+UNFILTERED = a : user_ping, uid : c582a145-b195-61b9-8081-1fe2f7bb50ed, auth : wBqUjp$+Q95bUpg_Q2kV+@OnPIrMy1M)b4e97fe18c0465dd49049adc34b13c6636a27b46cf6448712914b796368d7019f492073ef76ab6b32a575582adf5a0e4feaaceaa64b7ef6a0d832d87b509ce59, lat : 40.7414, long : -74.03396,  
+2012-01-06 1:06:03 - WARN  --> {"code":"ping_ok"} 
+2012-01-06 1:06:41 - INFO  -->  
+2012-01-06 1:06:41 - WARN  --> ACTION = user_ping
+UNFILTERED = a : user_ping, uid : c582a145-b195-61b9-8081-1fe2f7bb50ed, auth : wBqUjp$+Q95bUpg_Q2kV+@OnPIrMy1M)b4e97fe18c0465dd49049adc34b13c6636a27b46cf6448712914b796368d7019f492073ef76ab6b32a575582adf5a0e4feaaceaa64b7ef6a0d832d87b509ce59, lat : 40.7414, long : -74.03396,  
+2012-01-06 1:06:41 - WARN  --> {"code":"ping_ok"} 
+2012-01-06 1:08:04 - INFO  -->  
+2012-01-06 1:08:04 - WARN  --> ACTION = user_ping
+UNFILTERED = a : user_ping, uid : c582a145-b195-61b9-8081-1fe2f7bb50ed, auth : wBqUjp$+Q95bUpg_Q2kV+@OnPIrMy1M)b4e97fe18c0465dd49049adc34b13c6636a27b46cf6448712914b796368d7019f492073ef76ab6b32a575582adf5a0e4feaaceaa64b7ef6a0d832d87b509ce59, lat : 40.7414, long : -74.03396,  
+2012-01-06 1:08:04 - WARN  --> {"code":"ping_ok"} 
+2012-01-06 1:09:57 - INFO  -->  
+2012-01-06 1:09:57 - WARN  --> ACTION = user_ping
+UNFILTERED = a : user_ping, uid : c582a145-b195-61b9-8081-1fe2f7bb50ed, auth : wBqUjp$+Q95bUpg_Q2kV+@OnPIrMy1M)b4e97fe18c0465dd49049adc34b13c6636a27b46cf6448712914b796368d7019f492073ef76ab6b32a575582adf5a0e4feaaceaa64b7ef6a0d832d87b509ce59, lat : 40.7414, long : -74.03396,  
+2012-01-06 1:09:57 - WARN  --> {"code":"ping_ok"} 
+2012-01-06 1:14:03 - INFO  -->  
+2012-01-06 1:14:03 - WARN  --> ACTION = user_ping
+UNFILTERED = a : user_ping, uid : c582a145-b195-61b9-8081-1fe2f7bb50ed, auth : wBqUjp$+Q95bUpg_Q2kV+@OnPIrMy1M)b4e97fe18c0465dd49049adc34b13c6636a27b46cf6448712914b796368d7019f492073ef76ab6b32a575582adf5a0e4feaaceaa64b7ef6a0d832d87b509ce59, lat : 40.7414, long : -74.03396,  
+2012-01-06 1:14:03 - WARN  --> {"code":"ping_ok"} 
+2012-01-06 1:18:16 - INFO  -->  
+2012-01-06 1:18:16 - WARN  --> ACTION = user_ping
+UNFILTERED = a : user_ping, uid : c582a145-b195-61b9-8081-1fe2f7bb50ed, auth : wBqUjp$+Q95bUpg_Q2kV+@OnPIrMy1M)b4e97fe18c0465dd49049adc34b13c6636a27b46cf6448712914b796368d7019f492073ef76ab6b32a575582adf5a0e4feaaceaa64b7ef6a0d832d87b509ce59, lat : 40.7414, long : -74.03396,  
+2012-01-06 1:18:16 - WARN  --> {"code":"ping_ok"} 
+2012-01-06 1:18:38 - INFO  -->  
+2012-01-06 1:18:38 - WARN  --> ACTION = user_ping
+UNFILTERED = a : user_ping, uid : c582a145-b195-61b9-8081-1fe2f7bb50ed, auth : wBqUjp$+Q95bUpg_Q2kV+@OnPIrMy1M)b4e97fe18c0465dd49049adc34b13c6636a27b46cf6448712914b796368d7019f492073ef76ab6b32a575582adf5a0e4feaaceaa64b7ef6a0d832d87b509ce59, lat : 40.7414, long : -74.03396,  
+2012-01-06 1:18:38 - WARN  --> {"code":"ping_ok"} 
+2012-01-06 1:19:38 - INFO  -->  
+2012-01-06 1:19:38 - WARN  --> ACTION = user_ping
+UNFILTERED = a : user_ping, uid : c582a145-b195-61b9-8081-1fe2f7bb50ed, auth : wBqUjp$+Q95bUpg_Q2kV+@OnPIrMy1M)b4e97fe18c0465dd49049adc34b13c6636a27b46cf6448712914b796368d7019f492073ef76ab6b32a575582adf5a0e4feaaceaa64b7ef6a0d832d87b509ce59, lat : 40.7414, long : -74.03396,  
+2012-01-06 1:19:38 - WARN  --> {"code":"ping_ok"} 
+2012-01-06 1:19:47 - INFO  -->  
+2012-01-06 1:19:47 - WARN  --> ACTION = user_ping
+UNFILTERED = a : user_ping, uid : c582a145-b195-61b9-8081-1fe2f7bb50ed, auth : wBqUjp$+Q95bUpg_Q2kV+@OnPIrMy1M)b4e97fe18c0465dd49049adc34b13c6636a27b46cf6448712914b796368d7019f492073ef76ab6b32a575582adf5a0e4feaaceaa64b7ef6a0d832d87b509ce59, lat : 40.7414, long : -74.03396,  
+2012-01-06 1:19:48 - WARN  --> {"code":"ping_ok"} 
+2012-01-06 1:22:42 - INFO  -->  
+2012-01-06 1:22:42 - WARN  --> ACTION = user_ping
+UNFILTERED = a : user_ping, uid : c582a145-b195-61b9-8081-1fe2f7bb50ed, auth : wBqUjp$+Q95bUpg_Q2kV+@OnPIrMy1M)b4e97fe18c0465dd49049adc34b13c6636a27b46cf6448712914b796368d7019f492073ef76ab6b32a575582adf5a0e4feaaceaa64b7ef6a0d832d87b509ce59, lat : 40.7414, long : -74.03396,  
+2012-01-06 1:22:42 - WARN  --> {"code":"ping_ok"} 
+2012-01-06 1:23:09 - INFO  -->  
+2012-01-06 1:23:09 - WARN  --> ACTION = user_ping
+UNFILTERED = a : user_ping, uid : c582a145-b195-61b9-8081-1fe2f7bb50ed, auth : wBqUjp$+Q95bUpg_Q2kV+@OnPIrMy1M)b4e97fe18c0465dd49049adc34b13c6636a27b46cf6448712914b796368d7019f492073ef76ab6b32a575582adf5a0e4feaaceaa64b7ef6a0d832d87b509ce59, lat : 40.7414, long : -74.03396,  
+2012-01-06 1:23:09 - WARN  --> {"code":"ping_ok"} 

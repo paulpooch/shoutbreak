@@ -1,6 +1,7 @@
 package co.shoutbreak.polling;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -21,13 +22,15 @@ public class Polling {
 	private static final String TAG = "Polling";
 	
 	private ThreadSafeMediator _safeM;
-    private Handler _uiThreadHandler;
+  private Handler _uiThreadHandler;
+  private UUID _keyForLife;
     
-    public Polling(ThreadSafeMediator threadSafeMediator, Handler uiThreadHandler) {
-    	SBLog.constructor(TAG);
-    	_safeM = threadSafeMediator;
-    	_uiThreadHandler = uiThreadHandler;
-    }
+  public Polling(ThreadSafeMediator threadSafeMediator, Handler uiThreadHandler, UUID keyForLife) {
+  	SBLog.constructor(TAG);
+    _safeM = threadSafeMediator;
+    _uiThreadHandler = uiThreadHandler;
+    _keyForLife = keyForLife;
+   }
 	
 	public void go(Message message) {
 		SBLog.logic("Polling - go");
@@ -87,6 +90,7 @@ public class Polling {
 						if (_safeM.isResponseClean(message)) {						
 							_safeM.handlePingSuccess();
 							CrossThreadPacket xPacket = (CrossThreadPacket)message.obj;
+							xPacket.keyForLife = _keyForLife;
 							try {
 								String code = xPacket.json.getString(C.JSON_CODE);
 													
@@ -165,6 +169,7 @@ public class Polling {
 	
 	public void receiveShouts(Message message) {
 		CrossThreadPacket xPacket = (CrossThreadPacket)message.obj;
+		xPacket.keyForLife = _keyForLife;
 		try {
 			if (xPacket.json.has(C.JSON_DENSITY)) {
 				double density = (double) xPacket.json.optDouble(C.JSON_DENSITY);
@@ -297,7 +302,9 @@ public class Polling {
 				switch (message.what) {
 					case C.HTTP_DID_SUCCEED: {
 						if (_safeM.isResponseClean(message)) {
-							_uiThreadHandler.sendMessage(Message.obtain(_uiThreadHandler, C.STATE_CREATE_ACCOUNT_2, message.obj));
+							CrossThreadPacket xPacket = (CrossThreadPacket)message.obj;
+							xPacket.keyForLife = _keyForLife;
+							_uiThreadHandler.sendMessage(Message.obtain(_uiThreadHandler, C.STATE_CREATE_ACCOUNT_2, xPacket));
 						} else {
 							_safeM.handleCreateAccountFailed(message);
 						}
@@ -329,6 +336,7 @@ public class Polling {
 						if (_safeM.isResponseClean(message)) {
 							try {
 								CrossThreadPacket xPacket = (CrossThreadPacket)message.obj;
+								xPacket.keyForLife = _keyForLife;
 								String password = xPacket.json.getString(C.JSON_PW);
 								String uid = xPacket.sArgs[0];
 								_safeM.handleAccountCreated(uid, password);

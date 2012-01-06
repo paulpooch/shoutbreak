@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import co.shoutbreak.R;
 import co.shoutbreak.core.C;
 import co.shoutbreak.ui.Shoutbreak;
 
@@ -35,9 +36,9 @@ public class DialogBuilder {
 		String msg = "";
 		switch (whichDialog) {
 			case DIALOG_SERVER_INVALID_RESPONSE:
-				msg = "Sorry, our server is freaking out.\nWant to check our site for a downtime notice?";
+				msg = _ui.getString(R.string.serverInvalidResponse);
 			case DIALOG_SERVER_HTTP_ERROR: {
-				msg = "Sorry, our server is not responding.\nWant to check our site for a downtime notice?";
+				msg = _ui.getString(R.string.serverHttpError);
 				if (!_isDialogAlreadyShowing) {
 					_isDialogAlreadyShowing = true;
 					AlertDialog.Builder builder = new AlertDialog.Builder(_ui);

@@ -1,5 +1,7 @@
 package co.shoutbreak.polling;
 
+import java.util.UUID;
+
 import org.json.JSONObject;
 
 import co.shoutbreak.core.utils.SBLog;
@@ -17,5 +19,6 @@ public class CrossThreadPacket {
 	public int purpose;
 	public String[] sArgs;
 	public int[] iArgs;
+	public UUID keyForLife;
 	
 }
