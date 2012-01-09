@@ -7,7 +7,7 @@ class Config {
 	public static $SHOUTBREAK_SCORING_COEFFECIENT = 1.09;
 	public static $SHOUTBREAK_SCORING_WORK_AT_LEVEL_1 = 10;
 	public static $USER_INITIAL_LEVEL = 5;
-	public static $USER_INITIAL_POINTS = 470; // Config::pointsRequiredForLevel(Config::$USER_INITIAL_LEVEL + 1) - 5;
+	public static $USER_INITIAL_POINTS = 400; // Config::pointsRequiredForLevel(Config::$USER_INITIAL_LEVEL + 1) - 5;
 	public static $USER_INITIAL_PENDING_LEVEL_UP = 1;
 	public static $DEFAULT_POPULATION_DENSITY = .00001; // NYC = .0106 / m^2, but that's PEOPLE not USERS
 	public static $DATE_FORMAT = DATE_ISO8601;

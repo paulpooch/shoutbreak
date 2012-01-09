@@ -1,7 +1,7 @@
 package co.shoutbreak.storage.inbox;
 
 import android.widget.ImageButton;
-import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -14,7 +14,7 @@ public class InboxViewHolder {
 	TextView scoreC;
 	TextView scoreE;
 	TextView hitCount;
-	ImageView hitCountIcon;
+	LinearLayout hitCountLl;
 	public RelativeLayout collapsed;
 	public RelativeLayout expanded;
 	ImageButton btnVoteUp;

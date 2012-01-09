@@ -1,0 +1,289 @@
+2012-01-09 3:13:08 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 3:13:24 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 3:13:38 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 3:13:53 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 3:13:58 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 3:14:14 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 3:14:34 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 3:18:44 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 3:19:14 - WARN  --> {"code":"expired_auth","nonce":"Cy3m81\/FykNyTAzI03HD4!PXQ4tRQzsBCUYp%2*L"} 
+2012-01-09 3:19:14 - WARN  --> {"code":"expired_auth","nonce":"zgWj6Y7$LkEfsxv=035pdvjMM4S6JDZBXbgC#81Z"} 
+2012-01-09 3:19:15 - WARN  --> {"code":"expired_auth","nonce":"_yTg@Q&f)q4RnHRy9Bv_qNCkyMQTSmZbArI52HmO"} 
+2012-01-09 3:19:15 - WARN  --> {"code":"expired_auth","nonce":"YaKtChj*K*9z6h%4A&0B0Sb\/69+Q\/4xczfr+\/OF#"} 
+2012-01-09 3:19:15 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 3:19:15 - WARN  --> {"code":"expired_auth","nonce":"Qgvp\/*SCAmNZ5gWwq+a4W9PX44zvw)Ar@QnAn66M"} 
+2012-01-09 3:19:16 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 3:20:08 - WARN  --> {"code":"expired_auth","nonce":"JkF=OM%FAjpVmbTdr1j7AHwch0BjzaJ=+_TrdzZ)"} 
+2012-01-09 3:20:08 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 3:20:36 - WARN  --> {"code":"expired_auth","nonce":"D*%p=2C0dBG\/E5*CO8D3\/D0Hbz7V$\/X$%q$FWJ=x"} 
+2012-01-09 3:20:36 - WARN  --> {"code":"expired_auth","nonce":"cBftKAZy#=f%F+Kcg!NQMD8x+cKb*!XOmy*Q@UH3"} 
+2012-01-09 3:20:37 - WARN  --> {"code":"expired_auth","nonce":"S2L&z6\/hSgb69SZ_v&mO5mH!HWT\/USC2H7E+vd0*"} 
+2012-01-09 3:20:37 - WARN  --> {"code":"expired_auth","nonce":"7gPB5K#NYW(4CmFNhyJgI2x7+=vR84Fsv6%_pT\/8"} 
+2012-01-09 3:20:38 - WARN  --> {"code":"expired_auth","nonce":"xf0Us#vLtyY(nX!6yJOQ76_KCP10SO%wE\/\/qNN4Z"} 
+2012-01-09 3:20:38 - WARN  --> {"code":"expired_auth","nonce":")hT5@#pZwCrF14W0&\/X*HK8p)CBxpBpAfO3rg7H_"} 
+2012-01-09 3:20:38 - WARN  --> {"code":"expired_auth","nonce":"cGcvK#Z+\/23XkLzD%XDxIL&gJ%@7m-Gg(G-*1&Ad"} 
+2012-01-09 3:20:38 - WARN  --> {"code":"expired_auth","nonce":"Px%zUSpbB-Axk(F@6Q$DZ0n!z(fF@yJ0m3H#ELNr"} 
+2012-01-09 3:20:39 - WARN  --> {"code":"expired_auth","nonce":"crS!Nc*Cgv4nL_xvn@R#7zZz6*pMfY&E6cU72fR3"} 
+2012-01-09 3:20:39 - WARN  --> {"code":"expired_auth","nonce":"Fppjk2n#(SP+Dg5rapPQaNgq#fG(8j2G7QONOIyD"} 
+2012-01-09 3:20:40 - WARN  --> {"code":"expired_auth","nonce":"UKLNEAHTZ@TM&pOD\/rfQr1*)U@BMpsF-*fUg8M*$"} 
+2012-01-09 3:20:40 - WARN  --> {"code":"expired_auth","nonce":"3Hc_JGnvn0D-(CVG3cf&tyHnq0Pj5Z8SO(0akyp6"} 
+2012-01-09 3:20:41 - WARN  --> {"code":"expired_auth","nonce":"s(afSTmZ@J8\/m-dq+Jt1G3JfO5CfhT7%Y70hCw=G"} 
+2012-01-09 3:20:41 - WARN  --> {"code":"expired_auth","nonce":"*W5RI_94jp9LOwAZ$rvD-cfby(KBa6zpJ)R\/Mn5W"} 
+2012-01-09 3:20:42 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 3:20:42 - WARN  --> {"code":"expired_auth","nonce":"V@&OMhVFQ8-c*nGp_ajf=QD=K$mDb3)rzvf6&bO1"} 
+2012-01-09 3:20:43 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 3:22:44 - WARN  --> {"code":"expired_auth","nonce":"FJ%)mDh#G(7UMMfW0PhRLMcrZs7gHf)t!Jg2OZyn"} 
+2012-01-09 3:22:44 - WARN  --> {"code":"expired_auth","nonce":"0UXyKqtDf1Bts8Q1LvnPLCcgc\/%wjZ0=PANmkj!P"} 
+2012-01-09 3:22:45 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 3:22:45 - WARN  --> {"code":"expired_auth","nonce":"T@yIgjO_*hBFN1gTIkB2yRqWgka-6x6P(fmcMW1C"} 
+2012-01-09 3:22:45 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 3:22:59 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 3:23:09 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 3:23:10 - WARN  --> {"code":"shout_sent"} 
+2012-01-09 3:23:14 - WARN  --> {"code":"shouts","shouts":[{"shout_id":"14e6ef8a-96c9-87a7-a208-67dd0baf5372","ts":"2012-01-09T03:23:09+0000","txt":"Hi"}]} 
+2012-01-09 3:23:29 - WARN  --> {"code":"shouts","scores":[{"shout_id":"14e6ef8a-96c9-87a7-a208-67dd0baf5372","ups":1,"downs":0,"hit":1,"pts":1,"open":1}]} 
+2012-01-09 3:23:44 - WARN  --> {"code":"shouts","scores":[{"shout_id":"14e6ef8a-96c9-87a7-a208-67dd0baf5372","ups":2,"downs":0,"hit":1,"pts":2,"open":1}]} 
+2012-01-09 3:23:44 - WARN  --> {"code":"vote_ok"} 
+2012-01-09 3:24:02 - WARN  --> {"code":"shouts","scores":[{"shout_id":"14e6ef8a-96c9-87a7-a208-67dd0baf5372","ups":2,"downs":0,"hit":1,"pts":2,"open":1}]} 
+2012-01-09 3:24:35 - WARN  --> {"code":"expired_auth","nonce":"GOm)Dc2RH0QrImq%x*&&2x(cmtRfL@2LL8sNT0=4"} 
+2012-01-09 3:24:35 - WARN  --> {"code":"expired_auth","nonce":"@4m3Z=v0d*!sFVX&Y7JGy746JhtsdsJf9gnMX)Xd"} 
+2012-01-09 3:24:36 - WARN  --> {"code":"expired_auth","nonce":"Jj#_mZ3Sn%)r\/%N+I9$2#31L!ZQzhq\/IKfM$$WQC"} 
+2012-01-09 3:24:36 - WARN  --> {"code":"expired_auth","nonce":"!tEU$UY5qGM9T(CYFdT@_nms\/SOb(@62\/*dXNRD)"} 
+2012-01-09 3:24:36 - WARN  --> {"code":"shouts","scores":[{"shout_id":"14e6ef8a-96c9-87a7-a208-67dd0baf5372","ups":2,"downs":0,"hit":1,"pts":2,"open":1}]} 
+2012-01-09 3:24:36 - WARN  --> {"code":"expired_auth","nonce":"nWm2jCW#+CTTS+WZLXpIv6W%daNd$%#B0aCwg$fH"} 
+2012-01-09 3:24:37 - WARN  --> {"code":"shouts","scores":[{"shout_id":"14e6ef8a-96c9-87a7-a208-67dd0baf5372","ups":2,"downs":0,"hit":1,"pts":2,"open":1}]} 
+2012-01-09 3:24:51 - WARN  --> {"code":"shouts","scores":[{"shout_id":"14e6ef8a-96c9-87a7-a208-67dd0baf5372","ups":2,"downs":0,"hit":1,"pts":2,"open":1}]} 
+2012-01-09 3:25:05 - WARN  --> {"code":"shouts","scores":[{"shout_id":"14e6ef8a-96c9-87a7-a208-67dd0baf5372","ups":2,"downs":0,"hit":1,"pts":2,"open":1}]} 
+2012-01-09 3:25:17 - WARN  --> {"code":"shouts","scores":[{"shout_id":"14e6ef8a-96c9-87a7-a208-67dd0baf5372","ups":2,"downs":0,"hit":1,"pts":2,"open":1}]} 
+2012-01-09 3:25:32 - WARN  --> {"code":"shouts","scores":[{"shout_id":"14e6ef8a-96c9-87a7-a208-67dd0baf5372","ups":2,"downs":0,"hit":1,"pts":2,"open":1}]} 
+2012-01-09 3:25:47 - WARN  --> {"code":"shouts","scores":[{"shout_id":"14e6ef8a-96c9-87a7-a208-67dd0baf5372","ups":2,"downs":0,"hit":1,"pts":2,"open":1}]} 
+2012-01-09 3:26:17 - WARN  --> {"code":"expired_auth","nonce":"8!@BJk!EBU!x=p4sw3zjY3TAm5Arhnq$Ov7_7ES!"} 
+2012-01-09 3:26:18 - WARN  --> {"code":"shouts","scores":[{"shout_id":"14e6ef8a-96c9-87a7-a208-67dd0baf5372","ups":2,"downs":0,"hit":1,"pts":2,"open":1}]} 
+2012-01-09 3:26:18 - WARN  --> {"code":"shouts","scores":[{"shout_id":"14e6ef8a-96c9-87a7-a208-67dd0baf5372","ups":2,"downs":0,"hit":1,"pts":2,"open":1}]} 
+2012-01-09 3:26:34 - WARN  --> {"code":"shouts","scores":[{"shout_id":"14e6ef8a-96c9-87a7-a208-67dd0baf5372","ups":2,"downs":0,"hit":1,"pts":2,"open":1}]} 
+2012-01-09 3:26:50 - WARN  --> {"code":"shouts","scores":[{"shout_id":"14e6ef8a-96c9-87a7-a208-67dd0baf5372","ups":2,"downs":0,"hit":1,"pts":2,"open":1}]} 
+2012-01-09 3:27:03 - WARN  --> {"code":"shouts","scores":[{"shout_id":"14e6ef8a-96c9-87a7-a208-67dd0baf5372","ups":2,"downs":0,"hit":1,"pts":2,"open":1}]} 
+2012-01-09 3:27:18 - WARN  --> {"code":"shouts","scores":[{"shout_id":"14e6ef8a-96c9-87a7-a208-67dd0baf5372","ups":2,"downs":0,"hit":1,"pts":2,"open":1}]} 
+2012-01-09 3:27:51 - WARN  --> {"code":"shouts","scores":[{"shout_id":"14e6ef8a-96c9-87a7-a208-67dd0baf5372","ups":2,"downs":0,"hit":1,"pts":2,"open":1}]} 
+2012-01-09 3:28:56 - WARN  --> {"code":"shouts","scores":[{"shout_id":"14e6ef8a-96c9-87a7-a208-67dd0baf5372","ups":2,"downs":0,"hit":1,"pts":2,"open":1}]} 
+2012-01-09 3:29:12 - WARN  --> {"code":"shouts","scores":[{"shout_id":"14e6ef8a-96c9-87a7-a208-67dd0baf5372","ups":2,"downs":0,"hit":1,"pts":2,"open":1}]} 
+2012-01-09 3:29:28 - WARN  --> {"code":"shouts","scores":[{"shout_id":"14e6ef8a-96c9-87a7-a208-67dd0baf5372","ups":2,"downs":0,"hit":1,"pts":2,"open":1}]} 
+2012-01-09 3:29:41 - WARN  --> {"code":"shouts","scores":[{"shout_id":"14e6ef8a-96c9-87a7-a208-67dd0baf5372","ups":2,"downs":0,"hit":1,"pts":2,"open":1}]} 
+2012-01-09 3:29:56 - WARN  --> {"code":"shouts","scores":[{"shout_id":"14e6ef8a-96c9-87a7-a208-67dd0baf5372","ups":2,"downs":0,"hit":1,"pts":2,"open":1}]} 
+2012-01-09 3:30:00 - WARN  --> {"code":"shouts","scores":[{"shout_id":"14e6ef8a-96c9-87a7-a208-67dd0baf5372","ups":2,"downs":0,"hit":1,"pts":2,"open":1}]} 
+2012-01-09 3:33:21 - WARN  --> {"code":"shouts","scores":[{"shout_id":"14e6ef8a-96c9-87a7-a208-67dd0baf5372","ups":2,"downs":0,"hit":1,"pts":2,"open":1}]} 
+2012-01-09 3:47:00 - WARN  --> {"code":"shouts","scores":[{"shout_id":"14e6ef8a-96c9-87a7-a208-67dd0baf5372","ups":2,"downs":0,"hit":1,"pts":2,"open":0}]} 
+2012-01-09 3:47:04 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 3:47:04 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 3:47:21 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 3:47:42 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 4:08:18 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 4:08:19 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 4:08:37 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 4:08:54 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 4:09:07 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 4:10:05 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 4:13:19 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 4:29:06 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 4:29:09 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 4:29:21 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 4:29:43 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 4:30:05 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 4:30:26 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 4:32:54 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 4:33:16 - WARN  --> {"code":"expired_auth","nonce":"mSSD!1cP3tITtJz15Kz!\/OfWvqF3@m*JGOqaO0fX"} 
+2012-01-09 4:33:16 - WARN  --> {"code":"expired_auth","nonce":"%ywV+a8az=c(NjNRFDqP_%5)+AbOp5n%M6Zk5nG@"} 
+2012-01-09 4:33:17 - WARN  --> {"code":"expired_auth","nonce":"SdUqYfPr6FK91Q)Q)b$DmC5PTEHF6KvFx6AWcB#k"} 
+2012-01-09 4:33:17 - WARN  --> {"code":"expired_auth","nonce":"G\/dLB4-(KBKh3vG*Yyn$MSx1wtwzVaHRXOn*cAkv"} 
+2012-01-09 4:33:17 - WARN  --> {"code":"expired_auth","nonce":"ZF9=ZaAsTpZP8m7cIKp1jNaJJRaCmOGE2OVf#%jy"} 
+2012-01-09 4:33:17 - WARN  --> {"code":"expired_auth","nonce":"C((zP1CN&+@\/Rb)H6g(MaT4!*#(dHjM4tfJ!D8kN"} 
+2012-01-09 4:33:18 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 4:33:18 - WARN  --> {"code":"expired_auth","nonce":"rIqkL))O1*TpPjX(v%AS@GCdHgdAFZLk!dAVtIPd"} 
+2012-01-09 4:33:18 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 4:33:31 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 4:33:47 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 4:33:58 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 4:34:13 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 4:34:28 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 4:34:43 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 4:34:48 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 4:35:08 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 4:40:09 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 4:40:14 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 4:40:35 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 4:40:46 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 4:40:54 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 4:41:20 - WARN  --> {"code":"expired_auth","nonce":"2g86*+YbT8P0%8tm5DY8C@Nks!Ud0\/F$t*UTtNt9"} 
+2012-01-09 4:41:20 - WARN  --> {"code":"shouts","rho":1.0e-5} 
+2012-01-09 4:41:21 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 4:41:37 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 4:41:53 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 4:42:07 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 4:42:12 - WARN  --> {"code":"shouts","rho":1.0e-5} 
+2012-01-09 4:42:27 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 4:42:42 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 4:43:03 - WARN  --> {"code":"ping_ok"} 
+2012-01-08 23:45:28 - WARN  --> {"code":"ping_ok"} 
+2012-01-08 23:45:48 - WARN  --> {"code":"ping_ok"} 
+2012-01-08 23:47:41 - WARN  --> {"code":"ping_ok"} 
+2012-01-08 23:48:02 - WARN  --> {"code":"ping_ok"} 
+2012-01-08 23:51:46 - WARN  --> {"code":"ping_ok"} 
+2012-01-08 23:52:07 - WARN  --> {"code":"ping_ok"} 
+2012-01-08 23:53:46 - WARN  --> {"code":"ping_ok"} 
+2012-01-08 23:54:08 - WARN  --> {"code":"ping_ok"} 
+2012-01-08 23:54:48 - WARN  --> {"code":"ping_ok"} 
+2012-01-08 23:55:09 - WARN  --> {"code":"ping_ok"} 
+2012-01-08 23:59:11 - WARN  --> {"code":"ping_ok"} 
+2012-01-08 23:59:27 - WARN  --> {"code":"ping_ok"} 
+2012-01-08 23:59:49 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 0:03:33 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 0:03:54 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 0:10:46 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 0:10:51 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 0:11:12 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 0:11:46 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 0:12:07 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 0:15:46 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 0:15:52 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 0:16:13 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 0:18:22 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 0:18:33 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 0:18:47 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 0:19:07 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 0:19:23 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 0:19:38 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 0:19:53 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 0:20:01 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 0:20:23 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 0:21:15 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 0:21:36 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 0:22:20 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 0:22:41 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 0:23:30 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 0:23:52 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 0:23:59 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 0:24:03 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 0:24:10 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 0:24:25 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 0:24:40 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 0:24:56 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 0:25:08 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 0:25:29 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 0:27:41 - WARN  --> a : user_ping, uid : c582a145-b195-61b9-8081-1fe2f7bb50ed, auth : wBqUjp$+Q95bUpg_Q2kV+@OnPIrMy1M)9a57b960b8d2f7cdd9648a9462e7a6aa34e2221ea0ef2ec1c4aedeb28d3d0ed37b16aae78122b6462629f3f7717dbc0e77470d54809d588f93b1941f1fa27478, lat : 40.74866, long : -74.03178,  
+2012-01-09 0:27:41 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 0:27:52 - WARN  --> a : shout, uid : c582a145-b195-61b9-8081-1fe2f7bb50ed, auth : wBqUjp$+Q95bUpg_Q2kV+@OnPIrMy1M)9a57b960b8d2f7cdd9648a9462e7a6aa34e2221ea0ef2ec1c4aedeb28d3d0ed37b16aae78122b6462629f3f7717dbc0e77470d54809d588f93b1941f1fa27478, lat : 40.74866, long : -74.03178, txt : Hi, power : 5,  
+2012-01-09 0:27:52 - WARN  --> a : user_ping, uid : c582a145-b195-61b9-8081-1fe2f7bb50ed, auth : wBqUjp$+Q95bUpg_Q2kV+@OnPIrMy1M)9a57b960b8d2f7cdd9648a9462e7a6aa34e2221ea0ef2ec1c4aedeb28d3d0ed37b16aae78122b6462629f3f7717dbc0e77470d54809d588f93b1941f1fa27478, lat : 40.74866, long : -74.03178,  
+2012-01-09 0:27:52 - WARN  --> {"code":"shouts","shouts":[{"shout_id":"323d8398-050d-855a-a902-bbc51f4ebf39","ts":"2012-01-09T00:27:52-0500","txt":"Hi"}]} 
+2012-01-09 0:27:52 - WARN  --> {"code":"shout_sent"} 
+2012-01-09 0:28:01 - WARN  --> a : vote, uid : c582a145-b195-61b9-8081-1fe2f7bb50ed, auth : wBqUjp$+Q95bUpg_Q2kV+@OnPIrMy1M)9a57b960b8d2f7cdd9648a9462e7a6aa34e2221ea0ef2ec1c4aedeb28d3d0ed37b16aae78122b6462629f3f7717dbc0e77470d54809d588f93b1941f1fa27478, shout_id : 323d8398-050d-855a-a902-bbc51f4ebf39, vote : 1,  
+2012-01-09 0:28:01 - WARN  --> a : user_ping, uid : c582a145-b195-61b9-8081-1fe2f7bb50ed, auth : wBqUjp$+Q95bUpg_Q2kV+@OnPIrMy1M)9a57b960b8d2f7cdd9648a9462e7a6aa34e2221ea0ef2ec1c4aedeb28d3d0ed37b16aae78122b6462629f3f7717dbc0e77470d54809d588f93b1941f1fa27478, lat : 40.74866, long : -74.03178, scores : ["323d8398-050d-855a-a902-bbc51f4ebf39"],  
+2012-01-09 0:28:01 - WARN  --> {"code":"shouts","scores":[{"shout_id":"323d8398-050d-855a-a902-bbc51f4ebf39","ups":2,"downs":0,"hit":2,"pts":2,"open":1}]} 
+2012-01-09 0:28:01 - WARN  --> {"code":"vote_ok"} 
+2012-01-09 0:28:11 - WARN  --> a : user_ping, uid : c582a145-b195-61b9-8081-1fe2f7bb50ed, auth : wBqUjp$+Q95bUpg_Q2kV+@OnPIrMy1M)9a57b960b8d2f7cdd9648a9462e7a6aa34e2221ea0ef2ec1c4aedeb28d3d0ed37b16aae78122b6462629f3f7717dbc0e77470d54809d588f93b1941f1fa27478, lat : 40.74866, long : -74.03178, scores : ["323d8398-050d-855a-a902-bbc51f4ebf39"],  
+2012-01-09 0:28:11 - WARN  --> {"code":"shouts","scores":[{"shout_id":"323d8398-050d-855a-a902-bbc51f4ebf39","ups":2,"downs":0,"hit":2,"pts":2,"open":1}]} 
+2012-01-09 0:28:25 - WARN  --> a : user_ping, uid : c582a145-b195-61b9-8081-1fe2f7bb50ed, auth : wBqUjp$+Q95bUpg_Q2kV+@OnPIrMy1M)9a57b960b8d2f7cdd9648a9462e7a6aa34e2221ea0ef2ec1c4aedeb28d3d0ed37b16aae78122b6462629f3f7717dbc0e77470d54809d588f93b1941f1fa27478, lat : 40.74866, long : -74.03178, scores : ["323d8398-050d-855a-a902-bbc51f4ebf39"],  
+2012-01-09 0:28:25 - WARN  --> {"code":"shouts","scores":[{"shout_id":"323d8398-050d-855a-a902-bbc51f4ebf39","ups":2,"downs":0,"hit":2,"pts":2,"open":1}]} 
+2012-01-09 0:28:30 - WARN  --> a : user_ping, uid : c582a145-b195-61b9-8081-1fe2f7bb50ed, auth : wBqUjp$+Q95bUpg_Q2kV+@OnPIrMy1M)9a57b960b8d2f7cdd9648a9462e7a6aa34e2221ea0ef2ec1c4aedeb28d3d0ed37b16aae78122b6462629f3f7717dbc0e77470d54809d588f93b1941f1fa27478, lat : 40.74866, long : -74.03178, scores : ["323d8398-050d-855a-a902-bbc51f4ebf39"],  
+2012-01-09 0:28:30 - WARN  --> {"code":"shouts","scores":[{"shout_id":"323d8398-050d-855a-a902-bbc51f4ebf39","ups":2,"downs":0,"hit":2,"pts":2,"open":1}]} 
+2012-01-09 0:28:45 - WARN  --> a : user_ping, uid : c582a145-b195-61b9-8081-1fe2f7bb50ed, auth : wBqUjp$+Q95bUpg_Q2kV+@OnPIrMy1M)9a57b960b8d2f7cdd9648a9462e7a6aa34e2221ea0ef2ec1c4aedeb28d3d0ed37b16aae78122b6462629f3f7717dbc0e77470d54809d588f93b1941f1fa27478, lat : 40.74866, long : -74.03178, scores : ["323d8398-050d-855a-a902-bbc51f4ebf39"],  
+2012-01-09 0:28:45 - WARN  --> {"code":"shouts","scores":[{"shout_id":"323d8398-050d-855a-a902-bbc51f4ebf39","ups":2,"downs":0,"hit":2,"pts":2,"open":1}]} 
+2012-01-09 0:29:00 - WARN  --> a : user_ping, uid : c582a145-b195-61b9-8081-1fe2f7bb50ed, auth : wBqUjp$+Q95bUpg_Q2kV+@OnPIrMy1M)9a57b960b8d2f7cdd9648a9462e7a6aa34e2221ea0ef2ec1c4aedeb28d3d0ed37b16aae78122b6462629f3f7717dbc0e77470d54809d588f93b1941f1fa27478, lat : 40.74866, long : -74.03178, scores : ["323d8398-050d-855a-a902-bbc51f4ebf39"],  
+2012-01-09 0:29:00 - WARN  --> {"code":"shouts","scores":[{"shout_id":"323d8398-050d-855a-a902-bbc51f4ebf39","ups":2,"downs":0,"hit":2,"pts":2,"open":1}]} 
+2012-01-09 0:29:11 - WARN  --> a : user_ping, uid : c582a145-b195-61b9-8081-1fe2f7bb50ed, auth : wBqUjp$+Q95bUpg_Q2kV+@OnPIrMy1M)9a57b960b8d2f7cdd9648a9462e7a6aa34e2221ea0ef2ec1c4aedeb28d3d0ed37b16aae78122b6462629f3f7717dbc0e77470d54809d588f93b1941f1fa27478, lat : 40.74866, long : -74.03178, scores : ["323d8398-050d-855a-a902-bbc51f4ebf39"],  
+2012-01-09 0:29:11 - WARN  --> {"code":"shouts","scores":[{"shout_id":"323d8398-050d-855a-a902-bbc51f4ebf39","ups":2,"downs":0,"hit":2,"pts":2,"open":1}]} 
+2012-01-09 0:29:47 - WARN  --> a : shout, uid : c582a145-b195-61b9-8081-1fe2f7bb50ed, auth : wBqUjp$+Q95bUpg_Q2kV+@OnPIrMy1M)9a57b960b8d2f7cdd9648a9462e7a6aa34e2221ea0ef2ec1c4aedeb28d3d0ed37b16aae78122b6462629f3f7717dbc0e77470d54809d588f93b1941f1fa27478, lat : 40.74866, long : -74.03178, txt : A, power : 5,  
+2012-01-09 0:29:47 - WARN  --> a : user_ping, uid : c582a145-b195-61b9-8081-1fe2f7bb50ed, auth : wBqUjp$+Q95bUpg_Q2kV+@OnPIrMy1M)9a57b960b8d2f7cdd9648a9462e7a6aa34e2221ea0ef2ec1c4aedeb28d3d0ed37b16aae78122b6462629f3f7717dbc0e77470d54809d588f93b1941f1fa27478, lat : 40.74866, long : -74.03178, scores : ["323d8398-050d-855a-a902-bbc51f4ebf39"],  
+2012-01-09 0:29:47 - WARN  --> {"code":"shouts","shouts":[{"shout_id":"da401091-e7f9-137c-2e8c-71af7e9a6e9d","ts":"2012-01-09T00:29:47-0500","txt":"A"}],"scores":[{"shout_id":"323d8398-050d-855a-a902-bbc51f4ebf39","ups":2,"downs":0,"hit":2,"pts":2,"open":1}]} 
+2012-01-09 0:29:47 - WARN  --> {"code":"shout_sent"} 
+2012-01-09 0:29:56 - WARN  --> a : user_ping, uid : c582a145-b195-61b9-8081-1fe2f7bb50ed, auth : wBqUjp$+Q95bUpg_Q2kV+@OnPIrMy1M)9a57b960b8d2f7cdd9648a9462e7a6aa34e2221ea0ef2ec1c4aedeb28d3d0ed37b16aae78122b6462629f3f7717dbc0e77470d54809d588f93b1941f1fa27478, lat : 40.7414, long : -74.03396, scores : ["da401091-e7f9-137c-2e8c-71af7e9a6e9d", "323d8398-050d-855a-a902-bbc51f4ebf39"],  
+2012-01-09 0:29:57 - WARN  --> {"code":"shouts","scores":[{"shout_id":"da401091-e7f9-137c-2e8c-71af7e9a6e9d","ups":1,"downs":0,"hit":2,"pts":1,"open":1},{"shout_id":"323d8398-050d-855a-a902-bbc51f4ebf39","ups":2,"downs":0,"hit":2,"pts":2,"open":1}]} 
+2012-01-09 0:30:12 - WARN  --> a : user_ping, uid : c582a145-b195-61b9-8081-1fe2f7bb50ed, auth : wBqUjp$+Q95bUpg_Q2kV+@OnPIrMy1M)9a57b960b8d2f7cdd9648a9462e7a6aa34e2221ea0ef2ec1c4aedeb28d3d0ed37b16aae78122b6462629f3f7717dbc0e77470d54809d588f93b1941f1fa27478, lat : 40.7414, long : -74.03396, scores : ["da401091-e7f9-137c-2e8c-71af7e9a6e9d", "323d8398-050d-855a-a902-bbc51f4ebf39"],  
+2012-01-09 0:30:12 - WARN  --> {"code":"shouts","scores":[{"shout_id":"da401091-e7f9-137c-2e8c-71af7e9a6e9d","ups":1,"downs":0,"hit":2,"pts":1,"open":1},{"shout_id":"323d8398-050d-855a-a902-bbc51f4ebf39","ups":2,"downs":0,"hit":2,"pts":2,"open":1}]} 
+2012-01-09 0:30:27 - WARN  --> a : user_ping, uid : c582a145-b195-61b9-8081-1fe2f7bb50ed, auth : wBqUjp$+Q95bUpg_Q2kV+@OnPIrMy1M)9a57b960b8d2f7cdd9648a9462e7a6aa34e2221ea0ef2ec1c4aedeb28d3d0ed37b16aae78122b6462629f3f7717dbc0e77470d54809d588f93b1941f1fa27478, lat : 40.7414, long : -74.03396, scores : ["da401091-e7f9-137c-2e8c-71af7e9a6e9d", "323d8398-050d-855a-a902-bbc51f4ebf39"],  
+2012-01-09 0:30:27 - WARN  --> {"code":"shouts","scores":[{"shout_id":"da401091-e7f9-137c-2e8c-71af7e9a6e9d","ups":1,"downs":0,"hit":2,"pts":1,"open":1},{"shout_id":"323d8398-050d-855a-a902-bbc51f4ebf39","ups":2,"downs":0,"hit":2,"pts":2,"open":1}]} 
+2012-01-09 0:30:42 - WARN  --> a : user_ping, uid : c582a145-b195-61b9-8081-1fe2f7bb50ed, auth : wBqUjp$+Q95bUpg_Q2kV+@OnPIrMy1M)9a57b960b8d2f7cdd9648a9462e7a6aa34e2221ea0ef2ec1c4aedeb28d3d0ed37b16aae78122b6462629f3f7717dbc0e77470d54809d588f93b1941f1fa27478, lat : 40.7414, long : -74.03396, scores : ["da401091-e7f9-137c-2e8c-71af7e9a6e9d", "323d8398-050d-855a-a902-bbc51f4ebf39"],  
+2012-01-09 0:30:42 - WARN  --> {"code":"shouts","scores":[{"shout_id":"da401091-e7f9-137c-2e8c-71af7e9a6e9d","ups":1,"downs":0,"hit":2,"pts":1,"open":1},{"shout_id":"323d8398-050d-855a-a902-bbc51f4ebf39","ups":2,"downs":0,"hit":2,"pts":2,"open":1}]} 
+2012-01-09 0:30:46 - WARN  --> a : user_ping, uid : c582a145-b195-61b9-8081-1fe2f7bb50ed, auth : wBqUjp$+Q95bUpg_Q2kV+@OnPIrMy1M)9a57b960b8d2f7cdd9648a9462e7a6aa34e2221ea0ef2ec1c4aedeb28d3d0ed37b16aae78122b6462629f3f7717dbc0e77470d54809d588f93b1941f1fa27478, lat : 40.74866, long : -74.03178, scores : ["da401091-e7f9-137c-2e8c-71af7e9a6e9d", "323d8398-050d-855a-a902-bbc51f4ebf39"],  
+2012-01-09 0:30:46 - WARN  --> {"code":"shouts","scores":[{"shout_id":"da401091-e7f9-137c-2e8c-71af7e9a6e9d","ups":1,"downs":0,"hit":2,"pts":1,"open":1},{"shout_id":"323d8398-050d-855a-a902-bbc51f4ebf39","ups":2,"downs":0,"hit":2,"pts":2,"open":1}]} 
+2012-01-09 0:31:02 - WARN  --> a : user_ping, uid : c582a145-b195-61b9-8081-1fe2f7bb50ed, auth : wBqUjp$+Q95bUpg_Q2kV+@OnPIrMy1M)9a57b960b8d2f7cdd9648a9462e7a6aa34e2221ea0ef2ec1c4aedeb28d3d0ed37b16aae78122b6462629f3f7717dbc0e77470d54809d588f93b1941f1fa27478, lat : 40.74866, long : -74.03178, scores : ["da401091-e7f9-137c-2e8c-71af7e9a6e9d", "323d8398-050d-855a-a902-bbc51f4ebf39"],  
+2012-01-09 0:31:02 - WARN  --> {"code":"shouts","scores":[{"shout_id":"da401091-e7f9-137c-2e8c-71af7e9a6e9d","ups":1,"downs":0,"hit":2,"pts":1,"open":1},{"shout_id":"323d8398-050d-855a-a902-bbc51f4ebf39","ups":2,"downs":0,"hit":2,"pts":2,"open":1}]} 
+2012-01-09 0:31:17 - WARN  --> a : user_ping, uid : c582a145-b195-61b9-8081-1fe2f7bb50ed, auth : wBqUjp$+Q95bUpg_Q2kV+@OnPIrMy1M)9a57b960b8d2f7cdd9648a9462e7a6aa34e2221ea0ef2ec1c4aedeb28d3d0ed37b16aae78122b6462629f3f7717dbc0e77470d54809d588f93b1941f1fa27478, lat : 40.74866, long : -74.03178, scores : ["da401091-e7f9-137c-2e8c-71af7e9a6e9d", "323d8398-050d-855a-a902-bbc51f4ebf39"],  
+2012-01-09 0:31:17 - WARN  --> {"code":"shouts","scores":[{"shout_id":"da401091-e7f9-137c-2e8c-71af7e9a6e9d","ups":1,"downs":0,"hit":2,"pts":1,"open":1},{"shout_id":"323d8398-050d-855a-a902-bbc51f4ebf39","ups":2,"downs":0,"hit":2,"pts":2,"open":1}]} 
+2012-01-09 0:31:32 - WARN  --> a : user_ping, uid : c582a145-b195-61b9-8081-1fe2f7bb50ed, auth : wBqUjp$+Q95bUpg_Q2kV+@OnPIrMy1M)9a57b960b8d2f7cdd9648a9462e7a6aa34e2221ea0ef2ec1c4aedeb28d3d0ed37b16aae78122b6462629f3f7717dbc0e77470d54809d588f93b1941f1fa27478, lat : 40.74866, long : -74.03178, scores : ["da401091-e7f9-137c-2e8c-71af7e9a6e9d", "323d8398-050d-855a-a902-bbc51f4ebf39"],  
+2012-01-09 0:31:32 - WARN  --> {"code":"shouts","scores":[{"shout_id":"da401091-e7f9-137c-2e8c-71af7e9a6e9d","ups":1,"downs":0,"hit":2,"pts":1,"open":1},{"shout_id":"323d8398-050d-855a-a902-bbc51f4ebf39","ups":2,"downs":0,"hit":2,"pts":2,"open":1}]} 
+2012-01-09 0:31:47 - WARN  --> a : user_ping, uid : c582a145-b195-61b9-8081-1fe2f7bb50ed, auth : wBqUjp$+Q95bUpg_Q2kV+@OnPIrMy1M)9a57b960b8d2f7cdd9648a9462e7a6aa34e2221ea0ef2ec1c4aedeb28d3d0ed37b16aae78122b6462629f3f7717dbc0e77470d54809d588f93b1941f1fa27478, lat : 40.74866, long : -74.03178, scores : ["da401091-e7f9-137c-2e8c-71af7e9a6e9d", "323d8398-050d-855a-a902-bbc51f4ebf39"],  
+2012-01-09 0:31:47 - WARN  --> {"code":"shouts","scores":[{"shout_id":"da401091-e7f9-137c-2e8c-71af7e9a6e9d","ups":1,"downs":0,"hit":2,"pts":1,"open":1},{"shout_id":"323d8398-050d-855a-a902-bbc51f4ebf39","ups":2,"downs":0,"hit":2,"pts":2,"open":1}]} 
+2012-01-09 0:31:52 - WARN  --> a : user_ping, uid : c582a145-b195-61b9-8081-1fe2f7bb50ed, auth : wBqUjp$+Q95bUpg_Q2kV+@OnPIrMy1M)9a57b960b8d2f7cdd9648a9462e7a6aa34e2221ea0ef2ec1c4aedeb28d3d0ed37b16aae78122b6462629f3f7717dbc0e77470d54809d588f93b1941f1fa27478, lat : 40.74866, long : -74.03178, scores : ["da401091-e7f9-137c-2e8c-71af7e9a6e9d", "323d8398-050d-855a-a902-bbc51f4ebf39"],  
+2012-01-09 0:31:52 - WARN  --> {"code":"shouts","scores":[{"shout_id":"da401091-e7f9-137c-2e8c-71af7e9a6e9d","ups":1,"downs":0,"hit":2,"pts":1,"open":1},{"shout_id":"323d8398-050d-855a-a902-bbc51f4ebf39","ups":2,"downs":0,"hit":2,"pts":2,"open":1}]} 
+2012-01-09 0:32:07 - WARN  --> a : user_ping, uid : c582a145-b195-61b9-8081-1fe2f7bb50ed, auth : wBqUjp$+Q95bUpg_Q2kV+@OnPIrMy1M)9a57b960b8d2f7cdd9648a9462e7a6aa34e2221ea0ef2ec1c4aedeb28d3d0ed37b16aae78122b6462629f3f7717dbc0e77470d54809d588f93b1941f1fa27478, lat : 40.74866, long : -74.03178, scores : ["da401091-e7f9-137c-2e8c-71af7e9a6e9d", "323d8398-050d-855a-a902-bbc51f4ebf39"],  
+2012-01-09 0:32:07 - WARN  --> {"code":"shouts","scores":[{"shout_id":"da401091-e7f9-137c-2e8c-71af7e9a6e9d","ups":1,"downs":0,"hit":2,"pts":1,"open":1},{"shout_id":"323d8398-050d-855a-a902-bbc51f4ebf39","ups":2,"downs":0,"hit":2,"pts":2,"open":1}]} 
+2012-01-09 0:32:22 - WARN  --> a : user_ping, uid : c582a145-b195-61b9-8081-1fe2f7bb50ed, auth : wBqUjp$+Q95bUpg_Q2kV+@OnPIrMy1M)9a57b960b8d2f7cdd9648a9462e7a6aa34e2221ea0ef2ec1c4aedeb28d3d0ed37b16aae78122b6462629f3f7717dbc0e77470d54809d588f93b1941f1fa27478, lat : 40.74866, long : -74.03178, scores : ["da401091-e7f9-137c-2e8c-71af7e9a6e9d", "323d8398-050d-855a-a902-bbc51f4ebf39"],  
+2012-01-09 0:32:22 - WARN  --> {"code":"shouts","scores":[{"shout_id":"da401091-e7f9-137c-2e8c-71af7e9a6e9d","ups":1,"downs":0,"hit":2,"pts":1,"open":1},{"shout_id":"323d8398-050d-855a-a902-bbc51f4ebf39","ups":2,"downs":0,"hit":2,"pts":2,"open":1}]} 
+2012-01-09 0:32:37 - WARN  --> a : user_ping, uid : c582a145-b195-61b9-8081-1fe2f7bb50ed, auth : wBqUjp$+Q95bUpg_Q2kV+@OnPIrMy1M)9a57b960b8d2f7cdd9648a9462e7a6aa34e2221ea0ef2ec1c4aedeb28d3d0ed37b16aae78122b6462629f3f7717dbc0e77470d54809d588f93b1941f1fa27478, lat : 40.74866, long : -74.03178, scores : ["da401091-e7f9-137c-2e8c-71af7e9a6e9d", "323d8398-050d-855a-a902-bbc51f4ebf39"],  
+2012-01-09 0:32:37 - WARN  --> {"code":"shouts","scores":[{"shout_id":"da401091-e7f9-137c-2e8c-71af7e9a6e9d","ups":1,"downs":0,"hit":2,"pts":1,"open":1},{"shout_id":"323d8398-050d-855a-a902-bbc51f4ebf39","ups":2,"downs":0,"hit":2,"pts":2,"open":1}]} 
+2012-01-09 0:32:42 - WARN  --> a : user_ping, uid : c582a145-b195-61b9-8081-1fe2f7bb50ed, auth : wBqUjp$+Q95bUpg_Q2kV+@OnPIrMy1M)9a57b960b8d2f7cdd9648a9462e7a6aa34e2221ea0ef2ec1c4aedeb28d3d0ed37b16aae78122b6462629f3f7717dbc0e77470d54809d588f93b1941f1fa27478, lat : 40.74866, long : -74.03178, scores : ["da401091-e7f9-137c-2e8c-71af7e9a6e9d", "323d8398-050d-855a-a902-bbc51f4ebf39"],  
+2012-01-09 0:32:42 - WARN  --> {"code":"shouts","scores":[{"shout_id":"da401091-e7f9-137c-2e8c-71af7e9a6e9d","ups":1,"downs":0,"hit":2,"pts":1,"open":1},{"shout_id":"323d8398-050d-855a-a902-bbc51f4ebf39","ups":2,"downs":0,"hit":2,"pts":2,"open":1}]} 
+2012-01-09 0:32:57 - WARN  --> a : user_ping, uid : c582a145-b195-61b9-8081-1fe2f7bb50ed, auth : wBqUjp$+Q95bUpg_Q2kV+@OnPIrMy1M)9a57b960b8d2f7cdd9648a9462e7a6aa34e2221ea0ef2ec1c4aedeb28d3d0ed37b16aae78122b6462629f3f7717dbc0e77470d54809d588f93b1941f1fa27478, lat : 40.74866, long : -74.03178, scores : ["da401091-e7f9-137c-2e8c-71af7e9a6e9d", "323d8398-050d-855a-a902-bbc51f4ebf39"],  
+2012-01-09 0:32:57 - WARN  --> {"code":"shouts","scores":[{"shout_id":"da401091-e7f9-137c-2e8c-71af7e9a6e9d","ups":1,"downs":0,"hit":2,"pts":1,"open":1},{"shout_id":"323d8398-050d-855a-a902-bbc51f4ebf39","ups":2,"downs":0,"hit":2,"pts":2,"open":1}]} 
+2012-01-09 0:33:11 - WARN  --> a : user_ping, uid : c582a145-b195-61b9-8081-1fe2f7bb50ed, auth : wBqUjp$+Q95bUpg_Q2kV+@OnPIrMy1M)9a57b960b8d2f7cdd9648a9462e7a6aa34e2221ea0ef2ec1c4aedeb28d3d0ed37b16aae78122b6462629f3f7717dbc0e77470d54809d588f93b1941f1fa27478, lat : 40.74866, long : -74.03178, scores : ["da401091-e7f9-137c-2e8c-71af7e9a6e9d", "323d8398-050d-855a-a902-bbc51f4ebf39"],  
+2012-01-09 0:33:11 - WARN  --> {"code":"shouts","scores":[{"shout_id":"da401091-e7f9-137c-2e8c-71af7e9a6e9d","ups":1,"downs":0,"hit":2,"pts":1,"open":1},{"shout_id":"323d8398-050d-855a-a902-bbc51f4ebf39","ups":2,"downs":0,"hit":2,"pts":2,"open":1}]} 
+2012-01-09 0:33:26 - WARN  --> a : user_ping, uid : c582a145-b195-61b9-8081-1fe2f7bb50ed, auth : wBqUjp$+Q95bUpg_Q2kV+@OnPIrMy1M)9a57b960b8d2f7cdd9648a9462e7a6aa34e2221ea0ef2ec1c4aedeb28d3d0ed37b16aae78122b6462629f3f7717dbc0e77470d54809d588f93b1941f1fa27478, lat : 40.74866, long : -74.03178, scores : ["da401091-e7f9-137c-2e8c-71af7e9a6e9d", "323d8398-050d-855a-a902-bbc51f4ebf39"],  
+2012-01-09 0:33:26 - WARN  --> {"code":"shouts","scores":[{"shout_id":"da401091-e7f9-137c-2e8c-71af7e9a6e9d","ups":1,"downs":0,"hit":2,"pts":1,"open":1},{"shout_id":"323d8398-050d-855a-a902-bbc51f4ebf39","ups":2,"downs":0,"hit":2,"pts":2,"open":1}]} 
+2012-01-09 0:35:11 - WARN  --> a : user_ping, uid : c582a145-b195-61b9-8081-1fe2f7bb50ed, auth : default, lat : 40.74866, long : -74.03178, scores : ["da401091-e7f9-137c-2e8c-71af7e9a6e9d", "323d8398-050d-855a-a902-bbc51f4ebf39"],  
+2012-01-09 0:35:11 - WARN  --> a : user_ping, uid : c582a145-b195-61b9-8081-1fe2f7bb50ed, auth : default, lat : 40.74866, long : -74.03178, scores : ["da401091-e7f9-137c-2e8c-71af7e9a6e9d", "323d8398-050d-855a-a902-bbc51f4ebf39"],  
+2012-01-09 0:35:11 - WARN  --> {"code":"expired_auth","nonce":"x-xVvg!$EOL$!p=X$_P+IE$S)F-_xdVvKsHgt7ka"} 
+2012-01-09 0:35:11 - WARN  --> {"code":"expired_auth","nonce":"p\/nQLah*x@7I6r_E4PT\/@6cCz91NZv&t$CVp\/6*="} 
+2012-01-09 0:35:12 - WARN  --> a : user_ping, uid : c582a145-b195-61b9-8081-1fe2f7bb50ed, auth : wBqUjp$+Q95bUpg_Q2kV+@OnPIrMy1M)8ea974e1e3d10641e0b78e20947f805a18596bc98172a8ac541e635f7e0298f0555598673b2150cbe7580b95a3d9d38212749f1fa946a0492b308646b2d5c9ca, lat : 40.74866, long : -74.03178, scores : ["da401091-e7f9-137c-2e8c-71af7e9a6e9d", "323d8398-050d-855a-a902-bbc51f4ebf39"],  
+2012-01-09 0:35:12 - WARN  --> a : user_ping, uid : c582a145-b195-61b9-8081-1fe2f7bb50ed, auth : wBqUjp$+Q95bUpg_Q2kV+@OnPIrMy1M)062f419794859485d221ed8ae053952d2f1260bff882eef9e21e14cdbf8018a6117e5d2b64380873c7cccd2d90c5730191112738790b67efd0cfda8c597b140c, lat : 40.74866, long : -74.03178, scores : ["da401091-e7f9-137c-2e8c-71af7e9a6e9d", "323d8398-050d-855a-a902-bbc51f4ebf39"],  
+2012-01-09 0:35:12 - WARN  --> {"code":"shouts","scores":[{"shout_id":"da401091-e7f9-137c-2e8c-71af7e9a6e9d","ups":1,"downs":0,"hit":2,"pts":1,"open":1},{"shout_id":"323d8398-050d-855a-a902-bbc51f4ebf39","ups":2,"downs":0,"hit":2,"pts":2,"open":1}]} 
+2012-01-09 0:35:12 - WARN  --> {"code":"expired_auth","nonce":"n(2fdk\/M)wUJnaHvJ=IEN21f8\/+_5!wyEJnVdzB7"} 
+2012-01-09 0:35:13 - WARN  --> a : user_ping, uid : c582a145-b195-61b9-8081-1fe2f7bb50ed, auth : wBqUjp$+Q95bUpg_Q2kV+@OnPIrMy1M)1d2498e38773b5448d77f82f2d8866512937f67ec340025b9b4125eb69726deed7916117599bd027b04d4ff1e71fec11ee84dc68e2614f536ba1a0e64f79bd7f, lat : 40.74866, long : -74.03178, scores : ["da401091-e7f9-137c-2e8c-71af7e9a6e9d", "323d8398-050d-855a-a902-bbc51f4ebf39"],  
+2012-01-09 0:35:13 - WARN  --> {"code":"shouts","scores":[{"shout_id":"da401091-e7f9-137c-2e8c-71af7e9a6e9d","ups":1,"downs":0,"hit":2,"pts":1,"open":1},{"shout_id":"323d8398-050d-855a-a902-bbc51f4ebf39","ups":2,"downs":0,"hit":2,"pts":2,"open":1}]} 
+2012-01-09 0:35:18 - WARN  --> a : user_ping, uid : c582a145-b195-61b9-8081-1fe2f7bb50ed, auth : wBqUjp$+Q95bUpg_Q2kV+@OnPIrMy1M)1d2498e38773b5448d77f82f2d8866512937f67ec340025b9b4125eb69726deed7916117599bd027b04d4ff1e71fec11ee84dc68e2614f536ba1a0e64f79bd7f, lat : 40.74866, long : -74.03178, scores : ["da401091-e7f9-137c-2e8c-71af7e9a6e9d", "323d8398-050d-855a-a902-bbc51f4ebf39"],  
+2012-01-09 0:35:18 - WARN  --> {"code":"shouts","scores":[{"shout_id":"da401091-e7f9-137c-2e8c-71af7e9a6e9d","ups":1,"downs":0,"hit":2,"pts":1,"open":1},{"shout_id":"323d8398-050d-855a-a902-bbc51f4ebf39","ups":2,"downs":0,"hit":2,"pts":2,"open":1}]} 
+2012-01-09 0:35:33 - WARN  --> a : user_ping, uid : c582a145-b195-61b9-8081-1fe2f7bb50ed, auth : wBqUjp$+Q95bUpg_Q2kV+@OnPIrMy1M)1d2498e38773b5448d77f82f2d8866512937f67ec340025b9b4125eb69726deed7916117599bd027b04d4ff1e71fec11ee84dc68e2614f536ba1a0e64f79bd7f, lat : 40.74866, long : -74.03178, scores : ["da401091-e7f9-137c-2e8c-71af7e9a6e9d", "323d8398-050d-855a-a902-bbc51f4ebf39"],  
+2012-01-09 0:35:33 - WARN  --> {"code":"shouts","scores":[{"shout_id":"da401091-e7f9-137c-2e8c-71af7e9a6e9d","ups":1,"downs":0,"hit":2,"pts":1,"open":1},{"shout_id":"323d8398-050d-855a-a902-bbc51f4ebf39","ups":2,"downs":0,"hit":2,"pts":2,"open":1}]} 
+2012-01-09 0:35:49 - WARN  --> a : user_ping, uid : c582a145-b195-61b9-8081-1fe2f7bb50ed, auth : wBqUjp$+Q95bUpg_Q2kV+@OnPIrMy1M)1d2498e38773b5448d77f82f2d8866512937f67ec340025b9b4125eb69726deed7916117599bd027b04d4ff1e71fec11ee84dc68e2614f536ba1a0e64f79bd7f, lat : 40.74866, long : -74.03178, scores : ["da401091-e7f9-137c-2e8c-71af7e9a6e9d", "323d8398-050d-855a-a902-bbc51f4ebf39"],  
+2012-01-09 0:35:49 - WARN  --> {"code":"shouts","scores":[{"shout_id":"da401091-e7f9-137c-2e8c-71af7e9a6e9d","ups":1,"downs":0,"hit":2,"pts":1,"open":1},{"shout_id":"323d8398-050d-855a-a902-bbc51f4ebf39","ups":2,"downs":0,"hit":2,"pts":2,"open":1}]} 
+2012-01-09 0:36:04 - WARN  --> a : user_ping, uid : c582a145-b195-61b9-8081-1fe2f7bb50ed, auth : wBqUjp$+Q95bUpg_Q2kV+@OnPIrMy1M)1d2498e38773b5448d77f82f2d8866512937f67ec340025b9b4125eb69726deed7916117599bd027b04d4ff1e71fec11ee84dc68e2614f536ba1a0e64f79bd7f, lat : 40.74866, long : -74.03178, scores : ["da401091-e7f9-137c-2e8c-71af7e9a6e9d", "323d8398-050d-855a-a902-bbc51f4ebf39"],  
+2012-01-09 0:36:04 - WARN  --> {"code":"shouts","scores":[{"shout_id":"da401091-e7f9-137c-2e8c-71af7e9a6e9d","ups":1,"downs":0,"hit":2,"pts":1,"open":1},{"shout_id":"323d8398-050d-855a-a902-bbc51f4ebf39","ups":2,"downs":0,"hit":2,"pts":2,"open":1}]} 
+2012-01-09 0:36:28 - WARN  --> a : user_ping, uid : c582a145-b195-61b9-8081-1fe2f7bb50ed, auth : wBqUjp$+Q95bUpg_Q2kV+@OnPIrMy1M)1d2498e38773b5448d77f82f2d8866512937f67ec340025b9b4125eb69726deed7916117599bd027b04d4ff1e71fec11ee84dc68e2614f536ba1a0e64f79bd7f, lat : 40.74866, long : -74.03178, scores : ["da401091-e7f9-137c-2e8c-71af7e9a6e9d", "323d8398-050d-855a-a902-bbc51f4ebf39"],  
+2012-01-09 0:36:28 - WARN  --> {"code":"shouts","scores":[{"shout_id":"da401091-e7f9-137c-2e8c-71af7e9a6e9d","ups":1,"downs":0,"hit":2,"pts":1,"open":1},{"shout_id":"323d8398-050d-855a-a902-bbc51f4ebf39","ups":2,"downs":0,"hit":2,"pts":2,"open":1}]} 
+2012-01-09 0:36:43 - WARN  --> a : user_ping, uid : c582a145-b195-61b9-8081-1fe2f7bb50ed, auth : wBqUjp$+Q95bUpg_Q2kV+@OnPIrMy1M)1d2498e38773b5448d77f82f2d8866512937f67ec340025b9b4125eb69726deed7916117599bd027b04d4ff1e71fec11ee84dc68e2614f536ba1a0e64f79bd7f, lat : 40.74866, long : -74.03178, scores : ["da401091-e7f9-137c-2e8c-71af7e9a6e9d", "323d8398-050d-855a-a902-bbc51f4ebf39"],  
+2012-01-09 0:36:43 - WARN  --> {"code":"shouts","scores":[{"shout_id":"da401091-e7f9-137c-2e8c-71af7e9a6e9d","ups":1,"downs":0,"hit":2,"pts":1,"open":1},{"shout_id":"323d8398-050d-855a-a902-bbc51f4ebf39","ups":2,"downs":0,"hit":2,"pts":2,"open":1}]} 
+2012-01-09 0:36:55 - WARN  --> a : user_ping, uid : c582a145-b195-61b9-8081-1fe2f7bb50ed, auth : wBqUjp$+Q95bUpg_Q2kV+@OnPIrMy1M)1d2498e38773b5448d77f82f2d8866512937f67ec340025b9b4125eb69726deed7916117599bd027b04d4ff1e71fec11ee84dc68e2614f536ba1a0e64f79bd7f, lat : 40.74866, long : -74.03178, scores : ["da401091-e7f9-137c-2e8c-71af7e9a6e9d", "323d8398-050d-855a-a902-bbc51f4ebf39"],  
+2012-01-09 0:36:55 - WARN  --> {"code":"shouts","scores":[{"shout_id":"da401091-e7f9-137c-2e8c-71af7e9a6e9d","ups":1,"downs":0,"hit":2,"pts":1,"open":1},{"shout_id":"323d8398-050d-855a-a902-bbc51f4ebf39","ups":2,"downs":0,"hit":2,"pts":2,"open":1}]} 
+2012-01-09 0:36:55 - WARN  --> a : shout, uid : c582a145-b195-61b9-8081-1fe2f7bb50ed, auth : wBqUjp$+Q95bUpg_Q2kV+@OnPIrMy1M)1d2498e38773b5448d77f82f2d8866512937f67ec340025b9b4125eb69726deed7916117599bd027b04d4ff1e71fec11ee84dc68e2614f536ba1a0e64f79bd7f, lat : 40.74866, long : -74.03178, txt : G, power : 5,  
+2012-01-09 0:36:56 - WARN  --> {"code":"shout_sent"} 
+2012-01-09 0:37:03 - WARN  --> a : vote, uid : c582a145-b195-61b9-8081-1fe2f7bb50ed, auth : wBqUjp$+Q95bUpg_Q2kV+@OnPIrMy1M)1d2498e38773b5448d77f82f2d8866512937f67ec340025b9b4125eb69726deed7916117599bd027b04d4ff1e71fec11ee84dc68e2614f536ba1a0e64f79bd7f, shout_id : da401091-e7f9-137c-2e8c-71af7e9a6e9d, vote : 1,  
+2012-01-09 0:37:03 - WARN  --> a : user_ping, uid : c582a145-b195-61b9-8081-1fe2f7bb50ed, auth : wBqUjp$+Q95bUpg_Q2kV+@OnPIrMy1M)1d2498e38773b5448d77f82f2d8866512937f67ec340025b9b4125eb69726deed7916117599bd027b04d4ff1e71fec11ee84dc68e2614f536ba1a0e64f79bd7f, lat : 40.74866, long : -74.03178, scores : ["da401091-e7f9-137c-2e8c-71af7e9a6e9d", "323d8398-050d-855a-a902-bbc51f4ebf39"],  
+2012-01-09 0:37:03 - WARN  --> {"code":"shouts","shouts":[{"shout_id":"a1f84d1e-574c-ef3c-a930-d1d35b56d1d7","ts":"2012-01-09T00:36:55-0500","txt":"G"}],"scores":[{"shout_id":"da401091-e7f9-137c-2e8c-71af7e9a6e9d","ups":2,"downs":0,"hit":2,"pts":2,"open":1},{"shout_id":"323d8398-050d-855a-a902-bbc51f4ebf39","ups":2,"downs":0,"hit":2,"pts":2,"open":1}]} 
+2012-01-09 0:37:03 - WARN  --> {"code":"vote_ok"} 
+2012-01-09 0:37:10 - WARN  --> a : user_ping, uid : c582a145-b195-61b9-8081-1fe2f7bb50ed, auth : wBqUjp$+Q95bUpg_Q2kV+@OnPIrMy1M)1d2498e38773b5448d77f82f2d8866512937f67ec340025b9b4125eb69726deed7916117599bd027b04d4ff1e71fec11ee84dc68e2614f536ba1a0e64f79bd7f, lat : 40.74866, long : -74.03178, scores : ["a1f84d1e-574c-ef3c-a930-d1d35b56d1d7", "da401091-e7f9-137c-2e8c-71af7e9a6e9d", "323d8398-050d-855a-a902-bbc51f4ebf39"],  
+2012-01-09 0:37:10 - WARN  --> {"code":"shouts","scores":[{"shout_id":"a1f84d1e-574c-ef3c-a930-d1d35b56d1d7","ups":1,"downs":0,"hit":1,"pts":1,"open":1},{"shout_id":"da401091-e7f9-137c-2e8c-71af7e9a6e9d","ups":2,"downs":0,"hit":2,"pts":2,"open":1},{"shout_id":"323d8398-050d-855a-a902-bbc51f4ebf39","ups":2,"downs":0,"hit":2,"pts":2,"open":1}]} 
+2012-01-09 0:37:10 - WARN  --> a : vote, uid : c582a145-b195-61b9-8081-1fe2f7bb50ed, auth : wBqUjp$+Q95bUpg_Q2kV+@OnPIrMy1M)1d2498e38773b5448d77f82f2d8866512937f67ec340025b9b4125eb69726deed7916117599bd027b04d4ff1e71fec11ee84dc68e2614f536ba1a0e64f79bd7f, shout_id : a1f84d1e-574c-ef3c-a930-d1d35b56d1d7, vote : 1,  
+2012-01-09 0:37:10 - WARN  --> {"code":"vote_ok"} 
+2012-01-09 0:37:25 - WARN  --> a : user_ping, uid : c582a145-b195-61b9-8081-1fe2f7bb50ed, auth : wBqUjp$+Q95bUpg_Q2kV+@OnPIrMy1M)1d2498e38773b5448d77f82f2d8866512937f67ec340025b9b4125eb69726deed7916117599bd027b04d4ff1e71fec11ee84dc68e2614f536ba1a0e64f79bd7f, lat : 40.74866, long : -74.03178, scores : ["a1f84d1e-574c-ef3c-a930-d1d35b56d1d7", "da401091-e7f9-137c-2e8c-71af7e9a6e9d", "323d8398-050d-855a-a902-bbc51f4ebf39"],  
+2012-01-09 0:37:26 - WARN  --> {"code":"shouts","scores":[{"shout_id":"a1f84d1e-574c-ef3c-a930-d1d35b56d1d7","ups":2,"downs":0,"hit":1,"pts":2,"open":1},{"shout_id":"da401091-e7f9-137c-2e8c-71af7e9a6e9d","ups":2,"downs":0,"hit":2,"pts":2,"open":1},{"shout_id":"323d8398-050d-855a-a902-bbc51f4ebf39","ups":2,"downs":0,"hit":2,"pts":2,"open":1}]} 
+2012-01-09 0:37:40 - WARN  --> a : user_ping, uid : c582a145-b195-61b9-8081-1fe2f7bb50ed, auth : wBqUjp$+Q95bUpg_Q2kV+@OnPIrMy1M)1d2498e38773b5448d77f82f2d8866512937f67ec340025b9b4125eb69726deed7916117599bd027b04d4ff1e71fec11ee84dc68e2614f536ba1a0e64f79bd7f, lat : 40.74866, long : -74.03178, scores : ["a1f84d1e-574c-ef3c-a930-d1d35b56d1d7", "da401091-e7f9-137c-2e8c-71af7e9a6e9d", "323d8398-050d-855a-a902-bbc51f4ebf39"],  
+2012-01-09 0:37:41 - WARN  --> {"code":"shouts","scores":[{"shout_id":"a1f84d1e-574c-ef3c-a930-d1d35b56d1d7","ups":2,"downs":0,"hit":1,"pts":2,"open":1},{"shout_id":"da401091-e7f9-137c-2e8c-71af7e9a6e9d","ups":2,"downs":0,"hit":2,"pts":2,"open":1},{"shout_id":"323d8398-050d-855a-a902-bbc51f4ebf39","ups":2,"downs":0,"hit":2,"pts":2,"open":1}]} 
+2012-01-09 0:37:56 - WARN  --> a : user_ping, uid : c582a145-b195-61b9-8081-1fe2f7bb50ed, auth : wBqUjp$+Q95bUpg_Q2kV+@OnPIrMy1M)1d2498e38773b5448d77f82f2d8866512937f67ec340025b9b4125eb69726deed7916117599bd027b04d4ff1e71fec11ee84dc68e2614f536ba1a0e64f79bd7f, lat : 40.74866, long : -74.03178, scores : ["a1f84d1e-574c-ef3c-a930-d1d35b56d1d7", "da401091-e7f9-137c-2e8c-71af7e9a6e9d", "323d8398-050d-855a-a902-bbc51f4ebf39"],  
+2012-01-09 0:37:56 - WARN  --> {"code":"shouts","scores":[{"shout_id":"a1f84d1e-574c-ef3c-a930-d1d35b56d1d7","ups":2,"downs":0,"hit":1,"pts":2,"open":1},{"shout_id":"da401091-e7f9-137c-2e8c-71af7e9a6e9d","ups":2,"downs":0,"hit":2,"pts":2,"open":1},{"shout_id":"323d8398-050d-855a-a902-bbc51f4ebf39","ups":2,"downs":0,"hit":2,"pts":2,"open":1}]} 
+2012-01-09 0:38:00 - WARN  --> a : user_ping, uid : c582a145-b195-61b9-8081-1fe2f7bb50ed, auth : wBqUjp$+Q95bUpg_Q2kV+@OnPIrMy1M)1d2498e38773b5448d77f82f2d8866512937f67ec340025b9b4125eb69726deed7916117599bd027b04d4ff1e71fec11ee84dc68e2614f536ba1a0e64f79bd7f, lat : 40.74866, long : -74.03178, scores : ["a1f84d1e-574c-ef3c-a930-d1d35b56d1d7", "da401091-e7f9-137c-2e8c-71af7e9a6e9d", "323d8398-050d-855a-a902-bbc51f4ebf39"],  
+2012-01-09 0:38:00 - WARN  --> {"code":"shouts","scores":[{"shout_id":"a1f84d1e-574c-ef3c-a930-d1d35b56d1d7","ups":2,"downs":0,"hit":1,"pts":2,"open":1},{"shout_id":"da401091-e7f9-137c-2e8c-71af7e9a6e9d","ups":2,"downs":0,"hit":2,"pts":2,"open":1},{"shout_id":"323d8398-050d-855a-a902-bbc51f4ebf39","ups":2,"downs":0,"hit":2,"pts":2,"open":1}]} 
+2012-01-09 5:38:18 - WARN  --> a : user_ping, uid : c582a145-b195-61b9-8081-1fe2f7bb50ed, auth : wBqUjp$+Q95bUpg_Q2kV+@OnPIrMy1M)1d2498e38773b5448d77f82f2d8866512937f67ec340025b9b4125eb69726deed7916117599bd027b04d4ff1e71fec11ee84dc68e2614f536ba1a0e64f79bd7f, lat : 40.74866, long : -74.03178, scores : ["a1f84d1e-574c-ef3c-a930-d1d35b56d1d7", "da401091-e7f9-137c-2e8c-71af7e9a6e9d", "323d8398-050d-855a-a902-bbc51f4ebf39"],  
+2012-01-09 5:38:18 - WARN  --> {"code":"shouts","scores":[{"shout_id":"a1f84d1e-574c-ef3c-a930-d1d35b56d1d7","ups":2,"downs":0,"hit":1,"pts":2,"open":1},{"shout_id":"da401091-e7f9-137c-2e8c-71af7e9a6e9d","ups":2,"downs":0,"hit":2,"pts":2,"open":1},{"shout_id":"323d8398-050d-855a-a902-bbc51f4ebf39","ups":2,"downs":0,"hit":2,"pts":2,"open":1}]} 
+2012-01-09 5:38:33 - WARN  --> a : user_ping, uid : c582a145-b195-61b9-8081-1fe2f7bb50ed, auth : wBqUjp$+Q95bUpg_Q2kV+@OnPIrMy1M)1d2498e38773b5448d77f82f2d8866512937f67ec340025b9b4125eb69726deed7916117599bd027b04d4ff1e71fec11ee84dc68e2614f536ba1a0e64f79bd7f, lat : 40.74866, long : -74.03178, scores : ["a1f84d1e-574c-ef3c-a930-d1d35b56d1d7", "da401091-e7f9-137c-2e8c-71af7e9a6e9d", "323d8398-050d-855a-a902-bbc51f4ebf39"],  
+2012-01-09 5:38:33 - WARN  --> {"code":"shouts","scores":[{"shout_id":"a1f84d1e-574c-ef3c-a930-d1d35b56d1d7","ups":2,"downs":0,"hit":1,"pts":2,"open":1},{"shout_id":"da401091-e7f9-137c-2e8c-71af7e9a6e9d","ups":2,"downs":0,"hit":2,"pts":2,"open":1},{"shout_id":"323d8398-050d-855a-a902-bbc51f4ebf39","ups":2,"downs":0,"hit":2,"pts":2,"open":0}],"level_change":{"lvl":6,"pts":478,"next_lvl_at":604}} 
+2012-01-09 5:38:49 - WARN  --> a : user_ping, uid : c582a145-b195-61b9-8081-1fe2f7bb50ed, auth : wBqUjp$+Q95bUpg_Q2kV+@OnPIrMy1M)1d2498e38773b5448d77f82f2d8866512937f67ec340025b9b4125eb69726deed7916117599bd027b04d4ff1e71fec11ee84dc68e2614f536ba1a0e64f79bd7f, lat : 40.74866, long : -74.03178, lvl : 6, scores : ["a1f84d1e-574c-ef3c-a930-d1d35b56d1d7", "da401091-e7f9-137c-2e8c-71af7e9a6e9d"],  
+2012-01-09 5:38:49 - WARN  --> {"code":"shouts","scores":[{"shout_id":"a1f84d1e-574c-ef3c-a930-d1d35b56d1d7","ups":2,"downs":0,"hit":1,"pts":2,"open":1},{"shout_id":"da401091-e7f9-137c-2e8c-71af7e9a6e9d","ups":2,"downs":0,"hit":2,"pts":2,"open":1}]} 
+2012-01-09 5:39:03 - WARN  --> a : user_ping, uid : c582a145-b195-61b9-8081-1fe2f7bb50ed, auth : wBqUjp$+Q95bUpg_Q2kV+@OnPIrMy1M)1d2498e38773b5448d77f82f2d8866512937f67ec340025b9b4125eb69726deed7916117599bd027b04d4ff1e71fec11ee84dc68e2614f536ba1a0e64f79bd7f, lat : 40.74866, long : -74.03178, lvl : 6, scores : ["a1f84d1e-574c-ef3c-a930-d1d35b56d1d7", "da401091-e7f9-137c-2e8c-71af7e9a6e9d"],  
+2012-01-09 5:39:03 - WARN  --> {"code":"shouts","scores":[{"shout_id":"a1f84d1e-574c-ef3c-a930-d1d35b56d1d7","ups":2,"downs":0,"hit":1,"pts":2,"open":1},{"shout_id":"da401091-e7f9-137c-2e8c-71af7e9a6e9d","ups":2,"downs":0,"hit":2,"pts":2,"open":1}]} 
+2012-01-09 5:39:07 - WARN  --> a : user_ping, uid : c582a145-b195-61b9-8081-1fe2f7bb50ed, auth : wBqUjp$+Q95bUpg_Q2kV+@OnPIrMy1M)1d2498e38773b5448d77f82f2d8866512937f67ec340025b9b4125eb69726deed7916117599bd027b04d4ff1e71fec11ee84dc68e2614f536ba1a0e64f79bd7f, lat : 40.74866, long : -74.03178, lvl : 6, scores : ["a1f84d1e-574c-ef3c-a930-d1d35b56d1d7", "da401091-e7f9-137c-2e8c-71af7e9a6e9d"],  
+2012-01-09 5:39:07 - WARN  --> {"code":"shouts","scores":[{"shout_id":"a1f84d1e-574c-ef3c-a930-d1d35b56d1d7","ups":2,"downs":0,"hit":1,"pts":2,"open":1},{"shout_id":"da401091-e7f9-137c-2e8c-71af7e9a6e9d","ups":2,"downs":0,"hit":2,"pts":2,"open":1}]} 
+2012-01-09 5:39:23 - WARN  --> a : user_ping, uid : c582a145-b195-61b9-8081-1fe2f7bb50ed, auth : wBqUjp$+Q95bUpg_Q2kV+@OnPIrMy1M)1d2498e38773b5448d77f82f2d8866512937f67ec340025b9b4125eb69726deed7916117599bd027b04d4ff1e71fec11ee84dc68e2614f536ba1a0e64f79bd7f, lat : 40.74866, long : -74.03178, lvl : 6, scores : ["a1f84d1e-574c-ef3c-a930-d1d35b56d1d7", "da401091-e7f9-137c-2e8c-71af7e9a6e9d"],  
+2012-01-09 5:39:23 - WARN  --> {"code":"shouts","scores":[{"shout_id":"a1f84d1e-574c-ef3c-a930-d1d35b56d1d7","ups":2,"downs":0,"hit":1,"pts":2,"open":1},{"shout_id":"da401091-e7f9-137c-2e8c-71af7e9a6e9d","ups":2,"downs":0,"hit":2,"pts":2,"open":1}]} 
+2012-01-09 5:39:38 - WARN  --> a : user_ping, uid : c582a145-b195-61b9-8081-1fe2f7bb50ed, auth : wBqUjp$+Q95bUpg_Q2kV+@OnPIrMy1M)1d2498e38773b5448d77f82f2d8866512937f67ec340025b9b4125eb69726deed7916117599bd027b04d4ff1e71fec11ee84dc68e2614f536ba1a0e64f79bd7f, lat : 40.74866, long : -74.03178, lvl : 6, scores : ["a1f84d1e-574c-ef3c-a930-d1d35b56d1d7", "da401091-e7f9-137c-2e8c-71af7e9a6e9d"],  
+2012-01-09 5:39:38 - WARN  --> {"code":"shouts","scores":[{"shout_id":"a1f84d1e-574c-ef3c-a930-d1d35b56d1d7","ups":2,"downs":0,"hit":1,"pts":2,"open":1},{"shout_id":"da401091-e7f9-137c-2e8c-71af7e9a6e9d","ups":2,"downs":0,"hit":2,"pts":2,"open":1}]} 
+2012-01-09 5:39:53 - WARN  --> a : user_ping, uid : c582a145-b195-61b9-8081-1fe2f7bb50ed, auth : wBqUjp$+Q95bUpg_Q2kV+@OnPIrMy1M)1d2498e38773b5448d77f82f2d8866512937f67ec340025b9b4125eb69726deed7916117599bd027b04d4ff1e71fec11ee84dc68e2614f536ba1a0e64f79bd7f, lat : 40.74866, long : -74.03178, lvl : 6, scores : ["a1f84d1e-574c-ef3c-a930-d1d35b56d1d7", "da401091-e7f9-137c-2e8c-71af7e9a6e9d"],  
+2012-01-09 5:39:53 - WARN  --> {"code":"shouts","scores":[{"shout_id":"a1f84d1e-574c-ef3c-a930-d1d35b56d1d7","ups":2,"downs":0,"hit":1,"pts":2,"open":1},{"shout_id":"da401091-e7f9-137c-2e8c-71af7e9a6e9d","ups":2,"downs":0,"hit":2,"pts":2,"open":1}]} 

@@ -1,0 +1,16 @@
+2012-01-09 3:30:16 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 4:09:41 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 4:13:29 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 4:15:05 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 4:20:21 - WARN  --> {"code":"ping_ok"} 
+2012-01-08 23:46:39 - WARN  --> {"code":"ping_ok"} 
+2012-01-08 23:48:55 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 0:05:56 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 0:08:51 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 0:11:18 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 0:16:09 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 0:23:51 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 0:25:31 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 0:25:34 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 0:34:26 - WARN  --> a : user_ping, uid : a00ad423-b517-2a14-9368-b9e67369b0ad, auth : 5gZY!(y%&-2s7-D761GpCXvk@tAhVT_5d84e2893e6de2a715228913095fefab133dfb2a26e120cfd34ba85f92459c2fe7155248e9c30f7c5456ecf9dec2cea9ec4fc9ab77429ee95d5767914912309e6, lat : 40.98168, long : -74.1001,  
+2012-01-09 0:34:26 - WARN  --> {"code":"ping_ok"} 

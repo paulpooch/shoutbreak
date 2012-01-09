@@ -1,0 +1,2 @@
+2012-01-09 0:19:03 - WARN  --> {"code":"expired_auth","nonce":"ATY8FzpBZtAVV&R73#=_Qz9W1&a&Ps&5t92c2-6F"} 
+2012-01-09 0:19:05 - WARN  --> {"code":"ping_ok"} 

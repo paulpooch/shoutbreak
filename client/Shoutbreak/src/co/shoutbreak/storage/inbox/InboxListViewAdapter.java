@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
-import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -172,7 +172,7 @@ public class InboxListViewAdapter extends BaseAdapter implements Colleague {
 			holder.expanded = (RelativeLayout) convertView.findViewById(R.id.rlExpanded);
 			holder.btnVoteUp = (ImageButton) convertView.findViewById(R.id.btnVoteUp);
 			holder.hitCount = (TextView) convertView.findViewById(R.id.hitCountTv);
-			holder.hitCountIcon = (ImageView) convertView.findViewById(R.id.hitCountIconIv);
+			holder.hitCountLl = (LinearLayout) convertView.findViewById(R.id.hitCountLl);
 			holder.btnVoteUp.setOnClickListener(onVoteUpClickListener);
 			holder.btnVoteDown = (ImageButton) convertView.findViewById(R.id.btnVoteDown);
 			holder.btnVoteDown.setOnClickListener(onVoteDownClickListener);
@@ -268,18 +268,11 @@ public class InboxListViewAdapter extends BaseAdapter implements Colleague {
 		String score = Integer.toString(entry.score);
 		if (entry.score == C.NULL_SCORE) {
 			score = "?";
-			if (isExpanded) {
-				holder.hitCount.setVisibility(View.INVISIBLE);
-				holder.hitCountIcon.setVisibility(View.INVISIBLE);
-			}
+			holder.hitCount.setText("?");
 		} else {
-			if (isExpanded) {
-				holder.hitCount.setVisibility(View.VISIBLE);
-				holder.hitCountIcon.setVisibility(View.VISIBLE);
-				holder.hitCount.setText(Integer.toString(entry.hit));
-			}
+			holder.hitCount.setText(Integer.toString(entry.hit));
 		}
-
+		
 		// Mark shout as read/unread
 		if (entry.state_flag == C.SHOUT_STATE_NEW) {
 			holder.textC.setTypeface(Typeface.DEFAULT, Typeface.BOLD);

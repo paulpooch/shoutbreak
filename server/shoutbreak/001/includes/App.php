@@ -16,6 +16,7 @@ class App {
 	public function handleRequest() {		
 		global $mem, $log;
 		
+		/*
 		$packetCount = $mem->get(Config::$PRE_DDOS_SHIELD . $_SERVER['REMOTE_ADDR']);
 		if ($packetCount) {
 			if ($packetCount > Config::$DDOS_SHIELD_LIMIT) {
@@ -30,6 +31,7 @@ class App {
 			$packetCount = 1;
 			$mem->set(Config::$PRE_DDOS_SHIELD . $_SERVER['REMOTE_ADDR'], ++$packetCount, false, Config::$TIMEOUT_DDOS_SHIELD);
 		}
+		*/
 		
 		if (empty($_POST['a'])) {
 			$_POST = $_GET; // DEBUGGING
@@ -46,6 +48,13 @@ class App {
 		
 		$_POST = Filter::sanitize($_POST);
 		$_POST = Filter::validate($_POST);
+
+		// UID specific logging.
+		$logUid = empty($_POST['uid']) ? null : $_POST['uid']; 
+		if ($logUid != null) {
+			$log = new KLogger($_SERVER['DOCUMENT_ROOT'] . '/logs/' . $logUid . '.txt', KLogger::DEBUG);	
+			$log->LogWarn("$tempLog");	
+		}
 		
 		//$tempLog2 = "";
 		//foreach($_POST as $var => $value) {

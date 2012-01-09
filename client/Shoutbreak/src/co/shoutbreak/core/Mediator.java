@@ -777,8 +777,12 @@ public class Mediator {
 			_ui.userNextShoutreachTv.setText(Integer.toString(User.calculateShoutreach(level + 1)));
 			_ui.userPointsTv.setText(Integer.toString(currentPoints));
 			_ui.userNextLevelAtTv.setText(Integer.toString(levelEndPoints));
-			_ui.userStatsParagraphTv.setText("You have earned " + currentPoints + " points,\nso your shouts will reach " + User.calculateShoutreach(level)
-					+ " people.\nYou will reach " + User.calculateShoutreach(level + 1) + " people at " + levelEndPoints + " points.");
+			String infoParagraph = "You have earned " + currentPoints + " points.\nYour shouts can reach " + User.calculateShoutreach(level)
+					+ " people.\nOnce you earn " + levelEndPoints + " points, you will be able to reach " + User.calculateShoutreach(level + 1) + " people.";
+			if (currentPoints >= levelEndPoints) {
+				infoParagraph = "Congratulations!\nYou have earned enough points to become level " + (level + 1) + ".\nWe are leveling up your account,\nand it will take effect within 30 minutes.";
+			}
+			_ui.userStatsParagraphTv.setText(infoParagraph);
 			_ui.userLevelUpProgessRp.setMax(levelEndPoints - levelBeginPoints);
 			_ui.userLevelUpProgessRp.setProgress(currentPoints - levelBeginPoints);
 		}
