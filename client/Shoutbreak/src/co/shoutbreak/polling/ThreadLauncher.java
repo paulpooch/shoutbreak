@@ -55,6 +55,7 @@ public class ThreadLauncher implements Colleague {
 			newXPacket.purpose = C.PURPOSE_LOOP_FROM_UI;
 		
 			if (message.what == C.STATE_IDLE && oldXPacket.keyForLife.compareTo(_currentKeyForLife) != 0) {
+				// If a newer polling thread has been spawned (i.e. keyForLife has changed), don't let this start another iteration.
 				return;
 			}
 		

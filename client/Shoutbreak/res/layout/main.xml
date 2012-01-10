@@ -359,6 +359,7 @@
                             android:textSize="40dp"
                             android:textStyle="bold" />
 
+                        <!-- Approved use of pixels. -->
                         <LinearLayout
                             android:layout_width="fill_parent"
                             android:layout_height="45px"
@@ -407,6 +408,7 @@
                                     android:textSize="25dp" />
                             </LinearLayout>
 
+                            <!-- Approved use of pixels. -->
                             <co.shoutbreak.ui.RoundProgress
                                 android:id="@+id/userLevelUpProgressRp"
                                 android:layout_width="fill_parent"
@@ -516,6 +518,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/tab_bg" >
 
+                <!-- Approved use of pixels. -->
                 <ImageButton
                     android:id="@+id/inboxTabBtn"
                     android:layout_width="149px"
@@ -524,6 +527,7 @@
                     android:background="#00000000"
                     android:src="@drawable/tab_inbox" />
 
+                <!-- Approved use of pixels. -->
                 <ImageButton
                     android:id="@+id/composeTabBtn"
                     android:layout_width="149px"
@@ -534,6 +538,7 @@
                     android:background="#00000000"
                     android:src="@drawable/tab_shouting" />
 
+                <!-- Approved use of pixels. -->
                 <ImageButton
                     android:id="@+id/profileTabBtn"
                     android:layout_width="149px"
@@ -554,13 +559,6 @@
         </LinearLayout>
     </LinearLayout>
 
-    <RelativeLayout
-        android:id="@+id/noticeTabRl"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_marginTop="48px" >
-    </RelativeLayout>
-
     <!-- Power Button Extension -->
 
     <ImageButton
@@ -580,6 +578,7 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" >
 
+        <!-- Approved use of pixels. -->
         <co.shoutbreak.storage.noticetab.MultiDirectionSlidingDrawer
             android:id="@+id/noticeDrawerSd"
             android:layout_width="fill_parent"

@@ -13,7 +13,7 @@ public class PollingAlgorithm {
 	private static final long DELAY_MIN_SECS = 20; // 20 secs
 	private static final long DELAY_MAX_SECS = 1200; // 20 mins
 	private static final long SECONDS_TILL_MAX_DELAY = 600; // 10 mins
-	private static final long RESET_POLLING_DELAY_TO_IMMEDIATELY_TOLERANCE_MILLISEC = 3000; // 3 seconds
+	private static final long RESET_POLLING_DELAY_TO_IMMEDIATELY_TOLERANCE_MILLISEC = DELAY_MIN_SECS * 1000; // 20 seconds
 	
 	private static int consecutiveDroppedPackets = 0;
 	
@@ -28,25 +28,31 @@ public class PollingAlgorithm {
 	
 	public synchronized void resetPollingDelay(Mediator mediator) {
 		Date now = new Date();
-		long elapsedMilliseconds = now.getTime() - _lastActivity.getTime();
-		if (elapsedMilliseconds > RESET_POLLING_DELAY_TO_IMMEDIATELY_TOLERANCE_MILLISEC) {
-			mediator.resetPollingToNow();
+		if (mediator.getIsUiInForeground()) {
+			long elapsedMilliseconds = now.getTime() - _lastActivity.getTime();
+			if (elapsedMilliseconds > RESET_POLLING_DELAY_TO_IMMEDIATELY_TOLERANCE_MILLISEC) {
+				mediator.resetPollingToNow();
+			}
 		}
 		_lastActivity = now;
 	}
 	
 	// returns milliseconds
-	public long getPollingDelay() {
-		Date now = new Date();
-		long elapsedMilliseconds = now.getTime() - _lastActivity.getTime();
-		long elapsedSeconds = elapsedMilliseconds / 1000;
-		long delay = DELAY_MAX_SECS;
-		if (elapsedSeconds < SECONDS_TILL_MAX_DELAY) {
-			delay = (long) (elapsedSeconds * _delayPerSecondElapsed); // seconds elapsed * delayPerSecondElapsed
+	public long getPollingDelay(Mediator mediator) {
+		if (mediator.getIsUiInForeground()) {
+			return DELAY_MIN_SECS * 1000;
+		} else {
+			Date now = new Date();
+			long elapsedMilliseconds = now.getTime() - _lastActivity.getTime();
+			long elapsedSeconds = elapsedMilliseconds / 1000;
+			long delay = DELAY_MAX_SECS;
+			if (elapsedSeconds < SECONDS_TILL_MAX_DELAY) {
+				delay = (long) (elapsedSeconds * _delayPerSecondElapsed); // seconds elapsed * delayPerSecondElapsed
+			}
+			delay = DELAY_MIN_SECS + delay;
+			SBLog.polling(delay);
+			return delay * 1000;
 		}
-		delay = DELAY_MIN_SECS + delay;
-		SBLog.polling(delay);
-		return delay * 1000;
 	}
 
 	public static boolean isDropCountAtLimit() {

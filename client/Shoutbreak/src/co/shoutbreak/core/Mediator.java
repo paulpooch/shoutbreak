@@ -69,7 +69,7 @@ public class Mediator {
 	
 	// state flags
 	private Flag _isUIAlive = new Flag("m:_isUIAlive");
-	private Flag _isUIInForeground = new Flag("m:_isUIInForeground");
+	private Flag _isUiInForeground = new Flag("m:_isUIInForeground");
 	private Flag _isPollingAlive = new Flag("m:_isPollingAlive");
 	private Flag _isServiceConnected = new Flag("m:_isServiceConnected");
 	private Flag _isServiceStarted = new Flag("m:_isServiceStarted");
@@ -108,7 +108,7 @@ public class Mediator {
 			_isPollingAlive.set(false);
 		}
 		_isUIAlive.set(false);
-		_isUIInForeground.set(false);
+		_isUiInForeground.set(false);
 
 		_isDataEnabled.set(isDataEnabled());
 		_isLocationEnabled.set(isLocationEnabled());
@@ -156,7 +156,7 @@ public class Mediator {
 		// it must be added once the mediator is created
 		SBLog.lifecycle(TAG, "registerUI()");
 		_isUIAlive.set(true);
-		_isUIInForeground.set(true);
+		_isUiInForeground.set(true);
 		ui.setMediator(this);
 		_uiGateway = new UiOnGateway(ui);
 		_storage.initializeUiComponents();
@@ -234,10 +234,14 @@ public class Mediator {
 		startPolling(true);
 	}
 
-	public void setIsUIInForeground(boolean isUiInForeground) {
-		_isUIInForeground.set(isUiInForeground);
+	public void setIsUiInForeground(boolean isUiInForeground) {
+		_isUiInForeground.set(isUiInForeground);
 	}
 
+	public boolean getIsUiInForeground() {
+		return _isUiInForeground.get();
+	}
+	
 	public void resetNotifierShoutCount() {
 		_notifier.resetNotifierShoutCount();
 	}
@@ -287,6 +291,7 @@ public class Mediator {
 			if (xPacket.purpose == C.PURPOSE_LOOP_FROM_UI || xPacket.purpose == C.PURPOSE_LOOP_FROM_UI_DELAYED) {
 				if (PollingAlgorithm.isDropCountAtLimit()) {
 					// The Polling loop just crashed.
+					_storage.handleForcedPollingStop();
 					setPowerPreferenceToOff(true);
 				}
 			}
@@ -301,7 +306,7 @@ public class Mediator {
 	}
 	
 	public long getPollingDelay() {
-		return _pollingAlgorithm.getPollingDelay();
+		return _pollingAlgorithm.getPollingDelay(Mediator.this);
 	}
 
 	public void setPowerPreferenceToOn(boolean onUiThread) {
@@ -503,7 +508,7 @@ public class Mediator {
 		public void handleShoutsReceived(JSONArray shouts) {
 			SBLog.method(TAG, "shoutsReceived()");
 			_storage.handleShoutsReceived(shouts);
-			if (!_isUIInForeground.get()) {
+			if (!_isUiInForeground.get()) {
 				_notifier.handleShoutsReceived(shouts.length());
 			}
 		}
@@ -887,7 +892,10 @@ public class Mediator {
 
 		@Override
 		public void showTopNotice() {
-			_ui.noticeTabListView.setSelection(0);
+			if (_ui.noticeTabListView.getCount() > 0) {
+				_ui.noticeTabListView.requestFocusFromTouch();
+				_ui.noticeTabListView.setSelection(0);
+			}
 			_ui.noticeTabSd.showOneLine();
 		}
 
@@ -905,6 +913,7 @@ public class Mediator {
 
 		@Override
 		public void scrollInboxToPosition(int position) {
+			_ui.inboxListView.requestFocusFromTouch();
 			_ui.inboxListView.setSelection(position);
 		}
 

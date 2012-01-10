@@ -6,7 +6,7 @@ public class C {
 	// CONFIG /////////////////////////////////////////////////////////////////
 	// Match this to the $version in index.php
 	public static final boolean CONFIG_ADMIN_SUPERPOWERS = false;
-	public static final String CONFIG_SERVER_ADDRESS = "http://app.shoutbreak.co/001/";
+	public static final String CONFIG_SERVER_ADDRESS = "http://app.shoutbreak.co/002/";
 	public static final int CONFIG_HTTP_TIMEOUT = 25000;
 	public static final int CONFIG_DROPPED_PACKET_LIMIT = 5;
 	public static final int CONFIG_NOTICES_DISPLAYED_IN_TAB = 50;
@@ -36,6 +36,7 @@ public class C {
 	public static final String STRING_VOTE_FAILED = "Vote failed.  Shout is too old.";
 	public static final String STRING_CREATE_ACCOUNT_FAILED = "Unable to create an account.";
 	public static final String STRING_PING_FAILED = "Unable to reach server.";
+	public static final String STRING_FORCED_POLLING_STOP = "App turning off.  Dropped too many consecutive packets.";
 	
 	// NOTICES ////////////////////////////////////////////////////////////////
 	// 0 - 19
@@ -50,6 +51,7 @@ public class C {
 	public static final int NOTICE_VOTE_FAILED = 8;
 	public static final int NOTICE_POINTS_VOTING = 9;
 	public static final int NOTICE_POINTS_SHOUT = 10;
+	public static final int NOTICE_FORCED_POLLING_STOP = 11;
 	public static final int LEVEL_UP_NOTICE = Integer.MIN_VALUE;
 	
 	// MAP ////////////////////////////////////////////////////////////////////

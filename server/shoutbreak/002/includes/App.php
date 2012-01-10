@@ -53,7 +53,6 @@ class App {
 		$logUid = empty($_POST['uid']) ? null : $_POST['uid']; 
 		if ($logUid != null) {
 			$log = new KLogger($_SERVER['DOCUMENT_ROOT'] . '/logs/' . $logUid . '.txt', KLogger::DEBUG);	
-			$log->LogWarn("$tempLog");	
 		}
 		
 		//$tempLog2 = "";

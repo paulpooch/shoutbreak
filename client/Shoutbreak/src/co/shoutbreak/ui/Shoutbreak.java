@@ -201,7 +201,7 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		SBLog.lifecycle(TAG, "onResume()");
 		if (_m != null) {
 			// This is not a cold start.
-			_m.setIsUIInForeground(true);
+			_m.setIsUiInForeground(true);
 			wasLaunchFromReferral();
 			reflectPowerState();
 
@@ -217,7 +217,7 @@ public class Shoutbreak extends MapActivity implements Colleague {
 	public void onPause() {
 		SBLog.lifecycle(TAG, "onPause()");
 		if (_m != null) {
-			_m.setIsUIInForeground(false);
+			_m.setIsUiInForeground(false);
 		}
 		disableMapAndOverlay();
 		super.onPause();
@@ -266,7 +266,7 @@ public class Shoutbreak extends MapActivity implements Colleague {
 
 				// Best place to show 'User has screen open' even if they're not
 				// touching anything.
-				threadSafeMediator.resetPollingDelay();
+				// threadSafeMediator.resetPollingDelay();
 			}
 
 			if (loc != null) {
@@ -780,6 +780,13 @@ public class Shoutbreak extends MapActivity implements Colleague {
 	// _ui.onPowerPreferenceEnabled(onUiThread) ->
 	// onPowerPreferenceEnabled(onUiThread) [right under this function]
 	private class PowerButtonTask extends AsyncTask<Void, Void, Void> {
+		
+		private boolean failedToTurnOn;
+		
+		public PowerButtonTask() {
+			failedToTurnOn = false;
+		}
+		
 		@Override
 		protected Void doInBackground(Void... unused) {
 			SBLog.method(TAG, "PowerButtonTask.doInBackground()");
@@ -788,6 +795,8 @@ public class Shoutbreak extends MapActivity implements Colleague {
 				// Turn On.
 				if (canAppTurnOn(false, true)) {
 					_m.setPowerPreferenceToOn(false);
+				} else {
+					failedToTurnOn = true;
 				}
 			} else {
 				// Turn Off.
@@ -801,6 +810,9 @@ public class Shoutbreak extends MapActivity implements Colleague {
 			// Now we're on the Ui Thread, just see what the outcome of callback city
 			// was and set button to reflect that outcome.
 			reflectPowerState();
+			if (failedToTurnOn) {
+				Toast.makeText(Shoutbreak.this, getString(R.string.cannotTurnOnError), Toast.LENGTH_LONG).show();
+			}
 		}
 	}
 	

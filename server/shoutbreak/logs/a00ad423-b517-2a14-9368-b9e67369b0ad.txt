@@ -14,3 +14,87 @@
 2012-01-09 0:25:34 - WARN  --> {"code":"ping_ok"} 
 2012-01-09 0:34:26 - WARN  --> a : user_ping, uid : a00ad423-b517-2a14-9368-b9e67369b0ad, auth : 5gZY!(y%&-2s7-D761GpCXvk@tAhVT_5d84e2893e6de2a715228913095fefab133dfb2a26e120cfd34ba85f92459c2fe7155248e9c30f7c5456ecf9dec2cea9ec4fc9ab77429ee95d5767914912309e6, lat : 40.98168, long : -74.1001,  
 2012-01-09 0:34:26 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 5:41:24 - WARN  --> a : user_ping, uid : a00ad423-b517-2a14-9368-b9e67369b0ad, auth : 5gZY!(y%&-2s7-D761GpCXvk@tAhVT_5d84e2893e6de2a715228913095fefab133dfb2a26e120cfd34ba85f92459c2fe7155248e9c30f7c5456ecf9dec2cea9ec4fc9ab77429ee95d5767914912309e6, lat : 40.98168, long : -74.1001,  
+2012-01-09 5:41:24 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 6:50:13 - WARN  --> a : user_ping, uid : a00ad423-b517-2a14-9368-b9e67369b0ad, auth : 5gZY!(y%&-2s7-D761GpCXvk@tAhVT_5d84e2893e6de2a715228913095fefab133dfb2a26e120cfd34ba85f92459c2fe7155248e9c30f7c5456ecf9dec2cea9ec4fc9ab77429ee95d5767914912309e6, lat : 40.98168, long : -74.1001,  
+2012-01-09 6:50:13 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 7:01:20 - WARN  --> a : user_ping, uid : a00ad423-b517-2a14-9368-b9e67369b0ad, auth : 5gZY!(y%&-2s7-D761GpCXvk@tAhVT_5d84e2893e6de2a715228913095fefab133dfb2a26e120cfd34ba85f92459c2fe7155248e9c30f7c5456ecf9dec2cea9ec4fc9ab77429ee95d5767914912309e6, lat : 40.98168, long : -74.1001,  
+2012-01-09 7:01:20 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 7:07:43 - WARN  --> a : user_ping, uid : a00ad423-b517-2a14-9368-b9e67369b0ad, auth : 5gZY!(y%&-2s7-D761GpCXvk@tAhVT_5d84e2893e6de2a715228913095fefab133dfb2a26e120cfd34ba85f92459c2fe7155248e9c30f7c5456ecf9dec2cea9ec4fc9ab77429ee95d5767914912309e6, lat : 40.98168, long : -74.1001,  
+2012-01-09 7:07:43 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 8:35:53 - WARN  --> a : user_ping, uid : a00ad423-b517-2a14-9368-b9e67369b0ad, auth : 5gZY!(y%&-2s7-D761GpCXvk@tAhVT_5d84e2893e6de2a715228913095fefab133dfb2a26e120cfd34ba85f92459c2fe7155248e9c30f7c5456ecf9dec2cea9ec4fc9ab77429ee95d5767914912309e6, lat : 40.98168, long : -74.1001,  
+2012-01-09 8:35:53 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 11:41:00 - WARN  --> a : user_ping, uid : a00ad423-b517-2a14-9368-b9e67369b0ad, auth : 5gZY!(y%&-2s7-D761GpCXvk@tAhVT_5d84e2893e6de2a715228913095fefab133dfb2a26e120cfd34ba85f92459c2fe7155248e9c30f7c5456ecf9dec2cea9ec4fc9ab77429ee95d5767914912309e6, lat : 40.98168, long : -74.1001,  
+2012-01-09 11:41:00 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 12:00:17 - WARN  --> a : user_ping, uid : a00ad423-b517-2a14-9368-b9e67369b0ad, auth : 5gZY!(y%&-2s7-D761GpCXvk@tAhVT_5d84e2893e6de2a715228913095fefab133dfb2a26e120cfd34ba85f92459c2fe7155248e9c30f7c5456ecf9dec2cea9ec4fc9ab77429ee95d5767914912309e6, lat : 40.98168, long : -74.1001,  
+2012-01-09 12:00:17 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 12:07:17 - WARN  --> a : user_ping, uid : a00ad423-b517-2a14-9368-b9e67369b0ad, auth : 5gZY!(y%&-2s7-D761GpCXvk@tAhVT_5d84e2893e6de2a715228913095fefab133dfb2a26e120cfd34ba85f92459c2fe7155248e9c30f7c5456ecf9dec2cea9ec4fc9ab77429ee95d5767914912309e6, lat : 40.985, long : -74.11837,  
+2012-01-09 12:07:17 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 12:14:40 - WARN  --> a : user_ping, uid : a00ad423-b517-2a14-9368-b9e67369b0ad, auth : 5gZY!(y%&-2s7-D761GpCXvk@tAhVT_5d84e2893e6de2a715228913095fefab133dfb2a26e120cfd34ba85f92459c2fe7155248e9c30f7c5456ecf9dec2cea9ec4fc9ab77429ee95d5767914912309e6, lat : 40.98168, long : -74.1001,  
+2012-01-09 12:14:40 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 13:36:45 - WARN  --> a : user_ping, uid : a00ad423-b517-2a14-9368-b9e67369b0ad, auth : 5gZY!(y%&-2s7-D761GpCXvk@tAhVT_5d84e2893e6de2a715228913095fefab133dfb2a26e120cfd34ba85f92459c2fe7155248e9c30f7c5456ecf9dec2cea9ec4fc9ab77429ee95d5767914912309e6, lat : 40.76606, long : -74.023, rho : 1,  
+2012-01-09 13:36:45 - WARN  --> {"code":"shouts","rho":1.0e-5} 
+2012-01-09 13:36:45 - WARN  --> a : user_ping, uid : a00ad423-b517-2a14-9368-b9e67369b0ad, auth : 5gZY!(y%&-2s7-D761GpCXvk@tAhVT_5d84e2893e6de2a715228913095fefab133dfb2a26e120cfd34ba85f92459c2fe7155248e9c30f7c5456ecf9dec2cea9ec4fc9ab77429ee95d5767914912309e6, lat : 40.76606, long : -74.023, rho : 1,  
+2012-01-09 13:36:45 - WARN  --> {"code":"shouts","rho":1.0e-5} 
+2012-01-09 13:38:37 - WARN  --> a : user_ping, uid : a00ad423-b517-2a14-9368-b9e67369b0ad, auth : 5gZY!(y%&-2s7-D761GpCXvk@tAhVT_5d84e2893e6de2a715228913095fefab133dfb2a26e120cfd34ba85f92459c2fe7155248e9c30f7c5456ecf9dec2cea9ec4fc9ab77429ee95d5767914912309e6, lat : 40.72708, long : -74.14145, rho : 1,  
+2012-01-09 13:38:37 - WARN  --> a : user_ping, uid : a00ad423-b517-2a14-9368-b9e67369b0ad, auth : 5gZY!(y%&-2s7-D761GpCXvk@tAhVT_5d84e2893e6de2a715228913095fefab133dfb2a26e120cfd34ba85f92459c2fe7155248e9c30f7c5456ecf9dec2cea9ec4fc9ab77429ee95d5767914912309e6, lat : 40.72708, long : -74.14145, rho : 1,  
+2012-01-09 13:38:37 - WARN  --> {"code":"shouts","rho":1.0e-5} 
+2012-01-09 13:38:37 - WARN  --> {"code":"shouts","rho":1.0e-5} 
+2012-01-09 13:40:21 - WARN  --> a : user_ping, uid : a00ad423-b517-2a14-9368-b9e67369b0ad, auth : 5gZY!(y%&-2s7-D761GpCXvk@tAhVT_5d84e2893e6de2a715228913095fefab133dfb2a26e120cfd34ba85f92459c2fe7155248e9c30f7c5456ecf9dec2cea9ec4fc9ab77429ee95d5767914912309e6, lat : 40.72708, long : -74.14145,  
+2012-01-09 13:40:21 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 13:40:21 - WARN  --> a : user_ping, uid : a00ad423-b517-2a14-9368-b9e67369b0ad, auth : 5gZY!(y%&-2s7-D761GpCXvk@tAhVT_5d84e2893e6de2a715228913095fefab133dfb2a26e120cfd34ba85f92459c2fe7155248e9c30f7c5456ecf9dec2cea9ec4fc9ab77429ee95d5767914912309e6, lat : 40.72708, long : -74.14145,  
+2012-01-09 13:40:21 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 14:02:33 - WARN  --> a : user_ping, uid : a00ad423-b517-2a14-9368-b9e67369b0ad, auth : 5gZY!(y%&-2s7-D761GpCXvk@tAhVT_5d84e2893e6de2a715228913095fefab133dfb2a26e120cfd34ba85f92459c2fe7155248e9c30f7c5456ecf9dec2cea9ec4fc9ab77429ee95d5767914912309e6, lat : 40.75671, long : -73.99373, rho : 1,  
+2012-01-09 14:02:33 - WARN  --> {"code":"shouts","rho":1.0e-5} 
+2012-01-09 14:03:09 - WARN  --> a : user_ping, uid : a00ad423-b517-2a14-9368-b9e67369b0ad, auth : 5gZY!(y%&-2s7-D761GpCXvk@tAhVT_5d84e2893e6de2a715228913095fefab133dfb2a26e120cfd34ba85f92459c2fe7155248e9c30f7c5456ecf9dec2cea9ec4fc9ab77429ee95d5767914912309e6, lat : 40.75671, long : -73.99373,  
+2012-01-09 14:03:09 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 14:06:03 - WARN  --> a : user_ping, uid : a00ad423-b517-2a14-9368-b9e67369b0ad, auth : 5gZY!(y%&-2s7-D761GpCXvk@tAhVT_5d84e2893e6de2a715228913095fefab133dfb2a26e120cfd34ba85f92459c2fe7155248e9c30f7c5456ecf9dec2cea9ec4fc9ab77429ee95d5767914912309e6, lat : 40.72537, long : -74.0051, rho : 1,  
+2012-01-09 14:06:03 - WARN  --> {"code":"shouts","rho":1.0e-5} 
+2012-01-09 14:09:54 - WARN  --> a : user_ping, uid : a00ad423-b517-2a14-9368-b9e67369b0ad, auth : 5gZY!(y%&-2s7-D761GpCXvk@tAhVT_5d84e2893e6de2a715228913095fefab133dfb2a26e120cfd34ba85f92459c2fe7155248e9c30f7c5456ecf9dec2cea9ec4fc9ab77429ee95d5767914912309e6, lat : 40.7238, long : -74.00588, rho : 1,  
+2012-01-09 14:09:54 - WARN  --> {"code":"shouts","rho":1.0e-5} 
+2012-01-09 14:12:08 - WARN  --> a : user_ping, uid : a00ad423-b517-2a14-9368-b9e67369b0ad, auth : 5gZY!(y%&-2s7-D761GpCXvk@tAhVT_5d84e2893e6de2a715228913095fefab133dfb2a26e120cfd34ba85f92459c2fe7155248e9c30f7c5456ecf9dec2cea9ec4fc9ab77429ee95d5767914912309e6, lat : 40.72872, long : -74.00732, rho : 1,  
+2012-01-09 14:12:08 - WARN  --> {"code":"shouts","rho":1.0e-5} 
+2012-01-09 14:18:02 - WARN  --> a : user_ping, uid : a00ad423-b517-2a14-9368-b9e67369b0ad, auth : 5gZY!(y%&-2s7-D761GpCXvk@tAhVT_5d84e2893e6de2a715228913095fefab133dfb2a26e120cfd34ba85f92459c2fe7155248e9c30f7c5456ecf9dec2cea9ec4fc9ab77429ee95d5767914912309e6, lat : 40.72872, long : -74.00732,  
+2012-01-09 14:18:02 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 15:27:09 - WARN  --> a : user_ping, uid : a00ad423-b517-2a14-9368-b9e67369b0ad, auth : 5gZY!(y%&-2s7-D761GpCXvk@tAhVT_5d84e2893e6de2a715228913095fefab133dfb2a26e120cfd34ba85f92459c2fe7155248e9c30f7c5456ecf9dec2cea9ec4fc9ab77429ee95d5767914912309e6, lat : 40.72537, long : -74.0051,  
+2012-01-09 15:27:09 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 15:54:58 - WARN  --> a : user_ping, uid : a00ad423-b517-2a14-9368-b9e67369b0ad, auth : 5gZY!(y%&-2s7-D761GpCXvk@tAhVT_5d84e2893e6de2a715228913095fefab133dfb2a26e120cfd34ba85f92459c2fe7155248e9c30f7c5456ecf9dec2cea9ec4fc9ab77429ee95d5767914912309e6, lat : 40.7259, long : -74.0073, rho : 1,  
+2012-01-09 15:54:58 - WARN  --> {"code":"shouts","rho":1.0e-5} 
+2012-01-09 15:55:18 - WARN  --> a : user_ping, uid : a00ad423-b517-2a14-9368-b9e67369b0ad, auth : 5gZY!(y%&-2s7-D761GpCXvk@tAhVT_5d84e2893e6de2a715228913095fefab133dfb2a26e120cfd34ba85f92459c2fe7155248e9c30f7c5456ecf9dec2cea9ec4fc9ab77429ee95d5767914912309e6, lat : 40.72628, long : -74.00759,  
+2012-01-09 15:55:18 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 15:56:19 - WARN  --> a : user_ping, uid : a00ad423-b517-2a14-9368-b9e67369b0ad, auth : 5gZY!(y%&-2s7-D761GpCXvk@tAhVT_5d84e2893e6de2a715228913095fefab133dfb2a26e120cfd34ba85f92459c2fe7155248e9c30f7c5456ecf9dec2cea9ec4fc9ab77429ee95d5767914912309e6, lat : 40.72628, long : -74.00759,  
+2012-01-09 15:56:19 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 16:00:38 - WARN  --> a : user_ping, uid : a00ad423-b517-2a14-9368-b9e67369b0ad, auth : 5gZY!(y%&-2s7-D761GpCXvk@tAhVT_5d84e2893e6de2a715228913095fefab133dfb2a26e120cfd34ba85f92459c2fe7155248e9c30f7c5456ecf9dec2cea9ec4fc9ab77429ee95d5767914912309e6, lat : 40.72344, long : -74.01144, rho : 1,  
+2012-01-09 16:00:39 - WARN  --> {"code":"shouts","rho":1.0e-5} 
+2012-01-09 16:00:59 - WARN  --> a : user_ping, uid : a00ad423-b517-2a14-9368-b9e67369b0ad, auth : 5gZY!(y%&-2s7-D761GpCXvk@tAhVT_5d84e2893e6de2a715228913095fefab133dfb2a26e120cfd34ba85f92459c2fe7155248e9c30f7c5456ecf9dec2cea9ec4fc9ab77429ee95d5767914912309e6, lat : 40.72344, long : -74.01144,  
+2012-01-09 16:01:00 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 16:01:59 - WARN  --> a : user_ping, uid : a00ad423-b517-2a14-9368-b9e67369b0ad, auth : 5gZY!(y%&-2s7-D761GpCXvk@tAhVT_5d84e2893e6de2a715228913095fefab133dfb2a26e120cfd34ba85f92459c2fe7155248e9c30f7c5456ecf9dec2cea9ec4fc9ab77429ee95d5767914912309e6, lat : 40.72623, long : -74.00858,  
+2012-01-09 16:01:59 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 16:04:57 - WARN  --> a : user_ping, uid : a00ad423-b517-2a14-9368-b9e67369b0ad, auth : 5gZY!(y%&-2s7-D761GpCXvk@tAhVT_5d84e2893e6de2a715228913095fefab133dfb2a26e120cfd34ba85f92459c2fe7155248e9c30f7c5456ecf9dec2cea9ec4fc9ab77429ee95d5767914912309e6, lat : 40.72623, long : -74.00858,  
+2012-01-09 16:04:57 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 16:13:28 - WARN  --> a : user_ping, uid : a00ad423-b517-2a14-9368-b9e67369b0ad, auth : 5gZY!(y%&-2s7-D761GpCXvk@tAhVT_5d84e2893e6de2a715228913095fefab133dfb2a26e120cfd34ba85f92459c2fe7155248e9c30f7c5456ecf9dec2cea9ec4fc9ab77429ee95d5767914912309e6, lat : 40.72623, long : -74.00858,  
+2012-01-09 16:13:30 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 16:39:48 - WARN  --> a : user_ping, uid : a00ad423-b517-2a14-9368-b9e67369b0ad, auth : 5gZY!(y%&-2s7-D761GpCXvk@tAhVT_5d84e2893e6de2a715228913095fefab133dfb2a26e120cfd34ba85f92459c2fe7155248e9c30f7c5456ecf9dec2cea9ec4fc9ab77429ee95d5767914912309e6, lat : 40.7262, long : -74.00841,  
+2012-01-09 16:39:49 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 18:01:19 - WARN  --> a : user_ping, uid : a00ad423-b517-2a14-9368-b9e67369b0ad, auth : 5gZY!(y%&-2s7-D761GpCXvk@tAhVT_5d84e2893e6de2a715228913095fefab133dfb2a26e120cfd34ba85f92459c2fe7155248e9c30f7c5456ecf9dec2cea9ec4fc9ab77429ee95d5767914912309e6, lat : 40.72994, long : -74.00952, rho : 1,  
+2012-01-09 18:01:20 - WARN  --> {"code":"shouts","rho":1.0e-5} 
+2012-01-09 18:01:40 - WARN  --> a : user_ping, uid : a00ad423-b517-2a14-9368-b9e67369b0ad, auth : 5gZY!(y%&-2s7-D761GpCXvk@tAhVT_5d84e2893e6de2a715228913095fefab133dfb2a26e120cfd34ba85f92459c2fe7155248e9c30f7c5456ecf9dec2cea9ec4fc9ab77429ee95d5767914912309e6, lat : 40.72994, long : -74.00952,  
+2012-01-09 18:01:40 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 18:02:40 - WARN  --> a : user_ping, uid : a00ad423-b517-2a14-9368-b9e67369b0ad, auth : 5gZY!(y%&-2s7-D761GpCXvk@tAhVT_5d84e2893e6de2a715228913095fefab133dfb2a26e120cfd34ba85f92459c2fe7155248e9c30f7c5456ecf9dec2cea9ec4fc9ab77429ee95d5767914912309e6, lat : 40.75413, long : -74.03252, rho : 1,  
+2012-01-09 18:02:40 - WARN  --> {"code":"shouts","rho":1.0e-5} 
+2012-01-09 18:03:01 - WARN  --> a : user_ping, uid : a00ad423-b517-2a14-9368-b9e67369b0ad, auth : 5gZY!(y%&-2s7-D761GpCXvk@tAhVT_5d84e2893e6de2a715228913095fefab133dfb2a26e120cfd34ba85f92459c2fe7155248e9c30f7c5456ecf9dec2cea9ec4fc9ab77429ee95d5767914912309e6, lat : 40.75413, long : -74.03252,  
+2012-01-09 18:03:01 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 18:04:00 - WARN  --> a : user_ping, uid : a00ad423-b517-2a14-9368-b9e67369b0ad, auth : 5gZY!(y%&-2s7-D761GpCXvk@tAhVT_5d84e2893e6de2a715228913095fefab133dfb2a26e120cfd34ba85f92459c2fe7155248e9c30f7c5456ecf9dec2cea9ec4fc9ab77429ee95d5767914912309e6, lat : 40.73051, long : -74.00891,  
+2012-01-09 18:04:00 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 18:06:58 - WARN  --> a : user_ping, uid : a00ad423-b517-2a14-9368-b9e67369b0ad, auth : 5gZY!(y%&-2s7-D761GpCXvk@tAhVT_5d84e2893e6de2a715228913095fefab133dfb2a26e120cfd34ba85f92459c2fe7155248e9c30f7c5456ecf9dec2cea9ec4fc9ab77429ee95d5767914912309e6, lat : 40.7261, long : -74.01023,  
+2012-01-09 18:06:58 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 18:19:40 - WARN  --> a : user_ping, uid : a00ad423-b517-2a14-9368-b9e67369b0ad, auth : 5gZY!(y%&-2s7-D761GpCXvk@tAhVT_5d84e2893e6de2a715228913095fefab133dfb2a26e120cfd34ba85f92459c2fe7155248e9c30f7c5456ecf9dec2cea9ec4fc9ab77429ee95d5767914912309e6, lat : 40.72609, long : -74.00758,  
+2012-01-09 18:19:40 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 18:54:58 - WARN  --> a : user_ping, uid : a00ad423-b517-2a14-9368-b9e67369b0ad, auth : 5gZY!(y%&-2s7-D761GpCXvk@tAhVT_5d84e2893e6de2a715228913095fefab133dfb2a26e120cfd34ba85f92459c2fe7155248e9c30f7c5456ecf9dec2cea9ec4fc9ab77429ee95d5767914912309e6, lat : 40.7262, long : -74.00852,  
+2012-01-09 18:54:58 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 20:41:05 - WARN  --> a : user_ping, uid : a00ad423-b517-2a14-9368-b9e67369b0ad, auth : 5gZY!(y%&-2s7-D761GpCXvk@tAhVT_5d84e2893e6de2a715228913095fefab133dfb2a26e120cfd34ba85f92459c2fe7155248e9c30f7c5456ecf9dec2cea9ec4fc9ab77429ee95d5767914912309e6, lat : 40.72623, long : -74.00859,  
+2012-01-09 20:41:06 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 20:44:59 - WARN  --> a : user_ping, uid : a00ad423-b517-2a14-9368-b9e67369b0ad, auth : 5gZY!(y%&-2s7-D761GpCXvk@tAhVT_5d84e2893e6de2a715228913095fefab133dfb2a26e120cfd34ba85f92459c2fe7155248e9c30f7c5456ecf9dec2cea9ec4fc9ab77429ee95d5767914912309e6, lat : 40.72609, long : -74.00836,  
+2012-01-09 20:45:00 - WARN  --> {"code":"ping_ok"} 
+2012-01-09 22:22:50 - WARN  --> a : user_ping, uid : a00ad423-b517-2a14-9368-b9e67369b0ad, auth : 5gZY!(y%&-2s7-D761GpCXvk@tAhVT_5d84e2893e6de2a715228913095fefab133dfb2a26e120cfd34ba85f92459c2fe7155248e9c30f7c5456ecf9dec2cea9ec4fc9ab77429ee95d5767914912309e6, lat : 40.72563, long : -74.00479,  
+2012-01-09 22:22:50 - WARN  --> {"code":"ping_ok"} 

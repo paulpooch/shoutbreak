@@ -19,7 +19,7 @@ Location Services</string>
 	Want to check our site for a downtime notice?</string>
     <string name="serverHttpError">Sorry, our server is not responding.
 Want to check our site for a downtime notice?</string>
-
+ <string name="cannotTurnOnError">Unable to turn on.\nPlease restart the app.\nThis should never happen so please tell support.</string>
 </resources><!--
 john's debug         0lLmkCXVk9yD5LpfqqmAw9kMr2orIej8Y3aw2Dw
 paul's desktop debug 0D9gVcQxZ-ihLwDWC3oj- -dfHUntK8OOe7a2L9g REMOVE THE SPACE

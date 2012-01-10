@@ -6,6 +6,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import co.shoutbreak.R;
 import co.shoutbreak.core.C;
 import co.shoutbreak.core.Colleague;
 import co.shoutbreak.core.Mediator;
@@ -126,6 +127,10 @@ public class Storage implements Colleague {
 	
 	public void handleCreateAccountFailed() {
 		_noticeTabSystem.createNotice(C.NOTICE_CREATE_ACCOUNT_FAILED, 0, C.STRING_CREATE_ACCOUNT_FAILED, null);
+	}
+	
+	public void handleForcedPollingStop() {
+		_noticeTabSystem.createNotice(C.NOTICE_FORCED_POLLING_STOP, 0, C.STRING_FORCED_POLLING_STOP, null);
 	}
 	
 	///////////////////////////////////////////////////////////////////////////

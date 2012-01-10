@@ -129,7 +129,8 @@ public class NoticeTabListViewAdapter extends BaseAdapter implements Colleague {
 			}
 			case C.NOTICE_VOTE_FAILED:
 			case C.NOTICE_CREATE_ACCOUNT_FAILED:
-			case C.NOTICE_SHOUT_FAILED: {
+			case C.NOTICE_SHOUT_FAILED: 
+			case C.NOTICE_FORCED_POLLING_STOP: {
 				holder.icon.setBackgroundResource(R.drawable.notice_icon_warning);
 				break;
 			}
