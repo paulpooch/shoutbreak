@@ -1,6 +1,6 @@
 <?php
 
-$version = '001';
+$version = '003';
 set_include_path('/home/webuser/shoutbreak/htdocs/' . $version . '/includes/');
 require_once("SimpleDB.php");
 require_once("KLogger.php");

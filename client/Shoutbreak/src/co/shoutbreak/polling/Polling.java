@@ -312,51 +312,52 @@ public class Polling {
 	
 	public void createAccountStep2(Message message) {
 		SBLog.logic("Polling - createAccountStep2");
-		Handler httpHandler = new Handler() {
-			public void handleMessage(Message message) {
-				switch (message.what) {
-					case C.HTTP_DID_SUCCEED: {
-						if (_safeM.isResponseClean(message)) {
-							try {
-								CrossThreadPacket xPacket = (CrossThreadPacket)message.obj;
-								String password = xPacket.json.getString(C.JSON_PW);
-								String uid = xPacket.sArgs[0];
-								_safeM.handleAccountCreated(uid, password);
-								xPacket.purpose = _threadPurpose;
-								xPacket.keyForLife = _keyForLife;
-								_uiThreadHandler.sendMessage(Message.obtain(_uiThreadHandler, C.STATE_IDLE, xPacket));
-							} catch (JSONException ex) {
-								ErrorManager.manage(ex);
+		try {
+			
+			CrossThreadPacket xPacket2 = (CrossThreadPacket)message.obj;
+			final String tempUid = xPacket2.json.getString(C.JSON_UID);
+		
+			Handler httpHandler = new Handler() {
+				public void handleMessage(Message message) {
+					switch (message.what) {
+						case C.HTTP_DID_SUCCEED: {
+							if (_safeM.isResponseClean(message)) {
+								try {
+									CrossThreadPacket xPacket = (CrossThreadPacket)message.obj;
+									String password = xPacket.json.getString(C.JSON_PW);
+									_safeM.handleAccountCreated(tempUid, password);
+									xPacket.purpose = _threadPurpose;
+									xPacket.keyForLife = _keyForLife;
+									_uiThreadHandler.sendMessage(Message.obtain(_uiThreadHandler, C.STATE_IDLE, xPacket));
+								} catch (JSONException ex) {
+									ErrorManager.manage(ex);
+									_safeM.handleCreateAccountFailed(message);
+								}
+							} else {
 								_safeM.handleCreateAccountFailed(message);
 							}
-						} else {
-							_safeM.handleCreateAccountFailed(message);
+							break;
 						}
-						break;
-					}
-					case C.HTTP_DID_EXCEPTION: {
-						_safeM.handleCreateAccountFailed(message);
-						break;
-					}
-					case C.HTTP_DID_STATUS_CODE_ERROR: {
-						_safeM.handleCreateAccountFailed(message);
-						_safeM.handleServerHttpError();
-						break;
+						case C.HTTP_DID_EXCEPTION: {
+							_safeM.handleCreateAccountFailed(message);
+							break;
+						}
+						case C.HTTP_DID_STATUS_CODE_ERROR: {
+							_safeM.handleCreateAccountFailed(message);
+							_safeM.handleServerHttpError();
+							break;
+						}
 					}
 				}
-			}
-		};
-		try {
-			CrossThreadPacket xPacket = (CrossThreadPacket)message.obj;
-			String tempUID = xPacket.json.getString(C.JSON_UID);
+			};
+		
 			PostData postData = new PostData();
 			postData.add(C.JSON_ACTION, C.JSON_ACTION_CREATE_ACCOUNT);
-			postData.add(C.JSON_UID, tempUID);
+			postData.add(C.JSON_UID, tempUid);
 			postData.add(C.JSON_ANDROID_ID, _safeM.getAndroidId());
 			postData.add(C.JSON_DEVICE_ID, _safeM.getDeviceId());
 			postData.add(C.JSON_PHONE_NUM, _safeM.getPhoneNumber());
 			postData.add(C.JSON_CARRIER_NAME, _safeM.getNetworkOperator());
-			xPacket.sArgs = new String[] { tempUID };
 			new HttpConnection(httpHandler).post(postData);
 		} catch (JSONException ex) {
 			ErrorManager.manage(ex);
