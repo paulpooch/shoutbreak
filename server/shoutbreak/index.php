@@ -19,7 +19,7 @@
 -cron/jobs.php
 */
 
-$version = '001';
+$version = '002';
 set_include_path('/home/webuser/shoutbreak/htdocs/' . $version . '/includes/');
 require_once("SimpleDB.php");
 require_once("KLogger.php");

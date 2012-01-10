@@ -125,12 +125,9 @@ public class C {
 		
 	// STATES /////////////////////////////////////////////////////////////////
 	// 30 - 39
-	public static final int STATE_CREATE_ACCOUNT_2 = 30;
-	public static final int STATE_EXPIRED_AUTH = 31;
-	public static final int STATE_RECEIVE_SHOUTS = 32;
-	public static final int STATE_SHOUT = 33;
-	public static final int STATE_VOTE = 34;
-	public static final int STATE_IDLE = 35;
+	public static final int STATE_SHOUT = 31;
+	public static final int STATE_VOTE = 32;
+	public static final int STATE_IDLE = 33;
 	
 	// 40 - 49
 	public static final int SHOUT_STATE_NEW = 40;

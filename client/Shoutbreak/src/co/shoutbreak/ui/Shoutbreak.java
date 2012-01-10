@@ -387,7 +387,7 @@ public class Shoutbreak extends MapActivity implements Colleague {
 				super.handleMessage(message);
 			}
 		};
-		splashHandler.sendMessageDelayed(new Message(), 2000);
+		splashHandler.sendMessageDelayed(splashHandler.obtainMessage(), 2000);
 	}
 
 	private boolean wasLaunchFromReferral() {

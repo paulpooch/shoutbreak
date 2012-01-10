@@ -56,33 +56,25 @@ public class HttpConnection implements Runnable {
 		_handler = handler;
 	}
 
-	public void create(int method, String url, List<NameValuePair> data, CrossThreadPacket xPacket) {
+	public void create(int method, String url, List<NameValuePair> data) {
 		_method = method;
 		_url = url;
 		_data = data;
-		if (xPacket == null) {
-			_xPacket = new CrossThreadPacket();
-		} else {
-			_xPacket = xPacket;
-		}
+		_xPacket = new CrossThreadPacket();
 		ConnectionQueue.getInstance().push(this);
 	}
 
 	public void get(String url) {
-		create(GET, url, null, null);
+		create(GET, url, null);
 	}
-
+	
 	public void post(PostData postData) {
-		post(C.CONFIG_SERVER_ADDRESS, postData, null);
+		post(C.CONFIG_SERVER_ADDRESS, postData);
 	}
 	
-	public void post(PostData postData, CrossThreadPacket xPacket) {
-		post(C.CONFIG_SERVER_ADDRESS, postData, xPacket);
-	}
-	
-	public void post(String url, PostData postData, CrossThreadPacket xPacket) {
+	public void post(String url, PostData postData) {
 		List<NameValuePair> data = postData.getNameValuePairs();
-		create(POST, url, data, xPacket);
+		create(POST, url, data);
 	}
 
 	public void run() {

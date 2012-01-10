@@ -685,8 +685,7 @@ class DBEngine {
 							$attempts--;
 						}
 						
-						if ($voteWorkedGivePoints) {
-							$worked = false;	
+						if ($voteWorkedGivePoints) {	
 							$expected = null;
 							$attempts = $this->SAFE_GET_ATTEMPTS;
 							$backOffTimer = $this->BACKOFF_INITIAL;
@@ -740,7 +739,7 @@ class DBEngine {
 								while ($attempts > 0) {
 									$put = $this->sdb->putAttributes($this->TABLE_USERS, $shout->uid, $attrs, $expected);
 									if ($put) {
-										$worked = true;
+										return true;
 										break;
 									} else {
 										if ($this->sdb->ErrorCode == 'ServiceUnavailable' || $this->sdb->ErrorCode == 'InternalError') {

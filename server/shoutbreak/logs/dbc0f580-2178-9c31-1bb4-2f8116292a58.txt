@@ -8,3 +8,7 @@
 2012-01-09 22:54:35 - WARN  --> {"code":"expired_auth","nonce":"%)0@P@L4wXII*45t5\/#k2974Qw(*Q%yBLhbmyf%h"} 
 2012-01-09 22:54:35 - WARN  --> a : user_ping, uid : dbc0f580-2178-9c31-1bb4-2f8116292a58, auth : W-V*/yYRDWZH5$ERVh6AwZ6j_xE4Rx8=d93c412cddd945f11b27f14941ae25a8c34b9e8855bc20bee9f0999198378aaaae7acdd045763f0449fcf3ffad45d7942ef84ae24b8893002477a61f9ffd90f9, lat : 40.75047, long : -74.02702,  
 2012-01-09 22:54:36 - WARN  --> {"code":"ping_ok"} 
+2012-01-10 1:57:04 - WARN  --> a : user_ping, uid : dbc0f580-2178-9c31-1bb4-2f8116292a58, auth : W-V*/yYRDWZH5$ERVh6AwZ6j_xE4Rx8=d93c412cddd945f11b27f14941ae25a8c34b9e8855bc20bee9f0999198378aaaae7acdd045763f0449fcf3ffad45d7942ef84ae24b8893002477a61f9ffd90f9, lat : 40.75111, long : -74.0287,  
+2012-01-10 1:57:04 - WARN  --> {"code":"expired_auth","nonce":"w=5Y)O\/x!+QKCTcL2)(+#\/LEIK&8=was5W6QN#F7"} 
+2012-01-10 1:57:05 - WARN  --> a : user_ping, uid : dbc0f580-2178-9c31-1bb4-2f8116292a58, auth : W-V*/yYRDWZH5$ERVh6AwZ6j_xE4Rx8=e8bb4e0b83755b604e09b6d39b0fa7d4042f6af656b7d22f7df2f291e5587d489ae54240a67d5ea9282ea3ceb5c6b5a90e1c6ff2da400a66d7cbc769981ccf42, lat : 40.75111, long : -74.0287,  
+2012-01-10 1:57:05 - WARN  --> {"code":"ping_ok"} 

@@ -24,11 +24,13 @@ public class Polling {
 	private ThreadSafeMediator _safeM;
   private Handler _uiThreadHandler;
   private UUID _keyForLife;
-    
-  public Polling(ThreadSafeMediator threadSafeMediator, Handler uiThreadHandler, UUID keyForLife) {
+  private int _threadPurpose; 
+  
+  public Polling(ThreadSafeMediator threadSafeMediator, Handler uiThreadHandler, int threadPurpose, UUID keyForLife) {
   	SBLog.constructor(TAG);
     _safeM = threadSafeMediator;
     _uiThreadHandler = uiThreadHandler;
+    _threadPurpose = threadPurpose;
     _keyForLife = keyForLife;
    }
 	
@@ -38,12 +40,6 @@ public class Polling {
 			case C.STATE_IDLE: {
 				SBLog.logic("Polling - idle");
 				idle(message);
-				break;
-			}
-			case C.STATE_RECEIVE_SHOUTS: {
-				SBLog.logic("Polling - receiveShouts");
-				_safeM.resetPollingDelay();				
-				receiveShouts(message);
 				break;
 			}
 			case C.STATE_VOTE: {
@@ -58,16 +54,6 @@ public class Polling {
 				shout(message);
 				break;
 			}
-			case C.STATE_EXPIRED_AUTH: {
-				SBLog.logic("Polling - expiredAuth");
-				expiredAuth(message);
-				break;
-			}
-			case C.STATE_CREATE_ACCOUNT_2: {
-				SBLog.logic("Polling - createAccountStep2");
-				createAccountStep2(message);
-				break;
-			}
 		}
 	}
     
@@ -78,7 +64,6 @@ public class Polling {
 			return;
 		}
 		ping(message);
-		
 	}
 	
 	public void ping(Message message) {
@@ -90,20 +75,21 @@ public class Polling {
 						if (_safeM.isResponseClean(message)) {						
 							_safeM.handlePingSuccess();
 							CrossThreadPacket xPacket = (CrossThreadPacket)message.obj;
-							xPacket.keyForLife = _keyForLife;
+							message.obj = xPacket;
 							try {
 								String code = xPacket.json.getString(C.JSON_CODE);
-													
 								if (code.equals(C.JSON_CODE_PING_OK)) {
-									// if normal ping, introduce delay
-									if (xPacket.purpose == C.PURPOSE_LOOP_FROM_UI) {
-										xPacket.purpose = C.PURPOSE_LOOP_FROM_UI_DELAYED;
+									// If normal ping, introduce delay
+									if (_threadPurpose == C.PURPOSE_LOOP_FROM_UI) {
+										_threadPurpose = C.PURPOSE_LOOP_FROM_UI_DELAYED;
 									}
+									xPacket.purpose = _threadPurpose;
+									xPacket.keyForLife = _keyForLife;
 									_uiThreadHandler.sendMessage(Message.obtain(_uiThreadHandler, C.STATE_IDLE, xPacket));
 								} else if (code.equals(C.JSON_CODE_SHOUTS)) {
-									_uiThreadHandler.sendMessage(Message.obtain(_uiThreadHandler, C.STATE_RECEIVE_SHOUTS, xPacket));
+									receiveShouts(message);
 								} else if (code.equals(C.JSON_CODE_EXPIRED_AUTH)) {
-									_uiThreadHandler.sendMessage(Message.obtain(_uiThreadHandler, C.STATE_EXPIRED_AUTH, xPacket));
+									expiredAuth(message);
 								} else if (code.equals(C.JSON_CODE_INVALID_UID)) {
 									
 								} else {
@@ -131,7 +117,6 @@ public class Polling {
 				}
 			}
 		};
-		CrossThreadPacket xPacket = (CrossThreadPacket)message.obj;
 		ArrayList<String> scoresToRequest = _safeM.getOpenShoutIds();
 		PostData postData = new PostData();
 		postData.add(C.JSON_ACTION, C.JSON_ACTION_USER_PING);
@@ -164,12 +149,13 @@ public class Polling {
 			postData.add(C.JSON_SCORES, scoreReq.toString());
 		}
 			
-		new HttpConnection(httpHandler).post(postData, xPacket);	
+		new HttpConnection(httpHandler).post(postData);	
 	}
 	
 	public void receiveShouts(Message message) {
+		SBLog.logic("Polling - receiveShouts");
+		_safeM.resetPollingDelay();
 		CrossThreadPacket xPacket = (CrossThreadPacket)message.obj;
-		xPacket.keyForLife = _keyForLife;
 		try {
 			if (xPacket.json.has(C.JSON_DENSITY)) {
 				double density = (double) xPacket.json.optDouble(C.JSON_DENSITY);
@@ -187,9 +173,11 @@ public class Polling {
 				JSONObject levelInfo = xPacket.json.getJSONObject(C.JSON_LEVEL_CHANGE);
 				_safeM.handleLevelUp(levelInfo);
 			}
-			if (xPacket.purpose == C.PURPOSE_LOOP_FROM_UI) {
-				xPacket.purpose = C.PURPOSE_LOOP_FROM_UI_DELAYED;
-			}			
+			if (_threadPurpose == C.PURPOSE_LOOP_FROM_UI) {
+				_threadPurpose = C.PURPOSE_LOOP_FROM_UI_DELAYED;
+			}
+			xPacket.purpose = _threadPurpose;
+			xPacket.keyForLife = _keyForLife;
 			_uiThreadHandler.sendMessage(Message.obtain(_uiThreadHandler, C.STATE_IDLE, xPacket));	
 			
 		} catch (JSONException ex) {
@@ -209,9 +197,6 @@ public class Polling {
 								_safeM.handleShoutFailed(message);
 							} else {
 								_safeM.handleShoutSent();
-								// Unless shout occurs in idle thread, we don't need to sendMessage.
-								//CrossThreadPacket xPacket = (CrossThreadPacket)message.obj;
-								//_uiThreadHandler.sendMessage(Message.obtain(_uiThreadHandler, C.STATE_IDLE, xPacket)); // STATE doesn't matter - going to die
 							}
 						} else {
 							_safeM.handleShoutFailed(message);
@@ -241,7 +226,7 @@ public class Polling {
 		postData.add(C.JSON_LONG, Double.toString(_safeM.getLongitude()));
 		postData.add(C.JSON_SHOUT_TEXT, shoutText);
 		postData.add(C.JSON_SHOUT_POWER, Integer.toString(shoutPower));
-		new HttpConnection(httpHandler).post(postData, xPacket);	
+		new HttpConnection(httpHandler).post(postData);	
 	}
 	
 	public void vote(Message message) {
@@ -292,7 +277,7 @@ public class Polling {
 		postData.add(C.JSON_AUTH, _safeM.getAuth());
 		postData.add(C.JSON_SHOUT_ID, shoutId);
 		postData.add(C.JSON_VOTE, Integer.toString(vote));
-		new HttpConnection(httpHandler).post(postData, xPacket);	
+		new HttpConnection(httpHandler).post(postData);	
 	}
 	
 	public void createAccount(Message message) {
@@ -302,9 +287,7 @@ public class Polling {
 				switch (message.what) {
 					case C.HTTP_DID_SUCCEED: {
 						if (_safeM.isResponseClean(message)) {
-							CrossThreadPacket xPacket = (CrossThreadPacket)message.obj;
-							xPacket.keyForLife = _keyForLife;
-							_uiThreadHandler.sendMessage(Message.obtain(_uiThreadHandler, C.STATE_CREATE_ACCOUNT_2, xPacket));
+							createAccountStep2(message);
 						} else {
 							_safeM.handleCreateAccountFailed(message);
 						}
@@ -322,13 +305,13 @@ public class Polling {
 				}
 			}
 		};
-		CrossThreadPacket xPacket = (CrossThreadPacket)message.obj;
 		PostData postData = new PostData();
 		postData.add(C.JSON_ACTION, C.JSON_ACTION_CREATE_ACCOUNT);
-		new HttpConnection(httpHandler).post(postData, xPacket);	
+		new HttpConnection(httpHandler).post(postData);	
 	}
 	
 	public void createAccountStep2(Message message) {
+		SBLog.logic("Polling - createAccountStep2");
 		Handler httpHandler = new Handler() {
 			public void handleMessage(Message message) {
 				switch (message.what) {
@@ -336,10 +319,11 @@ public class Polling {
 						if (_safeM.isResponseClean(message)) {
 							try {
 								CrossThreadPacket xPacket = (CrossThreadPacket)message.obj;
-								xPacket.keyForLife = _keyForLife;
 								String password = xPacket.json.getString(C.JSON_PW);
 								String uid = xPacket.sArgs[0];
 								_safeM.handleAccountCreated(uid, password);
+								xPacket.purpose = _threadPurpose;
+								xPacket.keyForLife = _keyForLife;
 								_uiThreadHandler.sendMessage(Message.obtain(_uiThreadHandler, C.STATE_IDLE, xPacket));
 							} catch (JSONException ex) {
 								ErrorManager.manage(ex);
@@ -373,13 +357,14 @@ public class Polling {
 			postData.add(C.JSON_PHONE_NUM, _safeM.getPhoneNumber());
 			postData.add(C.JSON_CARRIER_NAME, _safeM.getNetworkOperator());
 			xPacket.sArgs = new String[] { tempUID };
-			new HttpConnection(httpHandler).post(postData, xPacket);
+			new HttpConnection(httpHandler).post(postData);
 		} catch (JSONException ex) {
 			ErrorManager.manage(ex);
 		}
 	}
 	
 	public void expiredAuth(Message message) {
+		SBLog.logic("Polling - expiredAuth");
 		try {
 			CrossThreadPacket xPacket = (CrossThreadPacket)message.obj;
 			String nonce = xPacket.json.getString(C.JSON_NONCE);
@@ -389,4 +374,5 @@ public class Polling {
 			ErrorManager.manage(ex);
 		}
 	}
+	
 }

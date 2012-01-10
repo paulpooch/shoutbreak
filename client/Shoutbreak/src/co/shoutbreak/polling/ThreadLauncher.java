@@ -40,49 +40,42 @@ public class ThreadLauncher implements Colleague {
 	public void spawnNextPollingThread(Message message) {
 		
 		CrossThreadPacket oldXPacket = (CrossThreadPacket) message.obj;
+		// Make sure we pass on the keyForLife... or polling thread will not be allowed to continue relaunching.
+		UUID oldKeyForLife = oldXPacket.keyForLife;
 		int oldThreadPurpose = oldXPacket.purpose;
-
-		// We need to re-create a new Message object. The old one falls out of scope.
-		// This is probably good for dumping stale data anyway.
-		Message newMessage = new Message();
-		newMessage.what = message.what;
-		CrossThreadPacket newXPacket = new CrossThreadPacket();
-		// Sometimes JSON needs to carry between states.
-		newXPacket.json = oldXPacket.json;	
+		int newPurpose = C.PURPOSE_DEATH;
+		Message idleMessage = _uiThreadHandler.obtainMessage(C.STATE_IDLE);
+		
 		// Only logic can decide if we are allowed to delay. 
 		// A lot of times we need immediate follow-up loop.
 		if (oldThreadPurpose == C.PURPOSE_LOOP_FROM_UI || oldThreadPurpose == C.PURPOSE_LOOP_FROM_UI_DELAYED) {
-			newXPacket.purpose = C.PURPOSE_LOOP_FROM_UI;
-		
-			if (message.what == C.STATE_IDLE && oldXPacket.keyForLife.compareTo(_currentKeyForLife) != 0) {
-				// If a newer polling thread has been spawned (i.e. keyForLife has changed), don't let this start another iteration.
-				return;
+			newPurpose = C.PURPOSE_LOOP_FROM_UI;
+			
+			if (message.what == C.STATE_IDLE && oldKeyForLife.compareTo(_currentKeyForLife) == 0) {
+				// Do we return to Polling?
+				switch (oldThreadPurpose) {
+					case C.PURPOSE_LOOP_FROM_UI: {
+						launchPollingThread(newPurpose, oldKeyForLife, false, idleMessage);
+						break;
+					}
+					case C.PURPOSE_LOOP_FROM_UI_DELAYED: {
+						launchPollingThread(newPurpose, oldKeyForLife, true, idleMessage);
+						break;
+					}
+					default:
+						break;
+				}
 			}
-		
-		}
-		newMessage.obj = newXPacket;
-
-		// Do we return to Polling?
-		switch (oldThreadPurpose) {
-			case C.PURPOSE_LOOP_FROM_UI: {
-				launchPollingThread(newMessage, false);
-				break;
-			}
-			case C.PURPOSE_LOOP_FROM_UI_DELAYED: {
-				launchPollingThread(newMessage, true);
-				break;
-			}
-			default:
-				break;
-		}
+		}	
 	}
 	
-	public void launchPollingThread(Message message, boolean delayed) {
-		launchPollingThread(message, delayed, UUID.randomUUID());
+	// Used by one-time trips to polling thread (shout, vote, etc.)
+	public void launchDisposableThread(Message message, boolean delayed) {
+		launchPollingThread(C.PURPOSE_DEATH, UUID.randomUUID(), delayed, message);
 	}
 	
-	public void launchPollingThread(Message message, boolean delayed, UUID keyForLife) {
-		PollingThread thread = new PollingThread(_m.getAThreadSafeMediator(), _uiThreadHandler, message, keyForLife);
+	public void launchPollingThread(int threadPurpose, UUID keyForLife, boolean delayed, Message message) {
+		PollingThread thread = new PollingThread(_m.getAThreadSafeMediator(), _uiThreadHandler, threadPurpose, keyForLife, message);
 		if (delayed) {
 			_loopingThread = thread;
 			_uiThreadHandler.postDelayed(thread, _m.getPollingDelay());
@@ -92,13 +85,9 @@ public class ThreadLauncher implements Colleague {
 	}
 	
 	public void startPolling() {
-		Message message = new Message();
-		CrossThreadPacket xPacket = new CrossThreadPacket();
-		xPacket.purpose = C.PURPOSE_LOOP_FROM_UI;
-		message.obj = xPacket;
-		message.what = C.STATE_IDLE;
 		_currentKeyForLife = UUID.randomUUID();
-		launchPollingThread(message, false, _currentKeyForLife);
+		Message idleMessage = _uiThreadHandler.obtainMessage(C.STATE_IDLE);
+		launchPollingThread(C.PURPOSE_LOOP_FROM_UI, _currentKeyForLife, false, idleMessage);
 	}
 	
 	public void stopLaunchingPollingThreads() {
@@ -117,25 +106,19 @@ public class ThreadLauncher implements Colleague {
 	}	
 	
 	public void handleShoutStart(String text, int power) {
-		Message message = new Message();
 		CrossThreadPacket xPacket = new CrossThreadPacket();
-		xPacket.purpose = C.PURPOSE_DEATH;
 		xPacket.sArgs = new String[] { text };
 		xPacket.iArgs = new int[] { power };
-		message.obj = xPacket;
-		message.what = C.STATE_SHOUT;
-		launchPollingThread(message, false);
+		Message message = _uiThreadHandler.obtainMessage(C.STATE_SHOUT, xPacket);
+		launchDisposableThread(message, false);
 	}
 	
 	public void handleVoteStart(String shoutId, int vote) {
-		Message message = new Message();
 		CrossThreadPacket xPacket = new CrossThreadPacket();
-		xPacket.purpose = C.PURPOSE_DEATH;
 		xPacket.sArgs = new String[] { shoutId };
 		xPacket.iArgs = new int[] { vote };
-		message.obj = xPacket;
-		message.what = C.STATE_VOTE;
-		launchPollingThread(message, false);
+		Message message = _uiThreadHandler.obtainMessage(C.STATE_VOTE, xPacket);
+		launchDisposableThread(message, false);
 	}
 
 }

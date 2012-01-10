@@ -122,9 +122,6 @@ public class InboxListViewAdapter extends BaseAdapter implements Colleague {
 			_m.handeVoteStart(holder.shoutId, voteDirection);
 			return null;
 		}
-
-		protected void onPostExecute(Void unused) {
-		}
 	}
 
 	public void undoVote(String shoutId, int vote) {
