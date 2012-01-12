@@ -22,7 +22,7 @@ public class RoundProgress extends RelativeLayout {
 		super(context, attrs);
 		SBLog.constructor(TAG);
 		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		inflater.inflate(R.layout.round_progress, this);
+		inflater.inflate(R.layout.round_progress, RoundProgress.this);
 		setup(context, attrs);
 	}
 	

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="co.shoutbreak"
-    android:versionCode="4"
-    android:versionName="1.3" >
+    android:versionCode="5"
+    android:versionName="1.4" >
 
     <uses-sdk android:minSdkVersion="8" />
 
@@ -10,7 +10,7 @@
     <!-- android:debuggable = false -->
     <!-- update maps key -->
     <!-- remove below permission -->
-    <!--<uses-permission android:name="android.permission.SET_DEBUG_APP" />-->
+    <uses-permission android:name="android.permission.SET_DEBUG_APP" />
     <!-- //////////////////////////////////////////////////////////// -->
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -26,7 +26,7 @@
     <uses-permission android:name="android.permission.GET_TASKS" />
 
     <application
-        android:debuggable="false"
+        android:debuggable="true"
         android:icon="@drawable/icon"
         android:label="Shoutbreak" >
 

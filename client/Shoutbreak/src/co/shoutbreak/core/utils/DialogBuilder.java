@@ -17,9 +17,10 @@ public class DialogBuilder {
 	public static final int DIALOG_SERVER_DOWNTIME = 1; // server error is the server giving us {code: error}
 	public static final int DIALOG_SERVER_INVALID_RESPONSE = 2; // server giving garbage data back
 	public static final int DIALOG_SERVER_HTTP_ERROR = 3; // server is giving http status errors
+	public static final int DIALOG_SCORE_DETAILS = 4;
 	
-	public static final int DIALOG_WAIT_FOR_MAP_TO_HAVE_LOCATION = 4;
-	public static final int DISMISS_DIALOG_WAIT_FOR_MAP_TO_HAVE_LOCATION = 5;
+	public static final int DIALOG_WAIT_FOR_MAP_TO_HAVE_LOCATION = 5;
+	public static final int DISMISS_DIALOG_WAIT_FOR_MAP_TO_HAVE_LOCATION = 6;
 	
 	private static ProgressDialog _waitForMapToHaveLocationDialog;
 	private boolean _isDialogAlreadyShowing;
@@ -35,6 +36,26 @@ public class DialogBuilder {
 
 		String msg = "";
 		switch (whichDialog) {
+		
+			case DIALOG_SCORE_DETAILS: {
+				if (!_isDialogAlreadyShowing) {
+					_isDialogAlreadyShowing = true;
+					AlertDialog.Builder builder = new AlertDialog.Builder(_ui);
+					builder
+						.setView(_ui.findViewById(R.id.scoreDialog))
+						.setCancelable(false)
+						.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog, int id) {
+									_isDialogAlreadyShowing = false;
+									dialog.cancel();
+								}
+						});							
+					AlertDialog alert = builder.create();
+					alert.show();
+				}
+				break;
+			}
+		
 			case DIALOG_SERVER_INVALID_RESPONSE:
 				msg = _ui.getString(R.string.serverInvalidResponse);
 			case DIALOG_SERVER_HTTP_ERROR: {
@@ -96,7 +117,7 @@ public class DialogBuilder {
 					_waitForMapToHaveLocationDialog.setButton("I Don't Care", new DialogInterface.OnClickListener() {
 					        public void onClick(DialogInterface dialog, int which) {
 					            // Use either finish() or return() to either close the activity or just the dialog
-					            DialogBuilder.this.showDialog(DISMISS_DIALOG_WAIT_FOR_MAP_TO_HAVE_LOCATION, "");
+					            showDialog(DISMISS_DIALOG_WAIT_FOR_MAP_TO_HAVE_LOCATION, "");
 					        	return;
 					        }
 					});

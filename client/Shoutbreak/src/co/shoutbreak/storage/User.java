@@ -165,14 +165,14 @@ public class User {
 	// SYNCHRONIZED WRITE METHODS /////////////////////////////////////////////
 	
 	public synchronized void savePoints(int pointsType, int pointsValue) {
-		this.storePoints(pointsType, pointsValue);
+		storePoints(pointsType, pointsValue);
 		_points += pointsValue;
 	}
 	
 	private synchronized Long storePoints(int pointsType, int pointsValue) {
 		SBLog.method(TAG, "storePoints()");
 		String sql = "INSERT INTO " + C.DB_TABLE_POINTS + " (type, value, timestamp) VALUES (?, ?, ?)";
-		SQLiteStatement insert = this._db.compileStatement(sql);
+		SQLiteStatement insert = _db.compileStatement(sql);
 		insert.bindLong(1, pointsType);
 		insert.bindLong(2, pointsValue);
 		insert.bindString(3, Database.getDateAsISO8601String(new Date()));
@@ -199,7 +199,7 @@ public class User {
 		SBLog.method(TAG, "saveCellDensity()");
 		String sql = "INSERT INTO " + C.DB_TABLE_DENSITY
 				+ " (cell_x, cell_y, density, last_updated) VALUES (?, ?, ?, ?)";
-		SQLiteStatement insert = this._db.compileStatement(sql);
+		SQLiteStatement insert = _db.compileStatement(sql);
 		insert.bindLong(1, cellDensity.cellX);
 		insert.bindLong(2, cellDensity.cellY);
 		insert.bindDouble(3, cellDensity.density);

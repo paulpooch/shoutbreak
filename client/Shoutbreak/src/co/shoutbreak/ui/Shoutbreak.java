@@ -202,6 +202,7 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		if (_m != null) {
 			// This is not a cold start.
 			_m.setIsUiInForeground(true);
+			_m.clearNotifications();
 			wasLaunchFromReferral();
 			reflectPowerState();
 
@@ -395,9 +396,6 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		boolean wasFromReferral = false;
 		Bundle extras = getIntent().getExtras();
 		if (extras != null && extras.getBoolean(C.NOTIFICATION_LAUNCHED_FROM_NOTIFICATION)) {
-			if (_m != null) {
-				_m.resetNotifierShoutCount();
-			}
 			showInbox(); // app launched from notification
 			wasFromReferral = true;
 		} else {

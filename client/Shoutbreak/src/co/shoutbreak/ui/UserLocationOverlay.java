@@ -145,10 +145,21 @@ public class UserLocationOverlay extends MyLocationOverlay {
 		// prevents us from doing this way too often - let's only care every 50 microdegrees
 		// TODO: cache maxAreaPixels / calculate it less often
 		double currentDensityInPixels = _maxShoutreach / _maxAreaPixels;
-		double currentArea = _currentRadiusPixels * _currentRadiusPixels * Math.PI;
-		_peopleCount = (int) Math.min(Math.ceil(currentDensityInPixels * currentArea), _maxShoutreach);
+		double currentAreaInPixels = _currentRadiusPixels * _currentRadiusPixels * Math.PI;
+		_peopleCount = (int) Math.min(Math.ceil(currentDensityInPixels * currentAreaInPixels), _maxShoutreach);
 		_ui.mapPeopleCountTv.setText(Integer.toString(_peopleCount));
-
+		
+		if (_currentRadiusPixels <= C.MIN_RADIUS_PX - 2) {
+			_resizeIconState = RESIZE_ICON_GONE;
+		} else if (_currentRadiusPixels < C.MIN_RADIUS_PX + 2 && _currentRadiusPixels > C.MIN_RADIUS_PX - 2 && _peopleCount < _maxShoutreach) {
+			_resizeIconState = RESIZE_ICON_MIN;
+		} else if (_peopleCount >= _maxShoutreach) {
+			_resizeIconState = RESIZE_ICON_MAX;
+		} else {
+			_resizeIconState = RESIZE_ICON;
+		}
+			
+		/*	
 		if (_peopleCount < _maxShoutreach) {
 			if (_currentRadiusPixels > C.MIN_RADIUS_PX) {
 				_resizeIconState = RESIZE_ICON;
@@ -162,14 +173,8 @@ public class UserLocationOverlay extends MyLocationOverlay {
 				_resizeIconState = RESIZE_ICON_GONE;
 			}
 		}
-
-		/*
-		 * if (_peopleCount >= _maxShoutreach) { _isResizeIconMaxed = true;
-		 * _isResizeIconMinned = false; } else if (_peopleCount <= 1 ||
-		 * _maxRadiusPixels <= C.MIN_RADIUS_PX) { _isResizeIconMaxed = false;
-		 * _isResizeIconMinned = true; } else { _isResizeIconMaxed = false;
-		 * _isResizeIconMinned = false; }
-		 */
+		*/
+	
 	}
 
 	@Override
@@ -179,6 +184,17 @@ public class UserLocationOverlay extends MyLocationOverlay {
 		if (!_arePixelsCalculated) {
 			_maxRadiusPixels = metersToPixels(_maxRadiusMeters, _map, _lastUserLocationGeoPoint.getLatitudeE6());
 			_maxAreaPixels = _maxRadiusPixels * _maxRadiusPixels * Math.PI;
+			SBLog.d("MAX RADIUS PIXELS", _maxRadiusPixels + " ");
+			
+			// If user radius did not reflect _maxShoutreach, when they resized, keep it that way.
+			if (getPeopleCount() != _maxShoutreach) {
+				double currentDensityInPixels = _maxShoutreach / _maxAreaPixels;
+				double currentAreaInPixels = getPeopleCount() / currentDensityInPixels;
+				_resizeAdjustmentPixels = (int) - Math.sqrt(currentAreaInPixels / Math.PI);
+			} else {
+				_resizeAdjustmentPixels = 0;
+			}
+			
 			_arePixelsCalculated = true;
 			calculateCurrentRadius();
 		}
@@ -222,12 +238,12 @@ public class UserLocationOverlay extends MyLocationOverlay {
 	public void handleZoomLevelChange() {
 		// NEW LOGIC
 		// Let's use _peopleCount and keep Area constant.
-		double area = (double) _maxShoutreach / _densityOfCurrentLocation;
-		double radius = Math.sqrt(area / Math.PI);
-		_maxRadiusMeters = (float) radius;
+		//double area = (double) _maxShoutreach / _densityOfCurrentLocation;
+		//double radius = Math.sqrt(area / Math.PI);
+		//_maxRadiusMeters = (float) radius;
 		_arePixelsCalculated = false;
-		_resizeAdjustmentPixels = 0;
-		_ui.mapPeopleCountTv.setText(Integer.toString(_maxShoutreach));
+		//_resizeAdjustmentPixels = 0;
+		//_ui.mapPeopleCountTv.setText(Integer.toString(_maxShoutreach));
 	}
 
 	// called when user drags resize icon

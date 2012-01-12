@@ -161,7 +161,7 @@ public class NoticeTabListViewAdapter extends BaseAdapter implements Colleague {
 
 	public void refresh(List<Notice> list) {
 		_displayedNotices = list;
-		this.notifyDataSetChanged();
+		notifyDataSetChanged();
 	}
 
 	public int getCount() {

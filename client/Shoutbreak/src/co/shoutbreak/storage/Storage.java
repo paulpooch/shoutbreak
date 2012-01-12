@@ -75,7 +75,6 @@ public class Storage implements Colleague {
 				SBLog.error(TAG, e.getMessage());
 			}
 		}
-		_inboxSystem.refresh();
 	}
 	
 	public void handleShoutsReceived(JSONArray shouts) {
@@ -95,13 +94,12 @@ public class Storage implements Colleague {
 		String pluralShout = "shout" + (count > 1 ? "s" : "");
 		String notice = "Just heard " + count + " new " + pluralShout + ".";
 		_noticeTabSystem.createNotice(C.NOTICE_SHOUTS_RECEIVED, count, notice, noticeRef);
-		_inboxSystem.refresh();
 	}
 	
 	public void handleVoteFinish(String shoutId, int vote) {
 		_inboxSystem.reflectVote(shoutId, vote);
-		_user.savePoints(C.POINTS_VOTE, User.calculatePointsForVote(this.getUserLevel()));
-		int points = User.calculatePointsForVote(this.getUserLevel());
+		_user.savePoints(C.POINTS_VOTE, User.calculatePointsForVote(getUserLevel()));
+		int points = User.calculatePointsForVote(getUserLevel());
 		String strPoints = (points == 1 || points == -1) ? "point" : "points";		
 		_noticeTabSystem.createNotice(C.NOTICE_POINTS_VOTING, points, "You gained " + points + " " + strPoints + " for voting.", shoutId);
 	}
@@ -138,7 +136,6 @@ public class Storage implements Colleague {
 	
 	public void deleteShout(String shoutID) {
 		_inboxSystem.deleteShout(shoutID);
-		_inboxSystem.refresh();
 	}
 	
 	public ArrayList<String> getOpenShoutIds() {
@@ -163,7 +160,7 @@ public class Storage implements Colleague {
 	
 	public void initializeDensity(CellDensity currentCell) {
 		CellDensity cellDensity = _user.getInitialDensity(currentCell);
-		_m.getUiGateway().handleDensityChange(cellDensity.isSet, cellDensity.density, this.getUserLevel());
+		_m.getUiGateway().handleDensityChange(cellDensity.isSet, cellDensity.density, getUserLevel());
 	}
 	
 	public CellDensity getCellDensity(CellDensity currentCell) {
@@ -195,7 +192,7 @@ public class Storage implements Colleague {
 	}
 
 	public void refreshUiComponents() {
-		_inboxSystem.refresh();
+		_inboxSystem.refreshAll();
 		_noticeTabSystem.refresh();
 	}
 

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scoreDialog"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="10dip" >
+
+    <TextView
+        android:id="@+id/scoreDialogUpsTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Ups"
+        android:textColor="#ffffffff"
+        android:textSize="15dp" />
+
+</LinearLayout>

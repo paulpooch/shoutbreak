@@ -8,7 +8,7 @@ import android.telephony.TelephonyManager;
 import co.shoutbreak.core.Colleague;
 import co.shoutbreak.core.Mediator;
 
-public class DataListener implements Colleague {
+public class DataChangeListener implements Colleague {
 
 	private static final String TAG = "DataListener";
 	
@@ -16,7 +16,7 @@ public class DataListener implements Colleague {
 	private TelephonyManager _telephonyManager;
 	private ConnectivityManager _connectivityManager;
 	
-	public DataListener(Mediator mediator) {
+	public DataChangeListener(Mediator mediator) {
     	SBLog.constructor(TAG);
 		_m = mediator;
 		_telephonyManager = (TelephonyManager) _m.getSystemService(Context.TELEPHONY_SERVICE);

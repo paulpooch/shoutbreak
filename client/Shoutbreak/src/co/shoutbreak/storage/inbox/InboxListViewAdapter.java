@@ -1,9 +1,7 @@
 package co.shoutbreak.storage.inbox;
 
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import android.graphics.Typeface;
 import android.graphics.PorterDuff.Mode;
@@ -17,7 +15,6 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 import co.shoutbreak.R;
 import co.shoutbreak.core.C;
 import co.shoutbreak.core.Colleague;
@@ -34,24 +31,25 @@ public class InboxListViewAdapter extends BaseAdapter implements Colleague {
 	private static final String TAG = "InboxListViewAdapter";
 
 	private Mediator _m;
-	private List<Shout> _displayedShouts;
 	private LayoutInflater _inflater;
+	private InboxSystem _inboxSystem;
 	private PrettyTime _prettyTime;
 	public OnClickListener onCollapseClickListener;
 	public OnClickListener onVoteUpClickListener;
 	public OnClickListener onVoteDownClickListener;
 	public OnClickListener onDeleteClickListener;
+	public OnClickListener onScoreClickListener;
 	private HashMap<String, Boolean> _cacheExpandState;
 	private HashMap<String, String> _cachePrettyTimeAgo;
 	private HashMap<String, Integer> _cacheVoteTemporary;
 	private boolean _isInputAllowed;
 
-	public InboxListViewAdapter(Mediator mediator, LayoutInflater inflater) {
+	public InboxListViewAdapter(Mediator mediator, LayoutInflater inflater, InboxSystem inboxSystem) {
 		SBLog.constructor(TAG);
 
 		_m = mediator;
 		_inflater = inflater;
-		_displayedShouts = new ArrayList<Shout>();
+		_inboxSystem = inboxSystem;
 		_prettyTime = new PrettyTime();
 		_cacheExpandState = new HashMap<String, Boolean>();
 		_cachePrettyTimeAgo = new HashMap<String, String>();
@@ -99,6 +97,13 @@ public class InboxListViewAdapter extends BaseAdapter implements Colleague {
 				_m.deleteShout(holder.shoutId);
 			}
 		};
+		
+		onScoreClickListener = new OnClickListener() {
+			public void onClick(View view) {
+				Shout entry = (Shout) view.getTag();
+				_m.getUiGateway().handleScoreDetailsRequest(entry.ups, entry.downs);
+			}
+		};
 
 	}
 
@@ -126,24 +131,12 @@ public class InboxListViewAdapter extends BaseAdapter implements Colleague {
 
 	public void undoVote(String shoutId, int vote) {
 		_cacheVoteTemporary.remove(shoutId);
-	}
-
-	public void refresh(List<Shout> shouts) {
-		_displayedShouts = shouts;
-		this.notifyDataSetChanged();
+		notifyDataSetChanged();
 	}
 
 	public void setInputAllowed(boolean b) {
 		_isInputAllowed = b;
 		notifyDataSetChanged();
-	}
-
-	public int getCount() {
-		return _displayedShouts.size();
-	}
-
-	public Object getItem(int position) {
-		return _displayedShouts.get(position);
 	}
 
 	public long getItemId(int position) {
@@ -153,7 +146,7 @@ public class InboxListViewAdapter extends BaseAdapter implements Colleague {
 	public View getView(int position, View convertView, ViewGroup parent) {
 
 		InboxViewHolder holder;
-		Shout entry = _displayedShouts.get(position);
+		Shout entry = (Shout) getItem(position);
 
 		if (convertView == null) {
 			// TODO: can we reduce the number of items?
@@ -165,6 +158,7 @@ public class InboxListViewAdapter extends BaseAdapter implements Colleague {
 			holder.textE = (TextView) convertView.findViewById(R.id.tvTextE);
 			holder.timeAgoE = (TextView) convertView.findViewById(R.id.tvTimeAgoE);
 			holder.scoreE = (TextView) convertView.findViewById(R.id.tvScoreE);
+			holder.scoreE.setOnClickListener(onScoreClickListener);
 			holder.collapsed = (RelativeLayout) convertView.findViewById(R.id.rlCollapsed);
 			holder.expanded = (RelativeLayout) convertView.findViewById(R.id.rlExpanded);
 			holder.btnVoteUp = (ImageButton) convertView.findViewById(R.id.btnVoteUp);
@@ -281,11 +275,13 @@ public class InboxListViewAdapter extends BaseAdapter implements Colleague {
 		holder.textE.setText(entry.text);
 		holder.scoreC.setText(score);
 		holder.scoreE.setText(score);
+		// This is for score details dialog.
+		holder.scoreE.setTag(entry);
 		holder.shoutId = entry.id;
 		holder.timeAgoC.setText(timeAgo);
 		holder.timeAgoE.setText(timeAgo);
 		holder.btnDelete.setTag(holder);
-
+		
 		// TODO this should be setEnabled(_isPowerOn) once implemented
 		// _isInputAllowed actually
 		// holder.btnReply.setEnabled(false);
@@ -293,17 +289,14 @@ public class InboxListViewAdapter extends BaseAdapter implements Colleague {
 		return convertView;
 	}
 
-	public void jumpToShoutInInbox(String shoutId) {
-		if (_displayedShouts != null && _displayedShouts.size() > 0) {
-			for (int i = 0; i < _displayedShouts.size(); i++) {
-				Shout shout = _displayedShouts.get(i);
-				if (shout.id.equals(shoutId)) {
-					_m.getUiGateway().scrollInboxToPosition(i);
-					return;
-				}
-			}
-		}
-		_m.getUiGateway().toast("Sorry, shout not found in inbox.", Toast.LENGTH_LONG);
+	@Override
+	public int getCount() {
+		return _inboxSystem.getDisplayedShouts().size();
+	}
+
+	@Override
+	public Object getItem(int position) {
+		return _inboxSystem.getDisplayedShouts().get(position);
 	}
 
 }

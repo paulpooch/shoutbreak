@@ -7,11 +7,11 @@ import android.net.ConnectivityManager;
 
 // http://code.google.com/p/krvarma-android-samples/source/browse/trunk/ConnectionTest/src/com/varma/samples/conntest/MainActivity.java
 // http://developer.motorola.com/docstools/library/detecting-and-using-lte-networks/
-public class ConnectivityReceiver extends BroadcastReceiver {
+public class DataChangeReceiver extends BroadcastReceiver {
 	
-	private DataListener _dataListener; 
+	private DataChangeListener _dataListener; 
 	
-	public ConnectivityReceiver(DataListener dataListener) {
+	public DataChangeReceiver(DataChangeListener dataListener) {
 		_dataListener = dataListener;
 	}
 

@@ -49,7 +49,7 @@ public class NoticeTabSystem implements Colleague {
 	}
 	
 	public void refresh() {
-		List<Notice> notices = this.getNoticesForUI();
+		List<Notice> notices = getNoticesForUI();
 
 		int unreadCount = 0;
 		int points = 0;
@@ -83,9 +83,9 @@ public class NoticeTabSystem implements Colleague {
 	}
 	
 	public void createNotice(int noticeType, int noticeValue, String noticeText, String noticeRef) {
-		this.saveNotice(noticeType, noticeValue, noticeText, noticeRef);
-		this.refresh();
-		this.showOneLine();
+		saveNotice(noticeType, noticeValue, noticeText, noticeRef);
+		refresh();
+		showOneLine();
 	}
 	
 	public void showOneLine() {
@@ -133,7 +133,7 @@ public class NoticeTabSystem implements Colleague {
 		boolean result = false;
 		SQLiteStatement update;
 		String sql = "UPDATE " + C.DB_TABLE_NOTICES + " SET state_flag = ? WHERE state_flag = ?";
-		update = this._db.compileStatement(sql);
+		update = _db.compileStatement(sql);
 		update.bindString(1, C.NOTICE_STATE_READ + "");
 		update.bindString(2, C.NOTICE_STATE_NEW + "");
 		try {
@@ -152,7 +152,7 @@ public class NoticeTabSystem implements Colleague {
 		noticeRef = (noticeRef == null) ? "" : noticeRef;
 		Date date = new Date();
 		String sql = "INSERT INTO " + C.DB_TABLE_NOTICES + " (type, value, text, ref, timestamp, state_flag) VALUES (?, ?, ?, ?, ?, ?)";
-		SQLiteStatement insert = this._db.compileStatement(sql);
+		SQLiteStatement insert = _db.compileStatement(sql);
 		insert.bindLong(1, noticeType);
 		insert.bindLong(2, noticeValue);
 		insert.bindString(3, noticeText);

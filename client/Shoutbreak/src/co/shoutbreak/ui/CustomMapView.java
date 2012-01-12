@@ -38,20 +38,20 @@ public class CustomMapView extends MapView {
 	
 	public void setUserLocationOverlay(UserLocationOverlay userLocationOverlay) {
 		_userLocationOverlay = userLocationOverlay;
-		_userLocationOverlay.setMapView(this);
+		_userLocationOverlay.setMapView(CustomMapView.this);
 	}
 	
 	@Override
     public void draw(Canvas canvas) {
         try {
-            if(this.getZoomLevel() >= 21) {
-                this.getController().setZoom(20);
+            if(getZoomLevel() >= 21) {
+                getController().setZoom(20);
             }
             super.draw(canvas);
         }
         catch(Exception ex) {           
-            getController().setCenter(this.getMapCenter());
-            getController().setZoom(this.getZoomLevel() - 2);
+            getController().setCenter(getMapCenter());
+            getController().setZoom(getZoomLevel() - 2);
             SBLog.error("CustomMapView", "Internal error in CustomMapView:" + Log.getStackTraceString(ex));
         }
     }
@@ -118,13 +118,13 @@ public class CustomMapView extends MapView {
 	        		Toast.makeText(_ui, _userLocationOverlay.getPeopleCount() + " users will hear your shout.", Toast.LENGTH_LONG).show();
 	        	}
 	        }
-	        if (this.getZoomLevel() != _lastZoomLevel) {
+	        if (getZoomLevel() != _lastZoomLevel) {
 	        	if ( _lastZoomLevel == -1) {
 	        		// ignore the first zoom (done automatically - not by user)
-	        		_lastZoomLevel = this.getZoomLevel();
+	        		_lastZoomLevel = getZoomLevel();
 	        	} else {
 					_userLocationOverlay.handleZoomLevelChange();
-					_lastZoomLevel = this.getZoomLevel();
+					_lastZoomLevel = getZoomLevel();
 	        	}
 			}
 	        return super.onTouchEvent(event);

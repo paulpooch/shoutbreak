@@ -61,7 +61,7 @@ public class HttpConnection implements Runnable {
 		_url = url;
 		_data = data;
 		_xPacket = new CrossThreadPacket();
-		ConnectionQueue.getInstance().push(this);
+		ConnectionQueue.getInstance().push(HttpConnection.this);
 	}
 
 	public void get(String url) {
@@ -107,7 +107,7 @@ public class HttpConnection implements Runnable {
 			_xPacket.exception = e;
 			_handler.sendMessage(Message.obtain(_handler, C.HTTP_DID_EXCEPTION, _xPacket));
 		} finally {
-			ConnectionQueue.getInstance().didComplete(this);
+			ConnectionQueue.getInstance().didComplete(HttpConnection.this);
 		}
 	}
 

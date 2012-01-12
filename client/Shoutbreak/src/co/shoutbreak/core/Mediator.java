@@ -24,8 +24,8 @@ import android.view.View;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import co.shoutbreak.R;
-import co.shoutbreak.core.utils.ConnectivityReceiver;
-import co.shoutbreak.core.utils.DataListener;
+import co.shoutbreak.core.utils.DataChangeReceiver;
+import co.shoutbreak.core.utils.DataChangeListener;
 import co.shoutbreak.core.utils.DialogBuilder;
 import co.shoutbreak.core.utils.Flag;
 import co.shoutbreak.core.utils.Notifier;
@@ -58,14 +58,14 @@ public class Mediator {
 	private DeviceInformation _device;
 	private Notifier _notifier;
 	private LocationTracker _location;
-	private DataListener _dataListener;
+	private DataChangeListener _dataListener;
 	private ThreadLauncher _threadLauncher;
 	private PollingAlgorithm _pollingAlgorithm;
 
 	private PendingIntent _intervalAlarmIntent;
 	private IUiGateway _uiGateway;
 	
-	private ConnectivityReceiver _connectivityReceiver;
+	private DataChangeReceiver _connectivityReceiver;
 	
 	// state flags
 	private Flag _isUIAlive = new Flag("m:_isUIAlive");
@@ -85,18 +85,18 @@ public class Mediator {
 
 		// add colleagues
 		_service = service;
-		_preferences = new PreferenceManager(this, _service.getSharedPreferences(C.PREFERENCE_FILE, Context.MODE_PRIVATE));
+		_preferences = new PreferenceManager(Mediator.this, _service.getSharedPreferences(C.PREFERENCE_FILE, Context.MODE_PRIVATE));
 		_device = new DeviceInformation(_service);
-		_notifier = new Notifier(this, _service);
-		_location = new LocationTracker(this);
-		_dataListener = new DataListener(this);
+		_notifier = new Notifier(Mediator.this, _service);
+		_location = new LocationTracker(Mediator.this);
+		_dataListener = new DataChangeListener(Mediator.this);
 		_db = new Database(_service);
-		_storage = new Storage(this, _db);
+		_storage = new Storage(Mediator.this, _db);
 		_pollingAlgorithm = new PollingAlgorithm();
 
-		_connectivityReceiver = new ConnectivityReceiver(_dataListener);
+		_connectivityReceiver = new DataChangeReceiver(_dataListener);
 		_service.registerReceiver(_connectivityReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
-		_threadLauncher = new ThreadLauncher(this);
+		_threadLauncher = new ThreadLauncher(Mediator.this);
 		_uiGateway = new UiOffGateway();
 
 		// Initialize State.
@@ -157,7 +157,7 @@ public class Mediator {
 		SBLog.lifecycle(TAG, "registerUI()");
 		_isUIAlive.set(true);
 		_isUiInForeground.set(true);
-		ui.setMediator(this);
+		ui.setMediator(Mediator.this);
 		_uiGateway = new UiOnGateway(ui);
 		_storage.initializeUiComponents();
 
@@ -242,8 +242,8 @@ public class Mediator {
 		return _isUiInForeground.get();
 	}
 	
-	public void resetNotifierShoutCount() {
-		_notifier.resetNotifierShoutCount();
+	public void clearNotifications() {
+		_notifier.clearNotifications();
 	}
 
 	public void startPolling(boolean onUiThread) {
@@ -376,6 +376,7 @@ public class Mediator {
 		if (_isUIAlive.get()) {
 			_uiGateway.onDataEnabled();
 		}
+		_location.refreshBestProvider();
 		startPolling(true);
 	}
 
@@ -439,7 +440,7 @@ public class Mediator {
 		_uiGateway.clearNoticeTab();
 		_storage.refreshNoticeTab();
 	}
-
+	
 	// /////////////////////////////////////////////////////////////////////////
 	// HANDLE STUFF ///////////////////////////////////////////////////////////
 	// /////////////////////////////////////////////////////////////////////////
@@ -719,7 +720,7 @@ public class Mediator {
 		// /////////////////////////////////////////////////////////////////////////
 
 		public void handleCreateAccountFailed() {
-			this.handleInvalidServerResponse();
+			handleInvalidServerResponse();
 		}
 
 		public void handleShoutSent() {
@@ -735,7 +736,7 @@ public class Mediator {
 			AnimationDrawable shoutButtonAnimation = (AnimationDrawable) _ui.shoutBtn.getDrawable();
 			shoutButtonAnimation.stop();
 			_ui.shoutBtn.setImageResource(R.drawable.shout_button_up);
-			this.handleInvalidServerResponse();
+			handleInvalidServerResponse();
 		}
 
 		public void handleDensityChange(boolean isDensitySet, double newDensity, int level) {
@@ -765,6 +766,10 @@ public class Mediator {
 			SBLog.method(TAG, "handleServerErrorCode()");
 			_ui.dialogBuilder.showDialog(DialogBuilder.DIALOG_SERVER_HTTP_ERROR, "");
 		}
+		
+		public void handleScoreDetailsRequest(int ups, int downs) {
+			_ui.dialogBuilder.showDialog(DialogBuilder.DIALOG_SCORE_DETAILS, "");
+		}
 
 		// /////////////////////////////////////////////////////////////////////////
 		// /////////////////////////////////////////////////////////////////////////
@@ -773,7 +778,7 @@ public class Mediator {
 		public void refreshUiComponents() {
 			// TODO: make inbox & profile more like noticeTabSystem
 			_storage.refreshUiComponents();
-			this.refreshProfile(_storage.getUserLevel(), _storage.getUserLevelBeginPoints(), _storage.getUserPoints(), _storage.getUserNextLevelAt());
+			refreshProfile(_storage.getUserLevel(), _storage.getUserLevelBeginPoints(), _storage.getUserPoints(), _storage.getUserNextLevelAt());
 		}
 
 		public void refreshProfile(int level, int levelBeginPoints, int currentPoints, int levelEndPoints) {

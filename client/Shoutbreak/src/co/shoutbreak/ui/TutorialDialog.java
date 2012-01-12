@@ -45,24 +45,24 @@ public class TutorialDialog extends Dialog {
     }
     
     private android.view.View.OnClickListener _backListener = new android.view.View.OnClickListener() {
-		@Override
-		public void onClick(View v) {
-			changeSlide(--_slide);				// back
-		}
+			@Override
+			public void onClick(View v) {
+				changeSlide(--_slide);				// back
+			}
     };
     
     private android.view.View.OnClickListener _nextListener = new android.view.View.OnClickListener() {
-		@Override
-		public void onClick(View v) {
-			changeSlide(++_slide);				// next
-		}
+			@Override
+			public void onClick(View v) {
+				changeSlide(++_slide);				// next
+			}
     };
     
     private android.view.View.OnClickListener _finishListener = new android.view.View.OnClickListener() {
-		@Override
-		public void onClick(View v) {
-			TutorialDialog.this.dismiss();		// finish
-		}
+			@Override
+			public void onClick(View v) {
+				dismiss();		// finish
+			}
     };
     
     private void changeSlide(int i) {
