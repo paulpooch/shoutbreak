@@ -114,6 +114,6 @@ public class UiOffGateway implements IUiGateway {
 	public void handleServerHttpError() {}
 
 	@Override
-	public void handleScoreDetailsRequest(int ups, int downs) {}
+	public void handleScoreDetailsRequest(int ups, int downs, int score) {}
 
 }

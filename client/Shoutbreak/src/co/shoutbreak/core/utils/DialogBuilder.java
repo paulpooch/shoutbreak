@@ -5,6 +5,9 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.TextView;
 import co.shoutbreak.R;
 import co.shoutbreak.core.C;
 import co.shoutbreak.ui.Shoutbreak;
@@ -17,10 +20,9 @@ public class DialogBuilder {
 	public static final int DIALOG_SERVER_DOWNTIME = 1; // server error is the server giving us {code: error}
 	public static final int DIALOG_SERVER_INVALID_RESPONSE = 2; // server giving garbage data back
 	public static final int DIALOG_SERVER_HTTP_ERROR = 3; // server is giving http status errors
-	public static final int DIALOG_SCORE_DETAILS = 4;
 	
-	public static final int DIALOG_WAIT_FOR_MAP_TO_HAVE_LOCATION = 5;
-	public static final int DISMISS_DIALOG_WAIT_FOR_MAP_TO_HAVE_LOCATION = 6;
+	public static final int DIALOG_WAIT_FOR_MAP_TO_HAVE_LOCATION = 4;
+	public static final int DISMISS_DIALOG_WAIT_FOR_MAP_TO_HAVE_LOCATION = 5;
 	
 	private static ProgressDialog _waitForMapToHaveLocationDialog;
 	private boolean _isDialogAlreadyShowing;
@@ -32,29 +34,37 @@ public class DialogBuilder {
 		_isDialogAlreadyShowing = false;
 	}
 
+	public void showScoreDetailsDialog(int ups, int downs, int score) {
+		if (!_isDialogAlreadyShowing) {
+			_isDialogAlreadyShowing = true;
+			LayoutInflater inflater = _ui.getLayoutInflater();
+			View dialogLayout = inflater.inflate(R.layout.score_dialog, null);
+			TextView upsTv = (TextView)dialogLayout.findViewById(R.id.scoreDialogUpsTv);
+			TextView downsTv = (TextView)dialogLayout.findViewById(R.id.scoreDialogDownsTv);
+			TextView scoreTv = (TextView)dialogLayout.findViewById(R.id.scoreDialogScoreTv);
+			upsTv.setText(Integer.toString(ups));
+			downsTv.setText(Integer.toString(downs));
+			scoreTv.setText(Integer.toString(score));
+			AlertDialog.Builder builder = new AlertDialog.Builder(_ui);
+			builder
+				.setView(dialogLayout)
+				.setTitle("Score Details")
+				.setCancelable(false)
+				.setPositiveButton("Close", new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int id) {
+							_isDialogAlreadyShowing = false;
+							dialog.cancel();
+						}
+				});							
+			AlertDialog alert = builder.create();
+			alert.show();
+		}
+	}
+	
 	public void showDialog(int whichDialog, String text) {
 
 		String msg = "";
 		switch (whichDialog) {
-		
-			case DIALOG_SCORE_DETAILS: {
-				if (!_isDialogAlreadyShowing) {
-					_isDialogAlreadyShowing = true;
-					AlertDialog.Builder builder = new AlertDialog.Builder(_ui);
-					builder
-						.setView(_ui.findViewById(R.id.scoreDialog))
-						.setCancelable(false)
-						.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-								public void onClick(DialogInterface dialog, int id) {
-									_isDialogAlreadyShowing = false;
-									dialog.cancel();
-								}
-						});							
-					AlertDialog alert = builder.create();
-					alert.show();
-				}
-				break;
-			}
 		
 			case DIALOG_SERVER_INVALID_RESPONSE:
 				msg = _ui.getString(R.string.serverInvalidResponse);

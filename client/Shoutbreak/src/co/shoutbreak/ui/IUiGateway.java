@@ -20,7 +20,7 @@ public interface IUiGateway {
 	public void handleLevelUp(double cellDensity, int newLevel);
 	public void handlePointsChange(int newPoints);
 	public void handleInvalidServerResponse();
-	public void handleScoreDetailsRequest(int ups, int downs);		
+	public void handleScoreDetailsRequest(int ups, int downs, int score);		
 	
 	///////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////

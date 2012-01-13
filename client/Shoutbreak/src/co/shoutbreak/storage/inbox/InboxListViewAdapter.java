@@ -40,7 +40,7 @@ public class InboxListViewAdapter extends BaseAdapter implements Colleague {
 	public OnClickListener onDeleteClickListener;
 	public OnClickListener onScoreClickListener;
 	private HashMap<String, Boolean> _cacheExpandState;
-	private HashMap<String, String> _cachePrettyTimeAgo;
+	//private HashMap<String, String> _cachePrettyTimeAgo;
 	private HashMap<String, Integer> _cacheVoteTemporary;
 	private boolean _isInputAllowed;
 
@@ -52,7 +52,7 @@ public class InboxListViewAdapter extends BaseAdapter implements Colleague {
 		_inboxSystem = inboxSystem;
 		_prettyTime = new PrettyTime();
 		_cacheExpandState = new HashMap<String, Boolean>();
-		_cachePrettyTimeAgo = new HashMap<String, String>();
+		//_cachePrettyTimeAgo = new HashMap<String, String>();
 		_cacheVoteTemporary = new HashMap<String, Integer>();
 		_isInputAllowed = false;
 
@@ -101,7 +101,7 @@ public class InboxListViewAdapter extends BaseAdapter implements Colleague {
 		onScoreClickListener = new OnClickListener() {
 			public void onClick(View view) {
 				Shout entry = (Shout) view.getTag();
-				_m.getUiGateway().handleScoreDetailsRequest(entry.ups, entry.downs);
+				_m.getUiGateway().handleScoreDetailsRequest(entry.ups, entry.downs, entry.score);
 			}
 		};
 
@@ -155,6 +155,7 @@ public class InboxListViewAdapter extends BaseAdapter implements Colleague {
 			holder.textC = (TextView) convertView.findViewById(R.id.tvTextC);
 			holder.timeAgoC = (TextView) convertView.findViewById(R.id.tvTimeAgoC);
 			holder.scoreC = (TextView) convertView.findViewById(R.id.tvScoreC);
+			holder.scoreC.setOnClickListener(onScoreClickListener);
 			holder.textE = (TextView) convertView.findViewById(R.id.tvTextE);
 			holder.timeAgoE = (TextView) convertView.findViewById(R.id.tvTimeAgoE);
 			holder.scoreE = (TextView) convertView.findViewById(R.id.tvScoreE);
@@ -199,16 +200,22 @@ public class InboxListViewAdapter extends BaseAdapter implements Colleague {
 
 		// How long ago was shout sent?
 		// TODO: this caching can become inaccurate
+//		String timeAgo = "";
+//		if (_cachePrettyTimeAgo.containsKey(entry.id)) {
+//			timeAgo = _cachePrettyTimeAgo.get(entry.id);
+//		} else {
+//			try {
+//				timeAgo = _prettyTime.format(ISO8601DateParser.parse(entry.timestamp));
+//				_cachePrettyTimeAgo.put(entry.id, timeAgo);
+//			} catch (ParseException ex) {
+//				ErrorManager.manage(ex);
+//			}
+//		}
 		String timeAgo = "";
-		if (_cachePrettyTimeAgo.containsKey(entry.id)) {
-			timeAgo = _cachePrettyTimeAgo.get(entry.id);
-		} else {
-			try {
-				timeAgo = _prettyTime.format(ISO8601DateParser.parse(entry.timestamp));
-				_cachePrettyTimeAgo.put(entry.id, timeAgo);
-			} catch (ParseException ex) {
-				ErrorManager.manage(ex);
-			}
+		try {
+			timeAgo = _prettyTime.format(ISO8601DateParser.parse(entry.timestamp));
+		} catch (ParseException ex) {
+			ErrorManager.manage(ex);
 		}
 
 		holder.btnVoteUp.getBackground().setAlpha(255);
@@ -259,10 +266,13 @@ public class InboxListViewAdapter extends BaseAdapter implements Colleague {
 		String score = Integer.toString(entry.score);
 		if (entry.score == C.NULL_SCORE) {
 			score = "?";
-			holder.hitCount.setText("?");
-		} else {
-			holder.hitCount.setText(Integer.toString(entry.hit));
 		}
+		
+		String hitCount = "?";
+		if (entry.hit != C.NULL_HIT) {
+			hitCount = Integer.toString(entry.hit);
+		}
+		holder.hitCount.setText(hitCount);
 		
 		// Mark shout as read/unread
 		if (entry.state_flag == C.SHOUT_STATE_NEW) {
@@ -276,6 +286,7 @@ public class InboxListViewAdapter extends BaseAdapter implements Colleague {
 		holder.scoreC.setText(score);
 		holder.scoreE.setText(score);
 		// This is for score details dialog.
+		holder.scoreC.setTag(entry);
 		holder.scoreE.setTag(entry);
 		holder.shoutId = entry.id;
 		holder.timeAgoC.setText(timeAgo);

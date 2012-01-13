@@ -767,8 +767,8 @@ public class Mediator {
 			_ui.dialogBuilder.showDialog(DialogBuilder.DIALOG_SERVER_HTTP_ERROR, "");
 		}
 		
-		public void handleScoreDetailsRequest(int ups, int downs) {
-			_ui.dialogBuilder.showDialog(DialogBuilder.DIALOG_SCORE_DETAILS, "");
+		public void handleScoreDetailsRequest(int ups, int downs, int score) {
+			_ui.dialogBuilder.showScoreDetailsDialog(ups, downs, score);
 		}
 
 		// /////////////////////////////////////////////////////////////////////////
