@@ -18,6 +18,7 @@ package co.shoutbreak.storage.noticetab;
  */
 
 import co.shoutbreak.R;
+import co.shoutbreak.core.Mediator;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
@@ -38,6 +39,7 @@ import android.view.accessibility.AccessibilityEvent;
 public class MultiDirectionSlidingDrawer extends ViewGroup {
 	
 	// PAP
+	private Mediator _m;
 	public static final int				NOTIFICATION_HEIGHT = 80; // px
 	public static final long			NOTICATION_DURATION = 3000;
 	private static final int			MSG_CLOSE_ONE_LINE  = 9000;
@@ -105,6 +107,10 @@ public class MultiDirectionSlidingDrawer extends ViewGroup {
 	private int								mMaximumMajorVelocity;
 	private int								mMaximumAcceleration;
 	private final int						mVelocityUnits;
+	
+	public void setMediator(Mediator mediator) {
+		_m = mediator;
+	}
 	
 	/**
 	 * Callback invoked when the drawer is opened.
@@ -211,6 +217,18 @@ public class MultiDirectionSlidingDrawer extends ViewGroup {
 		
 		a.recycle();
 		setAlwaysDrawnWithCacheEnabled( false );
+		
+		// PAP Bonus stuff
+		mOnDrawerOpenListener = new OnDrawerOpenListener() {
+			@Override
+			public void onDrawerOpened() {
+				// If user taps to open let's clear stuff.
+				if (_m != null && mTopOffset == _topOffset) {
+					_m.markAllNoticesRead();										
+				}
+			}
+		};
+		
 	}
 	
 	@Override
@@ -1102,4 +1120,5 @@ public class MultiDirectionSlidingDrawer extends ViewGroup {
 			}
 		}
 	}
+
 }

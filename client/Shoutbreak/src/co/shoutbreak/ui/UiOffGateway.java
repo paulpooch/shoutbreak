@@ -71,7 +71,7 @@ public class UiOffGateway implements IUiGateway {
 	public void showPointsNotice(int newPoints) {}
 
 	@Override
-	public void showShoutNotice(int newShouts) {}
+	public void showShoutNotice(String noticeText) {}
 
 	@Override
 	public void setupNoticeTabListView(NoticeTabListViewAdapter listAdapter, boolean itemsCanFocus,

@@ -71,7 +71,8 @@ public class NoticeTabSystem implements Colleague {
 			}
 		}
 		if (unreadCount > 0) {
-			_m.getUiGateway().showShoutNotice(unreadCount);
+			String noticeText = unreadCount + " new shout" + ((unreadCount > 1) ? "s" : "");
+			_m.getUiGateway().showShoutNotice(noticeText);
 		}
 		if (levelUp) {
 			_m.getUiGateway().showPointsNotice(C.LEVEL_UP_NOTICE);

@@ -32,7 +32,7 @@ public interface IUiGateway {
 	public void disableInputs();
 	public void clearNoticeTab();
 	public void showPointsNotice(int newPoints);
-	public void showShoutNotice(int newShouts);
+	public void showShoutNotice(String noticeText);
 	public void unsetUiMediator();
 	public void finishUi();
 	public void onDataEnabled();

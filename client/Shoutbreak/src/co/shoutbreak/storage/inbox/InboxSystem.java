@@ -235,7 +235,7 @@ public class InboxSystem {
 		publishChange();
 	}
 	
-	public synchronized void addShout(JSONObject jsonShout) {
+	public synchronized Shout addShout(JSONObject jsonShout) {
 		Shout shout = new Shout();
 		shout.id = jsonShout.optString(C.JSON_SHOUT_ID);
 		shout.timestamp = jsonShout.optString(C.JSON_SHOUT_TIMESTAMP);
@@ -245,8 +245,8 @@ public class InboxSystem {
 		shout.time_received = d.getTime();
 		//shout.open = jsonShout.optInt(C.JSON_SHOUT_OPEN, 0) == 1 ? true : C.NULL_OPEN;
 		shout.open = true;
-		shout.is_outbox = false;
 		shout.vote = C.NULL_VOTE;
+		shout.is_outbox = (jsonShout.optInt(C.JSON_SHOUT_OUTBOX, C.NULL_OUTBOX) == 1) ? true : false;
 		shout.hit = jsonShout.optInt(C.JSON_SHOUT_HIT, C.NULL_HIT);
 		//shout.ups = jsonShout.optInt(C.JSON_SHOUT_UPS, C.NULL_UPS);
 		//shout.downs = jsonShout.optInt(C.JSON_SHOUT_DOWNS, C.NULL_DOWNS);
@@ -254,11 +254,13 @@ public class InboxSystem {
 		shout.downs = 0;
 		shout.pts = C.NULL_PTS;
 		shout.state_flag = C.SHOUT_STATE_NEW;
-		shout.score = C.NULL_SCORE;		
+		shout.score = C.NULL_SCORE;
 		dbAddShoutToInbox(shout);
 		
 		_displayedShouts.add(0, shout);
 		publishChange();
+		
+		return shout;
 	}
 	
 	private synchronized boolean dbMarkShoutAsRead(String shoutID) {

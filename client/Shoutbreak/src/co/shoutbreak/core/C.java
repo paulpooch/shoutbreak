@@ -6,7 +6,7 @@ public class C {
 	// CONFIG /////////////////////////////////////////////////////////////////
 	// Match this to the $version in index.php
 	public static final boolean CONFIG_ADMIN_SUPERPOWERS = false;
-	public static final String CONFIG_SERVER_ADDRESS = "http://app.shoutbreak.co/004/";
+	public static final String CONFIG_SERVER_ADDRESS = "http://app.shoutbreak.co/005/";
 	public static final int CONFIG_HTTP_TIMEOUT = 25000;
 	public static final int CONFIG_DROPPED_PACKET_LIMIT = 5;
 	public static final int CONFIG_NOTICES_DISPLAYED_IN_TAB = 50;
@@ -35,7 +35,6 @@ public class C {
 	public static final String STRING_SHOUT_FAILED = "Shout failed.";
 	public static final String STRING_VOTE_FAILED = "Vote failed.  Shout is too old.";
 	public static final String STRING_CREATE_ACCOUNT_FAILED = "Unable to create an account.";
-	public static final String STRING_PING_FAILED = "Unable to reach server.";
 	public static final String STRING_FORCED_POLLING_STOP = "App turning off.  Dropped too many consecutive packets.";
 	
 	// NOTICES ////////////////////////////////////////////////////////////////
@@ -47,7 +46,6 @@ public class C {
 	public static final int NOTICE_NO_ACCOUNT = 4;
 	public static final int NOTICE_ACCOUNT_CREATED = 5;
 	public static final int NOTICE_CREATE_ACCOUNT_FAILED = 6;
-	public static final int NOTICE_PING_FAILED = 7;
 	public static final int NOTICE_VOTE_FAILED = 8;
 	public static final int NOTICE_POINTS_VOTING = 9;
 	public static final int NOTICE_POINTS_SHOUT = 10;
@@ -56,7 +54,6 @@ public class C {
 	
 	// MAP ////////////////////////////////////////////////////////////////////
 	public static final int DEFAULT_ZOOM_LEVEL = 16;
-	public static final int DEGREE_LAT_IN_METERS = 111133; // 60 nautical miles - avg'd from http://en.wikipedia.org/wiki/Latitude#Degree_length
 	public static final int CONFIG_TOUCH_TOLERANCE = 4;
 	public static final int CONFIG_RESIZE_ICON_TOUCH_TOLERANCE = 100; // +/- 50 px from center
 	public static final int MIN_RADIUS_PX = 30; // user can't resize below this
@@ -104,6 +101,7 @@ public class C {
 	public static final String JSON_SHOUT_HIT = "hit";
 	public static final String JSON_SHOUT_ID = "shout_id";
 	public static final String JSON_SHOUT_OPEN = "open";
+	public static final String JSON_SHOUT_OUTBOX = "outbox";
 	public static final String JSON_SHOUT_POWER = "power";
 	public static final String JSON_SHOUT_RE = "re";
 	public static final String JSON_SHOUT_TEXT = "txt";	
@@ -122,6 +120,7 @@ public class C {
 	public static final int NULL_SCORE = 0;
 	public static final int NULL_UPS = 0;
 	public static final int NULL_VOTE = 0;
+	public static final int NULL_OUTBOX = 0;
 		
 	// STATES /////////////////////////////////////////////////////////////////
 	// 30 - 39
@@ -139,9 +138,6 @@ public class C {
 	public static final int NOTICE_STATE_NEW = 50;
 	public static final int NOTICE_STATE_READ = 51;
 	
-	// ALARM MANAGER //////////////////////////////////////////////////////////
-	public static final String ALARM_START_FROM_UI = "start_from_ui";
-	
 	// PURPOSES ///////////////////////////////////////////////////////////////
 	// 60 - 69
 	public static final int PURPOSE_LOOP_FROM_UI = 60; // no delay
@@ -149,7 +145,7 @@ public class C {
 	public static final int PURPOSE_DEATH = 62; // don't repeat this - just die
 	
 	// DATABASE ///////////////////////////////////////////////////////////////
-	public static final int DB_VERSION = 4;
+	public static final int DB_VERSION = 5;
 
 	public static final String DB_NAME = "sbdb";
 	public static final String DB_TABLE_DENSITY = "DENSITY";
@@ -180,9 +176,7 @@ public class C {
 	
 	// NOTIFICATIONS //////////////////////////////////////////////////////////
 	// 90 - 99
-	public static final String NOTIFICATION_REFERRAL_ID = "NOTIFICATION_REFERRAL_ID";
 	public static final int APP_NOTIFICATION_ID = 90;
-	public static final String EXTRA_REFERRED_FROM_NOTIFICATION = "rfn";
 	public static final String NOTIFICATION_LAUNCHED_FROM_UI = "app_launched_from_ui";
 	public static final String NOTIFICATION_LAUNCHED_FROM_ALARM = "app_launched_from_alarm";
 	public static final String NOTIFICATION_LAUNCHED_FROM_NOTIFICATION = "app_launched_from_notification";

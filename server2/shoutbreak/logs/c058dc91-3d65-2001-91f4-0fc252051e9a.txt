@@ -1,0 +1,10 @@
+2012-01-10 5:51:05 - WARN  --> a : create_account, uid : c058dc91-3d65-2001-91f4-0fc252051e9a, android_id : e4c25ac3061c389f, device_id : A0000022ECB30A, phone_num : 2014033628, carrier : Verizon Wireless,  
+2012-01-10 5:51:05 - WARN  --> {"code":"create_account_1","pw":"BU44BQTNjcb+I4xgHH@XarJ==yJ7*)(1"} 
+2012-01-10 5:51:06 - WARN  --> a : user_ping, uid : c058dc91-3d65-2001-91f4-0fc252051e9a, auth : default, lat : 40.74866, long : -74.03178, rho : 1,  
+2012-01-10 5:51:06 - WARN  --> {"code":"expired_auth","nonce":"g-s(jYA@W@\/ZKSgI51rpAzAfO-p8LddyILacYOU_"} 
+2012-01-10 5:51:06 - WARN  --> a : user_ping, uid : c058dc91-3d65-2001-91f4-0fc252051e9a, auth : BU44BQTNjcb+I4xgHH@XarJ==yJ7*)(1c11556c232c6a0a2efa83c005e2d2331d1701ff9653e3098080b25b55714c3ceacec461dea11a93dd3e2585404a6f500f7ee7fd4d3a13a1c4e01ede257df69a1, lat : 40.74866, long : -74.03178, rho : 1,  
+2012-01-10 5:51:06 - WARN  --> {"code":"shouts","rho":1.0e-5,"level_change":{"lvl":5,"pts":400,"next_lvl_at":477}} 
+2012-01-10 5:51:28 - WARN  --> a : user_ping, uid : c058dc91-3d65-2001-91f4-0fc252051e9a, auth : BU44BQTNjcb+I4xgHH@XarJ==yJ7*)(1c11556c232c6a0a2efa83c005e2d2331d1701ff9653e3098080b25b55714c3ceacec461dea11a93dd3e2585404a6f500f7ee7fd4d3a13a1c4e01ede257df69a1, lat : 40.74866, long : -74.03178, lvl : 5,  
+2012-01-10 5:51:28 - WARN  --> {"code":"shouts"} 
+2012-01-10 5:51:49 - WARN  --> a : user_ping, uid : c058dc91-3d65-2001-91f4-0fc252051e9a, auth : BU44BQTNjcb+I4xgHH@XarJ==yJ7*)(1c11556c232c6a0a2efa83c005e2d2331d1701ff9653e3098080b25b55714c3ceacec461dea11a93dd3e2585404a6f500f7ee7fd4d3a13a1c4e01ede257df69a1, lat : 40.74866, long : -74.03178, lvl : 5,  
+2012-01-10 5:51:49 - WARN  --> {"code":"ping_ok"} 

@@ -41,6 +41,7 @@ import co.shoutbreak.storage.PreferenceManager;
 import co.shoutbreak.storage.Storage;
 import co.shoutbreak.storage.User;
 import co.shoutbreak.storage.inbox.InboxListViewAdapter;
+import co.shoutbreak.storage.noticetab.MultiDirectionSlidingDrawer;
 import co.shoutbreak.storage.noticetab.NoticeTabListViewAdapter;
 import co.shoutbreak.ui.IUiGateway;
 import co.shoutbreak.ui.Shoutbreak;
@@ -474,7 +475,8 @@ public class Mediator {
 	// /////////////////////////////////////////////////////////////////////////
 	// /////////////////////////////////////////////////////////////////////////
 
-	public void refreshUiComponents() {
+	public void refreshUiComponents(MultiDirectionSlidingDrawer noticeTabSlidingDrawer) {
+		noticeTabSlidingDrawer.setMediator(Mediator.this);
 		_uiGateway.refreshUiComponents();
 	}
 
@@ -544,6 +546,7 @@ public class Mediator {
 			SBLog.method(TAG, "handleShoutSent()");
 			_storage.handleShoutSent();
 			_uiGateway.handleShoutSent();
+			resetPollingToNow();
 		}
 
 		public void handleShoutFailed(Message message) {
@@ -858,7 +861,7 @@ public class Mediator {
 			//_ui.noticeTabPointsIv.setVisibility(View.INVISIBLE);
 			//_ui.noticeTabShoutsIv.setVisibility(View.INVISIBLE);
 		}
-
+		
 		@Override
 		public void showPointsNotice(int newPoints) {
 			//_ui.noticeTabPointsIv.setVisibility(View.VISIBLE);
@@ -874,10 +877,9 @@ public class Mediator {
 		}
 
 		@Override
-		public void showShoutNotice(int newShouts) {
+		public void showShoutNotice(String noticeText) {
 			//_ui.noticeTabShoutsIv.setVisibility(View.VISIBLE);
 			_ui.noticeTabShoutsTv.setVisibility(View.VISIBLE);
-			String noticeText = newShouts + " new shout" + ((newShouts > 1) ? "s" : "");
 			_ui.noticeTabShoutsTv.setText(noticeText);
 		}
 

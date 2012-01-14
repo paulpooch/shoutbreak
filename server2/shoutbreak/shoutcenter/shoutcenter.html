@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style type="text/css">
+
+html { margin: 0px; padding: 0px; font-size: 1.0em }
+body { margin: 0px; padding: 0px; font-family: "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Verdana, Tahoma, sans-serif; width: 100%; }
+#header { background: url("/shoutcenter/img/s_logo_h60.png") 4px 4px no-repeat; height: 64px; width: 100%; }
+.header.row { font-family: "Courier New"; background: #8000ff; color: #fff; font-weight: 700; }
+.row { font-size: .8em; background: #f2e5ff; height: 20px; margin-bottom: 1px; width: 1400px; clear: both; cursor: pointer; }
+.row:hover { background: #e5ccff; }
+.col { float: left; width: 100px; height: 100%; overflow: hidden; margin-left: 10px; }
+.code { font-family: "Courier New"; }
+#detailrow { margin: 10px; }
+.cssform p { width: 300px; clear: left; margin: 0; padding: 5px 0 8px 0; padding-left: 155px; border-top: 1px dashed gray; height: 1%; }
+.cssform label{ float: left; margin-left: -155px; width: 150px; }
+.cssform input[type="text"]{ width: 180px; }
+.cssform textarea{ width: 250px; height: 150px; }
+
+</style>
+
+
+</style>
+<link type="text/css" href="css/eggplant/jquery-ui-1.8.13.custom.css" rel="stylesheet" />	
+<script type="text/javascript" src="js/jquery-1.5.1.min.js"></script>
+<script type="text/javascript" src="js/jquery-ui-1.8.13.custom.min.js"></script>
+<script type="text/javascript">
+
+var ShoutCenter = (function() {
+
+	var self = this;
+	var DEV = false;
+	var lastJson = [{"Name":"7ad808a6-fd70-af3f-2d88-de28611ccdf6","Attributes":{"open":"0","shout_id":"7ad808a6-fd70-af3f-2d88-de28611ccdf6","time":"2011-02-13T04:54:22+0000","hit":"1","power":"1","downs":"0","user_id":"1e27408a-324f-d4b2-6ae9-9e19bffde9cc","ups":"2","long":"10596606","txt":"one","lat":"13074119"}},{"Name":"a6f8aeaf-32a5-edbe-a272-09135bc163cf","Attributes":{"open":"0","shout_id":"a6f8aeaf-32a5-edbe-a272-09135bc163cf","time":"2011-02-13T05:05:44+0000","hit":"1","power":"1","downs":"0","user_id":"1e27408a-324f-d4b2-6ae9-9e19bffde9cc","ups":"2","long":"10596606","txt":"two","lat":"13074119"}},{"Name":"b631e06f-ef59-1603-18c0-c749007323a0","Attributes":{"open":"0","shout_id":"b631e06f-ef59-1603-18c0-c749007323a0","time":"2011-02-13T05:15:02+0000","hit":"1","power":"1","downs":"0","user_id":"1e27408a-324f-d4b2-6ae9-9e19bffde9cc","ups":"2","long":"10596606","txt":"three","lat":"13074119"}},{"Name":"7ee4c21e-9092-6113-b469-f6f7c948bbca","Attributes":{"open":"0","shout_id":"7ee4c21e-9092-6113-b469-f6f7c948bbca","time":"2011-02-13T05:17:57+0000","hit":"1","power":"1","downs":"1","user_id":"1e27408a-324f-d4b2-6ae9-9e19bffde9cc","ups":"1","long":"10596606","txt":"four","lat":"13074119"}},{"Name":"f3ad59b8-5e4a-3e59-84bd-1c8180449dcb","Attributes":{"open":"0","shout_id":"f3ad59b8-5e4a-3e59-84bd-1c8180449dcb","time":"2011-02-13T05:27:40+0000","hit":"1","power":"1","downs":"0","user_id":"1e27408a-324f-d4b2-6ae9-9e19bffde9cc","ups":"2","long":"10596606","txt":"Five","lat":"13074119"}},{"Name":"c9902f94-577b-ff39-7efb-743483823d61","Attributes":{"open":"0","shout_id":"c9902f94-577b-ff39-7efb-743483823d61","time":"2011-02-13T05:47:37+0000","hit":"1","power":"1","downs":"1","user_id":"1e27408a-324f-d4b2-6ae9-9e19bffde9cc","ups":"1","long":"10596606","txt":"Six","lat":"13074119"}},{"Name":"5caf03f6-1cd6-ab47-127d-eddd9aea6221","Attributes":{"open":"0","shout_id":"5caf03f6-1cd6-ab47-127d-eddd9aea6221","time":"2011-02-13T07:17:13+0000","hit":"1","power":"1","downs":"0","user_id":"1e27408a-324f-d4b2-6ae9-9e19bffde9cc","ups":"1","long":"10596606","txt":"Seven","lat":"13074119"}},{"Name":"e42ad28c-0ca5-d3db-6a40-7601f490e668","Attributes":{"open":"0","shout_id":"e42ad28c-0ca5-d3db-6a40-7601f490e668","time":"2011-02-13T07:46:39+0000","hit":"1","power":"1","downs":"0","user_id":"1e27408a-324f-d4b2-6ae9-9e19bffde9cc","ups":"2","long":"10596606","txt":"A","lat":"13074119"}},{"Name":"4cb01bc9-3ed7-3bf2-bd08-98a9a2318ff8","Attributes":{"open":"0","shout_id":"4cb01bc9-3ed7-3bf2-bd08-98a9a2318ff8","time":"2011-02-13T07:46:44+0000","hit":"1","power":"1","downs":"1","user_id":"1e27408a-324f-d4b2-6ae9-9e19bffde9cc","ups":"1","long":"10596606","txt":"B","lat":"13074119"}},{"Name":"780a068d-eed3-973d-1212-3302ac5f9314","Attributes":{"open":"0","shout_id":"780a068d-eed3-973d-1212-3302ac5f9314","time":"2011-02-13T07:52:16+0000","hit":"1","power":"1","downs":"0","user_id":"1e27408a-324f-d4b2-6ae9-9e19bffde9cc","ups":"1","long":"10596606","txt":"No votes","lat":"13074119"}},{"Name":"26bd7e29-88de-16e4-29f7-a66618aa0334","Attributes":{"open":"0","shout_id":"26bd7e29-88de-16e4-29f7-a66618aa0334","time":"2011-02-13T21:24:12+0000","hit":"1","power":"1","downs":"1","user_id":"1e27408a-324f-d4b2-6ae9-9e19bffde9cc","ups":"1","long":"10596606","txt":"001","lat":"13074119"}},{"Name":"0b5a6fd4-2694-0acd-0d7b-c1a0374ea781","Attributes":{"open":"0","shout_id":"0b5a6fd4-2694-0acd-0d7b-c1a0374ea781","time":"2011-02-13T21:43:40+0000","hit":"1","power":"10","downs":"0","user_id":"1e27408a-324f-d4b2-6ae9-9e19bffde9cc","ups":"1","long":"10596606","txt":"Aggressive","lat":"13074119"}},{"Name":"a2a1a618-0f56-ff15-cd48-32c557f60c24","Attributes":{"open":"0","shout_id":"a2a1a618-0f56-ff15-cd48-32c557f60c24","time":"2011-02-13T21:56:13+0000","hit":"1","power":"10","downs":"0","user_id":"1e27408a-324f-d4b2-6ae9-9e19bffde9cc","ups":"2","long":"10596606","txt":"dead?","lat":"13074119"}},{"Name":"6fd29cca-435b-45bb-24cc-36cea4a8835a","Attributes":{"open":"0","shout_id":"6fd29cca-435b-45bb-24cc-36cea4a8835a","time":"2011-02-13T21:57:38+0000","hit":"1","power":"10","downs":"0","user_id":"1e27408a-324f-d4b2-6ae9-9e19bffde9cc","ups":"2","long":"10596606","txt":"Pii","lat":"13074119"}},{"Name":"58ef6dbc-bc1a-474e-d924-e2fe6def91d7","Attributes":{"open":"0","shout_id":"58ef6dbc-bc1a-474e-d924-e2fe6def91d7","time":"2011-02-13T21:59:41+0000","hit":"1","power":"10","downs":"0","user_id":"1e27408a-324f-d4b2-6ae9-9e19bffde9cc","ups":"1","long":"10596606","txt":"ttt","lat":"13074119"}},{"Name":"5837b572-c542-18ac-2c0d-18b30b5ceaca","Attributes":{"open":"0","shout_id":"5837b572-c542-18ac-2c0d-18b30b5ceaca","time":"2011-02-13T22:06:23+0000","hit":"1","power":"10","downs":"0","user_id":"1e27408a-324f-d4b2-6ae9-9e19bffde9cc","ups":"1","long":"10596606","txt":"hi","lat":"13074119"}},{"Name":"ebcecf3c-3fa6-216a-505c-9a6262d3e24a","Attributes":{"open":"0","shout_id":"ebcecf3c-3fa6-216a-505c-9a6262d3e24a","time":"2011-02-13T22:16:05+0000","hit":"1","power":"10","downs":"0","user_id":"1e27408a-324f-d4b2-6ae9-9e19bffde9cc","ups":"1","long":"10596606","txt":"002","lat":"13074119"}},{"Name":"0eee5de0-b941-7c0c-1efb-eee8b02cdace","Attributes":{"open":"0","shout_id":"0eee5de0-b941-7c0c-1efb-eee8b02cdace","time":"2011-02-13T22:18:37+0000","hit":"1","power":"10","downs":"0","user_id":"1e27408a-324f-d4b2-6ae9-9e19bffde9cc","ups":"1","long":"10596606","txt":"003","lat":"13074119"}},{"Name":"035e18cd-b4a7-653f-52c2-056b6d265f07","Attributes":{"open":"0","shout_id":"035e18cd-b4a7-653f-52c2-056b6d265f07","time":"2011-02-13T22:22:12+0000","hit":"1","power":"10","downs":"0","user_id":"1e27408a-324f-d4b2-6ae9-9e19bffde9cc","ups":"1","long":"10596606","txt":"010","lat":"13074119"}},{"Name":"d32963ee-3f65-bf56-09ce-9b06a626475f","Attributes":{"open":"0","shout_id":"d32963ee-3f65-bf56-09ce-9b06a626475f","time":"2011-02-13T22:24:34+0000","hit":"1","power":"10","downs":"0","user_id":"1e27408a-324f-d4b2-6ae9-9e19bffde9cc","ups":"1","long":"10596606","txt":"011","lat":"13074119"}},{"Name":"204ff496-93d2-8407-ddad-d08df82f83eb","Attributes":{"open":"0","shout_id":"204ff496-93d2-8407-ddad-d08df82f83eb","time":"2011-02-13T22:25:19+0000","hit":"1","power":"10","downs":"0","user_id":"1e27408a-324f-d4b2-6ae9-9e19bffde9cc","ups":"1","long":"10596707","txt":"012","lat":"13074463"}},{"Name":"b63fcb30-cac5-111d-058f-7a9f40b25d6d","Attributes":{"open":"0","shout_id":"b63fcb30-cac5-111d-058f-7a9f40b25d6d","time":"2011-02-13T22:30:20+0000","hit":"1","power":"10","downs":"1","user_id":"1e27408a-324f-d4b2-6ae9-9e19bffde9cc","ups":"1","long":"10596606","txt":"33","lat":"13074119"}},{"Name":"5bef0421-198e-5fbb-cfa4-680b7722854e","Attributes":{"open":"0","shout_id":"5bef0421-198e-5fbb-cfa4-680b7722854e","time":"2011-02-13T22:34:39+0000","hit":"1","power":"10","downs":"0","user_id":"1e27408a-324f-d4b2-6ae9-9e19bffde9cc","ups":"1","long":"10596606","txt":"Fuck you.","lat":"13074119"}},{"Name":"d6e029f9-f017-6d02-8bde-f0d4ddb90422","Attributes":{"open":"0","shout_id":"d6e029f9-f017-6d02-8bde-f0d4ddb90422","time":"2011-02-13T22:35:10+0000","hit":"1","power":"10","downs":"0","user_id":"1e27408a-324f-d4b2-6ae9-9e19bffde9cc","ups":"1","long":"10596606","txt":"fuck?","lat":"13074119"}},{"Name":"0e8e57fc-41bf-1341-9af6-11841e736176","Attributes":{"open":"0","shout_id":"0e8e57fc-41bf-1341-9af6-11841e736176","time":"2011-02-13T22:35:43+0000","hit":"1","power":"10","downs":"0","user_id":"1e27408a-324f-d4b2-6ae9-9e19bffde9cc","ups":"1","long":"10596606","txt":"1","lat":"13074119"}},{"Name":"de834285-b832-0581-830b-b10c7308a268","Attributes":{"open":"0","shout_id":"de834285-b832-0581-830b-b10c7308a268","time":"2011-02-13T22:35:46+0000","hit":"1","power":"10","downs":"0","user_id":"1e27408a-324f-d4b2-6ae9-9e19bffde9cc","ups":"1","long":"10596606","txt":"2","lat":"13074119"}},{"Name":"53c53842-d438-7356-6399-aa1c4295ecce","Attributes":{"open":"0","shout_id":"53c53842-d438-7356-6399-aa1c4295ecce","time":"2011-02-13T22:35:51+0000","hit":"1","power":"10","downs":"1","user_id":"1e27408a-324f-d4b2-6ae9-9e19bffde9cc","ups":"1","long":"10596606","txt":"3","lat":"13074119"}},{"Name":"f3272550-cef2-f381-49a6-f43439baa5d9","Attributes":{"open":"0","shout_id":"f3272550-cef2-f381-49a6-f43439baa5d9","time":"2011-02-14T04:01:35+0000","hit":"1","power":"220","downs":"0","user_id":"1e27408a-324f-d4b2-6ae9-9e19bffde9cc","ups":"1","long":"10596606","txt":"Final test.","lat":"13074119"}},{"Name":"c98c470d-7a85-2a7c-915c-d3ad5a2c2a71","Attributes":{"open":"0","shout_id":"c98c470d-7a85-2a7c-915c-d3ad5a2c2a71","time":"2011-02-14T05:05:36+0000","hit":"1","power":"1","downs":"1","user_id":"0004e07e-64b8-784e-506d-b4a6ddfa7988","ups":"1","long":"10216541","txt":"Testing it up^","lat":"13079259"}},{"Name":"6e9b0ad6-e027-b46d-bd72-01082725be53","Attributes":{"open":"0","shout_id":"6e9b0ad6-e027-b46d-bd72-01082725be53","time":"2011-02-14T05:37:06+0000","hit":"1","power":"1","downs":"0","user_id":"0004e07e-64b8-784e-506d-b4a6ddfa7988","ups":"1","long":"10216541","txt":"6 people will hear this. I had to zoom out to get map working","lat":"13079259"}},{"Name":"818ce8a1-eb6c-9c86-db7a-ec86e565e2f7","Attributes":{"open":"0","shout_id":"818ce8a1-eb6c-9c86-db7a-ec86e565e2f7","time":"2011-02-14T05:37:08+0000","hit":"1","power":"1","downs":"0","user_id":"0004e07e-64b8-784e-506d-b4a6ddfa7988","ups":"1","long":"10216541","txt":"6 people will hear this. I had to zoom out to get map working","lat":"13079259"}},{"Name":"cc62b275-1a19-30ad-0b09-b946a76f0c3a","Attributes":{"open":"0","shout_id":"cc62b275-1a19-30ad-0b09-b946a76f0c3a","time":"2011-02-14T05:37:11+0000","hit":"1","power":"1","downs":"0","user_id":"0004e07e-64b8-784e-506d-b4a6ddfa7988","ups":"1","long":"10216541","txt":"","lat":"13079259"}},{"Name":"fbc39ff7-c2ac-d1e2-7a32-6819d6310016","Attributes":{"open":"0","shout_id":"fbc39ff7-c2ac-d1e2-7a32-6819d6310016","time":"2011-02-14T05:37:14+0000","hit":"1","power":"1","downs":"0","user_id":"0004e07e-64b8-784e-506d-b4a6ddfa7988","ups":"1","long":"10216541","txt":"","lat":"13079259"}},{"Name":"bdfe998d-3175-6d5c-784a-0298ecade581","Attributes":{"open":"0","shout_id":"bdfe998d-3175-6d5c-784a-0298ecade581","time":"2011-02-14T05:37:15+0000","hit":"1","power":"1","downs":"0","user_id":"0004e07e-64b8-784e-506d-b4a6ddfa7988","ups":"1","long":"10216541","txt":"","lat":"13079259"}},{"Name":"e86581a0-6019-2f1d-0c2c-6fe3d5ddf234","Attributes":{"open":"0","shout_id":"e86581a0-6019-2f1d-0c2c-6fe3d5ddf234","time":"2011-02-14T05:37:18+0000","hit":"1","power":"1","downs":"0","user_id":"0004e07e-64b8-784e-506d-b4a6ddfa7988","ups":"1","long":"10216541","txt":"","lat":"13079259"}},{"Name":"a37d3797-f0dc-e532-944c-4ad0a9964d58","Attributes":{"open":"0","shout_id":"a37d3797-f0dc-e532-944c-4ad0a9964d58","time":"2011-02-14T05:37:22+0000","hit":"1","power":"1","downs":"0","user_id":"0004e07e-64b8-784e-506d-b4a6ddfa7988","ups":"1","long":"10216541","txt":"","lat":"13079259"}},{"Name":"4856520a-77de-3ce9-58ad-43f2f641f519","Attributes":{"open":"0","shout_id":"4856520a-77de-3ce9-58ad-43f2f641f519","time":"2011-02-14T05:37:24+0000","hit":"1","power":"1","downs":"0","user_id":"0004e07e-64b8-784e-506d-b4a6ddfa7988","ups":"1","long":"10216541","txt":"","lat":"13079259"}},{"Name":"348b993f-3b52-0053-ba8d-168078ddbeb8","Attributes":{"open":"0","shout_id":"348b993f-3b52-0053-ba8d-168078ddbeb8","time":"2011-02-14T05:37:25+0000","hit":"1","power":"1","downs":"0","user_id":"0004e07e-64b8-784e-506d-b4a6ddfa7988","ups":"1","long":"10216541","txt":"","lat":"13079259"}},{"Name":"5b6b1328-0a52-94ca-7ce2-0c21316ba704","Attributes":{"open":"0","shout_id":"5b6b1328-0a52-94ca-7ce2-0c21316ba704","time":"2011-02-14T06:08:25+0000","hit":"1","power":"1","downs":"0","user_id":"22e0cccc-443b-3248-d14b-6b5b958e6ab2","ups":"1","long":"10596606","txt":"One.","lat":"13074119"}},{"Name":"0cd65786-387c-bca3-2e31-db43131f78d2","Attributes":{"open":"0","shout_id":"0cd65786-387c-bca3-2e31-db43131f78d2","time":"2011-02-14T06:09:10+0000","hit":"1","power":"4","downs":"0","user_id":"22e0cccc-443b-3248-d14b-6b5b958e6ab2","ups":"1","long":"10596606","txt":"Two","lat":"13074119"}},{"Name":"97ad1692-55b2-514b-c124-3a7be920570a","Attributes":{"open":"0","shout_id":"97ad1692-55b2-514b-c124-3a7be920570a","time":"2011-02-26T04:54:44+0000","hit":"1","power":"1","downs":"0","user_id":"0004e07e-64b8-784e-506d-b4a6ddfa7988","ups":"1","long":"10216541","txt":"Gddfg","lat":"13079259"}},{"Name":"d5bf46a7-f769-2c63-69d1-9e6c94a42e38","Attributes":{"open":"0","shout_id":"d5bf46a7-f769-2c63-69d1-9e6c94a42e38","time":"2011-02-26T04:54:44+0000","hit":"1","power":"1","downs":"0","user_id":"0004e07e-64b8-784e-506d-b4a6ddfa7988","ups":"1","long":"10216541","txt":"Gddfg","lat":"13079259"}},{"Name":"6a593887-143e-833d-4511-1de150b73419","Attributes":{"open":"0","shout_id":"6a593887-143e-833d-4511-1de150b73419","time":"2011-03-24T00:56:35+0000","hit":"1","power":"1","downs":"1","user_id":"74452899-e5a7-baa2-b48f-51daff295022","ups":"1","long":"10596606","txt":"Hello?","lat":"13074119"}},{"Name":"2806efb4-c944-bfc2-134b-eecb400f15a7","Attributes":{"open":"0","shout_id":"2806efb4-c944-bfc2-134b-eecb400f15a7","time":"2011-03-24T02:45:03+0000","hit":"1","power":"1","downs":"0","user_id":"74452899-e5a7-baa2-b48f-51daff295022","ups":"1","long":"10596606","txt":"Small","lat":"13074119"}},{"Name":"c8ae6a4c-84ab-bab1-3ce1-6dd1f43609df","Attributes":{"open":"0","shout_id":"c8ae6a4c-84ab-bab1-3ce1-6dd1f43609df","time":"2011-03-24T03:41:18+0000","hit":"1","power":"2277","downs":"0","user_id":"74452899-e5a7-baa2-b48f-51daff295022","ups":"1","long":"10596606","txt":"Big","lat":"13074119"}},{"Name":"b1132c76-643d-278f-3461-358e9512af26","Attributes":{"open":"0","shout_id":"b1132c76-643d-278f-3461-358e9512af26","time":"2011-03-26T23:05:28+0000","hit":"1","power":"51","downs":"0","user_id":"74452899-e5a7-baa2-b48f-51daff295022","ups":"2","long":"10596606","txt":"Gfwfgxss","lat":"13074119"}},{"Name":"98ee6318-26e2-3ab2-54a9-d0d0accf65e2","Attributes":{"open":"0","shout_id":"98ee6318-26e2-3ab2-54a9-d0d0accf65e2","time":"2011-03-26T23:06:33+0000","hit":"1","power":"388","downs":"1","user_id":"74452899-e5a7-baa2-b48f-51daff295022","ups":"1","long":"10596606","txt":"Gh xgfgg","lat":"13074119"}},{"Name":"a5c739f6-e569-4ef2-4299-fd53bc47f5ea","Attributes":{"open":"0","shout_id":"a5c739f6-e569-4ef2-4299-fd53bc47f5ea","time":"2011-03-26T23:12:08+0000","hit":"1","power":"2","downs":"0","user_id":"74452899-e5a7-baa2-b48f-51daff295022","ups":"2","long":"10601204","txt":"Short org v sheikh hd her fan dr hd","lat":"13074784"}},{"Name":"8e6bbe6a-47a2-b755-e839-7c4f7e7cf3f8","Attributes":{"open":"0","shout_id":"8e6bbe6a-47a2-b755-e839-7c4f7e7cf3f8","time":"2011-03-29T03:04:13+0000","hit":"1","power":"1","downs":"1","user_id":"74452899-e5a7-baa2-b48f-51daff295022","ups":"1","long":"10596606","txt":"Hhhh","lat":"13074119"}},{"Name":"fcaffe14-7611-1545-69df-0c433f68fdf5","Attributes":{"open":"0","shout_id":"fcaffe14-7611-1545-69df-0c433f68fdf5","time":"2011-03-29T03:06:52+0000","hit":"1","power":"1","downs":"1","user_id":"74452899-e5a7-baa2-b48f-51daff295022","ups":"1","long":"10596606","txt":"Dgg","lat":"13074119"}}];
+	var shouts = new Object();
+	
+	var Shout = function(jsonObj) {
+		this.open = jsonObj['Attributes'].open;
+		this.time = jsonObj['Attributes'].time;
+		this.shout_id = jsonObj['Attributes'].shout_id;
+		this.hit = jsonObj['Attributes'].hit;
+		this.power = jsonObj['Attributes'].power;
+		this.user_id = jsonObj['Attributes'].user_id;
+		this.downs =jsonObj['Attributes'].downs;
+		this.ups = jsonObj['Attributes'].ups;
+		this.lat = jsonObj['Attributes'].lat;
+		this.long = jsonObj['Attributes'].long;
+		this.txt = jsonObj['Attributes'].txt;
+		shouts[this.shout_id] = this;
+	};
+	
+	var populateShoutForm = function(shout) {
+		$('#shout_form #time').val(shout.time);
+		$('#shout_form #shout_id').val(shout.shout_id);
+		$('#shout_form #txt').val(shout.txt);
+		$('#shout_form #lat').val(shout.lat);
+		$('#shout_form #long').val(shout.long);
+		$('#shout_form #open').val(shout.open);
+		$('#shout_form #power').val(shout.power);
+		$('#shout_form #user_id').val(shout.user_id);
+		$('#shout_form #ups').val(shout.ups);
+		$('#shout_form #downs').val(shout.downs);
+		$('#shout_form #hit').val(shout.hit);
+	}
+	
+	$(document).ready(function() {
+	
+		if (DEV) {
+			var items = [];
+			$.each(lastJson, function(key, val) {
+				var shout = new Shout(val);
+				var html = '<div class="row"><div class="col">' + shout.time + '</div><div class="col code shout_id">' + shout.shout_id + '</div><div class="col">' + shout.text + '</div><div class="col">' + shout.lat 
+						+ '</div><div class="col">' + shout.long + '</div><div class="col">' + shout.open + '</div><div class="col">' + shout.power
+						+ '</div><div class="col">' + shout.user_id + '</div><div class="col">' + shout.ups + '</div><div class="col">' + shout.downs + '</div><div class="col">' + shout.hit + '</div></div>';
+				items.push(html);
+			});
+			$('<div/>', {
+				'id': 'shouts',
+				html: items.join('')
+			})
+			.appendTo('body');
+		}
+		
+		$('#shouts .row').click(function() {
+			var shoutId = $(this).find('.shout_id').text();
+			var shout = shouts[shoutId];
+			populateShoutForm(shout);
+			$('#detailrow').insertAfter($(this)).show();
+		});
+		
+		$('#get_recent').click(function() {
+			$.getJSON('/shoutcenter/backend.php?a=get_recent_shouts', function(data) {
+				lastJson = data;
+				var items = [];
+				$.each(lastJson, function(key, val) {
+					var shout = new Shout(val);
+					var html = '<div class="row"><div class="col">' + shout.time + '</div><div class="col code shout_id">' + shout.shout_id + '</div><div class="col">' + shout.text + '</div><div class="col">' + shout.lat 
+							+ '</div><div class="col">' + shout.long + '</div><div class="col">' + shout.open + '</div><div class="col">' + shout.power
+							+ '</div><div class="col">' + shout.user_id + '</div><div class="col">' + shout.ups + '</div><div class="col">' + shout.downs + '</div><div class="col">' + shout.hit + '</div></div>';
+					items.push(html);
+				});
+				$('<div/>', {
+					'id': 'shouts',
+					html: items.join('')
+				}).appendTo('body');
+			});
+		});
+	});
+	return self;
+	
+})();
+
+
+</script>
+</head>
+<body>
+<div id="header"></div>
+<a href="http://app.shoutbreak.co/logs/log.txt">log</a>
+<input id="get_recent" type="button" value="Get Recent Shouts"/>
+
+<div class="header row">
+	<div class="col">time</div>
+	<div class="col code">shout_id</div>
+	<div class="col">txt</div>
+	<div class="col">lat</div>
+	<div class="col">long</div>
+	<div class="col">open</div>
+	<div class="col">power</div>
+	<div class="col">user_id</div>
+	<div class="col">ups</div>
+	<div class="col">downs</div>
+	<div class="col">hit</div>
+</div>
+<div id="detailrow">
+	<form id="shout_form" class="cssform" action="">
+		<p>
+			<label for="time">time</label>
+			<input id="time" type="text" value="" />
+		</p>
+		<p>
+			<label for="shout_id">shout_id</label>
+			<input id="shout_id" type="text" value="" />
+		</p>
+		<p>
+			<label for="txt">txt</label>
+			<input id="txt" type="text" value="" />
+		</p>
+		<p>
+			<label for="lat">lat</label>
+			<input id="lat" type="text" value="" />
+		</p>
+		<p>
+			<label for="long">long</label>
+			<input id="long" type="text" value="" />
+		</p>
+		<p>
+			<label for="time">open</label>
+			<input id="open" type="text" value="" />
+		</p>
+		<p>
+			<label for="power">power</label>
+			<input id="power" type="text" value="" />
+		</p>
+		<p>
+			<label for="user_id">user_id</label>
+			<input id="user_id" type="text" value="" />
+		</p>
+		<p>
+			<label for="ups">ups</label>
+			<input id="ups" type="text" value="" />
+		</p>
+		<p>
+			<label for="downs">downs</label>
+			<input id="downs" type="text" value="" />
+		</p>
+		<p>
+			<label for="hit">hit</label>
+			<input id="hit" type="text" value="" />
+		</p>
+		<div style="margin-left: 150px;">
+			<input type="submit" value="Submit" /> <input type="reset" value="reset" />
+		</div>
+	</form>
+</div>
+
+</body>
+</html>

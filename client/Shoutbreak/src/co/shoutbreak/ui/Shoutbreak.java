@@ -305,7 +305,7 @@ public class Shoutbreak extends MapActivity implements Colleague {
 			dialogBuilder = new DialogBuilder(Shoutbreak.this);
 
 			refreshFlags();
-			_m.refreshUiComponents();
+			_m.refreshUiComponents(noticeTabSd);
 
 			if (wasLaunchFromReferral()) {
 				hideSplash(false);
@@ -388,7 +388,7 @@ public class Shoutbreak extends MapActivity implements Colleague {
 				super.handleMessage(message);
 			}
 		};
-		splashHandler.sendMessageDelayed(splashHandler.obtainMessage(), 2000);
+		splashHandler.sendMessageDelayed(splashHandler.obtainMessage(), 1000);
 	}
 
 	private boolean wasLaunchFromReferral() {
@@ -486,6 +486,7 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		_composeViewLl.setVisibility(View.GONE);
 		_inboxViewLl.setVisibility(View.VISIBLE);
 		_profileViewLl.setVisibility(View.GONE);
+		clearShoutsNotice();
 	}
 
 	public void showProfile() {
@@ -499,6 +500,7 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		_composeViewLl.setVisibility(View.GONE);
 		_inboxViewLl.setVisibility(View.GONE);
 		_profileViewLl.setVisibility(View.VISIBLE);
+		clearPointsNotice();
 	}
 
 	private void enableMapAndOverlay() {
@@ -861,6 +863,14 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		} else {
 			_powerBtn.setImageResource(R.drawable.power_button_off);
 		}
+	}
+	
+	public void clearShoutsNotice() {
+		noticeTabShoutsTv.setVisibility(View.INVISIBLE);
+	}
+	
+	public void clearPointsNotice() {
+		noticeTabPointsTv.setVisibility(View.INVISIBLE);
 	}
 	
 }

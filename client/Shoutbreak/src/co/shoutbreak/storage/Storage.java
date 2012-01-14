@@ -9,6 +9,7 @@ import org.json.JSONObject;
 import co.shoutbreak.core.C;
 import co.shoutbreak.core.Colleague;
 import co.shoutbreak.core.Mediator;
+import co.shoutbreak.core.Shout;
 import co.shoutbreak.core.utils.SBLog;
 import co.shoutbreak.storage.inbox.InboxSystem;
 import co.shoutbreak.storage.noticetab.NoticeTabSystem;
@@ -79,21 +80,38 @@ public class Storage implements Colleague {
 	
 	public void handleShoutsReceived(JSONArray shouts) {
 		String noticeRef = "";
+		int newCount = 0;
+		int reachOfFirstSent = -1;
 		try {
 			for (int i = 0; i < shouts.length(); i++) {
 				JSONObject jsonShout = shouts.getJSONObject(i);
-				_inboxSystem.addShout(jsonShout);
+				Shout shout = _inboxSystem.addShout(jsonShout);
 				if (i == 0) {
 					noticeRef = jsonShout.optString(C.JSON_SHOUT_ID);
+				}
+				if (!shout.is_outbox) {
+					newCount++;
+				} else {
+					if (reachOfFirstSent < 0) {
+						reachOfFirstSent = shout.hit;
+					}
 				}
 			}
 		} catch (JSONException e) {
 			SBLog.error(TAG, e.getMessage());
 		}
-		int count = shouts.length();
-		String pluralShout = "shout" + (count > 1 ? "s" : "");
-		String notice = "Just heard " + count + " new " + pluralShout + ".";
-		_noticeTabSystem.createNotice(C.NOTICE_SHOUTS_RECEIVED, count, notice, noticeRef);
+		String noticeText = "";
+		if (newCount == 0 && shouts.length() == 1) {
+			noticeText = "shout hit " + reachOfFirstSent + " people";
+			_m.getUiGateway().showShoutNotice(noticeText);
+		} else if (newCount == 0 && shouts.length() > 0) {
+			noticeText = "heard your shouts";
+			_m.getUiGateway().showShoutNotice(noticeText);
+		} else {
+			String pluralShout = "shout" + (newCount > 1 ? "s" : "");
+			noticeText = "Just heard " + newCount + " new " + pluralShout + ".";
+			_noticeTabSystem.createNotice(C.NOTICE_SHOUTS_RECEIVED, newCount, noticeText, noticeRef);
+		}
 	}
 	
 	public void handleVoteFinish(String shoutId, int vote) {
