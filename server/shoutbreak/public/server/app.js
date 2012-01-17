@@ -6,9 +6,12 @@ var PORT		= 8080,
  	TABLE_SHOUTS	= 'SHOUTS_0',
 	REFRESH_RATE	= 5 * 1000,
 	BACKOFF_FACTOR	= 1.2,
-	EMIT_MAX	= 500;
-	REFRESH_MAX	= 5 * 60 * 1000;
-	MONTHS		= ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+	EMIT_MAX	= 500,
+	REFRESH_MAX	= 5 * 60 * 1000,
+	MONTHS		= ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+	DEGREE_LONG_FT	= 1 / 131239,
+	DEGREE_LAT_FT	= 1 / 77136,
+	BLUR_FT		= 800;
 
 var	_io	= require('socket.io');
 var _simpledb = require('simpledb');
@@ -152,6 +155,8 @@ var _pullShouts = function(callback) {
 		var apm;
 		var month;
 		var day;
+		var blurLat;
+		var blurLong;
 		if (result != null) {
 			for (var i = 0; i < result.length; i++) {
 				// clean up and push new shouts
@@ -164,8 +169,10 @@ var _pullShouts = function(callback) {
 				apm = date.getHours() < 12 ? "am" : "pm";
 				month = MONTHS[date.getMonth()];
 				day = date.getDate();
-				result[i].lat = (parseFloat(result[i].lat) / 100000) - 90;
-				result[i].lng = (parseFloat(result[i].long) / 100000) - 180;
+				blurLat = Math.random() * BLUR_FT * DEGREE_LAT_FT;
+				blurLong = Math.random() * BLUR_FT * DEGREE_LONG_FT;
+				result[i].lat = (parseFloat(result[i].lat) / 100000) - 90 + blurLat;
+				result[i].lng = (parseFloat(result[i].long) / 100000) - 180 + blurLong;
 				delete result[i].long;
 				result[i].date = month + " " + day + " at " + hour + ":" + minutes + apm; 
 				_shouts.push(result[i]);
