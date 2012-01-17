@@ -169,6 +169,8 @@ public class C {
 	public static final String PREFERENCE_FILE = "preferences";
 	public static final String PREFERENCE_POWER_STATE = "power_state_pref";
 	public static final String PREFERENCE_IS_FIRST_RUN = "is_first_run";
+	public static final String PREFERENCE_SIGNATURE_ENABLED = "sig_enabled";
+	public static final String PREFERENCE_SIGNATURE_TEXT = "sig_text";
 	
 	// ACTIVITY RESULTS ///////////////////////////////////////////////////////
 	// 80 - 89

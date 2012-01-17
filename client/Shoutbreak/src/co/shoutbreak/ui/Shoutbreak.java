@@ -12,18 +12,25 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.provider.Settings;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
+import android.view.View.OnKeyListener;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 // Don't remove this import.  The warning is wrong.
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -71,7 +78,9 @@ public class Shoutbreak extends MapActivity implements Colleague {
 	public TextView userNextLevelAtTv;
 	public TextView userNextShoutreachTv;
 	public RoundProgress userLevelUpProgessRp;
-
+	public CheckBox sigCheckboxCb;
+	public EditText sigInputEt;
+	
 	private RelativeLayout _inputLayoutRl;
 	private LinearLayout _composeBlanketLl;
 	private RelativeLayout _blanketDataRl;
@@ -92,6 +101,7 @@ public class Shoutbreak extends MapActivity implements Colleague {
 	private LinearLayout _profileViewLl;
 	private CustomMapView _map;
 	private LinearLayout _mapOptionsLl;
+	private ImageButton _sigClearBtn;
 
 	private Flag _isComposeShowing = new Flag("ui:_isComposeShowing");
 	private Flag _isInboxShowing = new Flag("ui:_isInboxShowing");
@@ -129,6 +139,8 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		userNextLevelAtTv = (TextView) findViewById(R.id.userNextLevelAtTv);
 		userNextShoutreachTv = (TextView) findViewById(R.id.userNextShoutreachTv);
 		userLevelUpProgessRp = (RoundProgress) findViewById(R.id.userLevelUpProgressRp);
+		sigInputEt = (EditText) findViewById(R.id.shoutInputEt);
+		sigCheckboxCb = (CheckBox) findViewById(R.id.sigCheckboxCb);
 
 		_inputLayoutRl = (RelativeLayout) findViewById(R.id.inputRl);
 		_composeBlanketLl = (LinearLayout) findViewById(R.id.composeBlanketLl);
@@ -150,7 +162,8 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		_enableLocationBtn = (Button) findViewById(R.id.enableLocationBtn);
 		_turnOnBtn = (Button) findViewById(R.id.turnOnBtn);
 		_mapOptionsLl = (LinearLayout) findViewById(R.id.mapOptionsLl);
-
+		_sigClearBtn = (ImageButton) findViewById(R.id.sigClearBtn);
+		
 		shoutBtn.setOnClickListener(_shoutButtonListener);
 		_composeTabBtn.setOnClickListener(_composeTabListener);
 		_inboxTabBtn.setOnClickListener(_inboxTabListener);
@@ -160,6 +173,7 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		_enableLocationBtn.getBackground().setColorFilter(0xAA9900FF, Mode.SRC_ATOP);
 		_turnOnBtn.setOnClickListener(_turnOnListener);
 		_turnOnBtn.getBackground().setColorFilter(0xAA9900FF, Mode.SRC_ATOP);
+		_sigClearBtn.getBackground().setColorFilter(0xAA9900FF, Mode.SRC_ATOP);
 
 		//noticeTabShoutsIv.setVisibility(View.INVISIBLE);
 		//noticeTabPointsIv.setVisibility(View.INVISIBLE);
@@ -190,10 +204,27 @@ public class Shoutbreak extends MapActivity implements Colleague {
 				}
 			});
 		}
+		
+		sigCheckboxCb.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+				if (_m != null) {
+					_m.saveUserSignature(isChecked, sigInputEt.getText().toString());				
+				}
+			}
+		});
+		
+		_sigClearBtn.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				sigInputEt.setText("");
+				sigCheckboxCb.setChecked(false);
+			}
+		});
 
 		// bind to service, initializes mediator
 		_serviceIntent = new Intent(Shoutbreak.this, ShoutbreakService.class);
 		bindService(_serviceIntent, _serviceConnection, Context.BIND_AUTO_CREATE);
+		
 	}
 
 	@Override
@@ -226,7 +257,6 @@ public class Shoutbreak extends MapActivity implements Colleague {
 
 	public void setMediator(Mediator mediator) {
 		SBLog.lifecycle(TAG, "setMediator()");
-		;
 		_m = mediator;
 	}
 

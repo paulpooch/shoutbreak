@@ -20,6 +20,8 @@ import android.graphics.drawable.AnimationDrawable;
 import android.net.ConnectivityManager;
 import android.os.Message;
 import android.os.SystemClock;
+import android.text.Editable;
+import android.text.InputFilter;
 import android.view.View;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
@@ -470,6 +472,13 @@ public class Mediator {
 		SBLog.method(TAG, "voteStart()");
 		_threadLauncher.handleVoteStart(shoutId, vote);
 	}
+	
+
+	public void saveUserSignature(boolean sigEnabled, String sigText) {
+		_preferences.putBoolean(C.PREFERENCE_SIGNATURE_ENABLED, sigEnabled);
+		_preferences.setString(C.PREFERENCE_SIGNATURE_TEXT, sigText);
+		_uiGateway.refreshSignature(sigText);
+	}
 
 	// /////////////////////////////////////////////////////////////////////////
 	// /////////////////////////////////////////////////////////////////////////
@@ -782,6 +791,7 @@ public class Mediator {
 			// TODO: make inbox & profile more like noticeTabSystem
 			_storage.refreshUiComponents();
 			refreshProfile(_storage.getUserLevel(), _storage.getUserLevelBeginPoints(), _storage.getUserPoints(), _storage.getUserNextLevelAt());
+			loadUserSignature();	
 		}
 
 		public void refreshProfile(int level, int levelBeginPoints, int currentPoints, int levelEndPoints) {
@@ -798,6 +808,23 @@ public class Mediator {
 			_ui.userStatsParagraphTv.setText(infoParagraph);
 			_ui.userLevelUpProgessRp.setMax(levelEndPoints - levelBeginPoints);
 			_ui.userLevelUpProgessRp.setProgress(currentPoints - levelBeginPoints);
+		}
+
+		@Override
+		public void refreshSignature(String signature) {
+			// Signature preference setup
+			int maxLength = _ui.getResources().getInteger(R.integer.shoutMaxLength) - signature.length();
+			_ui.shoutInputEt.setFilters(new InputFilter[] { new InputFilter.LengthFilter(maxLength) });
+		}
+		
+		@Override
+		public void loadUserSignature() {
+			// Signature preference setup
+			boolean sigEnabled = _preferences.getBoolean(C.PREFERENCE_SIGNATURE_ENABLED, false);
+			String sigText = _preferences.getString(C.PREFERENCE_SIGNATURE_TEXT);
+			_ui.sigCheckboxCb.setChecked(sigEnabled);
+			_ui.sigInputEt.setText(sigText);
+			refreshSignature(sigText);
 		}
 
 		public void enableInputs() {

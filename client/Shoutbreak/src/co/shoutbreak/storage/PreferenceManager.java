@@ -46,4 +46,15 @@ public class PreferenceManager {
 	public boolean isPowerPreferenceSetToOn() {
 		return getBoolean(C.PREFERENCE_POWER_STATE, true);
 	}
+
+	public String getString(String key) {
+		return _preferences.getString(key, "");
+	}
+	
+	public void setString(String key, String value) {
+		SharedPreferences.Editor _Editor = _preferences.edit();
+		_Editor.putString(key, value);
+		_Editor.commit();
+	}
+
 }

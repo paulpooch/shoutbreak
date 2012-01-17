@@ -20,6 +20,9 @@ import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapView;
 import com.google.android.maps.MyLocationOverlay;
 
+//http://code.google.com/apis/maps/documentation/javascript/maptypes.html#WorldCoordinates
+//http://code.google.com/android/add-ons/google-apis/reference/index.html
+
 //If this crashes DroidX, use FixedMyLocationOverlay
 //http://stackoverflow.com/questions/753793/how-can-i-use-a-custom-bitmap-for-the-you-are-here-point-in-a-mylocationoverlay
 //http://www.gitorious.net/android-maps-api/android-maps-api/blobs/42614538ffda1a6985c398933a85fcd9afc752ee/src/com/google/android/maps/MyLocationOverlay.java
@@ -32,15 +35,14 @@ public class UserLocationOverlay extends MyLocationOverlay {
 	private int _maxShoutreach;
 	private double _densityOfCurrentLocation;
 	private float _maxRadiusMeters;
-	private int _maxRadiusPixels;
+	private float _maxRadiusPixels;
 	private double _maxAreaPixels;
 	private boolean _arePixelsCalculated;
 	private boolean _isDensitySet;
 	private GeoPoint _lastUserLocationGeoPoint; // the last user coordinates
 	private int _resizeAdjustmentPixels;// user circle resize, in pixels
 	private boolean _calibrateZoomLevelForRadiusSize; // have we calibrated for the best zoom level yet?
-	private float _currentRadiusPixels; // currently displayed radius
-	// (baseRadius + resizeAdjustment)
+	private float _currentRadiusPixels; // currently displayed radius (baseRadius + resizeAdjustment)
 	private int _peopleCount;
 
 	// Artwork.
@@ -80,7 +82,7 @@ public class UserLocationOverlay extends MyLocationOverlay {
 		_calibrateZoomLevelForRadiusSize = true;
 		_userLocationPx = null;
 		_currentRadiusPixels = 0;
-		_peopleCount = 0;
+		_peopleCount = -1;
 		_mapSizeConstraint = -1;
 		_zoomLevel = C.DEFAULT_ZOOM_LEVEL;
 		_circleFillPaint = new Paint();
@@ -104,100 +106,28 @@ public class UserLocationOverlay extends MyLocationOverlay {
 		_resizeIconState = RESIZE_ICON_MAX;
 	}
 
-	// http://stackoverflow.com/questions/2077054/how-to-compute-a-radius-around-a-point-in-an-android-mapview
-	public static int metersToPixels(float meters, CustomMapView map, double latitude) {
-		double latAngle = latitude / 1E7;
-		return (int) (map.getProjection().metersToEquatorPixels(meters) * (1 / Math.cos(Math.toRadians(latAngle))));
-	}
-
-	public void handleDensityChange(boolean isDensitySet, double newDensity, int newLevel) {
-		_isDensitySet = isDensitySet;
-		handleRadiusChange(newDensity, newLevel);
-		_ui.canAppTurnOn(true, false);
-	}
-
-	public void handleLevelUp(double newDensity, int newLevel) {
-		handleRadiusChange(newDensity, newLevel);
-	}
-
-	private void handleRadiusChange(double newDensity, int newLevel) {
-		_densityOfCurrentLocation = newDensity;
-		_maxShoutreach = User.calculateShoutreach(newLevel);
-		_maxRadiusMeters = User.calculateRadius(_maxShoutreach, _densityOfCurrentLocation);
-		_arePixelsCalculated = false;
-		_resizeAdjustmentPixels = 0;
-		_calibrateZoomLevelForRadiusSize = true;
-	}
-
-	@Override
-	public void onLocationChanged(Location location) {
-		_ui.centerMapOnUser(false);
-		super.onLocationChanged(location);
-	}
-
-	public void calculateCurrentRadius() {
-		_currentRadiusPixels = _maxRadiusPixels + _resizeAdjustmentPixels;
-		updatePeopleCount();
-	}
-
-	protected void updatePeopleCount() {
-		// TODO introduce a tolerance.
-		// prevents us from doing this way too often - let's only care every 50 microdegrees
-		// TODO: cache maxAreaPixels / calculate it less often
-		double currentDensityInPixels = _maxShoutreach / _maxAreaPixels;
-		double currentAreaInPixels = _currentRadiusPixels * _currentRadiusPixels * Math.PI;
-		_peopleCount = (int) Math.min(Math.ceil(currentDensityInPixels * currentAreaInPixels), _maxShoutreach);
-		_ui.mapPeopleCountTv.setText(Integer.toString(_peopleCount));
-		
-		if (_currentRadiusPixels <= C.MIN_RADIUS_PX - 2) {
-			_resizeIconState = RESIZE_ICON_GONE;
-		} else if (_currentRadiusPixels < C.MIN_RADIUS_PX + 2 && _currentRadiusPixels > C.MIN_RADIUS_PX - 2 && _peopleCount < _maxShoutreach) {
-			_resizeIconState = RESIZE_ICON_MIN;
-		} else if (_peopleCount >= _maxShoutreach) {
-			_resizeIconState = RESIZE_ICON_MAX;
-		} else {
-			_resizeIconState = RESIZE_ICON;
-		}
-			
-		/*	
-		if (_peopleCount < _maxShoutreach) {
-			if (_currentRadiusPixels > C.MIN_RADIUS_PX) {
-				_resizeIconState = RESIZE_ICON;
-			} else {
-				_resizeIconState = RESIZE_ICON_MIN;
-			}
-		} else {
-			if (_currentRadiusPixels > C.MIN_RADIUS_PX) {
-				_resizeIconState = RESIZE_ICON_MAX;
-			} else {
-				_resizeIconState = RESIZE_ICON_GONE;
-			}
-		}
-		*/
-	
-	}
-
 	@Override
 	protected void drawMyLocation(Canvas canvas, MapView mapView, Location lastFix, GeoPoint myLocation, long when) {
 		// called every time map is redrawn.... don't do anything heavy here
 		_lastUserLocationGeoPoint = myLocation;
+
 		if (!_arePixelsCalculated) {
-			_maxRadiusPixels = metersToPixels(_maxRadiusMeters, _map, _lastUserLocationGeoPoint.getLatitudeE6());
+			_maxRadiusPixels = MeterPixelConverter.metersToPixels(_maxRadiusMeters, _map.getZoomLevel());
 			_maxAreaPixels = _maxRadiusPixels * _maxRadiusPixels * Math.PI;
-			SBLog.d("MAX RADIUS PIXELS", _maxRadiusPixels + " ");
-			
-			// If user radius did not reflect _maxShoutreach, when they resized, keep it that way.
 			if (getPeopleCount() != _maxShoutreach) {
-				double currentDensityInPixels = _maxShoutreach / _maxAreaPixels;
-				double currentAreaInPixels = getPeopleCount() / currentDensityInPixels;
-				_resizeAdjustmentPixels = (int) - Math.sqrt(currentAreaInPixels / Math.PI);
+				// subtract 1 from people count because we want the beginning of the range.
+				// e.g. 22 people is from r0 -> r1.  We want r0.
+				double peopleRatio = ((double)getPeopleCount() - 1) / (double)_maxShoutreach;
+				double newAreaPixels = peopleRatio * _maxAreaPixels;
+				double newRadiusPixels = Math.sqrt(newAreaPixels / Math.PI);
+				_resizeAdjustmentPixels = (int)(newRadiusPixels - _maxRadiusPixels);
 			} else {
 				_resizeAdjustmentPixels = 0;
 			}
-			
 			_arePixelsCalculated = true;
 			calculateCurrentRadius();
 		}
+		
 		_userLocationPx = mapView.getProjection().toPixels(_lastUserLocationGeoPoint, null);
 
 		// draw circle
@@ -233,24 +163,63 @@ public class UserLocationOverlay extends MyLocationOverlay {
 			calibrateZoomLevelToShowCircle();
 		}
 	}
+	
+	public void handleDensityChange(boolean isDensitySet, double newDensity, int newLevel) {
+		_isDensitySet = isDensitySet;
+		handleRadiusChange(newDensity, newLevel);
+		_ui.canAppTurnOn(true, false);
+	}
+
+	public void handleLevelUp(double newDensity, int newLevel) {
+		handleRadiusChange(newDensity, newLevel);
+	}
+
+	private void handleRadiusChange(double newDensity, int newLevel) {
+		_densityOfCurrentLocation = newDensity;
+		_maxShoutreach = User.calculateShoutreach(newLevel);
+		_maxRadiusMeters = User.calculateRadius(_maxShoutreach, _densityOfCurrentLocation);
+		_peopleCount = _maxShoutreach;
+		_arePixelsCalculated = false;
+		_resizeAdjustmentPixels = 0;
+		_calibrateZoomLevelForRadiusSize = true;
+	}
+
+	@Override
+	public void onLocationChanged(Location location) {
+		_ui.centerMapOnUser(false);
+		super.onLocationChanged(location);
+	}
+
+	public void calculateCurrentRadius() {
+		_currentRadiusPixels = _maxRadiusPixels + _resizeAdjustmentPixels;
+		updatePeopleCount();
+	}
+
+	protected void updatePeopleCount() {
+		// TODO Introduce a tolerance. Prevents us from doing this way too often - let's only care every 50 microdegrees.
+		double currentDensityInPixels = _maxShoutreach / _maxAreaPixels;
+		double currentAreaInPixels = _currentRadiusPixels * _currentRadiusPixels * Math.PI;
+		_peopleCount = (int) Math.min(Math.ceil(currentDensityInPixels * currentAreaInPixels), _maxShoutreach);
+		_ui.mapPeopleCountTv.setText(Integer.toString(_peopleCount));
+		if (_currentRadiusPixels <= C.MIN_RADIUS_PX - 2) {
+			_resizeIconState = RESIZE_ICON_GONE;
+		} else if (_currentRadiusPixels < C.MIN_RADIUS_PX + 2 && _currentRadiusPixels > C.MIN_RADIUS_PX - 2 && _peopleCount < _maxShoutreach) {
+			_resizeIconState = RESIZE_ICON_MIN;
+		} else if (_peopleCount >= _maxShoutreach) {
+			_resizeIconState = RESIZE_ICON_MAX;
+		} else {
+			_resizeIconState = RESIZE_ICON;
+		}
+	}
 
 	// called after zoom occurs
 	public void handleZoomLevelChange() {
-		// NEW LOGIC
-		// Let's use _peopleCount and keep Area constant.
-		//double area = (double) _maxShoutreach / _densityOfCurrentLocation;
-		//double radius = Math.sqrt(area / Math.PI);
-		//_maxRadiusMeters = (float) radius;
 		_arePixelsCalculated = false;
-		//_resizeAdjustmentPixels = 0;
-		//_ui.mapPeopleCountTv.setText(Integer.toString(_maxShoutreach));
 	}
 
 	// called when user drags resize icon
 	public void resize(int radiusChangePx) {
-		SBLog.error("CHANGE", "radiusChange = " + radiusChangePx);
 		_resizeAdjustmentPixels += radiusChangePx;
-		SBLog.error("BEFORE RAD", "current = " + _currentRadiusPixels + " | resize = " + _resizeAdjustmentPixels + " | base = " + _maxRadiusPixels);
 		// force minimum radius size
 		if (_maxRadiusPixels + _resizeAdjustmentPixels <= C.MIN_RADIUS_PX) {
 			_resizeAdjustmentPixels = (int) (C.MIN_RADIUS_PX - _maxRadiusPixels);
@@ -259,7 +228,6 @@ public class UserLocationOverlay extends MyLocationOverlay {
 		if (!C.CONFIG_ADMIN_SUPERPOWERS && _resizeAdjustmentPixels > 0) {
 			_resizeAdjustmentPixels = 0;
 		}
-		SBLog.error("AFTER RAD", "current = " + _currentRadiusPixels + " | resize = " + _resizeAdjustmentPixels + " | base = " + _maxRadiusPixels);
 		calculateCurrentRadius();
 	}
 
@@ -303,13 +271,35 @@ public class UserLocationOverlay extends MyLocationOverlay {
 
 	public void setMapView(CustomMapView mapView) {
 		_map = mapView;
+		if (!MeterPixelConverter.isInitialized) {
+			MeterPixelConverter.pixelsPer100Meters = _map.getProjection().metersToEquatorPixels(100);
+			MeterPixelConverter.baseZoomLevel = _map.getZoomLevel();
+			MeterPixelConverter.isInitialized = true;
+		}
 	}
 
 	public int getCurrentPower() {
-		SBLog.method(TAG, "getCurrentPower()");
 		return User.calculatePower(_peopleCount);
 	}
 
+	// TODO: We can replace this with:
+	// public static int metersToRadius(float meters, MapView map, double latitude) {
+	// 	 return (int) (map.getProjection().metersToEquatorPixels(meters) * (1/ Math.cos(Math.toRadians(latitude))));         
+	// }
+	// But that will make things less consistent to debug.
+	private static class MeterPixelConverter {
+		public static boolean isInitialized = false;
+		public static float pixelsPer100Meters = 0;
+		public static int baseZoomLevel = 0;
+		
+		// http://stackoverflow.com/questions/2077054/how-to-compute-a-radius-around-a-point-in-an-android-mapview
+		public static float metersToPixels(float meters, int currentZoomLevel) {
+			float pixelsAtBaseZoom = (pixelsPer100Meters * meters) / 100;
+			float result = (float) (pixelsAtBaseZoom * (Math.pow(2, currentZoomLevel - baseZoomLevel)));
+			return Math.abs(result);
+		}
+	}
+	
 	// MISC TECHNIQUES ////////////////////////////////////////////////////////
 
 	// private boolean _baseRadiusPxIsWrong; // is the radius calculation based

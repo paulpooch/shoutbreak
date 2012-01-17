@@ -297,7 +297,7 @@
                         android:gravity="top"
                         android:imeOptions="actionSend"
                         android:inputType="textLongMessage|textMultiLine"
-                        android:maxLength="256"
+                        android:maxLength="@integer/shoutMaxLength"
                         android:padding="4dp" />
                 </RelativeLayout>
             </LinearLayout>
@@ -339,14 +339,14 @@
                     android:background="#000000" >
 
                     <RelativeLayout
-                        android:id="@+id/userHeaderRl"
+                        android:id="@+id/userStatsHeaderRl"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:layout_alignParentTop="true"
-                        android:layout_marginTop="85dp" >
+                        android:layout_marginTop="10dp" >
 
                         <TextView
-                            android:id="@+id/userHeaderTv"
+                            android:id="@+id/userStatsHeaderTv"
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
                             android:layout_alignParentTop="true"
@@ -356,14 +356,15 @@
                             android:shadowRadius="2"
                             android:text="@string/userStatsHeader"
                             android:textColor="#ffffffff"
-                            android:textSize="40dp"
+                            android:textSize="18dp"
                             android:textStyle="bold" />
 
                         <!-- Approved use of pixels. -->
+
                         <LinearLayout
                             android:layout_width="fill_parent"
-                            android:layout_height="45px"
-                            android:layout_below="@id/userHeaderTv"
+                            android:layout_height="10dp"
+                            android:layout_below="@id/userStatsHeaderTv"
                             android:background="@drawable/user_stats_bg" />
                     </RelativeLayout>
 
@@ -371,9 +372,85 @@
                         android:id="@+id/userStatsParagraphTv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/userHeaderRl"
-                        android:textColor="#ffffff"
-                        android:textSize="18dp" />
+                        android:layout_below="@id/userStatsHeaderRl"
+                        android:textColor="#ffffffff"
+                        android:textSize="14dp" />
+
+                    <RelativeLayout
+                        android:id="@+id/userSigHeaderRl"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/userStatsParagraphTv"
+                        android:layout_marginTop="15dp" >
+
+                        <TextView
+                            android:id="@+id/userSigHeaderTv"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentTop="true"
+                            android:shadowColor="#1e003c"
+                            android:shadowDx="2"
+                            android:shadowDy="2"
+                            android:shadowRadius="2"
+                            android:text="@string/userSigHeader"
+                            android:textColor="#ffffffff"
+                            android:textSize="18dp"
+                            android:textStyle="bold" />
+
+                        <!-- Approved use of pixels. -->
+
+                        <LinearLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="10dp"
+                            android:layout_below="@+id/userSigHeaderTv"
+                            android:background="@drawable/user_stats_bg" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="100dp"
+                        android:layout_below="@id/userSigHeaderRl" >
+
+                        <CheckBox
+                            android:id="@+id/sigCheckboxCb"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentTop="true" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentTop="true"
+                            android:layout_marginTop="14dp"
+                             android:textSize="14dp"
+                            android:layout_toRightOf="@id/sigCheckboxCb"
+                            android:text="@string/sigExplanation"
+                            android:textColor="#ffffffff" />
+
+                        <ImageButton
+                            android:id="@+id/sigClearBtn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_below="@id/sigCheckboxCb"
+                            android:src="@drawable/inbox_delete" />
+
+                        <EditText
+                            android:id="@+id/sigInputEt"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/sigCheckboxCb"
+                            android:layout_toLeftOf="@id/sigClearBtn"
+                            android:layout_alignBottom="@id/sigClearBtn"
+                            android:background="@drawable/textbox"
+                            android:imeOptions="actionDone"
+                            android:inputType="text"
+                            android:maxLength="25"
+                            android:padding="4dp" />
+                    </RelativeLayout>
+
+                    <!-- Level up meter -->
 
                     <LinearLayout
                         android:id="@+id/levelRl"
@@ -409,6 +486,7 @@
                             </LinearLayout>
 
                             <!-- Approved use of pixels. -->
+
                             <co.shoutbreak.ui.RoundProgress
                                 android:id="@+id/userLevelUpProgressRp"
                                 android:layout_width="fill_parent"
@@ -519,6 +597,7 @@
                 android:background="@drawable/tab_bg" >
 
                 <!-- Approved use of pixels. -->
+
                 <ImageButton
                     android:id="@+id/inboxTabBtn"
                     android:layout_width="149px"
@@ -528,6 +607,7 @@
                     android:src="@drawable/tab_inbox" />
 
                 <!-- Approved use of pixels. -->
+
                 <ImageButton
                     android:id="@+id/composeTabBtn"
                     android:layout_width="149px"
@@ -539,6 +619,7 @@
                     android:src="@drawable/tab_shouting" />
 
                 <!-- Approved use of pixels. -->
+
                 <ImageButton
                     android:id="@+id/profileTabBtn"
                     android:layout_width="149px"
@@ -579,6 +660,7 @@
         android:layout_height="fill_parent" >
 
         <!-- Approved use of pixels. -->
+
         <co.shoutbreak.storage.noticetab.MultiDirectionSlidingDrawer
             android:id="@+id/noticeDrawerSd"
             android:layout_width="fill_parent"
