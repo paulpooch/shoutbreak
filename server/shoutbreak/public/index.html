@@ -2,333 +2,18 @@
 <html>
 <head>
 <title>Shoutbreak.com</title>
-<script type="text/javascript" src="js/jquery-1.6.2.min.js"></script>
-<script type="text/javascript" src="js/easySlider1.7.js"></script>
+<meta name="description" content="Shoutbreak is a backchannel to anonymously talk to people nearby. Send messages to people near you. It's totally anonymous with no need to &quot;friend&quot; people or announce &quot;check-ins&quot; online. Use it in the classroom, bar, or anywhere around the city to share thoughts or get info that's relevant to your location." />
+<meta name="keywords" content="shoutbreak,shout,projectloud,virtuability" />
+<meta charset="UTF-8" />
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/easyslider.js"></script>
 <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDIc1qNTUvLvybuC4-dGGq6zWT0FMaJpYA&sensor=false"></script>
 <script type="text/javascript" src="http://shoutbreak.com:8080/socket.io/socket.io.js"></script>
-<script type="text/javascript">
-
-var SB = function(map, server, max) {
-
-	console.log("new SB(map, server) created");
-
-	var self = this; 
-
-	var allShouts = [];
-
-	var filled = false;
-
-	var socket = (typeof io === 'undefined') ? null : io.connect(server);
-
-	var listen = function() {
-
-		console.log("SB.listen()");
-
-		socket.on("update", function(shouts) {
-
-			console.log("socket.io 'update' event fired");
-			if (filled) {
-				append(shouts);
-			} else {
-				fill(shouts);				
-				filled = true;
-			}
-
-		});
-
-	};
-
-	var fill = function(shouts) {
-		console.log("SB.fill(shouts)");
-		allShouts = shouts;
-		map.update(allShouts);
-	};
-
-	var append = function(shouts) {
-		console.log("SB.append(shouts)");
-		
-		var length;
-		var remove;
-
-		for (i = 0; i < shouts.length; i++) {
-			allShouts.push(shouts[i]);
-		}
-
-		length = allShouts.length;
-		remove = length - max;
-		if (remove > 0) {
-			allShouts.splice(0, remove);
-		}
-		map.update(allShouts);
-	};
-
-	if (socket) {
-		listen();
-	} else {
-		$("#view_map").remove();
-	}
-
-};
-
-
-var Map = function(canvas) {
-
-	console.log("new Map(canvas) created");
-
-	var self = this;
-	
-	var ridgewood = new google.maps.LatLng(40.9792645, -74.1165313);
-	var options = {
-		zoom: 7,
-		center: ridgewood,
-		mapTypeId: google.maps.MapTypeId.ROADMAP
-	};
-
-	var map = new google.maps.Map(canvas[0], options);
-
-	var mapBounds = null;
-
-	var allShouts = [];
-	var hashedShouts = {};
-
-	var markers = [];
-
-	var infoWindow = new google.maps.InfoWindow({ "content": "null" });
-
-	var clearMap = function() {
-		console.log("Map.clearMap()");
-		if (markers !== undefined) {
-			google.maps.event.clearListeners(map, "click");
-			for (var i = 0; i < markers.length; i++) {
-				var marker = markers[i];
-				marker.setMap(null);
-			}
-			hashedShouts = {};
-			markers = [];
-		}
-	}
-
-	var rehash = function() {
-		console.log("Map.rehash()");
-
-		var northEast;
-		var southWest;
-
-		var xBegin;
-		var xEnd;
-		var yBegin;
-		var yEnd;
-
-		var xPixels;
-		var yPixels;
-
-		var marker;
-		var markerLatLng;
-		var markerWidth = 20;
-		var markerHeight = 20;
-		var markerWidthInLng;
-		var markerHeightInLat;
-
-		var mapWidthInMarkers;
-		var mapHeightInMarkers; 
-
-		var lat;
-		var lng;
-
-		var xIndex;
-		var yIndex;
-		var shoutId;
-
-		var key;
-		var shout;
-
-		var xBucket;
-		var yBucket;
-
-		var content;
-		var listener;
-
-		if (mapBounds == null) {
-			console.log("mapBounds null, retrying Map.rehash()");
-			setTimeout(rehash, 300);
-		} else if (allShouts.length > 0) {
-			console.log("rehashing...");
-
-			northEast = mapBounds.getNorthEast();
-			southWest = mapBounds.getSouthWest();
-
-			xBegin = southWest.lng();
-			xEnd = northEast.lng();
-			yBegin = southWest.lat();
-			yEnd = northEast.lat();
-
-			xPixels = canvas.width()
-			yPixels = canvas.height();
-
-			mapWidthInMarkers = Math.round(xPixels / markerWidth);
-			mapHeightInMarkers = Math.round(yPixels / markerHeight);
-
-			markerWidthInLng = Math.abs(xEnd - xBegin) / mapWidthInMarkers;
-			markerHeightInLat = Math.abs(yEnd - yBegin) / mapHeightInMarkers;
-
-			clearMap();
-
-			for (key = 0; key < allShouts.length; key++) {
-
-				shout = allShouts[key];	
-
-				if (shout.lng > xBegin && shout.lng < xEnd && shout.lat > yBegin && shout.lat < yEnd) {
-					xIndex = xBegin + Math.floor( (shout.lng - xBegin) / markerWidthInLng) * markerWidthInLng;
-					yIndex = yBegin + Math.floor( (shout.lat - yBegin) / markerHeightInLat) * markerHeightInLat;
-
-					xBucket = hashedShouts[xIndex];
-					if (xBucket === undefined) {
-						xBucket = {};
-						hashedShouts[xIndex] = xBucket;
-					}
-
-					yBucket = hashedShouts[xIndex][yIndex];
-					if (yBucket === undefined) {
-						yBucket = {};
-						hashedShouts[xIndex][yIndex] = yBucket;
-					}
-
-					yBucket[shout.shout_id] = shout;
-				}
-
-			}
-
-			for (xIndex in hashedShouts) {
-
-				xBucket = hashedShouts[xIndex];
-				
-				if (xBucket !== undefined) {
-
-					for (yIndex in xBucket) {
-
-						yBucket = xBucket[yIndex];
-						
-						if (yBucket !== undefined) {
-
-							lat = parseFloat(yIndex) + markerHeightInLat / 2;
-							lng = parseFloat(xIndex) + markerWidthInLng / 2;
-							markerLatLng = new google.maps.LatLng(lat, lng);
-							content = [];
-
-							for (shoutId in yBucket) {
-								shout = yBucket[shoutId];
-								content += "<p>" + shout.txt + "</p><p class=\"date\">" + shout.date + "</p>";
-							}
-
-							marker = new google.maps.Marker({
-								"position": markerLatLng,
-								"map": map,
-								"draggable": false,
-								"animation": null,
-								"content": content
-							});
-
-							listener = google.maps.event.addListener(marker, "click", function() {
-								var marker = this;
-								var content = "<div id=\"info_window\">" + marker.content + "</div>";
-								infoWindow.setContent(content);
-								infoWindow.open(map, marker);
-							});
-
-							marker.listener = listener;
-							markers.push(marker);
-						}
-
-					}
-
-				}
-
-			}
-
-		} else {
-			console.log("no shouts to rehash");
-		}
-
-	};
-
-	this.update = function(shouts) {
-		console.log("Map.update()");
-		allShouts = shouts;
-		rehash();
-	};
-
-	this.resize = function() {
-		console.log("Map.resize()");
-		google.maps.event.trigger(map, "resize");
-		map.setCenter(ridgewood);
-	};
-
-	google.maps.event.addListener(map, "zoom_changed", function() {
-		console.log("maps 'zoom_changed' event fired");
-		mapBounds = null;
-		rehash();
-	});
-	
-	var boundsChangeTrigger;
-	google.maps.event.addListener(map, "bounds_changed", function() {
-		console.log("maps 'bounds_changed' event fired");
-		if (boundsChangeTrigger !== undefined) {
-			clearTimeout(boundsChangeTrigger);
-		}
-		boundsChangeTrigger = setTimeout(rehash, 300);
-		mapBounds = map.getBounds();
-	});
-
-	return self;
-}
-
-
-var initialize = function() {
-
-	console.log("initialize()");
-
-	// initialize shout map
-	var server = "http://shoutbreak.com:8080";
-	var canvas = $("#map");
-	var map = new Map(canvas);
-	var max = 500;
-	var sb = new SB(map, server, max);
-
-	// initialize easySlider
-	$("#slider li").css("width", $(window).width() + "px");
-	$("#slider").easySlider({
-		auto: true, 
-		continuous: true,
-		numeric: true,
-		pause: 6000,
-		speed: 800
-	});
-
-	$(".toggle_map").click(function() {
-		console.log("toggleMap()");
-		$("#layer5").toggle();
-		map.resize();
-	});
-
-	$("#disclaimer_button").click(function() {
-		$("#map_blanket").toggle();
-	});
-
-}
-
-$(initialize);
-</script>
+<script type="text/javascript" src="js/shoutbreak.min.js"></script>
 <style type="text/css">
 
-@font-face {
-	font-family: 'Droid Sans';
-	src: url('DroidSans.ttf');
-}
-
-@font-face {
-	font-family: 'Droid Sans Bold';
-	src: url('DroidSansBold.ttf');
-}
+@font-face { font-family: 'Droid Sans';	src: url('DroidSans.ttf'); }
+@font-face { font-family: 'Droid Sans Bold'; src: url('DroidSansBold.ttf'); }
 
 html { position: relative; width: 100%; height: 100%; margin: 0px; padding: 0px; background: #fff url('bg_1.jpg') 0px 0px repeat-x; }
 body { position: relative; width: 100%; height: 100%; margin: 0px; padding: 0px; font-family: "Droid Sans", "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Verdana, Tahoma, sans-serif; }
@@ -363,34 +48,12 @@ ul { margin: 0px; padding: 0px; list-style: none; }
 .left { float: left; }
 .right { float: right; }
 
-.button {
-	-moz-box-shadow:inset 0px 1px 0px 0px #d066e6;
-	-webkit-box-shadow:inset 0px 1px 0px 0px #d066e6;
-	box-shadow:inset 0px 1px 0px 0px #d066e6;
-	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #b100d5), color-stop(1, #37079a) );
-	background:-moz-linear-gradient( center top, #b100d5 5%, #37079a 100% );
-	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#b100d5', endColorstr='#37079a');
-	background-color:#b100d5;
-	-moz-border-radius:8px;
-	-webkit-border-radius:8px;
-	border-radius:8px;
-	border:1px solid #67018a;
-	display:inline-block;
-	color:#fff;
-	font-family:arial;
-	font-size:15px;
-	font-weight:bold;
-	padding:16px 24px;
-	text-decoration:none;
-	text-shadow: 0px 0px 2px #000;
-}.button:hover {
-	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #37079a), color-stop(1, #b100d5) );
-	background:-moz-linear-gradient( center top, #37079a 5%, #b100d5 100% );
-	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#37079a', endColorstr='#b100d5');
-	background-color:#37079a;
-}.button:active {
-	position:relative;
-	top:1px;
+.button { -moz-box-shadow:inset 0px 1px 0px 0px #d066e6; -webkit-box-shadow:inset 0px 1px 0px 0px #d066e6; box-shadow:inset 0px 1px 0px 0px #d066e6; background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #b100d5), color-stop(1, #37079a) ); background:-moz-linear-gradient( center top, #b100d5 5%, #37079a 100% ); filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#b100d5', endColorstr='#37079a');	background-color:#b100d5; -moz-border-radius:8px; -webkit-border-radius:8px; border-radius:8px; border:1px solid #67018a; display:inline-block;	color:#fff;	font-family:arial; font-size:15px; font-weight:bold; padding:16px 24px;	text-decoration:none; text-shadow: 0px 0px 2px #000;
+}
+.button:hover { background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #37079a), color-stop(1, #b100d5) );	background:-moz-linear-gradient( center top, #37079a 5%, #b100d5 100% ); filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#37079a', endColorstr='#b100d5');	background-color:#37079a;
+}
+.button:active {
+	position:relative; top:1px;
 }
 
 #slider { margin: 108px 0 0 0; width: 100%; }	
@@ -404,15 +67,7 @@ ul { margin: 0px; padding: 0px; list-style: none; }
 #controls .current { background: transparent url('bullet_on.png') center no-repeat; }
 
 .scenario { margin: auto; padding: 0px; width: 800px; height: 100%; }
-.description { width: 515px; height: 70%; float: left; margin: 8px; padding: 15px; border-top: 1px solid #7a4ec5; -moz-border-radius: 16px; border-radius: 15px; line-height: 150%;
-background: -moz-linear-gradient(top,  rgba(54,9,121,0.5) 0%, rgba(0,0,0,0) 100%); /* FF3.6+ */
-background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(54,9,121,0.5)), color-stop(100%,rgba(0,0,0,0))); /* Chrome,Safari4+ */
-background: -webkit-linear-gradient(top,  rgba(54,9,121,0.5) 0%,rgba(0,0,0,0) 100%); /* Chrome10+,Safari5.1+ */
-background: -o-linear-gradient(top,  rgba(54,9,121,0.5) 0%,rgba(0,0,0,0) 100%); /* Opera 11.10+ */
-background: -ms-linear-gradient(top,  rgba(54,9,121,0.5) 0%,rgba(0,0,0,0) 100%); /* IE10+ */
-background: linear-gradient(top,  rgba(54,9,121,0.5) 0%,rgba(0,0,0,0) 100%); /* W3C */
-filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#80360979', endColorstr='#00000000',GradientType=0 ); /* IE6-9 */
- }
+.description { width: 515px; height: 70%; float: left; margin: 8px; padding: 15px; border-top: 1px solid #7a4ec5; -moz-border-radius: 16px; border-radius: 15px; line-height: 150%; background: -moz-linear-gradient(top,  rgba(54,9,121,0.5) 0%, rgba(0,0,0,0) 100%); background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(54,9,121,0.5)), color-stop(100%,rgba(0,0,0,0))); background: -webkit-linear-gradient(top,  rgba(54,9,121,0.5) 0%,rgba(0,0,0,0) 100%); background: -o-linear-gradient(top,  rgba(54,9,121,0.5) 0%,rgba(0,0,0,0) 100%); background: -ms-linear-gradient(top,  rgba(54,9,121,0.5) 0%,rgba(0,0,0,0) 100%); background: linear-gradient(top,  rgba(54,9,121,0.5) 0%,rgba(0,0,0,0) 100%); filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#80360979', endColorstr='#00000000',GradientType=0 ); }
 </style>
 </head>
 <body>
@@ -438,20 +93,29 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#80360979', e
 			<ul>			
 				<li>
 					<div class="scenario">
-						<div class="description"><h1>Welcome to Shoutbreak!</h1><p>Shoutbreak is a backchannel to anonymously talk to people nearby. Send messages to people near you. It's totally anonymous with no need to "friend" people or announce "check-ins" online. Use it in the classroom, bar, or anywhere around the city to share thoughts or get info that's relevant to your location.</p></div>
-						<img class="right" src="screen_1.png">
+						<div class="description">
+							<h1>Welcome to Shoutbreak!</h1>
+							<p>Shoutbreak is a backchannel to anonymously talk to people nearby. Send messages to people near you. It's totally anonymous with no need to "friend" people or announce "check-ins" online. Use it in the classroom, bar, or anywhere around the city to share thoughts or get info that's relevant to your location.</p>
+						</div>
+						<img class="right" src="screen_1.png" />
 					</div>
 				</li>
 				<li>
 					<div class="scenario">
-						<div class="description"><h1>Check back for updates!</h1><p>We're working on deploying our website. Bare with us and check back for updates.</p></div>
-						<img class="right" src="screen_2.png">
+						<div class="description">
+							<h1>Check back for updates!</h1>
+							<p>We're working on deploying our website. Bare with us and check back for updates.</p>
+						</div>
+						<img class="right" src="screen_2.png" />
 					</div>
 				</li>
 				<li>
 					<div class="scenario">
-						<div class="description"><h1>Shoutbreak</h1><p>shoutbreak.com</p></div>
-						<img class="right" src="screen_3.png">
+						<div class="description">
+							<h1>Shoutbreak</h1>
+							<p>shoutbreak.com</p>
+						</div>
+						<img class="right" src="screen_3.png" />
 					</div>
 				</li>
 			</ul>
