@@ -24,6 +24,7 @@ Want to check our site for a downtime notice?</string>
  If the shouting tab does not explain why consider restarting the app.
  This should never happen so please tell support.</string>
    <string name="sigExplanation">Add this signature to shouts</string>
+   <string name="sigSaved">Signature settings saved.</string>
 
 </resources><!--
 john's debug         0lLmkCXVk9yD5LpfqqmAw9kMr2orIej8Y3aw2Dw

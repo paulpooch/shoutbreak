@@ -110,6 +110,7 @@
             android:layout_marginRight="10dp"
             android:layout_marginTop="5dp"
             android:layout_toLeftOf="@id/llScoreE"
+            android:minHeight="60dp"
             android:textColor="#ffffffff"
             android:textSize="15dp" />
 
@@ -128,8 +129,9 @@
             android:id="@+id/btnVoteUp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
             android:layout_below="@id/tvTextE"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
             android:layout_marginLeft="5dp"
             android:src="@drawable/vote_up_button" />
 
@@ -137,19 +139,12 @@
             android:id="@+id/btnVoteDown"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@id/btnVoteUp"
+            android:layout_below="@id/tvTextE"
+            android:layout_alignParentBottom="true"
             android:layout_marginLeft="5dp"
             android:layout_toRightOf="@id/btnVoteUp"
             android:src="@drawable/vote_down_button" />
 
-        <ImageButton
-            android:id="@+id/btnDelete"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@id/btnVoteUp"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="5dp"
-            android:src="@drawable/inbox_delete" />
         <!--
 			REPLY BUTTON <ImageButton android:id="@+id/btnReply"
 			android:layout_alignParentBottom="true"
@@ -157,15 +152,16 @@
 			android:layout_height="wrap_content"
 			android:layout_toLeftOf="@id/btnDelete"
 			android:layout_marginRight="5dp" android:src="@drawable/inbox_reply"
-			/>
+			/>
         -->
 
         <LinearLayout
             android:id="@+id/hitCountLl"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@id/btnVoteUp"
-            android:layout_marginBottom="6dp"
+            android:layout_below="@id/tvTextE"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="2dp"
             android:layout_toRightOf="@id/btnVoteDown"
             android:background="@drawable/shoutreach_transparent" >
 
@@ -182,6 +178,17 @@
                 android:textColor="#ffffffff"
                 android:textSize="25dp" />
         </LinearLayout>
+        
+         <ImageButton
+            android:id="@+id/btnDelete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvTextE"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="5dp"
+            android:src="@drawable/inbox_delete" />
+        
     </RelativeLayout>
 
 </LinearLayout>

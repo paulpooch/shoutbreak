@@ -416,6 +416,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentLeft="true"
+                            android:checked="false"
                             android:layout_alignParentTop="true" />
 
                         <TextView
@@ -423,10 +424,10 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentTop="true"
                             android:layout_marginTop="14dp"
-                             android:textSize="14dp"
                             android:layout_toRightOf="@id/sigCheckboxCb"
                             android:text="@string/sigExplanation"
-                            android:textColor="#ffffffff" />
+                            android:textColor="#ffffffff"
+                            android:textSize="14dp" />
 
                         <ImageButton
                             android:id="@+id/sigClearBtn"
@@ -436,13 +437,21 @@
                             android:layout_below="@id/sigCheckboxCb"
                             android:src="@drawable/inbox_delete" />
 
+                        <ImageButton
+                            android:id="@+id/sigSaveBtn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/sigCheckboxCb"
+                            android:layout_toLeftOf="@id/sigClearBtn"
+                            android:src="@drawable/sig_save" />
+
                         <EditText
                             android:id="@+id/sigInputEt"
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
-                            android:layout_below="@id/sigCheckboxCb"
-                            android:layout_toLeftOf="@id/sigClearBtn"
                             android:layout_alignBottom="@id/sigClearBtn"
+                            android:layout_below="@id/sigCheckboxCb"
+                            android:layout_toLeftOf="@id/sigSaveBtn"
                             android:background="@drawable/textbox"
                             android:imeOptions="actionDone"
                             android:inputType="text"

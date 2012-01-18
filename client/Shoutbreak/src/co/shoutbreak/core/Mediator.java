@@ -475,9 +475,11 @@ public class Mediator {
 	
 
 	public void saveUserSignature(boolean sigEnabled, String sigText) {
+		// Don't change checkbox here or event loop will occur.
 		_preferences.putBoolean(C.PREFERENCE_SIGNATURE_ENABLED, sigEnabled);
 		_preferences.setString(C.PREFERENCE_SIGNATURE_TEXT, sigText);
 		_uiGateway.refreshSignature(sigText);
+		_uiGateway.toast(_service.getString(R.string.sigSaved), Toast.LENGTH_LONG);
 	}
 
 	// /////////////////////////////////////////////////////////////////////////
@@ -822,7 +824,11 @@ public class Mediator {
 			// Signature preference setup
 			boolean sigEnabled = _preferences.getBoolean(C.PREFERENCE_SIGNATURE_ENABLED, false);
 			String sigText = _preferences.getString(C.PREFERENCE_SIGNATURE_TEXT);
-			_ui.sigCheckboxCb.setChecked(sigEnabled);
+			if (sigText.length() > 0) {
+				_ui.sigCheckboxCb.setChecked(sigEnabled);
+			} else {
+				_ui.sigCheckboxCb.setChecked(false);
+			}
 			_ui.sigInputEt.setText(sigText);
 			refreshSignature(sigText);
 		}

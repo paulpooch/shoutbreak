@@ -1,0 +1,309 @@
+var SB = function(map, server, max) {
+
+	console.log("new SB(map, server) created");
+
+	var self = this; 
+
+	var allShouts = [];
+
+	var filled = false;
+
+	var socket = (typeof io === 'undefined') ? null : io.connect(server);
+
+	var listen = function() {
+
+		console.log("SB.listen()");
+
+		socket.on("update", function(shouts) {
+
+			console.log("socket.io 'update' event fired");
+			if (filled) {
+				append(shouts);
+			} else {
+				fill(shouts);				
+				filled = true;
+			}
+
+		});
+
+	};
+
+	var fill = function(shouts) {
+		console.log("SB.fill(shouts)");
+		allShouts = shouts;
+		map.update(allShouts);
+	};
+
+	var append = function(shouts) {
+		console.log("SB.append(shouts)");
+		
+		var length;
+		var remove;
+
+		for (i = 0; i < shouts.length; i++) {
+			allShouts.push(shouts[i]);
+		}
+
+		length = allShouts.length;
+		remove = length - max;
+		if (remove > 0) {
+			allShouts.splice(0, remove);
+		}
+		map.update(allShouts);
+	};
+
+	if (socket) {
+		listen();
+	} else {
+		$("#view_map").remove();
+	}
+
+};
+
+
+var Map = function(canvas) {
+
+	console.log("new Map(canvas) created");
+
+	var self = this;
+	
+	var ridgewood = new google.maps.LatLng(40.9792645, -74.1165313);
+	var options = {
+		zoom: 7,
+		center: ridgewood,
+		mapTypeId: google.maps.MapTypeId.ROADMAP
+	};
+
+	var map = new google.maps.Map(canvas[0], options);
+
+	var mapBounds = null;
+
+	var allShouts = [];
+	var hashedShouts = {};
+
+	var markers = [];
+
+	var infoWindow = new google.maps.InfoWindow({ "content": "null" });
+
+	var clearMap = function() {
+		console.log("Map.clearMap()");
+		if (markers !== undefined) {
+			google.maps.event.clearListeners(map, "click");
+			for (var i = 0; i < markers.length; i++) {
+				var marker = markers[i];
+				marker.setMap(null);
+			}
+			hashedShouts = {};
+			markers = [];
+		}
+	}
+
+	var rehash = function() {
+		console.log("Map.rehash()");
+
+		var northEast;
+		var southWest;
+
+		var xBegin;
+		var xEnd;
+		var yBegin;
+		var yEnd;
+
+		var xPixels;
+		var yPixels;
+
+		var marker;
+		var markerLatLng;
+		var markerWidth = 20;
+		var markerHeight = 20;
+		var markerWidthInLng;
+		var markerHeightInLat;
+
+		var mapWidthInMarkers;
+		var mapHeightInMarkers; 
+
+		var lat;
+		var lng;
+
+		var xIndex;
+		var yIndex;
+		var shoutId;
+
+		var key;
+		var shout;
+
+		var xBucket;
+		var yBucket;
+
+		var content;
+		var listener;
+
+		if (mapBounds == null) {
+			console.log("mapBounds null, retrying Map.rehash()");
+			setTimeout(rehash, 300);
+		} else if (allShouts.length > 0) {
+			console.log("rehashing...");
+
+			northEast = mapBounds.getNorthEast();
+			southWest = mapBounds.getSouthWest();
+
+			xBegin = southWest.lng();
+			xEnd = northEast.lng();
+			yBegin = southWest.lat();
+			yEnd = northEast.lat();
+
+			xPixels = canvas.width()
+			yPixels = canvas.height();
+
+			mapWidthInMarkers = Math.round(xPixels / markerWidth);
+			mapHeightInMarkers = Math.round(yPixels / markerHeight);
+
+			markerWidthInLng = Math.abs(xEnd - xBegin) / mapWidthInMarkers;
+			markerHeightInLat = Math.abs(yEnd - yBegin) / mapHeightInMarkers;
+
+			clearMap();
+
+			for (key = 0; key < allShouts.length; key++) {
+
+				shout = allShouts[key];	
+
+				if (shout.lng > xBegin && shout.lng < xEnd && shout.lat > yBegin && shout.lat < yEnd) {
+					xIndex = xBegin + Math.floor( (shout.lng - xBegin) / markerWidthInLng) * markerWidthInLng;
+					yIndex = yBegin + Math.floor( (shout.lat - yBegin) / markerHeightInLat) * markerHeightInLat;
+
+					xBucket = hashedShouts[xIndex];
+					if (xBucket === undefined) {
+						xBucket = {};
+						hashedShouts[xIndex] = xBucket;
+					}
+
+					yBucket = hashedShouts[xIndex][yIndex];
+					if (yBucket === undefined) {
+						yBucket = {};
+						hashedShouts[xIndex][yIndex] = yBucket;
+					}
+
+					yBucket[shout.shout_id] = shout;
+				}
+
+			}
+
+			for (xIndex in hashedShouts) {
+
+				xBucket = hashedShouts[xIndex];
+				
+				if (xBucket !== undefined) {
+
+					for (yIndex in xBucket) {
+
+						yBucket = xBucket[yIndex];
+						
+						if (yBucket !== undefined) {
+
+							lat = parseFloat(yIndex) + markerHeightInLat / 2;
+							lng = parseFloat(xIndex) + markerWidthInLng / 2;
+							markerLatLng = new google.maps.LatLng(lat, lng);
+							content = [];
+
+							for (shoutId in yBucket) {
+								shout = yBucket[shoutId];
+								content += "<p>" + shout.txt + "</p><p class=\"date\">" + shout.date + "</p>";
+							}
+
+							marker = new google.maps.Marker({
+								"position": markerLatLng,
+								"map": map,
+								"draggable": false,
+								"animation": null,
+								"content": content
+							});
+
+							listener = google.maps.event.addListener(marker, "click", function() {
+								var marker = this;
+								var content = "<div id=\"info_window\">" + marker.content + "</div>";
+								infoWindow.setContent(content);
+								infoWindow.open(map, marker);
+							});
+
+							marker.listener = listener;
+							markers.push(marker);
+						}
+
+					}
+
+				}
+
+			}
+
+		} else {
+			console.log("no shouts to rehash");
+		}
+
+	};
+
+	this.update = function(shouts) {
+		console.log("Map.update()");
+		allShouts = shouts;
+		rehash();
+	};
+
+	this.resize = function() {
+		console.log("Map.resize()");
+		google.maps.event.trigger(map, "resize");
+		map.setCenter(ridgewood);
+	};
+
+	google.maps.event.addListener(map, "zoom_changed", function() {
+		console.log("maps 'zoom_changed' event fired");
+		mapBounds = null;
+		rehash();
+	});
+	
+	var boundsChangeTrigger;
+	google.maps.event.addListener(map, "bounds_changed", function() {
+		console.log("maps 'bounds_changed' event fired");
+		if (boundsChangeTrigger !== undefined) {
+			clearTimeout(boundsChangeTrigger);
+		}
+		boundsChangeTrigger = setTimeout(rehash, 300);
+		mapBounds = map.getBounds();
+	});
+
+	return self;
+}
+
+
+var initialize = function() {
+
+	console.log("initialize()");
+
+	// initialize shout map
+	var server = "http://shoutbreak.com:8080";
+	var canvas = $("#map");
+	var map = new Map(canvas);
+	var max = 500;
+	var sb = new SB(map, server, max);
+
+	// initialize easySlider
+	$("#slider li").css("width", $(window).width() + "px");
+	$("#slider").easySlider({
+		auto: true, 
+		continuous: true,
+		numeric: true,
+		pause: 8000,
+		speed: 800
+	});
+
+	$(".toggle_map").click(function() {
+		console.log("toggleMap()");
+		$("#layer5").toggle();
+		map.resize();
+	});
+
+	$("#disclaimer_button").click(function() {
+		$("#map_blanket").toggle();
+	});
+
+}
+
+$(initialize);

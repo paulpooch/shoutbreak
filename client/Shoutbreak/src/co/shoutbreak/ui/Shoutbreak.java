@@ -102,6 +102,7 @@ public class Shoutbreak extends MapActivity implements Colleague {
 	private CustomMapView _map;
 	private LinearLayout _mapOptionsLl;
 	private ImageButton _sigClearBtn;
+	private ImageButton _sigSaveBtn;
 
 	private Flag _isComposeShowing = new Flag("ui:_isComposeShowing");
 	private Flag _isInboxShowing = new Flag("ui:_isInboxShowing");
@@ -139,9 +140,10 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		userNextLevelAtTv = (TextView) findViewById(R.id.userNextLevelAtTv);
 		userNextShoutreachTv = (TextView) findViewById(R.id.userNextShoutreachTv);
 		userLevelUpProgessRp = (RoundProgress) findViewById(R.id.userLevelUpProgressRp);
-		sigInputEt = (EditText) findViewById(R.id.shoutInputEt);
+		sigInputEt = (EditText) findViewById(R.id.sigInputEt);
 		sigCheckboxCb = (CheckBox) findViewById(R.id.sigCheckboxCb);
-
+		sigCheckboxCb.setOnCheckedChangeListener(_sigCheckboxListener);
+		
 		_inputLayoutRl = (RelativeLayout) findViewById(R.id.inputRl);
 		_composeBlanketLl = (LinearLayout) findViewById(R.id.composeBlanketLl);
 		_blanketDataRl = (RelativeLayout) findViewById(R.id.blanketDataRl);
@@ -163,6 +165,7 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		_turnOnBtn = (Button) findViewById(R.id.turnOnBtn);
 		_mapOptionsLl = (LinearLayout) findViewById(R.id.mapOptionsLl);
 		_sigClearBtn = (ImageButton) findViewById(R.id.sigClearBtn);
+		_sigSaveBtn = (ImageButton) findViewById(R.id.sigSaveBtn);
 		
 		shoutBtn.setOnClickListener(_shoutButtonListener);
 		_composeTabBtn.setOnClickListener(_composeTabListener);
@@ -174,6 +177,9 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		_turnOnBtn.setOnClickListener(_turnOnListener);
 		_turnOnBtn.getBackground().setColorFilter(0xAA9900FF, Mode.SRC_ATOP);
 		_sigClearBtn.getBackground().setColorFilter(0xAA9900FF, Mode.SRC_ATOP);
+		_sigClearBtn.setOnClickListener(_sigClearListener);
+		_sigSaveBtn.getBackground().setColorFilter(0xAA9900FF, Mode.SRC_ATOP);
+		_sigSaveBtn.setOnClickListener(_sigSaveListener);
 
 		//noticeTabShoutsIv.setVisibility(View.INVISIBLE);
 		//noticeTabPointsIv.setVisibility(View.INVISIBLE);
@@ -205,22 +211,6 @@ public class Shoutbreak extends MapActivity implements Colleague {
 			});
 		}
 		
-		sigCheckboxCb.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-				if (_m != null) {
-					_m.saveUserSignature(isChecked, sigInputEt.getText().toString());				
-				}
-			}
-		});
-		
-		_sigClearBtn.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				sigInputEt.setText("");
-				sigCheckboxCb.setChecked(false);
-			}
-		});
-
 		// bind to service, initializes mediator
 		_serviceIntent = new Intent(Shoutbreak.this, ShoutbreakService.class);
 		bindService(_serviceIntent, _serviceConnection, Context.BIND_AUTO_CREATE);
@@ -307,7 +297,7 @@ public class Shoutbreak extends MapActivity implements Colleague {
 					_doesMapKnowLocation.set(true);
 					dialogBuilder.showDialog(DialogBuilder.DISMISS_DIALOG_WAIT_FOR_MAP_TO_HAVE_LOCATION, "");
 					if (showToast) {
-						_m.getUiGateway().toast("You are here.", Toast.LENGTH_SHORT);
+						Toast.makeText(Shoutbreak.this, "You are here.", Toast.LENGTH_SHORT);
 					}
 				}
 			} else {
@@ -738,19 +728,28 @@ public class Shoutbreak extends MapActivity implements Colleague {
 	private OnClickListener _shoutButtonListener = new OnClickListener() {
 		public void onClick(View v) {
 			SBLog.userAction("_shoutButtonListener.onClick()");
-			CharSequence text = shoutInputEt.getText().toString().trim();
+			String text = shoutInputEt.getText().toString().trim();
 
 			if (text.length() == 0) {
-				_m.getUiGateway().toast("Cannot shout blanks.", Toast.LENGTH_SHORT);
+				Toast.makeText(Shoutbreak.this, "Cannot shout blanks.", Toast.LENGTH_LONG);
 			} else {
 				// TODO: filter all text going to server
-
-				shoutBtn.setImageResource(R.anim.shout_button_down);
-				AnimationDrawable shoutButtonAnimation = (AnimationDrawable) shoutBtn.getDrawable();
-				shoutButtonAnimation.start();
-
-				_m.handleShoutStart(text.toString(), userLocationOverlay.getCurrentPower());
-				hideKeyboard();
+				
+				String signature = sigInputEt.getText().toString();
+				if (sigCheckboxCb.isChecked() && signature.length() > 0) {
+					text += "     [" + sigInputEt.getText().toString() + "]";
+					text.trim();
+				}
+				
+				if (text.length() <= getResources().getInteger(R.integer.shoutMaxLength)) {
+					shoutBtn.setImageResource(R.anim.shout_button_down);
+					AnimationDrawable shoutButtonAnimation = (AnimationDrawable) shoutBtn.getDrawable();
+					shoutButtonAnimation.start();
+					_m.handleShoutStart(text.toString(), userLocationOverlay.getCurrentPower());
+					hideKeyboard();
+				} else {
+					Toast.makeText(Shoutbreak.this, "Shout is too long (256 char limit).", Toast.LENGTH_LONG);
+				}
 			}
 		}
 	};
@@ -760,6 +759,37 @@ public class Shoutbreak extends MapActivity implements Colleague {
 			SBLog.userAction("_enableLocationListener.onClick()");
 			Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
 			startActivityForResult(intent, C.ACTIVITY_RESULT_LOCATION);
+		}
+	};
+
+	private OnCheckedChangeListener _sigCheckboxListener = new OnCheckedChangeListener() {
+		public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+			if (_m != null) {
+				_m.saveUserSignature(isChecked, sigInputEt.getText().toString());				
+			}
+		}
+	};
+	
+	private OnClickListener _sigClearListener = new OnClickListener() {
+		@Override
+		public void onClick(View v) {
+			if (_m != null) {
+				sigInputEt.setText("");
+				sigCheckboxCb.setChecked(false);
+				_m.saveUserSignature(sigCheckboxCb.isChecked(), sigInputEt.getText().toString());
+			}
+			hideKeyboard();			
+		}
+	};
+
+	private OnClickListener _sigSaveListener = new OnClickListener() {
+		@Override
+		public void onClick(View v) {
+			if (_m != null) {
+				sigCheckboxCb.setChecked(true);
+				_m.saveUserSignature(sigCheckboxCb.isChecked(),  sigInputEt.getText().toString());
+			}
+			hideKeyboard();
 		}
 	};
 
