@@ -65,7 +65,7 @@ var SB = function(map, server, max) {
 	if (socket) {
 		listen();
 	} else {
-		alert("server at " + server + " is down");
+		$("#view_map").remove();
 	}
 
 };
@@ -310,6 +310,10 @@ var initialize = function() {
 		map.resize();
 	});
 
+	$("#disclaimer_button").click(function() {
+		$("#map_blanket").toggle();
+	});
+
 }
 
 $(initialize);
@@ -347,10 +351,13 @@ ul { margin: 0px; padding: 0px; list-style: none; }
 #layer5 { position: fixed; top: 0px; left: 0px; z-index: 6; width: 100%; height: 100%; display: none; background-color: rgba(0, 0, 0, 0.8); }
 #layer6 { position: fixed; top: 0px; left: 0px; width: 100%; height: 100%; }
 #map_container { position: relative; margin: 98px auto; width: 80%; height: 80%; background: #fff; }
+#map_blanket { position: absolute; top: 0px; left: 0px; z-index: 8; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.8); }
+#disclaimer { position: relative; margin: 100px auto; width: 400px; padding: 16px; font-family: 'Droid Sans'; font-size: 0.8em; font-weight: normal; text-align: center; background: #fff; -moz-border-radius: 16px; -webkit-border-radius: 16px; }
+#disclaimer b { font-family: 'Droid Sans Bold'; }
 #info_window { max-height: 200px; font-size: 0.8em;  }
-#info_window p { margin: 4px 0px 0px 0px; }
+#info_window p { margin: 4px 0px 0px 0px; background: #fff; }
 #info_window .date { font-size: 0.7em; margin: 0px 0px 4px 0px; padding: 2px; border-bottom: 1px solid #ccc; }
-#close_button { position: absolute; z-index: 10; top: -10px; right: -10px; display: block; width: 20px; height: 20px; background: #000; color: #fff; -moz-border-radius: 16px; -webkit-border-radius: 16px; border: 2px solid #fff; text-align: center; text-decoration: none; font-weight: bold; }
+#close_button { position: absolute; z-index: 9; top: -10px; right: -10px; display: block; width: 20px; height: 20px; background: #000; color: #fff; -moz-border-radius: 16px; -webkit-border-radius: 16px; border: 2px solid #fff; text-align: center; text-decoration: none; font-weight: bold; font-family: Arial;}
 
 .center { position: relative; margin: 0 auto; width: 90px; text-align: center; }
 .left { float: left; }
@@ -421,8 +428,8 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#80360979', e
 			<div id="logo"></div>
 		</div>
 		<div id="white">
-			<a href="https://market.android.com/details?id=co.shoutbreak" class="button"><img src="download.png" /></a>
-			<a href="#" class="button toggle_map"><img src="live.png" /></a>
+			<a href="https://market.android.com/details?id=co.shoutbreak" id="download" class="button"><img src="download.png" /></a>
+			<a href="#" id="view_map" class="button toggle_map"><img src="live.png" /></a>
 			<footer>Copyright 2011, ProjectLoud</footer>
 		</div>
 	</div>
@@ -453,6 +460,9 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#80360979', e
 	<div id="layer5">
 		<div id="layer6" class="toggle_map"></div>
 		<div id="map_container">
+			<div id="map_blanket">
+				<div id="disclaimer">Most recent shouts are displayed along with the time they were sent. Locations of shouts are randomly padded to protect the sender's privacy. Zoom in on locations to increase marker density.<br /><br /><b>Warning shouts are uncensored and may contain profanity or other offensive material. Continue at your own discretion.</b><br /><br /><a href="#" id="disclaimer_button" class="button">I understand, continue</a></div>	
+			</div>
 			<a href="#" id="close_button" class="toggle_map">x</a>
 			<div id="map" style="width: 100%; height: 100%;"></div>
 		</div>
