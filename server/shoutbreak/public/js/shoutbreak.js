@@ -285,7 +285,8 @@ var initialize = function() {
 	var sb = new SB(map, server, max);
 
 	// initialize easySlider
-	$("#slider li").css("width", $(window).width() + "px");
+	//$("#slider li").css("width", $(window).width() + "px");
+	$("#slider li").css("width", "1920px");	
 	$("#slider").easySlider({
 		auto: true, 
 		continuous: true,
