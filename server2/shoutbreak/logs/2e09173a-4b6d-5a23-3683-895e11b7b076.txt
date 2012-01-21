@@ -1,2 +1,0 @@
-2012-01-10 3:48:55 - WARN  --> a : create_account, uid : 2e09173a-4b6d-5a23-3683-895e11b7b076, android_id : 4c8d14efeb84e55c, device_id : A0000022E5B247, phone_num : 7322394037, carrier : Verizon Wireless,  
-2012-01-10 3:48:55 - WARN  --> {"code":"create_account_0","uid":"be59fb56-d7e8-19d0-aae4-e08e62cb73ed"} 

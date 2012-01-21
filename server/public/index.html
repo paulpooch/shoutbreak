@@ -1,0 +1,131 @@
+<!doctype html>
+<html>
+<head>
+<title>Shoutbreak.com</title>
+<meta name="description" content="Shoutbreak is a backchannel to anonymously talk to people nearby. Send messages to people near you. It's totally anonymous with no need to &quot;friend&quot; people or announce &quot;check-ins&quot; online. Use it in the classroom, bar, or anywhere around the city to share thoughts or get info that's relevant to your location." />
+<meta name="keywords" content="shoutbreak,shout,projectloud,virtuability" />
+<meta charset="UTF-8" />
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/slider.js"></script>
+<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDIc1qNTUvLvybuC4-dGGq6zWT0FMaJpYA&sensor=false"></script>
+<script type="text/javascript" src="http://shoutbreak.com:8080/socket.io/socket.io.js"></script>
+<script type="text/javascript" src="js/shoutbreak.js"></script>
+<style type="text/css">
+
+@font-face { font-family: 'Droid Sans';	src: url('DroidSans.ttf'); }
+@font-face { font-family: 'Droid Sans Bold'; src: url('DroidSansBold.ttf'); }
+
+html { position: relative; width: 100%; height: 100%; margin: 0px; padding: 0px; background: #fff url('bg_1.jpg') 0px 0px repeat-x; }
+body { position: relative; width: 100%; height: 100%; margin: 0px; padding: 0px; font-family: "Droid Sans", "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Verdana, Tahoma, sans-serif; }
+footer { position: absolute; bottom: 4px; left: 0px;  width: 100%; margin: 0px; padding: 0px; text-align: center; font-size: .8em; color: #555; }
+ol { margin: 0px; padding: 0px; list-style: none; }
+ul { margin: 0px; padding: 0px; list-style: none; }
+
+#layer1 { position: absolute; z-index: -1; width: 100%; height: 745px; margin: 0px; padding: 0px; text-align: center; background: url('android_only.png') no-repeat -9999px -9999px; }
+#circle { position: relative; width: 1040px; height: 745px; margin: 0px auto; }
+#left_hemi { position: relative; width: 520px; height: 745px; margin: 0px; float: left; background: url('bg_2.jpg') left 0px no-repeat; }
+#right_hemi { position: relative; width: 520px; height: 745px; margin: 0px; float: right; background: url('bg_2.jpg') 0px 0px no-repeat; -moz-transform: scaleX(-1); -o-transform: scaleX(-1); -webkit-transform: scaleX(-1); transform: scaleX(-1); filter: FlipH; -ms-filter: "FlipH"; }
+#layer2 { position: absolute; left: 0px; top: 0px; z-index: 1; width: 100%; height: 745px; margin: 0px; padding: 0px; background: transparent url('diag.png') 0px 0px repeat;-moz-transform: scaleX(-1); -o-transform: scaleX(-1); -webkit-transform: scaleX(-1); transform: scaleX(-1); filter: FlipH; -ms-filter: "FlipH"; }
+#layer3 { position: absolute; left: 0px; top: 0px; z-index: 2; width: 100%; margin: 0px; padding: 0px; text-align:center; }
+#main { position: relative; width: 1040px; height: 745px; margin: 0px auto; }
+#logo {  position: absolute; left: 0px; top: 17px; width: 439px; height: 100px; background: transparent url('shoutbreak_s.png') no-repeat; }
+#android {  position: fixed; right: 40px; top: 0px; z-index: 5; width: 188px; height: 74px; background: transparent url('android.png') no-repeat; }
+#android:hover {  background: transparent url('android_only.png') no-repeat; }
+#white { padding: 35px; }
+#layer4 { position: absolute; top: 0px; left: 0px; z-index: 3; width: 100%; text-align: center; }	
+#layer5 { position: fixed; top: 0px; left: 0px; z-index: 6; width: 100%; height: 100%; display: none; background-color: rgba(0, 0, 0, 0.8); }
+#layer6 { position: fixed; top: 0px; left: 0px; width: 100%; height: 100%; }
+#map_container { position: relative; margin: 98px auto; width: 80%; height: 80%; background: #fff; }
+#map_blanket { position: absolute; top: 0px; left: 0px; z-index: 8; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.8); }
+#disclaimer { position: relative; margin: 100px auto; width: 400px; padding: 16px; font-family: 'Droid Sans'; font-size: 0.8em; font-weight: normal; text-align: center; background: #fff; -moz-border-radius: 16px; -webkit-border-radius: 16px; }
+#disclaimer b { font-family: 'Droid Sans Bold'; }
+#info_window { max-height: 200px; font-size: 0.8em;  }
+#info_window p { margin: 4px 0px 0px 0px; background: #fff; }
+#info_window .date { font-size: 0.7em; margin: 0px 0px 4px 0px; padding: 2px; border-bottom: 1px solid #ccc; }
+#close_button { position: absolute; z-index: 9; top: -10px; right: -10px; display: block; width: 20px; height: 20px; background: #000; color: #fff; -moz-border-radius: 16px; -webkit-border-radius: 16px; border: 2px solid #fff; text-align: center; text-decoration: none; font-weight: bold; font-family: Arial;}
+
+.center { position: relative; margin: 0 auto; width: 90px; text-align: center; }
+.left { float: left; }
+.right { float: right; }
+
+.button { -moz-box-shadow:inset 0px 1px 0px 0px #d066e6; -webkit-box-shadow:inset 0px 1px 0px 0px #d066e6; box-shadow:inset 0px 1px 0px 0px #d066e6; background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #b100d5), color-stop(1, #37079a) ); background:-moz-linear-gradient( center top, #b100d5 5%, #37079a 100% ); filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#b100d5', endColorstr='#37079a'); background-color:#b100d5; -moz-border-radius:8px; -webkit-border-radius:8px; border-radius:8px; border:1px solid #67018a; display:inline-block; color:#fff;	font-family:arial; font-size:15px; font-weight:bold; padding:16px 24px;	text-decoration:none; text-shadow: 0px 0px 2px #000; }
+.button:hover { background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #37079a), color-stop(1, #b100d5) ); background:-moz-linear-gradient( center top, #37079a 5%, #b100d5 100% ); filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#37079a', endColorstr='#b100d5');	background-color:#37079a; }
+.button:active { position:relative; top:1px; }
+
+#slider { margin: 108px 0 0 0; width: 100%; height: 600px; }	
+#slider ul, #slider li { text-align: center; }
+#slider li { height: 580px; color: #fff; text-shadow: 0px 0px 2px #000; }
+#slider h1 { margin: 0; padding: 0; font-family: 'Droid Sans Bold'; text-align: left; text-shadow: 0px 0px 5px #000; }
+#slider p { float: left; text-align: left; }
+#controls { margin: auto; width: 48px; }
+#controls a { float: left; display: block; width: 12px; height: 13px; margin: 2px; padding: 0px; background: transparent url('bullet_off.png') center no-repeat; }
+#controls .current { background: transparent url('bullet_on.png') center no-repeat; }
+
+.scenario { margin: auto; padding: 0px; width: 800px; height: 100%; }
+.description { width: 515px; height: 70%; float: left; margin: 8px; padding: 15px; border-top: 1px solid #7a4ec5; -moz-border-radius: 16px; border-radius: 15px; line-height: 150%; background: -moz-linear-gradient(top,  rgba(54,9,121,0.5) 0%, rgba(0,0,0,0) 100%); background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(54,9,121,0.5)), color-stop(100%,rgba(0,0,0,0))); background: -webkit-linear-gradient(top,  rgba(54,9,121,0.5) 0%,rgba(0,0,0,0) 100%); background: -o-linear-gradient(top,  rgba(54,9,121,0.5) 0%,rgba(0,0,0,0) 100%); background: -ms-linear-gradient(top,  rgba(54,9,121,0.5) 0%,rgba(0,0,0,0) 100%); background: linear-gradient(top,  rgba(54,9,121,0.5) 0%,rgba(0,0,0,0) 100%); filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#80360979', endColorstr='#00000000',GradientType=0 ); }
+</style>
+</head>
+<body>
+	<div id="layer1">
+		<div id="circle">
+			<div id="left_hemi"></div>
+			<div id="right_hemi"></div>
+		</div>
+	</div>
+	<div id="layer2"></div>
+	<div id="layer3">
+		<div id="main">
+			<div id="logo"></div>
+		</div>
+		<div id="white">
+			<a href="https://market.android.com/details?id=co.shoutbreak" id="download" class="button"><img src="download.png" width="158px" height="18px" /></a>
+			<a href="#" id="view_map" class="button toggle_map"><img src="live.png" width="169px" height="18px" /></a>
+			<footer>Copyright 2011, ProjectLoud</footer>
+		</div>
+	</div>
+	<div id="layer4">
+		<div id="slider">
+			<ul>			
+				<li>
+					<div class="scenario">
+						<div class="description">
+							<h1>Welcome to Shoutbreak!</h1>
+							<p>Shoutbreak is a backchannel to anonymously talk to people nearby. Send messages to people near you. It's totally anonymous with no need to "friend" people or announce "check-ins" online. Use it in the classroom, bar, or anywhere around the city to share thoughts or get info that's relevant to your location.</p>
+						</div>
+						<img class="right" src="screen_1.png" width="237px" height="425px" />
+					</div>
+				</li>
+				<li>
+					<div class="scenario">
+						<div class="description">
+							<h1>Check back for updates!</h1>
+							<p>We're working on deploying our website. Bare with us and check back for updates.</p>
+						</div>
+						<img class="right" src="screen_2.png" width="237px" height="425px" />
+					</div>
+				</li>
+				<li>
+					<div class="scenario">
+						<div class="description">
+							<h1>Shoutbreak</h1>
+							<p>shoutbreak.com</p>
+						</div>
+						<img class="right" src="screen_3.png" width="237px" height="425px" />
+					</div>
+				</li>
+			</ul>
+		</div>
+	</div>
+	<div id="layer5">
+		<div id="layer6" class="toggle_map"></div>
+		<div id="map_container">
+			<div id="map_blanket">
+				<div id="disclaimer">Most recent shouts are displayed along with the time they were sent. Locations of shouts are randomly padded to protect the sender's privacy. Zoom in on locations to increase marker density.<br /><br /><b>Warning shouts are uncensored and may contain profanity or other offensive material. Continue at your own discretion.</b><br /><br /><a href="#" id="disclaimer_button" class="button">I understand, continue</a></div>	
+			</div>
+			<a href="#" id="close_button" class="toggle_map">x</a>
+			<div id="map" style="width: 100%; height: 100%;"></div>
+		</div>
+	</div>
+	<a href="#" id="android"></a>
+</body>
+</html>

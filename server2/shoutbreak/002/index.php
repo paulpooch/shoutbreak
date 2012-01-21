@@ -1,1 +1,0 @@
-{code: "announcement", txt: "Sorry this version is discontinued.  Please update your app."}

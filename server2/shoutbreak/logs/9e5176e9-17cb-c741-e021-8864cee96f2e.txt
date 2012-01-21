@@ -1,2 +1,0 @@
-2012-01-09 7:12:15 - WARN  --> a : create_account, uid : 9e5176e9-17cb-c741-e021-8864cee96f2e, android_id : 9774d56d682e549c, device_id : 112358132134559, phone_num : 15555215306, carrier : Android,  
-2012-01-09 7:12:15 - WARN  --> {"code":"create_account_0","uid":"b4d72fe8-be05-a397-64f9-6a3071105d4f"} 
