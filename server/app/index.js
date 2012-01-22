@@ -8,7 +8,12 @@
 // TODO:
 // Is Cache.set doing replace?
 // Better logging.
-// 
+// Add secure random to generatePassword once it's released here:
+// https://github.com/akdubya/rbytes
+//
+// RESOURCES:
+// http://blog.mixu.net/2011/02/02/essential-node-js-patterns-and-snippets/
+// http://nodejsmodules.org/tags/password
 ///////////////////////////////////////////////////////////////////////////////
 
 // Config /////////////////////////////////////////////////////////////////////
@@ -21,8 +26,11 @@ var Config = (function() {
 		AccessKeyId: 'AKIAINHDEIZ3QVSHQ3PA', 
 		SecretKey: 'VNdRxsQNUAXYbps8YUAe3jjhTgnrG'
 	};
+	// Cache Keys
 	this.PRE_CREATE_ACCOUNT_USER_TEMP_ID = 		'tempuserid';
 	this.TIMEOUT_CREATE_ACCOUNT_USER_TEMP_ID = 	300; // 5 minutes
+	// Tables
+	this.TABLE_USERS = 'USERS';
 	return this;
 })();
 
@@ -45,6 +53,29 @@ var Log = (function() {
 	this.l = 	function(text) { console.log(text); };
 	this.w = 	function(text) { console.warn(text); };
 	this.obj = 	function(obj) { console.dir(obj); };
+	return this;
+})();
+
+var Utils = (function() {
+	this.generatePassword = function(pLength, pLevel) {
+		var length = (typeof pLength == 'undefined') ? 32 : pLength;
+		var level = (typeof pLevel == 'undefined') ? 3 : pLevel;
+		var validChars = [
+			'0123456789abcdfghjkmnpqrstvwxyz',
+			'0123456789abcdfghjkmnpqrstvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ',
+			'0123456789_!@#$%&*()-=+/abcdfghjkmnpqrstvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
+		];
+		var password = '';
+		var counter = 0;
+		while (counter < length) {
+			var rand = Math.round(Math.random() * (validChars[level].length - 1));
+			var oneChar = validChars[level].substr(rand, 1);
+			password += oneChar;
+			counter++;
+		}
+		return $password;
+	}
+	};
 	return this;
 })();
 
@@ -83,14 +114,59 @@ var Cache = (function() {
 			}
 		});
 	}
-
 	return self;
 })();
+
+// User ///////////////////////////////////////////////////////////////////////
+
+var User = function() {
+	this.uid = null;
+	this.lastActivityTime = null;
+	this.userPwHash = null;
+	this.userPwSalt = null;
+	this.androidId = null;
+	this.deviceId = null;
+	this.phoneNum = null;
+	this.carrier = null;
+	this.creationTime = null;
+	this.points = null;
+	this.level = null;
+	this.pendingLevelUp = null;
+}
 
 // Database ///////////////////////////////////////////////////////////////////
 
 var Database = (function() {
-	
+
+	// Users table
+	this.Users = function() {
+		this.add = function(user, callback) {
+			var data = {
+				'TableName': Config.TABLE_USERS,
+				'Item': {
+					'user_id': user.uid,
+					'last_activity_time': user.lastActivityTime,
+					'user_pw_hash': user.userPwHash,
+					'user_pw_salt': userPwSalt,
+					'android_id': androidId,
+					'device_id': user.deviceId,
+					'phone_num': user.phoneNum,
+					'carrier': user.carrier,
+					'creation_time': user.creationTime,
+					'points': user.points,
+					'level': user.level,
+					'pending_level_up': user.pendingLevelUp
+				}					
+			};
+			var dbCallback = function(result) {
+				result.on('data', function(chunk) {
+       				callback(chunk);
+       			});
+			};
+			DynamoDB.putItem(data, dbCallback);
+		};
+	};
+
 })();
 
 // Entry Methods //////////////////////////////////////////////////////////////
@@ -251,9 +327,28 @@ var createAccount = function(clean, response) {
 	if (uid && androidId && deviceId && phoneNum && carrier) {
 		var callback = function(hit) {
 			if (hit) {
-				
-
-
+				var user = new User();
+				var now = new Date().toISOString();
+				user.uid = uid;
+				user.lastActivityTime = now;
+				user.userPwHash = null;
+				user.userPwSalt = null;
+				user.androidId = androidId;
+				user.deviceId = deviceId;
+				user.phoneNum = phoneNum;
+				user.carrier = carrier;
+				user.creationTime = now;
+				user.points = null;
+				user.level = null;
+				user.pendingLevelUp = null;
+				var callback2 = function(result) {
+					var json = {
+						'code': 'create_account_1', 
+						'pw': user.pw
+					};
+					respond(json, response);				
+				};
+				Database.User.add(user, callback2);
 			} else {
 				var tempUid = Uuid.v4();
 				var json = {
