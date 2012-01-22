@@ -6,10 +6,12 @@
 // Node order of appearance matters for many sections.
 //
 // TODO:
-// Is Cache.set doing replace?
-// Better logging.
-// Add secure random to generatePassword once it's released here:
-// https://github.com/akdubya/rbytes
+// 1. Is Cache.set doing replace?
+// 2. Better logging - based on UID.
+// 3. Add secure random to generatePassword once it's released here:
+// 		https://github.com/akdubya/rbytes
+// 4. DDOS shield.
+//
 //
 // RESOURCES:
 // http://blog.mixu.net/2011/02/02/essential-node-js-patterns-and-snippets/
@@ -51,7 +53,8 @@ var Http = 			require('http'),
 	Sanitizer = 	require('validator').sanitize,
 	Validator = 	require('validator').check,
 	Uuid = 			require('node-uuid'),
-	Crypto =		require('crypto');
+	Crypto =		require('crypto'),
+	Assert =		require('assert');
 
 // Utils //////////////////////////////////////////////////////////////////////
 
@@ -242,10 +245,10 @@ var sanitize = function(dirty, response, testCallback) {
 		'uid': 1,
 		'android_id': 1,
 		'device_id': 1,
-		'carrier': 1
+		'carrier': 1,
+		'auth': 1
 	};
 	for (var param in allowedStrings) {
-		Log.l(param);
 		if (param in dirty) {
 			clean[param] = Sanitizer(dirty[param]).trim();
 			clean[param] = Sanitizer(clean[param]).xss();
@@ -258,9 +261,19 @@ var sanitize = function(dirty, response, testCallback) {
 		'phone_num': 1
 	};
 	for (var param in allowedInts) {
-		Log.l(param);
 		if (param in dirty) {
 			clean[param] = Sanitizer(dirty[param]).toInt();
+		}
+	}
+
+	// Floats
+	var allowedFloats = {
+		'lat': 1,
+		'lng': 1	
+	};
+	for (var param in allowedFloats) {
+		if (param in dirty) {
+			clean[param] = Sanitizer(dirty[param]).toFloat();
 		}
 	}
 
@@ -332,6 +345,34 @@ var validate = function(dirty, response, testCallback) {
 		}
 	}
 
+	// auth
+	param = 'auth';
+	if (param in dirty) {
+		if (dirty[param].length == 160 || dirty[param].length == 7) {
+			clean[param] = dirty[param];
+		}
+	}
+
+	// lat
+	param = 'lat';
+	if (param in dirty) {
+		if (Validator(dirty[param]).isFloat() &&
+		Validator(dirty[param]).min(-90) && 
+		Validator(dirty[param]).max(90)) {
+			clean[param] = dirty[param];
+		}
+	}
+
+	// lat
+	param = 'lng';
+	if (param in dirty) {
+		if (Validator(dirty[param]).isFloat() &&
+		Validator(dirty[param]).min(-180) && 
+		Validator(dirty[param]).max(180)) {
+			clean[param] = dirty[param];
+		}
+	}
+
 	Log.l(clean);
 	route(clean, response, testCallback);
 };
@@ -341,6 +382,9 @@ var route = function(clean, response, testCallback) {
 	switch(action) {
 		case 'create_account':
 			createAccount(clean, response, testCallback);
+			break;
+		case 'user_ping':
+			ping(clean, response, testCallback);
 			break;
 		default:
 			break;
@@ -420,10 +464,13 @@ var Tests = (function() {
 	
 	this.run = function() {
 
-		// Create Account ////////////////////////////////////////////////////
+		var uid = null;
+		var pw = null;
+
 		var test1 = function(json) {
 			Log.l(json);
-			// Create Account 1.
+			Assert.equal(json['code'], 'create_account_0');
+			uid = json['uid'];
 			var post = {
 				'a': 'create_account',
 				'uid': json['uid'],
@@ -437,6 +484,20 @@ var Tests = (function() {
 
 		var test2 = function(json) {
 			Log.l(json);
+			Assert.equal(json['code'], 'create_account_1');
+			pw = json['pw'];
+			var post = {
+				'a': 'user_ping',
+				'uid': uid,
+				'auth': 'none',
+				'lat': 40.00000,
+				'lng': -70.00000,
+			};
+			fakePost(post, null, test3);
+		};
+
+		var test3 = function(json) {
+			Log.l(json);	
 		};
 
 		var post = {
