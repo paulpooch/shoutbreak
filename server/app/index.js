@@ -19,18 +19,26 @@
 // Config /////////////////////////////////////////////////////////////////////
 
 var Config = (function() {
-	// Elasticache
+
+	// Settings
+	this.USER_INITIAL_POINTS = 400;
+	this.USER_INITIAL_LEVEL = 5;
+	this.USER_INITIAL_PENDING_LEVEL_UP = 5;
+	
+	// AWS
 	this.CACHE_URL = 'cache-001.ardkb4.0001.use1.cache.amazonaws.com:11211',
-	// For simpleDB and dynamoDB
 	this.AWS_CREDENTIALS = {
-		AccessKeyId: 'AKIAINHDEIZ3QVSHQ3PA', 
-		SecretKey: 'VNdRxsQNUAXYbps8YUAe3jjhTgnrG'
+		AccessKeyId:'AKIAINHDEIZ3QVSHQ3PA', 
+		SecretKey: 	'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'
 	};
+	
 	// Cache Keys
 	this.PRE_CREATE_ACCOUNT_USER_TEMP_ID = 		'tempuserid';
 	this.TIMEOUT_CREATE_ACCOUNT_USER_TEMP_ID = 	300; // 5 minutes
+	
 	// Tables
 	this.TABLE_USERS = 'USERS';
+
 	return this;
 })();
 
@@ -42,25 +50,30 @@ var Http = 			require('http'),
 	Memcached = 	require('memcached'),
 	Sanitizer = 	require('validator').sanitize,
 	Validator = 	require('validator').check,
-	Uuid = 			require('node-uuid');
+	Uuid = 			require('node-uuid'),
+	Crypto =		require('crypto');
 
 // Utils //////////////////////////////////////////////////////////////////////
 
 // Add more robust logging here as needed
 var Log = (function() {
+
 	this.e = 	function(text) { console.error(text); };
 	this.i = 	function(text) { console.info(text); };
 	this.l = 	function(text) { console.log(text); };
 	this.w = 	function(text) { console.warn(text); };
 	this.obj = 	function(obj) { console.dir(obj); };
+
 	return this;
 })();
 
 var Utils = (function() {
+
 	this.generatePassword = function(pLength, pLevel) {
 		var length = (typeof pLength == 'undefined') ? 32 : pLength;
 		var level = (typeof pLevel == 'undefined') ? 3 : pLevel;
 		var validChars = [
+			'', // Level 0 undefined. 
 			'0123456789abcdfghjkmnpqrstvwxyz',
 			'0123456789abcdfghjkmnpqrstvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ',
 			'0123456789_!@#$%&*()-=+/abcdfghjkmnpqrstvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
@@ -73,29 +86,41 @@ var Utils = (function() {
 			password += oneChar;
 			counter++;
 		}
-		return $password;
-	}
+		return password;
 	};
+
+	this.hashSha512 = function(text) {
+		return Crypto.createHash('sha512').update(text).digest('base64');
+	};
+
+	this.sleep = function(seconds) {
+		var startTime = new Date().getTime();
+		while (new Date().getTime() < startTime + (seconds * 1000));
+  	};
+
 	return this;
 })();
 
 // Cache //////////////////////////////////////////////////////////////////////
 
 var Cache = (function() {
-	var self = this;
+
 	var memcached = new Memcached(Config.CACHE_URL);
+
 	memcached.on('issue', function(issue) {
 		Log.e('Issue occured on server ' + issue.server + ', ' + issue.retries  + 
 		' attempts left untill failure');
 	});
+
 	memcached.on('failure', function(issue) {
 		Log.e(issue.server + ' failed!');
 	});
+
 	memcached.on('reconnecting', function(issue) {
 		Log.e('reconnecting to server: ' + issue.server + ' failed!');
 	})
+
 	this.get = function(key, callback) {
-		Log.l('GET:' + key);
 		memcached.get(key, function(err, result) {
 			if (err) {
 				Log.e(err);
@@ -104,6 +129,7 @@ var Cache = (function() {
 			}
 		});
 	};
+
 	// Returns _true_ if successful.
 	this.set = function(key, value, lifetime, callback) {
 		memcached.set(key, value, lifetime, function(err, result) {
@@ -114,7 +140,8 @@ var Cache = (function() {
 			}
 		});
 	}
-	return self;
+
+	return this;
 })();
 
 // User ///////////////////////////////////////////////////////////////////////
@@ -140,6 +167,7 @@ var Database = (function() {
 
 	// Users table
 	this.Users = function() {
+
 		this.add = function(user, callback) {
 			var data = {
 				'TableName': Config.TABLE_USERS,
@@ -147,8 +175,8 @@ var Database = (function() {
 					'user_id': user.uid,
 					'last_activity_time': user.lastActivityTime,
 					'user_pw_hash': user.userPwHash,
-					'user_pw_salt': userPwSalt,
-					'android_id': androidId,
+					'user_pw_salt': user.userPwSalt,
+					'android_id': user.androidId,
 					'device_id': user.deviceId,
 					'phone_num': user.phoneNum,
 					'carrier': user.carrier,
@@ -165,21 +193,22 @@ var Database = (function() {
 			};
 			DynamoDB.putItem(data, dbCallback);
 		};
-	};
 
+		return this;
+	}();
+
+	return this;
 })();
 
 // Entry Methods //////////////////////////////////////////////////////////////
 
 // Front door.
 var init = function(request, response) {
-	Log.l('init');
 	process(request, response);
 };
 
 // Parse POST variables.
 var process = function(request, response) {
-	Log.l('process');
 	if (request.method == 'POST') {
 		var body = '';
 		request.on('data', function(data) {
@@ -196,8 +225,13 @@ var process = function(request, response) {
     }
 };
 
+// Used by tests to skip front door.
+var fakePost = function(dirty, response, testCallback) {
+	sanitize(dirty, response, testCallback);
+};
+
 // Sanitize post vars.  Safe sex.
-var sanitize = function(dirty, response) {
+var sanitize = function(dirty, response, testCallback) {
 	Log.l(dirty);
 	Log.l('sanitize');
 	var clean = new Object();
@@ -230,14 +264,13 @@ var sanitize = function(dirty, response) {
 		}
 	}
 
-	Log.l(clean);
-	validate(clean, response);
+	validate(clean, response, testCallback);
 };
 
 // Strict whitelist validation.
-var validate = function(dirty, response) {
-	Log.l('validate');
+var validate = function(dirty, response, testCallback) {
 	Log.l(dirty);
+	Log.l('validate');
 	var clean = new Object();
 	var param;
 
@@ -300,15 +333,14 @@ var validate = function(dirty, response) {
 	}
 
 	Log.l(clean);
-	route(clean, response);
+	route(clean, response, testCallback);
 };
 
-var route = function(clean, response) {
+var route = function(clean, response, testCallback) {
 	var action = clean['a'];
 	switch(action) {
 		case 'create_account':
-			Log.l('create_account')
-			createAccount(clean, response);
+			createAccount(clean, response, testCallback);
 			break;
 		default:
 			break;
@@ -317,13 +349,13 @@ var route = function(clean, response) {
 
 // Action Logic ///////////////////////////////////////////////////////////////
 
-var createAccount = function(clean, response) {
-	Log.i('createAccount');
+var createAccount = function(clean, response, testCallback) {
 	var uid = clean['uid'];
 	var androidId = clean['android_id'];
 	var deviceId = clean['device_id'];
 	var phoneNum = clean['phone_num'];
 	var carrier = clean['carrier'];
+	var pw = Utils.generatePassword();
 	if (uid && androidId && deviceId && phoneNum && carrier) {
 		var callback = function(hit) {
 			if (hit) {
@@ -331,47 +363,50 @@ var createAccount = function(clean, response) {
 				var now = new Date().toISOString();
 				user.uid = uid;
 				user.lastActivityTime = now;
-				user.userPwHash = null;
-				user.userPwSalt = null;
+				user.userPwSalt = Utils.generatePassword(16, 3);
+				user.userPwHash = Utils.hashSha512(pw + User.userPwSalt);
 				user.androidId = androidId;
 				user.deviceId = deviceId;
 				user.phoneNum = phoneNum;
 				user.carrier = carrier;
 				user.creationTime = now;
-				user.points = null;
-				user.level = null;
-				user.pendingLevelUp = null;
+				user.points = Config.USER_INITIAL_POINTS;
+				user.level = Config.USER_INITIAL_LEVEL;
+				user.pendingLevelUp = Config.USER_INITIAL_PENDING_LEVEL_UP;
 				var callback2 = function(result) {
 					var json = {
 						'code': 'create_account_1', 
-						'pw': user.pw
+						'pw': pw
 					};
-					respond(json, response);				
+					respond(json, response, testCallback);				
 				};
-				Database.User.add(user, callback2);
-			} else {
-				var tempUid = Uuid.v4();
-				var json = {
-					'code': 'create_account_0', 
-					'uid': tempUid
-				};
-				var callback2 = function(put) {
-					respond(json, response);
-				};
-				Cache.set(Config.PRE_CREATE_ACCOUNT_USER_TEMP_ID + tempUid, tempUid, 
-					Config.TIMEOUT_CREATE_ACCOUNT_USER_TEMP_ID, callback2);
+				Log.l('USER');
+				Log.obj(user);
+				Database.Users.add(user, callback2);
 			}
 		};
 		Cache.get(Config.PRE_CREATE_ACCOUNT_USER_TEMP_ID + uid, callback);
+	} else {
+		var tempUid = Uuid.v4();
+		var json = {
+			'code': 'create_account_0', 
+			'uid': tempUid
+		};
+		var callback = function(put) {
+			respond(json, response, testCallback);
+		};
+		Cache.set(Config.PRE_CREATE_ACCOUNT_USER_TEMP_ID + tempUid, tempUid, 
+			Config.TIMEOUT_CREATE_ACCOUNT_USER_TEMP_ID, callback);
 	}
 };
 
 // Exit Methods ///////////////////////////////////////////////////////////////
 
-var respond = function(json, response) {
+var respond = function(json, response, testCallback) {
 	if (response == null) {
-		// We're in runTests()
-		Log.l(JSON.stringify(json));
+		if (typeof testCallback != 'undefined') {
+			testCallback(json);
+		}
 	} else {
 		response.writeHead(200, {'Content-Type': 'application/json'});
 		response.write(JSON.stringify(json));
@@ -381,24 +416,43 @@ var respond = function(json, response) {
 
 // Test Suite /////////////////////////////////////////////////////////////////
 
-var runTests = function() {
-	// Create account.
-	var post = {
-		'a': 'create_account',
-		'uid': 'abcd0123-ef45-6789-0000-abcdef012345',
-		'android_id': '0123456789abcdef',
-		'device_id': '0123456789ABCD',
-		'phone_num': 1234567890,
-		'carrier': 'Test Wireless'
+var Tests = (function() {
+	
+	this.run = function() {
+
+		// Create Account ////////////////////////////////////////////////////
+		var test1 = function(json) {
+			Log.l(json);
+			// Create Account 1.
+			var post = {
+				'a': 'create_account',
+				'uid': json['uid'],
+				'android_id': '0123456789abcdef',
+				'device_id': '0123456789ABCD',
+				'phone_num': 1234567890,
+				'carrier': 'Test Wireless'
+			};
+			fakePost(post, null, test2);
+		};
+
+		var test2 = function(json) {
+			Log.l(json);
+		};
+
+		var post = {
+			'a': 'create_account'
+		};
+		fakePost(post, null, test1);
 	};
-	sanitize(post, null);
-};
+
+	return this;
+})();
 
 // Bootstrap //////////////////////////////////////////////////////////////////
 
-Log.l('server online'); 
+Log.l('server online');
 Http.createServer(init).listen(80);
-runTests();
+Tests.run();
 
 
 /*
