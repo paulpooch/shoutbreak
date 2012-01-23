@@ -11,12 +11,25 @@
 // 3. Add secure random to generatePassword once it's released here:
 // 		https://github.com/akdubya/rbytes
 // 4. DDOS shield.
-//
+// 5. Cap number or auth challenges we'll send.
+// 6. Make sure no 'new' uses create memory leak.
 //
 // RESOURCES:
 // http://blog.mixu.net/2011/02/02/essential-node-js-patterns-and-snippets/
 // http://nodejsmodules.org/tags/password
+// http://docs.amazonwebservices.com/AWSRubySDK/latest/AWS/DynamoDB/AttributeCollection.html
+// http://docs.amazonwebservices.com/amazondynamodb/latest/developerguide/API_GetItem.html
 ///////////////////////////////////////////////////////////////////////////////
+
+				/*
+				var pendingLevelUp = user['pending_level_up'];
+				if (pendingLevelUp) {
+					var levelUpInfo = {'level': user['level'], 'pts': user['points']};
+					// No callback
+					Cache.set(Config.PRE_USER_PENDING_LEVEL_UP + uid, levelUpInfo, 
+						Config.TIMEOUT_USER_PENDING_LEVEL_UP, null);
+				}
+				*/
 
 // Config /////////////////////////////////////////////////////////////////////
 
@@ -37,6 +50,8 @@ var Config = (function() {
 	// Cache Keys
 	this.PRE_CREATE_ACCOUNT_USER_TEMP_ID = 		'tempuserid';
 	this.TIMEOUT_CREATE_ACCOUNT_USER_TEMP_ID = 	300; // 5 minutes
+	this.PRE_ACTIVE_AUTH = 						'activeauth';
+	this.TIMEOUT_ACTIVE_AUTH = 					1800; // 30 minutes
 	
 	// Tables
 	this.TABLE_USERS = 'USERS';
@@ -49,12 +64,14 @@ var Config = (function() {
 var Http = 			require('http'),
 	QueryString = 	require('querystring'),
 	DynamoDB = 		require('dynamoDB').DynamoDB(Config.AWS_CREDENTIALS),
+	SimpleDB =		require('simpledb'),
 	Memcached = 	require('memcached'),
 	Sanitizer = 	require('validator').sanitize,
 	Validator = 	require('validator').check,
 	Uuid = 			require('node-uuid'),
 	Crypto =		require('crypto'),
 	Assert =		require('assert');
+
 
 // Utils //////////////////////////////////////////////////////////////////////
 
@@ -142,7 +159,17 @@ var Cache = (function() {
 				callback(result);
 			}
 		});
-	}
+	};
+
+	this.delete = function(key, callback) {
+		memcached.del(key, function(err, result) {
+			if (err) {
+				Log.e(err);
+			} else {
+				callback(result);
+			}
+		});
+	};
 
 	return this;
 })();
@@ -171,30 +198,140 @@ var Database = (function() {
 	// Users table
 	this.Users = function() {
 
-		this.add = function(user, callback) {
+		this.add = function(user, parentCallback) {
 			var data = {
 				'TableName': Config.TABLE_USERS,
 				'Item': {
-					'user_id': user.uid,
-					'last_activity_time': user.lastActivityTime,
-					'user_pw_hash': user.userPwHash,
-					'user_pw_salt': user.userPwSalt,
-					'android_id': user.androidId,
-					'device_id': user.deviceId,
-					'phone_num': user.phoneNum,
-					'carrier': user.carrier,
-					'creation_time': user.creationTime,
-					'points': user.points,
-					'level': user.level,
-					'pending_level_up': user.pendingLevelUp
+					'user_id': 				{'S': user.uid},
+					'last_activity_time': 	{'S': user.lastActivityTime},
+					'user_pw_hash': 		{'S': user.userPwHash},
+					'user_pw_salt': 		{'S': user.userPwSalt},
+					'android_id': 			{'S': user.androidId},
+					'device_id': 			{'S': user.deviceId},
+					'phone_num': 			{'N': String(user.phoneNum)},
+					'carrier': 				{'S': user.carrier},
+					'creation_time': 		{'S': user.creationTime},
+					'points': 				{'N': String(user.points)},
+					'level': 				{'N': String(user.level)},
+					'pending_level_up': 	{'N': String(user.pendingLevelUp)}
 				}					
 			};
-			var dbCallback = function(result) {
+			var callback = function(result) {
 				result.on('data', function(chunk) {
-       				callback(chunk);
-       			});
+					if (chunk['ConsumedCapacityUnits']) {
+						parentCallback(true);
+					} else {
+						Log.e(String(chunk));
+						parentCallback(false);
+					}
+				});
+				result.on('ready', function(data) {
+					Log.e(data.error);
+					parentCallback(false);
+				});
 			};
-			DynamoDB.putItem(data, dbCallback);
+			DynamoDB.putItem(data, callback);
+		};
+
+		this.getUser = function(uid, parentCallback) {
+			Log.l("getUser = " + uid);
+			var req = {
+				'TableName': Config.TABLE_USERS,
+				'Key': {
+					'HashKeyElement': {'S': uid}
+				},
+				'AttributesToGet': [
+					'user_id',
+					'last_activity_time',
+					'user_pw_hash',
+					'user_pw_salt',
+					'android_id',
+					'device_id',
+					'phone_num',
+					'carrier',
+					'creation_time',
+					'points',
+					'level',
+					'pending_level_up'
+				],
+				'ConsistentRead': true
+			};
+			var callback = function(response) {
+    			response.on('data', function(chunk) {
+    				var item = JSON.parse(chunk);
+    				if (item['Item']) {
+    					item = item['Item'];
+    					var user = new User();
+    					user.uid = item['user_id']['S'];
+						user.lastActivityTime = item['last_activity_time']['S'];
+						user.userPwHash = item['user_pw_hash']['S'];
+						user.userPwSalt = item['user_pw_salt']['S'];
+						user.androidId = item['android_id']['S'];
+						user.deviceId = item['device_id']['S'];
+						user.phoneNum = parseInt(item['phone_num']['N']);
+						user.carrier = item['carrier']['S'];
+						user.creationTime = item['creation_time']['S'];
+						user.points = parseInt(item['points']['N']);
+						user.level = parseInt(item['level']['N']);
+						user.pendingLevelUp = parseInt(item['pending_level_up']['N']);
+       					parentCallback(user);
+       				} else {
+						Log.e(chunk);
+						parentCallback(false);
+       				}
+    			});
+    		};
+
+			/*
+			function(result) {
+       			//result.on('data', parentCallback);
+       			result.on('data', function(chunk) {
+       				Log.l(chunk);
+       			});
+         	};*/
+			DynamoDB.getItem(req, callback);
+		};
+
+		this.generateNonce = function(uid, parentCallback) {
+			Log.l('generateNonce');
+			var callback = function(user) {
+				Log.l(user);
+				if (user) {
+					if (user.userPwHash && user.userPwSalt) {
+						var nonce = Utils.generatePassword(40);
+						var authInfo = {'pw_hash': user.userPwHash, 'pw_salt': user.userPwSalt, 'nonce': nonce};
+						var callback2 = function(putResult) {
+							var now = new Date().toISOString();
+							var callback3 = function(updateResult) {
+								parentCallback(nonce);
+							};
+							Database.Users.updateLastActivityTime(uid, now, callback3);
+						};
+						Cache.set(Config.PRE_ACTIVE_AUTH + uid, authInfo,
+							Config.TIMEOUT_ACTIVE_AUTH, callback2);
+					}
+				} else {
+					parentCallback(false);
+				}
+			};
+			Database.Users.getUser(uid, callback);
+		};
+
+		this.updateLastActivityTime = function(uid, time, parentCallback) {
+			var data = {
+				'TableName': Config.TABLE_USERS,
+				'Key': {
+					'HashKeyElement': {'S': uid}
+				},
+				'AttributeUpdates': {
+					'last_activity_time': time
+				},
+				'ReturnValues': 'NONE'
+			};
+			var callback = function(response, result) {
+				response.on('data', parentCallback);
+			};
+			dynamoDB.updateItem(data, callback);
 		};
 
 		return this;
@@ -401,8 +538,8 @@ var createAccount = function(clean, response, testCallback) {
 	var carrier = clean['carrier'];
 	var pw = Utils.generatePassword();
 	if (uid && androidId && deviceId && phoneNum && carrier) {
-		var callback = function(hit) {
-			if (hit) {
+		var callback = function(getResult) {
+			if (getResult) {
 				var user = new User();
 				var now = new Date().toISOString();
 				user.uid = uid;
@@ -417,17 +554,18 @@ var createAccount = function(clean, response, testCallback) {
 				user.points = Config.USER_INITIAL_POINTS;
 				user.level = Config.USER_INITIAL_LEVEL;
 				user.pendingLevelUp = Config.USER_INITIAL_PENDING_LEVEL_UP;
-				var callback2 = function(result) {
-					var json = {
-						'code': 'create_account_1', 
-						'pw': pw
-					};
-					respond(json, response, testCallback);				
-				};
-				Log.l('USER');
-				Log.obj(user);
 				Database.Users.add(user, callback2);
 			}
+		};
+		var callback2 = function(result) {
+			Cache.delete(Config.PRE_ACTIVE_AUTH + uid, callback3);					
+		};
+		var callback3 = function() {
+			var json = {
+				'code': 'create_account_1', 
+				'pw': pw
+			};
+			respond(json, response, testCallback);			
 		};
 		Cache.get(Config.PRE_CREATE_ACCOUNT_USER_TEMP_ID + uid, callback);
 	} else {
@@ -436,12 +574,78 @@ var createAccount = function(clean, response, testCallback) {
 			'code': 'create_account_0', 
 			'uid': tempUid
 		};
-		var callback = function(put) {
+		var callback = function(putResult) {
 			respond(json, response, testCallback);
 		};
 		Cache.set(Config.PRE_CREATE_ACCOUNT_USER_TEMP_ID + tempUid, tempUid, 
 			Config.TIMEOUT_CREATE_ACCOUNT_USER_TEMP_ID, callback);
 	}
+};
+
+var ping = function(clean, response, testCallback) {
+	var uid = clean['uid'];
+	var auth = clean['auth'];
+	var lat = clean['lat'];
+	var lng = clean['lng'];
+	var reqScores = clean['scores'];
+	var reqRadius = clean['radius'];
+	var level = clean['lvl'];
+	if (uid && auth && lat && lng) {
+		var callback = function() {
+			//	
+		};
+		authIsValid(uid, auth, callback);
+	}
+};
+
+var authIsValid = function(uid, auth, parentCallback) {
+	var validAuth = false;
+	var callback = function(getResult) {
+		Log.l('AUTH RESULT = ' + getResult);
+		if (getResult) {
+			if (auth.length > Config.PASSWORD_LENGTH) {
+				var submittedPw = auth.substr(0, Config.PASSWORD_LENGTH);
+				var submittedHashChunk = auth.substr(Config.PASSWORD_LENGTH, auth.length);
+				var pwHash = getResult['pw_hash'];
+				var pwSalt = getResult['pw_salt'];
+				var nonce = getResult['nonce'];
+				// Does password match?
+				if (Utils.hashSha512(submittedPw + pwSalt) == pwHash) {
+					// Does nonce match?
+					if (submittedHashChunk == Utils.hashSha512(submittedPw + nonce + uid)) {
+						validAuth = true;
+						var resultObject = {'valid': true};
+						parentCallback(resultObject);
+					}
+				}				
+			}
+		}
+		if (!validAuth) {
+			Database.Users.generateNonce(uid, callback2);
+		}
+	};
+	var callback2 = function(nonce) {
+		Log.l('NONCE = ' + nonce);
+		if (nonce) {
+			var resultObject = {
+				'valid': false,
+				json: {
+					'code': 'expired_auth', 
+					'nonce': nonce
+				}
+			};
+			parentCallback(resultObject)
+		} else {
+			var resultObject = {
+				'valid': false,
+				json: {
+					'code': 'invalid_uid'
+				}
+			};
+			parentCallback(resultObject)
+		}
+	};
+	Cache.get(Config.PRE_ACTIVE_AUTH + uid, callback);	
 };
 
 // Exit Methods ///////////////////////////////////////////////////////////////
@@ -489,7 +693,7 @@ var Tests = (function() {
 			var post = {
 				'a': 'user_ping',
 				'uid': uid,
-				'auth': 'none',
+				'auth': 'default',
 				'lat': 40.00000,
 				'lng': -70.00000,
 			};

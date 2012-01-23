@@ -90,7 +90,7 @@ public class C {
 	public static final String JSON_LAT = "lat";
 	public static final String JSON_LEVEL = "lvl";
 	public static final String JSON_LEVEL_CHANGE = "level_change";
-	public static final String JSON_LONG = "long";
+	public static final String JSON_LONG = "lng";
 	public static final String JSON_NEXT_LEVEL_AT = "next_lvl_at";
 	public static final String JSON_NONCE = "nonce";
 	public static final String JSON_PHONE_NUM = "phone_num";
