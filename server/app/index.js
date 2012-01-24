@@ -39,12 +39,20 @@ var Config = (function() {
 	this.USER_INITIAL_POINTS = 400;
 	this.USER_INITIAL_LEVEL = 5;
 	this.USER_INITIAL_PENDING_LEVEL_UP = 5;
-	
+	this.PASSWORD_LENGTH = 32;
+	this.PAD_COORDS = 8;
+	this.OFFSET_LAT = 90;
+	this.OFFSET_LNG = 180;
+	 
 	// AWS
 	this.CACHE_URL = 'cache-001.ardkb4.0001.use1.cache.amazonaws.com:11211',
-	this.AWS_CREDENTIALS = {
+	this.DYNAMODB_CREDENTIALS = {
 		AccessKeyId:'AKIAINHDEIZ3QVSHQ3PA', 
 		SecretKey: 	'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'
+	};
+	this.SIMPLEDB_CREDENTIALS = {
+		keyid: 		'AKIAINHDEIZ3QVSHQ3PA', 
+		secret: 	'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'
 	};
 	
 	// Cache Keys
@@ -55,6 +63,7 @@ var Config = (function() {
 	
 	// Tables
 	this.TABLE_USERS = 'USERS';
+	this.TABLE_LIVE = 'LIVE';
 
 	return this;
 })();
@@ -63,7 +72,7 @@ var Config = (function() {
 
 var Http = 			require('http'),
 	QueryString = 	require('querystring'),
-	DynamoDB = 		require('dynamoDB').DynamoDB(Config.AWS_CREDENTIALS),
+	DynamoDB = 		require('dynamoDB').DynamoDB(Config.DYNAMODB_CREDENTIALS),
 	SimpleDB =		require('simpledb'),
 	Memcached = 	require('memcached'),
 	Sanitizer = 	require('validator').sanitize,
@@ -71,7 +80,7 @@ var Http = 			require('http'),
 	Uuid = 			require('node-uuid'),
 	Crypto =		require('crypto'),
 	Assert =		require('assert');
-
+SimpleDB = SimpleDB.SimpleDB(Config.SIMPLEDB_CREDENTIALS, SimpleDB.debuglogger);
 
 // Utils //////////////////////////////////////////////////////////////////////
 
@@ -113,9 +122,37 @@ var Utils = (function() {
 		return Crypto.createHash('sha512').update(text).digest('base64');
 	};
 
-	this.sleep = function(seconds) {
+	this.sleep = function(seconds, callback) {
 		var startTime = new Date().getTime();
 		while (new Date().getTime() < startTime + (seconds * 1000));
+		callback();
+  	};
+
+  	this.getNowISO = function() {
+  		return (new Date().toISOString());
+  	};
+
+  	this.formatLatForSimpleDB = function(lat) {
+  		lat += Config.OFFSET_LAT;
+  		return Utils.pad(Math.round(lat) * 100000, Config.PAD_COORDS);
+  	};
+
+	this.formatLngForSimpleDB = function(lng) {
+  		lng += Config.OFFSET_LNG;
+  		return Utils.pad(Math.round(lng) * 100000, Config.PAD_COORDS);
+  	};
+
+  	this.pad = function(val, digits) {
+  		if (val.length > digits) {
+  			if (val < 0) {
+  				digits++;
+  			}
+  		}
+ 		while (val.length < digits) {
+ 			val = '0' + val;
+ 		}
+ 		Log.l('val =' + val);
+ 		return val;
   	};
 
 	return this;
@@ -196,7 +233,7 @@ var User = function() {
 var Database = (function() {
 
 	// Users table
-	this.Users = function() {
+	this.Users = (function() {
 
 		this.add = function(user, parentCallback) {
 			var data = {
@@ -234,7 +271,6 @@ var Database = (function() {
 		};
 
 		this.getUser = function(uid, parentCallback) {
-			Log.l("getUser = " + uid);
 			var req = {
 				'TableName': Config.TABLE_USERS,
 				'Key': {
@@ -281,32 +317,24 @@ var Database = (function() {
        				}
     			});
     		};
-
-			/*
-			function(result) {
-       			//result.on('data', parentCallback);
-       			result.on('data', function(chunk) {
-       				Log.l(chunk);
-       			});
-         	};*/
 			DynamoDB.getItem(req, callback);
 		};
 
 		this.generateNonce = function(uid, parentCallback) {
-			Log.l('generateNonce');
 			var callback = function(user) {
-				Log.l(user);
 				if (user) {
 					if (user.userPwHash && user.userPwSalt) {
 						var nonce = Utils.generatePassword(40);
 						var authInfo = {'pw_hash': user.userPwHash, 'pw_salt': user.userPwSalt, 'nonce': nonce};
 						var callback2 = function(putResult) {
-							var now = new Date().toISOString();
+							var now = Utils.getNowISO();
 							var callback3 = function(updateResult) {
 								parentCallback(nonce);
 							};
 							Database.Users.updateLastActivityTime(uid, now, callback3);
 						};
+						Log.l('/////////////// SETTING AUTH //////////////////////');
+						Log.obj(authInfo);
 						Cache.set(Config.PRE_ACTIVE_AUTH + uid, authInfo,
 							Config.TIMEOUT_ACTIVE_AUTH, callback2);
 					}
@@ -324,18 +352,49 @@ var Database = (function() {
 					'HashKeyElement': {'S': uid}
 				},
 				'AttributeUpdates': {
-					'last_activity_time': time
+					'last_activity_time': {'S': time}
 				},
 				'ReturnValues': 'NONE'
 			};
 			var callback = function(response, result) {
 				response.on('data', parentCallback);
 			};
-			dynamoDB.updateItem(data, callback);
+			DynamoDB.updateItem(data, callback);
 		};
 
 		return this;
-	}();
+	})();
+
+	this.LiveUsers = (function() {
+		
+		this.putUserOnline = function(uid, lat, lng, parentCallback) {
+			var callback = function(error, result, metadata) {
+				// Begin working here Tuesday.
+				// Is memcache replace actually working?
+				Log.obj(error);
+				Log.obj(result);
+				Log.obj(metadata);
+			};
+			var now = Utils.getNowISO();
+			var pLat = Utils.formatLatForSimpleDB(lat);
+			var pLng = Utils.formatLngForSimpleDB(lng);
+			Log.l(pLat + '  ' + pLng);
+			Log.obj({
+				'user_id': uid,
+				'ping_time': now,
+				'lat': pLat,
+				'lng': pLng
+			});
+			SimpleDB.putItem(Config.TABLE_LIVE, uid, {
+				'user_id': uid,
+				'ping_time': now,
+				'lat': pLat,
+				'lng': pLng
+			}, callback);
+		};
+
+		return this;
+	})();
 
 	return this;
 })();
@@ -367,13 +426,13 @@ var process = function(request, response) {
 
 // Used by tests to skip front door.
 var fakePost = function(dirty, response, testCallback) {
-	sanitize(dirty, response, testCallback);
+	Utils.sleep(2, function() { 
+		sanitize(dirty, response, testCallback); 
+	});
 };
 
 // Sanitize post vars.  Safe sex.
 var sanitize = function(dirty, response, testCallback) {
-	Log.l(dirty);
-	Log.l('sanitize');
 	var clean = new Object();
 	
 	// Strings
@@ -419,8 +478,6 @@ var sanitize = function(dirty, response, testCallback) {
 
 // Strict whitelist validation.
 var validate = function(dirty, response, testCallback) {
-	Log.l(dirty);
-	Log.l('validate');
 	var clean = new Object();
 	var param;
 
@@ -485,7 +542,8 @@ var validate = function(dirty, response, testCallback) {
 	// auth
 	param = 'auth';
 	if (param in dirty) {
-		if (dirty[param].length == 160 || dirty[param].length == 7) {
+		Log.l('))))))) auth.length = ' + dirty[param].length);
+		if (dirty[param].length == 120 || dirty[param].length == 7) {
 			clean[param] = dirty[param];
 		}
 	}
@@ -510,7 +568,6 @@ var validate = function(dirty, response, testCallback) {
 		}
 	}
 
-	Log.l(clean);
 	route(clean, response, testCallback);
 };
 
@@ -537,15 +594,19 @@ var createAccount = function(clean, response, testCallback) {
 	var phoneNum = clean['phone_num'];
 	var carrier = clean['carrier'];
 	var pw = Utils.generatePassword();
-	if (uid && androidId && deviceId && phoneNum && carrier) {
+	if (typeof uid != 'undefined' &&
+	typeof androidId != 'undefined' &&
+	typeof deviceId != 'undefined' &&
+	typeof phoneNum != 'undefined' &&
+	typeof carrier != 'undefined') {
 		var callback = function(getResult) {
 			if (getResult) {
 				var user = new User();
-				var now = new Date().toISOString();
+				var now = Utils.getNowISO();
 				user.uid = uid;
 				user.lastActivityTime = now;
-				user.userPwSalt = Utils.generatePassword(16, 3);
-				user.userPwHash = Utils.hashSha512(pw + User.userPwSalt);
+				user.userPwSalt = Utils.generatePassword(16);
+				user.userPwHash = Utils.hashSha512(pw + user.userPwSalt);
 				user.androidId = androidId;
 				user.deviceId = deviceId;
 				user.phoneNum = phoneNum;
@@ -590,19 +651,38 @@ var ping = function(clean, response, testCallback) {
 	var reqScores = clean['scores'];
 	var reqRadius = clean['radius'];
 	var level = clean['lvl'];
-	if (uid && auth && lat && lng) {
-		var callback = function() {
-			//	
+	if (typeof uid != 'undefined' &&
+	typeof auth != 'undefined' &&
+	typeof lat != 'undefined' &&
+	typeof lng != 'undefined') {
+		var callback = function(resultObject) {
+			var validAuth = resultObject['valid'];
+			var json = resultObject['json'];
+			if (validAuth) {
+				Log.l('AUTH WAS VALID - PUT USER ONLINE');
+				Database.LiveUsers.putUserOnline(uid, lat, lng, callback2);
+			} else {
+				Log.l('AUTH WAS NOT VALID');
+				respond(json, response, testCallback);
+			}
 		};
-		authIsValid(uid, auth, callback);
+		var callback2 = function() {
+			
+		};
+		Log.l('/////////////// CHECKING IF AUTH IS VALID  //////////////////////');
+		authIsValid(uid, auth, callback);	
+	} else {
+		Log.l('invalid ping');
+		Log.l(typeof uid + ' | ' + typeof auth + ' | ' + typeof lat  + ' | ' + typeof lng);
 	}
 };
 
 var authIsValid = function(uid, auth, parentCallback) {
 	var validAuth = false;
 	var callback = function(getResult) {
-		Log.l('AUTH RESULT = ' + getResult);
 		if (getResult) {
+			Log.l('/////////////// GOT AUTH //////////////////////');
+			Log.obj(getResult);
 			if (auth.length > Config.PASSWORD_LENGTH) {
 				var submittedPw = auth.substr(0, Config.PASSWORD_LENGTH);
 				var submittedHashChunk = auth.substr(Config.PASSWORD_LENGTH, auth.length);
@@ -612,7 +692,8 @@ var authIsValid = function(uid, auth, parentCallback) {
 				// Does password match?
 				if (Utils.hashSha512(submittedPw + pwSalt) == pwHash) {
 					// Does nonce match?
-					if (submittedHashChunk == Utils.hashSha512(submittedPw + nonce + uid)) {
+					if (Utils.hashSha512(submittedPw + nonce + uid) == submittedHashChunk) {
+						Log.l('//////////// VALID AUTH ////////////////');
 						validAuth = true;
 						var resultObject = {'valid': true};
 						parentCallback(resultObject);
@@ -625,7 +706,6 @@ var authIsValid = function(uid, auth, parentCallback) {
 		}
 	};
 	var callback2 = function(nonce) {
-		Log.l('NONCE = ' + nonce);
 		if (nonce) {
 			var resultObject = {
 				'valid': false,
@@ -670,6 +750,7 @@ var Tests = (function() {
 
 		var uid = null;
 		var pw = null;
+		var auth = null;
 
 		var test1 = function(json) {
 			Log.l(json);
@@ -683,6 +764,8 @@ var Tests = (function() {
 				'phone_num': 1234567890,
 				'carrier': 'Test Wireless'
 			};
+			Log.l('***********POST**************');
+			Log.obj(post);
 			fakePost(post, null, test2);
 		};
 
@@ -697,11 +780,31 @@ var Tests = (function() {
 				'lat': 40.00000,
 				'lng': -70.00000,
 			};
+			Log.l('***********POST**************');
+			Log.obj(post);
 			fakePost(post, null, test3);
 		};
 
 		var test3 = function(json) {
-			Log.l(json);	
+			Log.l(json);
+			Assert.equal(json['code'], 'expired_auth');
+			var nonce = json['nonce'];
+			Log.l(pw);
+			auth = pw + Utils.hashSha512(pw + nonce + uid);
+			var post = {
+				'a': 'user_ping',
+				'uid': uid,
+				'auth': auth,
+				'lat': 40.00000,
+				'lng': -70.00000,
+			};
+			Log.l('***********POST**************');
+			Log.obj(post);
+			fakePost(post, null, test4);
+		};
+
+		var test4 = function(json) {
+			Log.l(json);
 		};
 
 		var post = {
