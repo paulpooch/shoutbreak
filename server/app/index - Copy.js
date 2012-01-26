@@ -5,8 +5,6 @@
 //
 // Node order of appearance matters for many sections.
 //
-// ps aux | grep node
-//
 // TODO:
 // 1. Is Cache.set doing replace?
 // 2. Better logging - based on UID.
@@ -15,8 +13,6 @@
 // 4. DDOS shield.
 // 5. Cap number or auth challenges we'll send.
 // 6. Make sure no 'new' uses create memory leak.
-// 7. Uncalled callbacks can sit idle forever and hang server.
-// 8. If auth fails, it's a character getting killed by xss() - remove it from genPW().
 //
 // RESOURCES:
 // http://blog.mixu.net/2011/02/02/essential-node-js-patterns-and-snippets/
@@ -76,12 +72,10 @@ var Config = (function() {
 
 var Http = 			require('http'),
 	QueryString = 	require('querystring'),
-	// https://github.com/xiepeng/dynamoDB
 	DynamoDB = 		require('dynamoDB').DynamoDB(Config.DYNAMODB_CREDENTIALS),
 	SimpleDB =		require('simpledb'),
 	Memcached = 	require('memcached'),
-	// https://github.com/chriso/node-validator
-	Sanitizer = 	require('validator').sanitize, 
+	Sanitizer = 	require('validator').sanitize,
 	Validator = 	require('validator').check,
 	Uuid = 			require('node-uuid'),
 	Crypto =		require('crypto'),
@@ -111,7 +105,7 @@ var Utils = (function() {
 			'', // Level 0 undefined. 
 			'0123456789abcdfghjkmnpqrstvwxyz',
 			'0123456789abcdfghjkmnpqrstvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ',
-			'0123456789_!@#$%*()-=+/abcdfghjkmnpqrstvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
+			'0123456789_!@#$%&*()-=+/abcdfghjkmnpqrstvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
 		];
 		var password = '';
 		var counter = 0;
@@ -183,36 +177,33 @@ var Cache = (function() {
 		Log.e('reconnecting to server: ' + issue.server + ' failed!');
 	})
 
-	this.get = function(key, successCallback, failCallback) {
+	this.get = function(key, callback) {
 		memcached.get(key, function(err, result) {
 			if (err) {
 				Log.e(err);
-				failCallback();	
 			} else {
-				successCallback(result);
+				callback(result);
 			}
 		});
 	};
 
-	this.set = function(key, value, lifetime, successCallback, failCallback) {
+	// Returns _true_ if successful.
+	this.set = function(key, value, lifetime, callback) {
 		memcached.set(key, value, lifetime, function(err, result) {
 			if (err) {
 				Log.e(err);
-				failCallback();
 			} else {
-				// This will be true if successful.
-				successCallback(result);
+				callback(result);
 			}
 		});
 	};
 
-	this.delete = function(key, successCallback, failCallback) {
+	this.delete = function(key, callback) {
 		memcached.del(key, function(err, result) {
 			if (err) {
 				Log.e(err);
-				failCallback();
 			} else {
-				successCallback(result);
+				callback(result);
 			}
 		});
 	};
@@ -244,7 +235,7 @@ var Database = (function() {
 	// Users table
 	this.Users = (function() {
 
-		this.add = function(user, successCallback, failCallback) {
+		this.add = function(user, parentCallback) {
 			var data = {
 				'TableName': Config.TABLE_USERS,
 				'Item': {
@@ -264,24 +255,22 @@ var Database = (function() {
 			};
 			var callback = function(result) {
 				result.on('data', function(chunk) {
-					chunk = JSON.parse(chunk);
 					if (chunk['ConsumedCapacityUnits']) {
-						successCallback(true);
+						parentCallback(true);
 					} else {
 						Log.e(String(chunk));
-						failCallback();
+						parentCallback(false);
 					}
 				});
 				result.on('ready', function(data) {
 					Log.e(data.error);
-					failCallback();
+					parentCallback(false);
 				});
 			};
-			Log.obj(data);
 			DynamoDB.putItem(data, callback);
 		};
 
-		this.getUser = function(uid, successCallback, failCallback) {
+		this.getUser = function(uid, parentCallback) {
 			var req = {
 				'TableName': Config.TABLE_USERS,
 				'Key': {
@@ -321,56 +310,42 @@ var Database = (function() {
 						user.points = parseInt(item['points']['N']);
 						user.level = parseInt(item['level']['N']);
 						user.pendingLevelUp = parseInt(item['pending_level_up']['N']);
-       					successCallback(user);
+       					parentCallback(user);
        				} else {
 						Log.e(chunk);
-						failCallback();
+						parentCallback(false);
        				}
     			});
     		};
 			DynamoDB.getItem(req, callback);
 		};
 
-		this.generateNonce = function(uid, successCallback, failCallback) {
-			var callback = function(getUserResult) {
-				if (getUserResult) {
-					if (getUserResult.userPwHash && getUserResult.userPwSalt) {
+		this.generateNonce = function(uid, parentCallback) {
+			var callback = function(user) {
+				if (user) {
+					if (user.userPwHash && user.userPwSalt) {
 						var nonce = Utils.generatePassword(40);
-						var authInfo = {'pw_hash': getUserResult.userPwHash, 'pw_salt': getUserResult.userPwSalt, 'nonce': nonce};
-						var callback2 = function(setResult) {
-							if (setResult) {
-								var now = Utils.getNowISO();
-								var callback3 = function(updateLastActivityTimeResult) {
-									successCallback(nonce);
-								};
-								Database.Users.updateLastActivityTime(uid, now, callback3, 
-									function() {
-										// Not much to do here.
-										Log.e("updateLastActivityTime failed")
-									}
-								);
-							}
+						var authInfo = {'pw_hash': user.userPwHash, 'pw_salt': user.userPwSalt, 'nonce': nonce};
+						var callback2 = function(putResult) {
+							var now = Utils.getNowISO();
+							var callback3 = function(updateResult) {
+								parentCallback(nonce);
+							};
+							Database.Users.updateLastActivityTime(uid, now, callback3);
 						};
 						Log.l('/////////////// SETTING AUTH //////////////////////');
 						Log.obj(authInfo);
 						Cache.set(Config.PRE_ACTIVE_AUTH + uid, authInfo,
-							Config.TIMEOUT_ACTIVE_AUTH, callback2, 
-							function() {
-								failCallback()
-							}
-						);
+							Config.TIMEOUT_ACTIVE_AUTH, callback2);
 					}
+				} else {
+					parentCallback(false);
 				}
 			};
-			Database.Users.getUser(uid, callback, 
-				function() {
-					failCallback();
-				}
-			);
+			Database.Users.getUser(uid, callback);
 		};
 
-		this.updateLastActivityTime = function(uid, time, successCallback, failCallback) {
-			// TODO: How can this return failCallback?
+		this.updateLastActivityTime = function(uid, time, parentCallback) {
 			var data = {
 				'TableName': Config.TABLE_USERS,
 				'Key': {
@@ -382,7 +357,7 @@ var Database = (function() {
 				'ReturnValues': 'NONE'
 			};
 			var callback = function(response, result) {
-				response.on('data', successCallback);
+				response.on('data', parentCallback);
 			};
 			DynamoDB.updateItem(data, callback);
 		};
@@ -392,15 +367,13 @@ var Database = (function() {
 
 	this.LiveUsers = (function() {
 		
-		this.putUserOnline = function(uid, lat, lng, successCallback, failCallback) {
+		this.putUserOnline = function(uid, lat, lng, parentCallback) {
 			var callback = function(error, result, metadata) {
-				if (result) {
-					if (error != null) {
-						failCallback();
-					} else {
-						successCallback(true);
-					}
-				}
+				// Begin working here Tuesday.
+				// Is memcache replace actually working?
+				Log.obj(error);
+				Log.obj(result);
+				Log.obj(metadata);
 			};
 			var now = Utils.getNowISO();
 			var pLat = Utils.formatLatForSimpleDB(lat);
@@ -418,28 +391,6 @@ var Database = (function() {
 				'lat': pLat,
 				'lng': pLng
 			}, callback);
-		};
-
-		this.calculateRadiusForShoutreach = function(user, successCallback, failCallback) {
-			Log.e('calculateRadiusForShoutreach');
-			// Being here Thurs.
-			/*
-
-			var xStartDelta, yStartDelta
-			select count(*) where delta
-			if (count < shoutreach) {
-				delta *= 2
-			}
-			else if (count >>> shoutreach) {
-				delta /= 2
-			}
-			else {
-				grab everything
-				sort and return lat long on border
-			}
-
-			*/
-
 		};
 
 		return this;
@@ -503,8 +454,7 @@ var sanitize = function(dirty, response, testCallback) {
 		
 	// Ints
 	var allowedInts = {
-		'phone_num': 1,
-		'radius': 1
+		'phone_num': 1
 	};
 	for (var param in allowedInts) {
 		if (param in dirty) {
@@ -593,8 +543,7 @@ var validate = function(dirty, response, testCallback) {
 	param = 'auth';
 	if (param in dirty) {
 		Log.l('))))))) auth.length = ' + dirty[param].length);
-		// WTF IS GOING ON HERE?!
-		if (dirty[param].length >= 120 || dirty[param].length == 7) {
+		if (dirty[param].length == 120 || dirty[param].length == 7) {
 			clean[param] = dirty[param];
 		}
 	}
@@ -618,15 +567,6 @@ var validate = function(dirty, response, testCallback) {
 			clean[param] = dirty[param];
 		}
 	}
-
-	// radius
-	param = 'radius';
-	if (param in dirty) {
-		if (Validator(dirty[param]).isNumeric() && dirty[param] == 1) {
-			clean[param] = 1;
-		}
-	}
-
 
 	route(clean, response, testCallback);
 };
@@ -675,53 +615,31 @@ var createAccount = function(clean, response, testCallback) {
 				user.points = Config.USER_INITIAL_POINTS;
 				user.level = Config.USER_INITIAL_LEVEL;
 				user.pendingLevelUp = Config.USER_INITIAL_PENDING_LEVEL_UP;
-				Database.Users.add(user, callback2, 
-					function() {
-						var json = { 'code': 'error', 'txt': 'Could not add user to database.' };
-						respond(json, response, testCallback);	
-					}
-				);
+				Database.Users.add(user, callback2);
 			}
 		};
-		var callback2 = function(addResult) {
-			Log.obj(addResult);
-			if (addResult) {
-				// Same callback regardless of outcome.
-				Cache.delete(Config.PRE_ACTIVE_AUTH + uid, callback3, callback3);
-			}				
+		var callback2 = function(result) {
+			Cache.delete(Config.PRE_ACTIVE_AUTH + uid, callback3);					
 		};
-		var callback3 = function(deleteResult) {
-			// We don't care about deleteResult.		
+		var callback3 = function() {
 			var json = {
 				'code': 'create_account_1', 
 				'pw': pw
 			};
-			respond(json, response, testCallback);
+			respond(json, response, testCallback);			
 		};
-		Cache.get(Config.PRE_CREATE_ACCOUNT_USER_TEMP_ID + uid, callback, 
-			function() {
-				var json = { 'code': 'error', 'txt': 'Could not find temp user id.'	};
-				respond(json, response, testCallback);
-			}
-		);
+		Cache.get(Config.PRE_CREATE_ACCOUNT_USER_TEMP_ID + uid, callback);
 	} else {
 		var tempUid = Uuid.v4();
-		var callback = function(setResult) {
-			if (setResult) {
-				var json = {
-					'code': 'create_account_0', 
-					'uid': tempUid
-				};
-				respond(json, response, testCallback);
-			}
+		var json = {
+			'code': 'create_account_0', 
+			'uid': tempUid
+		};
+		var callback = function(putResult) {
+			respond(json, response, testCallback);
 		};
 		Cache.set(Config.PRE_CREATE_ACCOUNT_USER_TEMP_ID + tempUid, tempUid, 
-			Config.TIMEOUT_CREATE_ACCOUNT_USER_TEMP_ID, callback, 
-			function() {
-				var json = { 'code': 'error', 'txt': 'Could not save temp user id.' };
-				respond(json, response, testCallback);
-			}
-		);
+			Config.TIMEOUT_CREATE_ACCOUNT_USER_TEMP_ID, callback);
 	}
 };
 
@@ -733,7 +651,6 @@ var ping = function(clean, response, testCallback) {
 	var reqScores = clean['scores'];
 	var reqRadius = clean['radius'];
 	var level = clean['lvl'];
-	var reqRadius = clean['radius'];
 	if (typeof uid != 'undefined' &&
 	typeof auth != 'undefined' &&
 	typeof lat != 'undefined' &&
@@ -742,42 +659,14 @@ var ping = function(clean, response, testCallback) {
 			var validAuth = resultObject['valid'];
 			var json = resultObject['json'];
 			if (validAuth) {
-				Database.LiveUsers.putUserOnline(uid, lat, lng, callback2, 
-					function() {
-						var json = { 'code': 'error', 'txt': 'Could not put user online.' };
-						respond(json, response, testCallback);
-					}
-				);
+				Log.l('AUTH WAS VALID - PUT USER ONLINE');
+				Database.LiveUsers.putUserOnline(uid, lat, lng, callback2);
 			} else {
+				Log.l('AUTH WAS NOT VALID');
 				respond(json, response, testCallback);
 			}
 		};
-		var callback2 = function(putUserOnlineResult) {
-			if (putUserOnlineResult) {
-				if (reqRadius == 1) {
-					Database.Users.getUser(uid, callback3, 
-						function() {
-							var json = { 'code': 'error', 'txt': 'Could not get user.' };
-							respond(json, response, testCallback);
-						}
-					);
-				} else {
-					callback4(true);
-				}
-			}
-		};
-		var callback3 = function(getUserResult) {
-			Log.e("GET USER RESULT");
-			Log.obj(getUserResult);
-			if (getUserResult) {
-				Database.LiveUsers.calculateRadiusForShoutreach(getUserResult, callback4, 
-					function() {
-						// failCallback
-					}
-				);
-			}
-		};
-		var callback4 = function(calculateRadiusForShoutreachResult) {
+		var callback2 = function() {
 			
 		};
 		Log.l('/////////////// CHECKING IF AUTH IS VALID  //////////////////////');
@@ -808,51 +697,35 @@ var authIsValid = function(uid, auth, parentCallback) {
 						validAuth = true;
 						var resultObject = {'valid': true};
 						parentCallback(resultObject);
-					} else {
-						//Log.e('Utils.hashSha512(submittedPw + nonce + uid) != submittedHashChunk');
-						//Log.e('Utils.hashSha512(' + submittedPw + ' + ' + nonce + ' + ' + uid + ') != ' + submittedHashChunk + ')');
 					}
-				} else {
-					//Log.e('Utils.hashSha512(submittedPw + pwSalt) != pwHash');
-					//Log.e('Utils.hashSha512(' + submittedPw + ' + ' + pwSalt + ') != ' + pwHash + ')');
-				}
+				}				
 			}
-		} else {
-			// Do not send error.  This is ok.
-			// It will fall to logic below.
 		}
 		if (!validAuth) {
-			Database.Users.generateNonce(uid, callback2, 
-				function() {
-					var resultObject = {
-						'valid': false,
-						json: {
-							'code': 'invalid_uid'
-						}
-					};
-					parentCallback(resultObject)
-				}
-			);
+			Database.Users.generateNonce(uid, callback2);
 		}
 	};
-	var callback2 = function(generateNonceResult) {
-		if (generateNonceResult) {
+	var callback2 = function(nonce) {
+		if (nonce) {
 			var resultObject = {
 				'valid': false,
 				json: {
 					'code': 'expired_auth', 
-					'nonce': generateNonceResult
+					'nonce': nonce
+				}
+			};
+			parentCallback(resultObject)
+		} else {
+			var resultObject = {
+				'valid': false,
+				json: {
+					'code': 'invalid_uid'
 				}
 			};
 			parentCallback(resultObject)
 		}
 	};
-	// We need to go to successCallback even if not found.
-	Cache.get(Config.PRE_ACTIVE_AUTH + uid, callback, 
-		function(){
-			callback(false)
-		}
-	);	
+	Cache.get(Config.PRE_ACTIVE_AUTH + uid, callback);	
 };
 
 // Exit Methods ///////////////////////////////////////////////////////////////
@@ -924,7 +797,6 @@ var Tests = (function() {
 				'auth': auth,
 				'lat': 40.00000,
 				'lng': -70.00000,
-				'radius': 1
 			};
 			Log.l('***********POST**************');
 			Log.obj(post);
