@@ -70,10 +70,13 @@ var Config = (function() {
 	this.TIMEOUT_ACTIVE_AUTH = 					1800; // 30 minutes
 	this.PRE_USER =								'user';
 	this.TIMEOUT_USER =							1800; // 30 minutes
+	this.PRE_SHOUT =							'shout';
+	this.TIMEOUT_SHOUT =						1800; // 30 minutes
 	
 	// Tables
 	this.TABLE_USERS = 'USERS';
 	this.TABLE_LIVE = 'LIVE';
+	this.TABLE_SHOUTS = 'SHOUTS';
 
 	return this;
 })();
@@ -250,7 +253,7 @@ var Cache = (function() {
 // User ///////////////////////////////////////////////////////////////////////
 
 var User = function() {
-	this.uid = null;
+	this.userId = null;
 	this.lastActivityTime = null;
 	this.userPwHash = null;
 	this.userPwSalt = null;
@@ -262,18 +265,110 @@ var User = function() {
 	this.points = null;
 	this.level = null;
 	this.pendingLevelUp = null;
-}
+};
+
+// Shout //////////////////////////////////////////////////////////////////////
+
+var Shout = function() {
+	this.shoutId = null;
+	this.userId = null;	
+	this.time = null;
+	this.text = null;
+	this.open = null;
+	this.re = null;
+	this.hit = null;
+	this.power = null;
+	this.ups = null;
+	this.downs = null;
+	this.lat = null;
+	this.lng = null;
+};
 
 // Database ///////////////////////////////////////////////////////////////////
 
 var Database = (function() {
 
 	this.Shouts = (function() {
-		
-		this.sendShout = function(user, targets, successCallback, failCallback) {
-			Log.e("SEND SHOUT");
-			Log.obj(user);
-			Log.obj(targets);			
+
+		this.saveShout = function(shout, successCallback, failCallback) {
+			var data = {
+				'TableName': Config.TABLE_SHOUTS,
+				'Item': {
+					'shout_id': {'S': shout.shoutId},
+					'user_id': 	{'S': shout.userId},
+					'time': 	{'S': shout.time},
+					'text': 	{'S': shout.text},
+					'open': 	{'N': String(shout.open)},
+					're': 		{'S': String(shout.re)},
+					'hit': 		{'N': String(shout.hit)},
+					'power': 	{'N': String(shout.power)},
+					'ups': 		{'N': String(shout.ups)},
+					'downs': 	{'N': String(shout.downs)},
+					'lat': 		{'N': String(shout.lat)},
+					'lng': 		{'N': String(shout.lng)}
+				}
+			};
+			var callback2 = function(setResult) {
+				successCallback(true);
+			};
+			var cacheShout = function() {
+				Cache.set(Config.PRE_SHOUT + shout.shoutId, shout, Config.TIMEOUT_SHOUT, callback2, 
+					function() {
+						// Not a huge problem.
+						Log.e("Couldn't save shout to cache.");
+						callback2(false);
+					}
+				);
+			};
+			var callback = function(result) {
+				result.on('data', function(chunk) {
+					Log.obj(chunk + '');
+					chunk = JSON.parse(chunk);
+					if (chunk['ConsumedCapacityUnits']) {
+						cacheShout();
+					} else {
+						Log.e(String(chunk));
+						failCallback();
+					}
+				});
+				result.on('ready', function(data) {
+					Log.e(data.error);
+					failCallback();
+				});
+			};
+			DynamoDB.putItem(data, callback);
+		};
+
+		this.sendShout = function(user, targets, shoutreach, lat, lng, text, successCallback, failCallback) {
+			
+			var shout = new Shout();
+			shout.shoutId = Uuid.v4();
+			shout.userId = user.userId;
+			shout.time = Utils.getNowISO();
+			shout.text = text;
+			shout.open = 1;
+			shout.re = 0;
+			shout.hit = 0;
+			shout.power = shoutreach;
+			shout.ups = 0;
+			shout.downs = 0;
+			shout.lat = lat;
+			shout.lng = lng;
+			
+			var callback = function() {
+				Log.e('shout was saved!');
+			}
+			Database.Shouts.saveShout(shout, callback, 
+				function() {
+					Log.e('Unable to save shout.');
+					failCallback();	
+				}
+			);
+			/*
+			for (var tIndex in targets) {
+				var target = targets[tIndex];
+			}			
+			*/
 		};
 
 		return this;
@@ -286,7 +381,7 @@ var Database = (function() {
 			var data = {
 				'TableName': Config.TABLE_USERS,
 				'Item': {
-					'user_id': 				{'S': user.uid},
+					'user_id': 				{'S': user.userId},
 					'last_activity_time': 	{'S': user.lastActivityTime},
 					'user_pw_hash': 		{'S': user.userPwHash},
 					'user_pw_salt': 		{'S': user.userPwSalt},
@@ -318,7 +413,7 @@ var Database = (function() {
 			DynamoDB.putItem(data, callback);
 		};
 
-		this.getUser = function(uid, successCallback, failCallback) {
+		this.getUser = function(userId, successCallback, failCallback) {
 			var returnUser;
 			var callback2 = function(response) {
     			response.on('data', function(chunk) {
@@ -326,7 +421,7 @@ var Database = (function() {
     				if (item['Item']) {
     					item = item['Item'];
     					var user = new User();
-    					user.uid = item['user_id']['S'];
+    					user.userId = item['user_id']['S'];
 						user.lastActivityTime = item['last_activity_time']['S'];
 						user.userPwHash = item['user_pw_hash']['S'];
 						user.userPwSalt = item['user_pw_salt']['S'];
@@ -355,7 +450,7 @@ var Database = (function() {
 					var req = {
 						'TableName': Config.TABLE_USERS,
 						'Key': {
-							'HashKeyElement': {'S': uid}
+							'HashKeyElement': {'S': userId}
 						},
 						'AttributesToGet': [
 							'user_id',
@@ -383,7 +478,7 @@ var Database = (function() {
 			var addToCache = function(user) {
 				returnUser = user;
 				Log.e('addToCache');
-				Cache.set(Config.PRE_USER + user.uid, user, Config.TIMEOUT_USER, callback3, 
+				Cache.set(Config.PRE_USER + user.userId, user, Config.TIMEOUT_USER, callback3, 
 					function() {
 						// Not a huge problem.
 						Log.e("Couldn't save user to cache.");
@@ -391,7 +486,7 @@ var Database = (function() {
 					}
 				);
 			};
-			Cache.get(Config.PRE_USER + uid, callback,
+			Cache.get(Config.PRE_USER + userId, callback,
 				function() {
 					// Ok to fail this get.
 					callback(false);
@@ -399,7 +494,7 @@ var Database = (function() {
 			);
 		};
 
-		this.generateNonce = function(uid, successCallback, failCallback) {
+		this.generateNonce = function(userId, successCallback, failCallback) {
 			var callback = function(getUserResult) {
 				if (getUserResult) {
 					if (getUserResult.userPwHash && getUserResult.userPwSalt) {
@@ -411,7 +506,7 @@ var Database = (function() {
 								var callback3 = function(updateLastActivityTimeResult) {
 									successCallback(nonce);
 								};
-								Database.Users.updateLastActivityTime(uid, now, callback3, 
+								Database.Users.updateLastActivityTime(userId, now, callback3, 
 									function() {
 										// Not much to do here.
 										Log.e("updateLastActivityTime failed")
@@ -419,7 +514,7 @@ var Database = (function() {
 								);
 							}
 						};
-						Cache.set(Config.PRE_ACTIVE_AUTH + uid, authInfo,
+						Cache.set(Config.PRE_ACTIVE_AUTH + userId, authInfo,
 							Config.TIMEOUT_ACTIVE_AUTH, callback2, 
 							function() {
 								failCallback()
@@ -428,19 +523,19 @@ var Database = (function() {
 					}
 				}
 			};
-			Database.Users.getUser(uid, callback, 
+			Database.Users.getUser(userId, callback, 
 				function() {
 					failCallback();
 				}
 			);
 		};
 
-		this.updateLastActivityTime = function(uid, time, successCallback, failCallback) {
+		this.updateLastActivityTime = function(userId, time, successCallback, failCallback) {
 			// TODO: How can this return failCallback?
 			var data = {
 				'TableName': Config.TABLE_USERS,
 				'Key': {
-					'HashKeyElement': {'S': uid}
+					'HashKeyElement': {'S': userId}
 				},
 				'AttributeUpdates': {
 					'last_activity_time': {'S': time}
@@ -458,7 +553,7 @@ var Database = (function() {
 
 	this.LiveUsers = (function() {
 		
-		this.putUserOnline = function(uid, lat, lng, successCallback, failCallback) {
+		this.putUserOnline = function(userId, lat, lng, successCallback, failCallback) {
 			var callback = function(error, result, metadata) {
 				if (result) {
 					if (error != null) {
@@ -471,21 +566,23 @@ var Database = (function() {
 			var now = Utils.getNowISO();
 			var pLat = Utils.formatLatForSimpleDB(lat);
 			var pLng = Utils.formatLngForSimpleDB(lng);
-			SimpleDB.putItem(Config.TABLE_LIVE, uid, {
-				'user_id': uid,
+			SimpleDB.putItem(Config.TABLE_LIVE, userId, {
+				'user_id': userId,
 				'ping_time': now,
 				'lat': pLat,
 				'lng': pLng
 			}, callback);
 		};
 
-		this.calculateRadiusOrFindTargets = function(isShouting, user, lat, lng, successCallback, failCallback) {
+		this.calculateRadiusOrFindTargets = function(isShouting, user, shoutreach, lat, lng, successCallback, failCallback) {
 			
 			var SELECT_LIMIT = 20;
 			var selectCount = 0;
 			var xMin = 0, yMin = 0, xMax = 36000000, yMax = 18000000;
 			var x0, x1, x2, x3, y0, y1, y2, y3, xDelta, yDelta, xOffset, yOffset;
-			var shoutreach = user.level;
+			if (!isShouting) {
+				var shoutreach = user.level;
+			}
 			var acceptableExtra = 40;
 			var acceptableExtraIncrement = 20;
 			var xWrap = false, yWrap = false;
@@ -591,12 +688,16 @@ var Database = (function() {
 					
 					if (isShouting) {
 						var targets = new Array();
-						for (var i = 0; i < shoutreach; i++) {
-							targets.push(nearby[i]);
+						var targetCount = 0;
+						for (var i = 0; i < nearby.length && targetCount < shoutreach; i++) {
+							if (nearby[i][1] != user.userId) {
+								targets.push(nearby[i]);
+								targetCount++;
+							}
 						}
 						successCallback(targets);
 					} else {
-						var radius = nearby[user.level - 1][0];
+						var radius = nearby[user.level][0];
 						radius *= 1000;
 						radius += Config.SHOUTREACH_BUFFER_METERS;
 						radius = Math.round(radius);
@@ -908,13 +1009,13 @@ var route = function(clean, response, testCallback) {
 // Action Logic ///////////////////////////////////////////////////////////////
 
 var createAccount = function(clean, response, testCallback) {
-	var uid = clean['uid'];
+	var userId = clean['uid'];
 	var androidId = clean['android_id'];
 	var deviceId = clean['device_id'];
 	var phoneNum = clean['phone_num'];
 	var carrier = clean['carrier'];
 	var pw = Utils.generatePassword();
-	if (typeof uid != 'undefined' &&
+	if (typeof userId != 'undefined' &&
 	typeof androidId != 'undefined' &&
 	typeof deviceId != 'undefined' &&
 	typeof phoneNum != 'undefined' &&
@@ -923,7 +1024,7 @@ var createAccount = function(clean, response, testCallback) {
 			if (getResult) {
 				var user = new User();
 				var now = Utils.getNowISO();
-				user.uid = uid;
+				user.userId = userId;
 				user.lastActivityTime = now;
 				user.userPwSalt = Utils.generatePassword(16);
 				user.userPwHash = Utils.hashSha512(pw + user.userPwSalt);
@@ -946,7 +1047,7 @@ var createAccount = function(clean, response, testCallback) {
 		var callback2 = function(addResult) {
 			if (addResult) {
 				// Same callback regardless of outcome.
-				Cache.delete(Config.PRE_ACTIVE_AUTH + uid, callback3, callback3);
+				Cache.delete(Config.PRE_ACTIVE_AUTH + userId, callback3, callback3);
 			}				
 		};
 		var callback3 = function(deleteResult) {
@@ -957,7 +1058,7 @@ var createAccount = function(clean, response, testCallback) {
 			};
 			respond(json, response, testCallback);
 		};
-		Cache.get(Config.PRE_CREATE_ACCOUNT_USER_TEMP_ID + uid, callback, 
+		Cache.get(Config.PRE_CREATE_ACCOUNT_USER_TEMP_ID + userId, callback, 
 			function() {
 				var json = { 'code': 'error', 'txt': 'Could not find temp user id.'	};
 				respond(json, response, testCallback);
@@ -985,7 +1086,7 @@ var createAccount = function(clean, response, testCallback) {
 };
 
 var ping = function(clean, response, testCallback) {
-	var uid = clean['uid'];
+	var userId = clean['uid'];
 	var auth = clean['auth'];
 	var lat = clean['lat'];
 	var lng = clean['lng'];
@@ -993,7 +1094,7 @@ var ping = function(clean, response, testCallback) {
 	var reqRadius = clean['radius'];
 	var level = clean['lvl'];
 	var reqRadius = clean['radius'];
-	if (typeof uid != 'undefined' &&
+	if (typeof userId != 'undefined' &&
 	typeof auth != 'undefined' &&
 	typeof lat != 'undefined' &&
 	typeof lng != 'undefined') {
@@ -1001,7 +1102,7 @@ var ping = function(clean, response, testCallback) {
 			var validAuth = authIsValidResult['valid'];
 			var json = authIsValidResult['json'];
 			if (validAuth) {
-				Database.LiveUsers.putUserOnline(uid, lat, lng, callback2, 
+				Database.LiveUsers.putUserOnline(userId, lat, lng, callback2, 
 					function() {
 						var json = { 'code': 'error', 'txt': 'Could not put user online.' };
 						respond(json, response, testCallback);
@@ -1014,7 +1115,7 @@ var ping = function(clean, response, testCallback) {
 		var callback2 = function(putUserOnlineResult) {
 			if (putUserOnlineResult) {
 				if (reqRadius == 1) {
-					Database.Users.getUser(uid, callback3, 
+					Database.Users.getUser(userId, callback3, 
 						function() {
 							var json = { 'code': 'error', 'txt': 'Could not get user.' };
 							respond(json, response, testCallback);
@@ -1027,7 +1128,7 @@ var ping = function(clean, response, testCallback) {
 		};
 		var callback3 = function(getUserResult) {
 			if (getUserResult) {
-				Database.LiveUsers.calculateRadiusOrFindTargets(false, getUserResult, lat, lng, callback4, 
+				Database.LiveUsers.calculateRadiusOrFindTargets(false, getUserResult, null, lat, lng, callback4, 
 					function() {
 						var json = { 'code': 'error', 'txt': 'Could not calculate radius for shoutreach.' };
 						respond(json, response, testCallback);
@@ -1039,22 +1140,22 @@ var ping = function(clean, response, testCallback) {
 			var json = { 'code': 'ping_ok', 'radius': calculateRadiusOrFindTargetsResult };
 			respond(json, response, testCallback);
 		};
-		authIsValid(uid, auth, callback);	
+		authIsValid(userId, auth, callback);	
 	} else {
 		Log.l('invalid ping');
-		Log.l(typeof uid + ' | ' + typeof auth + ' | ' + typeof lat  + ' | ' + typeof lng);
+		Log.l(typeof userId + ' | ' + typeof auth + ' | ' + typeof lat  + ' | ' + typeof lng);
 	}
 };
 
 var shout = function(clean, response, testCallback) {
-	var uid = clean['uid'];
+	var userId = clean['uid'];
 	var auth = clean['auth'];
 	var lat = clean['lat'];
 	var lng = clean['lng'];
 	var text = clean['txt'];
 	var shoutreach = clean['shoutreach'];
 	var user;
-	if (typeof uid != 'undefined' &&
+	if (typeof userId != 'undefined' &&
 	typeof auth != 'undefined' &&
 	typeof lat != 'undefined' &&
 	typeof lng != 'undefined' &&
@@ -1064,7 +1165,7 @@ var shout = function(clean, response, testCallback) {
 			var validAuth = authIsValidResult['valid'];
 			var json = authIsValidResult['json'];
 			if (validAuth) {
-				Database.Users.getUser(uid, callback2, 
+				Database.Users.getUser(userId, callback2, 
 					function() {
 						var json = { 'code': 'error', 'txt': 'Could not get user.' };
 						respond(json, response, testCallback);
@@ -1078,7 +1179,7 @@ var shout = function(clean, response, testCallback) {
 			
 		};
 		var callback3 = function(calculateRadiusOrFindTargetsResult) {
-			Database.Shouts.sendShout(user, calculateRadiusOrFindTargetsResult, callback4,
+			Database.Shouts.sendShout(user, calculateRadiusOrFindTargetsResult, shoutreach, lat, lng, text, callback4,
 				function() {
 					
 				}
@@ -1090,7 +1191,7 @@ var shout = function(clean, response, testCallback) {
 			if (getUserResult) {
 				user = getUserResult;
 				if (user.level >= shoutreach) {
-					calculateRadiusOrFindTargets(true, user, lat, lng, callback3, 
+					calculateRadiusOrFindTargets(true, user, shoutreach, lat, lng, callback3, 
 						function() {
 							var json = { 'code': 'error', 'txt': 'Error finding targets.' };
 							respond(json, response, testCallback);
@@ -1102,13 +1203,13 @@ var shout = function(clean, response, testCallback) {
 				}
 			}	
 		};
-		authIsValid(uid, auth, callback);	
+		authIsValid(userId, auth, callback);	
 	} else {
 		Log.l('invalid shout');
 	}
 };
 
-var authIsValid = function(uid, auth, parentCallback) {
+var authIsValid = function(userId, auth, parentCallback) {
 	var validAuth = false;
 	var callback = function(getResult) {
 		if (getResult) {
@@ -1123,7 +1224,7 @@ var authIsValid = function(uid, auth, parentCallback) {
 				// Does password match?
 				if (Utils.hashSha512(submittedPw + pwSalt) == pwHash) {
 					// Does nonce match?
-					if (Utils.hashSha512(submittedPw + nonce + uid) == submittedHashChunk) {
+					if (Utils.hashSha512(submittedPw + nonce + userId) == submittedHashChunk) {
 						Log.l('//////////// VALID AUTH ////////////////');
 						validAuth = true;
 						var resultObject = {'valid': true};
@@ -1142,7 +1243,7 @@ var authIsValid = function(uid, auth, parentCallback) {
 			// It will fall to logic below.
 		}
 		if (!validAuth) {
-			Database.Users.generateNonce(uid, callback2, 
+			Database.Users.generateNonce(userId, callback2, 
 				function() {
 					var resultObject = {
 						'valid': false,
@@ -1168,7 +1269,7 @@ var authIsValid = function(uid, auth, parentCallback) {
 		}
 	};
 	// We need to go to successCallback even if not found.
-	Cache.get(Config.PRE_ACTIVE_AUTH + uid, callback, 
+	Cache.get(Config.PRE_ACTIVE_AUTH + userId, callback, 
 		function(){
 			callback(false)
 		}
@@ -1195,14 +1296,14 @@ var Tests = (function() {
 	
 	this.run = function() {
 
-		var uid = null;
+		var userId = null;
 		var pw = null;
 		var auth = null;
 
 		var test1 = function(json) {
 			Log.l(json);
 			Assert.equal(json['code'], 'create_account_0');
-			uid = json['uid'];
+			userId = json['uid'];
 			var post = {
 				'a': 'create_account',
 				'uid': json['uid'],
@@ -1222,7 +1323,7 @@ var Tests = (function() {
 			pw = json['pw'];
 			var post = {
 				'a': 'user_ping',
-				'uid': uid,
+				'uid': userId,
 				'auth': 'default',
 				'lat': 40.00000,
 				'lng': -70.00000,
@@ -1237,10 +1338,10 @@ var Tests = (function() {
 			Assert.equal(json['code'], 'expired_auth');
 			var nonce = json['nonce'];
 			Log.l(pw);
-			auth = pw + Utils.hashSha512(pw + nonce + uid);
+			auth = pw + Utils.hashSha512(pw + nonce + userId);
 			var post = {
 				'a': 'user_ping',
-				'uid': uid,
+				'uid': userId,
 				'auth': auth,
 				'lat': 40.00000,
 				'lng': -70.00000,
@@ -1255,7 +1356,7 @@ var Tests = (function() {
 			Log.l(json);
 			var post = {
 				'a': 'shout',
-				'uid': uid,
+				'uid': userId,
 				'auth': auth,
 				'lat': 40.00000,
 				'lng': -70.00000,
