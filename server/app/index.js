@@ -45,8 +45,12 @@ var Config = (function() {
 	this.USER_INITIAL_PENDING_LEVEL_UP = 5;
 	this.PASSWORD_LENGTH = 32;
 	this.PAD_COORDS = 8;
+	this.MULTIPLY_COORDS = 100000;
 	this.OFFSET_LAT = 90;
 	this.OFFSET_LNG = 180;
+	this.SHOUTREACH_BUFFER_METERS = 200;
+	this.SHOUTREACH_LIMIT = 500;
+	this.SHOUT_LENGTH_LIMIT = 256;
 	 
 	// AWS
 	this.CACHE_URL = 'cache-001.ardkb4.0001.use1.cache.amazonaws.com:11211',
@@ -64,6 +68,8 @@ var Config = (function() {
 	this.TIMEOUT_CREATE_ACCOUNT_USER_TEMP_ID = 	300; // 5 minutes
 	this.PRE_ACTIVE_AUTH = 						'activeauth';
 	this.TIMEOUT_ACTIVE_AUTH = 					1800; // 30 minutes
+	this.PRE_USER =								'user';
+	this.TIMEOUT_USER =							1800; // 30 minutes
 	
 	// Tables
 	this.TABLE_USERS = 'USERS';
@@ -140,15 +146,16 @@ var Utils = (function() {
 
   	this.formatLatForSimpleDB = function(lat) {
   		lat += Config.OFFSET_LAT;
-  		return Utils.pad(Math.round(lat) * 100000, Config.PAD_COORDS);
+  		return Utils.pad(Math.round(lat) * Config.MULTIPLY_COORDS, Config.PAD_COORDS);
   	};
 
 	this.formatLngForSimpleDB = function(lng) {
   		lng += Config.OFFSET_LNG;
-  		return Utils.pad(Math.round(lng) * 100000, Config.PAD_COORDS);
+  		return Utils.pad(Math.round(lng) * Config.MULTIPLY_COORDS, Config.PAD_COORDS);
   	};
 
   	this.pad = function(val, digits) {
+  		val = Math.round(val);
   		if (val.length > digits) {
   			if (val < 0) {
   				digits++;
@@ -157,9 +164,29 @@ var Utils = (function() {
  		while (val.length < digits) {
  			val = '0' + val;
  		}
- 		Log.l('val =' + val);
- 		return val;
+ 		return String(val);
   	};
+
+ 	if (typeof(Number.prototype.toRad) === "undefined") {
+  		Number.prototype.toRad = function() {
+    		return this * Math.PI / 180;
+  		};
+	}
+
+	// http://stackoverflow.com/questions/27928/how-do-i-calculate-distance-between-two-latitude-longitude-points
+  	this.distanceBetween = function(lat1, lng1, lat2, lng2) {
+  		var R = 6371; // Radius of the earth in km
+		var dLat = (lat2 - lat1).toRad();  // Javascript functions in radians
+		var dLon = (lng2 - lng1).toRad(); 
+		var a = Math.sin(dLat / 2) * Math.sin( dLat / 2) +
+			Math.cos(lat1.toRad()) * Math.cos(lat2.toRad()) * 
+        	Math.sin(dLon / 2) * Math.sin(dLon / 2); 
+		var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)); 
+		var d = R * c; // Distance in km
+		return d;
+  	};
+
+ 
 
 	return this;
 })();
@@ -241,6 +268,17 @@ var User = function() {
 
 var Database = (function() {
 
+	this.Shouts = (function() {
+		
+		this.sendShout = function(user, targets, successCallback, failCallback) {
+			Log.e("SEND SHOUT");
+			Log.obj(user);
+			Log.obj(targets);			
+		};
+
+		return this;
+	})();
+
 	// Users table
 	this.Users = (function() {
 
@@ -277,33 +315,12 @@ var Database = (function() {
 					failCallback();
 				});
 			};
-			Log.obj(data);
 			DynamoDB.putItem(data, callback);
 		};
 
 		this.getUser = function(uid, successCallback, failCallback) {
-			var req = {
-				'TableName': Config.TABLE_USERS,
-				'Key': {
-					'HashKeyElement': {'S': uid}
-				},
-				'AttributesToGet': [
-					'user_id',
-					'last_activity_time',
-					'user_pw_hash',
-					'user_pw_salt',
-					'android_id',
-					'device_id',
-					'phone_num',
-					'carrier',
-					'creation_time',
-					'points',
-					'level',
-					'pending_level_up'
-				],
-				'ConsistentRead': true
-			};
-			var callback = function(response) {
+			var returnUser;
+			var callback2 = function(response) {
     			response.on('data', function(chunk) {
     				var item = JSON.parse(chunk);
     				if (item['Item']) {
@@ -321,14 +338,65 @@ var Database = (function() {
 						user.points = parseInt(item['points']['N']);
 						user.level = parseInt(item['level']['N']);
 						user.pendingLevelUp = parseInt(item['pending_level_up']['N']);
-       					successCallback(user);
+						Log.e('got user from db');
+       					addToCache(user);
        				} else {
 						Log.e(chunk);
 						failCallback();
        				}
     			});
     		};
-			DynamoDB.getItem(req, callback);
+			var callback = function(getResult) {
+				Log.e("Cache.get user");
+				Log.obj(getResult);
+				if (getResult) {
+					successCallback(getResult);
+				} else {
+					var req = {
+						'TableName': Config.TABLE_USERS,
+						'Key': {
+							'HashKeyElement': {'S': uid}
+						},
+						'AttributesToGet': [
+							'user_id',
+							'last_activity_time',
+							'user_pw_hash',
+							'user_pw_salt',
+							'android_id',
+							'device_id',
+							'phone_num',
+							'carrier',
+							'creation_time',
+							'points',
+							'level',
+							'pending_level_up'
+						],
+						'ConsistentRead': true
+					};
+					DynamoDB.getItem(req, callback2);
+				}
+			};
+			var callback3 = function(setResult) {
+				// We don't really care about the result.
+				successCallback(returnUser);
+			};	
+			var addToCache = function(user) {
+				returnUser = user;
+				Log.e('addToCache');
+				Cache.set(Config.PRE_USER + user.uid, user, Config.TIMEOUT_USER, callback3, 
+					function() {
+						// Not a huge problem.
+						Log.e("Couldn't save user to cache.");
+						callback3(false);
+					}
+				);
+			};
+			Cache.get(Config.PRE_USER + uid, callback,
+				function() {
+					// Ok to fail this get.
+					callback(false);
+				}
+			);
 		};
 
 		this.generateNonce = function(uid, successCallback, failCallback) {
@@ -351,8 +419,6 @@ var Database = (function() {
 								);
 							}
 						};
-						Log.l('/////////////// SETTING AUTH //////////////////////');
-						Log.obj(authInfo);
 						Cache.set(Config.PRE_ACTIVE_AUTH + uid, authInfo,
 							Config.TIMEOUT_ACTIVE_AUTH, callback2, 
 							function() {
@@ -405,13 +471,6 @@ var Database = (function() {
 			var now = Utils.getNowISO();
 			var pLat = Utils.formatLatForSimpleDB(lat);
 			var pLng = Utils.formatLngForSimpleDB(lng);
-			Log.l(pLat + '  ' + pLng);
-			Log.obj({
-				'user_id': uid,
-				'ping_time': now,
-				'lat': pLat,
-				'lng': pLng
-			});
 			SimpleDB.putItem(Config.TABLE_LIVE, uid, {
 				'user_id': uid,
 				'ping_time': now,
@@ -420,26 +479,205 @@ var Database = (function() {
 			}, callback);
 		};
 
-		this.calculateRadiusForShoutreach = function(user, successCallback, failCallback) {
-			Log.e('calculateRadiusForShoutreach');
-			// Being here Thurs.
-			/*
+		this.calculateRadiusOrFindTargets = function(isShouting, user, lat, lng, successCallback, failCallback) {
+			
+			var SELECT_LIMIT = 20;
+			var selectCount = 0;
+			var xMin = 0, yMin = 0, xMax = 36000000, yMax = 18000000;
+			var x0, x1, x2, x3, y0, y1, y2, y3, xDelta, yDelta, xOffset, yOffset;
+			var shoutreach = user.level;
+			var acceptableExtra = 40;
+			var acceptableExtraIncrement = 20;
+			var xWrap = false, yWrap = false;
+			var xUser = Utils.formatLatForSimpleDB(lat);
+			var yUser = Utils.formatLngForSimpleDB(lng);
 
-			var xStartDelta, yStartDelta
-			select count(*) where delta
-			if (count < shoutreach) {
-				delta *= 2
-			}
-			else if (count >>> shoutreach) {
-				delta /= 2
-			}
-			else {
-				grab everything
-				sort and return lat long on border
-			}
+			var xCenter = xMax / 2;
+			var yCenter = yMax / 2;
+			xCenter = Utils.formatLatForSimpleDB(lat);
+			xCenter = Utils.formatLngForSimpleDB(lng);
 
-			*/
+			var createCleanBounds = function() {
+				xWrap = false;
+				yWrap = false;
 
+				// Step 1 - expand bounding box from center of map.
+				// Possibly hit full size of map.
+				x0 = xCenter - xDelta;
+				x1 = xCenter + xDelta;
+				y0 = yCenter - yDelta;
+				y1 = yCenter + yDelta;
+				x0 = (x0 < xMin) ? xMin : x0;
+				x1 = (x1 > xMax) ? xMax : x1;
+				y0 = (y0 < yMin) ? yMin : y0;
+				y1 = (y1 > yMax) ? yMax : y1;
+				
+				// Step 2 - shift bounding box to user location.
+				xOffset = xUser - xCenter;
+				yOffset = yUser - yCenter;
+				x0 += xOffset;
+				x1 += xOffset;
+				y0 += yOffset;
+				y1 += yOffset;
+
+				// Step 3 - did we just cause wrap around?
+				// Wrap on left border.
+				if (x0 < xMin) {
+					xWrap = true;
+					x2 = xMax - (xMin - x0);
+					x3 = xMax;
+					x0 = xMin;
+				}
+				// Wrap on right border.				
+				if (x1 > xMax) {
+					xWrap = true;
+					x3 = xMin + (x1 - xMax);
+					x2 = xMin;
+					x1 = xMax;
+				}
+				// Wrap on bottom border.
+				if (y0 < yMin) {
+					yWrap = true;
+					y2 = yMax - (yMin - y0);
+					y3 = yMax;
+					y0 = yMin;
+				}
+				// Wrap on top border.				
+				if (y1 > yMax) {
+					yWrap = true;
+					y3 = yMin + (y1 - yMax);
+					y2 = yMin;
+					y1 = yMax;
+				}
+
+				// Step 4 - format everything for simple db.
+				x0 = String(x0);
+				x1 = String(x1);
+				x2 = String(x2);
+				x3 = String(x3);
+				y0 = String(y0);
+				y1 = String(y1);
+				y2 = String(y2);
+				y3 = String(y3);
+				x0 = Utils.pad(x0, Config.PAD_COORDS);
+				x1 = Utils.pad(x1, Config.PAD_COORDS);
+				x2 = Utils.pad(x2, Config.PAD_COORDS);
+				x3 = Utils.pad(x3, Config.PAD_COORDS);
+				y0 = Utils.pad(y0, Config.PAD_COORDS);
+				y1 = Utils.pad(y1, Config.PAD_COORDS);
+				y2 = Utils.pad(y2, Config.PAD_COORDS);
+				y3 = Utils.pad(y3, Config.PAD_COORDS);
+
+			};
+
+			var fullGetCallback = function(error, result, metadata) {
+				var nearby = new Array();
+				var nearbySorter = function(a, b) {
+					return b[0] - a[0];	
+				};
+				if (!isShouting && result.length < shoutreach) {
+					// We have a problem.
+					Log.e('calculateRadiusOrFindTargets failed to find enough users.');
+					failCallback();
+				} else {
+					for (var row in result) {
+						row = result[row];
+						var lat2 = (row['lat'] - Config.OFFSET_LAT) / Config.MULTIPLY_COORDS; 
+						var lng2 = (row['lng'] - Config.OFFSET_LNG) / Config.MULTIPLY_COORDS;
+						var distanceKm = Utils.distanceBetween(lat, lng, lat2, lng2);
+						nearby.push([distanceKm, row['user_id']]);
+					}
+					nearby.sort(nearbySorter);
+					
+					if (isShouting) {
+						var targets = new Array();
+						for (var i = 0; i < shoutreach; i++) {
+							targets.push(nearby[i]);
+						}
+						successCallback(targets);
+					} else {
+						var radius = nearby[user.level - 1][0];
+						radius *= 1000;
+						radius += Config.SHOUTREACH_BUFFER_METERS;
+						radius = Math.round(radius);
+						successCallback(radius);
+					}
+
+				}
+			};
+
+			var performSelect = function(justGetCount, callback) {
+				createCleanBounds();
+				var params = new Array();
+				var sql = "SELECT ";
+				if (justGetCount) {
+					sql += "count(*) FROM ? WHERE ";
+				} else {
+					sql += "* FROM ? WHERE ";
+				}
+				params.push(Config.TABLE_LIVE);
+				if (xWrap) {
+					sql += "(lng BETWEEN '?' AND '?' OR lng BETWEEN '?' AND '?') ";
+					params.push(x0, x1, x2, x3);
+				} else {
+					sql += "(lng BETWEEN '?' AND '?') ";
+					params.push(x0, x1);
+				}
+				sql += "AND ";
+				if (yWrap) {
+					sql += "(lat BETWEEN '?' AND '?' OR lat BETWEEN '?' AND '?') ";
+					params.push(y0, y1, y2, y3);
+				} else {
+					sql += "(lat BETWEEN '?' AND '?') ";
+					params.push(y0, y1);
+				}
+				/*
+				SimpleDB.select("SELECT count(*) FROM ? WHERE lat BETWEEN '?' AND '?' AND lng BETWEEN '?' AND '?'",
+					[Config.TABLE_LIVE, x0, x1, y0, y1], recursiveCallback);
+				*/
+				SimpleDB.select(sql, params, callback);
+			};
+
+			var recursiveCallback = function(error, result, metadata) {
+				// Let's not accidentally infinite loop and spend $50,000 on AWS.
+				selectCount++;
+				Log.e('recursiveCallback on iteration ' + selectCount);
+				var makeNextSelect = true;
+				var count = result[0]['Count'];
+				Log.e("COUNT = " + count + ', SHOUTREACH = ' + shoutreach);
+				if (count >= shoutreach) {
+					if (count - shoutreach <= acceptableExtra) {
+						makeNextSelect = false;
+						performSelect(false, fullGetCallback);
+					} else {
+						// Go smaller.
+						// Important!
+						// The multiple for go smaller cannot equal the one for go bigger,
+						// or we could infinitely flip between too many and not enough.
+						xDelta /= 3;
+						yDelta /= 3;
+					}
+				} else {
+					// Go bigger.
+					xDelta *= 2;
+					yDelta *= 2;
+				}
+				if (makeNextSelect) {
+					if (selectCount <= SELECT_LIMIT) {
+						acceptableExtra += acceptableExtraIncrement;
+						performSelect(true, recursiveCallback);
+					} else {
+						// We gotta bail to avoid infinite selects.
+						Log.e('INFINITE LOOP WOULD HAVE OCCURED IN recursiveCallback');
+						performSelect(false, fullGetCallback);
+					}
+				}
+			};
+
+			// First try.
+			xDelta = xMax / 2; // TODO: Change these.
+			yDelta = yMax / 2;
+			performSelect(true, recursiveCallback);
 		};
 
 		return this;
@@ -475,7 +713,7 @@ var process = function(request, response) {
 
 // Used by tests to skip front door.
 var fakePost = function(dirty, response, testCallback) {
-	Utils.sleep(2, function() { 
+	Utils.sleep(1, function() { 
 		sanitize(dirty, response, testCallback); 
 	});
 };
@@ -491,7 +729,8 @@ var sanitize = function(dirty, response, testCallback) {
 		'android_id': 1,
 		'device_id': 1,
 		'carrier': 1,
-		'auth': 1
+		'auth': 1,
+		'txt': 1
 	};
 	for (var param in allowedStrings) {
 		if (param in dirty) {
@@ -504,7 +743,8 @@ var sanitize = function(dirty, response, testCallback) {
 	// Ints
 	var allowedInts = {
 		'phone_num': 1,
-		'radius': 1
+		'radius': 1,
+		'shoutreach': 1
 	};
 	for (var param in allowedInts) {
 		if (param in dirty) {
@@ -627,6 +867,23 @@ var validate = function(dirty, response, testCallback) {
 		}
 	}
 
+	// android_id
+	param = 'txt';
+	if (param in dirty) {
+		if (dirty[param].length <= Config.SHOUT_LENGTH_LIMIT) {
+			clean[param] = dirty[param];
+		}
+	}
+
+	// shoutreach
+	param = 'shoutreach';
+	if (param in dirty) {
+		if (Validator(dirty[param]).isNumeric() &&
+		Validator(dirty[param]).min(0) && 
+		Validator(dirty[param]).max(Config.SHOUTREACH_LIMIT)) {
+			clean[param] = dirty[param];
+		}
+	}
 
 	route(clean, response, testCallback);
 };
@@ -639,6 +896,9 @@ var route = function(clean, response, testCallback) {
 			break;
 		case 'user_ping':
 			ping(clean, response, testCallback);
+			break;
+		case 'shout':
+			shout(clean, response, testCallback);
 			break;
 		default:
 			break;
@@ -684,7 +944,6 @@ var createAccount = function(clean, response, testCallback) {
 			}
 		};
 		var callback2 = function(addResult) {
-			Log.obj(addResult);
 			if (addResult) {
 				// Same callback regardless of outcome.
 				Cache.delete(Config.PRE_ACTIVE_AUTH + uid, callback3, callback3);
@@ -738,9 +997,9 @@ var ping = function(clean, response, testCallback) {
 	typeof auth != 'undefined' &&
 	typeof lat != 'undefined' &&
 	typeof lng != 'undefined') {
-		var callback = function(resultObject) {
-			var validAuth = resultObject['valid'];
-			var json = resultObject['json'];
+		var callback = function(authIsValidResult) {
+			var validAuth = authIsValidResult['valid'];
+			var json = authIsValidResult['json'];
 			if (validAuth) {
 				Database.LiveUsers.putUserOnline(uid, lat, lng, callback2, 
 					function() {
@@ -767,24 +1026,85 @@ var ping = function(clean, response, testCallback) {
 			}
 		};
 		var callback3 = function(getUserResult) {
-			Log.e("GET USER RESULT");
-			Log.obj(getUserResult);
 			if (getUserResult) {
-				Database.LiveUsers.calculateRadiusForShoutreach(getUserResult, callback4, 
+				Database.LiveUsers.calculateRadiusOrFindTargets(false, getUserResult, lat, lng, callback4, 
 					function() {
-						// failCallback
+						var json = { 'code': 'error', 'txt': 'Could not calculate radius for shoutreach.' };
+						respond(json, response, testCallback);
 					}
 				);
 			}
 		};
-		var callback4 = function(calculateRadiusForShoutreachResult) {
-			
+		var callback4 = function(calculateRadiusOrFindTargetsResult) {
+			var json = { 'code': 'ping_ok', 'radius': calculateRadiusOrFindTargetsResult };
+			respond(json, response, testCallback);
 		};
-		Log.l('/////////////// CHECKING IF AUTH IS VALID  //////////////////////');
 		authIsValid(uid, auth, callback);	
 	} else {
 		Log.l('invalid ping');
 		Log.l(typeof uid + ' | ' + typeof auth + ' | ' + typeof lat  + ' | ' + typeof lng);
+	}
+};
+
+var shout = function(clean, response, testCallback) {
+	var uid = clean['uid'];
+	var auth = clean['auth'];
+	var lat = clean['lat'];
+	var lng = clean['lng'];
+	var text = clean['txt'];
+	var shoutreach = clean['shoutreach'];
+	var user;
+	if (typeof uid != 'undefined' &&
+	typeof auth != 'undefined' &&
+	typeof lat != 'undefined' &&
+	typeof lng != 'undefined' &&
+	typeof text != 'undefined' &&
+	typeof shoutreach != 'undefined') {
+		var callback = function(authIsValidResult) {
+			var validAuth = authIsValidResult['valid'];
+			var json = authIsValidResult['json'];
+			if (validAuth) {
+				Database.Users.getUser(uid, callback2, 
+					function() {
+						var json = { 'code': 'error', 'txt': 'Could not get user.' };
+						respond(json, response, testCallback);
+					}
+				);
+			} else {
+				respond(json, response, testCallback);
+			}
+		};
+		var callback4 = function(sendShoutResult) {
+			
+		};
+		var callback3 = function(calculateRadiusOrFindTargetsResult) {
+			Database.Shouts.sendShout(user, calculateRadiusOrFindTargetsResult, callback4,
+				function() {
+					
+				}
+			);
+		};
+		var callback2 = function(getUserResult) {
+			Log.e("getUserResult");
+			Log.obj(getUserResult);
+			if (getUserResult) {
+				user = getUserResult;
+				if (user.level >= shoutreach) {
+					calculateRadiusOrFindTargets(true, user, lat, lng, callback3, 
+						function() {
+							var json = { 'code': 'error', 'txt': 'Error finding targets.' };
+							respond(json, response, testCallback);
+						}
+					); 
+				} else {
+					var json = { 'code': 'error', 'txt': 'User does not have requested shoutreach.' };
+					respond(json, response, testCallback);
+				}
+			}	
+		};
+		authIsValid(uid, auth, callback);	
+	} else {
+		Log.l('invalid shout');
 	}
 };
 
@@ -933,6 +1253,22 @@ var Tests = (function() {
 
 		var test4 = function(json) {
 			Log.l(json);
+			var post = {
+				'a': 'shout',
+				'uid': uid,
+				'auth': auth,
+				'lat': 40.00000,
+				'lng': -70.00000,
+				'txt': 'This is a test shout.',
+				'shoutreach': 5
+			};
+			Log.l('***********POST**************');
+			Log.obj(post);
+			fakePost(post, null, test5);
+		};
+
+		var test5 = function(json) {
+			Log.l(json);	
 		};
 
 		var post = {
