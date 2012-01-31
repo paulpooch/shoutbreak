@@ -1,4 +1,4 @@
-///////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 // Shoutbreak Server v2.0
 // All code Copyright 2012 Virtuability, LLC.
 // See shoutbreak.com for more info.
@@ -13,17 +13,18 @@
 // 3. Add secure random to generatePassword once it's released here:
 // 		https://github.com/akdubya/rbytes
 // 4. DDOS shield.
-// 5. Cap number or auth challenges we'll send.
+// 5. Cap number of auth challenges we'll send.
 // 6. Make sure no 'new' uses create memory leak.
 // 7. Uncalled callbacks can sit idle forever and hang server.
 // 8. If auth fails, it's a character getting killed by xss() - remove it from genPW().
+// 9. Don't let user keep asking for radius - cache limit that.
 //
 // RESOURCES:
 // http://blog.mixu.net/2011/02/02/essential-node-js-patterns-and-snippets/
 // http://nodejsmodules.org/tags/password
 // http://docs.amazonwebservices.com/AWSRubySDK/latest/AWS/DynamoDB/AttributeCollection.html
 // http://docs.amazonwebservices.com/amazondynamodb/latest/developerguide/API_GetItem.html
-///////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
 
 				/*
 				var pendingLevelUp = user['pending_level_up'];
@@ -35,7 +36,7 @@
 				}
 				*/
 
-// Config /////////////////////////////////////////////////////////////////////
+// Config //////////////////////////////////////////////////////////////////////
 
 var Config = (function() {
 
@@ -72,6 +73,8 @@ var Config = (function() {
 	this.TIMEOUT_USER =							1800; // 30 minutes
 	this.PRE_SHOUT =							'shout';
 	this.TIMEOUT_SHOUT =						1800; // 30 minutes
+	this.PRE_INBOX =							'inbox';
+	this.TIMEOUT_INBOX =						1800; // 30 minutes
 	
 	// Tables
 	this.TABLE_USERS = 'USERS';
@@ -81,7 +84,7 @@ var Config = (function() {
 	return this;
 })();
 
-// Includes ///////////////////////////////////////////////////////////////////
+// Includes ////////////////////////////////////////////////////////////////////
 
 var Http = 			require('http'),
 	QueryString = 	require('querystring'),
@@ -95,9 +98,8 @@ var Http = 			require('http'),
 	Uuid = 			require('node-uuid'),
 	Crypto =		require('crypto'),
 	Assert =		require('assert');
-SimpleDB = SimpleDB.SimpleDB(Config.SIMPLEDB_CREDENTIALS, SimpleDB.debuglogger);
 
-// Utils //////////////////////////////////////////////////////////////////////
+// Utils ///////////////////////////////////////////////////////////////////////
 
 // Add more robust logging here as needed
 var Log = (function() {
@@ -170,7 +172,7 @@ var Utils = (function() {
  		return String(val);
   	};
 
- 	if (typeof(Number.prototype.toRad) === "undefined") {
+ 	if (typeof(Number.prototype.toRad) === 'undefined') {
   		Number.prototype.toRad = function() {
     		return this * Math.PI / 180;
   		};
@@ -189,68 +191,25 @@ var Utils = (function() {
 		return d;
   	};
 
- 
+  	// Adapter from simpledb.js
+  	this.simpleDBLogger = function(date, type) {
+  		var strs = ['simpledb: ', date.toISOString(), type];
+  		for (var aI = 2; aI < arguments.length; aI++) {
+  			var a = arguments[aI];
+  			strs.push('object' == typeof(a) ? JSON.stringify(a) : '' + a);
+  		}
+  		//util.debug(strs.join(' '));
+  		//Log.i(strs.join(' '));
+  	};
 
 	return this;
 })();
 
-// Cache //////////////////////////////////////////////////////////////////////
+// More Includes ///////////////////////////////////////////////////////////////
 
-var Cache = (function() {
+var SimpleDB = SimpleDB.SimpleDB(Config.SIMPLEDB_CREDENTIALS, Utils.simpleDBLogger);
 
-	var memcached = new Memcached(Config.CACHE_URL);
-
-	memcached.on('issue', function(issue) {
-		Log.e('Issue occured on server ' + issue.server + ', ' + issue.retries  + 
-		' attempts left untill failure');
-	});
-
-	memcached.on('failure', function(issue) {
-		Log.e(issue.server + ' failed!');
-	});
-
-	memcached.on('reconnecting', function(issue) {
-		Log.e('reconnecting to server: ' + issue.server + ' failed!');
-	})
-
-	this.get = function(key, successCallback, failCallback) {
-		memcached.get(key, function(err, result) {
-			if (err) {
-				Log.e(err);
-				failCallback();	
-			} else {
-				successCallback(result);
-			}
-		});
-	};
-
-	this.set = function(key, value, lifetime, successCallback, failCallback) {
-		memcached.set(key, value, lifetime, function(err, result) {
-			if (err) {
-				Log.e(err);
-				failCallback();
-			} else {
-				// This will be true if successful.
-				successCallback(result);
-			}
-		});
-	};
-
-	this.delete = function(key, successCallback, failCallback) {
-		memcached.del(key, function(err, result) {
-			if (err) {
-				Log.e(err);
-				failCallback();
-			} else {
-				successCallback(result);
-			}
-		});
-	};
-
-	return this;
-})();
-
-// User ///////////////////////////////////////////////////////////////////////
+// User ////////////////////////////////////////////////////////////////////////
 
 var User = function() {
 	this.userId = null;
@@ -267,7 +226,7 @@ var User = function() {
 	this.pendingLevelUp = null;
 };
 
-// Shout //////////////////////////////////////////////////////////////////////
+// Shout ///////////////////////////////////////////////////////////////////////
 
 var Shout = function() {
 	this.shoutId = null;
@@ -284,11 +243,178 @@ var Shout = function() {
 	this.lng = null;
 };
 
-// Database ///////////////////////////////////////////////////////////////////
+// Storage /////////////////////////////////////////////////////////////////////
 
-var Database = (function() {
+var Storage = (function() {
+
+	// Cache ///////////////////////////////////////////////////////////////////
+
+	var Cache = (function() {
+		var memcached = new Memcached(Config.CACHE_URL);
+		memcached.on('issue', function(issue) {
+			Log.e('Issue occured on server ' + issue.server + ', ' + issue.retries  + 
+			' attempts left untill failure');
+		});
+		memcached.on('failure', function(issue) {
+			Log.e(issue.server + ' failed!');
+		});
+		memcached.on('reconnecting', function(issue) {
+			Log.e('reconnecting to server: ' + issue.server + ' failed!');
+		})
+		this.get = function(key, successCallback, failCallback) {
+			memcached.get(key, function(err, result) {
+				if (err) {
+					Log.e(err);
+					failCallback();	
+				} else {
+					successCallback(result);
+				}
+			});
+		};
+		this.set = function(key, value, lifetime, successCallback, failCallback) {
+			memcached.set(key, value, lifetime, function(err, result) {
+				if (err) {
+					Log.e(err);
+					failCallback();
+				} else {
+					// This will be true if successful.
+					successCallback(result);
+				}
+			});
+		};
+		this.delete = function(key, successCallback, failCallback) {
+			memcached.del(key, function(err, result) {
+				if (err) {
+					Log.e(err);
+					failCallback();
+				} else {
+					successCallback(result);
+				}
+			});
+		};
+		return this;
+	})();
+
+	this.setTempAccount = function(tempUid, successCallback, failCallback) {
+		Cache.set(Config.PRE_CREATE_ACCOUNT_USER_TEMP_ID + tempUid, tempUid, 
+			Config.TIMEOUT_CREATE_ACCOUNT_USER_TEMP_ID, successCallback, failCallback);
+	};
+
+	this.getTempAccount = function(userId, successCallback, failCallback) {
+		Cache.get(Config.PRE_CREATE_ACCOUNT_USER_TEMP_ID + userId, successCallback, failCallback);	
+	};
+
+	this.getAuth = function(userId, successCallback, failCallback) {
+		Cache.get(Config.PRE_ACTIVE_AUTH + userId, successCallback, failCallback);
+	};
+
+	this.deleteAuth = function(userId, successCallback, failCallback) {
+		Cache.delete(Config.PRE_ACTIVE_AUTH + userId, successCallback, failCallback);
+	};
+
+	// Inbox ///////////////////////////////////////////////////////////////////
+
+	this.Inbox = (function() {
+		
+		this.checkInbox = function(userId, successCallback, failCallback) {
+			Cache.get(Config.PRE_INBOX + userId, successCallback, failCallback);	
+		};
+
+		this.addToInbox = function(userId, shoutId, successCallback, failCallback) {
+			var callback = function(inboxArray) {
+				var targetInbox = [];
+				if (inboxArray) {
+					targetInbox = inboxArray;
+				}
+				targetInbox.push(shoutId);
+				Cache.set(Config.PRE_INBOX + userId, targetInbox, Config.TIMEOUT_INBOX, successCallback, failCallback);
+			};
+			Inbox.checkInbox(userId, callback, failCallback);
+		};			
+
+		return this;
+	})();
+
+	// Shouts //////////////////////////////////////////////////////////////////
 
 	this.Shouts = (function() {
+
+		this.getShout = function(shoutId, successCallback, failCallback) {
+			var returnShout;
+			var callback2 = function(response) {
+    			response.on('data', function(chunk) {
+    				var item = JSON.parse(chunk);
+    				if (item['Item']) {
+    					item = item['Item'];
+    					var shout = new Shout();
+    					shout.shoutId = item['shout_id']['S'];
+    					shout.userId = item['user_id']['S'];
+    					shout.time = item['time']['S'];
+    					shout.text = item['text']['S'];
+    					shout.open = parseInt(item['open']['N']);
+    					shout.re = item['re']['S'];
+    					shout.hit = parseInt(item['hit']['N']);
+    					shout.power = parseInt(item['power']['N']);
+						shout.ups = parseInt(item['ups']['N']);
+						shout.downs = parseInt(item['downs']['N']);
+						shout.lat = parseInt(item['lat']['N']);
+						shout.lng = parseInt(item['lng']['N']);
+						addToCache(shout);
+       				} else {
+						Log.e(chunk);
+						failCallback();
+       				}
+    			});
+    		};
+			var callback = function(getResult) {
+				if (getResult) {
+					successCallback(getResult);
+				} else {
+					var req = {
+						'TableName': Config.TABLE_SHOUTS,
+						'Key': {
+							'HashKeyElement': {'S': shoutId}
+						},
+						'AttributesToGet': [
+							'shout_id',
+							'user_id',
+							'time',
+							'text',
+							'open',
+							're',
+							'hit',
+							'power',
+							'ups',
+							'downs',
+							'lat',
+							'lng'
+						],
+						'ConsistentRead': true
+					};
+					DynamoDB.getItem(req, callback2);
+				}
+			};
+			var callback3 = function(setResult) {
+				// We don't really care about the result.
+				successCallback(returnShout);
+			};	
+			var addToCache = function(shout) {
+				returnShout = shout;
+				Cache.set(Config.PRE_SHOUT + shout.shoutId, shout, Config.TIMEOUT_SHOUT, callback3, 
+					function() {
+						// Not a huge problem.
+						Log.e('Could not save shout to cache.');
+						callback3(false);
+					}
+				);
+			};
+			Cache.get(Config.PRE_SHOUT + shoutId, callback,
+				function() {
+					// Ok to fail this get.
+					callback(false);
+				}
+			);
+		};
 
 		this.saveShout = function(shout, successCallback, failCallback) {
 			var data = {
@@ -315,7 +441,7 @@ var Database = (function() {
 				Cache.set(Config.PRE_SHOUT + shout.shoutId, shout, Config.TIMEOUT_SHOUT, callback2, 
 					function() {
 						// Not a huge problem.
-						Log.e("Couldn't save shout to cache.");
+						Log.e('Could not save shout to cache.');
 						callback2(false);
 					}
 				);
@@ -348,33 +474,48 @@ var Database = (function() {
 			shout.text = text;
 			shout.open = 1;
 			shout.re = 0;
-			shout.hit = 0;
+			shout.hit = targets.length;
 			shout.power = shoutreach;
 			shout.ups = 0;
 			shout.downs = 0;
-			shout.lat = lat;
-			shout.lng = lng;
+			shout.lat = Utils.formatLatForSimpleDB(parseFloat(lat));
+			shout.lng = Utils.formatLngForSimpleDB(parseFloat(lng));
 			
-			var callback = function() {
-				Log.e('shout was saved!');
+			// Let's manually add the send to the list of targets.
+			targets.push([0, shout.userId]);
+
+			var loop = function(index) {
+				if (index < targets.length) {
+					var targetId = targets[index][1];
+					Storage.Inbox.addToInbox(targetId, shout.shoutId, 
+						function() {
+							loop(index + 1);		
+						},
+						function() {
+							Log.e('Could not put shout in target inbox.');
+							failCallback();
+						}
+					);
+				} else {
+					successCallback();
+				}
 			}
-			Database.Shouts.saveShout(shout, callback, 
+			var callback = function(saveShoutResult) {
+				loop(0);
+			}
+			Storage.Shouts.saveShout(shout, callback, 
 				function() {
 					Log.e('Unable to save shout.');
 					failCallback();	
 				}
 			);
-			/*
-			for (var tIndex in targets) {
-				var target = targets[tIndex];
-			}			
-			*/
 		};
 
 		return this;
 	})();
 
-	// Users table
+	// Users ///////////////////////////////////////////////////////////////////
+
 	this.Users = (function() {
 
 		this.add = function(user, successCallback, failCallback) {
@@ -442,8 +583,6 @@ var Database = (function() {
     			});
     		};
 			var callback = function(getResult) {
-				Log.e("Cache.get user");
-				Log.obj(getResult);
 				if (getResult) {
 					successCallback(getResult);
 				} else {
@@ -481,7 +620,7 @@ var Database = (function() {
 				Cache.set(Config.PRE_USER + user.userId, user, Config.TIMEOUT_USER, callback3, 
 					function() {
 						// Not a huge problem.
-						Log.e("Couldn't save user to cache.");
+						Log.e('Could not save user to cache.');
 						callback3(false);
 					}
 				);
@@ -506,10 +645,10 @@ var Database = (function() {
 								var callback3 = function(updateLastActivityTimeResult) {
 									successCallback(nonce);
 								};
-								Database.Users.updateLastActivityTime(userId, now, callback3, 
+								Storage.Users.updateLastActivityTime(userId, now, callback3, 
 									function() {
 										// Not much to do here.
-										Log.e("updateLastActivityTime failed")
+										Log.e('updateLastActivityTime failed.');
 									}
 								);
 							}
@@ -523,7 +662,7 @@ var Database = (function() {
 					}
 				}
 			};
-			Database.Users.getUser(userId, callback, 
+			Storage.Users.getUser(userId, callback, 
 				function() {
 					failCallback();
 				}
@@ -550,6 +689,8 @@ var Database = (function() {
 
 		return this;
 	})();
+
+	// Live Users //////////////////////////////////////////////////////////////
 
 	this.LiveUsers = (function() {
 		
@@ -668,7 +809,7 @@ var Database = (function() {
 			};
 
 			var fullGetCallback = function(error, result, metadata) {
-				var nearby = new Array();
+				var nearby = [];
 				var nearbySorter = function(a, b) {
 					return b[0] - a[0];	
 				};
@@ -687,7 +828,7 @@ var Database = (function() {
 					nearby.sort(nearbySorter);
 					
 					if (isShouting) {
-						var targets = new Array();
+						var targets = [];
 						var targetCount = 0;
 						for (var i = 0; i < nearby.length && targetCount < shoutreach; i++) {
 							if (nearby[i][1] != user.userId) {
@@ -709,7 +850,7 @@ var Database = (function() {
 
 			var performSelect = function(justGetCount, callback) {
 				createCleanBounds();
-				var params = new Array();
+				var params = [];
 				var sql = "SELECT ";
 				if (justGetCount) {
 					sql += "count(*) FROM ? WHERE ";
@@ -745,7 +886,7 @@ var Database = (function() {
 				Log.e('recursiveCallback on iteration ' + selectCount);
 				var makeNextSelect = true;
 				var count = result[0]['Count'];
-				Log.e("COUNT = " + count + ', SHOUTREACH = ' + shoutreach);
+				Log.e('COUNT = ' + count + ', SHOUTREACH = ' + shoutreach);
 				if (count >= shoutreach) {
 					if (count - shoutreach <= acceptableExtra) {
 						makeNextSelect = false;
@@ -821,7 +962,7 @@ var fakePost = function(dirty, response, testCallback) {
 
 // Sanitize post vars.  Safe sex.
 var sanitize = function(dirty, response, testCallback) {
-	var clean = new Object();
+	var clean = {};
 	
 	// Strings
 	var allowedStrings = {
@@ -869,7 +1010,7 @@ var sanitize = function(dirty, response, testCallback) {
 
 // Strict whitelist validation.
 var validate = function(dirty, response, testCallback) {
-	var clean = new Object();
+	var clean = {};
 	var param;
 
 	// a
@@ -933,9 +1074,7 @@ var validate = function(dirty, response, testCallback) {
 	// auth
 	param = 'auth';
 	if (param in dirty) {
-		Log.l('))))))) auth.length = ' + dirty[param].length);
-		// WTF IS GOING ON HERE?!
-		if (dirty[param].length >= 120 || dirty[param].length == 7) {
+		if (dirty[param].length == 120 || dirty[param].length == 7) {
 			clean[param] = dirty[param];
 		}
 	}
@@ -1036,7 +1175,7 @@ var createAccount = function(clean, response, testCallback) {
 				user.points = Config.USER_INITIAL_POINTS;
 				user.level = Config.USER_INITIAL_LEVEL;
 				user.pendingLevelUp = Config.USER_INITIAL_PENDING_LEVEL_UP;
-				Database.Users.add(user, callback2, 
+				Storage.Users.add(user, callback2, 
 					function() {
 						var json = { 'code': 'error', 'txt': 'Could not add user to database.' };
 						respond(json, response, testCallback);	
@@ -1047,7 +1186,7 @@ var createAccount = function(clean, response, testCallback) {
 		var callback2 = function(addResult) {
 			if (addResult) {
 				// Same callback regardless of outcome.
-				Cache.delete(Config.PRE_ACTIVE_AUTH + userId, callback3, callback3);
+				Storage.deleteAuth(userId, callback3, callback3);
 			}				
 		};
 		var callback3 = function(deleteResult) {
@@ -1058,10 +1197,10 @@ var createAccount = function(clean, response, testCallback) {
 			};
 			respond(json, response, testCallback);
 		};
-		Cache.get(Config.PRE_CREATE_ACCOUNT_USER_TEMP_ID + userId, callback, 
+		Storage.getTempAccount(userId, callback,
 			function() {
 				var json = { 'code': 'error', 'txt': 'Could not find temp user id.'	};
-				respond(json, response, testCallback);
+				respond(json, response, testCallback);			
 			}
 		);
 	} else {
@@ -1075,8 +1214,7 @@ var createAccount = function(clean, response, testCallback) {
 				respond(json, response, testCallback);
 			}
 		};
-		Cache.set(Config.PRE_CREATE_ACCOUNT_USER_TEMP_ID + tempUid, tempUid, 
-			Config.TIMEOUT_CREATE_ACCOUNT_USER_TEMP_ID, callback, 
+		Storage.setTempAccount(tempUid, callback, 
 			function() {
 				var json = { 'code': 'error', 'txt': 'Could not save temp user id.' };
 				respond(json, response, testCallback);
@@ -1098,11 +1236,14 @@ var ping = function(clean, response, testCallback) {
 	typeof auth != 'undefined' &&
 	typeof lat != 'undefined' &&
 	typeof lng != 'undefined') {
+
+		var json = {};
+
 		var callback = function(authIsValidResult) {
 			var validAuth = authIsValidResult['valid'];
 			var json = authIsValidResult['json'];
 			if (validAuth) {
-				Database.LiveUsers.putUserOnline(userId, lat, lng, callback2, 
+				Storage.LiveUsers.putUserOnline(userId, lat, lng, callback2, 
 					function() {
 						var json = { 'code': 'error', 'txt': 'Could not put user online.' };
 						respond(json, response, testCallback);
@@ -1114,8 +1255,9 @@ var ping = function(clean, response, testCallback) {
 		};
 		var callback2 = function(putUserOnlineResult) {
 			if (putUserOnlineResult) {
+				json['code'] = 'ping_ok';
 				if (reqRadius == 1) {
-					Database.Users.getUser(userId, callback3, 
+					Storage.Users.getUser(userId, callback3, 
 						function() {
 							var json = { 'code': 'error', 'txt': 'Could not get user.' };
 							respond(json, response, testCallback);
@@ -1128,7 +1270,7 @@ var ping = function(clean, response, testCallback) {
 		};
 		var callback3 = function(getUserResult) {
 			if (getUserResult) {
-				Database.LiveUsers.calculateRadiusOrFindTargets(false, getUserResult, null, lat, lng, callback4, 
+				Storage.LiveUsers.calculateRadiusOrFindTargets(false, getUserResult, null, lat, lng, callback4, 
 					function() {
 						var json = { 'code': 'error', 'txt': 'Could not calculate radius for shoutreach.' };
 						respond(json, response, testCallback);
@@ -1137,9 +1279,44 @@ var ping = function(clean, response, testCallback) {
 			}
 		};
 		var callback4 = function(calculateRadiusOrFindTargetsResult) {
-			var json = { 'code': 'ping_ok', 'radius': calculateRadiusOrFindTargetsResult };
-			respond(json, response, testCallback);
+			if (calculateRadiusOrFindTargetsResult) {
+				json['radius'] = calculateRadiusOrFindTargetsResult;
+			}
+			Storage.Inbox.checkInbox(userId, callback5,
+				function() {
+					Log.e('Could not check inbox.');
+				}
+			);
 		};
+		var callback5 = function(inboxContent) {
+			if (inboxContent) {
+				var newShouts = [];
+				var loop = function(index) {
+					if (index < inboxContent.length) {
+						Storage.Shouts.getShout(inboxContent[index], 
+							function(shout) {
+								newShouts.push(shout);
+								loop(index + 1);
+							},
+							function() {
+								var json = { 'code': 'error', 'txt': 'Could not get a shout from storage.' };
+								respond(json, response, testCallback);
+							}
+						);
+					} else {
+						for (var key in newShouts) {
+							var shout = newShouts[key];
+							Log.obj(shout);
+
+							// Begin here Tuesday.
+						}
+					}
+				}
+				loop(0);
+			}
+			respond(json, response, testCallback);
+		}
+
 		authIsValid(userId, auth, callback);	
 	} else {
 		Log.l('invalid ping');
@@ -1165,7 +1342,7 @@ var shout = function(clean, response, testCallback) {
 			var validAuth = authIsValidResult['valid'];
 			var json = authIsValidResult['json'];
 			if (validAuth) {
-				Database.Users.getUser(userId, callback2, 
+				Storage.Users.getUser(userId, callback2, 
 					function() {
 						var json = { 'code': 'error', 'txt': 'Could not get user.' };
 						respond(json, response, testCallback);
@@ -1176,18 +1353,18 @@ var shout = function(clean, response, testCallback) {
 			}
 		};
 		var callback4 = function(sendShoutResult) {
-			
+			var json = { 'code': 'shout_sent' };
+			respond(json, response, testCallback);		
 		};
 		var callback3 = function(calculateRadiusOrFindTargetsResult) {
-			Database.Shouts.sendShout(user, calculateRadiusOrFindTargetsResult, shoutreach, lat, lng, text, callback4,
+			Storage.Shouts.sendShout(user, calculateRadiusOrFindTargetsResult, shoutreach, lat, lng, text, callback4,
 				function() {
-					
+					var json = { 'code': 'error', 'txt': 'Send shout failed.' };
+					respond(json, response, testCallback);
 				}
 			);
 		};
 		var callback2 = function(getUserResult) {
-			Log.e("getUserResult");
-			Log.obj(getUserResult);
 			if (getUserResult) {
 				user = getUserResult;
 				if (user.level >= shoutreach) {
@@ -1213,8 +1390,6 @@ var authIsValid = function(userId, auth, parentCallback) {
 	var validAuth = false;
 	var callback = function(getResult) {
 		if (getResult) {
-			Log.l('/////////////// GOT AUTH //////////////////////');
-			Log.obj(getResult);
 			if (auth.length > Config.PASSWORD_LENGTH) {
 				var submittedPw = auth.substr(0, Config.PASSWORD_LENGTH);
 				var submittedHashChunk = auth.substr(Config.PASSWORD_LENGTH, auth.length);
@@ -1225,7 +1400,6 @@ var authIsValid = function(userId, auth, parentCallback) {
 				if (Utils.hashSha512(submittedPw + pwSalt) == pwHash) {
 					// Does nonce match?
 					if (Utils.hashSha512(submittedPw + nonce + userId) == submittedHashChunk) {
-						Log.l('//////////// VALID AUTH ////////////////');
 						validAuth = true;
 						var resultObject = {'valid': true};
 						parentCallback(resultObject);
@@ -1243,7 +1417,7 @@ var authIsValid = function(userId, auth, parentCallback) {
 			// It will fall to logic below.
 		}
 		if (!validAuth) {
-			Database.Users.generateNonce(userId, callback2, 
+			Storage.Users.generateNonce(userId, callback2, 
 				function() {
 					var resultObject = {
 						'valid': false,
@@ -1269,11 +1443,11 @@ var authIsValid = function(userId, auth, parentCallback) {
 		}
 	};
 	// We need to go to successCallback even if not found.
-	Cache.get(Config.PRE_ACTIVE_AUTH + userId, callback, 
-		function(){
-			callback(false)
+	Storage.getAuth(userId, callback, 
+		function() {
+			callback(false);
 		}
-	);	
+	);
 };
 
 // Exit Methods ///////////////////////////////////////////////////////////////
@@ -1369,6 +1543,22 @@ var Tests = (function() {
 		};
 
 		var test5 = function(json) {
+			Log.l(json);
+			Assert.equal(json['code'], 'shout_sent');
+			var post = {
+				'a': 'user_ping',
+				'uid': userId,
+				'auth': auth,
+				'lat': 40.00000,
+				'lng': -70.00000,
+				'radius': 1
+			};
+			Log.l('***********POST**************');
+			Log.obj(post);
+			fakePost(post, null, test6);
+		};
+
+		var test6 = function(json) {
 			Log.l(json);	
 		};
 
