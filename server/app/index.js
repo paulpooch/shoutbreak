@@ -5,6 +5,8 @@
 //
 // Node order of appearance matters for many sections.
 //
+// Be careful old objects in cache won't reflect new capabilities.
+//
 // ps aux | grep node
 //
 // TODO:
@@ -202,6 +204,19 @@ var Utils = (function() {
   		//Log.i(strs.join(' '));
   	};
 
+  	this.buildShoutJson = function(shout, forUserId) {
+		var sObj = {
+			'shout_id': shout.shoutId,
+			'txt': shout.text,
+			'ts': shout.time,
+			'hit': shout.hit
+		};
+		if (forUserId == shout.userId) {
+			sObj['outbox'] = 1;
+		}
+		return sObj;
+	};
+
 	return this;
 })();
 
@@ -241,6 +256,7 @@ var Shout = function() {
 	this.downs = null;
 	this.lat = null;
 	this.lng = null;
+	this.outbox = null;
 };
 
 // Storage /////////////////////////////////////////////////////////////////////
@@ -400,6 +416,8 @@ var Storage = (function() {
 			};	
 			var addToCache = function(shout) {
 				returnShout = shout;
+				Log.e("ADD SHOUT TO CACHE");
+				Log.obj(shout);
 				Cache.set(Config.PRE_SHOUT + shout.shoutId, shout, Config.TIMEOUT_SHOUT, callback3, 
 					function() {
 						// Not a huge problem.
@@ -435,6 +453,7 @@ var Storage = (function() {
 				}
 			};
 			var callback2 = function(setResult) {
+				Log.e("saveShout CACHED");
 				successCallback(true);
 			};
 			var cacheShout = function() {
@@ -480,7 +499,7 @@ var Storage = (function() {
 			shout.downs = 0;
 			shout.lat = Utils.formatLatForSimpleDB(parseFloat(lat));
 			shout.lng = Utils.formatLngForSimpleDB(parseFloat(lng));
-			
+
 			// Let's manually add the send to the list of targets.
 			targets.push([0, shout.userId]);
 
@@ -659,7 +678,11 @@ var Storage = (function() {
 								failCallback()
 							}
 						);
+					}else {
+						failCallback();
 					}
+				} else {
+					failCallback();
 				}
 			};
 			Storage.Users.getUser(userId, callback, 
@@ -925,10 +948,41 @@ var Storage = (function() {
 		return this;
 	})();
 
+	// Votes ///////////////////////////////////////////////////////////////////
+	this.Votes = (function() {
+		
+		this.doesVoteExist = function(shoutId, userId, successCallback, failCallback) {
+			var req = {
+						'TableName': Config.TABLE_USERS,
+						'Key': {
+							'HashKeyElement': {'S': userId}
+						},
+						'AttributesToGet': [
+							'user_id',
+							'last_activity_time',
+							'user_pw_hash',
+							'user_pw_salt',
+							'android_id',
+							'device_id',
+							'phone_num',
+							'carrier',
+							'creation_time',
+							'points',
+							'level',
+							'pending_level_up'
+						],
+						'ConsistentRead': true
+					};
+					DynamoDB.getItem(req, callback2);
+		}
+
+		return this;
+	})();
+
 	return this;
 })();
 
-// Entry Methods //////////////////////////////////////////////////////////////
+// Entry Methods ///////////////////////////////////////////////////////////////
 
 // Front door.
 var init = function(request, response) {
@@ -972,7 +1026,8 @@ var sanitize = function(dirty, response, testCallback) {
 		'device_id': 1,
 		'carrier': 1,
 		'auth': 1,
-		'txt': 1
+		'txt': 1,
+		'shout_id': 1
 	};
 	for (var param in allowedStrings) {
 		if (param in dirty) {
@@ -986,7 +1041,8 @@ var sanitize = function(dirty, response, testCallback) {
 	var allowedInts = {
 		'phone_num': 1,
 		'radius': 1,
-		'shoutreach': 1
+		'shoutreach': 1,
+		'vote': 1
 	};
 	for (var param in allowedInts) {
 		if (param in dirty) {
@@ -1125,6 +1181,24 @@ var validate = function(dirty, response, testCallback) {
 		}
 	}
 
+	// shout_id
+	param = 'shout_id';
+	if (param in dirty) {
+		if (dirty[param].length == 36) {
+			if (Validator(dirty[param]).isUUID()) {
+				clean[param] = dirty[param];
+			}
+		}
+	}
+
+	// vote
+	param = 'vote';
+	if (param in dirty) {
+		if (Validator(dirty[param]).isNumeric() && (dirty[param] == 1 || dirty[param] == -1)) {
+			clean[param] = 1;
+		}
+	}
+
 	route(clean, response, testCallback);
 };
 
@@ -1139,6 +1213,9 @@ var route = function(clean, response, testCallback) {
 			break;
 		case 'shout':
 			shout(clean, response, testCallback);
+			break;
+		case 'vote':
+			vote(clean, response, testCallback);
 			break;
 		default:
 			break;
@@ -1304,16 +1381,23 @@ var ping = function(clean, response, testCallback) {
 							}
 						);
 					} else {
+						var sArray = [];
 						for (var key in newShouts) {
 							var shout = newShouts[key];
 							Log.obj(shout);
-
-							// Begin here Tuesday.
+							Log.obj(Utils.buildShoutJson(shout, userId));
+							sArray.push(Utils.buildShoutJson(shout, userId));
 						}
+						json['shouts'] = sArray;
+						callback6();
 					}
 				}
 				loop(0);
+			} else {
+				callback6();
 			}
+		}
+		var callback6 = function() {
 			respond(json, response, testCallback);
 		}
 
@@ -1382,7 +1466,46 @@ var shout = function(clean, response, testCallback) {
 		};
 		authIsValid(userId, auth, callback);	
 	} else {
-		Log.l('invalid shout');
+		Log.l('Invalid shout.');
+	}
+};
+
+var vote = function(clean, response, testCallback) {
+	var userId = clean['uid'];
+	var auth = clean['auth'];
+	var shoutId = clean['shout_id'];
+	var vote = clean['vote'];
+	if (typeof userId != 'undefined' &&
+	typeof auth != 'undefined' &&
+	typeof shoutId != 'undefined' &&
+	typeof vote != 'undefined') {
+		var callback3 = function(doesVoteExistResult) {
+			
+		};
+		var callback2 = function(getShoutResult) {
+			Storage.Votes.doesVoteExist(userId, shoutId, callback3, 
+				function() {
+					
+				}
+			);	
+		};
+		var callback = function(authIsValidResult) {
+			var validAuth = authIsValidResult['valid'];
+			var json = authIsValidResult['json'];
+			if (validAuth) {
+				Storage.Shouts.getShout(shoutId, callback2,
+					function() {
+						var json = { 'code': 'error', 'txt': 'Cannot vote on non-existent shout.' };
+						respond(json, response, testCallback);		
+					}
+				);
+			} else {
+				respond(json, response, testCallback);
+			}
+		};
+		authIsValid(userId, auth, callback);
+	} else {
+		Log.l('Invalid vote.');
 	}
 };
 
@@ -1473,6 +1596,7 @@ var Tests = (function() {
 		var userId = null;
 		var pw = null;
 		var auth = null;
+		var sentShoutId = null;
 
 		var test1 = function(json) {
 			Log.l(json);
@@ -1559,7 +1683,24 @@ var Tests = (function() {
 		};
 
 		var test6 = function(json) {
-			Log.l(json);	
+			Log.l(json);
+			var newShouts = json['shouts'];
+			var sentShoutId = newShouts[0]['shout_id'];
+			Assert.equal(json['code'], 'ping_ok');
+			var post = {
+				'a': 'vote',
+				'uid': userId,
+				'auth': auth,
+				'shout_id': sentShoutId,
+				'vote': 1,
+			};
+			Log.l('***********POST**************');
+			Log.obj(post);
+			fakePost(post, null, test7);
+		};
+
+		var test7 = function(json) {
+			Log.l(json);
 		};
 
 		var post = {
