@@ -26,6 +26,7 @@
 // http://nodejsmodules.org/tags/password
 // http://docs.amazonwebservices.com/AWSRubySDK/latest/AWS/DynamoDB/AttributeCollection.html
 // http://docs.amazonwebservices.com/amazondynamodb/latest/developerguide/API_GetItem.html
+// http://www.paperplanes.de/2012/1/30/a-tour-of-amazons-dynamodb.html
 ////////////////////////////////////////////////////////////////////////////////
 
 				/*
@@ -77,11 +78,14 @@ var Config = (function() {
 	this.TIMEOUT_SHOUT =						1800; // 30 minutes
 	this.PRE_INBOX =							'inbox';
 	this.TIMEOUT_INBOX =						1800; // 30 minutes
+	this.PRE_VOTE =								'vote';
+	this.TIMEOUT_VOTE = 						300; // 5 minutes
 	
 	// Tables
 	this.TABLE_USERS = 'USERS';
 	this.TABLE_LIVE = 'LIVE';
 	this.TABLE_SHOUTS = 'SHOUTS';
+	this.TABLE_VOTES = 'VOTES';
 
 	return this;
 })();
@@ -434,7 +438,7 @@ var Storage = (function() {
 			);
 		};
 
-		this.saveShout = function(shout, successCallback, failCallback) {
+		this.addNewShout = function(shout, successCallback, failCallback) {
 			var data = {
 				'TableName': Config.TABLE_SHOUTS,
 				'Item': {
@@ -453,13 +457,11 @@ var Storage = (function() {
 				}
 			};
 			var callback2 = function(setResult) {
-				Log.e("saveShout CACHED");
 				successCallback(true);
 			};
 			var cacheShout = function() {
 				Cache.set(Config.PRE_SHOUT + shout.shoutId, shout, Config.TIMEOUT_SHOUT, callback2, 
 					function() {
-						// Not a huge problem.
 						Log.e('Could not save shout to cache.');
 						callback2(false);
 					}
@@ -519,15 +521,73 @@ var Storage = (function() {
 					successCallback();
 				}
 			}
-			var callback = function(saveShoutResult) {
+			var callback = function(addNewShoutResult) {
 				loop(0);
 			}
-			Storage.Shouts.saveShout(shout, callback, 
+			Storage.Shouts.addNewShout(shout, callback, 
 				function() {
 					Log.e('Unable to save shout.');
 					failCallback();	
 				}
 			);
+		};
+
+		this.updateVoteCount = function(shoutId, vote, successCallback, failCallback) {
+			if (vote == -1 || vote == 1) {
+
+				var callback2 = function(setResult) {
+					successCallback();
+				};
+
+				var callback = function(response) {
+					response.on('data', function(chunk) {
+	    				var item = JSON.parse(chunk);
+	    				Log.obj(item);
+	    				if (item['Attributes']) {
+	    					item = item['Attributes'];
+	    					
+	    					var shout = new Shout();
+	    					shout.shoutId = item['shout_id']['S'];
+	    					shout.userId = item['user_id']['S'];
+	    					shout.time = item['time']['S'];
+	    					shout.text = item['text']['S'];
+	    					shout.open = parseInt(item['open']['N']);
+	    					shout.re = item['re']['S'];
+	    					shout.hit = parseInt(item['hit']['N']);
+	    					shout.power = parseInt(item['power']['N']);
+							shout.ups = parseInt(item['ups']['N']);
+							shout.downs = parseInt(item['downs']['N']);
+							shout.lat = parseInt(item['lat']['N']);
+							shout.lng = parseInt(item['lng']['N']);
+
+	    					Cache.set(Config.PRE_SHOUT + shout.shoutId, shout, Config.TIMEOUT_SHOUT, callback2, 
+								function() {
+									Log.e('Could not save shout to cache.');
+									failCallback();
+								}
+							);
+	    					
+	       				} else {
+							Log.e(chunk);
+							failCallback();
+	       				}
+	    			});	
+				};
+				var req = {
+					'TableName': Config.TABLE_SHOUTS,
+					'Key': {
+						'HashKeyElement': {'S': shoutId}
+					},
+					'AttributeUpdates': {
+						'ups': {
+							'Value': {'N': String(vote)},
+							'Action': 'ADD'
+						}
+					},
+					'ReturnValues': 'ALL_NEW'
+				};
+				DynamoDB.updateItem(req, callback);
+			}
 		};
 
 		return this;
@@ -537,7 +597,7 @@ var Storage = (function() {
 
 	this.Users = (function() {
 
-		this.add = function(user, successCallback, failCallback) {
+		this.addNewUser = function(user, successCallback, failCallback) {
 			var data = {
 				'TableName': Config.TABLE_USERS,
 				'Item': {
@@ -951,30 +1011,103 @@ var Storage = (function() {
 	// Votes ///////////////////////////////////////////////////////////////////
 	this.Votes = (function() {
 		
-		this.doesVoteExist = function(shoutId, userId, successCallback, failCallback) {
-			var req = {
-						'TableName': Config.TABLE_USERS,
+		this.getVote = function(shoutId, userId, successCallback, failCallback) {
+			var returnVote;
+			var callback2 = function(response) {
+    			response.on('data', function(chunk) {
+    				var item = JSON.parse(chunk);
+    				if (item['Item']) {
+    					item = item['Item'];
+    					var vote = [item['vote'], item['time']];
+    					addToCache(vote);
+       				} else {
+       					// Vote does not exist.
+      					// That's ok though.
+						successCallback(false);
+       				}
+    			});
+    		};
+			var callback = function(getResult) {
+				if (getResult) {
+					successCallback(getResult);
+				} else {
+					var req = {
+						'TableName': Config.TABLE_VOTES,
 						'Key': {
-							'HashKeyElement': {'S': userId}
+							'HashKeyElement': {'S': userId},
+							'RangeKeyElement': {'S': shoutId}
 						},
 						'AttributesToGet': [
-							'user_id',
-							'last_activity_time',
-							'user_pw_hash',
-							'user_pw_salt',
-							'android_id',
-							'device_id',
-							'phone_num',
-							'carrier',
-							'creation_time',
-							'points',
-							'level',
-							'pending_level_up'
+							'vote'
 						],
 						'ConsistentRead': true
 					};
 					DynamoDB.getItem(req, callback2);
-		}
+				}
+			};
+			var callback3 = function(setResult) {
+				// We don't really care about the result.
+				successCallback(returnVote);
+			};	
+			var addToCache = function(vote) {
+				returnVote = vote;
+				Cache.set(Config.PRE_VOTE + userId + shoutId, vote, Config.TIMEOUT_VOTE, callback3, 
+					function() {
+						// Not a huge problem.
+						Log.e('Could not save vote to cache.');
+						callback3(false);
+					}
+				);
+			};
+			Cache.get(Config.PRE_VOTE + userId + shoutId, callback,
+				function() {
+					// Ok to fail this get.
+					callback(false);
+				}
+			);
+		};
+
+		this.addNewVote = function(userId, shoutId, vote, successCallback, failCallback) {
+			var now = Utils.getNowISO();
+			var data = {
+				'TableName': Config.TABLE_VOTES,
+				'Item': {
+					'shout_id': {'S': shoutId},
+					'user_id': 	{'S': userId},
+					'vote': 	{'N': String(vote)},
+					'time': 	{'S': now}
+				}
+			};
+			var callback2 = function(setResult) {
+				successCallback(true);
+			};
+			var cacheVote = function() {
+				Cache.set(Config.PRE_VOTE + userId + shoutId, vote, Config.TIMEOUT_VOTE, callback2, 
+					function() {
+						// Not a huge problem.
+						Log.e('Could not save vote to cache.');
+						callback2(false);
+					}
+				);
+			};
+			var callback = function(result) {
+				result.on('data', function(chunk) {
+					Log.obj(chunk + '');
+					chunk = JSON.parse(chunk);
+					if (chunk['ConsumedCapacityUnits']) {
+						cacheVote();
+					} else {
+						Log.e(String(chunk));
+						failCallback();
+					}
+				});
+				result.on('ready', function(data) {
+					Log.e(data.error);
+					failCallback();
+				});
+			};
+			DynamoDB.putItem(data, callback);
+		};
 
 		return this;
 	})();
@@ -1252,7 +1385,7 @@ var createAccount = function(clean, response, testCallback) {
 				user.points = Config.USER_INITIAL_POINTS;
 				user.level = Config.USER_INITIAL_LEVEL;
 				user.pendingLevelUp = Config.USER_INITIAL_PENDING_LEVEL_UP;
-				Storage.Users.add(user, callback2, 
+				Storage.Users.addNewUser(user, callback2, 
 					function() {
 						var json = { 'code': 'error', 'txt': 'Could not add user to database.' };
 						respond(json, response, testCallback);	
@@ -1260,8 +1393,8 @@ var createAccount = function(clean, response, testCallback) {
 				);
 			}
 		};
-		var callback2 = function(addResult) {
-			if (addResult) {
+		var callback2 = function(addNewUserResult) {
+			if (addNewUserResult) {
 				// Same callback regardless of outcome.
 				Storage.deleteAuth(userId, callback3, callback3);
 			}				
@@ -1479,26 +1612,44 @@ var vote = function(clean, response, testCallback) {
 	typeof auth != 'undefined' &&
 	typeof shoutId != 'undefined' &&
 	typeof vote != 'undefined') {
-		var callback3 = function(doesVoteExistResult) {
+		var callback4 = function(addNewVoteResult) {
+			// Begin here Thursday.
+			// We must update User's points
+			// See if they leveled up...
+			// Both shouter and voter.... fuck.
 			
 		};
-		var callback2 = function(getShoutResult) {
-			Storage.Votes.doesVoteExist(userId, shoutId, callback3, 
+		var callback3 = function(updateVoteCountResult) {
+			Storage.Votes.addNewVote(userId, shoutId, vote, callback4,
 				function() {
-					
+					var json = { 'code': 'error', 'txt': 'Could not create new vote.' };
+					respond(json, response, testCallback);	
 				}
-			);	
+			);
+		};
+		var callback2 = function(getVoteResult) {
+			if (!getVoteResult) {
+				Storage.Shouts.updateVoteCount(shoutId, vote, callback3,
+					function() {
+						var json = { 'code': 'error', 'txt': 'Shout does not exist or could not update vote count.' };
+						respond(json, response, testCallback);	
+					}
+				);
+			} else {
+				var json = { 'code': 'error', 'txt': 'User already voted on this shout.' };
+				respond(json, response, testCallback);	
+			}
 		};
 		var callback = function(authIsValidResult) {
 			var validAuth = authIsValidResult['valid'];
 			var json = authIsValidResult['json'];
 			if (validAuth) {
-				Storage.Shouts.getShout(shoutId, callback2,
-					function() {
-						var json = { 'code': 'error', 'txt': 'Cannot vote on non-existent shout.' };
-						respond(json, response, testCallback);		
-					}
-				);
+				Storage.Votes.getVote(userId, shoutId, callback2, 
+				function() {
+					var json = { 'code': 'error', 'txt': 'Cannot check if vote exists.' };
+					respond(json, response, testCallback);	
+				}
+			);
 			} else {
 				respond(json, response, testCallback);
 			}
