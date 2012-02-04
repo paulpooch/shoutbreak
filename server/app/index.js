@@ -55,6 +55,10 @@ var Config = (function() {
 	this.SHOUTREACH_BUFFER_METERS = 200;
 	this.SHOUTREACH_LIMIT = 500;
 	this.SHOUT_LENGTH_LIMIT = 256;
+	this.SHOUT_IDLE_TIMEOUT = 60; // minutes
+	this.SIMPLEDB_MAX_NUMBER_OF_ITEMS = 2500;
+	this.SHOUTBREAK_SCORING_WORK_AT_LEVEL_1 = 10;
+	this.SHOUTBREAK_SCORING_COEFFECIENT = 1.09;
 	 
 	// AWS
 	this.CACHE_URL = 'cache-001.ardkb4.0001.use1.cache.amazonaws.com:11211',
@@ -221,6 +225,49 @@ var Utils = (function() {
 		return sObj;
 	};
 
+	this.makeShoutFromDynamoItem = function(item) {
+		var shout = new Shout();
+		shout.shoutId = item['shout_id']['S'];
+		shout.userId = item['user_id']['S'];
+		shout.time = item['time']['S'];
+		shout.lastActivityTime = item['last_activity_time']['S'];
+		shout.text = item['text']['S'];
+		shout.open = parseInt(item['open']['N']);
+		shout.re = item['re']['S'];
+		shout.hit = parseInt(item['hit']['N']);
+		shout.power = parseInt(item['power']['N']);
+		shout.ups = parseInt(item['ups']['N']);
+		shout.downs = parseInt(item['downs']['N']);
+		shout.lat = parseInt(item['lat']['N']);
+		shout.lng = parseInt(item['lng']['N']);
+		return shout;
+	};
+
+	this.maxTargetsAtLevel = function(level) {
+		return Math.min((level * 5), Config.SIMPLEDB_MAX_NUMBER_OF_ITEMS)
+	};
+
+	this.reachAtLevel = function(level) {
+		return Utils.maxTargetsAtLevel(level);
+	};
+
+	this.workRequiredForLevel = function(level) {
+		if (level == 1) {
+			return Config.SHOUTBREAK_SCORING_WORK_AT_LEVEL_1;
+		} else {
+			return Config.SHOUTBREAK_SCORING_COEFFECIENT * Utils.workRequiredForLevel(level - 1);
+		}
+	};
+
+	this.pointsRequiredForLevel = function(level) {
+		var result = Math.round(Utils.workRequiredForLevel(level) * Utils.reachAtLevel(level));
+		return result;	
+	};
+
+	this.pointsForVote = function(level) {
+		return 1;
+	};
+
 	return this;
 })();
 
@@ -251,6 +298,7 @@ var Shout = function() {
 	this.shoutId = null;
 	this.userId = null;	
 	this.time = null;
+	this.lastActivityTime = null;
 	this.text = null;
 	this.open = null;
 	this.re = null;
@@ -360,25 +408,16 @@ var Storage = (function() {
 	this.Shouts = (function() {
 
 		this.getShout = function(shoutId, successCallback, failCallback) {
+			Log.e('getShout');
 			var returnShout;
 			var callback2 = function(response) {
     			response.on('data', function(chunk) {
     				var item = JSON.parse(chunk);
     				if (item['Item']) {
     					item = item['Item'];
-    					var shout = new Shout();
-    					shout.shoutId = item['shout_id']['S'];
-    					shout.userId = item['user_id']['S'];
-    					shout.time = item['time']['S'];
-    					shout.text = item['text']['S'];
-    					shout.open = parseInt(item['open']['N']);
-    					shout.re = item['re']['S'];
-    					shout.hit = parseInt(item['hit']['N']);
-    					shout.power = parseInt(item['power']['N']);
-						shout.ups = parseInt(item['ups']['N']);
-						shout.downs = parseInt(item['downs']['N']);
-						shout.lat = parseInt(item['lat']['N']);
-						shout.lng = parseInt(item['lng']['N']);
+    					var shout = Utils.makeShoutFromDynamoItem(item);
+    					Log.obj('makeShoutFromDynamoItem');
+    					Log.obj(shout);
 						addToCache(shout);
        				} else {
 						Log.e(chunk);
@@ -388,6 +427,8 @@ var Storage = (function() {
     		};
 			var callback = function(getResult) {
 				if (getResult) {
+					Log.e('shout found in cache');
+					Log.obj(getResult);
 					successCallback(getResult);
 				} else {
 					var req = {
@@ -416,12 +457,14 @@ var Storage = (function() {
 			};
 			var callback3 = function(setResult) {
 				// We don't really care about the result.
+				Log.e('Returning Shout from getShout');
+				Log.obj(returnShout);
 				successCallback(returnShout);
 			};	
 			var addToCache = function(shout) {
-				returnShout = shout;
-				Log.e("ADD SHOUT TO CACHE");
+				Log.e('addToCache');
 				Log.obj(shout);
+				returnShout = shout;
 				Cache.set(Config.PRE_SHOUT + shout.shoutId, shout, Config.TIMEOUT_SHOUT, callback3, 
 					function() {
 						// Not a huge problem.
@@ -442,18 +485,19 @@ var Storage = (function() {
 			var data = {
 				'TableName': Config.TABLE_SHOUTS,
 				'Item': {
-					'shout_id': {'S': shout.shoutId},
-					'user_id': 	{'S': shout.userId},
-					'time': 	{'S': shout.time},
-					'text': 	{'S': shout.text},
-					'open': 	{'N': String(shout.open)},
-					're': 		{'S': String(shout.re)},
-					'hit': 		{'N': String(shout.hit)},
-					'power': 	{'N': String(shout.power)},
-					'ups': 		{'N': String(shout.ups)},
-					'downs': 	{'N': String(shout.downs)},
-					'lat': 		{'N': String(shout.lat)},
-					'lng': 		{'N': String(shout.lng)}
+					'shout_id': 			{'S': shout.shoutId},
+					'user_id': 				{'S': shout.userId},
+					'time': 				{'S': shout.time},
+					'last_activity_time': 	{'S': shout.lastActivityTime},
+					'text': 				{'S': shout.text},
+					'open': 				{'N': String(shout.open)},
+					're': 					{'S': String(shout.re)},
+					'hit': 					{'N': String(shout.hit)},
+					'power': 				{'N': String(shout.power)},
+					'ups': 					{'N': String(shout.ups)},
+					'downs': 				{'N': String(shout.downs)},
+					'lat': 					{'N': String(shout.lat)},
+					'lng': 					{'N': String(shout.lng)}
 				}
 			};
 			var callback2 = function(setResult) {
@@ -492,6 +536,7 @@ var Storage = (function() {
 			shout.shoutId = Uuid.v4();
 			shout.userId = user.userId;
 			shout.time = Utils.getNowISO();
+			shout.lastActivityTime = Utils.getNowISO();
 			shout.text = text;
 			shout.open = 1;
 			shout.re = 0;
@@ -532,51 +577,21 @@ var Storage = (function() {
 			);
 		};
 
-		this.updateVoteCount = function(shoutId, vote, successCallback, failCallback) {
+		// pass the full shout object into here
+		this.updateVoteCount = function(shout, vote, successCallback, failCallback) {
 			if (vote == -1 || vote == 1) {
-
-				var callback2 = function(setResult) {
+				var callback = function(setResult) {
 					successCallback();
 				};
-
-				var callback = function(response) {
-					response.on('data', function(chunk) {
-	    				var item = JSON.parse(chunk);
-	    				Log.obj(item);
-	    				if (item['Attributes']) {
-	    					item = item['Attributes'];
-	    					
-	    					var shout = new Shout();
-	    					shout.shoutId = item['shout_id']['S'];
-	    					shout.userId = item['user_id']['S'];
-	    					shout.time = item['time']['S'];
-	    					shout.text = item['text']['S'];
-	    					shout.open = parseInt(item['open']['N']);
-	    					shout.re = item['re']['S'];
-	    					shout.hit = parseInt(item['hit']['N']);
-	    					shout.power = parseInt(item['power']['N']);
-							shout.ups = parseInt(item['ups']['N']);
-							shout.downs = parseInt(item['downs']['N']);
-							shout.lat = parseInt(item['lat']['N']);
-							shout.lng = parseInt(item['lng']['N']);
-
-	    					Cache.set(Config.PRE_SHOUT + shout.shoutId, shout, Config.TIMEOUT_SHOUT, callback2, 
-								function() {
-									Log.e('Could not save shout to cache.');
-									failCallback();
-								}
-							);
-	    					
-	       				} else {
-							Log.e(chunk);
-							failCallback();
-	       				}
-	    			});	
-				};
+				if (vote == -1) {
+					shout.downs++;
+				} else {
+					shout.ups++;
+				}
 				var req = {
 					'TableName': Config.TABLE_SHOUTS,
 					'Key': {
-						'HashKeyElement': {'S': shoutId}
+						'HashKeyElement': {'S': shout.shoutId}
 					},
 					'AttributeUpdates': {
 						'ups': {
@@ -584,10 +599,61 @@ var Storage = (function() {
 							'Action': 'ADD'
 						}
 					},
-					'ReturnValues': 'ALL_NEW'
+					'ReturnValues': 'NONE'
 				};
-				DynamoDB.updateItem(req, callback);
+				Storage.Shouts.updateShout(shout, req, callback, failCallback);
+			} else {
+				failCallback();
 			}
+		};
+
+		this.isExpired = function(shout, successCallback, failCallback) {
+			var d2 = new Date();
+			var d1 = new Date(shout.lastActivityTime);
+			var idleTime = (d2 - d1) / 60000; // = minutes
+			Log.e('idleTime = ' + idleTime);
+			if (idleTime > Config.SHOUT_IDLE_TIMEOUT) {
+				shout.open = 0;
+				var callback = function(updateShoutResult) {
+					successCallback(true);
+				};
+				var req = {
+					'TableName': Config.TABLE_SHOUTS,
+					'Key': {
+						'HashKeyElement': {'S': shout.shoutId}
+					},
+					'AttributeUpdates': {
+						'open': {
+							'Value': {'N': String(shout.open)}
+						}
+					},
+					'ReturnValues': 'NONE'
+				};
+				Storage.Shouts.updateShout(shout, req, callback, failCallback);
+			} else {
+				successCallback(false);
+			}
+		};
+
+		this.updateShout = function(shout, dynamoRequest, successCallback, failCallback) {
+			var callback2 = function(setResult) {
+				successCallback();
+			};
+			var callback = function(response) {
+				response.on('data', function(chunk) {
+	    			//	var item = JSON.parse(chunk);
+	    			//	if (item['Attributes']) {
+	    			//		item = item['Attributes'];
+	    			// 		returnShout = Utils.makeShoutFromDynamoItem(item); }
+	    			Cache.set(Config.PRE_SHOUT + shout.shoutId, shout, Config.TIMEOUT_SHOUT, callback2, 
+						function() {
+							Log.e('Could not save shout to cache.');
+							failCallback();
+						}
+					);
+	       		});	
+			};
+			DynamoDB.updateItem(dynamoRequest, callback);
 		};
 
 		return this;
@@ -752,9 +818,75 @@ var Storage = (function() {
 			);
 		};
 
+		this.givePoints = function(userId, pointsAmount, successCallback, failCallback) {
+			var user = null;
+			var req = null;
+			var callback3 = function() {
+				// Begin here Sunday.
+				// Need to create Users.setLevelUp	
+			};
+			var callback2 = function() {
+				Storage.Users.updateUser(user, req, callback3, failCallback);
+			};
+			var callback = function(getUserResult) {
+				user = getUserResult;
+				user.points += pointsAmount;
+				var levelChange = false;
+				var levelDiff = 0;
+				if (user.points > Utils.pointsRequiredForLevel(user.level + 1)) {
+					user.level++;
+					levelDiff = 1;
+					levelChange = true;
+				} else if (user.points < Utils.pointsRequiredForLevel(user.level - 1)) {
+					user.level--;
+					levelDiff = -1;
+					levelChange = true;
+				}
+				if (levelChange) {
+					var req = {
+						'TableName': Config.TABLE_USERS,
+						'Key': {
+							'HashKeyElement': {'S': userId}
+						},
+						'AttributeUpdates': {
+							'points': {
+								'Value': {'N': String(pointsAmount)},
+								'Action': 'ADD'
+							},
+							'level': {
+								'Value': {'N': String(levelDiff)},
+								'Action': 'ADD'
+							},
+							'pending_level_up': {
+								'Value': {'N': String(user.level)},
+							}
+						}
+						'ReturnValues': 'NONE'
+					};
+					Storage.Users.setLevelUp(user, user.level, callback2, failCallback);
+				} else {
+					var req = {
+						'TableName': Config.TABLE_USERS,
+						'Key': {
+							'HashKeyElement': {'S': userId}
+						},
+						'AttributeUpdates': {
+							'points': {
+								'Value': {'N': String(pointsAmount)},
+								'Action': 'ADD'
+							}
+						}
+						'ReturnValues': 'NONE'
+					};
+					callback2();
+				}
+			};
+			Storage.Users.getUser(userId, callback, failCallback);
+		};
+
+		// We won't use updateUser here 
 		this.updateLastActivityTime = function(userId, time, successCallback, failCallback) {
-			// TODO: How can this return failCallback?
-			var data = {
+			var req = {
 				'TableName': Config.TABLE_USERS,
 				'Key': {
 					'HashKeyElement': {'S': userId}
@@ -768,6 +900,27 @@ var Storage = (function() {
 				response.on('data', successCallback);
 			};
 			DynamoDB.updateItem(data, callback);
+		};
+
+		this.updateUser = function(user, dynamoRequest, successCallback, failCallback) {
+			var callback2 = function(setResult) {
+				successCallback();
+			};
+			var callback = function(response) {
+				response.on('data', function(chunk) {
+	    			//	var item = JSON.parse(chunk);
+	    			//	if (item['Attributes']) {
+	    			//		item = item['Attributes'];
+	    			// 		returnShout = Utils.makeShoutFromDynamoItem(item); }
+	    			Cache.set(Config.PRE_USER + user.userId, user, Config.TIMEOUT_USER, callback2, 
+						function() {
+							Log.e('Could not save user to cache.');
+							failCallback();
+						}
+					);
+	       		});	
+			};
+			DynamoDB.updateItem(dynamoRequest, callback);
 		};
 
 		return this;
@@ -1604,6 +1757,7 @@ var shout = function(clean, response, testCallback) {
 };
 
 var vote = function(clean, response, testCallback) {
+	var shout = false;
 	var userId = clean['uid'];
 	var auth = clean['auth'];
 	var shoutId = clean['shout_id'];
@@ -1612,26 +1766,69 @@ var vote = function(clean, response, testCallback) {
 	typeof auth != 'undefined' &&
 	typeof shoutId != 'undefined' &&
 	typeof vote != 'undefined') {
-		var callback4 = function(addNewVoteResult) {
+
+
+		var callback8 = function() {
+			// update last activity time of shout
+		};
+
+		var callback6 = function(addNewVoteResult) {
 			// Begin here Thursday.
 			// We must update User's points
 			// See if they leveled up...
 			// Both shouter and voter.... fuck.
+			Log.e("YAY!");
+			Log.obj(addNewVoteResult
+
+			// WARNING - we hardcoded in level 1 here.
+			Storage.Users.givePoints(userId, Utils.pointsForVote(1), callback7, 
+				function() {
+					
+				}
+			);
+
+			
+			//var shout = Utils.makeShoutFromDynamoItem()
 			
 		};
-		var callback3 = function(updateVoteCountResult) {
-			Storage.Votes.addNewVote(userId, shoutId, vote, callback4,
+		var callback5 = function(updateVoteCountResult) {
+			Storage.Votes.addNewVote(userId, shoutId, vote, callback6,
 				function() {
 					var json = { 'code': 'error', 'txt': 'Could not create new vote.' };
 					respond(json, response, testCallback);	
 				}
 			);
 		};
+		var callback4 = function(updateShoutResult) {		
+			Storage.Shouts.updateVoteCount(shoutId, vote, callback5,
+				function() {
+					var json = { 'code': 'error', 'txt': 'Shout does not exist or could not update vote count.' };
+					respond(json, response, testCallback);	
+				}
+			);
+		};
+		var callback3 = function(getShoutResult) {
+			Log.e('callback3');
+			Log.e('getShoutResult = ');
+			Log.obj(getShoutResult);
+			shout = getShoutResult;
+			if (shout.open == 0) {
+				var json = { 'code': 'error', 'txt': 'Cannot vote.  Shout is closed.'};
+				respond(json, response, testCallback);	
+			} else {
+				Storage.Shouts.isExpired(shout, callback4, 
+					function() {
+						var json = { 'code': 'error', 'txt': 'Could not check shout expiration.' };
+						respond(json, response, testCallback);			
+					}
+				);
+			}
+		};
 		var callback2 = function(getVoteResult) {
 			if (!getVoteResult) {
-				Storage.Shouts.updateVoteCount(shoutId, vote, callback3,
+				Storage.Shouts.getShout(shoutId, callback3,
 					function() {
-						var json = { 'code': 'error', 'txt': 'Shout does not exist or could not update vote count.' };
+						var json = { 'code': 'error', 'txt': 'Could not get shout to register vote.' };
 						respond(json, response, testCallback);	
 					}
 				);
@@ -1639,7 +1836,7 @@ var vote = function(clean, response, testCallback) {
 				var json = { 'code': 'error', 'txt': 'User already voted on this shout.' };
 				respond(json, response, testCallback);	
 			}
-		};
+		}
 		var callback = function(authIsValidResult) {
 			var validAuth = authIsValidResult['valid'];
 			var json = authIsValidResult['json'];
