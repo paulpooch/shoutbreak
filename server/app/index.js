@@ -419,9 +419,13 @@ var ping = function(clean, response, testCallback) {
 			if (getUserResult) {
 				// Check level up.
 				var user = getUserResult;
+				json['pts'] = user.points;
 				if (user.pendingLevelUp > 0) {
-						// Begin here THursday
-
+					json['lvl_change'] = {
+						'lvl': user.level,
+						'lvl_at': Utils.pointsRequiredForLevel(user.level),
+						'next_lvl_at': Utils.pointsRequiredForLevel(user.level + 1)
+					};
 				}
 				if (reqRadius == 1) {
 					Storage.LiveUsers.calculateRadiusOrFindTargets(false, getUserResult, null, lat, lng, callback4, 
@@ -476,10 +480,10 @@ var ping = function(clean, response, testCallback) {
 			} else {
 				callback6();
 			}
-		}
+		};
 		var callback6 = function() {
 			respond(json, response, testCallback);
-		}
+		};
 		
 		authIsValid(userId, auth, callback);	
 	} else {
@@ -516,18 +520,6 @@ var shout = function(clean, response, testCallback) {
 				respond(json, response, testCallback);
 			}
 		};
-		var callback4 = function(sendShoutResult) {
-			var json = { 'code': 'shout_sent' };
-			respond(json, response, testCallback);		
-		};
-		var callback3 = function(calculateRadiusOrFindTargetsResult) {
-			Storage.Shouts.sendShout(user, calculateRadiusOrFindTargetsResult, shoutreach, lat, lng, text, callback4,
-				function() {
-					var json = { 'code': 'error', 'txt': 'Send shout failed.' };
-					respond(json, response, testCallback);
-				}
-			);
-		};
 		var callback2 = function(getUserResult) {
 			if (getUserResult) {
 				user = getUserResult;
@@ -543,6 +535,18 @@ var shout = function(clean, response, testCallback) {
 					respond(json, response, testCallback);
 				}
 			}	
+		};
+		var callback3 = function(calculateRadiusOrFindTargetsResult) {
+			Storage.Shouts.sendShout(user, calculateRadiusOrFindTargetsResult, shoutreach, lat, lng, text, callback4,
+				function() {
+					var json = { 'code': 'error', 'txt': 'Send shout failed.' };
+					respond(json, response, testCallback);
+				}
+			);
+		};
+		var callback4 = function(sendShoutResult) {
+			var json = { 'code': 'shout_sent' };
+			respond(json, response, testCallback);		
 		};
 		authIsValid(userId, auth, callback);	
 	} else {
@@ -560,48 +564,32 @@ var vote = function(clean, response, testCallback) {
 	typeof auth != 'undefined' &&
 	typeof shoutId != 'undefined' &&
 	typeof vote != 'undefined') {
-
-
-		var callback8 = function() {
-			// update last activity time of shout
+		var callback = function(authIsValidResult) {
+			var validAuth = authIsValidResult['valid'];
+			var json = authIsValidResult['json'];
+			if (validAuth) {
+				Storage.Votes.getVote(userId, shoutId, callback2, 
+					function() {
+						var json = { 'code': 'error', 'txt': 'Cannot check if vote exists.' };
+						respond(json, response, testCallback);	
+					}
+				);
+			} else {
+				respond(json, response, testCallback);
+			}
 		};
-
-		var callback7 = function() {
-			
-		};
-
-		var callback6 = function(addNewVoteResult) {
-			// Begin here Thursday.
-			// We must update User's points
-			// See if they leveled up...
-			// Both shouter and voter.... fuck.
-
-			// WARNING - we hardcoded in level 1 here.
-			Storage.Users.givePoints(userId, Utils.pointsForVote(1), callback7, 
-				function() {
-					
-				}
-			);
-
-			
-			//var shout = Utils.makeShoutFromDynamoItem()
-			
-		};
-		var callback5 = function(updateVoteCountResult) {
-			Storage.Votes.addNewVote(userId, shoutId, vote, callback6,
-				function() {
-					var json = { 'code': 'error', 'txt': 'Could not create new vote.' };
-					respond(json, response, testCallback);	
-				}
-			);
-		};
-		var callback4 = function(updateShoutResult) {		
-			Storage.Shouts.updateVoteCount(shoutId, vote, callback5,
-				function() {
-					var json = { 'code': 'error', 'txt': 'Shout does not exist or could not update vote count.' };
-					respond(json, response, testCallback);	
-				}
-			);
+		var callback2 = function(getVoteResult) {
+			if (!getVoteResult) {
+				Storage.Shouts.getShout(shoutId, callback3,
+					function() {
+						var json = { 'code': 'error', 'txt': 'Could not get shout to register vote.' };
+						respond(json, response, testCallback);	
+					}
+				);
+			} else {
+				var json = { 'code': 'error', 'txt': 'User already voted on this shout.' };
+				respond(json, response, testCallback);	
+			}
 		};
 		var callback3 = function(getShoutResult) {
 			Log.e('callback3');
@@ -620,32 +608,54 @@ var vote = function(clean, response, testCallback) {
 				);
 			}
 		};
-		var callback2 = function(getVoteResult) {
-			if (!getVoteResult) {
-				Storage.Shouts.getShout(shoutId, callback3,
-					function() {
-						var json = { 'code': 'error', 'txt': 'Could not get shout to register vote.' };
-						respond(json, response, testCallback);	
-					}
-				);
-			} else {
-				var json = { 'code': 'error', 'txt': 'User already voted on this shout.' };
-				respond(json, response, testCallback);	
-			}
-		}
-		var callback = function(authIsValidResult) {
-			var validAuth = authIsValidResult['valid'];
-			var json = authIsValidResult['json'];
-			if (validAuth) {
-				Storage.Votes.getVote(userId, shoutId, callback2, 
+		var callback4 = function(updateShoutResult) {	
+			Log.e('callback4');
+			Log.obj(shout);	
+			Storage.Shouts.updateVoteCount(shout, vote, callback5,
 				function() {
-					var json = { 'code': 'error', 'txt': 'Cannot check if vote exists.' };
+					var json = { 'code': 'error', 'txt': 'Shout does not exist or could not update vote count.' };
 					respond(json, response, testCallback);	
 				}
 			);
-			} else {
-				respond(json, response, testCallback);
-			}
+		};
+		var callback5 = function(updateVoteCountResult) {
+			Storage.Votes.addNewVote(userId, shoutId, vote, callback6,
+				function() {
+					var json = { 'code': 'error', 'txt': 'Could not create new vote.' };
+					respond(json, response, testCallback);	
+				}
+			);
+		};
+		var callback6 = function(addNewVoteResult) {
+			// Begin here Thursday.
+			// We must update User's points
+			// See if they leveled up...
+			// Both shouter and voter.... fuck.
+
+			// WARNING - we hardcoded in level 1 here.
+			Storage.Users.givePoints(userId, Utils.pointsForVote(1), callback7, 
+				function() {
+					var json = { 'code': 'error', 'txt': 'Could not give vote points to voter.' };
+					respond(json, response, testCallback);			
+				}
+			);
+
+			
+			//var shout = Utils.makeShoutFromDynamoItem()
+			
+		};
+		var callback7 = function(givePointsResult) {
+			// WARNING - we hardcoded in level 1 here.
+			Storage.Users.givePoints(shout.userId, Utils.pointsForVote(1), callback8,
+			function() {
+					var json = { 'code': 'error', 'txt': 'Could not give vote points to sender.' };
+					respond(json, response, testCallback);			
+				}
+			);
+		};
+		var callback8 = function() {
+			var json = { 'code': 'vote_ok' };
+			respond(json, response, testCallback);
 		};
 		authIsValid(userId, auth, callback);
 	} else {

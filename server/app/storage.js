@@ -115,21 +115,6 @@ module.exports = (function() {
 		this.getShout = function(shoutId, successCallback, failCallback) {
 			Log.e('getShout');
 			var returnShout;
-			var callback2 = function(response) {
-    			response.on('data', function(chunk) {
-    				var item = JSON.parse(chunk);
-    				if (item['Item']) {
-    					item = item['Item'];
-    					var shout = Utils.makeShoutFromDynamoItem(item);
-    					Log.obj('makeShoutFromDynamoItem');
-    					Log.obj(shout);
-						addToCache(shout);
-       				} else {
-						Log.e(chunk);
-						failCallback();
-       				}
-    			});
-    		};
 			var callback = function(getResult) {
 				if (getResult) {
 					Log.e('shout found in cache');
@@ -160,12 +145,21 @@ module.exports = (function() {
 					DynamoDB.getItem(req, callback2);
 				}
 			};
-			var callback3 = function(setResult) {
-				// We don't really care about the result.
-				Log.e('Returning Shout from getShout');
-				Log.obj(returnShout);
-				successCallback(returnShout);
-			};	
+			var callback2 = function(response) {
+    			response.on('data', function(chunk) {
+    				var item = JSON.parse(chunk);
+    				if (item['Item']) {
+    					item = item['Item'];
+    					var shout = Utils.makeShoutFromDynamoItem(item);
+    					Log.obj('makeShoutFromDynamoItem');
+    					Log.obj(shout);
+						addToCache(shout);
+       				} else {
+						Log.e(chunk);
+						failCallback();
+       				}
+    			});
+    		};
 			var addToCache = function(shout) {
 				Log.e('addToCache');
 				Log.obj(shout);
@@ -178,6 +172,12 @@ module.exports = (function() {
 					}
 				);
 			};
+			var callback3 = function(setResult) {
+				// We don't really care about the result.
+				Log.e('Returning Shout from getShout');
+				Log.obj(returnShout);
+				successCallback(returnShout);
+			};	
 			Cache.get(Config.PRE_SHOUT + shoutId, callback,
 				function() {
 					// Ok to fail this get.
@@ -205,17 +205,6 @@ module.exports = (function() {
 					'lng': 					{'N': String(shout.lng)}
 				}
 			};
-			var callback2 = function(setResult) {
-				successCallback(true);
-			};
-			var cacheShout = function() {
-				Cache.set(Config.PRE_SHOUT + shout.shoutId, shout, Config.TIMEOUT_SHOUT, callback2, 
-					function() {
-						Log.e('Could not save shout to cache.');
-						callback2(false);
-					}
-				);
-			};
 			var callback = function(result) {
 				result.on('data', function(chunk) {
 					Log.obj(chunk + '');
@@ -231,6 +220,17 @@ module.exports = (function() {
 					Log.e(data.error);
 					failCallback();
 				});
+			};
+			var cacheShout = function() {
+				Cache.set(Config.PRE_SHOUT + shout.shoutId, shout, Config.TIMEOUT_SHOUT, callback2, 
+					function() {
+						Log.e('Could not save shout to cache.');
+						callback2(false);
+					}
+				);
+			};
+			var callback2 = function(setResult) {
+				successCallback(true);
 			};
 			DynamoDB.putItem(data, callback);
 		};
@@ -282,7 +282,6 @@ module.exports = (function() {
 			);
 		};
 
-		// pass the full shout object into here
 		this.updateVoteCount = function(shout, vote, successCallback, failCallback) {
 			if (vote == -1 || vote == 1) {
 				var callback = function(setResult) {
@@ -302,7 +301,8 @@ module.exports = (function() {
 						'ups': {
 							'Value': {'N': String(vote)},
 							'Action': 'ADD'
-						}
+						},
+						'last_activity_time': {'S': Utils.getNowISO() }
 					},
 					'ReturnValues': 'NONE'
 				};
@@ -341,9 +341,6 @@ module.exports = (function() {
 		};
 
 		this.updateShout = function(shout, dynamoRequest, successCallback, failCallback) {
-			var callback2 = function(setResult) {
-				successCallback();
-			};
 			var callback = function(response) {
 				response.on('data', function(chunk) {
 	    			//	var item = JSON.parse(chunk);
@@ -357,6 +354,9 @@ module.exports = (function() {
 						}
 					);
 	       		});	
+			};
+			var callback2 = function(setResult) {
+				successCallback();
 			};
 			DynamoDB.updateItem(dynamoRequest, callback);
 		};
@@ -406,33 +406,6 @@ module.exports = (function() {
 
 		this.getUser = function(userId, successCallback, failCallback) {
 			var returnUser;
-			var callback2 = function(response) {
-    			response.on('data', function(chunk) {
-    				var item = JSON.parse(chunk);
-    				if (item['Item']) {
-    					item = item['Item'];
-    					var user = new User();
-    					user.userId = item['user_id']['S'];
-						user.lastActivityTime = item['last_activity_time']['S'];
-						user.userPwHash = item['user_pw_hash']['S'];
-						user.userPwSalt = item['user_pw_salt']['S'];
-						user.androidId = item['android_id']['S'];
-						user.deviceId = item['device_id']['S'];
-						user.phoneNum = parseInt(item['phone_num']['N']);
-						user.carrier = item['carrier']['S'];
-						user.creationTime = item['creation_time']['S'];
-						user.points = parseInt(item['points']['N']);
-						user.level = parseInt(item['level']['N']);
-						user.pendingLevelUp = parseInt(item['pending_level_up']['N']);
-						Log.e('got user from db');
-						Log.obj(user);
-       					addToCache(user);
-       				} else {
-						Log.e(chunk);
-						failCallback();
-       				}
-    			});
-    		};
 			var callback = function(getResult) {
 				if (getResult) {
 					successCallback(getResult);
@@ -461,10 +434,33 @@ module.exports = (function() {
 					DynamoDB.getItem(req, callback2);
 				}
 			};
-			var callback3 = function(setResult) {
-				// We don't really care about the result.
-				successCallback(returnUser);
-			};	
+			var callback2 = function(response) {
+    			response.on('data', function(chunk) {
+    				var item = JSON.parse(chunk);
+    				if (item['Item']) {
+    					item = item['Item'];
+    					var user = new User();
+    					user.userId = item['user_id']['S'];
+						user.lastActivityTime = item['last_activity_time']['S'];
+						user.userPwHash = item['user_pw_hash']['S'];
+						user.userPwSalt = item['user_pw_salt']['S'];
+						user.androidId = item['android_id']['S'];
+						user.deviceId = item['device_id']['S'];
+						user.phoneNum = parseInt(item['phone_num']['N']);
+						user.carrier = item['carrier']['S'];
+						user.creationTime = item['creation_time']['S'];
+						user.points = parseInt(item['points']['N']);
+						user.level = parseInt(item['level']['N']);
+						user.pendingLevelUp = parseInt(item['pending_level_up']['N']);
+						Log.e('got user from db');
+						Log.obj(user);
+       					addToCache(user);
+       				} else {
+						Log.e(chunk);
+						failCallback();
+       				}
+    			});
+    		};
 			var addToCache = function(user) {
 				returnUser = user;
 				Log.e('addToCache');
@@ -477,6 +473,10 @@ module.exports = (function() {
 					}
 				);
 			};
+			var callback3 = function(setResult) {
+				// We don't really care about the result.
+				successCallback(returnUser);
+			};	
 			Cache.get(Config.PRE_USER + userId, callback,
 				function() {
 					// Ok to fail this get.
@@ -528,9 +528,6 @@ module.exports = (function() {
 		this.givePoints = function(userId, pointsAmount, successCallback, failCallback) {
 			var user = null;
 			var req = null;
-			var callback2 = function() {
-				self.Users.updateUser(user, req, successCallback, failCallback);
-			};
 			var callback = function(getUserResult) {
 				user = getUserResult;
 				user.points += pointsAmount;
@@ -543,7 +540,7 @@ module.exports = (function() {
 					levelDiff = -1;
 				}
 				if (levelDiff != 0) {
-					var req = {
+					req = {
 						'TableName': Config.TABLE_USERS,
 						'Key': {
 							'HashKeyElement': {'S': userId}
@@ -565,7 +562,7 @@ module.exports = (function() {
 					};
 					callback2();
 				} else {
-					var req = {
+					req = {
 						'TableName': Config.TABLE_USERS,
 						'Key': {
 							'HashKeyElement': {'S': userId}
@@ -580,6 +577,9 @@ module.exports = (function() {
 					};
 					callback2();
 				}
+			};
+			var callback2 = function() {
+				self.Users.updateUser(user, req, successCallback, failCallback);
 			};
 			self.Users.getUser(userId, callback, failCallback);
 		};
@@ -603,9 +603,6 @@ module.exports = (function() {
 		};
 
 		this.updateUser = function(user, dynamoRequest, successCallback, failCallback) {
-			var callback2 = function(setResult) {
-				successCallback();
-			};
 			var callback = function(response) {
 				response.on('data', function(chunk) {
 	    			//	var item = JSON.parse(chunk);
@@ -621,6 +618,9 @@ module.exports = (function() {
 						}
 					);
 	       		});	
+			};
+			var callback2 = function(setResult) {
+				successCallback();
 			};
 			DynamoDB.updateItem(dynamoRequest, callback);
 		};
@@ -868,20 +868,6 @@ module.exports = (function() {
 		
 		this.getVote = function(shoutId, userId, successCallback, failCallback) {
 			var returnVote;
-			var callback2 = function(response) {
-    			response.on('data', function(chunk) {
-    				var item = JSON.parse(chunk);
-    				if (item['Item']) {
-    					item = item['Item'];
-    					var vote = [item['vote'], item['time']];
-    					addToCache(vote);
-       				} else {
-       					// Vote does not exist.
-      					// That's ok though.
-						successCallback(false);
-       				}
-    			});
-    		};
 			var callback = function(getResult) {
 				if (getResult) {
 					successCallback(getResult);
@@ -900,11 +886,21 @@ module.exports = (function() {
 					DynamoDB.getItem(req, callback2);
 				}
 			};
-			var callback3 = function(setResult) {
-				// We don't really care about the result.
-				successCallback(returnVote);
-			};	
-			var addToCache = function(vote) {
+			var callback2 = function(response) {
+    			response.on('data', function(chunk) {
+    				var item = JSON.parse(chunk);
+    				if (item['Item']) {
+    					item = item['Item'];
+    					var vote = [item['vote'], item['time']];
+    					addToCache(vote);
+       				} else {
+       					// Vote does not exist.
+      					// That's ok though.
+						successCallback(false);
+       				}
+    			});
+    		};
+    		var addToCache = function(vote) {
 				returnVote = vote;
 				Cache.set(Config.PRE_VOTE + userId + shoutId, vote, Config.TIMEOUT_VOTE, callback3, 
 					function() {
@@ -913,6 +909,10 @@ module.exports = (function() {
 						callback3(false);
 					}
 				);
+			};
+			var callback3 = function(setResult) {
+				// We don't really care about the result.
+				successCallback(returnVote);
 			};
 			Cache.get(Config.PRE_VOTE + userId + shoutId, callback,
 				function() {
@@ -933,18 +933,6 @@ module.exports = (function() {
 					'time': 	{'S': now}
 				}
 			};
-			var callback2 = function(setResult) {
-				successCallback(true);
-			};
-			var cacheVote = function() {
-				Cache.set(Config.PRE_VOTE + userId + shoutId, vote, Config.TIMEOUT_VOTE, callback2, 
-					function() {
-						// Not a huge problem.
-						Log.e('Could not save vote to cache.');
-						callback2(false);
-					}
-				);
-			};
 			var callback = function(result) {
 				result.on('data', function(chunk) {
 					Log.obj(chunk + '');
@@ -960,6 +948,18 @@ module.exports = (function() {
 					Log.e(data.error);
 					failCallback();
 				});
+			};
+			var cacheVote = function() {
+				Cache.set(Config.PRE_VOTE + userId + shoutId, vote, Config.TIMEOUT_VOTE, callback2, 
+					function() {
+						// Not a huge problem.
+						Log.e('Could not save vote to cache.');
+						callback2(false);
+					}
+				);
+			};
+			var callback2 = function(setResult) {
+				successCallback(true);
 			};
 			DynamoDB.putItem(data, callback);
 		};
