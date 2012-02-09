@@ -43,8 +43,6 @@ module.exports = (function() {
 			});
 		};
 		this.set = function(key, value, lifetime, successCallback, failCallback) {
-			Log.e('Memcached.set: ' + key);
-			Log.obj(value);
 			Memcached.set(key, value, lifetime, function(err, result) {
 				if (err) {
 					Log.e(err);
@@ -582,6 +580,22 @@ module.exports = (function() {
 				self.Users.updateUser(user, req, successCallback, failCallback);
 			};
 			self.Users.getUser(userId, callback, failCallback);
+		};
+
+		this.acknowledgeLevelUp = function(user, successCallback, failCallback) {
+			var req = {
+				'TableName': Config.TABLE_USERS,
+				'Key': {
+					'HashKeyElement': {'S': user.userId}
+				},
+				'AttributeUpdates': {
+					'pending_level_up': {
+						'Value': {'N': String(0)},
+					}
+				},
+				'ReturnValues': 'NONE'
+			};
+			self.Users.updateUser(user, req, successCallback, failCallback);
 		};
 
 		// We won't use updateUser here 

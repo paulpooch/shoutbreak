@@ -391,6 +391,7 @@ var ping = function(clean, response, testCallback) {
 	typeof lng != 'undefined') {
 
 		var json = {};
+		var user = false;
 
 		var callback = function(authIsValidResult) {
 			var validAuth = authIsValidResult['valid'];
@@ -418,38 +419,60 @@ var ping = function(clean, response, testCallback) {
 		var callback3 = function(getUserResult) {
 			if (getUserResult) {
 				// Check level up.
-				var user = getUserResult;
+				user = getUserResult;
 				json['pts'] = user.points;
+				var doCallback = true;
 				if (user.pendingLevelUp > 0) {
-					json['lvl_change'] = {
-						'lvl': user.level,
-						'lvl_at': Utils.pointsRequiredForLevel(user.level),
-						'next_lvl_at': Utils.pointsRequiredForLevel(user.level + 1)
-					};
-				}
-				if (reqRadius == 1) {
-					Storage.LiveUsers.calculateRadiusOrFindTargets(false, getUserResult, null, lat, lng, callback4, 
-						function() {
-							var json = { 'code': 'error', 'txt': 'Could not calculate radius for shoutreach.' };
-							respond(json, response, testCallback);
+					var skipLevelChange = false;
+					if (level) {
+						if (level == user.level) {
+							// User has achknowledged level up.
+							skipLevelChange = true;
+							doCallback = false;
+							Storage.Users.acknowledgeLevelUp(user, callback4, 
+								function() {
+									var json = { 'code': 'error', 'txt': 'Could not achknowledge level up.' };
+									respond(json, response, testCallback);
+								}
+							);
 						}
-					);
-				} else {
-					callback4(false);
+					} 
+					if (!skipLevelChange) {
+						json['lvl_change'] = {
+							'lvl': user.level,
+							'lvl_at': Utils.pointsRequiredForLevel(user.level),
+							'next_lvl_at': Utils.pointsRequiredForLevel(user.level + 1)
+						};
+					}
 				}
+				if (doCallback) {
+					callback4();
+				}				
 			}
 		};
-		var callback4 = function(calculateRadiusOrFindTargetsResult) {
+		var callback4 = function() {
+			if (reqRadius == 1) {
+				Storage.LiveUsers.calculateRadiusOrFindTargets(false, user, null, lat, lng, callback5, 
+					function() {
+						var json = { 'code': 'error', 'txt': 'Could not calculate radius for shoutreach.' };
+						respond(json, response, testCallback);
+					}
+				);
+			} else {
+				callback5(false);
+			}
+		};
+		var callback5 = function(calculateRadiusOrFindTargetsResult) {
 			if (calculateRadiusOrFindTargetsResult) {
 				json['radius'] = calculateRadiusOrFindTargetsResult;	
 			}
-			Storage.Inbox.checkInbox(userId, callback5,
+			Storage.Inbox.checkInbox(userId, callback6,
 				function() {
 					Log.e('Could not check inbox.');
 				}
 			);
 		};
-		var callback5 = function(inboxContent) {
+		var callback6 = function(inboxContent) {
 			if (inboxContent) {
 				var newShouts = [];
 				var loop = function(index) {
@@ -473,15 +496,15 @@ var ping = function(clean, response, testCallback) {
 							sArray.push(Utils.buildShoutJson(shout, userId));
 						}
 						json['shouts'] = sArray;
-						callback6();
+						callback7();
 					}
 				}
 				loop(0);
 			} else {
-				callback6();
+				callback7();
 			}
 		};
-		var callback6 = function() {
+		var callback7 = function() {
 			respond(json, response, testCallback);
 		};
 		
