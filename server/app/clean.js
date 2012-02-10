@@ -73,9 +73,6 @@ exports.sanitize = function(dirty, response, testCallback, callback) {
 		clean[param] = cleanArray;
 	}
 
-	Log.e('SANITIZED');
-	Log.obj(clean);
-
 	var routingObject = {
 		'post': clean,
 		'response': response,
@@ -233,9 +230,6 @@ exports.validate = function(dirty, response, testCallback, callback) {
 		}
 		clean[param] = cleanArray;
 	}
-
-	Log.e('VALIDATED');
-	Log.obj(clean);
 
 	var routingObject = {
 		'post': clean,

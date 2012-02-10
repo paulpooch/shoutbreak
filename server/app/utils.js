@@ -110,6 +110,17 @@ module.exports = (function() {
 		return sObj;
 	};
 
+	this.buildScoreJson = function(shout) {
+		var sObj = {
+			'shout_id': shout.shoutId,
+			'ups': shout.ups,
+			'downs': shout.downs,
+			'hit': shout.hit,
+			'open': shout.open
+		};
+		return sObj;
+	};
+	
 	this.makeShoutFromDynamoItem = function(item) {
 		var shout = new Shout();
 		shout.shoutId = item['shout_id']['S'];

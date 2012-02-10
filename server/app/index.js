@@ -104,8 +104,6 @@ var fakePost = function(dirty, response, testCallback) {
 };
 
 var route = function(clean, response, testCallback) {
-	Log.e('route');
-	Log.obj(clean);
 	var action = clean['a'];
 	switch(action) {
 		case 'create_account':
@@ -217,13 +215,10 @@ var ping = function(clean, response, testCallback) {
 	typeof lat != 'undefined' &&
 	typeof lng != 'undefined') {
 
-		Log.e('ping');
-
 		var json = {};
 		var user = false;
 
 		var callback = function(authIsValidResult) {
-			Log.e(1);
 			var validAuth = authIsValidResult['valid'];
 			var json = authIsValidResult['json'];
 			if (validAuth) {
@@ -238,7 +233,6 @@ var ping = function(clean, response, testCallback) {
 			}
 		};
 		var callback2 = function(putUserOnlineResult) {
-			Log.e(2);
 			json['code'] = 'ping_ok';
 			Storage.Users.getUser(userId, callback3, 
 				function() {
@@ -248,7 +242,6 @@ var ping = function(clean, response, testCallback) {
 			);
 		};
 		var callback3 = function(getUserResult) {
-			Log.e(3);
 			if (getUserResult) {
 				// Check level up.
 				user = getUserResult;
@@ -283,7 +276,6 @@ var ping = function(clean, response, testCallback) {
 			}
 		};
 		var callback4 = function() {
-			Log.e(4);
 			if (reqRadius == 1) {
 				Storage.LiveUsers.calculateRadiusOrFindTargets(false, user, null, lat, lng, callback5, 
 					function() {
@@ -296,7 +288,6 @@ var ping = function(clean, response, testCallback) {
 			}
 		};
 		var callback5 = function(calculateRadiusOrFindTargetsResult) {
-			Log.e(5);
 			if (calculateRadiusOrFindTargetsResult) {
 				json['radius'] = calculateRadiusOrFindTargetsResult;	
 			}
@@ -307,7 +298,6 @@ var ping = function(clean, response, testCallback) {
 			);
 		};
 		var callback6 = function(inboxContent) {
-			Log.e(6);
 			if (inboxContent) {
 				var newShouts = [];
 				var loop = function(index) {
@@ -326,8 +316,6 @@ var ping = function(clean, response, testCallback) {
 						var sArray = [];
 						for (var key in newShouts) {
 							var shout = newShouts[key];
-							Log.obj(shout);
-							Log.obj(Utils.buildShoutJson(shout, userId));
 							sArray.push(Utils.buildShoutJson(shout, userId));
 						}
 						json['shouts'] = sArray;
@@ -340,10 +328,7 @@ var ping = function(clean, response, testCallback) {
 			}
 		};
 		var callback7 = function(inboxContent) {
-			Log.e(7);
 			if (reqScores) {
-				Log.e('reqScores');
-				Log.obj(reqScores);
 				var pulledScores = [];
 				var loop = function(index) {
 					if (index < reqScores.length) {
@@ -361,11 +346,7 @@ var ping = function(clean, response, testCallback) {
 						var sArray = [];
 						for (var key in pulledScores) {
 							var shout = pulledScores[key];
-							// Begin here Saturday
-							// We need a new version of buildShoutJson
-							// Should be buildScoreJson...
-
-							sArray.push(Utils.buildShoutJson(shout, userId));
+							sArray.push(Utils.buildScoreJson(shout));
 						}
 						json['scores'] = sArray;
 						callback8();
@@ -377,7 +358,6 @@ var ping = function(clean, response, testCallback) {
 			}
 		};
 		var callback8 = function() {
-			Log.e(8);
 			respond(json, response, testCallback);
 		};
 		authIsValid(userId, auth, callback);	
@@ -487,9 +467,6 @@ var vote = function(clean, response, testCallback) {
 			}
 		};
 		var callback3 = function(getShoutResult) {
-			Log.e('callback3');
-			Log.e('getShoutResult = ');
-			Log.obj(getShoutResult);
 			shout = getShoutResult;
 			if (shout.open == 0) {
 				var json = { 'code': 'error', 'txt': 'Cannot vote.  Shout is closed.'};
@@ -504,8 +481,6 @@ var vote = function(clean, response, testCallback) {
 			}
 		};
 		var callback4 = function(updateShoutResult) {	
-			Log.e('callback4');
-			Log.obj(shout);	
 			Storage.Shouts.updateVoteCount(shout, vote, callback5,
 				function() {
 					var json = { 'code': 'error', 'txt': 'Shout does not exist or could not update vote count.' };
@@ -748,7 +723,7 @@ var Tests = (function() {
 		// Vote on it.
 		var test7 = function(json) {
 			Log.l(json);
-			Assert.equal(json['scores'][0]['ups'], 1);
+			Assert.equal(json['scores'][0]['ups'], 0);
 			var post = {
 				'a': 'vote',
 				'uid': userId,
@@ -780,7 +755,7 @@ var Tests = (function() {
 
 		var test9 = function(json) {
 			Log.l(json);
-			Assert.equal(json['scores'][0]['ups'], 2);	
+			Assert.equal(json['scores'][0]['ups'], 1);	
 		};
 
 		// Trigger first test...
