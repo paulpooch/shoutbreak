@@ -73,6 +73,9 @@ exports.sanitize = function(dirty, response, testCallback, callback) {
 		clean[param] = cleanArray;
 	}
 
+	Log.e('SANITIZED');
+	Log.obj(clean);
+
 	var routingObject = {
 		'post': clean,
 		'response': response,
@@ -89,7 +92,7 @@ exports.validate = function(dirty, response, testCallback, callback) {
 	// a
 	param = 'a';
 	if (param in dirty) {
-		var validActions = {'create_account':1, 'user_ping':1, 'shout':1, 'vote':1};
+		var validActions = {'create_account':1, 'ping':1, 'shout':1, 'vote':1};
 		if (dirty[param] in validActions) {
 			clean[param] = dirty[param];
 		}
@@ -230,6 +233,9 @@ exports.validate = function(dirty, response, testCallback, callback) {
 		}
 		clean[param] = cleanArray;
 	}
+
+	Log.e('VALIDATED');
+	Log.obj(clean);
 
 	var routingObject = {
 		'post': clean,

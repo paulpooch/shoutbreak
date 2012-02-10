@@ -111,7 +111,7 @@ var route = function(clean, response, testCallback) {
 		case 'create_account':
 			createAccount(clean, response, testCallback);
 			break;
-		case 'user_ping':
+		case 'ping':
 			ping(clean, response, testCallback);
 			break;
 		case 'shout':
@@ -361,6 +361,10 @@ var ping = function(clean, response, testCallback) {
 						var sArray = [];
 						for (var key in pulledScores) {
 							var shout = pulledScores[key];
+							// Begin here Saturday
+							// We need a new version of buildShoutJson
+							// Should be buildScoreJson...
+
 							sArray.push(Utils.buildShoutJson(shout, userId));
 						}
 						json['scores'] = sArray;
@@ -657,7 +661,7 @@ var Tests = (function() {
 			Assert.equal(json['code'], 'create_account_1');
 			pw = json['pw'];
 			var post = {
-				'a': 'user_ping',
+				'a': 'ping',
 				'uid': userId,
 				'auth': 'default',
 				'lat': 40.00000,
@@ -675,7 +679,7 @@ var Tests = (function() {
 			Log.l(pw);
 			auth = pw + Utils.hashSha512(pw + nonce + userId);
 			var post = {
-				'a': 'user_ping',
+				'a': 'ping',
 				'uid': userId,
 				'auth': auth,
 				'lat': 40.00000,
@@ -709,7 +713,7 @@ var Tests = (function() {
 			Log.l(json);
 			Assert.equal(json['code'], 'shout_sent');
 			var post = {
-				'a': 'user_ping',
+				'a': 'ping',
 				'uid': userId,
 				'auth': auth,
 				'lat': 40.00000,
