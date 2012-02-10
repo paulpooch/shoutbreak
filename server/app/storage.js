@@ -115,8 +115,6 @@ module.exports = (function() {
 			var returnShout;
 			var callback = function(getResult) {
 				if (getResult) {
-					Log.e('shout found in cache');
-					Log.obj(getResult);
 					successCallback(getResult);
 				} else {
 					var req = {

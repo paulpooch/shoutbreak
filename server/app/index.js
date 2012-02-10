@@ -29,16 +29,6 @@
 // http://www.paperplanes.de/2012/1/30/a-tour-of-amazons-dynamodb.html
 ////////////////////////////////////////////////////////////////////////////////
 
-				/*
-				var pendingLevelUp = user['pending_level_up'];
-				if (pendingLevelUp) {
-					var levelUpInfo = {'level': user['level'], 'pts': user['points']};
-					// No callback
-					Cache.set(Config.PRE_USER_PENDING_LEVEL_UP + uid, levelUpInfo, 
-						Config.TIMEOUT_USER_PENDING_LEVEL_UP, null);
-				}
-				*/
-
 // Includes ////////////////////////////////////////////////////////////////////
 
 // Internal
@@ -47,14 +37,13 @@ var Log = 			require('./log'),
 	Config =		require('./config'),
 	User =			require('./user'),
 	Shout =			require('./shout'),
-	Storage =		require('./storage');
+	Storage =		require('./storage'),
+	Clean =			require('./clean');
 
 // External (Modules)
 var Http = 			require('http'),
 	QueryString = 	require('querystring'),
 	// https://github.com/chriso/node-validator
-	Sanitizer = 	require('validator').sanitize, 
-	Validator = 	require('validator').check,
 	Uuid = 			require('node-uuid'),
 	Assert =		require('assert');
 
@@ -78,207 +67,45 @@ var process = function(request, response) {
 		});
 		request.on('end', function () {
 			var POST = QueryString.parse(body);
-			sanitize(POST, response);
+			var callback = function(routingObject) {
+				var objPost = routingObject['post'];
+				var objResponse = routingObject['response'];
+				var objTestCallback = routingObject['testCallback'];
+				Clean.validate(objPost, objResponse, objTestCallback, callback2);
+			};
+			var callback2 = function(routingObject) {
+				var objPost = routingObject['post'];
+				var objResponse = routingObject['response'];
+				var objTestCallback = routingObject['testCallback'];
+				route(objPost, objResponse, objTestCallback);
+			};
+			Clean.sanitize(POST, response, null, callback);
         });
     }
 };
 
 // Used by tests to skip front door.
 var fakePost = function(dirty, response, testCallback) {
-	Utils.sleep(1, function() { 
-		sanitize(dirty, response, testCallback); 
+	Utils.sleep(1, function() {
+		var callback = function(routingObject) {
+			var objPost = routingObject['post'];
+			var objResponse = routingObject['response'];
+			var objTestCallback = routingObject['testCallback'];
+			Clean.validate(objPost, objResponse, objTestCallback, callback2);
+		};
+		var callback2 = function(routingObject) {
+			var objPost = routingObject['post'];
+			var objResponse = routingObject['response'];
+			var objTestCallback = routingObject['testCallback'];
+			route(objPost, objResponse, objTestCallback);
+		};
+		Clean.sanitize(dirty, response, testCallback, callback);
 	});
 };
 
-// Sanitize post vars.  Safe sex.
-var sanitize = function(dirty, response, testCallback) {
-	var clean = {};
-	
-	// Strings
-	var allowedStrings = {
-		'a': 1,
-		'uid': 1,
-		'android_id': 1,
-		'device_id': 1,
-		'carrier': 1,
-		'auth': 1,
-		'txt': 1,
-		'shout_id': 1
-	};
-	for (var param in allowedStrings) {
-		if (param in dirty) {
-			clean[param] = Sanitizer(dirty[param]).trim();
-			clean[param] = Sanitizer(clean[param]).xss();
-			clean[param] = Sanitizer(clean[param]).entityEncode();
-		}
-	}
-		
-	// Ints
-	var allowedInts = {
-		'phone_num': 1,
-		'radius': 1,
-		'shoutreach': 1,
-		'vote': 1
-	};
-	for (var param in allowedInts) {
-		if (param in dirty) {
-			clean[param] = Sanitizer(dirty[param]).toInt();
-		}
-	}
-
-	// Floats
-	var allowedFloats = {
-		'lat': 1,
-		'lng': 1	
-	};
-	for (var param in allowedFloats) {
-		if (param in dirty) {
-			clean[param] = Sanitizer(dirty[param]).toFloat();
-		}
-	}
-
-	validate(clean, response, testCallback);
-};
-
-// Strict whitelist validation.
-var validate = function(dirty, response, testCallback) {
-	var clean = {};
-	var param;
-
-	// a
-	param = 'a';
-	if (param in dirty) {
-		var validActions = {'create_account':1, 'user_ping':1, 'shout':1, 'vote':1};
-		if (dirty[param] in validActions) {
-			clean[param] = dirty[param];
-		}
-	}
-
-	// uid
-	param = 'uid';
-	if (param in dirty) {
-		if (dirty[param].length == 36) {
-			if (Validator(dirty[param]).isUUID()) {
-				clean[param] = dirty[param];
-			}
-		}
-	}
-
-	// android_id
-	param = 'android_id';
-	if (param in dirty) {
-		if (dirty[param].length == 16) {
-			if (Validator(dirty[param]).regex(/[0-9A-Fa-f]{16}/)) {
-				clean[param] = dirty[param];
-			}
-		}
-	}
-
-	// device_id
-	param = 'device_id';
-	if (param in dirty) {
-		if (dirty[param].length < 65) {
-			// We'll allow 8-64 hexchars.
-			if (Validator(dirty[param]).regex(/[0-9A-Fa-f]{8,64}/)) {
-				clean[param] = dirty[param];
-			}
-		}
-	}
-
-	// phone_num
-	param = 'phone_num';
-	if (param in dirty) {
-		if (Validator(dirty[param]).isNumeric() &&
-		Validator(dirty[param]).min(0) && 
-		Validator(dirty[param]).max(9999999999)) {
-			clean[param] = dirty[param];
-		}
-	}
-
-	// carrier
-	param = 'carrier';
-	if (param in dirty) {
-		if (dirty[param].length < 100) {
-			clean[param] = dirty[param];
-		}
-	}
-
-	// auth
-	param = 'auth';
-	if (param in dirty) {
-		if (dirty[param].length == 120 || dirty[param].length == 7) {
-			clean[param] = dirty[param];
-		}
-	}
-
-	// lat
-	param = 'lat';
-	if (param in dirty) {
-		if (Validator(dirty[param]).isFloat() &&
-		Validator(dirty[param]).min(-90) && 
-		Validator(dirty[param]).max(90)) {
-			clean[param] = dirty[param];
-		}
-	}
-
-	// lat
-	param = 'lng';
-	if (param in dirty) {
-		if (Validator(dirty[param]).isFloat() &&
-		Validator(dirty[param]).min(-180) && 
-		Validator(dirty[param]).max(180)) {
-			clean[param] = dirty[param];
-		}
-	}
-
-	// radius
-	param = 'radius';
-	if (param in dirty) {
-		if (Validator(dirty[param]).isNumeric() && dirty[param] == 1) {
-			clean[param] = 1;
-		}
-	}
-
-	// android_id
-	param = 'txt';
-	if (param in dirty) {
-		if (dirty[param].length <= Config.SHOUT_LENGTH_LIMIT) {
-			clean[param] = dirty[param];
-		}
-	}
-
-	// shoutreach
-	param = 'shoutreach';
-	if (param in dirty) {
-		if (Validator(dirty[param]).isNumeric() &&
-		Validator(dirty[param]).min(0) && 
-		Validator(dirty[param]).max(Config.SHOUTREACH_LIMIT)) {
-			clean[param] = dirty[param];
-		}
-	}
-
-	// shout_id
-	param = 'shout_id';
-	if (param in dirty) {
-		if (dirty[param].length == 36) {
-			if (Validator(dirty[param]).isUUID()) {
-				clean[param] = dirty[param];
-			}
-		}
-	}
-
-	// vote
-	param = 'vote';
-	if (param in dirty) {
-		if (Validator(dirty[param]).isNumeric() && (dirty[param] == 1 || dirty[param] == -1)) {
-			clean[param] = 1;
-		}
-	}
-
-	route(clean, response, testCallback);
-};
-
 var route = function(clean, response, testCallback) {
+	Log.e('route');
+	Log.obj(clean);
 	var action = clean['a'];
 	switch(action) {
 		case 'create_account':
@@ -390,10 +217,13 @@ var ping = function(clean, response, testCallback) {
 	typeof lat != 'undefined' &&
 	typeof lng != 'undefined') {
 
+		Log.e('ping');
+
 		var json = {};
 		var user = false;
 
 		var callback = function(authIsValidResult) {
+			Log.e(1);
 			var validAuth = authIsValidResult['valid'];
 			var json = authIsValidResult['json'];
 			if (validAuth) {
@@ -408,6 +238,7 @@ var ping = function(clean, response, testCallback) {
 			}
 		};
 		var callback2 = function(putUserOnlineResult) {
+			Log.e(2);
 			json['code'] = 'ping_ok';
 			Storage.Users.getUser(userId, callback3, 
 				function() {
@@ -417,6 +248,7 @@ var ping = function(clean, response, testCallback) {
 			);
 		};
 		var callback3 = function(getUserResult) {
+			Log.e(3);
 			if (getUserResult) {
 				// Check level up.
 				user = getUserResult;
@@ -451,6 +283,7 @@ var ping = function(clean, response, testCallback) {
 			}
 		};
 		var callback4 = function() {
+			Log.e(4);
 			if (reqRadius == 1) {
 				Storage.LiveUsers.calculateRadiusOrFindTargets(false, user, null, lat, lng, callback5, 
 					function() {
@@ -463,6 +296,7 @@ var ping = function(clean, response, testCallback) {
 			}
 		};
 		var callback5 = function(calculateRadiusOrFindTargetsResult) {
+			Log.e(5);
 			if (calculateRadiusOrFindTargetsResult) {
 				json['radius'] = calculateRadiusOrFindTargetsResult;	
 			}
@@ -473,6 +307,7 @@ var ping = function(clean, response, testCallback) {
 			);
 		};
 		var callback6 = function(inboxContent) {
+			Log.e(6);
 			if (inboxContent) {
 				var newShouts = [];
 				var loop = function(index) {
@@ -504,10 +339,43 @@ var ping = function(clean, response, testCallback) {
 				callback7();
 			}
 		};
-		var callback7 = function() {
+		var callback7 = function(inboxContent) {
+			Log.e(7);
+			if (reqScores) {
+				Log.e('reqScores');
+				Log.obj(reqScores);
+				var pulledScores = [];
+				var loop = function(index) {
+					if (index < reqScores.length) {
+						Storage.Shouts.getShout(reqScores[index], 
+							function(shout) {
+								pulledScores.push(shout);
+								loop(index + 1);
+							},
+							function() {
+								var json = { 'code': 'error', 'txt': 'Could not get a shout from storage for requested scores.' };
+								respond(json, response, testCallback);
+							}
+						);
+					} else {
+						var sArray = [];
+						for (var key in pulledScores) {
+							var shout = pulledScores[key];
+							sArray.push(Utils.buildShoutJson(shout, userId));
+						}
+						json['scores'] = sArray;
+						callback8();
+					}
+				}
+				loop(0);
+			} else {
+				callback8();
+			}
+		};
+		var callback8 = function() {
+			Log.e(8);
 			respond(json, response, testCallback);
 		};
-		
 		authIsValid(userId, auth, callback);	
 	} else {
 		Log.l('invalid ping');
@@ -650,11 +518,6 @@ var vote = function(clean, response, testCallback) {
 			);
 		};
 		var callback6 = function(addNewVoteResult) {
-			// Begin here Thursday.
-			// We must update User's points
-			// See if they leveled up...
-			// Both shouter and voter.... fuck.
-
 			// WARNING - we hardcoded in level 1 here.
 			Storage.Users.givePoints(userId, Utils.pointsForVote(1), callback7, 
 				function() {
@@ -662,10 +525,6 @@ var vote = function(clean, response, testCallback) {
 					respond(json, response, testCallback);			
 				}
 			);
-
-			
-			//var shout = Utils.makeShoutFromDynamoItem()
-			
 		};
 		var callback7 = function(givePointsResult) {
 			// WARNING - we hardcoded in level 1 here.
@@ -773,6 +632,7 @@ var Tests = (function() {
 		var userId = null;
 		var pw = null;
 		var auth = null;
+		var newShouts = null;
 		var sentShoutId = null;
 
 		var test1 = function(json) {
@@ -827,6 +687,7 @@ var Tests = (function() {
 			fakePost(post, null, test4);
 		};
 
+		// Send a shout.
 		var test4 = function(json) {
 			Log.l(json);
 			var post = {
@@ -843,6 +704,7 @@ var Tests = (function() {
 			fakePost(post, null, test5);
 		};
 
+		// Go receive the shout.
 		var test5 = function(json) {
 			Log.l(json);
 			Assert.equal(json['code'], 'shout_sent');
@@ -859,11 +721,30 @@ var Tests = (function() {
 			fakePost(post, null, test6);
 		};
 
+		// Check its score.
 		var test6 = function(json) {
 			Log.l(json);
-			var newShouts = json['shouts'];
-			var sentShoutId = newShouts[0]['shout_id'];
+			newShouts = json['shouts'];
+			sentShoutId = newShouts[0]['shout_id'];
 			Assert.equal(json['code'], 'ping_ok');
+			var post = {
+				'a': 'ping',
+				'uid': userId,
+				'auth': auth,
+				'lat': 40.00000,
+				'lng': -70.00000,
+				'scores': [sentShoutId]
+			};
+			Log.l('***********POST**************');
+			Log.obj(post);
+			Log.e('fakePost test7 go');
+			fakePost(post, null, test7);
+		};
+
+		// Vote on it.
+		var test7 = function(json) {
+			Log.l(json);
+			Assert.equal(json['scores'][0]['ups'], 1);
 			var post = {
 				'a': 'vote',
 				'uid': userId,
@@ -873,16 +754,33 @@ var Tests = (function() {
 			};
 			Log.l('***********POST**************');
 			Log.obj(post);
-			fakePost(post, null, test7);
+			fakePost(post, null, test8);
 		};
 
-		var test7 = function(json) {
+		// Check its new score.
+		var test8 = function(json) {
 			Log.l(json);
+			Assert.equal(json['code'], 'vote_ok');
+			var post = {
+				'a': 'ping',
+				'uid': userId,
+				'auth': auth,
+				'lat': 40.00000,
+				'lng': -70.00000,
+				'scores': [sentShoutId]
+			};
+			Log.l('***********POST**************');
+			Log.obj(post);
+			fakePost(post, null, test9);
+		};	
+
+		var test9 = function(json) {
+			Log.l(json);
+			Assert.equal(json['scores'][0]['ups'], 2);	
 		};
 
-		var post = {
-			'a': 'create_account'
-		};
+		// Trigger first test...
+		var post = { 'a': 'create_account' };
 		fakePost(post, null, test1);
 	};
 
