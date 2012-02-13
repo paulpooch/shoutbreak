@@ -33,12 +33,12 @@ public class UserLocationOverlay extends MyLocationOverlay {
 	private Shoutbreak _ui;
 	private CustomMapView _map;
 	private int _maxShoutreach;
-	private double _densityOfCurrentLocation;
+	private boolean _isShoutreachRadiusSet;
+	private long _shoutreachRadiusOfCurrentLocation ;
 	private float _maxRadiusMeters;
 	private float _maxRadiusPixels;
 	private double _maxAreaPixels;
 	private boolean _arePixelsCalculated;
-	private boolean _isDensitySet;
 	private GeoPoint _lastUserLocationGeoPoint; // the last user coordinates
 	private int _resizeAdjustmentPixels;// user circle resize, in pixels
 	private boolean _calibrateZoomLevelForRadiusSize; // have we calibrated for the best zoom level yet?
@@ -71,12 +71,12 @@ public class UserLocationOverlay extends MyLocationOverlay {
 		_ui = ui;
 		_map = null;
 		_maxShoutreach = -1;
-		_densityOfCurrentLocation = -1;
+		_shoutreachRadiusOfCurrentLocation = -1;
+		_isShoutreachRadiusSet = false;
 		_maxRadiusMeters = 0;
 		_maxRadiusPixels = C.MIN_RADIUS_PX;
 		_maxAreaPixels = C.MIN_RADIUS_PX * C.MIN_RADIUS_PX * Math.PI;
 		_arePixelsCalculated = false;
-		_isDensitySet = false;
 		_lastUserLocationGeoPoint = null;
 		_resizeAdjustmentPixels = 0;
 		_calibrateZoomLevelForRadiusSize = true;
@@ -164,24 +164,16 @@ public class UserLocationOverlay extends MyLocationOverlay {
 		}
 	}
 	
-	public void handleDensityChange(boolean isDensitySet, double newDensity, int newLevel) {
-		_isDensitySet = isDensitySet;
-		handleRadiusChange(newDensity, newLevel);
-		_ui.canAppTurnOn(true, false);
-	}
-
-	public void handleLevelUp(double newDensity, int newLevel) {
-		handleRadiusChange(newDensity, newLevel);
-	}
-
-	private void handleRadiusChange(double newDensity, int newLevel) {
-		_densityOfCurrentLocation = newDensity;
-		_maxShoutreach = User.calculateShoutreach(newLevel);
-		_maxRadiusMeters = User.calculateRadius(_maxShoutreach, _densityOfCurrentLocation);
+	public void handleShoutreachRadiusChange(boolean isShoutreachRadiusSet, long newShoutreachRadius, int newLevel) {
+		_isShoutreachRadiusSet = isShoutreachRadiusSet;
+		_shoutreachRadiusOfCurrentLocation = newShoutreachRadius;
+		_maxShoutreach = newLevel;
+		_maxRadiusMeters = _shoutreachRadiusOfCurrentLocation;
 		_peopleCount = _maxShoutreach;
 		_arePixelsCalculated = false;
 		_resizeAdjustmentPixels = 0;
 		_calibrateZoomLevelForRadiusSize = true;
+		_ui.canAppTurnOn(true, false);
 	}
 
 	@Override
@@ -257,8 +249,8 @@ public class UserLocationOverlay extends MyLocationOverlay {
 		_arePixelsCalculated = false;
 	}
 
-	public boolean isDensitySet() {
-		return _isDensitySet;
+	public boolean isShoutreachRadiusSet() {
+		return _isShoutreachRadiusSet;
 	}
 
 	public int getPeopleCount() {

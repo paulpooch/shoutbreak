@@ -12,26 +12,20 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.provider.Settings;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
-import android.view.View.OnKeyListener;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageButton;
-// Don't remove this import.  The warning is wrong.
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
-import android.widget.ImageView;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -41,9 +35,9 @@ import co.shoutbreak.R;
 import co.shoutbreak.core.C;
 import co.shoutbreak.core.Colleague;
 import co.shoutbreak.core.Mediator;
+import co.shoutbreak.core.Mediator.ThreadSafeMediator;
 import co.shoutbreak.core.ServiceBridgeInterface;
 import co.shoutbreak.core.ShoutbreakService;
-import co.shoutbreak.core.Mediator.ThreadSafeMediator;
 import co.shoutbreak.core.utils.DialogBuilder;
 import co.shoutbreak.core.utils.Flag;
 import co.shoutbreak.core.utils.SBLog;
@@ -84,7 +78,7 @@ public class Shoutbreak extends MapActivity implements Colleague {
 	private RelativeLayout _inputLayoutRl;
 	private LinearLayout _composeBlanketLl;
 	private RelativeLayout _blanketDataRl;
-	private RelativeLayout _blanketDensityRl;
+	private RelativeLayout _blanketRadiusRl;
 	private RelativeLayout _blanketLocationRl;
 	private RelativeLayout _blanketPowerRl;
 	private ImageButton _powerBtn;
@@ -147,7 +141,7 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		_inputLayoutRl = (RelativeLayout) findViewById(R.id.inputRl);
 		_composeBlanketLl = (LinearLayout) findViewById(R.id.composeBlanketLl);
 		_blanketDataRl = (RelativeLayout) findViewById(R.id.blanketDataRl);
-		_blanketDensityRl = (RelativeLayout) findViewById(R.id.blanketDensityRl);
+		_blanketRadiusRl = (RelativeLayout) findViewById(R.id.blanketDensityRl);
 		_blanketLocationRl = (RelativeLayout) findViewById(R.id.blanketLocationRl);
 		_blanketPowerRl = (RelativeLayout) findViewById(R.id.blanketPowerRl);
 		_composeTabBtn = (ImageButton) findViewById(R.id.composeTabBtn);
@@ -660,19 +654,19 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		}
 
 		if (canTurnOn) {
-			if (!userLocationOverlay.isDensitySet()) {
+			if (!userLocationOverlay.isShoutreachRadiusSet()) {
 				showBlanket = true;
 				if (onUiThread) {
-					_blanketDensityRl.setVisibility(View.VISIBLE);
+					_blanketRadiusRl.setVisibility(View.VISIBLE);
 				}
 			} else {
 				if (onUiThread) {
-					_blanketDensityRl.setVisibility(View.GONE);
+					_blanketRadiusRl.setVisibility(View.GONE);
 				}
 			}
 		} else {
 			if (onUiThread) {
-				_blanketDensityRl.setVisibility(View.GONE);
+				_blanketRadiusRl.setVisibility(View.GONE);
 			}
 		}
 

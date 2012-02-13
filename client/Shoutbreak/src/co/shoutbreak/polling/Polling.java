@@ -79,15 +79,7 @@ public class Polling {
 							try {
 								String code = xPacket.json.getString(C.JSON_CODE);
 								if (code.equals(C.JSON_CODE_PING_OK)) {
-									// If normal ping, introduce delay
-									if (_threadPurpose == C.PURPOSE_LOOP_FROM_UI) {
-										_threadPurpose = C.PURPOSE_LOOP_FROM_UI_DELAYED;
-									}
-									xPacket.purpose = _threadPurpose;
-									xPacket.keyForLife = _keyForLife;
-									_uiThreadHandler.sendMessage(Message.obtain(_uiThreadHandler, C.STATE_IDLE, xPacket));
-								} else if (code.equals(C.JSON_CODE_SHOUTS)) {
-									receiveShouts(message);
+									receivePing(message);
 								} else if (code.equals(C.JSON_CODE_EXPIRED_AUTH)) {
 									expiredAuth(message);
 								} else if (code.equals(C.JSON_CODE_INVALID_UID)) {
@@ -126,8 +118,8 @@ public class Polling {
 		postData.add(C.JSON_LONG, Double.toString(_safeM.getLongitude()));
 		
 		// do we need to pull a density?
-		if (! _safeM.getCellDensity().isSet) {	
-			postData.add(C.JSON_DENSITY, "1");
+		if (! _safeM.getRadiusAtCell().isSet) {	
+			postData.add(C.JSON_RADIUS, "1");
 			//Toast.makeText(_context, "Requesting Density: " + tempCellDensity.cellX + " , " + tempCellDensity.cellY, Toast.LENGTH_SHORT).show();
 		}
 		
@@ -152,16 +144,16 @@ public class Polling {
 		new HttpConnection(httpHandler).post(postData);	
 	}
 	
-	public void receiveShouts(Message message) {
+	public void receivePing(Message message) {
 		SBLog.logic("Polling - receiveShouts");
-		_safeM.resetPollingDelay();
 		CrossThreadPacket xPacket = (CrossThreadPacket)message.obj;
 		try {
-			if (xPacket.json.has(C.JSON_DENSITY)) {
-				double density = (double) xPacket.json.optDouble(C.JSON_DENSITY);
-				_safeM.handleDensityChange(density);
+			if (xPacket.json.has(C.JSON_RADIUS)) {
+				long radius = (long) xPacket.json.optLong(C.JSON_RADIUS);
+				_safeM.handleRadiusChange(radius);
 			}
 			if (xPacket.json.has(C.JSON_SHOUTS)) {
+				_safeM.resetPollingDelay();
 				JSONArray shouts = xPacket.json.getJSONArray(C.JSON_SHOUTS);
 				_safeM.handleShoutsReceived(shouts);
 			}
@@ -169,17 +161,21 @@ public class Polling {
 				JSONArray scores = xPacket.json.getJSONArray(C.JSON_SCORES);
 				_safeM.handleScoresReceived(scores);
 			}
+			if (xPacket.json.has(C.JSON_POINTS)) {
+				int newPoints = (int) xPacket.json.optLong(C.JSON_POINTS);
+				_safeM.handlePointsSync(newPoints);
+			}
 			if (xPacket.json.has(C.JSON_LEVEL_CHANGE)) {
 				JSONObject levelInfo = xPacket.json.getJSONObject(C.JSON_LEVEL_CHANGE);
 				_safeM.handleLevelUp(levelInfo);
 			}
+			// If normal ping, introduce delay
 			if (_threadPurpose == C.PURPOSE_LOOP_FROM_UI) {
 				_threadPurpose = C.PURPOSE_LOOP_FROM_UI_DELAYED;
 			}
 			xPacket.purpose = _threadPurpose;
 			xPacket.keyForLife = _keyForLife;
 			_uiThreadHandler.sendMessage(Message.obtain(_uiThreadHandler, C.STATE_IDLE, xPacket));	
-			
 		} catch (JSONException ex) {
 			ErrorManager.manage(ex);
 		}				

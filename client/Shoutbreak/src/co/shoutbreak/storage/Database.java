@@ -61,8 +61,8 @@ public class Database {
 		@Override
 		public void onCreate(SQLiteDatabase db) {
 			db.execSQL("CREATE TABLE " + C.DB_TABLE_USER_SETTINGS + " (setting_key TEXT, setting_value TEXT)");
-			db.execSQL("CREATE TABLE " + C.DB_TABLE_DENSITY
-					+ " (cell_x INTEGER, cell_y INTEGER, density REAL, last_updated TEXT)");
+			db.execSQL("CREATE TABLE " + C.DB_TABLE_RADIUS
+					+ " (cell_x INTEGER, cell_y INTEGER, radius INTEGER, level INTEGER, last_updated TEXT)");
 			db.execSQL("CREATE TABLE "
 					+ C.DB_TABLE_SHOUTS
 					+ " (shout_id TEXT, timestamp TEXT, time_received INTEGER, txt TEXT, is_outbox INTEGER, re TEXT, vote INTEGER, hit INTEGER, open INTEGER, ups INTEGER, downs INTEGER, pts INTEGER, state_flag INTEGER)");
@@ -73,7 +73,7 @@ public class Database {
 		@Override
 		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 			db.execSQL("DROP TABLE IF EXISTS " + C.DB_TABLE_USER_SETTINGS);
-			db.execSQL("DROP TABLE IF EXISTS " + C.DB_TABLE_DENSITY);
+			db.execSQL("DROP TABLE IF EXISTS " + C.DB_TABLE_RADIUS);
 			db.execSQL("DROP TABLE IF EXISTS " + C.DB_TABLE_SHOUTS);
 			db.execSQL("DROP TABLE IF EXISTS " + C.DB_TABLE_POINTS);
 			db.execSQL("DROP TABLE IF EXISTS " + C.DB_TABLE_NOTICES);

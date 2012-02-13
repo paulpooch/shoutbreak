@@ -23,15 +23,15 @@ public class User {
 	
 	private Database _db;
 	private HashMap<String, String> _userSettings;
-	private CellDensity _cellDensity;
+	private RadiusCacheCell _radiusAtCell;
 	private boolean _passwordExists; // no reason to put actual pw into memory
 	private boolean _userSettingsAreStale;
 	private boolean _levelUpOccured;
 	private String _uid;
 	private String _auth;
 	private int _level;
-	private int _levelBeginPoints;
 	private int _points;
+	private int _levelAt;
 	private int _nextLevelAt;
 	
 	public User(Database db) {
@@ -43,7 +43,7 @@ public class User {
 		_level = 0;
 		_points = 0;
 		_auth = "default"; // we don't have auth yet... just give us nonce
-		_cellDensity = null;
+		_radiusAtCell = null;
 		JSONObject crittercismMetadata = new JSONObject();
 		
 		HashMap<String, String> userSettings = getUserSettings();
@@ -65,10 +65,15 @@ public class User {
 				SBLog.e(TAG, e);
 			}
 		}
+		if (userSettings.containsKey(C.KEY_USER_LEVEL_AT)) {
+			_levelAt = Integer.parseInt(userSettings.get(C.KEY_USER_LEVEL_AT));
+		}
 		if (userSettings.containsKey(C.KEY_USER_NEXT_LEVEL_AT)) {
 			_nextLevelAt = Integer.parseInt(userSettings.get(C.KEY_USER_NEXT_LEVEL_AT));
 		}
-		initializePoints();
+		if (userSettings.containsKey(C.KEY_USER_POINTS)) {
+			_points = Integer.parseInt(userSettings.get(C.KEY_USER_POINTS));
+		}
 		
 		// send metadata to crittercism (asynchronously)
 		Crittercism.setMetadata(crittercismMetadata);
@@ -106,7 +111,7 @@ public class User {
 	}
 	
 	public int getLevelBeginPoints() {
-		return _levelBeginPoints;
+		return _levelAt;
 	}
 	
 	public boolean hasAccount() {
@@ -125,29 +130,33 @@ public class User {
 		return _levelUpOccured;
 	}
 	
+	public int getLevelAt() {
+		return _levelAt;
+	}
+	
 	public int getNextLevelAt() {
 		return _nextLevelAt;
 	}
 	
-	public CellDensity getInitialDensity(CellDensity currentCell) {
-		_cellDensity = getCellDensity(currentCell);
-		return _cellDensity;
+	public RadiusCacheCell getInitialRadiusAtCell(RadiusCacheCell currentCell) {
+		_radiusAtCell = getRadiusAtCellDb(currentCell);
+		return _radiusAtCell;
 	}
 	
-	public CellDensity getDensityAtCell(CellDensity cell) {
+	public RadiusCacheCell getRadiusAtCellDb(RadiusCacheCell cell) {
 		SBLog.method(TAG, "getDensityAtCell()");
-		CellDensity result = new CellDensity();
+		RadiusCacheCell result = new RadiusCacheCell();
 		result.isSet = false;
-		String sql = "SELECT density, last_updated FROM " + C.DB_TABLE_DENSITY + " WHERE cell_x = ? AND cell_y = ? ORDER BY last_updated DESC";
+		String sql = "SELECT radius, last_updated FROM " + C.DB_TABLE_RADIUS + " WHERE cell_x = ? AND cell_y = ? AND level = ? ORDER BY last_updated DESC";
 		Cursor cursor = null;
 		try {
-			cursor = _db.rawQuery(sql, new String[] { Integer.toString(cell.cellX), Integer.toString(cell.cellY) });
+			cursor = _db.rawQuery(sql, new String[] { Integer.toString(cell.cellX), Integer.toString(cell.cellY), Integer.toString(cell.level) });
 			if (cursor.moveToFirst()) {
 				String lastUpdated = cursor.getString(1);
 				long lastUpdatedMillisecs = ISO8601DateParser.parse(lastUpdated).getTime();
 				long diff = (new Date().getTime()) - lastUpdatedMillisecs;
 				if (diff < C.CONFIG_DENSITY_EXPIRATION) {
-					result.density = cursor.getDouble(0);
+					result.radius = cursor.getLong(0);
 					result.isSet = true;
 					return result;
 				}
@@ -186,24 +195,26 @@ public class User {
 		return 0l;
 	}	
 	
-	public synchronized void saveDensity(double density, CellDensity tempCellDensity) {
-		_cellDensity.cellX = tempCellDensity.cellX;
-		_cellDensity.cellY = tempCellDensity.cellY;
-		_cellDensity.density = density;
-		saveCellDensity(_cellDensity);
-		_cellDensity.isSet = true;
+	public synchronized void saveRadiusForCell(long radius, RadiusCacheCell tempCell) {
+		_radiusAtCell.cellX = tempCell.cellX;
+		_radiusAtCell.cellY = tempCell.cellY;
+		_radiusAtCell.level = getLevel();
+		_radiusAtCell.radius = radius;
+		saveRadiusForCellToDb(_radiusAtCell);
+		_radiusAtCell.isSet = true;
 		//setDensityJustChanged(true);
 	}
 	
-	public synchronized Long saveCellDensity(CellDensity cellDensity) {
+	public synchronized Long saveRadiusForCellToDb(RadiusCacheCell radiusAtCell) {
 		SBLog.method(TAG, "saveCellDensity()");
-		String sql = "INSERT INTO " + C.DB_TABLE_DENSITY
-				+ " (cell_x, cell_y, density, last_updated) VALUES (?, ?, ?, ?)";
+		String sql = "INSERT INTO " + C.DB_TABLE_RADIUS
+				+ " (cell_x, cell_y, level, radius, last_updated) VALUES (?, ?, ?, ?, ?)";
 		SQLiteStatement insert = _db.compileStatement(sql);
-		insert.bindLong(1, cellDensity.cellX);
-		insert.bindLong(2, cellDensity.cellY);
-		insert.bindDouble(3, cellDensity.density);
-		insert.bindString(4, Database.getDateAsISO8601String(new Date()));
+		insert.bindLong(1, radiusAtCell.cellX);
+		insert.bindLong(2, radiusAtCell.cellY);
+		insert.bindLong(3, radiusAtCell.level);
+		insert.bindDouble(4, radiusAtCell.radius);
+		insert.bindString(5, Database.getDateAsISO8601String(new Date()));
 		try {
 			return insert.executeInsert();
 		} catch (Exception ex) {
@@ -214,11 +225,16 @@ public class User {
 		return 0l;
 	}
 	
-	public synchronized void levelUp(int newLevel, int newPoints, int nextLevelAt) {
+	public synchronized void levelUp(int newLevel, int levelAt, int nextLevelAt) {
 		setLevel(newLevel);
+		setLevelAt(levelAt);
 		setNextLevelAt(nextLevelAt);
-		resetPointsTotalAt(newPoints);
 		_levelUpOccured = true;
+	}
+	
+	public synchronized void setPoints(int currentPoints) {
+		String sPoints = Integer.toString(currentPoints);
+		saveUserSetting(C.KEY_USER_POINTS, sPoints);
 	}
 	
 	private synchronized void setLevel(int level) {
@@ -227,69 +243,50 @@ public class User {
 		_level = level;
 	}
 	
+	private synchronized void setLevelAt(int levelAt) {
+		String sLevelAt = Integer.toString(levelAt);
+		saveUserSetting(C.KEY_USER_LEVEL_AT, sLevelAt);
+		_levelAt = levelAt;
+	}
+	
 	private synchronized void setNextLevelAt(int nextLevelAt) {
 		String sNextLevelAt = Integer.toString(nextLevelAt);
 		saveUserSetting(C.KEY_USER_NEXT_LEVEL_AT, sNextLevelAt);
 		_nextLevelAt = nextLevelAt;
 	}
 	
-	// TODO: implement this for when level changes
-	private synchronized void resetPointsTotalAt(int points) {
-		//String sPoints = Integer.toString(points);
-		//_db.saveUserSetting(C.KEY_USER_POINTS, sPoints);
-		savePoints(C.POINTS_LEVEL_CHANGE, points);
-		initializePoints();
-	}
+//	// TODO: implement this for when level changes
+//	private synchronized void resetPointsTotalAt(int points) {
+//		//String sPoints = Integer.toString(points);
+//		//_db.saveUserSetting(C.KEY_USER_POINTS, sPoints);
+//		savePoints(C.POINTS_LEVEL_CHANGE, points);
+//		initializePoints();
+//	}
 	
-	public synchronized CellDensity getCellDensity(CellDensity currentCell) {
-		SBLog.method(TAG, "getCellDensity()");
+	public synchronized RadiusCacheCell getRadiusAtCell(RadiusCacheCell currentCell) {
+		SBLog.method(TAG, "getRadiusAtCell()");
 		
-		if (_cellDensity != null && _cellDensity.cellX == currentCell.cellX && _cellDensity.cellY == currentCell.cellY) {
+		if (_radiusAtCell != null && _radiusAtCell.level == _level && _radiusAtCell.cellX == currentCell.cellX && _radiusAtCell.cellY == currentCell.cellY) {
 			// Are we still in the same cell?
-			return _cellDensity;
+			return _radiusAtCell;
 		} else {
-			// Different cell, let's make a new CellDensity object
-			_cellDensity = new CellDensity();
-			_cellDensity.cellX = currentCell.cellX;
-			_cellDensity.cellY = currentCell.cellY;
+			// Different cell, let's make a new RadiusCacheCell object
+			_radiusAtCell = new RadiusCacheCell();
+			_radiusAtCell.cellX = _radiusAtCell.cellX;
+			_radiusAtCell.cellY = _radiusAtCell.cellY;
+			_radiusAtCell.level = _level;
 		
 			// Let's see if the database has a value for this cell
-			CellDensity tempCellDensity = getDensityAtCell(_cellDensity);
-			if (tempCellDensity.isSet) {
-				_cellDensity.density = tempCellDensity.density;
-				_cellDensity.isSet = true;
+			RadiusCacheCell tempCell = getRadiusAtCellDb(_radiusAtCell);
+			if (tempCell.isSet) {
+				_radiusAtCell.radius = tempCell.radius;
+				_radiusAtCell.isSet = true;
 			}
 			
 			// This will only be isSet if database had a usable value
-			return _cellDensity;
+			return _radiusAtCell;
 		}
 	}
-	
-	/* OLD VERSION
-	public synchronized CellDensity getCellDensity(CellDensity currentCell) {
-		SBLog.i(TAG, "getCellDensity()");
-		if (_cellDensity == null) {
-			_cellDensity = new CellDensity();
-		} else {
-			// If _cellDensity exists, see if it's still valid.
-			CellDensity oldCellDensity = _cellDensity;
-			CellDensity tempCellDensity = currentCell;
-			_cellDensity.cellX = tempCellDensity.cellX;
-			_cellDensity.cellY = tempCellDensity.cellY;
-			if (_cellDensity.isSet && _cellDensity.cellX == oldCellDensity.cellX && _cellDensity.cellY == oldCellDensity.cellY) {
-				// We're still in the same cell so return this.
-				return _cellDensity;
-			}
-		}
-		// Otherwise we'll see if DB has a cached result. If not, isSet will be false.
-		CellDensity tempCellDensity = getDensityAtCell(_cellDensity);
-		if (tempCellDensity.isSet) {
-			_cellDensity.density = tempCellDensity.density;
-			_cellDensity.isSet = true;
-		}
-		return _cellDensity;
-	}
-	*/
 	
 	public synchronized void updateAuth(String nonce) {
 		String pw = "";
@@ -323,72 +320,45 @@ public class User {
 		}
 		return _userSettings;
 	}
-	
-	private synchronized void initializePoints() {
-		_points = calculateUsersPoints();
-		_levelBeginPoints = calculateLevelBeginPoints();
-	}
-	
-	public synchronized int calculateLevelBeginPoints() {
-		int result = 0;
-		String sql = "SELECT value, timestamp FROM " + C.DB_TABLE_POINTS + " WHERE type = " + C.POINTS_LEVEL_CHANGE + " ORDER BY timestamp DESC LIMIT 1";
-		Cursor cursor = null;
-		try {
-			cursor = _db.rawQuery(sql, null);
-			if (cursor.moveToFirst()) {
-				result = cursor.getInt(0);
-			}
-			cursor.close();
-		} catch (Exception ex) {
-			ErrorManager.manage(ex);
-		} finally {
-			if (cursor != null && !cursor.isClosed()) {
-				cursor.close();
-			}
-		}
-		return result;
-	}
-	
-	public synchronized int calculateUsersPoints() {
-		SBLog.method(TAG, "calculateUserPoints()");
-		String sql = "SELECT value, timestamp FROM " + C.DB_TABLE_POINTS + " WHERE type = ? ORDER BY timestamp DESC";
-		Cursor cursor = null;
-		String cutoffDate = null;
-		int points = 0;
-		try {
-			
-			// Get most recent level_change info
-			cursor = _db.rawQuery(sql, new String[] { Integer.toString(C.POINTS_LEVEL_CHANGE) });
-			if (cursor.moveToFirst()) {
-				points = cursor.getInt(0);
-				cutoffDate = cursor.getString(1);
-			}
-			cursor.close();
-			
-			// Get all valid points
-			if (cutoffDate != null) {
-				String sql2 = "SELECT value FROM " + C.DB_TABLE_POINTS + " WHERE timestamp > ?";
-				cursor = _db.rawQuery(sql2, new String[] { cutoffDate });
-			} else {
-				String sql2 = "SELECT value FROM " + C.DB_TABLE_POINTS;
-				cursor = _db.rawQuery(sql2, null);
-			}	
-			while (cursor.moveToNext()) {
-				points += cursor.getInt(0);
-			}
-		
-		} catch (Exception ex) {
-			ErrorManager.manage(ex);
-			points = 0;
-		} finally {
-			if (cursor != null && !cursor.isClosed()) {
-				cursor.close();
-			}
-		}
-		return points;	
-	}
-	
 
+//	public synchronized int calculateUsersPoints() {
+//		SBLog.method(TAG, "calculateUserPoints()");
+//		String sql = "SELECT value, timestamp FROM " + C.DB_TABLE_POINTS + " WHERE type = ? ORDER BY timestamp DESC";
+//		Cursor cursor = null;
+//		String cutoffDate = null;
+//		int points = 0;
+//		try {
+//			
+//			// Get most recent level_change info
+//			cursor = _db.rawQuery(sql, new String[] { Integer.toString(C.POINTS_LEVEL_CHANGE) });
+//			if (cursor.moveToFirst()) {
+//				points = cursor.getInt(0);
+//				cutoffDate = cursor.getString(1);
+//			}
+//			cursor.close();
+//			
+//			// Get all valid points
+//			if (cutoffDate != null) {
+//				String sql2 = "SELECT value FROM " + C.DB_TABLE_POINTS + " WHERE timestamp > ?";
+//				cursor = _db.rawQuery(sql2, new String[] { cutoffDate });
+//			} else {
+//				String sql2 = "SELECT value FROM " + C.DB_TABLE_POINTS;
+//				cursor = _db.rawQuery(sql2, null);
+//			}	
+//			while (cursor.moveToNext()) {
+//				points += cursor.getInt(0);
+//			}
+//		
+//		} catch (Exception ex) {
+//			ErrorManager.manage(ex);
+//			points = 0;
+//		} finally {
+//			if (cursor != null && !cursor.isClosed()) {
+//				cursor.close();
+//			}
+//		}
+//		return points;	
+//	}
 	
 	public synchronized Long saveUserSetting(String key, String value) {
 		SBLog.method(TAG, "saveUserSetting()");
@@ -420,115 +390,4 @@ public class User {
 		_uid = uid;
 	}
 	
-	
-	/*
-	private ShoutbreakService _service;
-	private TelephonyManager _tm;
-	private Database _db;
-	private CellDensity _cellDensity;
-	private LocationTracker _locationTracker;
-	protected Inbox _inbox;
-	private boolean _levelUpOccured; //This means level up.
-	//private boolean _densityJustChanged;
-
-	private String _auth;
-	private boolean _passwordExists; // no reason to put actual pw into memory
-	private int _level;
-	private int _points;
-	private int _nextLevelAt;
-	
-	public User(ShoutbreakService service, StateManager stateManager, LocationTracker locationTracker) {
-		_service = service;
-		
-		_tm = (TelephonyManager) service.getSystemService(Context.TELEPHONY_SERVICE);
-		_db = new Database(_service);
-		_locationTracker = locationTracker;
-		_inbox = new Inbox(_service, _db, this);
-		_passwordExists = false;
-		_level = 0;
-		_points = 0;
-		_auth = "default"; // we don't have auth yet... just give us nonce
-		HashMap<String, String> userSettings = _db.getUserSettings();
-		if (userSettings.containsKey(C.KEY_USER_PW)) {
-			_passwordExists = true;
-		}
-		if (userSettings.containsKey(C.KEY_USER_ID)) {
-			_uid = userSettings.get(C.KEY_USER_ID);
-		}
-		if (userSettings.containsKey(C.KEY_USER_LEVEL)) {
-			_level = Integer.parseInt(userSettings.get(C.KEY_USER_LEVEL));
-		}
-		if (userSettings.containsKey(C.KEY_USER_NEXT_LEVEL_AT)) {
-			_nextLevelAt = Integer.parseInt(userSettings.get(C.KEY_USER_NEXT_LEVEL_AT));
-		}
-		initializePoints();
-		_cellDensity = getCellDensity();
-		
-		// initialize user state
-		StateEvent e = new StateEvent();
-		e.locationServicesChanged = true;
-		e.levelChanged = true;
-		e.pointsChanged = true;
-		e.inboxChanged = true;
-		e.densityChanged = true;
-		_stateManager.fireStateEvent(e);
-		
-	}
-	
-	public LocationTracker getLocationTracker() {
-		return _locationTracker;
-	}
-	
-	public double getLatitude() {
-		return _locationTracker.getLatitude();
-	}
-
-	public double getLongitude() {
-		return _locationTracker.getLongitude();
-	}
-
-	public Inbox getInbox() {
-		return _inbox;
-	}
-
-	public String getAuth() {
-		return _auth;
-	}
-	
-
-	
-	public void destroy() {
-		_stateManager.deleteObserver(this);
-		_stateManager = null;
-		_service = null;
-	}
-
-	public void update(Observable observable, Object data) {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	// STATICS ////////////////////////////////////////////////////////////////
-
-	public static float calculateRadius(int power, double density) {
-		int maxPeople = power * C.CONFIG_PEOPLE_PER_LEVEL;
-		double area = maxPeople / density;
-		float radius = (float) Math.sqrt(area / Math.PI);
-		return radius;
-	}
-
-	public static void setBooleanPreference(Context context, String key, boolean val) {
-		SharedPreferences settings = context.getSharedPreferences(C.PREFS_NAMESPACE, Context.MODE_PRIVATE);
-		SharedPreferences.Editor editor = settings.edit();
-		editor.putBoolean(key, val);
-		editor.commit();
-	}
-
-	public static boolean getBooleanPreference(Context context, String key, boolean defaultReturnVal) {
-		SharedPreferences settings = context.getSharedPreferences(C.PREFS_NAMESPACE, Context.MODE_PRIVATE);
-		boolean val = settings.getBoolean(key, defaultReturnVal);
-		return val;
-	}
-	
-	*/
 }

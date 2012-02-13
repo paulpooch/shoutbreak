@@ -23,12 +23,6 @@ public class UiOffGateway implements IUiGateway {
 	public void handleCreateAccountFailed() {}
 
 	@Override
-	public void handleDensityChange(boolean isDensitySet, double newDensity, int level) {}
-
-	@Override
-	public void handleLevelUp(double cellDensity, int newLevel) {}
-
-	@Override
 	public void handlePointsChange(int newPoints) {}
 
 	@Override
@@ -121,5 +115,11 @@ public class UiOffGateway implements IUiGateway {
 	
 	@Override
 	public void loadUserSignature() {}
+
+	@Override
+	public void handleRadiusChange(boolean isRadiusSet, long newRadius, int level) {}
+
+	@Override
+	public void handleLevelUp(long cellRadius, int newLevel) {}
 
 }

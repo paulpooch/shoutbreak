@@ -16,8 +16,8 @@ public interface IUiGateway {
 	public void handleServerAnnouncementCode(String text);
 	public void handleShoutSent();
 	public void handleShoutFailed();
-	public void handleDensityChange(boolean isDensitySet, double newDensity, int level);
-	public void handleLevelUp(double cellDensity, int newLevel);
+	public void handleRadiusChange(boolean isRadiusSet, long newRadius, int level);
+	public void handleLevelUp(long cellRadius, int newLevel);
 	public void handlePointsChange(int newPoints);
 	public void handleInvalidServerResponse();
 	public void handleScoreDetailsRequest(int ups, int downs, int score);		

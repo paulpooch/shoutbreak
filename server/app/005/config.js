@@ -1,0 +1,57 @@
+////////////////////////////////////////////////////////////////////////////////
+// 
+// CONFIG
+//
+////////////////////////////////////////////////////////////////////////////////
+module.exports = (function() {
+
+	// Settings
+	this.USER_INITIAL_POINTS = 400;
+	this.USER_INITIAL_LEVEL = 5;
+	this.USER_INITIAL_PENDING_LEVEL_UP = 5;
+	this.PASSWORD_LENGTH = 32;
+	this.PAD_COORDS = 8;
+	this.MULTIPLY_COORDS = 100000;
+	this.OFFSET_LAT = 90;
+	this.OFFSET_LNG = 180;
+	this.SHOUTREACH_BUFFER_METERS = 200;
+	this.SHOUTREACH_LIMIT = 500;
+	this.SHOUT_LENGTH_LIMIT = 256;
+	this.SHOUT_IDLE_TIMEOUT = 60; // minutes
+	this.SIMPLEDB_MAX_NUMBER_OF_ITEMS = 2500;
+	this.SHOUTBREAK_SCORING_WORK_AT_LEVEL_1 = 10;
+	this.SHOUTBREAK_SCORING_COEFFECIENT = 1.09;
+	 
+	// AWS
+	this.CACHE_URL = 'cache-001.ardkb4.0001.use1.cache.amazonaws.com:11211',
+	this.DYNAMODB_CREDENTIALS = {
+		AccessKeyId:'AKIAINHDEIZ3QVSHQ3PA', 
+		SecretKey: 	'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'
+	};
+	this.SIMPLEDB_CREDENTIALS = {
+		keyid: 		'AKIAINHDEIZ3QVSHQ3PA', 
+		secret: 	'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'
+	};
+	
+	// Cache Keys
+	this.PRE_CREATE_ACCOUNT_USER_TEMP_ID = 		'tempuserid';
+	this.TIMEOUT_CREATE_ACCOUNT_USER_TEMP_ID = 	300; // 5 minutes
+	this.PRE_ACTIVE_AUTH = 						'activeauth';
+	this.TIMEOUT_ACTIVE_AUTH = 					1800; // 30 minutes
+	this.PRE_USER =								'user';
+	this.TIMEOUT_USER =							1800; // 30 minutes
+	this.PRE_SHOUT =							'shout';
+	this.TIMEOUT_SHOUT =						1800; // 30 minutes
+	this.PRE_INBOX =							'inbox';
+	this.TIMEOUT_INBOX =						1800; // 30 minutes
+	this.PRE_VOTE =								'vote';
+	this.TIMEOUT_VOTE = 						300; // 5 minutes
+	
+	// Tables
+	this.TABLE_USERS = 'USERS';
+	this.TABLE_LIVE = 'LIVE';
+	this.TABLE_SHOUTS = 'SHOUTS';
+	this.TABLE_VOTES = 'VOTES';
+
+	return this;
+})();

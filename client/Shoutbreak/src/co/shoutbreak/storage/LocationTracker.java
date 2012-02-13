@@ -89,28 +89,28 @@ public class LocationTracker implements LocationListener, Colleague {
 		return ((double)Math.round(_location.getLongitude() * 100000)) / 100000;
 	}
 	
-	public CellDensity getCurrentCell() {
-		CellDensity cellDensity = new CellDensity();
+	public RadiusCacheCell getCurrentCell() {
+		RadiusCacheCell currentCell = new RadiusCacheCell();
 		double lat;
 		double lng;
 		lat = getLatitude() + 90;
 		lng = getLongitude() + 180;
 		lat = lat * 60 * 6;
 		lng = lng * 60 * 6;
-		cellDensity.cellY = (int) Math.floor(lat);
-		cellDensity.cellX = (int) Math.floor(lng);
+		currentCell.cellY = (int) Math.floor(lat);
+		currentCell.cellX = (int) Math.floor(lng);
 								
 		// GRID WRAPPING
 		// X must be between 0 & 129,599
-		if (cellDensity.cellX == C.CONFIG_DENSITY_GRID_X_GRANULARITY) {
-			cellDensity.cellX = 0;
+		if (currentCell.cellX == C.CONFIG_DENSITY_GRID_X_GRANULARITY) {
+			currentCell.cellX = 0;
 		}
 		// Y must be between 0 & 64,799
-		if (cellDensity.cellY == C.CONFIG_DENSITY_GRID_Y_GRANULARITY) {
-			cellDensity.cellY = 0;
+		if (currentCell.cellY == C.CONFIG_DENSITY_GRID_Y_GRANULARITY) {
+			currentCell.cellY = 0;
 		}		
 		
-		return cellDensity;
+		return currentCell;
 	}
 
 	 // http://developer.android.com/guide/topics/location/obtaining-user-location.html

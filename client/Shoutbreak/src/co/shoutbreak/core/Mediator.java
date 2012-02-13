@@ -20,7 +20,6 @@ import android.graphics.drawable.AnimationDrawable;
 import android.net.ConnectivityManager;
 import android.os.Message;
 import android.os.SystemClock;
-import android.text.Editable;
 import android.text.InputFilter;
 import android.view.View;
 import android.widget.Toast;
@@ -35,11 +34,11 @@ import co.shoutbreak.core.utils.SBLog;
 import co.shoutbreak.polling.CrossThreadPacket;
 import co.shoutbreak.polling.PollingAlgorithm;
 import co.shoutbreak.polling.ThreadLauncher;
-import co.shoutbreak.storage.CellDensity;
 import co.shoutbreak.storage.Database;
 import co.shoutbreak.storage.DeviceInformation;
 import co.shoutbreak.storage.LocationTracker;
 import co.shoutbreak.storage.PreferenceManager;
+import co.shoutbreak.storage.RadiusCacheCell;
 import co.shoutbreak.storage.Storage;
 import co.shoutbreak.storage.User;
 import co.shoutbreak.storage.inbox.InboxListViewAdapter;
@@ -356,7 +355,7 @@ public class Mediator {
 		if (_isUIAlive.get()) {
 			_uiGateway.onLocationEnabled();
 		}
-		_storage.initializeDensity(getCurrentCell());
+		_storage.initializeRadiusAtCell(getCurrentCell());
 		startPolling(true);
 	}
 
@@ -412,7 +411,7 @@ public class Mediator {
 		return _service.getSystemService(name);
 	}
 
-	public CellDensity getCurrentCell() {
+	public RadiusCacheCell getCurrentCell() {
 		// TODO: should this be moved to ThreadSafeMediator?
 		SBLog.method(TAG, "getCurrentCell()");
 		if (!_isLocationEnabled.get()) {
@@ -527,11 +526,11 @@ public class Mediator {
 			}
 		}
 
-		public void handleDensityChange(double density) {
+		public void handleRadiusChange(long radius) {
 			SBLog.method(TAG, "densityChange()");
 			// Note: The order in these matters.
-			_storage.handleDensityChange(density, getCurrentCell());
-			_uiGateway.handleDensityChange(true, density, _storage.getUserLevel());
+			_storage.handleRadiusChange(radius, getCurrentCell());
+			_uiGateway.handleRadiusChange(true, radius, _storage.getUserLevel());
 		}
 
 		public void handleScoresReceived(JSONArray scores) {
@@ -543,14 +542,18 @@ public class Mediator {
 			SBLog.method(TAG, "handleLevelUp()");
 			try {
 				int newLevel = (int) levelInfo.getLong(C.JSON_LEVEL);
-				int newPoints = (int) levelInfo.getLong(C.JSON_POINTS);
+				int levelAt = (int) levelInfo.getLong(C.JSON_LEVEL_AT);
 				int nextLevelAt = (int) levelInfo.getLong(C.JSON_NEXT_LEVEL_AT);
-				_storage.handleLevelUp(newLevel, newPoints, nextLevelAt);
-				_uiGateway.handleLevelUp(_storage.getCellDensity(getCurrentCell()).density, _storage.getUserLevel());
-				_uiGateway.handlePointsChange(_storage.getUserPoints());
+				_storage.handleLevelUp(newLevel, levelAt, nextLevelAt);
+				_uiGateway.handleLevelUp(_storage.getRadiusAtCell(getCurrentCell()).radius, _storage.getUserLevel());
 			} catch (JSONException e) {
 				SBLog.error(TAG, e.getMessage());
 			}
+		}
+		
+		public void handlePointsSync(int currentPoints) {
+			_storage.handlePointsSync(currentPoints);
+			_uiGateway.handlePointsChange(_storage.getUserPoints());
 		}
 
 		public void handleShoutSent() {
@@ -662,9 +665,9 @@ public class Mediator {
 			return _storage.getUserAuth();
 		}
 
-		public CellDensity getCellDensity() {
+		public RadiusCacheCell getRadiusAtCell() {
 			SBLog.method(TAG, "getCellDensity()");
-			return _storage.getCellDensity(getCurrentCell());
+			return _storage.getRadiusAtCell(getCurrentCell());
 		}
 
 		public double getLongitude() {
@@ -753,20 +756,19 @@ public class Mediator {
 			handleInvalidServerResponse();
 		}
 
-		public void handleDensityChange(boolean isDensitySet, double newDensity, int level) {
-			SBLog.method(TAG, "handleDensityChange()");
-			_ui.userLocationOverlay.handleDensityChange(isDensitySet, newDensity, level);
+		public void handleRadiusChange(boolean isRadiusSet, long newRadius, int level) {
+			SBLog.method(TAG, "handleRadiusChange()");
+			_ui.userLocationOverlay.handleShoutreachRadiusChange(isRadiusSet, newRadius, level);
 		}
 
-		public void handleLevelUp(double cellDensity, int newLevel) {
+		public void handleLevelUp(long cellRadius, int newLevel) {
 			SBLog.method(TAG, "handleLevelUp()");
-			_ui.userLocationOverlay.handleLevelUp(cellDensity, newLevel);
-			_uiGateway.refreshProfile(_storage.getUserLevel(), _storage.getUserLevelBeginPoints(), _storage.getUserPoints(), _storage.getUserNextLevelAt());
+			_uiGateway.refreshProfile(_storage.getUserLevel(), _storage.getUserLevelAt(), _storage.getUserPoints(), _storage.getUserNextLevelAt());
 		}
 
 		public void handlePointsChange(int newPoints) {
 			SBLog.method(TAG, "handlePointsChange()");
-			_uiGateway.refreshProfile(_storage.getUserLevel(), _storage.getUserLevelBeginPoints(), _storage.getUserPoints(), _storage.getUserNextLevelAt());
+			_uiGateway.refreshProfile(_storage.getUserLevel(), _storage.getUserLevelAt(), _storage.getUserPoints(), _storage.getUserNextLevelAt());
 		}
 
 		public void handleInvalidServerResponse() {
@@ -792,7 +794,7 @@ public class Mediator {
 		public void refreshUiComponents() {
 			// TODO: make inbox & profile more like noticeTabSystem
 			_storage.refreshUiComponents();
-			refreshProfile(_storage.getUserLevel(), _storage.getUserLevelBeginPoints(), _storage.getUserPoints(), _storage.getUserNextLevelAt());
+			refreshProfile(_storage.getUserLevel(), _storage.getUserLevelAt(), _storage.getUserPoints(), _storage.getUserNextLevelAt());
 			loadUserSignature();	
 		}
 

@@ -52,13 +52,17 @@ public class Storage implements Colleague {
 		_noticeTabSystem.createNotice(C.NOTICE_POINTS_SHOUT, pointsValue, "Your shout earned " + pointsValue + " " + strPoints + ".", shoutId);
 	}
 	
-	public void handleDensityChange(double density, CellDensity currentCell) {
-		_user.saveDensity(density, currentCell);
+	public void handlePointsSync(int currentPoints) {
+		_user.setPoints(currentPoints);
 	}
 	
-	public void handleLevelUp(int newLevel, int newPoints, int nextLevelAt) {
-		_user.levelUp(newLevel, newPoints, nextLevelAt);
-		_noticeTabSystem.createNotice(C.NOTICE_LEVEL_UP, newLevel, C.STRING_LEVEL_UP_1 + getUserLevel() + "\n" + C.STRING_LEVEL_UP_2 + (User.calculateShoutreach(getUserLevel())) + " people.", null);			
+	public void handleRadiusChange(long radius, RadiusCacheCell currentCell) {
+		_user.saveRadiusForCell(radius, currentCell);
+	}
+	
+	public void handleLevelUp(int newLevel, int levelAt, int nextLevelAt) {
+		_user.levelUp(newLevel, levelAt, nextLevelAt);
+		_noticeTabSystem.createNotice(C.NOTICE_LEVEL_UP, newLevel, "Your shoutreach was increased to " + getUserLevel() + " people!", null);			
 	}
 	
 	public void handleAccountCreated(String uid, String password) {
@@ -164,25 +168,25 @@ public class Storage implements Colleague {
 		return _user.getPoints();
 	}
 	
-	public int getUserLevelBeginPoints() {
-		return _user.getLevelBeginPoints();
-	}
-	
 	public int getUserLevel() {
 		return _user.getLevel();
 	}
 	
+	public int getUserLevelAt() {
+		return _user.getLevelAt();
+	}
+		
 	public int getUserNextLevelAt() {
 		return _user.getNextLevelAt();
 	}
 	
-	public void initializeDensity(CellDensity currentCell) {
-		CellDensity cellDensity = _user.getInitialDensity(currentCell);
-		_m.getUiGateway().handleDensityChange(cellDensity.isSet, cellDensity.density, getUserLevel());
+	public void initializeRadiusAtCell(RadiusCacheCell currentCell) {
+		RadiusCacheCell radiusAtCell = _user.getInitialRadiusAtCell(currentCell);
+		_m.getUiGateway().handleRadiusChange(radiusAtCell.isSet, radiusAtCell.radius, getUserLevel());
 	}
 	
-	public CellDensity getCellDensity(CellDensity currentCell) {
-		return _user.getCellDensity(currentCell);
+	public RadiusCacheCell getRadiusAtCell(RadiusCacheCell currentCell) {
+		return _user.getRadiusAtCell(currentCell);
 	}
 	
 	public boolean getUserHasAccount() {

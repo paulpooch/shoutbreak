@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="maps_api_key">0D9gVcQxZ-ihLwDWC3oj--dfHUntK8OOe7a2L9g</string>
+    <string name="maps_api_key">0D9gVcQxZ-ig9gNLIiSpWtGk6B8dWdXj_3eSfSQ</string>
     <string name="appTitle">Shoutbreak</string>
     <string name="powerBlanket">Power switch must be on in order to send &amp; receive shouts.</string>
     <string name="dataBlanket">You must have data service to shout.</string>
     <string name="locationBlanket">You must enable "Google location services" to send shouts.</string>
-    <string name="densityBlanket">Please wait while we determine the user density of your location.</string>
+    <string name="densityBlanket">Please wait while we determine the nearest users.</string>
     <string name="enablePower">Turn On Power Switch</string>
     <string name="enableLocation">Enable Google
 Location Services</string>
@@ -28,7 +28,7 @@ Want to check our site for a downtime notice?</string>
 
 </resources><!--
 john's debug         0lLmkCXVk9yD5LpfqqmAw9kMr2orIej8Y3aw2Dw
-paul's desktop debug 0D9gVcQxZ-ihLwDWC3oj- -dfHUntK8OOe7a2L9g REMOVE THE SPACE
+paul's desktop debug 0D9gVcQxZ-ig9gNLIiSpWtGk6B8dWdXj_3eSfSQ
 paul's laptop debug  0D9gVcQxZ-ihbS2t_012bUHYWdS21lRVuJb28Wg
 release              0D9gVcQxZ-igCC4AmcJ1sNuzauE1tUQ74OO0dXA
 -->

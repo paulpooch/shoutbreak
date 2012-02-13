@@ -6,7 +6,7 @@ public class C {
 	// CONFIG /////////////////////////////////////////////////////////////////
 	// Match this to the $version in index.php
 	public static final boolean CONFIG_ADMIN_SUPERPOWERS = false;
-	public static final String CONFIG_SERVER_ADDRESS = "http://app.shoutbreak.co/005/";
+	public static final String CONFIG_SERVER_ADDRESS = "http://23.21.234.1/005/";
 	public static final int CONFIG_HTTP_TIMEOUT = 25000;
 	public static final int CONFIG_DROPPED_PACKET_LIMIT = 5;
 	public static final int CONFIG_NOTICES_DISPLAYED_IN_TAB = 50;
@@ -69,7 +69,7 @@ public class C {
 	public static final String JSON_ACTION = "a";
 	public static final String JSON_ACTION_CREATE_ACCOUNT = "create_account";
 	public static final String JSON_ACTION_SHOUT = "shout";
-	public static final String JSON_ACTION_USER_PING = "user_ping";
+	public static final String JSON_ACTION_USER_PING = "ping";
 	public static final String JSON_ACTION_VOTE = "vote";
 	
 	public static final String JSON_CODE = "code";
@@ -85,11 +85,12 @@ public class C {
 	public static final String JSON_ANDROID_ID = "android_id";
 	public static final String JSON_AUTH = "auth";
 	public static final String JSON_CARRIER_NAME = "carrier";
-	public static final String JSON_DENSITY = "rho";
+	public static final String JSON_RADIUS = "radius";
 	public static final String JSON_DEVICE_ID = "device_id";
 	public static final String JSON_LAT = "lat";
 	public static final String JSON_LEVEL = "lvl";
-	public static final String JSON_LEVEL_CHANGE = "level_change";
+	public static final String JSON_LEVEL_AT = "lvl_at";
+	public static final String JSON_LEVEL_CHANGE = "lvl_change";
 	public static final String JSON_LONG = "lng";
 	public static final String JSON_NEXT_LEVEL_AT = "next_lvl_at";
 	public static final String JSON_NONCE = "nonce";
@@ -145,10 +146,10 @@ public class C {
 	public static final int PURPOSE_DEATH = 62; // don't repeat this - just die
 	
 	// DATABASE ///////////////////////////////////////////////////////////////
-	public static final int DB_VERSION = 5;
+	public static final int DB_VERSION = 7;
 
 	public static final String DB_NAME = "sbdb";
-	public static final String DB_TABLE_DENSITY = "DENSITY";
+	public static final String DB_TABLE_RADIUS = "RADIUS";
 	public static final String DB_TABLE_SHOUTS = "SHOUTS";
 	public static final String DB_TABLE_POINTS = "POINTS";
 	public static final String DB_TABLE_NOTICES = "NOTICES";
@@ -156,7 +157,9 @@ public class C {
 	
 	public static final String KEY_USER_ID = "user_id";
 	public static final String KEY_USER_LEVEL = "user_level";
+	public static final String KEY_USER_LEVEL_AT = "user_next_level_at";
 	public static final String KEY_USER_NEXT_LEVEL_AT = "user_next_level_at";
+	public static final String KEY_USER_POINTS = "user_points"; 
 	public static final String KEY_USER_PW = "user_pw";
 	
 	// POINTS TYPES ///////////////////////////////////////////////////////////

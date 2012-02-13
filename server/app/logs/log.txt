@@ -1,0 +1,345 @@
+[Mon Feb 13 2012 03:45:33 GMT+0000 (UTC)] DEBUG Log initiated.
+[Mon Feb 13 2012 03:45:33 GMT+0000 (UTC)] DEBUG Server launched.
+[Mon Feb 13 2012 03:46:12 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Mon Feb 13 2012 03:46:12 GMT+0000 (UTC)] DEBUG { a: 'create_account' }
+[Mon Feb 13 2012 03:46:12 GMT+0000 (UTC)] DEBUG { a: 'create_account' }
+[Mon Feb 13 2012 03:46:12 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Mon Feb 13 2012 03:46:12 GMT+0000 (UTC)] DEBUG { code: 'create_account_0',
+  uid: '00481400-3303-4c2c-b921-e3ed3405d62d' }
+[Mon Feb 13 2012 03:46:12 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Mon Feb 13 2012 03:46:12 GMT+0000 (UTC)] DEBUG { a: 'create_account',
+  uid: '00481400-3303-4c2c-b921-e3ed3405d62d',
+  android_id: 'e4c25ac3061c389f',
+  device_id: 'A0000022ECB30A',
+  phone_num: '2014033628',
+  carrier: 'Verizon Wireless' }
+[Mon Feb 13 2012 03:46:12 GMT+0000 (UTC)] DEBUG { a: 'create_account',
+  uid: '00481400-3303-4c2c-b921-e3ed3405d62d',
+  android_id: 'e4c25ac3061c389f',
+  device_id: 'A0000022ECB30A',
+  phone_num: 2014033628,
+  carrier: 'Verizon Wireless' }
+[Mon Feb 13 2012 03:46:12 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Mon Feb 13 2012 03:46:12 GMT+0000 (UTC)] DEBUG { code: 'create_account_1',
+  pw: 'c@yUrpb1db/rEV4VX9_*r7B6XZz+C98(' }
+[Mon Feb 13 2012 03:46:13 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Mon Feb 13 2012 03:46:13 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: '00481400-3303-4c2c-b921-e3ed3405d62d',
+  auth: 'default',
+  lat: '40.74148',
+  lng: '-74.03392',
+  radius: '1' }
+[Mon Feb 13 2012 03:46:13 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: '00481400-3303-4c2c-b921-e3ed3405d62d',
+  auth: 'default',
+  lat: 40.74148,
+  lng: -74.03392,
+  radius: 1 }
+[Mon Feb 13 2012 03:46:13 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Mon Feb 13 2012 03:46:13 GMT+0000 (UTC)] DEBUG { code: 'expired_auth',
+  nonce: 'G74q9)5fJfR-3O9v6tUj3pDnT_)wS1Ca@asMY6s5' }
+[Mon Feb 13 2012 03:46:40 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Mon Feb 13 2012 03:46:40 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: '00481400-3303-4c2c-b921-e3ed3405d62d',
+  auth: 'c@yUrpb1db/rEV4VX9_*r7B6XZz+C98(cMRWCgNNjnN9x0YzWRAc4Cu6Rlsd3QrBgFIMKl3NUWzPWdNkQtrKDKdXgJz4ELaMbtqKB1n7RXER5uO7cHVaGA==',
+  lat: '40.74148',
+  lng: '-74.03392',
+  radius: '1' }
+[Mon Feb 13 2012 03:46:40 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: '00481400-3303-4c2c-b921-e3ed3405d62d',
+  auth: 'c@yUrpb1db/rEV4VX9_*r7B6XZz+C98(cMRWCgNNjnN9x0YzWRAc4Cu6Rlsd3QrBgFIMKl3NUWzPWdNkQtrKDKdXgJz4ELaMbtqKB1n7RXER5uO7cHVaGA==',
+  lat: 40.74148,
+  lng: -74.03392,
+  radius: 1 }
+[Mon Feb 13 2012 03:46:40 GMT+0000 (UTC)] DEBUG authIsValid------------------------------------
+[Mon Feb 13 2012 03:46:40 GMT+0000 (UTC)] DEBUG auth = c@yUrpb1db/rEV4VX9_*r7B6XZz+C98(cMRWCgNNjnN9x0YzWRAc4Cu6Rlsd3QrBgFIMKl3NUWzPWdNkQtrKDKdXgJz4ELaMbtqKB1n7RXER5uO7cHVaGA==
+[Mon Feb 13 2012 03:46:40 GMT+0000 (UTC)] DEBUG submittedPw = c@yUrpb1db/rEV4VX9_*r7B6XZz+C98(
+[Mon Feb 13 2012 03:46:40 GMT+0000 (UTC)] DEBUG submittedHashChunk = cMRWCgNNjnN9x0YzWRAc4Cu6Rlsd3QrBgFIMKl3NUWzPWdNkQtrKDKdXgJz4ELaMbtqKB1n7RXER5uO7cHVaGA==
+[Mon Feb 13 2012 03:46:40 GMT+0000 (UTC)] DEBUG pwHash = Fzvy3Ob4JIWUmA9tku/HVGEoidRJg5cfJuiXllrwQOd3yS3wvyKWbt6Aw+QtbKD3qeG0cCgMeeza95es4dBg5Q==
+[Mon Feb 13 2012 03:46:40 GMT+0000 (UTC)] DEBUG pwSalt = tF2hwM5g6nm9BRF@
+[Mon Feb 13 2012 03:46:40 GMT+0000 (UTC)] DEBUG nonce = G74q9)5fJfR-3O9v6tUj3pDnT_)wS1Ca@asMY6s5
+[Mon Feb 13 2012 03:46:40 GMT+0000 (UTC)] DEBUG Utils.hashSha512(submittedPw + pwSalt) = Fzvy3Ob4JIWUmA9tku/HVGEoidRJg5cfJuiXllrwQOd3yS3wvyKWbt6Aw+QtbKD3qeG0cCgMeeza95es4dBg5Q==
+[Mon Feb 13 2012 03:46:40 GMT+0000 (UTC)] DEBUG pwHash = Fzvy3Ob4JIWUmA9tku/HVGEoidRJg5cfJuiXllrwQOd3yS3wvyKWbt6Aw+QtbKD3qeG0cCgMeeza95es4dBg5Q==
+[Mon Feb 13 2012 03:46:40 GMT+0000 (UTC)] DEBUG Utils.hashSha512(submittedPw + nonce + userId) = cMRWCgNNjnN9x0YzWRAc4Cu6Rlsd3QrBgFIMKl3NUWzPWdNkQtrKDKdXgJz4ELaMbtqKB1n7RXER5uO7cHVaGA==
+[Mon Feb 13 2012 03:46:40 GMT+0000 (UTC)] DEBUG submittedHashChunk = cMRWCgNNjnN9x0YzWRAc4Cu6Rlsd3QrBgFIMKl3NUWzPWdNkQtrKDKdXgJz4ELaMbtqKB1n7RXER5uO7cHVaGA==
+[Mon Feb 13 2012 03:46:41 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Mon Feb 13 2012 03:46:41 GMT+0000 (UTC)] DEBUG { code: 'ping_ok',
+  pts: 400,
+  lvl_change: { lvl: 5, lvl_at: 353, next_lvl_at: 462 },
+  radius: 1076481 }
+[Mon Feb 13 2012 03:47:51 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Mon Feb 13 2012 03:47:51 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: '00481400-3303-4c2c-b921-e3ed3405d62d',
+  auth: 'c@yUrpb1db/rEV4VX9_*r7B6XZz+C98(cMRWCgNNjnN9x0YzWRAc4Cu6Rlsd3QrBgFIMKl3NUWzPWdNkQtrKDKdXgJz4ELaMbtqKB1n7RXER5uO7cHVaGA==',
+  lat: '40.74148',
+  lng: '-74.03392',
+  radius: '1',
+  lvl: '5' }
+[Mon Feb 13 2012 03:47:51 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: '00481400-3303-4c2c-b921-e3ed3405d62d',
+  auth: 'c@yUrpb1db/rEV4VX9_*r7B6XZz+C98(cMRWCgNNjnN9x0YzWRAc4Cu6Rlsd3QrBgFIMKl3NUWzPWdNkQtrKDKdXgJz4ELaMbtqKB1n7RXER5uO7cHVaGA==',
+  lat: 40.74148,
+  lng: -74.03392,
+  radius: 1 }
+[Mon Feb 13 2012 03:47:51 GMT+0000 (UTC)] DEBUG authIsValid------------------------------------
+[Mon Feb 13 2012 03:47:51 GMT+0000 (UTC)] DEBUG auth = c@yUrpb1db/rEV4VX9_*r7B6XZz+C98(cMRWCgNNjnN9x0YzWRAc4Cu6Rlsd3QrBgFIMKl3NUWzPWdNkQtrKDKdXgJz4ELaMbtqKB1n7RXER5uO7cHVaGA==
+[Mon Feb 13 2012 03:47:51 GMT+0000 (UTC)] DEBUG submittedPw = c@yUrpb1db/rEV4VX9_*r7B6XZz+C98(
+[Mon Feb 13 2012 03:47:51 GMT+0000 (UTC)] DEBUG submittedHashChunk = cMRWCgNNjnN9x0YzWRAc4Cu6Rlsd3QrBgFIMKl3NUWzPWdNkQtrKDKdXgJz4ELaMbtqKB1n7RXER5uO7cHVaGA==
+[Mon Feb 13 2012 03:47:51 GMT+0000 (UTC)] DEBUG pwHash = Fzvy3Ob4JIWUmA9tku/HVGEoidRJg5cfJuiXllrwQOd3yS3wvyKWbt6Aw+QtbKD3qeG0cCgMeeza95es4dBg5Q==
+[Mon Feb 13 2012 03:47:51 GMT+0000 (UTC)] DEBUG pwSalt = tF2hwM5g6nm9BRF@
+[Mon Feb 13 2012 03:47:51 GMT+0000 (UTC)] DEBUG nonce = G74q9)5fJfR-3O9v6tUj3pDnT_)wS1Ca@asMY6s5
+[Mon Feb 13 2012 03:47:51 GMT+0000 (UTC)] DEBUG Utils.hashSha512(submittedPw + pwSalt) = Fzvy3Ob4JIWUmA9tku/HVGEoidRJg5cfJuiXllrwQOd3yS3wvyKWbt6Aw+QtbKD3qeG0cCgMeeza95es4dBg5Q==
+[Mon Feb 13 2012 03:47:51 GMT+0000 (UTC)] DEBUG pwHash = Fzvy3Ob4JIWUmA9tku/HVGEoidRJg5cfJuiXllrwQOd3yS3wvyKWbt6Aw+QtbKD3qeG0cCgMeeza95es4dBg5Q==
+[Mon Feb 13 2012 03:47:51 GMT+0000 (UTC)] DEBUG Utils.hashSha512(submittedPw + nonce + userId) = cMRWCgNNjnN9x0YzWRAc4Cu6Rlsd3QrBgFIMKl3NUWzPWdNkQtrKDKdXgJz4ELaMbtqKB1n7RXER5uO7cHVaGA==
+[Mon Feb 13 2012 03:47:51 GMT+0000 (UTC)] DEBUG submittedHashChunk = cMRWCgNNjnN9x0YzWRAc4Cu6Rlsd3QrBgFIMKl3NUWzPWdNkQtrKDKdXgJz4ELaMbtqKB1n7RXER5uO7cHVaGA==
+[Mon Feb 13 2012 03:47:52 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Mon Feb 13 2012 03:47:52 GMT+0000 (UTC)] DEBUG { code: 'ping_ok',
+  pts: 400,
+  lvl_change: { lvl: 5, lvl_at: 353, next_lvl_at: 462 },
+  radius: 1076481 }
+[Mon Feb 13 2012 03:48:19 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Mon Feb 13 2012 03:48:19 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: '00481400-3303-4c2c-b921-e3ed3405d62d',
+  auth: 'c@yUrpb1db/rEV4VX9_*r7B6XZz+C98(cMRWCgNNjnN9x0YzWRAc4Cu6Rlsd3QrBgFIMKl3NUWzPWdNkQtrKDKdXgJz4ELaMbtqKB1n7RXER5uO7cHVaGA==',
+  lat: '40.74148',
+  lng: '-74.03392',
+  lvl: '5' }
+[Mon Feb 13 2012 03:48:19 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: '00481400-3303-4c2c-b921-e3ed3405d62d',
+  auth: 'c@yUrpb1db/rEV4VX9_*r7B6XZz+C98(cMRWCgNNjnN9x0YzWRAc4Cu6Rlsd3QrBgFIMKl3NUWzPWdNkQtrKDKdXgJz4ELaMbtqKB1n7RXER5uO7cHVaGA==',
+  lat: 40.74148,
+  lng: -74.03392 }
+[Mon Feb 13 2012 03:48:19 GMT+0000 (UTC)] DEBUG authIsValid------------------------------------
+[Mon Feb 13 2012 03:48:19 GMT+0000 (UTC)] DEBUG auth = c@yUrpb1db/rEV4VX9_*r7B6XZz+C98(cMRWCgNNjnN9x0YzWRAc4Cu6Rlsd3QrBgFIMKl3NUWzPWdNkQtrKDKdXgJz4ELaMbtqKB1n7RXER5uO7cHVaGA==
+[Mon Feb 13 2012 03:48:19 GMT+0000 (UTC)] DEBUG submittedPw = c@yUrpb1db/rEV4VX9_*r7B6XZz+C98(
+[Mon Feb 13 2012 03:48:19 GMT+0000 (UTC)] DEBUG submittedHashChunk = cMRWCgNNjnN9x0YzWRAc4Cu6Rlsd3QrBgFIMKl3NUWzPWdNkQtrKDKdXgJz4ELaMbtqKB1n7RXER5uO7cHVaGA==
+[Mon Feb 13 2012 03:48:19 GMT+0000 (UTC)] DEBUG pwHash = Fzvy3Ob4JIWUmA9tku/HVGEoidRJg5cfJuiXllrwQOd3yS3wvyKWbt6Aw+QtbKD3qeG0cCgMeeza95es4dBg5Q==
+[Mon Feb 13 2012 03:48:19 GMT+0000 (UTC)] DEBUG pwSalt = tF2hwM5g6nm9BRF@
+[Mon Feb 13 2012 03:48:19 GMT+0000 (UTC)] DEBUG nonce = G74q9)5fJfR-3O9v6tUj3pDnT_)wS1Ca@asMY6s5
+[Mon Feb 13 2012 03:48:19 GMT+0000 (UTC)] DEBUG Utils.hashSha512(submittedPw + pwSalt) = Fzvy3Ob4JIWUmA9tku/HVGEoidRJg5cfJuiXllrwQOd3yS3wvyKWbt6Aw+QtbKD3qeG0cCgMeeza95es4dBg5Q==
+[Mon Feb 13 2012 03:48:19 GMT+0000 (UTC)] DEBUG pwHash = Fzvy3Ob4JIWUmA9tku/HVGEoidRJg5cfJuiXllrwQOd3yS3wvyKWbt6Aw+QtbKD3qeG0cCgMeeza95es4dBg5Q==
+[Mon Feb 13 2012 03:48:19 GMT+0000 (UTC)] DEBUG Utils.hashSha512(submittedPw + nonce + userId) = cMRWCgNNjnN9x0YzWRAc4Cu6Rlsd3QrBgFIMKl3NUWzPWdNkQtrKDKdXgJz4ELaMbtqKB1n7RXER5uO7cHVaGA==
+[Mon Feb 13 2012 03:48:19 GMT+0000 (UTC)] DEBUG submittedHashChunk = cMRWCgNNjnN9x0YzWRAc4Cu6Rlsd3QrBgFIMKl3NUWzPWdNkQtrKDKdXgJz4ELaMbtqKB1n7RXER5uO7cHVaGA==
+[Mon Feb 13 2012 03:48:19 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Mon Feb 13 2012 03:48:19 GMT+0000 (UTC)] DEBUG { code: 'ping_ok',
+  pts: 400,
+  lvl_change: { lvl: 5, lvl_at: 353, next_lvl_at: 462 } }
+[Mon Feb 13 2012 03:48:46 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Mon Feb 13 2012 03:48:46 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: '00481400-3303-4c2c-b921-e3ed3405d62d',
+  auth: 'c@yUrpb1db/rEV4VX9_*r7B6XZz+C98(cMRWCgNNjnN9x0YzWRAc4Cu6Rlsd3QrBgFIMKl3NUWzPWdNkQtrKDKdXgJz4ELaMbtqKB1n7RXER5uO7cHVaGA==',
+  lat: '40.74148',
+  lng: '-74.03392',
+  lvl: '5' }
+[Mon Feb 13 2012 03:48:46 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: '00481400-3303-4c2c-b921-e3ed3405d62d',
+  auth: 'c@yUrpb1db/rEV4VX9_*r7B6XZz+C98(cMRWCgNNjnN9x0YzWRAc4Cu6Rlsd3QrBgFIMKl3NUWzPWdNkQtrKDKdXgJz4ELaMbtqKB1n7RXER5uO7cHVaGA==',
+  lat: 40.74148,
+  lng: -74.03392 }
+[Mon Feb 13 2012 03:48:46 GMT+0000 (UTC)] DEBUG authIsValid------------------------------------
+[Mon Feb 13 2012 03:48:46 GMT+0000 (UTC)] DEBUG auth = c@yUrpb1db/rEV4VX9_*r7B6XZz+C98(cMRWCgNNjnN9x0YzWRAc4Cu6Rlsd3QrBgFIMKl3NUWzPWdNkQtrKDKdXgJz4ELaMbtqKB1n7RXER5uO7cHVaGA==
+[Mon Feb 13 2012 03:48:46 GMT+0000 (UTC)] DEBUG submittedPw = c@yUrpb1db/rEV4VX9_*r7B6XZz+C98(
+[Mon Feb 13 2012 03:48:46 GMT+0000 (UTC)] DEBUG submittedHashChunk = cMRWCgNNjnN9x0YzWRAc4Cu6Rlsd3QrBgFIMKl3NUWzPWdNkQtrKDKdXgJz4ELaMbtqKB1n7RXER5uO7cHVaGA==
+[Mon Feb 13 2012 03:48:46 GMT+0000 (UTC)] DEBUG pwHash = Fzvy3Ob4JIWUmA9tku/HVGEoidRJg5cfJuiXllrwQOd3yS3wvyKWbt6Aw+QtbKD3qeG0cCgMeeza95es4dBg5Q==
+[Mon Feb 13 2012 03:48:46 GMT+0000 (UTC)] DEBUG pwSalt = tF2hwM5g6nm9BRF@
+[Mon Feb 13 2012 03:48:46 GMT+0000 (UTC)] DEBUG nonce = G74q9)5fJfR-3O9v6tUj3pDnT_)wS1Ca@asMY6s5
+[Mon Feb 13 2012 03:48:46 GMT+0000 (UTC)] DEBUG Utils.hashSha512(submittedPw + pwSalt) = Fzvy3Ob4JIWUmA9tku/HVGEoidRJg5cfJuiXllrwQOd3yS3wvyKWbt6Aw+QtbKD3qeG0cCgMeeza95es4dBg5Q==
+[Mon Feb 13 2012 03:48:46 GMT+0000 (UTC)] DEBUG pwHash = Fzvy3Ob4JIWUmA9tku/HVGEoidRJg5cfJuiXllrwQOd3yS3wvyKWbt6Aw+QtbKD3qeG0cCgMeeza95es4dBg5Q==
+[Mon Feb 13 2012 03:48:46 GMT+0000 (UTC)] DEBUG Utils.hashSha512(submittedPw + nonce + userId) = cMRWCgNNjnN9x0YzWRAc4Cu6Rlsd3QrBgFIMKl3NUWzPWdNkQtrKDKdXgJz4ELaMbtqKB1n7RXER5uO7cHVaGA==
+[Mon Feb 13 2012 03:48:46 GMT+0000 (UTC)] DEBUG submittedHashChunk = cMRWCgNNjnN9x0YzWRAc4Cu6Rlsd3QrBgFIMKl3NUWzPWdNkQtrKDKdXgJz4ELaMbtqKB1n7RXER5uO7cHVaGA==
+[Mon Feb 13 2012 03:48:46 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Mon Feb 13 2012 03:48:46 GMT+0000 (UTC)] DEBUG { code: 'ping_ok',
+  pts: 400,
+  lvl_change: { lvl: 5, lvl_at: 353, next_lvl_at: 462 } }
+[Mon Feb 13 2012 03:54:36 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Mon Feb 13 2012 03:54:36 GMT+0000 (UTC)] DEBUG { a: 'create_account' }
+[Mon Feb 13 2012 03:54:36 GMT+0000 (UTC)] DEBUG { a: 'create_account' }
+[Mon Feb 13 2012 03:54:36 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Mon Feb 13 2012 03:54:36 GMT+0000 (UTC)] DEBUG { code: 'create_account_0',
+  uid: 'e9b00454-4ae7-4f19-a93c-c9066462211b' }
+[Mon Feb 13 2012 03:54:37 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Mon Feb 13 2012 03:54:37 GMT+0000 (UTC)] DEBUG { a: 'create_account',
+  uid: 'e9b00454-4ae7-4f19-a93c-c9066462211b',
+  android_id: 'e4c25ac3061c389f',
+  device_id: 'A0000022ECB30A',
+  phone_num: '2014033628',
+  carrier: 'Verizon Wireless' }
+[Mon Feb 13 2012 03:54:37 GMT+0000 (UTC)] DEBUG { a: 'create_account',
+  uid: 'e9b00454-4ae7-4f19-a93c-c9066462211b',
+  android_id: 'e4c25ac3061c389f',
+  device_id: 'A0000022ECB30A',
+  phone_num: 2014033628,
+  carrier: 'Verizon Wireless' }
+[Mon Feb 13 2012 03:54:38 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Mon Feb 13 2012 03:54:38 GMT+0000 (UTC)] DEBUG { code: 'create_account_1',
+  pw: '85-LUS)tEE#d4s))%(=pAFgfYfjz+dLs' }
+[Mon Feb 13 2012 03:54:38 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Mon Feb 13 2012 03:54:38 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'e9b00454-4ae7-4f19-a93c-c9066462211b',
+  auth: 'default',
+  lat: '40.74148',
+  lng: '-74.03392',
+  radius: '1' }
+[Mon Feb 13 2012 03:54:38 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'e9b00454-4ae7-4f19-a93c-c9066462211b',
+  auth: 'default',
+  lat: 40.74148,
+  lng: -74.03392,
+  radius: 1 }
+[Mon Feb 13 2012 03:54:38 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Mon Feb 13 2012 03:54:38 GMT+0000 (UTC)] DEBUG { code: 'expired_auth',
+  nonce: 'ymYsnstQF)dY21OSnzMQPh7=fjNHqundefined#-Vz#P/73' }
+[Mon Feb 13 2012 04:03:13 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Mon Feb 13 2012 04:03:13 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'e9b00454-4ae7-4f19-a93c-c9066462211b',
+  auth: '85-LUS)tEE#d4s))%(=pAFgfYfjz+dLsL92K60T3oa0/C0t3U9ZrH/zRrnYZ+N+1y+DshyDHT4DXoeLr9TFMz6BtSMqHMiiCetMTByqbpCcpEw58ALrtlg==',
+  lat: '40.74148',
+  lng: '-74.03392',
+  radius: '1' }
+[Mon Feb 13 2012 04:03:13 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'e9b00454-4ae7-4f19-a93c-c9066462211b',
+  auth: '85-LUS)tEE#d4s))%(=pAFgfYfjz+dLsL92K60T3oa0/C0t3U9ZrH/zRrnYZ+N+1y+DshyDHT4DXoeLr9TFMz6BtSMqHMiiCetMTByqbpCcpEw58ALrtlg==',
+  lat: 40.74148,
+  lng: -74.03392,
+  radius: 1 }
+[Mon Feb 13 2012 04:03:13 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Mon Feb 13 2012 04:03:13 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'e9b00454-4ae7-4f19-a93c-c9066462211b',
+  auth: '85-LUS)tEE#d4s))%(=pAFgfYfjz+dLsL92K60T3oa0/C0t3U9ZrH/zRrnYZ+N+1y+DshyDHT4DXoeLr9TFMz6BtSMqHMiiCetMTByqbpCcpEw58ALrtlg==',
+  lat: '40.74148',
+  lng: '-74.03392',
+  radius: '1' }
+[Mon Feb 13 2012 04:03:13 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'e9b00454-4ae7-4f19-a93c-c9066462211b',
+  auth: '85-LUS)tEE#d4s))%(=pAFgfYfjz+dLsL92K60T3oa0/C0t3U9ZrH/zRrnYZ+N+1y+DshyDHT4DXoeLr9TFMz6BtSMqHMiiCetMTByqbpCcpEw58ALrtlg==',
+  lat: 40.74148,
+  lng: -74.03392,
+  radius: 1 }
+[Mon Feb 13 2012 04:03:13 GMT+0000 (UTC)] DEBUG authIsValid------------------------------------
+[Mon Feb 13 2012 04:03:13 GMT+0000 (UTC)] DEBUG auth = 85-LUS)tEE#d4s))%(=pAFgfYfjz+dLsL92K60T3oa0/C0t3U9ZrH/zRrnYZ+N+1y+DshyDHT4DXoeLr9TFMz6BtSMqHMiiCetMTByqbpCcpEw58ALrtlg==
+[Mon Feb 13 2012 04:03:13 GMT+0000 (UTC)] DEBUG submittedPw = 85-LUS)tEE#d4s))%(=pAFgfYfjz+dLs
+[Mon Feb 13 2012 04:03:13 GMT+0000 (UTC)] DEBUG submittedHashChunk = L92K60T3oa0/C0t3U9ZrH/zRrnYZ+N+1y+DshyDHT4DXoeLr9TFMz6BtSMqHMiiCetMTByqbpCcpEw58ALrtlg==
+[Mon Feb 13 2012 04:03:13 GMT+0000 (UTC)] DEBUG pwHash = QSivwbb1XJsd/HLh9aPgGWKcfEsOP5pvTJ+upak67W/h5SVwxMoy2g4aCWp/XLz9+anEoav7vMnqdOnH/WKdzg==
+[Mon Feb 13 2012 04:03:13 GMT+0000 (UTC)] DEBUG pwSalt = E9VVxcEn#LR#cyQ(
+[Mon Feb 13 2012 04:03:13 GMT+0000 (UTC)] DEBUG nonce = ymYsnstQF)dY21OSnzMQPh7=fjNHqundefined#-Vz#P/73
+[Mon Feb 13 2012 04:03:13 GMT+0000 (UTC)] DEBUG Utils.hashSha512(submittedPw + pwSalt) = QSivwbb1XJsd/HLh9aPgGWKcfEsOP5pvTJ+upak67W/h5SVwxMoy2g4aCWp/XLz9+anEoav7vMnqdOnH/WKdzg==
+[Mon Feb 13 2012 04:03:13 GMT+0000 (UTC)] DEBUG pwHash = QSivwbb1XJsd/HLh9aPgGWKcfEsOP5pvTJ+upak67W/h5SVwxMoy2g4aCWp/XLz9+anEoav7vMnqdOnH/WKdzg==
+[Mon Feb 13 2012 04:03:13 GMT+0000 (UTC)] DEBUG Utils.hashSha512(submittedPw + nonce + userId) = L92K60T3oa0/C0t3U9ZrH/zRrnYZ+N+1y+DshyDHT4DXoeLr9TFMz6BtSMqHMiiCetMTByqbpCcpEw58ALrtlg==
+[Mon Feb 13 2012 04:03:13 GMT+0000 (UTC)] DEBUG submittedHashChunk = L92K60T3oa0/C0t3U9ZrH/zRrnYZ+N+1y+DshyDHT4DXoeLr9TFMz6BtSMqHMiiCetMTByqbpCcpEw58ALrtlg==
+[Mon Feb 13 2012 04:03:13 GMT+0000 (UTC)] DEBUG authIsValid------------------------------------
+[Mon Feb 13 2012 04:03:13 GMT+0000 (UTC)] DEBUG auth = 85-LUS)tEE#d4s))%(=pAFgfYfjz+dLsL92K60T3oa0/C0t3U9ZrH/zRrnYZ+N+1y+DshyDHT4DXoeLr9TFMz6BtSMqHMiiCetMTByqbpCcpEw58ALrtlg==
+[Mon Feb 13 2012 04:03:13 GMT+0000 (UTC)] DEBUG submittedPw = 85-LUS)tEE#d4s))%(=pAFgfYfjz+dLs
+[Mon Feb 13 2012 04:03:13 GMT+0000 (UTC)] DEBUG submittedHashChunk = L92K60T3oa0/C0t3U9ZrH/zRrnYZ+N+1y+DshyDHT4DXoeLr9TFMz6BtSMqHMiiCetMTByqbpCcpEw58ALrtlg==
+[Mon Feb 13 2012 04:03:13 GMT+0000 (UTC)] DEBUG pwHash = QSivwbb1XJsd/HLh9aPgGWKcfEsOP5pvTJ+upak67W/h5SVwxMoy2g4aCWp/XLz9+anEoav7vMnqdOnH/WKdzg==
+[Mon Feb 13 2012 04:03:13 GMT+0000 (UTC)] DEBUG pwSalt = E9VVxcEn#LR#cyQ(
+[Mon Feb 13 2012 04:03:13 GMT+0000 (UTC)] DEBUG nonce = ymYsnstQF)dY21OSnzMQPh7=fjNHqundefined#-Vz#P/73
+[Mon Feb 13 2012 04:03:13 GMT+0000 (UTC)] DEBUG Utils.hashSha512(submittedPw + pwSalt) = QSivwbb1XJsd/HLh9aPgGWKcfEsOP5pvTJ+upak67W/h5SVwxMoy2g4aCWp/XLz9+anEoav7vMnqdOnH/WKdzg==
+[Mon Feb 13 2012 04:03:13 GMT+0000 (UTC)] DEBUG pwHash = QSivwbb1XJsd/HLh9aPgGWKcfEsOP5pvTJ+upak67W/h5SVwxMoy2g4aCWp/XLz9+anEoav7vMnqdOnH/WKdzg==
+[Mon Feb 13 2012 04:03:13 GMT+0000 (UTC)] DEBUG Utils.hashSha512(submittedPw + nonce + userId) = L92K60T3oa0/C0t3U9ZrH/zRrnYZ+N+1y+DshyDHT4DXoeLr9TFMz6BtSMqHMiiCetMTByqbpCcpEw58ALrtlg==
+[Mon Feb 13 2012 04:03:13 GMT+0000 (UTC)] DEBUG submittedHashChunk = L92K60T3oa0/C0t3U9ZrH/zRrnYZ+N+1y+DshyDHT4DXoeLr9TFMz6BtSMqHMiiCetMTByqbpCcpEw58ALrtlg==
+[Mon Feb 13 2012 04:03:13 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Mon Feb 13 2012 04:03:13 GMT+0000 (UTC)] DEBUG { code: 'ping_ok',
+  pts: 400,
+  lvl_change: { lvl: 5, lvl_at: 353, next_lvl_at: 462 },
+  radius: 1076481 }
+[Mon Feb 13 2012 04:03:13 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Mon Feb 13 2012 04:03:13 GMT+0000 (UTC)] DEBUG { code: 'ping_ok',
+  pts: 400,
+  lvl_change: { lvl: 5, lvl_at: 353, next_lvl_at: 462 },
+  radius: 1076481 }
+[Mon Feb 13 2012 04:03:48 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Mon Feb 13 2012 04:03:48 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'e9b00454-4ae7-4f19-a93c-c9066462211b',
+  auth: '85-LUS)tEE#d4s))%(=pAFgfYfjz+dLsL92K60T3oa0/C0t3U9ZrH/zRrnYZ+N+1y+DshyDHT4DXoeLr9TFMz6BtSMqHMiiCetMTByqbpCcpEw58ALrtlg==',
+  lat: '40.74148',
+  lng: '-74.03392',
+  lvl: '5' }
+[Mon Feb 13 2012 04:03:48 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'e9b00454-4ae7-4f19-a93c-c9066462211b',
+  auth: '85-LUS)tEE#d4s))%(=pAFgfYfjz+dLsL92K60T3oa0/C0t3U9ZrH/zRrnYZ+N+1y+DshyDHT4DXoeLr9TFMz6BtSMqHMiiCetMTByqbpCcpEw58ALrtlg==',
+  lat: 40.74148,
+  lng: -74.03392 }
+[Mon Feb 13 2012 04:03:48 GMT+0000 (UTC)] DEBUG authIsValid------------------------------------
+[Mon Feb 13 2012 04:03:48 GMT+0000 (UTC)] DEBUG auth = 85-LUS)tEE#d4s))%(=pAFgfYfjz+dLsL92K60T3oa0/C0t3U9ZrH/zRrnYZ+N+1y+DshyDHT4DXoeLr9TFMz6BtSMqHMiiCetMTByqbpCcpEw58ALrtlg==
+[Mon Feb 13 2012 04:03:48 GMT+0000 (UTC)] DEBUG submittedPw = 85-LUS)tEE#d4s))%(=pAFgfYfjz+dLs
+[Mon Feb 13 2012 04:03:48 GMT+0000 (UTC)] DEBUG submittedHashChunk = L92K60T3oa0/C0t3U9ZrH/zRrnYZ+N+1y+DshyDHT4DXoeLr9TFMz6BtSMqHMiiCetMTByqbpCcpEw58ALrtlg==
+[Mon Feb 13 2012 04:03:48 GMT+0000 (UTC)] DEBUG pwHash = QSivwbb1XJsd/HLh9aPgGWKcfEsOP5pvTJ+upak67W/h5SVwxMoy2g4aCWp/XLz9+anEoav7vMnqdOnH/WKdzg==
+[Mon Feb 13 2012 04:03:48 GMT+0000 (UTC)] DEBUG pwSalt = E9VVxcEn#LR#cyQ(
+[Mon Feb 13 2012 04:03:48 GMT+0000 (UTC)] DEBUG nonce = ymYsnstQF)dY21OSnzMQPh7=fjNHqundefined#-Vz#P/73
+[Mon Feb 13 2012 04:03:48 GMT+0000 (UTC)] DEBUG Utils.hashSha512(submittedPw + pwSalt) = QSivwbb1XJsd/HLh9aPgGWKcfEsOP5pvTJ+upak67W/h5SVwxMoy2g4aCWp/XLz9+anEoav7vMnqdOnH/WKdzg==
+[Mon Feb 13 2012 04:03:48 GMT+0000 (UTC)] DEBUG pwHash = QSivwbb1XJsd/HLh9aPgGWKcfEsOP5pvTJ+upak67W/h5SVwxMoy2g4aCWp/XLz9+anEoav7vMnqdOnH/WKdzg==
+[Mon Feb 13 2012 04:03:48 GMT+0000 (UTC)] DEBUG Utils.hashSha512(submittedPw + nonce + userId) = L92K60T3oa0/C0t3U9ZrH/zRrnYZ+N+1y+DshyDHT4DXoeLr9TFMz6BtSMqHMiiCetMTByqbpCcpEw58ALrtlg==
+[Mon Feb 13 2012 04:03:48 GMT+0000 (UTC)] DEBUG submittedHashChunk = L92K60T3oa0/C0t3U9ZrH/zRrnYZ+N+1y+DshyDHT4DXoeLr9TFMz6BtSMqHMiiCetMTByqbpCcpEw58ALrtlg==
+[Mon Feb 13 2012 04:03:48 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Mon Feb 13 2012 04:03:48 GMT+0000 (UTC)] DEBUG { code: 'ping_ok',
+  pts: 400,
+  lvl_change: { lvl: 5, lvl_at: 353, next_lvl_at: 462 } }
+[Mon Feb 13 2012 04:04:10 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Mon Feb 13 2012 04:04:10 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'e9b00454-4ae7-4f19-a93c-c9066462211b',
+  auth: '85-LUS)tEE#d4s))%(=pAFgfYfjz+dLsL92K60T3oa0/C0t3U9ZrH/zRrnYZ+N+1y+DshyDHT4DXoeLr9TFMz6BtSMqHMiiCetMTByqbpCcpEw58ALrtlg==',
+  lat: '40.74148',
+  lng: '-74.03392',
+  lvl: '5' }
+[Mon Feb 13 2012 04:04:10 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'e9b00454-4ae7-4f19-a93c-c9066462211b',
+  auth: '85-LUS)tEE#d4s))%(=pAFgfYfjz+dLsL92K60T3oa0/C0t3U9ZrH/zRrnYZ+N+1y+DshyDHT4DXoeLr9TFMz6BtSMqHMiiCetMTByqbpCcpEw58ALrtlg==',
+  lat: 40.74148,
+  lng: -74.03392 }
+[Mon Feb 13 2012 04:04:10 GMT+0000 (UTC)] DEBUG authIsValid------------------------------------
+[Mon Feb 13 2012 04:04:10 GMT+0000 (UTC)] DEBUG auth = 85-LUS)tEE#d4s))%(=pAFgfYfjz+dLsL92K60T3oa0/C0t3U9ZrH/zRrnYZ+N+1y+DshyDHT4DXoeLr9TFMz6BtSMqHMiiCetMTByqbpCcpEw58ALrtlg==
+[Mon Feb 13 2012 04:04:10 GMT+0000 (UTC)] DEBUG submittedPw = 85-LUS)tEE#d4s))%(=pAFgfYfjz+dLs
+[Mon Feb 13 2012 04:04:10 GMT+0000 (UTC)] DEBUG submittedHashChunk = L92K60T3oa0/C0t3U9ZrH/zRrnYZ+N+1y+DshyDHT4DXoeLr9TFMz6BtSMqHMiiCetMTByqbpCcpEw58ALrtlg==
+[Mon Feb 13 2012 04:04:10 GMT+0000 (UTC)] DEBUG pwHash = QSivwbb1XJsd/HLh9aPgGWKcfEsOP5pvTJ+upak67W/h5SVwxMoy2g4aCWp/XLz9+anEoav7vMnqdOnH/WKdzg==
+[Mon Feb 13 2012 04:04:10 GMT+0000 (UTC)] DEBUG pwSalt = E9VVxcEn#LR#cyQ(
+[Mon Feb 13 2012 04:04:10 GMT+0000 (UTC)] DEBUG nonce = ymYsnstQF)dY21OSnzMQPh7=fjNHqundefined#-Vz#P/73
+[Mon Feb 13 2012 04:04:10 GMT+0000 (UTC)] DEBUG Utils.hashSha512(submittedPw + pwSalt) = QSivwbb1XJsd/HLh9aPgGWKcfEsOP5pvTJ+upak67W/h5SVwxMoy2g4aCWp/XLz9+anEoav7vMnqdOnH/WKdzg==
+[Mon Feb 13 2012 04:04:10 GMT+0000 (UTC)] DEBUG pwHash = QSivwbb1XJsd/HLh9aPgGWKcfEsOP5pvTJ+upak67W/h5SVwxMoy2g4aCWp/XLz9+anEoav7vMnqdOnH/WKdzg==
+[Mon Feb 13 2012 04:04:10 GMT+0000 (UTC)] DEBUG Utils.hashSha512(submittedPw + nonce + userId) = L92K60T3oa0/C0t3U9ZrH/zRrnYZ+N+1y+DshyDHT4DXoeLr9TFMz6BtSMqHMiiCetMTByqbpCcpEw58ALrtlg==
+[Mon Feb 13 2012 04:04:10 GMT+0000 (UTC)] DEBUG submittedHashChunk = L92K60T3oa0/C0t3U9ZrH/zRrnYZ+N+1y+DshyDHT4DXoeLr9TFMz6BtSMqHMiiCetMTByqbpCcpEw58ALrtlg==
+[Mon Feb 13 2012 04:04:10 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Mon Feb 13 2012 04:04:10 GMT+0000 (UTC)] DEBUG { code: 'ping_ok',
+  pts: 400,
+  lvl_change: { lvl: 5, lvl_at: 353, next_lvl_at: 462 } }
