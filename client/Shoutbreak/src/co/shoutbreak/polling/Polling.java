@@ -126,6 +126,7 @@ public class Polling {
 		// acknowledge any level up packets
 		if (_safeM.getUserLevelUpOccurred()) {
 			postData.add(C.JSON_LEVEL, Integer.toString(_safeM.getUserLevel()));
+			_safeM.setUserLevelUpOccured(false);
 		}
 		
 		if (scoresToRequest.size() > 0) {
@@ -214,6 +215,7 @@ public class Polling {
 		CrossThreadPacket xPacket = (CrossThreadPacket)message.obj;
 		String shoutText = xPacket.sArgs[0];
 		int shoutPower = xPacket.iArgs[0];
+		long radiusHint = xPacket.lArgs[0];
 		PostData postData = new PostData();
 		postData.add(C.JSON_ACTION, C.JSON_ACTION_SHOUT);
 		postData.add(C.JSON_UID, _safeM.getUserId());
@@ -222,6 +224,9 @@ public class Polling {
 		postData.add(C.JSON_LONG, Double.toString(_safeM.getLongitude()));
 		postData.add(C.JSON_SHOUT_TEXT, shoutText);
 		postData.add(C.JSON_SHOUT_POWER, Integer.toString(shoutPower));
+		if (radiusHint > 0) {
+			postData.add(C.JSON_RADIUS_HINT, Long.toString(radiusHint));
+		}
 		new HttpConnection(httpHandler).post(postData);	
 	}
 	

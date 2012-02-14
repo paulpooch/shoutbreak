@@ -205,6 +205,10 @@ public class Storage implements Colleague {
 		return _user.getLevelUpOccured();
 	}	
 	
+	public void setLevelUpOccured(boolean b) {
+		_user.setLevelUpOccured(b);
+	}
+	
 	public ArrayList<String> getOpenShoutIDs() {
 		return _inboxSystem.getOpenShoutIDs();
 	}

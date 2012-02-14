@@ -11,7 +11,7 @@ public class C {
 	public static final int CONFIG_DROPPED_PACKET_LIMIT = 5;
 	public static final int CONFIG_NOTICES_DISPLAYED_IN_TAB = 50;
 	public static final String CONFIG_SUPPORT_ADDRESS = "http://shoutbreak.com/support";
-	public static final long CONFIG_DENSITY_EXPIRATION = (long) 4.32E8; // 5 days
+	public static final long CONFIG_SHOUTREACH_RADIUS_EXPIRATION = (long) 1800000; // 30 minutes
 	public static final int CONFIG_DENSITY_GRID_X_GRANULARITY = 129600; // 10 second cells
 	public static final int CONFIG_DENSITY_GRID_Y_GRANULARITY = 64800; // 10 second cells
 	public static final int CONFIG_GPS_MIN_UPDATE_MILLISECS = 60000; // 0 gives most frequent
@@ -78,7 +78,6 @@ public class C {
 	public static final String JSON_CODE_EXPIRED_AUTH = "expired_auth";
 	public static final String JSON_CODE_INVALID_UID = "invalid_uid";
 	public static final String JSON_CODE_PING_OK = "ping_ok";
-	public static final String JSON_CODE_SHOUTS = "shouts";
 	public static final String JSON_CODE_VOTE_OK = "vote_ok";
 	public static final String JSON_CODE_VOTE_FAIL = "vote_fail";
 	
@@ -86,6 +85,7 @@ public class C {
 	public static final String JSON_AUTH = "auth";
 	public static final String JSON_CARRIER_NAME = "carrier";
 	public static final String JSON_RADIUS = "radius";
+	public static final String JSON_RADIUS_HINT = "hint";
 	public static final String JSON_DEVICE_ID = "device_id";
 	public static final String JSON_LAT = "lat";
 	public static final String JSON_LEVEL = "lvl";
@@ -103,7 +103,7 @@ public class C {
 	public static final String JSON_SHOUT_ID = "shout_id";
 	public static final String JSON_SHOUT_OPEN = "open";
 	public static final String JSON_SHOUT_OUTBOX = "outbox";
-	public static final String JSON_SHOUT_POWER = "power";
+	public static final String JSON_SHOUT_POWER = "shoutreach";
 	public static final String JSON_SHOUT_RE = "re";
 	public static final String JSON_SHOUT_TEXT = "txt";	
 	public static final String JSON_SHOUT_TIMESTAMP = "ts";
@@ -146,7 +146,7 @@ public class C {
 	public static final int PURPOSE_DEATH = 62; // don't repeat this - just die
 	
 	// DATABASE ///////////////////////////////////////////////////////////////
-	public static final int DB_VERSION = 7;
+	public static final int DB_VERSION = 5;
 
 	public static final String DB_NAME = "sbdb";
 	public static final String DB_TABLE_RADIUS = "RADIUS";

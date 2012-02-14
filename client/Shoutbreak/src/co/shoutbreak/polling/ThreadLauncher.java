@@ -105,10 +105,11 @@ public class ThreadLauncher implements Colleague {
 		startPolling();		
 	}	
 	
-	public void handleShoutStart(String text, int power) {
+	public void handleShoutStart(String text, int power, long radius) {
 		CrossThreadPacket xPacket = new CrossThreadPacket();
 		xPacket.sArgs = new String[] { text };
 		xPacket.iArgs = new int[] { power };
+		xPacket.lArgs = new long[] { radius };
 		Message message = _uiThreadHandler.obtainMessage(C.STATE_SHOUT, xPacket);
 		launchDisposableThread(message, false);
 	}

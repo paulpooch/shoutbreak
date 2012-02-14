@@ -81,14 +81,9 @@ public class User {
 
 	// STATICS ////////////////////////////////////////////////////////////////
 
-	public static float calculateRadius(int targets, double density) {
-		double area = targets / density;
-		float radius = (float) Math.sqrt(area / Math.PI);
-		return radius;
-	}
-	
 	public static int calculatePower(int people) {
-		return (int)Math.ceil((float)people / (float)C.CONFIG_PEOPLE_PER_LEVEL);
+		//return (int)Math.ceil((float)people / (float)C.CONFIG_PEOPLE_PER_LEVEL);
+		return people;
 	}
 	
 	public static int calculatePointsForVote(int userLevel) {
@@ -96,8 +91,8 @@ public class User {
 		return 1;
 	}
 	
-	public static int calculateShoutreach(int level) {
-		return level * C.CONFIG_PEOPLE_PER_LEVEL;
+	public static int calculateMaxShoutreach(int level) {
+		return level;
 	}
 	
 	// NON-WRITE METHODS //////////////////////////////////////////////////////
@@ -130,6 +125,10 @@ public class User {
 		return _levelUpOccured;
 	}
 	
+	public boolean setLevelUpOccured(boolean b) {
+		return _levelUpOccured = b;
+	}
+	
 	public int getLevelAt() {
 		return _levelAt;
 	}
@@ -155,7 +154,7 @@ public class User {
 				String lastUpdated = cursor.getString(1);
 				long lastUpdatedMillisecs = ISO8601DateParser.parse(lastUpdated).getTime();
 				long diff = (new Date().getTime()) - lastUpdatedMillisecs;
-				if (diff < C.CONFIG_DENSITY_EXPIRATION) {
+				if (diff < C.CONFIG_SHOUTREACH_RADIUS_EXPIRATION) {
 					result.radius = cursor.getLong(0);
 					result.isSet = true;
 					return result;
@@ -229,12 +228,15 @@ public class User {
 		setLevel(newLevel);
 		setLevelAt(levelAt);
 		setNextLevelAt(nextLevelAt);
-		_levelUpOccured = true;
+		setLevelUpOccured(true);
 	}
 	
 	public synchronized void setPoints(int currentPoints) {
-		String sPoints = Integer.toString(currentPoints);
-		saveUserSetting(C.KEY_USER_POINTS, sPoints);
+		if (currentPoints != _points) {
+			String sPoints = Integer.toString(currentPoints);
+			saveUserSetting(C.KEY_USER_POINTS, sPoints);
+			_points = currentPoints;
+		}
 	}
 	
 	private synchronized void setLevel(int level) {

@@ -457,7 +457,7 @@ public class Mediator {
 
 	public void handleShoutStart(String text, int power) {
 		SBLog.method(TAG, "shout()");
-		_threadLauncher.handleShoutStart(text, power);
+		_threadLauncher.handleShoutStart(text, power, _storage.getRadiusAtCell(getCurrentCell()).radius);
 	}
 
 	// Triggered from a Shout close. Have user save earned points.
@@ -689,6 +689,10 @@ public class Mediator {
 			SBLog.method(TAG, "getLevelUpOccurred()");
 			return _storage.getLevelUpOccured();
 		}
+		
+		public void setUserLevelUpOccured(boolean b) {
+			_storage.setLevelUpOccured(b);
+		}
 
 		public int getUserLevel() {
 			SBLog.method(TAG, "getLevel()");
@@ -800,12 +804,12 @@ public class Mediator {
 
 		public void refreshProfile(int level, int levelBeginPoints, int currentPoints, int levelEndPoints) {
 			SBLog.method(TAG, "refreshProfile()");
-			_ui.userCurrentShoutreachTv.setText(Integer.toString(User.calculateShoutreach(level)));
-			_ui.userNextShoutreachTv.setText(Integer.toString(User.calculateShoutreach(level + 1)));
+			_ui.userCurrentShoutreachTv.setText(Integer.toString(User.calculateMaxShoutreach(level)));
+			_ui.userNextShoutreachTv.setText(Integer.toString(User.calculateMaxShoutreach(level + 1)));
 			_ui.userPointsTv.setText(Integer.toString(currentPoints));
 			_ui.userNextLevelAtTv.setText(Integer.toString(levelEndPoints));
-			String infoParagraph = "You have earned " + currentPoints + " points.\nYour shouts can reach " + User.calculateShoutreach(level)
-					+ " people.\nOnce you earn " + levelEndPoints + " points, you will be able to reach " + User.calculateShoutreach(level + 1) + " people.";
+			String infoParagraph = "You have earned " + currentPoints + " points.\nYour shouts can reach " + User.calculateMaxShoutreach(level)
+					+ " people.\nOnce you earn " + levelEndPoints + " points, you will be able to reach " + User.calculateMaxShoutreach(level + 1) + " people.";
 			if (currentPoints >= levelEndPoints) {
 				infoParagraph = "Congratulations!\nYou have earned enough points to become level " + (level + 1) + ".\nWe are leveling up your account,\nand it will take effect within 30 minutes.";
 			}

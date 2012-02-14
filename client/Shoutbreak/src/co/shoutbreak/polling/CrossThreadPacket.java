@@ -19,6 +19,7 @@ public class CrossThreadPacket {
 	public int purpose;
 	public String[] sArgs;
 	public int[] iArgs;
+	public long[] lArgs;
 	public UUID keyForLife;
 	
 }
