@@ -612,6 +612,10 @@ public class Mediator {
 		// /////////////////////////////////////////////////////////////////////////
 		// /////////////////////////////////////////////////////////////////////////
 
+		public boolean isUiInForeground() {
+			return getIsUiInForeground();
+		}
+		
 		public boolean isResponseClean(Message message) {
 			boolean isClean = true;
 			if (message != null) {

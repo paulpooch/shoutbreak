@@ -6,7 +6,7 @@
 module.exports = (function() {
 
 	// Settings
-	this.USER_INITIAL_POINTS = 400;
+	this.USER_INITIAL_POINTS = 71;
 	this.USER_INITIAL_LEVEL = 5;
 	this.USER_INITIAL_PENDING_LEVEL_UP = 5;
 	this.PASSWORD_LENGTH = 32;
@@ -17,10 +17,12 @@ module.exports = (function() {
 	this.SHOUTREACH_BUFFER_METERS = 200;
 	this.SHOUTREACH_LIMIT = 500;
 	this.SHOUT_LENGTH_LIMIT = 256;
-	this.SHOUT_IDLE_TIMEOUT = 60; // minutes
+	this.SHOUT_IDLE_TIMEOUT = 5; // minutes
 	this.SIMPLEDB_MAX_NUMBER_OF_ITEMS = 2500;
 	this.SHOUTBREAK_SCORING_WORK_AT_LEVEL_1 = 10;
 	this.SHOUTBREAK_SCORING_COEFFECIENT = 1.09;
+	this.SELECT_ALGORITHM_ACCEPTABLE_EXTRA = 100;
+	this.SELECT_ALGORITHM_INCREMENT = 50;
 	 
 	// AWS
 	this.CACHE_URL = 'cache-001.ardkb4.0001.use1.cache.amazonaws.com:11211',

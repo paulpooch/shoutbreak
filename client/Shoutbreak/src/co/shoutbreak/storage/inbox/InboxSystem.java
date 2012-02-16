@@ -23,7 +23,7 @@ import co.shoutbreak.storage.Database;
 
 public class InboxSystem {
 	
-	private static final String TAG = "Inbox";
+	private static final String TAG = "InboxSystem";
 	
 	private Mediator _m;
 	private InboxSystem _self;

@@ -103,6 +103,10 @@ module.exports = (function() {
 			Inbox.checkInbox(userId, callback, failCallback);
 		};			
 
+		this.clearInbox = function(userId, successCallback, failCallback) {
+			Cache.delete(Config.PRE_INBOX + userId, successCallback, failCallback);
+		};
+
 		return this;
 	})();
 

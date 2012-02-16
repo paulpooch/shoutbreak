@@ -116,30 +116,32 @@ public class Polling {
 		postData.add(C.JSON_AUTH, _safeM.getAuth());
 		postData.add(C.JSON_LAT, Double.toString(_safeM.getLatitude()));
 		postData.add(C.JSON_LONG, Double.toString(_safeM.getLongitude()));
-		
-		// do we need to pull a density?
-		if (! _safeM.getRadiusAtCell().isSet) {	
-			postData.add(C.JSON_RADIUS, "1");
-			//Toast.makeText(_context, "Requesting Density: " + tempCellDensity.cellX + " , " + tempCellDensity.cellY, Toast.LENGTH_SHORT).show();
-		}
-		
+
 		// acknowledge any level up packets
 		if (_safeM.getUserLevelUpOccurred()) {
 			postData.add(C.JSON_LEVEL, Integer.toString(_safeM.getUserLevel()));
 			_safeM.setUserLevelUpOccured(false);
 		}
-		
-		if (scoresToRequest.size() > 0) {
-			StringBuilder scoreReq = new StringBuilder("[");
-			int i = 0;
-			for (String reqID : scoresToRequest) {
-				scoreReq.append("\"" + reqID + "\"");
-				if (++i != scoresToRequest.size()) {
-					scoreReq.append(", ");
-				}
+
+		// Only do this stuff if UI is open.
+		if (_safeM.isUiInForeground()) {
+			// do we need to pull a density?
+			if (! _safeM.getRadiusAtCell().isSet) {	
+				postData.add(C.JSON_RADIUS, "1");
+				//Toast.makeText(_context, "Requesting Density: " + tempCellDensity.cellX + " , " + tempCellDensity.cellY, Toast.LENGTH_SHORT).show();
 			}
-			scoreReq.append("]");
-			postData.add(C.JSON_SCORES, scoreReq.toString());
+			if (scoresToRequest.size() > 0) {
+				StringBuilder scoreReq = new StringBuilder("[");
+				int i = 0;
+				for (String reqID : scoresToRequest) {
+					scoreReq.append("\"" + reqID + "\"");
+					if (++i != scoresToRequest.size()) {
+						scoreReq.append(", ");
+					}
+				}
+				scoreReq.append("]");
+				postData.add(C.JSON_SCORES, scoreReq.toString());
+			}
 		}
 			
 		new HttpConnection(httpHandler).post(postData);	

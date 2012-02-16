@@ -8,7 +8,8 @@ module.exports = (function() {
 
 	// Includes ////////////////////////////////////////////////////////////////
 	var Crypto =	require('crypto'),
-		Config =	require('./config');
+		Config =	require('./config'),
+		Shout = 	require('./shout');
 
 	this.generatePassword = function(pLength, pLevel) {
 		var length = (typeof pLength == 'undefined') ? 32 : pLength;
@@ -126,7 +127,9 @@ module.exports = (function() {
 		shout.shoutId = item['shout_id']['S'];
 		shout.userId = item['user_id']['S'];
 		shout.time = item['time']['S'];
-		shout.lastActivityTime = item['last_activity_time']['S'];
+		if (item['last_activity_time']) {
+			shout.lastActivityTime = item['last_activity_time']['S'];
+		}
 		shout.text = item['text']['S'];
 		shout.open = parseInt(item['open']['N']);
 		shout.re = item['re']['S'];
@@ -140,7 +143,7 @@ module.exports = (function() {
 	};
 
 	this.maxTargetsAtLevel = function(level) {
-		return Math.min((level * 5), Config.SIMPLEDB_MAX_NUMBER_OF_ITEMS)
+		return Math.min((level), Config.SIMPLEDB_MAX_NUMBER_OF_ITEMS)
 	};
 
 	this.reachAtLevel = function(level) {

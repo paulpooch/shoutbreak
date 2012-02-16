@@ -240,7 +240,7 @@ var ping = function(clean, response, testCallback) {
 				var doCallback = true;
 				if (user.pendingLevelUp > 0) {
 					var skipLevelChange = false;
-					if (level) {
+					if (typeof(level) != 'undefined') {
 						if (level == user.level) {
 							// User has achknowledged level up.
 							skipLevelChange = true;
@@ -318,15 +318,31 @@ var ping = function(clean, response, testCallback) {
 				callback7();
 			}
 		};
-		var callback7 = function(inboxContent) {
+		var callback7 = function() {
+			Storage.Inbox.clearInbox(userId, callback8, 
+				function() {
+					var json = { 'code': 'error', 'txt': 'Could not clear user\'s inbox.' };
+					respond(json, response, testCallback);
+				}
+			);	
+		};
+		var callback8 = function() {
 			if (reqScores) {
 				var pulledScores = [];
 				var loop = function(index) {
 					if (index < reqScores.length) {
 						Storage.Shouts.getShout(reqScores[index], 
 							function(shout) {
-								pulledScores.push(shout);
-								loop(index + 1);
+								Storage.Shouts.isExpired(shout, 
+									function(isExpiredResult) {	
+										pulledScores.push(shout);
+										loop(index + 1);		
+									},
+									function() {
+										var json = { 'code': 'error', 'txt': 'Could not check shout expiration.' };
+										respond(json, response, testCallback);			
+									}
+								);
 							},
 							function() {
 								var json = { 'code': 'error', 'txt': 'Could not get a shout from storage for requested scores.' };
@@ -340,15 +356,15 @@ var ping = function(clean, response, testCallback) {
 							sArray.push(Utils.buildScoreJson(shout));
 						}
 						json['scores'] = sArray;
-						callback8();
+						callback9();
 					}
 				}
 				loop(0);
 			} else {
-				callback8();
+				callback9();
 			}
 		};
-		var callback8 = function() {
+		var callback9 = function() {
 			respond(json, response, testCallback);
 		};
 		authIsValid(userId, auth, callback);	
@@ -365,6 +381,7 @@ var shout = function(clean, response, testCallback) {
 	var lng = clean['lng'];
 	var text = clean['txt'];
 	var shoutreach = clean['shoutreach'];
+	var radiusHint = clean['hint'];
 	var user;
 	if (typeof userId != 'undefined' &&
 	typeof auth != 'undefined' &&
@@ -390,7 +407,7 @@ var shout = function(clean, response, testCallback) {
 			if (getUserResult) {
 				user = getUserResult;
 				if (user.level >= shoutreach) {
-					calculateRadiusOrFindTargets(true, user, shoutreach, lat, lng, callback3, 
+					Storage.LiveUsers.calculateRadiusOrFindTargetsWithRadiusHint(true, user, shoutreach, lat, lng, radiusHint, callback3, 
 						function() {
 							var json = { 'code': 'error', 'txt': 'Error finding targets.' };
 							respond(json, response, testCallback);
@@ -471,13 +488,18 @@ var vote = function(clean, response, testCallback) {
 				);
 			}
 		};
-		var callback4 = function(updateShoutResult) {	
-			Storage.Shouts.updateVoteCount(shout, vote, callback5,
-				function() {
-					var json = { 'code': 'error', 'txt': 'Shout does not exist or could not update vote count.' };
-					respond(json, response, testCallback);	
-				}
-			);
+		var callback4 = function(isExpiredResult) {	
+			if (isExpiredResult) {
+				var json = { 'code': 'error', 'txt': 'Cannot vote.  Shout is expired.' };
+				respond(json, response, testCallback);	
+			} else {
+				Storage.Shouts.updateVoteCount(shout, vote, callback5,
+					function() {
+						var json = { 'code': 'error', 'txt': 'Shout does not exist or could not update vote count.' };
+						respond(json, response, testCallback);	
+					}
+				);
+			}
 		};
 		var callback5 = function(updateVoteCountResult) {
 			Storage.Votes.addNewVote(userId, shoutId, vote, callback6,
@@ -525,20 +547,20 @@ var authIsValid = function(userId, auth, parentCallback) {
 				var pwHash = getResult['pw_hash'];
 				var pwSalt = getResult['pw_salt'];
 				var nonce = getResult['nonce'];
-				Log.l('authIsValid------------------------------------');
-				Log.l('auth = ' + auth);
-				Log.l('submittedPw = ' + submittedPw);
-				Log.l('submittedHashChunk = ' + submittedHashChunk);
-				Log.l('pwHash = ' + pwHash);
-				Log.l('pwSalt = ' + pwSalt);
-				Log.l('nonce = ' + nonce);
+				// Log.l('authIsValid------------------------------------');
+				// Log.l('auth = ' + auth);
+				// Log.l('submittedPw = ' + submittedPw);
+				// Log.l('submittedHashChunk = ' + submittedHashChunk);
+				// Log.l('pwHash = ' + pwHash);
+				// Log.l('pwSalt = ' + pwSalt);
+				// Log.l('nonce = ' + nonce);
 				// Does password match?
-				Log.l('Utils.hashSha512(submittedPw + pwSalt) = ' + Utils.hashSha512(submittedPw + pwSalt));
-				Log.l('pwHash = ' + pwHash);	
+				// Log.l('Utils.hashSha512(submittedPw + pwSalt) = ' + Utils.hashSha512(submittedPw + pwSalt));
+				// Log.l('pwHash = ' + pwHash);	
 				if (Utils.hashSha512(submittedPw + pwSalt) == pwHash) {
 					// Does nonce match?
-					Log.l('Utils.hashSha512(submittedPw + nonce + userId) = ' + Utils.hashSha512(submittedPw + nonce + userId));
-					Log.l('submittedHashChunk = ' + submittedHashChunk);
+					// Log.l('Utils.hashSha512(submittedPw + nonce + userId) = ' + Utils.hashSha512(submittedPw + nonce + userId));
+					// Log.l('submittedHashChunk = ' + submittedHashChunk);
 					if (Utils.hashSha512(submittedPw + nonce + userId) == submittedHashChunk) {
 						validAuth = true;
 						var resultObject = {'valid': true};
@@ -655,7 +677,6 @@ var Tests = (function() {
 			Log.l(json);
 			Assert.equal(json['code'], 'expired_auth');
 			var nonce = json['nonce'];
-			Log.l(pw);
 			auth = pw + Utils.hashSha512(pw + nonce + userId);
 			var post = {
 				'a': 'ping',

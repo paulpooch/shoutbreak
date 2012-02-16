@@ -327,7 +327,15 @@ var ping = function(clean, response, testCallback) {
 				callback7();
 			}
 		};
-		var callback7 = function(inboxContent) {
+		var callback7 = function() {
+			Storage.Inbox.clearInbox(userid, callback8, 
+				function() {
+					var json = { 'code': 'error', 'txt': 'Could not clear user\'s inbox.' };
+					respond(json, response, testCallback);
+				}
+			);	
+		};
+		var callback8 = function() {
 			if (reqScores) {
 				var pulledScores = [];
 				var loop = function(index) {
@@ -349,15 +357,15 @@ var ping = function(clean, response, testCallback) {
 							sArray.push(Utils.buildScoreJson(shout));
 						}
 						json['scores'] = sArray;
-						callback8();
+						callback9();
 					}
 				}
 				loop(0);
 			} else {
-				callback8();
+				callback9();
 			}
 		};
-		var callback8 = function() {
+		var callback9 = function() {
 			respond(json, response, testCallback);
 		};
 		authIsValid(userId, auth, callback);	

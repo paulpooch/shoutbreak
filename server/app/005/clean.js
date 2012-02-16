@@ -38,7 +38,9 @@ exports.sanitize = function(dirty, response, testCallback, callback) {
 		'phone_num': 1,
 		'radius': 1,
 		'shoutreach': 1,
-		'vote': 1
+		'vote': 1,
+		'lvl': 1,
+		'hint': 1
 	};
 	for (var param in allowedInts) {
 		if (param in dirty) {
@@ -61,6 +63,7 @@ exports.sanitize = function(dirty, response, testCallback, callback) {
 	var param = 'scores';
 	if (param in dirty) {
 		var cleanArray = [];
+		dirty[param] = JSON.parse(dirty[param]);
 		for (var i = 0; i < dirty[param].length; i++) {
 			var reqScoreId = dirty[param][i];
 			reqScoreId = Sanitizer(reqScoreId).trim();
@@ -229,6 +232,26 @@ exports.validate = function(dirty, response, testCallback, callback) {
 			}
 		}
 		clean[param] = cleanArray;
+	}
+
+	// lvl
+	param = 'lvl';
+	if (param in dirty) {
+		if (Validator(dirty[param]).isNumeric() &&
+		Validator(dirty[param]).min(0) && 
+		Validator(dirty[param]).max(1000)) {
+			clean[param] = dirty[param];
+		}
+	}
+
+	// hint
+	param = 'hint';
+	if (param in dirty) {
+		if (Validator(dirty[param]).isNumeric() &&
+		Validator(dirty[param]).min(0) && 
+		Validator(dirty[param]).max(6371000)) { // 6371000 = radius earth
+			clean[param] = dirty[param];
+		}
 	}
 
 	var routingObject = {

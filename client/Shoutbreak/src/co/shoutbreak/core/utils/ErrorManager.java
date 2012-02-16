@@ -12,6 +12,7 @@ public class ErrorManager {
 
 	public static void manage(Exception ex) {
 		SBLog.error(TAG, "manage()");
+		
 		if (ex instanceof JSONException) {
 			SBLog.error(TAG, ex.getMessage());
 			ex.printStackTrace();

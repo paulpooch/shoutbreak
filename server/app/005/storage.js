@@ -103,6 +103,10 @@ module.exports = (function() {
 			Inbox.checkInbox(userId, callback, failCallback);
 		};			
 
+		this.clearInbox = function(userId, successCallback, failCallback) {
+			Cache.delete(Config.PRE_INBOX + userId, successCallback, failCallback);
+		};
+
 		return this;
 	})();
 
@@ -111,7 +115,6 @@ module.exports = (function() {
 	this.Shouts = (function() {
 
 		this.getShout = function(shoutId, successCallback, failCallback) {
-			Log.e('getShout');
 			var returnShout;
 			var callback = function(getResult) {
 				if (getResult) {
@@ -126,6 +129,7 @@ module.exports = (function() {
 							'shout_id',
 							'user_id',
 							'time',
+							'last_activity_time',
 							'text',
 							'open',
 							're',
@@ -309,6 +313,9 @@ module.exports = (function() {
 		};
 
 		this.isExpired = function(shout, successCallback, failCallback) {
+			if (shout.open == 0) {
+				return true;
+			}
 			var d2 = new Date();
 			var d1 = new Date(shout.lastActivityTime);
 			var idleTime = (d2 - d1) / 60000; // = minutes
@@ -581,6 +588,7 @@ module.exports = (function() {
 		};
 
 		this.acknowledgeLevelUp = function(user, successCallback, failCallback) {
+			user.pendingLevelUp = 0;
 			var req = {
 				'TableName': Config.TABLE_USERS,
 				'Key': {
@@ -588,7 +596,7 @@ module.exports = (function() {
 				},
 				'AttributeUpdates': {
 					'pending_level_up': {
-						'Value': {'N': String(0)},
+						'Value': {'N': String(user.pendingLevelUp)},
 					}
 				},
 				'ReturnValues': 'NONE'
@@ -643,7 +651,8 @@ module.exports = (function() {
 	// Live Users //////////////////////////////////////////////////////////////
 
 	this.LiveUsers = (function() {
-		
+		var liveUsersSelf = this;
+
 		this.putUserOnline = function(userId, lat, lng, successCallback, failCallback) {
 			var callback = function(error, result, metadata) {
 				if (result) {
@@ -666,16 +675,21 @@ module.exports = (function() {
 		};
 
 		this.calculateRadiusOrFindTargets = function(isShouting, user, shoutreach, lat, lng, successCallback, failCallback) {
+			liveUsersSelf.calculateRadiusOrFindTargetsWithRadiusHint(isShouting, user, shoutreach, lat, lng, null, successCallback, failCallback)
+		};
+
+		this.calculateRadiusOrFindTargetsWithRadiusHint = function(isShouting, user, shoutreach, lat, lng, radiusHint, successCallback, failCallback) {
 			
 			var SELECT_LIMIT = 20;
 			var selectCount = 0;
+			var radiusHint = false;
 			var xMin = 0, yMin = 0, xMax = 36000000, yMax = 18000000;
 			var x0, x1, x2, x3, y0, y1, y2, y3, xDelta, yDelta, xOffset, yOffset;
 			if (!isShouting) {
 				var shoutreach = user.level;
 			}
-			var acceptableExtra = 40;
-			var acceptableExtraIncrement = 20;
+			var acceptableExtra = Config.SELECT_ALGORITHM_ACCEPTABLE_EXTRA;
+			var acceptableExtraIncrement = Config.SELECT_ALGORITHM_INCREMENT;
 			var xWrap = false, yWrap = false;
 			var xUser = Utils.formatLatForSimpleDB(lat);
 			var yUser = Utils.formatLngForSimpleDB(lng);
@@ -867,8 +881,17 @@ module.exports = (function() {
 			};
 
 			// First try.
-			xDelta = xMax / 2; // TODO: Change these.
-			yDelta = yMax / 2;
+			if (radiusHint != null && typeof(radiusHint) != 'undefined' && radiusHint > 100) {
+				var degreeLatAt45InMeters = 111132;
+				var degrees = radiusHint / degreeLatAt45InMeters;
+				degrees *= 100000; // degrees with 5 zeros;
+				xDelta = degrees;
+				yDelta = degrees;
+				Log.l('radius hint = ' + degrees);
+			} else {
+				xDelta = xMax / 2; // TODO: Change these.
+				yDelta = yMax / 2;
+			}
 			performSelect(true, recursiveCallback);
 		};
 
