@@ -2,6 +2,7 @@ package co.shoutbreak.storage.inbox;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import org.json.JSONObject;
@@ -32,12 +33,15 @@ public class InboxSystem {
 	private ListView.OnItemClickListener _listViewItemClickListener;
 	private Database _db;
 	
+	private HashMap<String, Date> _scoreLastUpdatedAt; 
+	
 	public InboxSystem(Mediator mediator, Database db) {
 		SBLog.constructor(TAG);
 		_m = mediator;
 		_db = db;
 		_self = InboxSystem.this;
 		_displayedShouts = new ArrayList<Shout>();
+		_scoreLastUpdatedAt = new HashMap<String, Date>();
 		_listAdapter = new InboxListViewAdapter(_m, (LayoutInflater)_m.getSystemService(Context.LAYOUT_INFLATER_SERVICE), InboxSystem.this);
 		_listViewItemClickListener = new ListView.OnItemClickListener() {
 			public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
@@ -144,13 +148,38 @@ public class InboxSystem {
 		return results;
 	}
 	
-	public ArrayList<String> getOpenShoutIDs() {
-		SBLog.method(TAG, "getOpenShoutIDs");
-		ArrayList<String> results = new ArrayList<String>();
+	class ScoreRequest {
+		public String id;
+		public Date time;
+		public ScoreRequest(String id) {
+			this.id = id;
+			this.time = new Date(0);
+			if (_scoreLastUpdatedAt.containsKey(id)) {
+				this.time = _scoreLastUpdatedAt.get(id);
+			}
+		}
+	}
+	
+	public ArrayList<String> getScoreRequestIds() {
+		SBLog.method(TAG, "getScoreRequestIds");
+		ArrayList<ScoreRequest> sorter = new ArrayList<ScoreRequest>();
 		for (Shout shout : _displayedShouts) {
 			if (shout.open) {
-				results.add(shout.id);
+				ScoreRequest req = new ScoreRequest(shout.id);		
+				if (sorter.size() == 0) {
+					sorter.add(req);
+				} else {
+					int i = 0;
+					while (i < sorter.size() && req.time.compareTo(sorter.get(i).time) >= 0) {
+						i++;
+					}
+					sorter.add(i, req);
+				}				
 			}
+		}
+		ArrayList<String> results = new ArrayList<String>();
+		for (int i = 0; i < C.CONFIG_SCORE_REQUEST_LIMIT && i < sorter.size(); i++) {
+			results.add(sorter.get(i).id);
 		}
 		return results;
 	}
@@ -198,6 +227,8 @@ public class InboxSystem {
 		shout.pts = jsonScore.optInt(C.JSON_POINTS, C.NULL_PTS);
 		shout.open = jsonScore.optInt(C.JSON_SHOUT_OPEN, 0) == 1 ? true : C.NULL_OPEN;
 		dbUpdateScore(shout);
+		 
+		_scoreLastUpdatedAt.put(shout.id, new Date());
 		
 		// If the shout is closed, we checked if it's in our outbox.
 		// If it is, we need to save the points.

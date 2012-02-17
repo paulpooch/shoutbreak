@@ -109,7 +109,6 @@ public class Polling {
 				}
 			}
 		};
-		ArrayList<String> scoresToRequest = _safeM.getOpenShoutIds();
 		PostData postData = new PostData();
 		postData.add(C.JSON_ACTION, C.JSON_ACTION_USER_PING);
 		postData.add(C.JSON_UID, _safeM.getUserId());
@@ -130,6 +129,7 @@ public class Polling {
 				postData.add(C.JSON_RADIUS, "1");
 				//Toast.makeText(_context, "Requesting Density: " + tempCellDensity.cellX + " , " + tempCellDensity.cellY, Toast.LENGTH_SHORT).show();
 			}
+			ArrayList<String> scoresToRequest = _safeM.getScoreRequestIds();
 			if (scoresToRequest.size() > 0) {
 				StringBuilder scoreReq = new StringBuilder("[");
 				int i = 0;
@@ -151,10 +151,6 @@ public class Polling {
 		SBLog.logic("Polling - receiveShouts");
 		CrossThreadPacket xPacket = (CrossThreadPacket)message.obj;
 		try {
-			if (xPacket.json.has(C.JSON_RADIUS)) {
-				long radius = (long) xPacket.json.optLong(C.JSON_RADIUS);
-				_safeM.handleRadiusChange(radius);
-			}
 			if (xPacket.json.has(C.JSON_SHOUTS)) {
 				_safeM.resetPollingDelay();
 				JSONArray shouts = xPacket.json.getJSONArray(C.JSON_SHOUTS);
@@ -171,6 +167,11 @@ public class Polling {
 			if (xPacket.json.has(C.JSON_LEVEL_CHANGE)) {
 				JSONObject levelInfo = xPacket.json.getJSONObject(C.JSON_LEVEL_CHANGE);
 				_safeM.handleLevelUp(levelInfo);
+			}
+			// Radius stuff must come after level change... so new radius is set based on new level.
+			if (xPacket.json.has(C.JSON_RADIUS)) {
+				long radius = (long) xPacket.json.optLong(C.JSON_RADIUS);
+				_safeM.handleRadiusChange(radius);
 			}
 			// If normal ping, introduce delay
 			if (_threadPurpose == C.PURPOSE_LOOP_FROM_UI) {

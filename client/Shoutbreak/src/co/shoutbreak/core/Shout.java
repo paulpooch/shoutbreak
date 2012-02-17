@@ -17,7 +17,7 @@ public class Shout {
 	public int pts;
 	public int state_flag;
 	public int score;
-
+	
 	public Shout() {
 		this("", "", "");
 	}

@@ -94,7 +94,6 @@ var fakePost = function(dirty, response, testCallback) {
 };
 
 var route = function(clean, response, testCallback) {
-	Log.l(clean);
 	var action = clean['a'];
 	switch(action) {
 		case 'create_account':
@@ -200,7 +199,6 @@ var ping = function(clean, response, testCallback) {
 	var reqScores = clean['scores'];
 	var reqRadius = clean['radius'];
 	var level = clean['lvl'];
-	var reqRadius = clean['radius'];
 	if (typeof userId != 'undefined' &&
 	typeof auth != 'undefined' &&
 	typeof lat != 'undefined' &&
@@ -268,15 +266,29 @@ var ping = function(clean, response, testCallback) {
 		};
 		var callback4 = function() {
 			if (reqRadius == 1) {
-				Storage.LiveUsers.calculateRadiusOrFindTargets(false, user, null, lat, lng, callback5, 
+				Storage.LiveUsers.userCanRequestRadius(userId, callback45, 
 					function() {
-						var json = { 'code': 'error', 'txt': 'Could not calculate radius for shoutreach.' };
-						respond(json, response, testCallback);
+						var json = { 'code': 'error', 'txt': 'Radius request limit exceeded.' };
+						respond(json, response, testCallback);	
 					}
 				);
 			} else {
 				callback5(false);
 			}
+		};
+		var callback45 = function(userCanRequestRadiusResult) {
+			if (userCanRequestRadiusResult) {
+				Storage.LiveUsers.calculateRadiusOrFindTargets(false, user, null, lat, lng, callback5, 
+					function() {
+						var json = { 'code': 'error', 'txt': 'Could not calculate radius for shoutreach.' };
+						respond(json, response, testCallback);
+					}
+				);	
+			} else {
+				// User keeps requesting radius, no longer allowed to get it.  Ignore request.
+				callback5(false);
+			}
+				
 		};
 		var callback5 = function(calculateRadiusOrFindTargetsResult) {
 			if (calculateRadiusOrFindTargetsResult) {

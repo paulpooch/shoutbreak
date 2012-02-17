@@ -314,7 +314,7 @@ module.exports = (function() {
 
 		this.isExpired = function(shout, successCallback, failCallback) {
 			if (shout.open == 0) {
-				return true;
+				successCallback(true);
 			}
 			var d2 = new Date();
 			var d1 = new Date(shout.lastActivityTime);
@@ -455,8 +455,6 @@ module.exports = (function() {
 						user.points = parseInt(item['points']['N']);
 						user.level = parseInt(item['level']['N']);
 						user.pendingLevelUp = parseInt(item['pending_level_up']['N']);
-						Log.e('got user from db');
-						Log.obj(user);
        					addToCache(user);
        				} else {
 						Log.e(chunk);
@@ -652,6 +650,38 @@ module.exports = (function() {
 
 	this.LiveUsers = (function() {
 		var liveUsersSelf = this;
+
+		this.userCanRequestRadius = function(userId, successCallback, failCallback) {
+			var result = false;
+			var callback = function(getResult) {
+				var reqCount = 1;
+				if (getResult) {
+					reqCount = getResult + 1;
+					if (reqCount > Config.RADIUS_REQUEST_LIMIT) {
+						result = false;
+					} else {
+						result = true;
+					}
+				} else {
+					// If we can't find it...
+					result = true;
+				}
+				Cache.set(Config.PRE_RADIUS_REQUEST + userId, reqCount, Config.TIMEOUT_RADIUS_REQUEST, callback2,
+					function() {
+						Log.e('Could not save radius request limit to cache.');
+						failCallback();
+					}
+				);
+			};
+			var callback2 = function(setResult) {
+				successCallback(result);
+			};
+			Cache.get(Config.PRE_RADIUS_REQUEST + userId, callback,
+				function() {
+					callback(false);
+				}
+			);
+		};
 
 		this.putUserOnline = function(userId, lat, lng, successCallback, failCallback) {
 			var callback = function(error, result, metadata) {

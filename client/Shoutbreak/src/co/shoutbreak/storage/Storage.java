@@ -160,8 +160,8 @@ public class Storage implements Colleague {
 		_inboxSystem.deleteShout(shoutID);
 	}
 	
-	public ArrayList<String> getOpenShoutIds() {
-		return _inboxSystem.getOpenShoutIDs();
+	public ArrayList<String> getScoreRequestIds() {
+		return _inboxSystem.getScoreRequestIds();
 	}
 	
 	public int getUserPoints() {
@@ -207,10 +207,6 @@ public class Storage implements Colleague {
 	
 	public void setLevelUpOccured(boolean b) {
 		_user.setLevelUpOccured(b);
-	}
-	
-	public ArrayList<String> getOpenShoutIDs() {
-		return _inboxSystem.getOpenShoutIDs();
 	}
 	
 	public void updateAuth(String nonce) {

@@ -23,6 +23,8 @@ module.exports = (function() {
 	this.SHOUTBREAK_SCORING_COEFFECIENT = 1.09;
 	this.SELECT_ALGORITHM_ACCEPTABLE_EXTRA = 100;
 	this.SELECT_ALGORITHM_INCREMENT = 50;
+	this.SCORE_REQUEST_LIMIT = 30;
+	this.RADIUS_REQUEST_LIMIT = 10;
 	 
 	// AWS
 	this.CACHE_URL = 'cache-001.ardkb4.0001.use1.cache.amazonaws.com:11211',
@@ -48,6 +50,8 @@ module.exports = (function() {
 	this.TIMEOUT_INBOX =						1800; // 30 minutes
 	this.PRE_VOTE =								'vote';
 	this.TIMEOUT_VOTE = 						300; // 5 minutes
+	this.PRE_RADIUS_REQUEST = 					'radiusreq';
+	this.TIMEOUT_RADIUS_REQUEST = 				1200; // 20 minutes
 	
 	// Tables
 	this.TABLE_USERS = 'USERS';

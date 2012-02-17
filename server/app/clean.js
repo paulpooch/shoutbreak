@@ -61,7 +61,8 @@ exports.sanitize = function(dirty, response, testCallback, callback) {
 	var param = 'scores';
 	if (param in dirty) {
 		var cleanArray = [];
-		for (var i = 0; i < dirty[param].length; i++) {
+		var lengthCap = min(dirty[param].length, Config.SCORE_REQUEST_LIMIT);
+		for (var i = 0; i < lengthCap; i++) {
 			var reqScoreId = dirty[param][i];
 			reqScoreId = Sanitizer(reqScoreId).trim();
 			reqScoreId = Sanitizer(reqScoreId).xss();

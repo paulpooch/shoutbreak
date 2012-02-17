@@ -659,9 +659,9 @@ public class Mediator {
 			return _storage.getUserId();
 		}
 
-		public ArrayList<String> getOpenShoutIds() {
-			SBLog.method(TAG, "getOpenShoutIds()");
-			return _storage.getOpenShoutIDs();
+		public ArrayList<String> getScoreRequestIds() {
+			SBLog.method(TAG, "getScoreRequestIds()");
+			return _storage.getScoreRequestIds();
 		}
 
 		public String getAuth() {
