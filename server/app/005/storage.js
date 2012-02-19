@@ -8,6 +8,7 @@ module.exports = (function() {
 
 	// Includes ////////////////////////////////////////////////////////////////
 	// https://github.com/xiepeng/dynamoDB
+	// https://github.com/rjrodger/simpledb
 	var	Config =	require('./config'),
 		Utils = 	require('./utils'),
 		User =		require('./user'),
@@ -487,6 +488,40 @@ module.exports = (function() {
 		};
 
 		this.generateNonce = function(userId, successCallback, failCallback) {
+			var callback0 = function(getResult) {
+				var failCount = 1;
+				if (getResult) {
+					failCount = getResult + 1;
+				}
+				if (failCount > Config.AUTH_ATTEMPT_FAIL_LIMIT) {
+					var json = { 
+						'code': 'error',
+						'txt': 'Too many failed auth attempts.'
+					};
+					failCallback(json);
+				} else {
+					Cache.set(Config.PRE_AUTH_ATTEMPT_FAIL + userId, failCount, Config.TIMEOUT_AUTH_ATTEMPT_FAIL, callback01, 
+						function() {
+							var json = { 
+								'code': 'error',
+								'txt': 'Could not cache failed auth attempt.'
+							};
+							failCallback(json);
+						}
+					);
+				}	
+			};
+			var callback01 = function(setResult) {
+				self.Users.getUser(userId, callback, 
+					function() {
+						var json = { 
+							'code': 'error',
+							'txt': 'Could not get user to generate nonce.'
+						};
+						failCallback(json);
+					}
+				);
+			};
 			var callback = function(getUserResult) {
 				if (getUserResult) {
 					if (getUserResult.userPwHash && getUserResult.userPwSalt) {
@@ -509,19 +544,28 @@ module.exports = (function() {
 						Cache.set(Config.PRE_ACTIVE_AUTH + userId, authInfo,
 							Config.TIMEOUT_ACTIVE_AUTH, callback2, 
 							function() {
-								failCallback()
+								var json = { 
+									'code': 'error',
+									'txt': 'Could not add auth to cache.'
+								};
+								failCallback(json);
 							}
 						);
 					}else {
-						failCallback();
+						var json = { 
+							'code': 'error',
+							'txt': 'User does not have a password.'
+						};
+						failCallback(json);
 					}
 				} else {
-					failCallback();
+					var json = { 'code': 'invalid_uid' };
+					failCallback(json);
 				}
 			};
-			self.Users.getUser(userId, callback, 
+			Cache.get(Config.PRE_AUTH_ATTEMPT_FAIL + userId, callback0, 
 				function() {
-					failCallback();
+					callback0(false);
 				}
 			);
 		};
@@ -651,6 +695,47 @@ module.exports = (function() {
 	this.LiveUsers = (function() {
 		var liveUsersSelf = this;
 
+		this.cull = function(successCallback, failCallback) {
+			Log.l('CRON CULL LIVE USERS');
+			var usersToCull = false;
+			var loop = function(index) {
+				if (usersToCull.length > index) {
+					var userId = usersToCull[index]['user_id'];	
+					SimpleDB.deleteItem(Config.TABLE_LIVE, userId, 
+						function(error, result, metadata) {
+							if (result) {
+								if (error != null) {
+									Log.l('Failed to delete a user from LIVE');
+									failCallback();
+								} else {
+									loop(index + 1);
+								}
+							}
+						}
+					);
+				} else {
+					successCallback(usersToCull.length);
+				}
+			};
+			var callback = function(error, result, metadata) {
+				if (result) {
+					if (error != null) {
+						Log.l('Failed to select expired users from LIVE');
+						failCallback();
+					} else {
+						usersToCull = result;
+						loop(0);
+					}
+				}
+			};
+			var now = new Date();
+			var lastAcceptableCheckInTime = String(new Date(now.getTime() - Config.LIVE_USERS_TIMEOUT));
+			var params = [];
+			var query = "SELECT user_id, ping_time FROM " + Config.TABLE_LIVE + " WHERE ping_time < '?'";
+			params.push(lastAcceptableCheckInTime);
+			SimpleDB.select(query, params, callback);
+		};
+
 		this.userCanRequestRadius = function(userId, successCallback, failCallback) {
 			var result = false;
 			var callback = function(getResult) {
@@ -723,6 +808,7 @@ module.exports = (function() {
 			var xWrap = false, yWrap = false;
 			var xUser = Utils.formatLatForSimpleDB(lat);
 			var yUser = Utils.formatLngForSimpleDB(lng);
+			var selectEntirePlanet = false;
 
 			var xCenter = xMax / 2;
 			var yCenter = yMax / 2;
@@ -730,6 +816,7 @@ module.exports = (function() {
 			xCenter = Utils.formatLngForSimpleDB(lng);
 
 			var createCleanBounds = function() {
+				selectEntirePlanet = false;
 				xWrap = false;
 				yWrap = false;
 
@@ -744,6 +831,10 @@ module.exports = (function() {
 				y0 = (y0 < yMin) ? yMin : y0;
 				y1 = (y1 > yMax) ? yMax : y1;
 				
+				if (x0 == xMin && x1 == xMax && y0 == yMin && y1 == yMax) {
+					selectEntirePlanet = true;
+				}
+
 				// Step 2 - shift bounding box to user location.
 				xOffset = xUser - xCenter;
 				yOffset = yUser - yCenter;
@@ -807,7 +898,7 @@ module.exports = (function() {
 				var nearbySorter = function(a, b) {
 					return b[0] - a[0];	
 				};
-				if (!isShouting && result.length < shoutreach) {
+				if (!isShouting && (!selectEntirePlanet && result.length < shoutreach)) {
 					// We have a problem.
 					Log.e('calculateRadiusOrFindTargets failed to find enough users.');
 					failCallback();
@@ -818,6 +909,7 @@ module.exports = (function() {
 						var lng2 = (row['lng'] - Config.OFFSET_LNG) / Config.MULTIPLY_COORDS;
 						var distanceKm = Utils.distanceBetween(lat, lng, lat2, lng2);
 						nearby.push([distanceKm, row['user_id']]);
+						Log.l('nearby.push(' + distanceKm + ', ' + row['user_id'] + ')');
 					}
 					nearby.sort(nearbySorter);
 					
@@ -832,11 +924,19 @@ module.exports = (function() {
 						}
 						successCallback(targets);
 					} else {
-						var radius = nearby[user.level][0];
-						radius *= 1000;
-						radius += Config.SHOUTREACH_BUFFER_METERS;
-						radius = Math.round(radius);
-						successCallback(radius);
+						Log.l('nearby = ');
+						Log.l(nearby);
+						if (nearby.length >= user.level) {
+							var radius = nearby[user.level][0];
+							radius *= 1000;
+							radius += Config.SHOUTREACH_BUFFER_METERS;
+							radius = Math.round(radius);
+							successCallback(radius);	
+						} else {
+							// Not enough live users online.
+							successCallback(Config.RADIUS_FOR_INSUFFICIENT_USERS_ONLINE);
+						}
+
 					}
 
 				}
@@ -880,8 +980,8 @@ module.exports = (function() {
 				Log.e('recursiveCallback on iteration ' + selectCount);
 				var makeNextSelect = true;
 				var count = result[0]['Count'];
-				Log.e('COUNT = ' + count + ', SHOUTREACH = ' + shoutreach);
-				if (count >= shoutreach) {
+				Log.e('COUNT = ' + count + ', SHOUTREACH = ' + shoutreach + ', selectEntirePlanet = ' + selectEntirePlanet);
+				if (count >= shoutreach || selectEntirePlanet) {
 					if (count - shoutreach <= acceptableExtra) {
 						makeNextSelect = false;
 						performSelect(false, fullGetCallback);

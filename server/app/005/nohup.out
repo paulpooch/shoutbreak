@@ -1,0 +1,316 @@
+Log initiated.
+Server launched.
+
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+{ a: 'create_account' }
+RESPONSE = 
+{ code: 'create_account_0',
+  uid: 'a45d1c28-955e-4b23-9629-e4db5100f106' }
+
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+{ a: 'create_account',
+  uid: 'a45d1c28-955e-4b23-9629-e4db5100f106',
+  android_id: 'e4c25ac3061c389f',
+  device_id: 'A0000022ECB30A',
+  phone_num: '2014033628',
+  carrier: 'Verizon Wireless' }
+RESPONSE = 
+{ code: 'create_account_1',
+  pw: '2bx!W+6Kn/YHwX=9z3-NhQ5tvSXr7!vS' }
+
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+{ a: 'ping',
+  uid: 'a45d1c28-955e-4b23-9629-e4db5100f106',
+  auth: 'default',
+  lat: '40.74331',
+  lng: '-74.03102',
+  radius: '1' }
+addToCache
+user
+RESPONSE = 
+{ code: 'expired_auth',
+  nonce: '#_nFqwE8FTExxRv1/_U-QcNx9ELRHS7+2Hart6h3' }
+
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+{ a: 'ping',
+  uid: 'a45d1c28-955e-4b23-9629-e4db5100f106',
+  auth: '2bx!W+6Kn/YHwX=9z3-NhQ5tvSXr7!vSs9fS4dx1ucAzPKhs7RumnBN1NsDSqRX28adAwm8J0tL0hv8xex95/XODf4ykZgHnxOFTwPgbxESHd+kc23Da4g==',
+  lat: '40.74331',
+  lng: '-74.03102',
+  radius: '1' }
+recursiveCallback on iteration 1
+COUNT = 202, SHOUTREACH = 5
+recursiveCallback on iteration 2
+COUNT = 0, SHOUTREACH = 5
+recursiveCallback on iteration 3
+COUNT = 0, SHOUTREACH = 5
+recursiveCallback on iteration 4
+COUNT = 202, SHOUTREACH = 5
+RESPONSE = 
+{ code: 'ping_ok',
+  pts: 71,
+  lvl_change: { lvl: 5, lvl_at: 71, next_lvl_at: 92 },
+  radius: 1076220 }
+
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+{ a: 'ping',
+  uid: 'a45d1c28-955e-4b23-9629-e4db5100f106',
+  auth: '2bx!W+6Kn/YHwX=9z3-NhQ5tvSXr7!vSs9fS4dx1ucAzPKhs7RumnBN1NsDSqRX28adAwm8J0tL0hv8xex95/XODf4ykZgHnxOFTwPgbxESHd+kc23Da4g==',
+  lat: '40.74331',
+  lng: '-74.03102',
+  lvl: '5' }
+updateUser database result:
+'{"ConsumedCapacityUnits":1.0}'
+RESPONSE = 
+{ code: 'ping_ok', pts: 71 }
+
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+{ a: 'ping',
+  uid: 'a45d1c28-955e-4b23-9629-e4db5100f106',
+  auth: '2bx!W+6Kn/YHwX=9z3-NhQ5tvSXr7!vSs9fS4dx1ucAzPKhs7RumnBN1NsDSqRX28adAwm8J0tL0hv8xex95/XODf4ykZgHnxOFTwPgbxESHd+kc23Da4g==',
+  lat: '40.74836',
+  lng: '-74.03177' }
+RESPONSE = 
+{ code: 'ping_ok', pts: 71 }
+
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+{ a: 'ping',
+  uid: 'a45d1c28-955e-4b23-9629-e4db5100f106',
+  auth: '2bx!W+6Kn/YHwX=9z3-NhQ5tvSXr7!vSs9fS4dx1ucAzPKhs7RumnBN1NsDSqRX28adAwm8J0tL0hv8xex95/XODf4ykZgHnxOFTwPgbxESHd+kc23Da4g==',
+  lat: '40.74836',
+  lng: '-74.03177' }
+RESPONSE = 
+{ code: 'ping_ok', pts: 71 }
+
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+{ a: 'ping',
+  uid: 'a45d1c28-955e-4b23-9629-e4db5100f106',
+  auth: '2bx!W+6Kn/YHwX=9z3-NhQ5tvSXr7!vSs9fS4dx1ucAzPKhs7RumnBN1NsDSqRX28adAwm8J0tL0hv8xex95/XODf4ykZgHnxOFTwPgbxESHd+kc23Da4g==',
+  lat: '40.74836',
+  lng: '-74.03177' }
+RESPONSE = 
+{ code: 'ping_ok', pts: 71 }
+
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+{ a: 'ping',
+  uid: 'a45d1c28-955e-4b23-9629-e4db5100f106',
+  auth: '2bx!W+6Kn/YHwX=9z3-NhQ5tvSXr7!vSs9fS4dx1ucAzPKhs7RumnBN1NsDSqRX28adAwm8J0tL0hv8xex95/XODf4ykZgHnxOFTwPgbxESHd+kc23Da4g==',
+  lat: '40.74836',
+  lng: '-74.03177' }
+RESPONSE = 
+{ code: 'ping_ok', pts: 71 }
+
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+{ a: 'ping',
+  uid: 'a45d1c28-955e-4b23-9629-e4db5100f106',
+  auth: '2bx!W+6Kn/YHwX=9z3-NhQ5tvSXr7!vSs9fS4dx1ucAzPKhs7RumnBN1NsDSqRX28adAwm8J0tL0hv8xex95/XODf4ykZgHnxOFTwPgbxESHd+kc23Da4g==',
+  lat: '40.74836',
+  lng: '-74.03177' }
+RESPONSE = 
+{ code: 'ping_ok', pts: 71 }
+
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+{ a: 'ping',
+  uid: 'a45d1c28-955e-4b23-9629-e4db5100f106',
+  auth: '2bx!W+6Kn/YHwX=9z3-NhQ5tvSXr7!vSs9fS4dx1ucAzPKhs7RumnBN1NsDSqRX28adAwm8J0tL0hv8xex95/XODf4ykZgHnxOFTwPgbxESHd+kc23Da4g==',
+  lat: '40.74331',
+  lng: '-74.03102' }
+RESPONSE = 
+{ code: 'ping_ok', pts: 71 }
+
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+{ a: 'ping',
+  uid: 'a45d1c28-955e-4b23-9629-e4db5100f106',
+  auth: '2bx!W+6Kn/YHwX=9z3-NhQ5tvSXr7!vSs9fS4dx1ucAzPKhs7RumnBN1NsDSqRX28adAwm8J0tL0hv8xex95/XODf4ykZgHnxOFTwPgbxESHd+kc23Da4g==',
+  lat: '40.74331',
+  lng: '-74.03102' }
+RESPONSE = 
+{ code: 'ping_ok', pts: 71 }
+
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+{ a: 'ping',
+  uid: 'a45d1c28-955e-4b23-9629-e4db5100f106',
+  auth: '2bx!W+6Kn/YHwX=9z3-NhQ5tvSXr7!vSs9fS4dx1ucAzPKhs7RumnBN1NsDSqRX28adAwm8J0tL0hv8xex95/XODf4ykZgHnxOFTwPgbxESHd+kc23Da4g==',
+  lat: '40.74331',
+  lng: '-74.03102' }
+RESPONSE = 
+{ code: 'ping_ok', pts: 71 }
+
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+{ a: 'ping',
+  uid: 'a45d1c28-955e-4b23-9629-e4db5100f106',
+  auth: '2bx!W+6Kn/YHwX=9z3-NhQ5tvSXr7!vSs9fS4dx1ucAzPKhs7RumnBN1NsDSqRX28adAwm8J0tL0hv8xex95/XODf4ykZgHnxOFTwPgbxESHd+kc23Da4g==',
+  lat: '40.74331',
+  lng: '-74.03102' }
+RESPONSE = 
+{ code: 'ping_ok', pts: 71 }
+
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+{ a: 'create_account' }
+RESPONSE = 
+{ code: 'create_account_0',
+  uid: '324019fc-01d4-48aa-9f70-01f66a3a4c37' }
+
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+{ a: 'create_account',
+  uid: '324019fc-01d4-48aa-9f70-01f66a3a4c37',
+  android_id: 'e4c25ac3061c389f',
+  device_id: 'A0000022ECB30A',
+  phone_num: '2014033628',
+  carrier: 'Verizon Wireless' }
+RESPONSE = 
+{ code: 'create_account_1',
+  pw: 'PA#EWKqw/Wdw-gg#MD@A#6yOt8ZH(7Y#' }
+
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+{ a: 'ping',
+  uid: '324019fc-01d4-48aa-9f70-01f66a3a4c37',
+  auth: 'default',
+  lat: '40.74331',
+  lng: '-74.03102',
+  radius: '1' }
+addToCache
+user
+RESPONSE = 
+{ code: 'expired_auth',
+  nonce: 'U5bc-hq5gFZGw*fU3VU3GxgA5_VKtz*s8(96L/ws' }
+
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+{ a: 'ping',
+  uid: '324019fc-01d4-48aa-9f70-01f66a3a4c37',
+  auth: 'PA#EWKqw/Wdw-gg#MD@A#6yOt8ZH(7Y#E10pLsKaAUy/vR5YQVbkkOrb7EK9QWICdMZLYFpWenBHu4DbeenxkerLeM0M8f79qi2wgFDhPvZ95Pt8prX94w==',
+  lat: '40.74331',
+  lng: '-74.03102',
+  radius: '1' }
+recursiveCallback on iteration 1
+COUNT = 2, SHOUTREACH = 5
+recursiveCallback on iteration 2
+COUNT = 2, SHOUTREACH = 5
+recursiveCallback on iteration 3
+COUNT = 2, SHOUTREACH = 5
+recursiveCallback on iteration 4
+COUNT = 2, SHOUTREACH = 5
+recursiveCallback on iteration 5
+COUNT = 2, SHOUTREACH = 5
+recursiveCallback on iteration 6
+COUNT = 2, SHOUTREACH = 5
+recursiveCallback on iteration 7
+COUNT = 2, SHOUTREACH = 5
+recursiveCallback on iteration 8
+COUNT = 2, SHOUTREACH = 5
+recursiveCallback on iteration 9
+COUNT = 2, SHOUTREACH = 5
+recursiveCallback on iteration 10
+COUNT = 2, SHOUTREACH = 5
+recursiveCallback on iteration 11
+COUNT = 2, SHOUTREACH = 5
+recursiveCallback on iteration 12
+COUNT = 2, SHOUTREACH = 5
+recursiveCallback on iteration 13
+COUNT = 2, SHOUTREACH = 5
+recursiveCallback on iteration 14
+COUNT = 2, SHOUTREACH = 5
+recursiveCallback on iteration 15
+COUNT = 2, SHOUTREACH = 5
+recursiveCallback on iteration 16
+COUNT = 2, SHOUTREACH = 5
+recursiveCallback on iteration 17
+COUNT = 2, SHOUTREACH = 5
+recursiveCallback on iteration 18
+COUNT = 2, SHOUTREACH = 5
+recursiveCallback on iteration 19
+COUNT = 2, SHOUTREACH = 5
+recursiveCallback on iteration 20
+COUNT = 2, SHOUTREACH = 5
+recursiveCallback on iteration 21
+COUNT = 2, SHOUTREACH = 5
+INFINITE LOOP WOULD HAVE OCCURED IN recursiveCallback
+calculateRadiusOrFindTargets failed to find enough users.
+RESPONSE = 
+{ code: 'error',
+  txt: 'Could not calculate radius for shoutreach.' }
+
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+{ a: 'ping',
+  uid: '324019fc-01d4-48aa-9f70-01f66a3a4c37',
+  auth: 'PA#EWKqw/Wdw-gg#MD@A#6yOt8ZH(7Y#E10pLsKaAUy/vR5YQVbkkOrb7EK9QWICdMZLYFpWenBHu4DbeenxkerLeM0M8f79qi2wgFDhPvZ95Pt8prX94w==',
+  lat: '40.74331',
+  lng: '-74.03102' }
+RESPONSE = 
+{ code: 'ping_ok',
+  pts: 71,
+  lvl_change: { lvl: 5, lvl_at: 71, next_lvl_at: 92 } }
+
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+{ a: 'ping',
+  uid: '324019fc-01d4-48aa-9f70-01f66a3a4c37',
+  auth: 'PA#EWKqw/Wdw-gg#MD@A#6yOt8ZH(7Y#E10pLsKaAUy/vR5YQVbkkOrb7EK9QWICdMZLYFpWenBHu4DbeenxkerLeM0M8f79qi2wgFDhPvZ95Pt8prX94w==',
+  lat: '40.74331',
+  lng: '-74.03102',
+  lvl: '5' }
+updateUser database result:
+'{"ConsumedCapacityUnits":1.0}'
+RESPONSE = 
+{ code: 'ping_ok', pts: 71 }
+
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+{ a: 'ping',
+  uid: '324019fc-01d4-48aa-9f70-01f66a3a4c37',
+  auth: 'PA#EWKqw/Wdw-gg#MD@A#6yOt8ZH(7Y#E10pLsKaAUy/vR5YQVbkkOrb7EK9QWICdMZLYFpWenBHu4DbeenxkerLeM0M8f79qi2wgFDhPvZ95Pt8prX94w==',
+  lat: '40.74331',
+  lng: '-74.03102' }
+RESPONSE = 
+{ code: 'ping_ok', pts: 71 }
+
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+{ a: 'ping',
+  uid: '324019fc-01d4-48aa-9f70-01f66a3a4c37',
+  auth: 'PA#EWKqw/Wdw-gg#MD@A#6yOt8ZH(7Y#E10pLsKaAUy/vR5YQVbkkOrb7EK9QWICdMZLYFpWenBHu4DbeenxkerLeM0M8f79qi2wgFDhPvZ95Pt8prX94w==',
+  lat: '40.74331',
+  lng: '-74.03102' }
+RESPONSE = 
+{ code: 'ping_ok', pts: 71 }

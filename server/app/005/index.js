@@ -592,12 +592,10 @@ var authIsValid = function(userId, auth, parentCallback) {
 		}
 		if (!validAuth) {
 			Storage.Users.generateNonce(userId, callback2, 
-				function() {
+				function(errorJson) {
 					var resultObject = {
 						'valid': false,
-						json: {
-							'code': 'invalid_uid'
-						}
+						json: errorJson
 					};
 					parentCallback(resultObject)
 				}
