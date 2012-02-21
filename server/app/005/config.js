@@ -27,7 +27,7 @@ module.exports = (function() {
 	this.RADIUS_REQUEST_LIMIT = 10;
 	this.RADIUS_FOR_INSUFFICIENT_USERS_ONLINE = 6000000; // earth is 6378000, let's not push it tho.
 	this.LIVE_USERS_TIMEOUT = 1260000; // 21 minutes
-	this.AUTH_ATTEMPT_FAIL_LIMIT = 10;
+	this.AUTH_ATTEMPT_FAIL_LIMIT = 30; // consider lowering this once not debugging (relaunching a million times).
 	 
 	// AWS
 	this.CACHE_URL = 'cache-001.ardkb4.0001.use1.cache.amazonaws.com:11211',
@@ -57,12 +57,15 @@ module.exports = (function() {
 	this.TIMEOUT_RADIUS_REQUEST = 				1200; // 20 minutes
 	this.PRE_AUTH_ATTEMPT_FAIL =				'authfail';
 	this.TIMEOUT_AUTH_ATTEMPT_FAIL =			1200; // 20 minutes
-	
+	this.PRE_REPLY =							'reply';
+	this.TIMEOUT_REPLY =						1800; // 30 minutes
+
 	// Tables
 	this.TABLE_USERS = 'USERS';
 	this.TABLE_LIVE = 'LIVE';
 	this.TABLE_SHOUTS = 'SHOUTS';
 	this.TABLE_VOTES = 'VOTES';
+	this.TABLE_REPLIES = 'REPLIES';
 
 	return this;
 })();

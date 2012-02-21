@@ -150,6 +150,7 @@ public class Polling {
 	public void receivePing(Message message) {
 		SBLog.logic("Polling - receiveShouts");
 		CrossThreadPacket xPacket = (CrossThreadPacket)message.obj;
+		boolean delay = true;
 		try {
 			if (xPacket.json.has(C.JSON_SHOUTS)) {
 				_safeM.resetPollingDelay();
@@ -167,6 +168,7 @@ public class Polling {
 			if (xPacket.json.has(C.JSON_LEVEL_CHANGE)) {
 				JSONObject levelInfo = xPacket.json.getJSONObject(C.JSON_LEVEL_CHANGE);
 				_safeM.handleLevelUp(levelInfo);
+				delay = false;
 			}
 			// Radius stuff must come after level change... so new radius is set based on new level.
 			if (xPacket.json.has(C.JSON_RADIUS)) {
@@ -175,7 +177,11 @@ public class Polling {
 			}
 			// If normal ping, introduce delay
 			if (_threadPurpose == C.PURPOSE_LOOP_FROM_UI) {
-				_threadPurpose = C.PURPOSE_LOOP_FROM_UI_DELAYED;
+				if (delay) {
+					_threadPurpose = C.PURPOSE_LOOP_FROM_UI_DELAYED;
+				} else {
+					_threadPurpose = C.PURPOSE_LOOP_FROM_UI;
+				}
 			}
 			xPacket.purpose = _threadPurpose;
 			xPacket.keyForLife = _keyForLife;

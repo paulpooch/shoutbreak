@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical" >
 
@@ -8,14 +8,14 @@
 
     <RelativeLayout
         android:id="@+id/rlCollapsed"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="64dp"
         android:background="#ffffffff" >
 
         <!-- Approved use of pixels. -->
 
         <LinearLayout
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="80px"
             android:layout_alignParentBottom="true"
             android:background="@drawable/notice_bg_x" />
@@ -32,7 +32,7 @@
 
             <TextView
                 android:id="@+id/tvScoreC"
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:textColor="#ffffffff"
@@ -52,7 +52,7 @@
         <TextView
             android:id="@+id/tvTextC"
             android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
+            android:layout_height="match_parent"
             android:layout_alignParentLeft="true"
             android:layout_toLeftOf="@id/llScoreC"
             android:padding="5dp"
@@ -64,7 +64,7 @@
 
     <RelativeLayout
         android:id="@+id/rlExpanded"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#ff000000"
         android:minHeight="140dp"
@@ -75,7 +75,7 @@
         <!-- Approved use of pixels. -->
 
         <LinearLayout
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="50px"
             android:layout_alignParentTop="true"
             android:background="@drawable/inbox_expanded_bg_x" />
@@ -92,7 +92,7 @@
 
             <TextView
                 android:id="@+id/tvScoreE"
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:textColor="#ffffffff"
@@ -102,7 +102,7 @@
         <TextView
             android:id="@+id/tvTextE"
             android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
+            android:layout_height="match_parent"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:layout_marginBottom="10dp"
@@ -129,9 +129,9 @@
             android:id="@+id/btnVoteUp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tvTextE"
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
+            android:layout_below="@id/tvTextE"
             android:layout_marginLeft="5dp"
             android:src="@drawable/vote_up_button" />
 
@@ -139,28 +139,18 @@
             android:id="@+id/btnVoteDown"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tvTextE"
             android:layout_alignParentBottom="true"
+            android:layout_below="@id/tvTextE"
             android:layout_marginLeft="5dp"
             android:layout_toRightOf="@id/btnVoteUp"
             android:src="@drawable/vote_down_button" />
-
-        <!--
-			REPLY BUTTON <ImageButton android:id="@+id/btnReply"
-			android:layout_alignParentBottom="true"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_toLeftOf="@id/btnDelete"
-			android:layout_marginRight="5dp" android:src="@drawable/inbox_reply"
-			/>
-        -->
 
         <LinearLayout
             android:id="@+id/hitCountLl"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tvTextE"
             android:layout_alignParentBottom="true"
+            android:layout_below="@id/tvTextE"
             android:layout_marginBottom="2dp"
             android:layout_toRightOf="@id/btnVoteDown"
             android:background="@drawable/shoutreach_transparent" >
@@ -178,17 +168,58 @@
                 android:textColor="#ffffffff"
                 android:textSize="25dp" />
         </LinearLayout>
-        
-         <ImageButton
+
+        <ImageButton
             android:id="@+id/btnDelete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tvTextE"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
+            android:layout_below="@id/tvTextE"
             android:layout_marginRight="5dp"
             android:src="@drawable/inbox_delete" />
-        
+
+        <ImageButton
+            android:id="@+id/btnReply"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginRight="5dp"
+            android:layout_toLeftOf="@id/btnDelete"
+            android:src="@drawable/inbox_reply" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/replyInputRl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shout_input_bg" >
+
+        <ImageButton
+            android:id="@+id/replyInputBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="2dp"
+            android:layout_marginTop="6dp"
+            android:background="#00000000"
+            android:src="@drawable/shout_button_up" />
+
+        <EditText
+            android:id="@+id/replyInputEt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="3dp"
+            android:layout_toLeftOf="@id/replyInputBtn"
+            android:background="@drawable/textbox"
+            android:gravity="top"
+            android:imeOptions="actionSend"
+            android:inputType="textLongMessage|textMultiLine"
+            android:maxLength="@integer/shoutMaxLength"
+            android:padding="4dp" />
     </RelativeLayout>
 
 </LinearLayout>

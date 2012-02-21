@@ -472,6 +472,13 @@ public class Mediator {
 		_threadLauncher.handleVoteStart(shoutId, vote);
 	}
 	
+	public String getSignature() {
+		return _storage.getSignature();
+	}
+	
+	public boolean getIsSignatureEnabled() {
+		return _storage.getIsSignatureEnabled();
+	}
 
 	public void saveUserSignature(boolean sigEnabled, String sigText) {
 		// Don't change checkbox here or event loop will occur.
@@ -480,7 +487,7 @@ public class Mediator {
 		_uiGateway.refreshSignature(sigText);
 		_uiGateway.toast(_service.getString(R.string.sigSaved), Toast.LENGTH_LONG);
 	}
-
+	
 	// /////////////////////////////////////////////////////////////////////////
 	// /////////////////////////////////////////////////////////////////////////
 	// /////////////////////////////////////////////////////////////////////////
@@ -823,9 +830,10 @@ public class Mediator {
 		}
 
 		@Override
-		public void refreshSignature(String signature) {
+		public void refreshSignature(String signature, boolean isSignatureEnabled) {
 			// Signature preference setup
 			int maxLength = _ui.getResources().getInteger(R.integer.shoutMaxLength) - signature.length();
+			_storage.setSignature(signature, isSignatureEnabled);
 			_ui.shoutInputEt.setFilters(new InputFilter[] { new InputFilter.LengthFilter(maxLength) });
 		}
 		
@@ -840,7 +848,7 @@ public class Mediator {
 				_ui.sigCheckboxCb.setChecked(false);
 			}
 			_ui.sigInputEt.setText(sigText);
-			refreshSignature(sigText);
+			refreshSignature(sigText, sigEnabled);
 		}
 
 		public void enableInputs() {
@@ -993,5 +1001,4 @@ public class Mediator {
 		}
 
 	}
-
 }

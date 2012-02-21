@@ -1,12 +1,13 @@
 package co.shoutbreak.storage.inbox;
 
+import co.shoutbreak.core.Shout;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class InboxViewHolder {
-	public String shoutId;
 	TextView textC;
 	TextView textE;
 	TextView timeAgoC;
@@ -20,5 +21,9 @@ public class InboxViewHolder {
 	ImageButton btnVoteUp;
 	ImageButton btnVoteDown;
 	ImageButton btnDelete;
-	//ImageButton btnReply;
+	ImageButton btnReply;
+	RelativeLayout replyInputRl;
+	ImageButton replyInputBtn;
+	EditText replyInputEt;
+	Shout shout;
 }

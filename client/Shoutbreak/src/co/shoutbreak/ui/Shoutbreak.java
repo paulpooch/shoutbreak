@@ -296,7 +296,7 @@ public class Shoutbreak extends MapActivity implements Colleague {
 				}
 			} else {
 				_doesMapKnowLocation.set(false);
-				dialogBuilder.showDialog(DialogBuilder.DIALOG_WAIT_FOR_MAP_TO_HAVE_LOCATION, "Hold on while we find you...");
+				dialogBuilder.showDialog(DialogBuilder.DIALOG_WAIT_FOR_MAP_TO_HAVE_LOCATION, this.getString(R.string.holdWhileFinding));
 			}
 
 		}
@@ -537,7 +537,7 @@ public class Shoutbreak extends MapActivity implements Colleague {
 			// This is sort of irrelevant, but this is just a convenient place for this
 			// code chunk.
 			if (!_doesMapKnowLocation.get()) {
-				dialogBuilder.showDialog(DialogBuilder.DIALOG_WAIT_FOR_MAP_TO_HAVE_LOCATION, "Hold on while we find you...");
+				dialogBuilder.showDialog(DialogBuilder.DIALOG_WAIT_FOR_MAP_TO_HAVE_LOCATION, this.getString(R.string.holdWhileFinding));
 			}
 		}
 		

@@ -46,7 +46,7 @@ public class InboxSystem {
 		_listViewItemClickListener = new ListView.OnItemClickListener() {
 			public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
 				InboxViewHolder holder = (InboxViewHolder) view.getTag();
-				String shoutId = holder.shoutId;
+				String shoutId = holder.shout.id;
 				holder.collapsed.setVisibility(View.GONE);
 				holder.expanded.setVisibility(View.VISIBLE);
 				Shout shout = _displayedShouts.get(position);
@@ -63,6 +63,11 @@ public class InboxSystem {
 	}
 	
 	// NON-WRITE METHODS //////////////////////////////////////////////////////
+	
+	public void refreshSignature(String signature, int maxLength) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 	public List<Shout> getDisplayedShouts() {
 		return _displayedShouts;

@@ -20,15 +20,17 @@ Location Services</string>
 	Want to check our site for a downtime notice?</string>
     <string name="serverHttpError">Sorry, our server is not responding.
 Want to check our site for a downtime notice?</string>
- <string name="cannotTurnOnError">Unable to turn on.
+    <string name="cannotTurnOnError">Unable to turn on.
  If the shouting tab does not explain why consider restarting the app.
  This should never happen so please tell support.</string>
-   <string name="sigExplanation">Add this signature to shouts</string>
-   <string name="sigSaved">Signature settings saved.</string>
+    <string name="sigExplanation">Add this signature to shouts</string>
+    <string name="sigSaved">Signature settings saved.</string>
+    <string name="holdWhileFinding">Hold on while we find you...
+	this only happens on your first use.</string>
 
 </resources><!--
 john's debug         0lLmkCXVk9yD5LpfqqmAw9kMr2orIej8Y3aw2Dw
 paul's desktop debug 0D9gVcQxZ-ig9gNLIiSpWtGk6B8dWdXj_3eSfSQ
 paul's laptop debug  0D9gVcQxZ-ihbS2t_012bUHYWdS21lRVuJb28Wg
-release              0D9gVcQxZ-igCC4AmcJ1sNuzauE1tUQ74OO0dXA
+release              0D9gVcQxZ-igCC4AmcJ1sNuzauE1tUQ74OO0dXA
 -->

@@ -33,6 +33,8 @@ public class User {
 	private int _points;
 	private int _levelAt;
 	private int _nextLevelAt;
+	private String _signature;
+	private boolean _isSignatureEnabled;
 	
 	public User(Database db) {
 		SBLog.constructor(TAG);
@@ -390,6 +392,19 @@ public class User {
 	public synchronized void setUserId(String uid) {
 		saveUserSetting(C.KEY_USER_ID, uid);
 		_uid = uid;
+	}
+
+	public void setSignature(String signature, boolean isSignatureEnabled) {
+		_signature = signature;
+		_isSignatureEnabled = isSignatureEnabled;
+	}
+	
+	public String getSignature() {
+		return _signature;
+	}
+	
+	public boolean getIsSignatureEnabled() {
+		return _isSignatureEnabled;
 	}
 	
 }

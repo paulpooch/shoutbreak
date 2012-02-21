@@ -84,6 +84,111 @@ module.exports = (function() {
 		Cache.delete(Config.PRE_ACTIVE_AUTH + userId, successCallback, failCallback);
 	};
 
+	// Replies /////////////////////////////////////////////////////////////////
+
+	this.Replies = (function() {
+		
+		this.addNewParentShout = function(shoutId, targets, successCallback, failCallback) {
+			var data = {
+				'TableName': Config.TABLE_REPLIES,
+				'Item': {
+					'shout_id': 			{'S': shoutId},
+					'recipients': 			{'SS': targets}
+				}
+			};
+			var callback = function(result) {
+				result.on('data', function(chunk) {
+					Log.obj(chunk + '');
+					chunk = JSON.parse(chunk);
+					if (chunk['ConsumedCapacityUnits']) {
+						cacheReplyTo();
+					} else {
+						Log.e(String(chunk));
+						failCallback();
+					}
+				});
+				result.on('ready', function(data) {
+					Log.e(data.error);
+					failCallback();
+				});
+			};
+			DynamoDB.putItem(data, callback);
+			var cacheReplyTo = function() {
+				Cache.set(Config.PRE_REPLY + shoutId, targets, Config.TIMEOUT_REPLY, callback2, 
+					function() {
+						Log.e('Could not save reply targets to cache.');
+						callback2(false);
+					}
+				);
+			};
+			var callback2 = function(setResult) {
+				successCallback(true);
+			};
+		};
+
+		this.getRecipients = function(shoutId, successCallback, failCallback) {
+			var returnRecipients;
+			var callback = function(getResult) {
+				if (getResult) {
+					successCallback(getResult);
+				} else {
+					var req = {
+						'TableName': Config.TABLE_REPLY,
+						'Key': {
+							'HashKeyElement': {'S': shoutId}
+						},
+						'AttributesToGet': [
+							'recipients'
+						]
+						// False used by not including the param.
+						//'ConsistentRead': false 
+					};
+					DynamoDB.getItem(req, callback2);
+				}
+			};
+			var callback2 = function(response) {
+    			response.on('data', function(chunk) {
+    				var item = JSON.parse(chunk);
+    				if (item['Item']) {
+    					var recipients = item['Item'];
+    					Log.obj('recipients');
+    					Log.obj(recipients);
+						addToCache();
+       				} else {
+						Log.e(chunk);
+						failCallback();
+       				}
+    			});
+    		};
+			var addToCache = function(recipients) {
+				Log.e('addToCache');
+				Log.obj(shout);
+				returnRecipients = recipients;
+				Cache.set(Config.PRE_REPLY + shoutId, returnRecipients, Config.TIMEOUT_REPLY, callback3, 
+					function() {
+						// Not a huge problem.
+						Log.e('Could not save recipients to cache.');
+						callback3(false);
+					}
+				);
+			};
+			var callback3 = function(setResult) {
+				// We don't really care about the result.
+				Log.e('Returning Recipients from getRecipients');
+				Log.obj(returnRecipients);
+				successCallback(returnRecipients);
+			};	
+			Cache.get(Config.PRE_REPLY + shoutId, callback,
+				function() {
+					// Ok to fail this get.
+					callback(false);
+				}
+			);
+		};
+		
+		return this;
+	})();
+
 	// Inbox ///////////////////////////////////////////////////////////////////
 
 	this.Inbox = (function() {
@@ -253,12 +358,12 @@ module.exports = (function() {
 			shout.lat = Utils.formatLatForSimpleDB(parseFloat(lat));
 			shout.lng = Utils.formatLngForSimpleDB(parseFloat(lng));
 
-			// Let's manually add the send to the list of targets.
-			targets.push([0, shout.userId]);
+			// Let's manually add the sender to the list of targets.
+			targets.push(shout.userId);
 
 			var loop = function(index) {
 				if (index < targets.length) {
-					var targetId = targets[index][1];
+					var targetId = targets[index];
 					self.Inbox.addToInbox(targetId, shout.shoutId, 
 						function() {
 							loop(index + 1);		
@@ -269,12 +374,26 @@ module.exports = (function() {
 						}
 					);
 				} else {
-					successCallback();
+					callback2();
 				}
 			}
 			var callback = function(addNewShoutResult) {
 				loop(0);
 			}
+			var callback2 = function() {
+				if (shout.re == 0) {
+					self.Replies.addNewParentShout(shout.shoutId, targets, callback3,
+						function() {
+							failCallback();		
+						}
+					);	
+				} else {
+					callback3();
+				}
+			};
+			var callback3 = function() {
+				successCallback();	
+			};
 			self.Shouts.addNewShout(shout, callback, 
 				function() {
 					Log.e('Unable to save shout.');
@@ -491,8 +610,9 @@ module.exports = (function() {
 			var callback0 = function(getResult) {
 				var failCount = 1;
 				if (getResult) {
-					failCount = getResult + 1;
+					failCount = Number(getResult) + 1;
 				}
+				Log.l('Failed auth count = ' + failCount);
 				if (failCount > Config.AUTH_ATTEMPT_FAIL_LIMIT) {
 					var json = { 
 						'code': 'error',
@@ -741,7 +861,7 @@ module.exports = (function() {
 			var callback = function(getResult) {
 				var reqCount = 1;
 				if (getResult) {
-					reqCount = getResult + 1;
+					reqCount = Number(getResult) + 1;
 					if (reqCount > Config.RADIUS_REQUEST_LIMIT) {
 						result = false;
 					} else {
@@ -813,7 +933,7 @@ module.exports = (function() {
 			var xCenter = xMax / 2;
 			var yCenter = yMax / 2;
 			xCenter = Utils.formatLatForSimpleDB(lat);
-			xCenter = Utils.formatLngForSimpleDB(lng);
+			yCenter = Utils.formatLngForSimpleDB(lng);
 
 			var createCleanBounds = function() {
 				selectEntirePlanet = false;
@@ -894,6 +1014,7 @@ module.exports = (function() {
 			};
 
 			var fullGetCallback = function(error, result, metadata) {
+				Log.l('fullGetCallback');
 				var nearby = [];
 				var nearbySorter = function(a, b) {
 					return b[0] - a[0];	
@@ -905,20 +1026,26 @@ module.exports = (function() {
 				} else {
 					for (var row in result) {
 						row = result[row];
-						var lat2 = (row['lat'] - Config.OFFSET_LAT) / Config.MULTIPLY_COORDS; 
-						var lng2 = (row['lng'] - Config.OFFSET_LNG) / Config.MULTIPLY_COORDS;
-						var distanceKm = Utils.distanceBetween(lat, lng, lat2, lng2);
-						nearby.push([distanceKm, row['user_id']]);
-						Log.l('nearby.push(' + distanceKm + ', ' + row['user_id'] + ')');
+						if (row['user_id'] != user.userId) {
+							Log.l('row = ' + row['lat'] + ', ' + row['lng']);
+							var lat2 = (row['lat'] / Config.MULTIPLY_COORDS) - Config.OFFSET_LAT; 
+							var lng2 = (row['lng'] / Config.MULTIPLY_COORDS) - Config.OFFSET_LNG;
+							Log.l('lat2, lng2 = ' + lat2 + ', ' + lng2);
+							var distanceKm = Utils.distanceBetween(lat, lng, lat2, lng2);
+							nearby.push([distanceKm, row['user_id']]);
+							Log.l('nearby.push(' + distanceKm + ', ' + row['user_id'] + ')');
+						}
 					}
 					nearby.sort(nearbySorter);
+					Log.l('nearby = ');
+					Log.l(nearby);
 					
 					if (isShouting) {
 						var targets = [];
 						var targetCount = 0;
 						for (var i = 0; i < nearby.length && targetCount < shoutreach; i++) {
 							if (nearby[i][1] != user.userId) {
-								targets.push(nearby[i]);
+								targets.push(nearby[i][1]);
 								targetCount++;
 							}
 						}
@@ -927,7 +1054,7 @@ module.exports = (function() {
 						Log.l('nearby = ');
 						Log.l(nearby);
 						if (nearby.length >= user.level) {
-							var radius = nearby[user.level][0];
+							var radius = nearby[user.level - 1][0];
 							radius *= 1000;
 							radius += Config.SHOUTREACH_BUFFER_METERS;
 							radius = Math.round(radius);
@@ -981,7 +1108,7 @@ module.exports = (function() {
 				var makeNextSelect = true;
 				var count = result[0]['Count'];
 				Log.e('COUNT = ' + count + ', SHOUTREACH = ' + shoutreach + ', selectEntirePlanet = ' + selectEntirePlanet);
-				if (count >= shoutreach || selectEntirePlanet) {
+				if (count > shoutreach || selectEntirePlanet) {
 					if (count - shoutreach <= acceptableExtra) {
 						makeNextSelect = false;
 						performSelect(false, fullGetCallback);
@@ -1046,7 +1173,8 @@ module.exports = (function() {
 						'AttributesToGet': [
 							'vote'
 						],
-						'ConsistentRead': true
+						// False used by not including the param.
+						//'ConsistentRead': false 
 					};
 					DynamoDB.getItem(req, callback2);
 				}

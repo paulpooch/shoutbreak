@@ -266,6 +266,7 @@ var ping = function(clean, response, testCallback) {
 		};
 		var callback4 = function() {
 			if (reqRadius == 1) {
+				Log.l('User requested radius.');
 				Storage.LiveUsers.userCanRequestRadius(userId, callback45, 
 					function() {
 						var json = { 'code': 'error', 'txt': 'Radius request limit exceeded.' };
@@ -277,6 +278,7 @@ var ping = function(clean, response, testCallback) {
 			}
 		};
 		var callback45 = function(userCanRequestRadiusResult) {
+			Log.l('userCanRequestRadiusResult = ' + userCanRequestRadiusResult);
 			if (userCanRequestRadiusResult) {
 				Storage.LiveUsers.calculateRadiusOrFindTargets(false, user, null, lat, lng, callback5, 
 					function() {
@@ -394,6 +396,7 @@ var shout = function(clean, response, testCallback) {
 	var text = clean['txt'];
 	var shoutreach = clean['shoutreach'];
 	var radiusHint = clean['hint'];
+	var re = clean['re'];
 	var user;
 	if (typeof userId != 'undefined' &&
 	typeof auth != 'undefined' &&
@@ -419,20 +422,31 @@ var shout = function(clean, response, testCallback) {
 			if (getUserResult) {
 				user = getUserResult;
 				if (user.level >= shoutreach) {
-					Storage.LiveUsers.calculateRadiusOrFindTargetsWithRadiusHint(true, user, shoutreach, lat, lng, radiusHint, callback3, 
-						function() {
-							var json = { 'code': 'error', 'txt': 'Error finding targets.' };
-							respond(json, response, testCallback);
-						}
-					); 
+					if (re > 0) {
+						// This is a reply.
+						Storage.Replies.getRecipients(re, callback3, 
+							function() {
+								var json = { 'code': 'error', 'txt': 'Could not get recipients of parent shout for reply.' };
+								respond(json, response, testCallback);
+							}
+						);
+					} else {
+						// This is a normal 'parent' shout.
+						Storage.LiveUsers.calculateRadiusOrFindTargetsWithRadiusHint(true, user, shoutreach, lat, lng, radiusHint, callback3, 
+							function() {
+								var json = { 'code': 'error', 'txt': 'Error finding targets.' };
+								respond(json, response, testCallback);
+							}
+						); 		
+					}
 				} else {
 					var json = { 'code': 'error', 'txt': 'User does not have requested shoutreach.' };
 					respond(json, response, testCallback);
 				}
 			}	
 		};
-		var callback3 = function(calculateRadiusOrFindTargetsResult) {
-			Storage.Shouts.sendShout(user, calculateRadiusOrFindTargetsResult, shoutreach, lat, lng, text, callback4,
+		var callback3 = function(getTargetsResult) {
+			Storage.Shouts.sendShout(user, getTargetsResult, shoutreach, lat, lng, text, callback4,
 				function() {
 					var json = { 'code': 'error', 'txt': 'Send shout failed.' };
 					respond(json, response, testCallback);

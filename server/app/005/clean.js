@@ -40,7 +40,8 @@ exports.sanitize = function(dirty, response, testCallback, callback) {
 		'shoutreach': 1,
 		'vote': 1,
 		'lvl': 1,
-		'hint': 1
+		'hint': 1,
+		're': 1
 	};
 	for (var param in allowedInts) {
 		if (param in dirty) {
@@ -252,6 +253,14 @@ exports.validate = function(dirty, response, testCallback, callback) {
 		Validator(dirty[param]).min(0) && 
 		Validator(dirty[param]).max(6371000)) { // 6371000 = radius earth
 			clean[param] = dirty[param];
+		}
+	}
+
+	// re
+	param = 're';
+	if (param in dirty) {
+		if (Validator(dirty[param]).isNumeric() && dirty[param] == 1) {
+			clean[param] = 1;
 		}
 	}
 

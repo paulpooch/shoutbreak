@@ -243,5 +243,17 @@ public class Storage implements Colleague {
 	public void jumpToShoutInInbox(String shoutId) {
 		_inboxSystem.jumpToShoutInInbox(shoutId);
 	}
+
+	public void setSignature(String signature, boolean isSignatureEnabled) {
+		_user.setSignature(signature, isSignatureEnabled);
+	}
+	
+	public String getSignature() {
+		return _user.getSignature();
+	}
+	
+	public boolean getIsSignatureEnabled() {
+		return _user.getIsSignatureEnabled();
+	}
 	
 }

@@ -1,12 +1,12 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:sb="http://schemas.android.com/apk/res/co.shoutbreak"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent" >
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
 
     <LinearLayout
         android:id="@+id/parentLl"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:baselineAligned="false"
         android:orientation="vertical" >
 
@@ -14,7 +14,7 @@
 
         <RelativeLayout
             android:id="@+id/titleBarRl"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0"
             android:background="@drawable/top_bg" >
@@ -46,8 +46,8 @@
 
         <RelativeLayout
             android:id="@+id/viewContainerRl"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:visibility="visible" >
 
@@ -55,7 +55,7 @@
 
             <LinearLayout
                 android:id="@+id/composeViewLl"
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="#ff000000"
                 android:baselineAligned="false"
@@ -66,7 +66,7 @@
 
                 <LinearLayout
                     android:id="@+id/composeBlanketLl"
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="50dp"
                     android:layout_weight="1"
@@ -75,7 +75,7 @@
 
                     <RelativeLayout
                         android:id="@+id/blanketDataRl"
-                        android:layout_width="fill_parent"
+                        android:layout_width="match_parent"
                         android:layout_height="40dp"
                         android:layout_marginLeft="20dp"
                         android:layout_marginRight="20dp"
@@ -102,7 +102,7 @@
 
                     <RelativeLayout
                         android:id="@+id/blanketDensityRl"
-                        android:layout_width="fill_parent"
+                        android:layout_width="match_parent"
                         android:layout_height="40dp"
                         android:layout_marginLeft="20dp"
                         android:layout_marginRight="20dp"
@@ -129,7 +129,7 @@
 
                     <RelativeLayout
                         android:id="@+id/blanketLocationRl"
-                        android:layout_width="fill_parent"
+                        android:layout_width="match_parent"
                         android:layout_height="110dp"
                         android:layout_marginLeft="20dp"
                         android:layout_marginRight="20dp"
@@ -171,7 +171,7 @@
 
                     <RelativeLayout
                         android:id="@+id/blanketPowerRl"
-                        android:layout_width="fill_parent"
+                        android:layout_width="match_parent"
                         android:layout_height="110dp"
                         android:layout_marginLeft="20dp"
                         android:layout_marginRight="20dp"
@@ -215,13 +215,13 @@
 
                 <RelativeLayout
                     android:id="@+id/mapRl"
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1" >
 
                     <co.shoutbreak.ui.CustomMapView
                         android:id="@+id/mapCmv"
-                        android:layout_width="fill_parent"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:apiKey="@string/maps_api_key"
                         android:clickable="true" />
@@ -269,7 +269,7 @@
 
                 <RelativeLayout
                     android:id="@+id/inputRl"
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="0"
                     android:background="@drawable/shout_input_bg" >
@@ -287,7 +287,7 @@
 
                     <EditText
                         android:id="@+id/shoutInputEt"
-                        android:layout_width="fill_parent"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="4dp"
@@ -306,15 +306,15 @@
 
             <LinearLayout
                 android:id="@+id/inboxViewLl"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:background="#ff000000"
                 android:orientation="vertical"
                 android:visibility="invisible" >
 
                 <ListView
                     android:id="@+id/inboxLv"
-                    android:layout_width="fill_parent"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="#ff000000"
                     android:cacheColorHint="#ff000000"
@@ -327,27 +327,27 @@
 
             <LinearLayout
                 android:id="@+id/profileViewLl"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:background="#ff000000"
                 android:orientation="vertical"
                 android:visibility="invisible" >
 
                 <RelativeLayout
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:background="#000000" >
 
                     <RelativeLayout
                         android:id="@+id/userStatsHeaderRl"
-                        android:layout_width="fill_parent"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_alignParentTop="true"
                         android:layout_marginTop="10dp" >
 
                         <TextView
                             android:id="@+id/userStatsHeaderTv"
-                            android:layout_width="fill_parent"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_alignParentTop="true"
                             android:shadowColor="#1e003c"
@@ -362,7 +362,7 @@
                         <!-- Approved use of pixels. -->
 
                         <LinearLayout
-                            android:layout_width="fill_parent"
+                            android:layout_width="match_parent"
                             android:layout_height="10dp"
                             android:layout_below="@id/userStatsHeaderTv"
                             android:background="@drawable/user_stats_bg" />
@@ -378,14 +378,14 @@
 
                     <RelativeLayout
                         android:id="@+id/userSigHeaderRl"
-                        android:layout_width="fill_parent"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/userStatsParagraphTv"
                         android:layout_marginTop="15dp" >
 
                         <TextView
                             android:id="@+id/userSigHeaderTv"
-                            android:layout_width="fill_parent"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_alignParentTop="true"
                             android:shadowColor="#1e003c"
@@ -400,14 +400,14 @@
                         <!-- Approved use of pixels. -->
 
                         <LinearLayout
-                            android:layout_width="fill_parent"
+                            android:layout_width="match_parent"
                             android:layout_height="10dp"
                             android:layout_below="@+id/userSigHeaderTv"
                             android:background="@drawable/user_stats_bg" />
                     </RelativeLayout>
 
                     <RelativeLayout
-                        android:layout_width="fill_parent"
+                        android:layout_width="match_parent"
                         android:layout_height="100dp"
                         android:layout_below="@id/userSigHeaderRl" >
 
@@ -447,7 +447,7 @@
 
                         <EditText
                             android:id="@+id/sigInputEt"
-                            android:layout_width="fill_parent"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_alignBottom="@id/sigClearBtn"
                             android:layout_below="@id/sigCheckboxCb"
@@ -463,14 +463,14 @@
 
                     <LinearLayout
                         android:id="@+id/levelRl"
-                        android:layout_width="fill_parent"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_alignParentBottom="true"
                         android:background="@drawable/shout_input_bg"
                         android:orientation="vertical" >
 
                         <LinearLayout
-                            android:layout_width="fill_parent"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal" >
 
@@ -498,7 +498,7 @@
 
                             <co.shoutbreak.ui.RoundProgress
                                 android:id="@+id/userLevelUpProgressRp"
-                                android:layout_width="fill_parent"
+                                android:layout_width="match_parent"
                                 android:layout_height="30px"
                                 android:layout_marginTop="12dp"
                                 android:layout_weight="1"
@@ -529,7 +529,7 @@
                         </LinearLayout>
 
                         <RelativeLayout
-                            android:layout_width="fill_parent"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content" >
 
                             <LinearLayout
@@ -595,13 +595,13 @@
         <!-- ////////////////////////////////////////////////////////////// -->
 
         <LinearLayout
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0"
             android:orientation="vertical" >
 
             <RelativeLayout
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/tab_bg" >
 
@@ -643,7 +643,7 @@
             <!-- Height must match Drawer height -->
 
             <RelativeLayout
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="52dp" >
             </RelativeLayout>
         </LinearLayout>
@@ -665,14 +665,14 @@
 
     <LinearLayout
         android:id="@+id/noticeDrawerLl"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent" >
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
 
         <!-- Approved use of pixels. -->
 
         <co.shoutbreak.storage.noticetab.MultiDirectionSlidingDrawer
             android:id="@+id/noticeDrawerSd"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0"
             android:content="@+id/drawerContentLl"
@@ -691,7 +691,7 @@
                 <TextView
                     android:id="@+id/noticeTabShoutsTv"
                     android:layout_width="wrap_content"
-                    android:layout_height="fill_parent"
+                    android:layout_height="match_parent"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentTop="true"
                     android:layout_marginLeft="12dp"
@@ -707,7 +707,7 @@
                 <TextView
                     android:id="@+id/noticeTabPointsTv"
                     android:layout_width="wrap_content"
-                    android:layout_height="fill_parent"
+                    android:layout_height="match_parent"
                     android:layout_alignParentRight="true"
                     android:layout_alignParentTop="true"
                     android:layout_marginTop="12dp"
@@ -722,14 +722,14 @@
 
             <LinearLayout
                 android:id="@+id/drawerContentLl"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:orientation="vertical" >
 
                 <ListView
                     android:id="@+id/noticeLv"
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:background="#ff000000"
                     android:cacheColorHint="#ffffffff"
                     android:divider="#00000000" />
@@ -741,8 +741,8 @@
 
     <LinearLayout
         android:id="@+id/splashLl"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:background="@drawable/splash"
         android:orientation="vertical" >
     </LinearLayout>
