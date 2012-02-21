@@ -314,3 +314,5 @@ REQUEST =
   lng: '-74.03102' }
 RESPONSE = 
 { code: 'ping_ok', pts: 71 }
+Log initiated.
+Server launched.
