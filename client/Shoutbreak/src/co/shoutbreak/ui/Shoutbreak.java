@@ -739,7 +739,7 @@ public class Shoutbreak extends MapActivity implements Colleague {
 					shoutBtn.setImageResource(R.anim.shout_button_down);
 					AnimationDrawable shoutButtonAnimation = (AnimationDrawable) shoutBtn.getDrawable();
 					shoutButtonAnimation.start();
-					_m.handleShoutStart(text.toString(), userLocationOverlay.getCurrentPower());
+					_m.handleShoutStart(text.toString(), userLocationOverlay.getCurrentPower(), C.NULL_REPLY);
 					hideKeyboard();
 				} else {
 					Toast.makeText(Shoutbreak.this, "Shout is too long (256 char limit).", Toast.LENGTH_LONG);
@@ -759,7 +759,7 @@ public class Shoutbreak extends MapActivity implements Colleague {
 	private OnCheckedChangeListener _sigCheckboxListener = new OnCheckedChangeListener() {
 		public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 			if (_m != null) {
-				_m.saveUserSignature(isChecked, sigInputEt.getText().toString());				
+				_m.saveUserSignature(sigInputEt.getText().toString(), isChecked);				
 			}
 		}
 	};
@@ -770,7 +770,7 @@ public class Shoutbreak extends MapActivity implements Colleague {
 			if (_m != null) {
 				sigInputEt.setText("");
 				sigCheckboxCb.setChecked(false);
-				_m.saveUserSignature(sigCheckboxCb.isChecked(), sigInputEt.getText().toString());
+				_m.saveUserSignature(sigInputEt.getText().toString(), sigCheckboxCb.isChecked());
 			}
 			hideKeyboard();			
 		}
@@ -781,7 +781,7 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		public void onClick(View v) {
 			if (_m != null) {
 				sigCheckboxCb.setChecked(true);
-				_m.saveUserSignature(sigCheckboxCb.isChecked(),  sigInputEt.getText().toString());
+				_m.saveUserSignature(sigInputEt.getText().toString(), sigCheckboxCb.isChecked());
 			}
 			hideKeyboard();
 		}

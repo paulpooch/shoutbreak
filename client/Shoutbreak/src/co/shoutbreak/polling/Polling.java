@@ -233,6 +233,9 @@ public class Polling {
 		postData.add(C.JSON_LONG, Double.toString(_safeM.getLongitude()));
 		postData.add(C.JSON_SHOUT_TEXT, shoutText);
 		postData.add(C.JSON_SHOUT_POWER, Integer.toString(shoutPower));
+		if (xPacket.sArgs.length > 1 && !xPacket.sArgs[1].equals(C.NULL_REPLY)) {
+			postData.add(C.JSON_SHOUT_RE, xPacket.sArgs[1]);
+		}
 		if (radiusHint > 0) {
 			postData.add(C.JSON_RADIUS_HINT, Long.toString(radiusHint));
 		}

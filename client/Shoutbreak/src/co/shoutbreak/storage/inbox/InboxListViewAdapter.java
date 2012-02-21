@@ -3,6 +3,7 @@ package co.shoutbreak.storage.inbox;
 import java.text.ParseException;
 import java.util.HashMap;
 
+import android.content.Context;
 import android.graphics.Typeface;
 import android.graphics.PorterDuff.Mode;
 import android.graphics.drawable.AnimationDrawable;
@@ -11,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -26,8 +28,6 @@ import co.shoutbreak.core.Shout;
 import co.shoutbreak.core.utils.ErrorManager;
 import co.shoutbreak.core.utils.ISO8601DateParser;
 import co.shoutbreak.core.utils.SBLog;
-import co.shoutbreak.ui.Shoutbreak;
-
 import com.ocpsoft.pretty.time.PrettyTime;
 
 public class InboxListViewAdapter extends BaseAdapter implements Colleague {
@@ -147,8 +147,8 @@ public class InboxListViewAdapter extends BaseAdapter implements Colleague {
 						holder.replyInputBtn.setImageResource(R.anim.shout_button_down);
 						AnimationDrawable shoutButtonAnimation = (AnimationDrawable) holder.replyInputBtn.getDrawable();
 						shoutButtonAnimation.start();
-						_m.handleShoutStart(text.toString(), userLocationOverlay.getCurrentPower(), holder.shout.id);
-						hideKeyboard();
+						_m.handleShoutStart(text.toString(), 0, holder.shout.id);
+						hideReplyKeyboard(holder.replyInputEt);
 					} else {
 						_m.getUiGateway().toast("Shout is too long (256 char limit).", Toast.LENGTH_LONG);
 					}
@@ -158,6 +158,15 @@ public class InboxListViewAdapter extends BaseAdapter implements Colleague {
 		
 	}
 
+	
+	
+	// http://stackoverflow.com/questions/2150078/android-is-software-keyboard-shown
+	public void hideReplyKeyboard(EditText et) {
+		SBLog.method(TAG, "hideKeyboard()");
+		InputMethodManager imm = (InputMethodManager) _m.getSystemService(Context.INPUT_METHOD_SERVICE);
+		imm.hideSoftInputFromWindow(et.getWindowToken(), 0);
+	}
+	
 	@Override
 	public void unsetMediator() {
 		_m = null;
@@ -230,6 +239,7 @@ public class InboxListViewAdapter extends BaseAdapter implements Colleague {
 			holder.replyInputRl = (RelativeLayout) convertView.findViewById(R.id.replyInputRl);
 			holder.replyInputBtn = (ImageButton) convertView.findViewById(R.id.replyInputBtn);
 			holder.replyInputBtn.setOnClickListener(onReplyInputClickListener);
+			holder.replyInputBtn.setTag(holder);
 			holder.replyInputEt = (EditText) convertView.findViewById(R.id.replyInputEt);
 			holder.expanded.setOnClickListener(onCollapseClickListener);
 			holder.expanded.setTag(holder);
@@ -240,7 +250,7 @@ public class InboxListViewAdapter extends BaseAdapter implements Colleague {
 
 		Shout entry = (Shout) getItem(position);
 		holder.shout = entry;
-		boolean isReply = (!entry.re.equals(""));
+		boolean isReply = (!entry.re.equals(C.NULL_REPLY));
 
 		// Is expanded? ///////////////////////////////////////////////////////////
 		boolean isExpanded = false;

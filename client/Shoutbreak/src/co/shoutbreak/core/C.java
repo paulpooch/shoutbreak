@@ -123,7 +123,8 @@ public class C {
 	public static final int NULL_UPS = 0;
 	public static final int NULL_VOTE = 0;
 	public static final int NULL_OUTBOX = 0;
-		
+	public static final String NULL_REPLY = "";	
+	
 	// STATES /////////////////////////////////////////////////////////////////
 	// 30 - 39
 	public static final int STATE_SHOUT = 31;

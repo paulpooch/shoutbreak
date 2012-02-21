@@ -26,7 +26,7 @@ public class Shout {
 		this.id = id;
 		this.timestamp = timestamp;
 		this.text = text;
-		this.re = "";
+		this.re = C.NULL_REPLY;
 		Date d = new Date();
 		this.time_received = d.getTime();
 		this.open = true;

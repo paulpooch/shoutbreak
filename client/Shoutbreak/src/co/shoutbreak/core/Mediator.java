@@ -455,9 +455,9 @@ public class Mediator {
 		// Else polling thread dies.
 	}
 
-	public void handleShoutStart(String text, int power) {
+	public void handleShoutStart(String text, int power, String replyingTo) {
 		SBLog.method(TAG, "shout()");
-		_threadLauncher.handleShoutStart(text, power, _storage.getRadiusAtCell(getCurrentCell()).radius);
+		_threadLauncher.handleShoutStart(text, power, _storage.getRadiusAtCell(getCurrentCell()).radius, replyingTo);
 	}
 
 	// Triggered from a Shout close. Have user save earned points.
@@ -480,11 +480,11 @@ public class Mediator {
 		return _storage.getIsSignatureEnabled();
 	}
 
-	public void saveUserSignature(boolean sigEnabled, String sigText) {
+	public void saveUserSignature(String sigText, boolean sigEnabled) {
 		// Don't change checkbox here or event loop will occur.
 		_preferences.putBoolean(C.PREFERENCE_SIGNATURE_ENABLED, sigEnabled);
 		_preferences.setString(C.PREFERENCE_SIGNATURE_TEXT, sigText);
-		_uiGateway.refreshSignature(sigText);
+		_uiGateway.refreshSignature(sigText, sigEnabled);
 		_uiGateway.toast(_service.getString(R.string.sigSaved), Toast.LENGTH_LONG);
 	}
 	
