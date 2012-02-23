@@ -22,8 +22,5 @@ public class InboxViewHolder {
 	ImageButton btnVoteDown;
 	ImageButton btnDelete;
 	ImageButton btnReply;
-	RelativeLayout replyInputRl;
-	ImageButton replyInputBtn;
-	EditText replyInputEt;
 	Shout shout;
 }

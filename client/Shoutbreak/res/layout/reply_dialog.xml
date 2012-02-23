@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scoreDialog"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:id="@+id/rlCollapsed"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:background="#ffffffff" >
+
+        <!-- Approved use of pixels. -->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="80px"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/notice_bg_x" />
+
+        <TextView
+            android:id="@+id/shoutTextTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:padding="5dp"
+            android:textColor="#ff3c056e"
+            android:textSize="15dp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/replyInputRl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shout_input_bg" >
+
+        <ImageButton
+            android:id="@+id/replyInputBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="2dp"
+            android:layout_marginTop="6dp"
+            android:background="#00000000"
+            android:contentDescription="reply"
+            android:src="@drawable/shout_button_up" />
+
+        <EditText
+            android:id="@+id/replyInputEt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="3dp"
+            android:layout_toLeftOf="@id/replyInputBtn"
+            android:background="@drawable/textbox"
+            android:gravity="top"
+            android:imeOptions="actionSend"
+            android:inputType="textLongMessage|textMultiLine"
+            android:maxLength="@integer/shoutMaxLength"
+            android:padding="4dp" />
+    </RelativeLayout>
+
+</LinearLayout>

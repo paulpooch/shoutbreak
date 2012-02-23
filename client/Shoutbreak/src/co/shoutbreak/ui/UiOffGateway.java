@@ -1,5 +1,6 @@
 package co.shoutbreak.ui;
 
+import co.shoutbreak.core.Shout;
 import co.shoutbreak.core.utils.SBLog;
 import co.shoutbreak.storage.inbox.InboxListViewAdapter;
 import co.shoutbreak.storage.noticetab.NoticeTabListViewAdapter;
@@ -121,5 +122,8 @@ public class UiOffGateway implements IUiGateway {
 
 	@Override
 	public void handleLevelUp(long cellRadius, int newLevel) {}
+
+	@Override
+	public void createReplyDialog(Shout shout) {}
 
 }

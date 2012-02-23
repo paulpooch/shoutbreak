@@ -17,6 +17,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.drawable.AnimationDrawable;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.os.Message;
 import android.os.SystemClock;
@@ -135,6 +137,52 @@ public class Mediator {
 		}
 	}
 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	// LIFECYCLE ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
 	private void enableIntervalAlarm() {
 		Intent alarmIntent = new Intent(_service, ShoutbreakService.class);
 		alarmIntent.putExtra(C.NOTIFICATION_LAUNCHED_FROM_ALARM, true);
@@ -411,6 +459,52 @@ public class Mediator {
 		return _service.getSystemService(name);
 	}
 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	// LOGIC STUFF /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
 	public RadiusCacheCell getCurrentCell() {
 		// TODO: should this be moved to ThreadSafeMediator?
 		SBLog.method(TAG, "getCurrentCell()");
@@ -426,11 +520,6 @@ public class Mediator {
 		_storage.deleteShout(shoutId);
 	}
 
-	// public void launchPollingThread(Message message) {
-	// SBLog.i(TAG, "launchPollingThread()");
-	// _threadLauncher.launchPollingThread(message, false);
-	// }
-
 	public ThreadSafeMediator getAThreadSafeMediator() {
 		SBLog.method(TAG, "getAThreadSafeMediator()");
 		return new ThreadSafeMediator();
@@ -443,10 +532,6 @@ public class Mediator {
 		_storage.refreshNoticeTab();
 	}
 	
-	// /////////////////////////////////////////////////////////////////////////
-	// HANDLE STUFF ///////////////////////////////////////////////////////////
-	// /////////////////////////////////////////////////////////////////////////
-
 	public void handlePollingResponse(Message message) {
 		SBLog.method(TAG, "handlePollingResponse()");
 		if (_isPollingAlive.get()) {
@@ -488,10 +573,6 @@ public class Mediator {
 		_uiGateway.toast(_service.getString(R.string.sigSaved), Toast.LENGTH_LONG);
 	}
 	
-	// /////////////////////////////////////////////////////////////////////////
-	// /////////////////////////////////////////////////////////////////////////
-	// /////////////////////////////////////////////////////////////////////////
-
 	public void refreshUiComponents(MultiDirectionSlidingDrawer noticeTabSlidingDrawer) {
 		noticeTabSlidingDrawer.setMediator(Mediator.this);
 		_uiGateway.refreshUiComponents();
@@ -501,6 +582,54 @@ public class Mediator {
 		return _uiGateway;
 	}
 
+	public void createReplyDialog(Shout shout) {
+		_uiGateway.createReplyDialog(shout);
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	// THREAD SAFE MEDIATOR ///////////////////////////////////////////////////
 
 	public class ThreadSafeMediator {
@@ -737,6 +866,51 @@ public class Mediator {
 
 	}
 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	// UI GATEWAY /////////////////////////////////////////////////////////////
 
 	private class UiOnGateway implements IUiGateway {
@@ -757,10 +931,17 @@ public class Mediator {
 
 		public void handleShoutSent() {
 			SBLog.method(TAG, "handleShoutSent()");
-			AnimationDrawable shoutButtonAnimation = (AnimationDrawable) _ui.shoutBtn.getDrawable();
-			shoutButtonAnimation.stop();
-			_ui.shoutBtn.setImageResource(R.drawable.shout_button_up);
-			_ui.shoutInputEt.setText("");
+			Drawable d = _ui.shoutBtn.getDrawable();
+			if (d.getClass().equals(BitmapDrawable.class)) {
+				// Shout was a reply
+				_ui.dialogBuilder.handleReplySent();
+			} else if (d.getClass().equals(AnimationDrawable.class)) {
+				// Shout was a normal shout
+				AnimationDrawable shoutButtonAnimation = (AnimationDrawable) _ui.shoutBtn.getDrawable();
+				shoutButtonAnimation.stop();
+				_ui.shoutBtn.setImageResource(R.drawable.shout_button_up);
+				_ui.shoutInputEt.setText("");
+			}
 		}
 
 		public void handleShoutFailed() {
@@ -800,6 +981,10 @@ public class Mediator {
 		
 		public void handleScoreDetailsRequest(int ups, int downs, int score) {
 			_ui.dialogBuilder.showScoreDetailsDialog(ups, downs, score);
+		}
+		
+		public void createReplyDialog(Shout shout) {
+			_ui.dialogBuilder.showReplyDialog(shout);
 		}
 
 		// /////////////////////////////////////////////////////////////////////////

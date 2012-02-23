@@ -133,8 +133,8 @@
             android:layout_alignParentLeft="true"
             android:layout_below="@id/tvTextE"
             android:layout_marginLeft="5dp"
-            android:src="@drawable/vote_up_button"
-            android:contentDescription="vote up" />
+            android:contentDescription="vote up"
+            android:src="@drawable/vote_up_button" />
 
         <ImageButton
             android:id="@+id/btnVoteDown"
@@ -144,8 +144,8 @@
             android:layout_below="@id/tvTextE"
             android:layout_marginLeft="5dp"
             android:layout_toRightOf="@id/btnVoteUp"
-            android:src="@drawable/vote_down_button"
-            android:contentDescription="vote down" />
+            android:contentDescription="vote down"
+            android:src="@drawable/vote_down_button" />
 
         <LinearLayout
             android:id="@+id/hitCountLl"
@@ -179,8 +179,8 @@
             android:layout_alignParentRight="true"
             android:layout_below="@id/tvTextE"
             android:layout_marginRight="5dp"
-            android:src="@drawable/inbox_delete"
-            android:contentDescription="delete" />
+            android:contentDescription="delete"
+            android:src="@drawable/inbox_delete" />
 
         <ImageButton
             android:id="@+id/btnReply"
@@ -189,42 +189,8 @@
             android:layout_alignParentBottom="true"
             android:layout_marginRight="5dp"
             android:layout_toLeftOf="@id/btnDelete"
-            android:src="@drawable/inbox_reply"
-            android:contentDescription="reply" />
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/replyInputRl"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/shout_input_bg" >
-
-        <ImageButton
-            android:id="@+id/replyInputBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="2dp"
-            android:layout_marginTop="6dp"
-            android:background="#00000000"
-            android:src="@drawable/shout_button_up"
-            android:contentDescription="reply" />
-
-        <EditText
-            android:id="@+id/replyInputEt"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="4dp"
-            android:layout_marginRight="3dp"
-            android:layout_toLeftOf="@id/replyInputBtn"
-            android:background="@drawable/textbox"
-            android:gravity="top"
-            android:imeOptions="actionSend"
-            android:inputType="textLongMessage|textMultiLine"
-            android:maxLength="@integer/shoutMaxLength"
-            android:padding="4dp" />
+            android:contentDescription="reply"
+            android:src="@drawable/inbox_reply" />
     </RelativeLayout>
 
 </LinearLayout>

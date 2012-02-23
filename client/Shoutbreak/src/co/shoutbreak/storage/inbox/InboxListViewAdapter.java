@@ -6,7 +6,6 @@ import java.util.HashMap;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.graphics.PorterDuff.Mode;
-import android.graphics.drawable.AnimationDrawable;
 import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,7 +18,6 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 import co.shoutbreak.R;
 import co.shoutbreak.core.C;
 import co.shoutbreak.core.Colleague;
@@ -44,9 +42,7 @@ public class InboxListViewAdapter extends BaseAdapter implements Colleague {
 	public OnClickListener onDeleteClickListener;
 	public OnClickListener onScoreClickListener;
 	public OnClickListener onReplyClickListener;
-	public OnClickListener onReplyInputClickListener;
 	private HashMap<String, Boolean> _cacheExpandState;
-	private HashMap<String, Boolean> _cacheReplyOpenState;
 	// private HashMap<String, String> _cachePrettyTimeAgo;
 	private HashMap<String, Integer> _cacheVoteTemporary;
 	private boolean _isInputAllowed;
@@ -59,8 +55,6 @@ public class InboxListViewAdapter extends BaseAdapter implements Colleague {
 		_inboxSystem = inboxSystem;
 		_prettyTime = new PrettyTime();
 		_cacheExpandState = new HashMap<String, Boolean>();
-		_cacheReplyOpenState = new HashMap<String, Boolean>();
-		// _cachePrettyTimeAgo = new HashMap<String, String>();
 		_cacheVoteTemporary = new HashMap<String, Integer>();
 		_isInputAllowed = false;
 
@@ -116,55 +110,10 @@ public class InboxListViewAdapter extends BaseAdapter implements Colleague {
 		onReplyClickListener = new OnClickListener() {
 			public void onClick(View view) {
 				InboxViewHolder holder = (InboxViewHolder) view.getTag();
-				boolean isReplyOpen = false;
-				if (_cacheReplyOpenState.containsKey(holder.shout.id)) {
-					isReplyOpen = _cacheReplyOpenState.get(holder.shout.id);
-				}
-				if (!isReplyOpen) {
-					holder.replyInputRl.setVisibility(View.VISIBLE);
-					_cacheReplyOpenState.put(holder.shout.id, true);
-				} else {
-					holder.replyInputRl.setVisibility(View.GONE);
-					_cacheReplyOpenState.put(holder.shout.id, false);
-				}
+				_m.createReplyDialog(holder.shout);
 			}
 		};
 
-		onReplyInputClickListener = new OnClickListener() {
-			public void onClick(View view) {
-				InboxViewHolder holder = (InboxViewHolder) view.getTag();
-				// This is just a copy of the shout logic from main tab.
-				String text = holder.replyInputEt.getText().toString().trim();
-				if (text.length() == 0) {
-					_m.getUiGateway().toast("Cannot shout blanks.", Toast.LENGTH_LONG);
-				} else {
-					String signature = _m.getSignature();
-					if (_m.getIsSignatureEnabled() && signature.length() > 0) {
-						text += "     [" + signature + "]";
-						text.trim();
-					}
-					if (text.length() <= C.CONFIG_SHOUT_MAXLENGTH) {
-						holder.replyInputBtn.setImageResource(R.anim.shout_button_down);
-						AnimationDrawable shoutButtonAnimation = (AnimationDrawable) holder.replyInputBtn.getDrawable();
-						shoutButtonAnimation.start();
-						_m.handleShoutStart(text.toString(), 0, holder.shout.id);
-						hideReplyKeyboard(holder.replyInputEt);
-					} else {
-						_m.getUiGateway().toast("Shout is too long (256 char limit).", Toast.LENGTH_LONG);
-					}
-				}
-			}
-		};
-		
-	}
-
-	
-	
-	// http://stackoverflow.com/questions/2150078/android-is-software-keyboard-shown
-	public void hideReplyKeyboard(EditText et) {
-		SBLog.method(TAG, "hideKeyboard()");
-		InputMethodManager imm = (InputMethodManager) _m.getSystemService(Context.INPUT_METHOD_SERVICE);
-		imm.hideSoftInputFromWindow(et.getWindowToken(), 0);
 	}
 	
 	@Override
@@ -236,11 +185,6 @@ public class InboxListViewAdapter extends BaseAdapter implements Colleague {
 			holder.btnVoteDown.getBackground().setColorFilter(0xAA9900FF, Mode.SRC_ATOP);
 			holder.btnDelete.getBackground().setColorFilter(0xAA9900FF, Mode.SRC_ATOP);
 			holder.btnReply.getBackground().setColorFilter(0xAA9900FF, Mode.SRC_ATOP);
-			holder.replyInputRl = (RelativeLayout) convertView.findViewById(R.id.replyInputRl);
-			holder.replyInputBtn = (ImageButton) convertView.findViewById(R.id.replyInputBtn);
-			holder.replyInputBtn.setOnClickListener(onReplyInputClickListener);
-			holder.replyInputBtn.setTag(holder);
-			holder.replyInputEt = (EditText) convertView.findViewById(R.id.replyInputEt);
 			holder.expanded.setOnClickListener(onCollapseClickListener);
 			holder.expanded.setTag(holder);
 			convertView.setTag(holder);
@@ -276,15 +220,6 @@ public class InboxListViewAdapter extends BaseAdapter implements Colleague {
 			}
 			holder.hitCountLl.setVisibility(View.VISIBLE);
 			holder.hitCount.setText(hitCount);
-			boolean isReplyOpen = false;
-			if (_cacheReplyOpenState.containsKey(entry.id)) {
-				isReplyOpen = _cacheExpandState.get(entry.id);
-			}
-			if (isReplyOpen) {
-				holder.replyInputRl.setVisibility(View.VISIBLE);
-			} else {
-				holder.replyInputRl.setVisibility(View.GONE);
-			}
 			// Reply button
 			if (entry.open) {
 				holder.btnReply.setVisibility(View.VISIBLE);

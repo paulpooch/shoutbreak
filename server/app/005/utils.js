@@ -122,11 +122,16 @@ module.exports = (function() {
 			'ups': shout.ups,
 			'downs': shout.downs,
 			'hit': shout.hit,
-			'open': shout.open
+			'open': shout.open,
+			'pts': this.calculateShoutScore(shout)
 		};
 		return sObj;
 	};
 	
+	this.calculateShoutScore = function(shout) {
+		return shout.ups - shout.downs;	
+	};
+
 	this.makeShoutFromDynamoItem = function(item) {
 		var shout = new Shout();
 		shout.shoutId = item['shout_id']['S'];

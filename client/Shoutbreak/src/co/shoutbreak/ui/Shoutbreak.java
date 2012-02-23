@@ -316,7 +316,7 @@ public class Shoutbreak extends MapActivity implements Colleague {
 			startService(_serviceIntent);
 
 			userLocationOverlay = new UserLocationOverlay(Shoutbreak.this, _map);
-			dialogBuilder = new DialogBuilder(Shoutbreak.this);
+			dialogBuilder = new DialogBuilder(Shoutbreak.this, _m);
 
 			refreshFlags();
 			_m.refreshUiComponents(noticeTabSd);

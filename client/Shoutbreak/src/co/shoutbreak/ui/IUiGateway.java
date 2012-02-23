@@ -1,6 +1,7 @@
 package co.shoutbreak.ui;
 
 import android.widget.AdapterView.OnItemClickListener;
+import co.shoutbreak.core.Shout;
 import co.shoutbreak.storage.inbox.InboxListViewAdapter;
 import co.shoutbreak.storage.noticetab.NoticeTabListViewAdapter;
 
@@ -26,6 +27,7 @@ public interface IUiGateway {
 	///////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////		
 	
+	public void createReplyDialog(Shout shout);
 	public void refreshUiComponents();
 	public void refreshProfile(int level, int levelBeginPoints, int currentPoints, int levelEndPoints);
 	public void refreshSignature(String signature, boolean isSignatureEnabled);
