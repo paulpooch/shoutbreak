@@ -7,6 +7,7 @@ public class Shout {
 	public String timestamp;
 	public String text;
 	public String re;
+	public boolean isReply;
 	public Long time_received;
 	public boolean open;
 	public boolean is_outbox;

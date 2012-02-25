@@ -194,7 +194,6 @@ public class InboxListViewAdapter extends BaseAdapter implements Colleague {
 
 		Shout entry = (Shout) getItem(position);
 		holder.shout = entry;
-		boolean isReply = (!entry.re.equals(C.NULL_REPLY));
 
 		// Is expanded? ///////////////////////////////////////////////////////////
 		boolean isExpanded = false;
@@ -210,7 +209,7 @@ public class InboxListViewAdapter extends BaseAdapter implements Colleague {
 		}
 
 		// Is reply? //////////////////////////////////////////////////////////////
-		if (isReply) {
+		if (entry.isReply) {
 			holder.hitCountLl.setVisibility(View.GONE);
 			holder.btnReply.setVisibility(View.GONE);
 		} else {
@@ -280,9 +279,9 @@ public class InboxListViewAdapter extends BaseAdapter implements Colleague {
 
 		// Is there a score?
 		String score = Integer.toString(entry.score);
-		if (entry.score == C.NULL_SCORE) {
-			score = "?";
-		}
+//		if (entry.score == C.NULL_SCORE) {
+//			score = "?";
+//		}
 
 		// Mark shout as read/unread
 		if (entry.state_flag == C.SHOUT_STATE_NEW) {

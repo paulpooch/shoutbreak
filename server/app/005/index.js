@@ -397,6 +397,7 @@ var shout = function(clean, response, testCallback) {
 	var shoutreach = clean['shoutreach'];
 	var radiusHint = clean['hint'];
 	var re = clean['re'];
+	Log.l('shout re = ' + re);
 	var user;
 	if (typeof userId != 'undefined' &&
 	typeof auth != 'undefined' &&
@@ -422,7 +423,8 @@ var shout = function(clean, response, testCallback) {
 			if (getUserResult) {
 				user = getUserResult;
 				if (user.level >= shoutreach) {
-					if (re > 0) {
+					if (typeof(re) != 'undefined') {
+						Log.l('this is a reply');
 						// This is a reply.
 						Storage.Replies.getRecipients(re, callback3, 
 							function() {
@@ -431,6 +433,7 @@ var shout = function(clean, response, testCallback) {
 							}
 						);
 					} else {
+						Log.l('this is not a reply');
 						// This is a normal 'parent' shout.
 						Storage.LiveUsers.calculateRadiusOrFindTargetsWithRadiusHint(true, user, shoutreach, lat, lng, radiusHint, callback3, 
 							function() {
@@ -446,7 +449,7 @@ var shout = function(clean, response, testCallback) {
 			}	
 		};
 		var callback3 = function(getTargetsResult) {
-			Storage.Shouts.sendShout(user, getTargetsResult, shoutreach, lat, lng, text, callback4,
+			Storage.Shouts.sendShout(user, getTargetsResult, shoutreach, lat, lng, text, re, callback4,
 				function() {
 					var json = { 'code': 'error', 'txt': 'Send shout failed.' };
 					respond(json, response, testCallback);
@@ -820,7 +823,7 @@ var Tests = (function() {
 Log.l('Server launched.');
 Http.createServer(init).listen(80);
 
-//Tests.run();
+Tests.run();
 
 
 /*

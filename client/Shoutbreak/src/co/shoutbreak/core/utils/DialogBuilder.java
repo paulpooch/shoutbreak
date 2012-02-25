@@ -142,6 +142,12 @@ public class DialogBuilder implements Colleague {
 			};
 			_replyBtn.setOnClickListener(onReplyInputClickListener);
 			AlertDialog.Builder builder = new AlertDialog.Builder(_ui);
+
+			View parent = (View) _replyLayout.getParent();
+			if (parent != null) {
+				
+			}
+			
 			builder.setView(_replyLayout).setTitle("Reply").setCancelable(false).setPositiveButton("Cancel", new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int id) {
 					_isDialogAlreadyShowing = false;

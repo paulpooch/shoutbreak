@@ -946,10 +946,18 @@ public class Mediator {
 
 		public void handleShoutFailed() {
 			SBLog.method(TAG, "handleShoutFailed()");
-			AnimationDrawable shoutButtonAnimation = (AnimationDrawable) _ui.shoutBtn.getDrawable();
-			shoutButtonAnimation.stop();
-			_ui.shoutBtn.setImageResource(R.drawable.shout_button_up);
-			handleInvalidServerResponse();
+			Drawable d = _ui.shoutBtn.getDrawable();
+			if (d.getClass().equals(BitmapDrawable.class)) {
+				// Shout was a reply
+				
+			} else if (d.getClass().equals(AnimationDrawable.class)) {
+				// Shout was a normal shout
+				AnimationDrawable shoutButtonAnimation = (AnimationDrawable) _ui.shoutBtn.getDrawable();
+				shoutButtonAnimation.stop();
+				_ui.shoutBtn.setImageResource(R.drawable.shout_button_up);
+				_ui.shoutInputEt.setText("");
+			}
+			handleInvalidServerResponse();			
 		}
 
 		public void handleRadiusChange(boolean isRadiusSet, long newRadius, int level) {

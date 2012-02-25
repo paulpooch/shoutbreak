@@ -341,7 +341,7 @@ module.exports = (function() {
 			DynamoDB.putItem(data, callback);
 		};
 
-		this.sendShout = function(user, targets, shoutreach, lat, lng, text, successCallback, failCallback) {
+		this.sendShout = function(user, targets, shoutreach, lat, lng, text, re, successCallback, failCallback) {
 			
 			var shout = new Shout();
 			shout.shoutId = Uuid.v4();
@@ -351,6 +351,9 @@ module.exports = (function() {
 			shout.text = text;
 			shout.open = 1;
 			shout.re = 0;
+			if (typeof(re) != 'undefined') {
+				shout.re = re;
+			}
 			shout.hit = targets.length;
 			shout.power = shoutreach;
 			shout.ups = 0;
@@ -359,8 +362,10 @@ module.exports = (function() {
 			shout.lng = Utils.formatLngForSimpleDB(parseFloat(lng));
 
 			// Let's manually add the sender to the list of targets.
-			targets.push(shout.userId);
-
+			if (shout.re == 0) {
+				targets.push(shout.userId);
+			}
+			
 			var loop = function(index) {
 				if (index < targets.length) {
 					var targetId = targets[index];
@@ -862,6 +867,7 @@ module.exports = (function() {
 				var reqCount = 1;
 				if (getResult) {
 					reqCount = Number(getResult) + 1;
+					Log.l('userCanRequestRadius Count = ' + reqCount);
 					if (reqCount > Config.RADIUS_REQUEST_LIMIT) {
 						result = false;
 					} else {

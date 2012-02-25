@@ -104,6 +104,8 @@ module.exports = (function() {
   	};
 
   	this.buildShoutJson = function(shout, forUserId) {
+  		Log.l('buildShoutFromJson');
+  		Log.l(shout);
 		var sObj = {
 			'shout_id': shout.shoutId,
 			'txt': shout.text,
@@ -112,6 +114,9 @@ module.exports = (function() {
 		};
 		if (forUserId == shout.userId) {
 			sObj['outbox'] = 1;
+		}
+		if (!shout.re == 0) {
+			sObj['re'] = shout.re;	
 		}
 		return sObj;
 	};

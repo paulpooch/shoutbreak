@@ -133,6 +133,10 @@ public class InboxSystem {
 				s.text = cursor.getString(3);
 				s.is_outbox = cursor.getInt(4) == 1 ? true : false;
 				s.re = cursor.getString(5);
+				s.isReply = false;
+				if (!s.re.equals(C.NULL_REPLY)) {
+					s.isReply = true;
+				}
 				s.vote = cursor.getInt(6);
 				s.hit = cursor.getInt(7);
 				s.open = cursor.getInt(8) == 1 ? true : false;
@@ -203,6 +207,10 @@ public class InboxSystem {
 				s.text = cursor.getString(3);
 				s.is_outbox = cursor.getInt(4) == 1 ? true : false;
 				s.re = cursor.getString(5);
+				s.isReply = false;
+				if (!s.re.equals(C.NULL_REPLY)) {
+					s.isReply = true;
+				}
 				s.vote = cursor.getInt(6);
 				s.hit = cursor.getInt(7);
 				s.open = cursor.getInt(8) == 1 ? true : false;
@@ -276,7 +284,11 @@ public class InboxSystem {
 		shout.id = jsonShout.optString(C.JSON_SHOUT_ID);
 		shout.timestamp = jsonShout.optString(C.JSON_SHOUT_TIMESTAMP);
 		shout.text = jsonShout.optString(C.JSON_SHOUT_TEXT);
-		shout.re = jsonShout.optString(C.JSON_SHOUT_RE);
+		shout.re = jsonShout.optString(C.JSON_SHOUT_RE, C.NULL_REPLY);
+		shout.isReply = false;
+		if (!shout.re.equals(C.NULL_REPLY)) {
+			shout.isReply = true;
+		}
 		Date d = new Date();
 		shout.time_received = d.getTime();
 		//shout.open = jsonShout.optInt(C.JSON_SHOUT_OPEN, 0) == 1 ? true : C.NULL_OPEN;
