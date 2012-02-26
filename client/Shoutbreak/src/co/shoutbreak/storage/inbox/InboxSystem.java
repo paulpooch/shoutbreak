@@ -125,6 +125,28 @@ public class InboxSystem {
 		}
 	}
 	
+	private List<Shout> buildSortedList(String onlySortThisParentId) {
+		ArrayList<Shout> sorted = new ArrayList<Shout>();
+		
+		// Step 2: Iterate through parents, foreach parent, grab kids and add them in sorted order.
+		for (Shout s : _parentShouts) {
+			sorted.add(s);
+			if (_repliesByParentId.containsKey(s.id)) {
+				ArrayList<Shout> replies = _repliesByParentId.get(s.id);
+				if (s.id.equals(onlySortThisParentId)) {
+					if (replies.size() > 0) {
+						Collections.sort(replies, _shoutComparator);
+					}
+				}
+				for (Shout c : replies) {
+					sorted.add(c);
+				}
+			}
+		}
+		
+		return sorted;
+	}
+	
 	private List<Shout> buildSortedList() {
 		ArrayList<Shout> sorted = new ArrayList<Shout>();
 		
@@ -347,7 +369,7 @@ public class InboxSystem {
 							}
 						}
 					}
-					_displayedShouts = buildSortedList();
+					_displayedShouts = buildSortedList(shout.re);
 				} else {
 					for (int j = 0 ; j < _parentShouts.size(); j++) {
 						if (shout.id.equals(_parentShouts.get(j).id)) {
@@ -396,14 +418,14 @@ public class InboxSystem {
 				siblingReplies = new ArrayList<Shout>();
 			}
 			siblingReplies.add(shout);		
-			_repliesByParentId.put(shout.re, siblingReplies);		
+			_repliesByParentId.put(shout.re, siblingReplies);
+			_displayedShouts = buildSortedList(shout.re);
 		} else {
 			_parentShouts.add(0, shout);
+			_displayedShouts.add(0, shout);
 		}
 		
-		_displayedShouts = buildSortedList();
 		publishChange();
-		
 		return shout;
 	}
 	
