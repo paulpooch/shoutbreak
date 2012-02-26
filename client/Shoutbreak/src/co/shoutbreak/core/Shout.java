@@ -2,6 +2,8 @@ package co.shoutbreak.core;
 
 import java.util.Date;
 
+import co.shoutbreak.core.utils.SBLog;
+
 public class Shout {	
 	public String id;
 	public String timestamp;
@@ -44,7 +46,7 @@ public class Shout {
 	public void calculateScore() {
 		// begin here:
 		// http://www.derivante.com/2009/09/01/php-content-rating-confidence/
-		score = ratingAverage(ups, ups + downs);
+		this.score = ratingAverage(ups, ups + downs);
 	}
 
 	public static int ratingAverage(int positive, int total) {

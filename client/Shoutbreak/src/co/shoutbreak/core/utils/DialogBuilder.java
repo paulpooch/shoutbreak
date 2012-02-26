@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -108,6 +109,12 @@ public class DialogBuilder implements Colleague {
 		InputMethodManager imm = (InputMethodManager) _m.getSystemService(Context.INPUT_METHOD_SERVICE);
 		imm.hideSoftInputFromWindow(et.getWindowToken(), 0);
 	}
+	
+	public void showReplyKeyboard(EditText et) {
+		SBLog.method(TAG, "hideKeyboard()");
+		InputMethodManager imm = (InputMethodManager) _m.getSystemService(Context.INPUT_METHOD_SERVICE);
+		imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
+	}
 
 	public void sendReply(Shout shout) {
 		String text = _replyEt.getText().toString().trim();
@@ -145,10 +152,11 @@ public class DialogBuilder implements Colleague {
 
 			View parent = (View) _replyLayout.getParent();
 			if (parent != null) {
-				
+				FrameLayout parentLayout = (FrameLayout) parent;
+				parentLayout.removeAllViews();
 			}
 			
-			builder.setView(_replyLayout).setTitle("Reply").setCancelable(false).setPositiveButton("Cancel", new DialogInterface.OnClickListener() {
+			builder.setView(_replyLayout).setTitle("Reply to All").setCancelable(false).setPositiveButton("Cancel", new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int id) {
 					_isDialogAlreadyShowing = false;
 					dialog.cancel();
@@ -156,6 +164,8 @@ public class DialogBuilder implements Colleague {
 			});
 			_replyDialog = builder.create();
 			_replyDialog.show();
+			_replyEt.requestFocus();
+			showReplyKeyboard(_replyEt);
 		}
 	}
 

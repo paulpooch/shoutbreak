@@ -44,6 +44,7 @@ import co.shoutbreak.storage.RadiusCacheCell;
 import co.shoutbreak.storage.Storage;
 import co.shoutbreak.storage.User;
 import co.shoutbreak.storage.inbox.InboxListViewAdapter;
+import co.shoutbreak.storage.inbox.InboxViewHolder;
 import co.shoutbreak.storage.noticetab.MultiDirectionSlidingDrawer;
 import co.shoutbreak.storage.noticetab.NoticeTabListViewAdapter;
 import co.shoutbreak.ui.IUiGateway;
@@ -707,11 +708,11 @@ public class Mediator {
 
 		public void handleVoteFinish(String shoutId, int vote) {
 			SBLog.method(TAG, "handleVoteFinish()");
-			if (vote == 1) {
-				_uiGateway.toast("You helped the sender get louder.", Toast.LENGTH_LONG);
-			} else if (vote == -1) {
-				_uiGateway.toast("You made the sender quieter.", Toast.LENGTH_LONG);
-			}
+//			if (vote == 1) {
+//				_uiGateway.toast("You helped the sender get louder.", Toast.LENGTH_LONG);
+//			} else if (vote == -1) {
+//				_uiGateway.toast("You made the sender quieter.", Toast.LENGTH_LONG);
+//			}
 			_storage.handleVoteFinish(shoutId, vote);
 			_uiGateway.handlePointsChange(_storage.getUserPoints());
 		}
@@ -1166,6 +1167,9 @@ public class Mediator {
 		public void scrollInboxToPosition(int position) {
 			_ui.inboxListView.requestFocusFromTouch();
 			_ui.inboxListView.setSelection(position);
+			InboxViewHolder holder = (InboxViewHolder) _ui.inboxListView.getSelectedView().getTag();
+			holder.collapsed.setVisibility(View.GONE);
+			holder.expanded.setVisibility(View.VISIBLE);			
 		}
 
 		@Override

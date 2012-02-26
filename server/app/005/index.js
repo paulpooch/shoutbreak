@@ -71,6 +71,11 @@ var process = function(request, response) {
 			Log.l(POST);
 			Clean.sanitize(POST, response, null, callback);
         });
+    } else {
+    	var json = { 'status': 'online'};
+    	response.writeHead(200, {'Content-Type': 'application/json'});
+		response.write(JSON.stringify(json));
+		response.end();	
     }
 };
 
@@ -822,8 +827,9 @@ var Tests = (function() {
 
 Log.l('Server launched.');
 Http.createServer(init).listen(80);
+Log.l('Listening...');
 
-Tests.run();
+//Tests.run();
 
 
 /*

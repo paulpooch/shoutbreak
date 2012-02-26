@@ -148,7 +148,7 @@ public class C {
 	public static final int PURPOSE_DEATH = 62; // don't repeat this - just die
 	
 	// DATABASE ///////////////////////////////////////////////////////////////
-	public static final int DB_VERSION = 1;
+	public static final int DB_VERSION = 3;
 
 	public static final String DB_NAME = "sbdb";
 	public static final String DB_TABLE_RADIUS = "RADIUS";
@@ -159,7 +159,7 @@ public class C {
 	
 	public static final String KEY_USER_ID = "user_id";
 	public static final String KEY_USER_LEVEL = "user_level";
-	public static final String KEY_USER_LEVEL_AT = "user_next_level_at";
+	public static final String KEY_USER_LEVEL_AT = "user_level_at";
 	public static final String KEY_USER_NEXT_LEVEL_AT = "user_next_level_at";
 	public static final String KEY_USER_POINTS = "user_points"; 
 	public static final String KEY_USER_PW = "user_pw";

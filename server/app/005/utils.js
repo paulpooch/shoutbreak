@@ -47,9 +47,7 @@ module.exports = (function() {
   	};
 
   	this.formatLatForSimpleDB = function(lat) {
-  		Log.l('formatLatForSimpleDB : ' + lat + ' => ');
   		lat += Config.OFFSET_LAT;
-  		Log.l(self.pad(lat * Config.MULTIPLY_COORDS, Config.PAD_COORDS));
   		return self.pad(lat * Config.MULTIPLY_COORDS, Config.PAD_COORDS);
   	};
 
@@ -79,7 +77,7 @@ module.exports = (function() {
 
 	// http://stackoverflow.com/questions/27928/how-do-i-calculate-distance-between-two-latitude-longitude-points
   	this.distanceBetween = function(lat1, lng1, lat2, lng2) {
-  		Log.l('distanceBetween (' + lat1 + ', ' + lng1 + ') - (' + lat2 + ', ' + lng2 + ' ) = ');
+  		//Log.l('distanceBetween (' + lat1 + ', ' + lng1 + ') - (' + lat2 + ', ' + lng2 + ' ) = ');
   		var R = 6371; // Radius of the earth in km
 		var dLat = (lat2 - lat1).toRad();  // Javascript functions in radians
 		var dLon = (lng2 - lng1).toRad(); 
@@ -88,7 +86,7 @@ module.exports = (function() {
         	Math.sin(dLon / 2) * Math.sin(dLon / 2); 
 		var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)); 
 		var d = R * c; // Distance in km
-		Log.l(d);
+		//Log.l(d);
 		return d;
   	};
 

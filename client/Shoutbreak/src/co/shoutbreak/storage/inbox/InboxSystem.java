@@ -1,6 +1,8 @@
 package co.shoutbreak.storage.inbox;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -32,7 +34,9 @@ public class InboxSystem {
 	private InboxListViewAdapter _listAdapter;
 	private ListView.OnItemClickListener _listViewItemClickListener;
 	private Database _db;
-	
+	private ShoutComparator _shoutComparator;
+	private ArrayList<Shout> _parentShouts;
+	private HashMap<String, ArrayList<Shout>> _repliesByParentId;
 	private HashMap<String, Date> _scoreLastUpdatedAt; 
 	
 	public InboxSystem(Mediator mediator, Database db) {
@@ -42,6 +46,7 @@ public class InboxSystem {
 		_self = InboxSystem.this;
 		_displayedShouts = new ArrayList<Shout>();
 		_scoreLastUpdatedAt = new HashMap<String, Date>();
+		_shoutComparator = new ShoutComparator();
 		_listAdapter = new InboxListViewAdapter(_m, (LayoutInflater)_m.getSystemService(Context.LAYOUT_INFLATER_SERVICE), InboxSystem.this);
 		_listViewItemClickListener = new ListView.OnItemClickListener() {
 			public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
@@ -99,6 +104,7 @@ public class InboxSystem {
 				Shout shout = _displayedShouts.get(i);
 				if (shout.id.equals(shoutId)) {
 					_m.getUiGateway().scrollInboxToPosition(i);
+					_listAdapter.getCacheExpandState().put(shoutId, true);
 					return;
 				}
 			}
@@ -112,9 +118,66 @@ public class InboxSystem {
 		publishChange();
 	}
 	
+	private class ShoutComparator implements Comparator<Shout> {
+		@Override
+		public int compare(Shout lhs, Shout rhs) {
+			return rhs.score - lhs.score;
+		}
+	}
+	
+	private List<Shout> buildSortedList() {
+		ArrayList<Shout> sorted = new ArrayList<Shout>();
+		
+		// Step 2: Iterate through parents, foreach parent, grab kids and add them in sorted order.
+		for (Shout s : _parentShouts) {
+			sorted.add(s);
+			if (_repliesByParentId.containsKey(s.id)) {
+				ArrayList<Shout> replies = _repliesByParentId.get(s.id);
+				if (replies.size() > 0) {
+					Collections.sort(replies, _shoutComparator);
+					for (Shout c : replies) {
+						sorted.add(c);
+					}
+				}
+			}
+		}
+		
+		return sorted;
+	}
+	
+	private List<Shout> sortShouts(List<Shout> unsorted) {
+	
+		_parentShouts = new ArrayList<Shout>();
+		_repliesByParentId = new HashMap<String, ArrayList<Shout>>();
+		
+		// Step 1: Iterate through parents.
+		for (Shout s : unsorted) {
+			if (!s.isReply) {
+				_parentShouts.add(s);
+			}
+		}
+		
+		// Step 2: Find all replies, create an ArrayList foreach parent shout, that contains its children (replies).
+		for (Shout s : unsorted) {
+			if (s.isReply) {
+				ArrayList<Shout> replies;
+				if (_repliesByParentId.containsKey(s.re)) {
+					replies = _repliesByParentId.get(s.re);
+				} else {
+					replies = new ArrayList<Shout>();
+				}
+				replies.add(s);
+				_repliesByParentId.put(s.re, replies);
+			}
+		}
+		
+		return buildSortedList();
+	}
+	
 	private List<Shout> getShoutsForUI() {
 		SBLog.method(TAG, "getShoutsForUI()");
-		return dbGetShoutsForUI(0, 50);
+		List<Shout> unsorted = dbGetShoutsForUI(0, 50);
+		return sortShouts(unsorted); 
 	}
 	
 	private List<Shout> dbGetShoutsForUI(int start, int amount) {		
@@ -145,6 +208,7 @@ public class InboxSystem {
 				s.pts = cursor.getInt(11);
 				s.state_flag = cursor.getInt(12);
 				s.calculateScore();
+				SBLog.d("SCORE", "ups = " + s.ups + " downs = " + s.downs + " score = " +  s.score);
 				results.add(s);
 			}
 		} catch (Exception ex) {
@@ -272,8 +336,29 @@ public class InboxSystem {
 			Shout shout = _displayedShouts.get(i);
 			if (shout.id.equals(shoutId)) {
 				shout = dbGetShoutFromDb(shoutId);
-				_displayedShouts.remove(i);
-				_displayedShouts.add(i, shout);
+				
+				if (shout.isReply) {
+					ArrayList<Shout> siblingReplies = _repliesByParentId.get(shout.re);
+					if (siblingReplies != null) {
+						for (int j = 0 ; j < siblingReplies.size(); j++) {
+							if (shout.id.equals(siblingReplies.get(j).id)) {
+								siblingReplies.remove(j);
+								siblingReplies.add(j, shout);
+							}
+						}
+					}
+					_displayedShouts = buildSortedList();
+				} else {
+					for (int j = 0 ; j < _parentShouts.size(); j++) {
+						if (shout.id.equals(_parentShouts.get(j).id)) {
+							_parentShouts.remove(j);
+							_parentShouts.add(j, shout);
+						}
+					}
+					_displayedShouts.remove(i);
+					_displayedShouts.add(i, shout);
+				}
+
 			}
 		}
 		publishChange();
@@ -298,14 +383,25 @@ public class InboxSystem {
 		shout.hit = jsonShout.optInt(C.JSON_SHOUT_HIT, C.NULL_HIT);
 		//shout.ups = jsonShout.optInt(C.JSON_SHOUT_UPS, C.NULL_UPS);
 		//shout.downs = jsonShout.optInt(C.JSON_SHOUT_DOWNS, C.NULL_DOWNS);
-		shout.ups = 1;
-		shout.downs = 0;
+		shout.ups = C.NULL_UPS;
+		shout.downs = C.NULL_DOWNS;
 		shout.pts = C.NULL_PTS;
 		shout.state_flag = C.SHOUT_STATE_NEW;
 		shout.score = C.NULL_SCORE;
 		dbAddShoutToInbox(shout);
 		
-		_displayedShouts.add(0, shout);
+		if (shout.isReply) {
+			ArrayList<Shout> siblingReplies = _repliesByParentId.get(shout.re);
+			if (siblingReplies == null) {
+				siblingReplies = new ArrayList<Shout>();
+			}
+			siblingReplies.add(shout);		
+			_repliesByParentId.put(shout.re, siblingReplies);		
+		} else {
+			_parentShouts.add(0, shout);
+		}
+		
+		_displayedShouts = buildSortedList();
 		publishChange();
 		
 		return shout;

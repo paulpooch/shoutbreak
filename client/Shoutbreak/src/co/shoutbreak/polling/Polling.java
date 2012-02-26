@@ -129,6 +129,7 @@ public class Polling {
 				postData.add(C.JSON_RADIUS, "1");
 				//Toast.makeText(_context, "Requesting Density: " + tempCellDensity.cellX + " , " + tempCellDensity.cellY, Toast.LENGTH_SHORT).show();
 			}
+			
 			ArrayList<String> scoresToRequest = _safeM.getScoreRequestIds();
 			if (scoresToRequest.size() > 0) {
 				StringBuilder scoreReq = new StringBuilder("[");

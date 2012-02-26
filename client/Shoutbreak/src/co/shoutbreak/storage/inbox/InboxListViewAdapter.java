@@ -12,12 +12,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.RelativeLayout.LayoutParams;
 import co.shoutbreak.R;
 import co.shoutbreak.core.C;
 import co.shoutbreak.core.Colleague;
@@ -102,7 +104,8 @@ public class InboxListViewAdapter extends BaseAdapter implements Colleague {
 
 		onScoreClickListener = new OnClickListener() {
 			public void onClick(View view) {
-				Shout entry = (Shout) view.getTag();
+				InboxViewHolder holder = (InboxViewHolder) view.getTag();
+				Shout entry = holder.shout;
 				_m.getUiGateway().handleScoreDetailsRequest(entry.ups, entry.downs, entry.score);
 			}
 		};
@@ -194,7 +197,7 @@ public class InboxListViewAdapter extends BaseAdapter implements Colleague {
 
 		Shout entry = (Shout) getItem(position);
 		holder.shout = entry;
-
+	
 		// Is expanded? ///////////////////////////////////////////////////////////
 		boolean isExpanded = false;
 		if (_cacheExpandState.containsKey(entry.id)) {
@@ -207,11 +210,12 @@ public class InboxListViewAdapter extends BaseAdapter implements Colleague {
 			holder.collapsed.setVisibility(View.VISIBLE);
 			holder.expanded.setVisibility(View.GONE);
 		}
-
+		
 		// Is reply? //////////////////////////////////////////////////////////////
 		if (entry.isReply) {
 			holder.hitCountLl.setVisibility(View.GONE);
 			holder.btnReply.setVisibility(View.GONE);
+			convertView.setPadding(25, 0, 0, 0);
 		} else {
 			String hitCount = "?";
 			if (entry.hit != C.NULL_HIT) {
@@ -228,6 +232,7 @@ public class InboxListViewAdapter extends BaseAdapter implements Colleague {
 				holder.btnReply.setVisibility(View.GONE);
 				holder.btnReply.setEnabled(_isInputAllowed);
 			}
+			convertView.setPadding(0, 0, 0, 0);
 		}
 
 		// Voting /////////////////////////////////////////////////////////////////

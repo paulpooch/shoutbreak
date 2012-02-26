@@ -107,10 +107,6 @@ public class User {
 		return _level;
 	}
 	
-	public int getLevelBeginPoints() {
-		return _levelAt;
-	}
-	
 	public boolean hasAccount() {
 		return _passwordExists;
 	}

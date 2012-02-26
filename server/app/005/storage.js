@@ -364,6 +364,8 @@ module.exports = (function() {
 			// Let's manually add the sender to the list of targets.
 			if (shout.re == 0) {
 				targets.push(shout.userId);
+			} else {
+				shout.hit -= 1;
 			}
 			
 			var loop = function(index) {
@@ -444,7 +446,6 @@ module.exports = (function() {
 			var d2 = new Date();
 			var d1 = new Date(shout.lastActivityTime);
 			var idleTime = (d2 - d1) / 60000; // = minutes
-			Log.e('idleTime = ' + idleTime);
 			if (idleTime > Config.SHOUT_IDLE_TIMEOUT) {
 				shout.open = 0;
 				var callback = function(updateShoutResult) {
@@ -1036,15 +1037,12 @@ module.exports = (function() {
 							Log.l('row = ' + row['lat'] + ', ' + row['lng']);
 							var lat2 = (row['lat'] / Config.MULTIPLY_COORDS) - Config.OFFSET_LAT; 
 							var lng2 = (row['lng'] / Config.MULTIPLY_COORDS) - Config.OFFSET_LNG;
-							Log.l('lat2, lng2 = ' + lat2 + ', ' + lng2);
 							var distanceKm = Utils.distanceBetween(lat, lng, lat2, lng2);
 							nearby.push([distanceKm, row['user_id']]);
 							Log.l('nearby.push(' + distanceKm + ', ' + row['user_id'] + ')');
 						}
 					}
 					nearby.sort(nearbySorter);
-					Log.l('nearby = ');
-					Log.l(nearby);
 					
 					if (isShouting) {
 						var targets = [];

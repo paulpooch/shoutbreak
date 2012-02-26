@@ -13,9 +13,6 @@ var Sanitizer = require('validator').sanitize,
 // Sanitize post vars.  Safe sex.
 exports.sanitize = function(dirty, response, testCallback, callback) {
 	var clean = {};
-	
-	Log.l('sanitize');
-	Log.l(dirty);
 
 	// Strings
 	var allowedStrings = {
@@ -67,14 +64,9 @@ exports.sanitize = function(dirty, response, testCallback, callback) {
 	var param = 'scores';
 	if (param in dirty) {
 		var cleanArray = [];
-		Log.l('dirty param =');
-		Log.l(dirty[param]);
-		//dirty[param] = JSON.parse(dirty[param]);
+		dirty[param] = JSON.parse(dirty[param]);
 		var lengthCap = Math.min(dirty[param].length, Config.SCORE_REQUEST_LIMIT);
-		Log.l('after parse');
-		Log.l(dirty[param]);
 		for (var i = 0; i < lengthCap; i++) {
-			Log.l('i = ' + i);
 			var reqScoreId = dirty[param][i];
 			reqScoreId = Sanitizer(reqScoreId).trim();
 			reqScoreId = Sanitizer(reqScoreId).xss();
@@ -225,7 +217,7 @@ exports.validate = function(dirty, response, testCallback, callback) {
 	param = 'vote';
 	if (param in dirty) {
 		if (Validator(dirty[param]).isNumeric() && (dirty[param] == 1 || dirty[param] == -1)) {
-			clean[param] = 1;
+			clean[param] = dirty[param];
 		}
 	}
 

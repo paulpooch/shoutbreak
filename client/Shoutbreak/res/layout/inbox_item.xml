@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical" >
+    android:orientation="vertical" 
+    android:background="#fff03cff">
 
     <!-- COLLAPSED -->
 
@@ -190,7 +191,7 @@
             android:layout_marginRight="5dp"
             android:layout_toLeftOf="@id/btnDelete"
             android:contentDescription="reply"
-            android:src="@drawable/inbox_reply" />
+            android:src="@drawable/reply_button" />
     </RelativeLayout>
 
 </LinearLayout>
