@@ -148,7 +148,7 @@ public class C {
 	public static final int PURPOSE_DEATH = 62; // don't repeat this - just die
 	
 	// DATABASE ///////////////////////////////////////////////////////////////
-	public static final int DB_VERSION = 3;
+	public static final int DB_VERSION = 10;
 
 	public static final String DB_NAME = "sbdb";
 	public static final String DB_TABLE_RADIUS = "RADIUS";

@@ -121,7 +121,19 @@ public class InboxSystem {
 	private class ShoutComparator implements Comparator<Shout> {
 		@Override
 		public int compare(Shout lhs, Shout rhs) {
-			return rhs.score - lhs.score;
+			if (rhs.score == 0 && lhs.score == 0) {
+				if (rhs.ups != lhs.ups) {
+					return rhs.ups - lhs.ups;
+				} else {
+					if (rhs.downs != lhs.downs) {
+						return lhs.downs - rhs.downs;
+					} else {
+						return 0;
+					}
+				}
+			} else {
+				return rhs.score - lhs.score;
+			}
 		}
 	}
 	
@@ -535,12 +547,23 @@ public class InboxSystem {
 		return result;
 	}
 	
-	public synchronized boolean deleteShout(String shoutId) {
+	public synchronized boolean deleteShout(String shoutId) {		
 		boolean result = dbDeleteShout(shoutId);
 		if (result) {
 			for (Shout shout : _displayedShouts) {
 				if (shout.id.equals(shoutId)) {
 					_displayedShouts.remove(shout);
+					if (!shout.isReply) {
+						if (_repliesByParentId.containsKey(shout.id)) {
+							List<Shout> replies = _repliesByParentId.get(shout.id);
+							for (Shout reply : replies) {
+								dbDeleteShout(reply.id);
+								_displayedShouts.remove(reply);
+							}
+							_repliesByParentId.remove(shout.id);
+						}
+						_parentShouts.remove(shout.id);
+					}
 					break;
 				}
 			}
