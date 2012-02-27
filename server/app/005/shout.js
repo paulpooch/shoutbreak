@@ -18,4 +18,5 @@ module.exports = function() {
 	this.lat = null;
 	this.lng = null;
 	this.outbox = null;
+	this.senderIp = null;
 };

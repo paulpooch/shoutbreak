@@ -78,6 +78,9 @@ exports.sanitize = function(dirty, response, testCallback, callback) {
 		clean[param] = cleanArray;
 	}
 
+	// trusted params
+	clean['ip'] = dirty['ip'];
+
 	var routingObject = {
 		'post': clean,
 		'response': response,
@@ -265,6 +268,9 @@ exports.validate = function(dirty, response, testCallback, callback) {
 			}
 		}
 	}
+
+	// trusted params
+	clean['ip'] = dirty['ip'];
 	
 	var routingObject = {
 		'post': clean,

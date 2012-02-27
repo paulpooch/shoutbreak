@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="maps_api_key">0D9gVcQxZ-ig9gNLIiSpWtGk6B8dWdXj_3eSfSQ</string>
+    <string name="maps_api_key">0D9gVcQxZ-igCC4AmcJ1sNuzauE1tUQ74OO0dXA</string>
     <string name="appTitle">Shoutbreak</string>
     <string name="powerBlanket">Power switch must be on in order to send &amp; receive shouts.</string>
     <string name="dataBlanket">You must have data service to shout.</string>

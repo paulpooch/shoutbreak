@@ -68,6 +68,7 @@ var process = function(request, response) {
 				route(objPost, objResponse, objTestCallback);
 			};
 			Log.l('\n\n///////////////////////////////////////////////////////////////////////////\nREQUEST = ');
+			POST['ip'] = request.connection.remoteAddress;
 			Log.l(POST);
 			Clean.sanitize(POST, response, null, callback);
         });
@@ -454,7 +455,7 @@ var shout = function(clean, response, testCallback) {
 			}	
 		};
 		var callback3 = function(getTargetsResult) {
-			Storage.Shouts.sendShout(user, getTargetsResult, shoutreach, lat, lng, text, re, callback4,
+			Storage.Shouts.sendShout(user, getTargetsResult, shoutreach, lat, lng, text, re, clean['ip'], callback4,
 				function() {
 					var json = { 'code': 'error', 'txt': 'Send shout failed.' };
 					respond(json, response, testCallback);

@@ -308,7 +308,8 @@ module.exports = (function() {
 					'ups': 					{'N': String(shout.ups)},
 					'downs': 				{'N': String(shout.downs)},
 					'lat': 					{'N': String(shout.lat)},
-					'lng': 					{'N': String(shout.lng)}
+					'lng': 					{'N': String(shout.lng)},
+					'sender_ip': 			{'S': String(shout.senderIp)}
 				}
 			};
 			var callback = function(result) {
@@ -341,7 +342,7 @@ module.exports = (function() {
 			DynamoDB.putItem(data, callback);
 		};
 
-		this.sendShout = function(user, targets, shoutreach, lat, lng, text, re, successCallback, failCallback) {
+		this.sendShout = function(user, targets, shoutreach, lat, lng, text, re, senderIp, successCallback, failCallback) {
 			
 			var shout = new Shout();
 			shout.shoutId = Uuid.v4();
@@ -360,6 +361,7 @@ module.exports = (function() {
 			shout.downs = 0;
 			shout.lat = Utils.formatLatForSimpleDB(parseFloat(lat));
 			shout.lng = Utils.formatLngForSimpleDB(parseFloat(lng));
+			shout.senderIp = senderIp;
 
 			// Let's manually add the sender to the list of targets.
 			if (shout.re == 0) {

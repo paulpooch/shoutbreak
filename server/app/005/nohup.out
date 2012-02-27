@@ -4976,3 +4976,538 @@ Error: Invalid number
     at HTTPParser.onMessageComplete (http.js:137:23)
     at Socket.ondata (http.js:1387:22)
     at TCP.onread (net.js:354:27)
+Log initiated.
+Server launched.
+Listening...
+
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+{ a: 'ping',
+  uid: 'ee38c686-9cf9-43e2-a6d6-d2d5a10fb78a',
+  auth: 'RtR9Lkf3*NNh#FaxY1#a6D*pH/dS9q9V/mI2TEm1xGAomxANSuKIubvOQwSr1ntb2KEHItxCRor1c5CgtOw01dTa515ACIHWiO1kZXso5mN18SlZZKNhbw==',
+  lat: '40.74291',
+  lng: '-74.02899',
+  scores: '["b87a5ace-9b38-40bb-b47f-da7a33525abd"]' }
+RESPONSE = 
+{ code: 'ping_ok',
+  pts: 77,
+  scores: 
+   [ { shout_id: 'b87a5ace-9b38-40bb-b47f-da7a33525abd',
+       ups: 1,
+       downs: 0,
+       hit: 5,
+       open: 0,
+       pts: 1 } ] }
+
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+{ a: 'shout',
+  uid: 'ee38c686-9cf9-43e2-a6d6-d2d5a10fb78a',
+  auth: 'RtR9Lkf3*NNh#FaxY1#a6D*pH/dS9q9V/mI2TEm1xGAomxANSuKIubvOQwSr1ntb2KEHItxCRor1c5CgtOw01dTa515ACIHWiO1kZXso5mN18SlZZKNhbw==',
+  lat: '40.74291',
+  lng: '-74.02899',
+  txt: 'Five',
+  shoutreach: '5',
+  hint: '351330' }
+shout re = undefined
+this is not a reply
+recursiveCallback on iteration 1
+COUNT = 0, SHOUTREACH = 5, selectEntirePlanet = false
+recursiveCallback on iteration 2
+COUNT = 20, SHOUTREACH = 5, selectEntirePlanet = true
+fullGetCallback
+row = 13074832, 10596822
+nearby.push(0.6458503518755306, 1d582ccb-11f4-4f99-a5cd-1d3265f9f6a2)
+row = 13074832, 10596822
+nearby.push(0.6458503518755306, 58bcef29-a1fb-40b6-9151-942687542f7a)
+row = 13074330, 10596899
+nearby.push(0.1756157064379328, 499a31f2-2570-4586-b71d-d913f856f83d)
+row = 13074330, 10596899
+nearby.push(0.1756157064379328, c7c806a9-1d3a-4007-a4ea-86a5d242c235)
+row = 13074297, 10597099
+nearby.push(0.0068811699265616064, 01044462-65a6-41c6-9f76-9ad0d73bf8fd)
+row = 13074294, 10597115
+nearby.push(0.012257154431290425, c79a49f1-2b48-45b0-8066-443b88faee56)
+row = 13074292, 10597125
+nearby.push(0.020249678535728115, 6553fcaf-7897-490f-94ee-55c479d4525d)
+row = 13100000, 10600000
+nearby.push(28.690838969121682, f382f2dc-45a0-471e-93e5-431be6451d6b)
+row = 13100000, 10600000
+nearby.push(28.690838969121682, 3d47de43-3b31-4099-a6af-f1d7c482366a)
+row = 13100000, 10600000
+nearby.push(28.690838969121682, f116bba4-a04d-40df-a1cb-c529426ec35b)
+row = 13100000, 10600000
+nearby.push(28.690838969121682, 8a143109-1098-4c4e-b338-776861f9f45d)
+row = 13100000, 10600000
+nearby.push(28.690838969121682, ed2add0d-b9f5-40d7-bdbe-0057c65a015f)
+row = 13100000, 10600000
+nearby.push(28.690838969121682, 545ebf1d-8204-4ab0-bf6e-f8766b84c010)
+row = 13000000, 11000000
+nearby.push(351.1346159957546, 8a5aa713-be95-4e60-adc2-856eda98a339)
+row = 13000000, 11000000
+nearby.push(351.1346159957546, 298380db-ae4b-4042-b4a5-474b00d67628)
+row = 13000000, 11000000
+nearby.push(351.1346159957546, 9782f343-4ec9-4a81-9ce0-e68194e9c6c6)
+row = 13000000, 11000000
+nearby.push(351.1346159957546, 01ddd761-6f6f-4ffa-8b88-a96ef258e9cf)
+row = 13000000, 11000000
+nearby.push(351.1346159957546, 0d6b29d4-c34b-44ab-893f-1f896577fd3f)
+row = 13000000, 11000000
+nearby.push(351.1346159957546, afba7c9c-231e-4efd-959f-34a02c336155)
+'{"ConsumedCapacityUnits":1.0}'
+'{"ConsumedCapacityUnits":1.0}'
+RESPONSE = 
+{ code: 'shout_sent' }
+
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+{ a: 'ping',
+  uid: 'ee38c686-9cf9-43e2-a6d6-d2d5a10fb78a',
+  auth: 'RtR9Lkf3*NNh#FaxY1#a6D*pH/dS9q9V/mI2TEm1xGAomxANSuKIubvOQwSr1ntb2KEHItxCRor1c5CgtOw01dTa515ACIHWiO1kZXso5mN18SlZZKNhbw==',
+  lat: '40.74291',
+  lng: '-74.02899' }
+buildShoutFromJson
+{ shoutId: '06bd5d0d-4afb-4404-9979-fbc3e3caeea2',
+  userId: 'ee38c686-9cf9-43e2-a6d6-d2d5a10fb78a',
+  time: '2012-02-26T08:11:06.575Z',
+  lastActivityTime: '2012-02-26T08:11:06.575Z',
+  text: 'Five',
+  open: 1,
+  re: 0,
+  hit: 5,
+  power: 5,
+  ups: 0,
+  downs: 0,
+  lat: '13074291',
+  lng: '10597101',
+  outbox: null }
+RESPONSE = 
+{ code: 'ping_ok',
+  pts: 77,
+  shouts: 
+   [ { shout_id: '06bd5d0d-4afb-4404-9979-fbc3e3caeea2',
+       txt: 'Five',
+       ts: '2012-02-26T08:11:06.575Z',
+       hit: 5,
+       outbox: 1 } ] }
+
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+{ a: 'shout',
+  uid: 'ee38c686-9cf9-43e2-a6d6-d2d5a10fb78a',
+  auth: 'RtR9Lkf3*NNh#FaxY1#a6D*pH/dS9q9V/mI2TEm1xGAomxANSuKIubvOQwSr1ntb2KEHItxCRor1c5CgtOw01dTa515ACIHWiO1kZXso5mN18SlZZKNhbw==',
+  lat: '40.74291',
+  lng: '-74.02899',
+  txt: ',1',
+  shoutreach: '0',
+  re: '06bd5d0d-4afb-4404-9979-fbc3e3caeea2',
+  hint: '351330' }
+shout re = 06bd5d0d-4afb-4404-9979-fbc3e3caeea2
+this is a reply
+'{"ConsumedCapacityUnits":1.0}'
+RESPONSE = 
+{ code: 'shout_sent' }
+
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+{ a: 'ping',
+  uid: 'ee38c686-9cf9-43e2-a6d6-d2d5a10fb78a',
+  auth: 'RtR9Lkf3*NNh#FaxY1#a6D*pH/dS9q9V/mI2TEm1xGAomxANSuKIubvOQwSr1ntb2KEHItxCRor1c5CgtOw01dTa515ACIHWiO1kZXso5mN18SlZZKNhbw==',
+  lat: '40.74291',
+  lng: '-74.02899',
+  scores: '["06bd5d0d-4afb-4404-9979-fbc3e3caeea2"]' }
+buildShoutFromJson
+{ shoutId: '48c952c3-e157-4a04-ac0c-9128f7185a3a',
+  userId: 'ee38c686-9cf9-43e2-a6d6-d2d5a10fb78a',
+  time: '2012-02-26T08:11:22.462Z',
+  lastActivityTime: '2012-02-26T08:11:22.462Z',
+  text: ',1',
+  open: 1,
+  re: '06bd5d0d-4afb-4404-9979-fbc3e3caeea2',
+  hit: 5,
+  power: 0,
+  ups: 0,
+  downs: 0,
+  lat: '13074291',
+  lng: '10597101',
+  outbox: null }
+RESPONSE = 
+{ code: 'ping_ok',
+  pts: 77,
+  shouts: 
+   [ { shout_id: '48c952c3-e157-4a04-ac0c-9128f7185a3a',
+       txt: ',1',
+       ts: '2012-02-26T08:11:22.462Z',
+       hit: 5,
+       outbox: 1,
+       re: '06bd5d0d-4afb-4404-9979-fbc3e3caeea2' } ],
+  scores: 
+   [ { shout_id: '06bd5d0d-4afb-4404-9979-fbc3e3caeea2',
+       ups: 0,
+       downs: 0,
+       hit: 5,
+       open: 1,
+       pts: 0 } ] }
+
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+{ a: 'shout',
+  uid: 'ee38c686-9cf9-43e2-a6d6-d2d5a10fb78a',
+  auth: 'RtR9Lkf3*NNh#FaxY1#a6D*pH/dS9q9V/mI2TEm1xGAomxANSuKIubvOQwSr1ntb2KEHItxCRor1c5CgtOw01dTa515ACIHWiO1kZXso5mN18SlZZKNhbw==',
+  lat: '40.74291',
+  lng: '-74.02899',
+  txt: '3',
+  shoutreach: '0',
+  re: '06bd5d0d-4afb-4404-9979-fbc3e3caeea2',
+  hint: '351330' }
+shout re = 06bd5d0d-4afb-4404-9979-fbc3e3caeea2
+this is a reply
+'{"ConsumedCapacityUnits":1.0}'
+RESPONSE = 
+{ code: 'shout_sent' }
+
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+{ a: 'ping',
+  uid: 'ee38c686-9cf9-43e2-a6d6-d2d5a10fb78a',
+  auth: 'RtR9Lkf3*NNh#FaxY1#a6D*pH/dS9q9V/mI2TEm1xGAomxANSuKIubvOQwSr1ntb2KEHItxCRor1c5CgtOw01dTa515ACIHWiO1kZXso5mN18SlZZKNhbw==',
+  lat: '40.74291',
+  lng: '-74.02899',
+  scores: '["48c952c3-e157-4a04-ac0c-9128f7185a3a", "06bd5d0d-4afb-4404-9979-fbc3e3caeea2"]' }
+buildShoutFromJson
+{ shoutId: '60c698dd-12ff-4388-8b36-a0c857ff2e5b',
+  userId: 'ee38c686-9cf9-43e2-a6d6-d2d5a10fb78a',
+  time: '2012-02-26T08:11:27.578Z',
+  lastActivityTime: '2012-02-26T08:11:27.578Z',
+  text: '3',
+  open: 1,
+  re: '06bd5d0d-4afb-4404-9979-fbc3e3caeea2',
+  hit: 5,
+  power: 0,
+  ups: 0,
+  downs: 0,
+  lat: '13074291',
+  lng: '10597101',
+  outbox: null }
+RESPONSE = 
+{ code: 'ping_ok',
+  pts: 77,
+  shouts: 
+   [ { shout_id: '60c698dd-12ff-4388-8b36-a0c857ff2e5b',
+       txt: '3',
+       ts: '2012-02-26T08:11:27.578Z',
+       hit: 5,
+       outbox: 1,
+       re: '06bd5d0d-4afb-4404-9979-fbc3e3caeea2' } ],
+  scores: 
+   [ { shout_id: '48c952c3-e157-4a04-ac0c-9128f7185a3a',
+       ups: 0,
+       downs: 0,
+       hit: 5,
+       open: 1,
+       pts: 0 },
+     { shout_id: '06bd5d0d-4afb-4404-9979-fbc3e3caeea2',
+       ups: 0,
+       downs: 0,
+       hit: 5,
+       open: 1,
+       pts: 0 } ] }
+
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+{ a: 'shout',
+  uid: 'ee38c686-9cf9-43e2-a6d6-d2d5a10fb78a',
+  auth: 'RtR9Lkf3*NNh#FaxY1#a6D*pH/dS9q9V/mI2TEm1xGAomxANSuKIubvOQwSr1ntb2KEHItxCRor1c5CgtOw01dTa515ACIHWiO1kZXso5mN18SlZZKNhbw==',
+  lat: '40.74291',
+  lng: '-74.02899',
+  txt: '2',
+  shoutreach: '0',
+  re: '06bd5d0d-4afb-4404-9979-fbc3e3caeea2',
+  hint: '351330' }
+shout re = 06bd5d0d-4afb-4404-9979-fbc3e3caeea2
+this is a reply
+'{"ConsumedCapacityUnits":1.0}'
+RESPONSE = 
+{ code: 'shout_sent' }
+
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+{ a: 'ping',
+  uid: 'ee38c686-9cf9-43e2-a6d6-d2d5a10fb78a',
+  auth: 'RtR9Lkf3*NNh#FaxY1#a6D*pH/dS9q9V/mI2TEm1xGAomxANSuKIubvOQwSr1ntb2KEHItxCRor1c5CgtOw01dTa515ACIHWiO1kZXso5mN18SlZZKNhbw==',
+  lat: '40.74291',
+  lng: '-74.02899',
+  scores: '["60c698dd-12ff-4388-8b36-a0c857ff2e5b", "48c952c3-e157-4a04-ac0c-9128f7185a3a", "06bd5d0d-4afb-4404-9979-fbc3e3caeea2"]' }
+buildShoutFromJson
+{ shoutId: 'b576c00a-aeea-41c4-b71d-9588b45cd396',
+  userId: 'ee38c686-9cf9-43e2-a6d6-d2d5a10fb78a',
+  time: '2012-02-26T08:11:33.220Z',
+  lastActivityTime: '2012-02-26T08:11:33.220Z',
+  text: '2',
+  open: 1,
+  re: '06bd5d0d-4afb-4404-9979-fbc3e3caeea2',
+  hit: 5,
+  power: 0,
+  ups: 0,
+  downs: 0,
+  lat: '13074291',
+  lng: '10597101',
+  outbox: null }
+RESPONSE = 
+{ code: 'ping_ok',
+  pts: 77,
+  shouts: 
+   [ { shout_id: 'b576c00a-aeea-41c4-b71d-9588b45cd396',
+       txt: '2',
+       ts: '2012-02-26T08:11:33.220Z',
+       hit: 5,
+       outbox: 1,
+       re: '06bd5d0d-4afb-4404-9979-fbc3e3caeea2' } ],
+  scores: 
+   [ { shout_id: '60c698dd-12ff-4388-8b36-a0c857ff2e5b',
+       ups: 0,
+       downs: 0,
+       hit: 5,
+       open: 1,
+       pts: 0 },
+     { shout_id: '48c952c3-e157-4a04-ac0c-9128f7185a3a',
+       ups: 0,
+       downs: 0,
+       hit: 5,
+       open: 1,
+       pts: 0 },
+     { shout_id: '06bd5d0d-4afb-4404-9979-fbc3e3caeea2',
+       ups: 0,
+       downs: 0,
+       hit: 5,
+       open: 1,
+       pts: 0 } ] }
+
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+{ a: 'vote',
+  uid: 'ee38c686-9cf9-43e2-a6d6-d2d5a10fb78a',
+  auth: 'RtR9Lkf3*NNh#FaxY1#a6D*pH/dS9q9V/mI2TEm1xGAomxANSuKIubvOQwSr1ntb2KEHItxCRor1c5CgtOw01dTa515ACIHWiO1kZXso5mN18SlZZKNhbw==',
+  shout_id: '60c698dd-12ff-4388-8b36-a0c857ff2e5b',
+  vote: '-1' }
+'{"ConsumedCapacityUnits":1.0}'
+updateUser database result:
+'{"ConsumedCapacityUnits":1.0}'
+updateUser database result:
+'{"ConsumedCapacityUnits":1.0}'
+RESPONSE = 
+{ code: 'vote_ok' }
+
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+{ a: 'vote',
+  uid: 'ee38c686-9cf9-43e2-a6d6-d2d5a10fb78a',
+  auth: 'RtR9Lkf3*NNh#FaxY1#a6D*pH/dS9q9V/mI2TEm1xGAomxANSuKIubvOQwSr1ntb2KEHItxCRor1c5CgtOw01dTa515ACIHWiO1kZXso5mN18SlZZKNhbw==',
+  shout_id: 'b576c00a-aeea-41c4-b71d-9588b45cd396',
+  vote: '1' }
+'{"ConsumedCapacityUnits":1.0}'
+updateUser database result:
+'{"ConsumedCapacityUnits":1.0}'
+updateUser database result:
+'{"ConsumedCapacityUnits":1.0}'
+RESPONSE = 
+{ code: 'vote_ok' }
+
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+{ a: 'ping',
+  uid: 'ee38c686-9cf9-43e2-a6d6-d2d5a10fb78a',
+  auth: 'RtR9Lkf3*NNh#FaxY1#a6D*pH/dS9q9V/mI2TEm1xGAomxANSuKIubvOQwSr1ntb2KEHItxCRor1c5CgtOw01dTa515ACIHWiO1kZXso5mN18SlZZKNhbw==',
+  lat: '40.74291',
+  lng: '-74.02899',
+  scores: '["b576c00a-aeea-41c4-b71d-9588b45cd396", "60c698dd-12ff-4388-8b36-a0c857ff2e5b", "48c952c3-e157-4a04-ac0c-9128f7185a3a", "06bd5d0d-4afb-4404-9979-fbc3e3caeea2"]' }
+RESPONSE = 
+{ code: 'ping_ok',
+  pts: 81,
+  scores: 
+   [ { shout_id: 'b576c00a-aeea-41c4-b71d-9588b45cd396',
+       ups: 1,
+       downs: 0,
+       hit: 5,
+       open: 1,
+       pts: 1 },
+     { shout_id: '60c698dd-12ff-4388-8b36-a0c857ff2e5b',
+       ups: 0,
+       downs: 1,
+       hit: 5,
+       open: 1,
+       pts: -1 },
+     { shout_id: '48c952c3-e157-4a04-ac0c-9128f7185a3a',
+       ups: 0,
+       downs: 0,
+       hit: 5,
+       open: 1,
+       pts: 0 },
+     { shout_id: '06bd5d0d-4afb-4404-9979-fbc3e3caeea2',
+       ups: 0,
+       downs: 0,
+       hit: 5,
+       open: 1,
+       pts: 0 } ] }
+
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+{ a: 'ping',
+  uid: 'ee38c686-9cf9-43e2-a6d6-d2d5a10fb78a',
+  auth: 'RtR9Lkf3*NNh#FaxY1#a6D*pH/dS9q9V/mI2TEm1xGAomxANSuKIubvOQwSr1ntb2KEHItxCRor1c5CgtOw01dTa515ACIHWiO1kZXso5mN18SlZZKNhbw==',
+  lat: '40.74291',
+  lng: '-74.02899',
+  scores: '["b576c00a-aeea-41c4-b71d-9588b45cd396", "60c698dd-12ff-4388-8b36-a0c857ff2e5b", "48c952c3-e157-4a04-ac0c-9128f7185a3a", "06bd5d0d-4afb-4404-9979-fbc3e3caeea2"]' }
+RESPONSE = 
+{ code: 'ping_ok',
+  pts: 81,
+  scores: 
+   [ { shout_id: 'b576c00a-aeea-41c4-b71d-9588b45cd396',
+       ups: 1,
+       downs: 0,
+       hit: 5,
+       open: 1,
+       pts: 1 },
+     { shout_id: '60c698dd-12ff-4388-8b36-a0c857ff2e5b',
+       ups: 0,
+       downs: 1,
+       hit: 5,
+       open: 1,
+       pts: -1 },
+     { shout_id: '48c952c3-e157-4a04-ac0c-9128f7185a3a',
+       ups: 0,
+       downs: 0,
+       hit: 5,
+       open: 1,
+       pts: 0 },
+     { shout_id: '06bd5d0d-4afb-4404-9979-fbc3e3caeea2',
+       ups: 0,
+       downs: 0,
+       hit: 5,
+       open: 1,
+       pts: 0 } ] }
+
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+{ a: 'ping',
+  uid: 'ee38c686-9cf9-43e2-a6d6-d2d5a10fb78a',
+  auth: 'RtR9Lkf3*NNh#FaxY1#a6D*pH/dS9q9V/mI2TEm1xGAomxANSuKIubvOQwSr1ntb2KEHItxCRor1c5CgtOw01dTa515ACIHWiO1kZXso5mN18SlZZKNhbw==',
+  lat: '40.74291',
+  lng: '-74.02899',
+  scores: '["b576c00a-aeea-41c4-b71d-9588b45cd396", "60c698dd-12ff-4388-8b36-a0c857ff2e5b", "48c952c3-e157-4a04-ac0c-9128f7185a3a", "06bd5d0d-4afb-4404-9979-fbc3e3caeea2"]' }
+RESPONSE = 
+{ code: 'ping_ok',
+  pts: 81,
+  scores: 
+   [ { shout_id: 'b576c00a-aeea-41c4-b71d-9588b45cd396',
+       ups: 1,
+       downs: 0,
+       hit: 5,
+       open: 1,
+       pts: 1 },
+     { shout_id: '60c698dd-12ff-4388-8b36-a0c857ff2e5b',
+       ups: 0,
+       downs: 1,
+       hit: 5,
+       open: 1,
+       pts: -1 },
+     { shout_id: '48c952c3-e157-4a04-ac0c-9128f7185a3a',
+       ups: 0,
+       downs: 0,
+       hit: 5,
+       open: 1,
+       pts: 0 },
+     { shout_id: '06bd5d0d-4afb-4404-9979-fbc3e3caeea2',
+       ups: 0,
+       downs: 0,
+       hit: 5,
+       open: 1,
+       pts: 0 } ] }
+
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+{ a: 'ping',
+  uid: 'ee38c686-9cf9-43e2-a6d6-d2d5a10fb78a',
+  auth: 'RtR9Lkf3*NNh#FaxY1#a6D*pH/dS9q9V/mI2TEm1xGAomxANSuKIubvOQwSr1ntb2KEHItxCRor1c5CgtOw01dTa515ACIHWiO1kZXso5mN18SlZZKNhbw==',
+  lat: '40.74291',
+  lng: '-74.02899' }
+RESPONSE = 
+{ code: 'ping_ok', pts: 81 }
+Log initiated.
+Server launched.
+Listening...
+
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+{ a: 'ping',
+  uid: '7a0449f8-fe59-449f-a366-6260a2204f3d',
+  auth: 's2zg2-bPUhXPSvBth+@UUfG8VzmGXg%0NFlDl5+FNOdujXwI+HwpfmFVReRJTX4llU/fVhZaEvlHo5wiBQTJubpy4ey9mvP4Mm5tKCIeimsNY8/XfVCEUg==',
+  lat: '40.7433',
+  lng: '-74.03101',
+  ip: '174.252.26.24' }
+RESPONSE = 
+{ code: 'ping_ok', pts: 71 }
+
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+{ a: 'ping',
+  uid: '7a0449f8-fe59-449f-a366-6260a2204f3d',
+  auth: 's2zg2-bPUhXPSvBth+@UUfG8VzmGXg%0NFlDl5+FNOdujXwI+HwpfmFVReRJTX4llU/fVhZaEvlHo5wiBQTJubpy4ey9mvP4Mm5tKCIeimsNY8/XfVCEUg==',
+  lat: '40.7433',
+  lng: '-74.03101',
+  ip: '174.252.26.24' }
+RESPONSE = 
+{ code: 'ping_ok', pts: 71 }
+
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+{ a: 'ping',
+  uid: '7a0449f8-fe59-449f-a366-6260a2204f3d',
+  auth: 's2zg2-bPUhXPSvBth+@UUfG8VzmGXg%0NFlDl5+FNOdujXwI+HwpfmFVReRJTX4llU/fVhZaEvlHo5wiBQTJubpy4ey9mvP4Mm5tKCIeimsNY8/XfVCEUg==',
+  lat: '40.7433',
+  lng: '-74.03101',
+  ip: '174.252.26.24' }
+RESPONSE = 
+{ code: 'ping_ok', pts: 71 }
+
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+{ a: 'ping',
+  uid: '7a0449f8-fe59-449f-a366-6260a2204f3d',
+  auth: 's2zg2-bPUhXPSvBth+@UUfG8VzmGXg%0NFlDl5+FNOdujXwI+HwpfmFVReRJTX4llU/fVhZaEvlHo5wiBQTJubpy4ey9mvP4Mm5tKCIeimsNY8/XfVCEUg==',
+  lat: '40.7433',
+  lng: '-74.03101',
+  ip: '174.252.26.24' }
+RESPONSE = 
+{ code: 'ping_ok', pts: 71 }
+
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+{ a: 'ping',
+  uid: '7a0449f8-fe59-449f-a366-6260a2204f3d',
+  auth: 's2zg2-bPUhXPSvBth+@UUfG8VzmGXg%0NFlDl5+FNOdujXwI+HwpfmFVReRJTX4llU/fVhZaEvlHo5wiBQTJubpy4ey9mvP4Mm5tKCIeimsNY8/XfVCEUg==',
+  lat: '40.7433',
+  lng: '-74.03101',
+  ip: '174.252.26.24' }
+RESPONSE = 
+{ code: 'ping_ok', pts: 71 }
