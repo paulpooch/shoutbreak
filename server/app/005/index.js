@@ -826,6 +826,9 @@ var Tests = (function() {
 
 // Bootstrap //////////////////////////////////////////////////////////////////
 
+var now = new Date();
+var logName = now.getFullYear() + '-' + (now.getMonth() + 1) + '-' + now.getDate() + '.log';
+Log.init(logName);
 Log.l('Server launched.');
 Http.createServer(init).listen(80);
 Log.l('Listening...');

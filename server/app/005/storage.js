@@ -824,11 +824,10 @@ module.exports = (function() {
 		var liveUsersSelf = this;
 
 		this.cull = function(successCallback, failCallback) {
-			Log.l('CRON CULL LIVE USERS');
 			var usersToCull = false;
 			var loop = function(index) {
 				if (usersToCull.length > index) {
-					var userId = usersToCull[index]['user_id'];	
+					var userId = usersToCull[index]['user_id'];
 					SimpleDB.deleteItem(Config.TABLE_LIVE, userId, 
 						function(error, result, metadata) {
 							if (result) {
@@ -852,15 +851,17 @@ module.exports = (function() {
 						failCallback();
 					} else {
 						usersToCull = result;
+						Log.l('Culling ' + usersToCull.length + ' users.');
 						loop(0);
 					}
 				}
 			};
 			var now = new Date();
-			var lastAcceptableCheckInTime = String(new Date(now.getTime() - Config.LIVE_USERS_TIMEOUT));
+			var lastAcceptableCheckInTime = new Date(now.getTime() - Config.LIVE_USERS_TIMEOUT);
+			var formattedCutoff = lastAcceptableCheckInTime.toISOString();
 			var params = [];
 			var query = "SELECT user_id, ping_time FROM " + Config.TABLE_LIVE + " WHERE ping_time < '?'";
-			params.push(lastAcceptableCheckInTime);
+			params.push(formattedCutoff);
 			SimpleDB.select(query, params, callback);
 		};
 

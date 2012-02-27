@@ -7,7 +7,9 @@ var Log = 			require('./log'),
 // Go //////////////////////////////////////////////////////////////////////////
 
 var Cron = (function() {
-	Log.l('CRON - CULL LIVE USERS - BEGIN');
+	Log.init('cron.log');
+	Log.l(new Date());
+	Log.l('CRON - CULL LIVE USERS');
 	if (process.argv.length > 2) {
 		var job = process.argv[2];
 		if (job == 'cull_live_users') {

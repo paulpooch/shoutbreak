@@ -7,9 +7,15 @@ module.exports = (function() {
 
 	var FileSystem = require('fs'),
 		Logger = require('log'),
-		logFile = new Logger('debug', FileSystem.createWriteStream('../logs/log.txt')),
-		// Not Utils, native util.
 		Util = require('util');
+
+	var logFile = false;
+
+	this.init = function(logName) {
+		logFile = new Logger('debug', FileSystem.createWriteStream('../logs/' + logName ));
+		this.l('Log initiated.');
+		// Not Utils, native util.
+	};
 
 	this.e = function(text) { 
 		console.error(text);
@@ -20,6 +26,9 @@ module.exports = (function() {
 	};
 	
 	this.l = function(text) {
+		if (logFile === false) {
+			logFile = new Logger('debug', FileSystem.createWriteStream('../logs/log.txt'));
+		}
 		if (typeof(text) != 'string') {
 			console.dir(text);
 			logFile.debug(Util.inspect(text));
@@ -36,8 +45,6 @@ module.exports = (function() {
 	this.obj = function(obj) { 
 		console.dir(obj); 
 	};
-
-	this.l('Log initiated.');
 
 	return this;
 })();
