@@ -5511,3 +5511,1194 @@ REQUEST =
   ip: '174.252.26.24' }
 RESPONSE = 
 { code: 'ping_ok', pts: 71 }
+
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+{ a: 'create_account', ip: '174.231.68.172' }
+RESPONSE = 
+{ code: 'create_account_0',
+  uid: 'f6292a18-4915-49de-b1a3-fe3f9017d626' }
+
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+{ a: 'create_account',
+  uid: 'f6292a18-4915-49de-b1a3-fe3f9017d626',
+  android_id: '15539710b55c8528',
+  device_id: 'A1000017F0834F',
+  phone_num: '2019561191',
+  carrier: 'Verizon Wireless',
+  ip: '174.231.68.172' }
+RESPONSE = 
+{ code: 'create_account_1',
+  pw: '9pa*AnhwQDBSG6/dHyBh*5(8gjsz2QtN' }
+
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+{ a: 'ping',
+  uid: 'f6292a18-4915-49de-b1a3-fe3f9017d626',
+  auth: 'default',
+  lat: '40.79084',
+  lng: '-77.84366',
+  radius: '1',
+  ip: '174.231.68.172' }
+Failed auth count = 1
+addToCache
+user
+RESPONSE = 
+{ code: 'expired_auth',
+  nonce: 'aWIQOaHHAEN@R47TZnYzY%k9Gw*/9zI7(=k(pYzN' }
+
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+{ a: 'ping',
+  uid: 'f6292a18-4915-49de-b1a3-fe3f9017d626',
+  auth: '9pa*AnhwQDBSG6/dHyBh*5(8gjsz2QtNNtvAdWwMZKqbJU2PK9I7A+copcTOqOo59mwMrypFUgg9AuvAXvueNqTF6z+juaEwzcZeKapvK/jJNeiWp1d8cQ==',
+  lat: '40.79084',
+  lng: '-77.84366',
+  radius: '1',
+  ip: '174.231.68.172' }
+User requested radius.
+userCanRequestRadiusResult = true
+recursiveCallback on iteration 1
+COUNT = 4, SHOUTREACH = 5, selectEntirePlanet = false
+recursiveCallback on iteration 2
+COUNT = 4, SHOUTREACH = 5, selectEntirePlanet = true
+fullGetCallback
+row = 13074330, 10596899
+nearby.push(321.10341660340976, 8cc212c3-d463-4dd5-ac5b-bd5b0bcf2dcb)
+row = 13074330, 10596899
+nearby.push(321.10341660340976, 44a665db-d31a-4237-ad12-28c351de945b)
+row = 13074330, 10596899
+nearby.push(321.10341660340976, 7a0449f8-fe59-449f-a366-6260a2204f3d)
+nearby = 
+[ [ 321.10341660340976, '8cc212c3-d463-4dd5-ac5b-bd5b0bcf2dcb' ],
+  [ 321.10341660340976, '44a665db-d31a-4237-ad12-28c351de945b' ],
+  [ 321.10341660340976, '7a0449f8-fe59-449f-a366-6260a2204f3d' ] ]
+RESPONSE = 
+{ code: 'ping_ok',
+  pts: 71,
+  lvl_change: { lvl: 5, lvl_at: 71, next_lvl_at: 92 },
+  radius: 6000000 }
+
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+{ a: 'ping',
+  uid: 'f6292a18-4915-49de-b1a3-fe3f9017d626',
+  auth: '9pa*AnhwQDBSG6/dHyBh*5(8gjsz2QtNNtvAdWwMZKqbJU2PK9I7A+copcTOqOo59mwMrypFUgg9AuvAXvueNqTF6z+juaEwzcZeKapvK/jJNeiWp1d8cQ==',
+  lat: '40.79084',
+  lng: '-77.84366',
+  lvl: '5',
+  ip: '174.231.68.172' }
+updateUser database result:
+'{"ConsumedCapacityUnits":1.0}'
+RESPONSE = 
+{ code: 'ping_ok', pts: 71 }
+
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+{ a: 'shout',
+  uid: 'f6292a18-4915-49de-b1a3-fe3f9017d626',
+  auth: '9pa*AnhwQDBSG6/dHyBh*5(8gjsz2QtNNtvAdWwMZKqbJU2PK9I7A+copcTOqOo59mwMrypFUgg9AuvAXvueNqTF6z+juaEwzcZeKapvK/jJNeiWp1d8cQ==',
+  lat: '40.79162',
+  lng: '-77.85857',
+  txt: 'test',
+  shoutreach: '5',
+  ip: '174.231.68.172' }
+shout re = undefined
+this is not a reply
+recursiveCallback on iteration 1
+COUNT = 4, SHOUTREACH = 5, selectEntirePlanet = false
+recursiveCallback on iteration 2
+COUNT = 4, SHOUTREACH = 5, selectEntirePlanet = true
+fullGetCallback
+row = 13074330, 10596899
+nearby.push(322.35814756026485, 8cc212c3-d463-4dd5-ac5b-bd5b0bcf2dcb)
+row = 13074330, 10596899
+nearby.push(322.35814756026485, 44a665db-d31a-4237-ad12-28c351de945b)
+row = 13074330, 10596899
+nearby.push(322.35814756026485, 7a0449f8-fe59-449f-a366-6260a2204f3d)
+'{"ConsumedCapacityUnits":1.0}'
+'{"ConsumedCapacityUnits":1.0}'
+RESPONSE = 
+{ code: 'shout_sent' }
+
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+{ a: 'ping',
+  uid: 'f6292a18-4915-49de-b1a3-fe3f9017d626',
+  auth: '9pa*AnhwQDBSG6/dHyBh*5(8gjsz2QtNNtvAdWwMZKqbJU2PK9I7A+copcTOqOo59mwMrypFUgg9AuvAXvueNqTF6z+juaEwzcZeKapvK/jJNeiWp1d8cQ==',
+  lat: '40.79162',
+  lng: '-77.85857',
+  radius: '1',
+  ip: '174.231.68.172' }
+User requested radius.
+userCanRequestRadius Count = 2
+userCanRequestRadiusResult = true
+recursiveCallback on iteration 1
+COUNT = 4, SHOUTREACH = 5, selectEntirePlanet = false
+recursiveCallback on iteration 2
+COUNT = 4, SHOUTREACH = 5, selectEntirePlanet = true
+fullGetCallback
+row = 13074330, 10596899
+nearby.push(322.35814756026485, 8cc212c3-d463-4dd5-ac5b-bd5b0bcf2dcb)
+row = 13074330, 10596899
+nearby.push(322.35814756026485, 44a665db-d31a-4237-ad12-28c351de945b)
+row = 13074330, 10596899
+nearby.push(322.35814756026485, 7a0449f8-fe59-449f-a366-6260a2204f3d)
+nearby = 
+[ [ 322.35814756026485, '8cc212c3-d463-4dd5-ac5b-bd5b0bcf2dcb' ],
+  [ 322.35814756026485, '44a665db-d31a-4237-ad12-28c351de945b' ],
+  [ 322.35814756026485, '7a0449f8-fe59-449f-a366-6260a2204f3d' ] ]
+buildShoutFromJson
+{ shoutId: '19c1d8c1-57f6-43f9-bc22-0b75617609d8',
+  userId: 'f6292a18-4915-49de-b1a3-fe3f9017d626',
+  time: '2012-02-27T03:11:39.325Z',
+  lastActivityTime: '2012-02-27T03:11:39.325Z',
+  text: 'test',
+  open: 1,
+  re: 0,
+  hit: 3,
+  power: 5,
+  ups: 0,
+  downs: 0,
+  lat: '13079162',
+  lng: '10214143',
+  outbox: null,
+  senderIp: '174.231.68.172' }
+RESPONSE = 
+{ code: 'ping_ok',
+  pts: 71,
+  radius: 6000000,
+  shouts: 
+   [ { shout_id: '19c1d8c1-57f6-43f9-bc22-0b75617609d8',
+       txt: 'test',
+       ts: '2012-02-27T03:11:39.325Z',
+       hit: 3,
+       outbox: 1 } ] }
+Log initiated.
+Server launched.
+Listening...
+
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+{ a: 'ping',
+  uid: '7a0449f8-fe59-449f-a366-6260a2204f3d',
+  auth: 's2zg2-bPUhXPSvBth+@UUfG8VzmGXg%0NFlDl5+FNOdujXwI+HwpfmFVReRJTX4llU/fVhZaEvlHo5wiBQTJubpy4ey9mvP4Mm5tKCIeimsNY8/XfVCEUg==',
+  lat: '40.74832',
+  lng: '-74.03178',
+  radius: '1',
+  ip: '174.252.26.24' }
+User requested radius.
+userCanRequestRadius Count = 2
+userCanRequestRadiusResult = true
+recursiveCallback on iteration 1
+COUNT = 0, SHOUTREACH = 5, selectEntirePlanet = false
+recursiveCallback on iteration 2
+COUNT = 4, SHOUTREACH = 5, selectEntirePlanet = true
+fullGetCallback
+row = 13079162, 10214143
+nearby.push(322.27233686792846, f6292a18-4915-49de-b1a3-fe3f9017d626)
+row = 13074330, 10596899
+nearby.push(0.5619549020159756, 8cc212c3-d463-4dd5-ac5b-bd5b0bcf2dcb)
+row = 13074330, 10596899
+nearby.push(0.5619549020159756, 44a665db-d31a-4237-ad12-28c351de945b)
+nearby = 
+[ [ 322.27233686792846, 'f6292a18-4915-49de-b1a3-fe3f9017d626' ],
+  [ 0.5619549020159756, '8cc212c3-d463-4dd5-ac5b-bd5b0bcf2dcb' ],
+  [ 0.5619549020159756, '44a665db-d31a-4237-ad12-28c351de945b' ] ]
+buildShoutFromJson
+{ shoutId: '19c1d8c1-57f6-43f9-bc22-0b75617609d8',
+  userId: 'f6292a18-4915-49de-b1a3-fe3f9017d626',
+  time: '2012-02-27T03:11:39.325Z',
+  lastActivityTime: '2012-02-27T03:11:39.325Z',
+  text: 'test',
+  open: 1,
+  re: 0,
+  hit: 3,
+  power: 5,
+  ups: 0,
+  downs: 0,
+  lat: '13079162',
+  lng: '10214143',
+  outbox: null,
+  senderIp: '174.231.68.172' }
+RESPONSE = 
+{ code: 'ping_ok',
+  pts: 71,
+  radius: 6000000,
+  shouts: 
+   [ { shout_id: '19c1d8c1-57f6-43f9-bc22-0b75617609d8',
+       txt: 'test',
+       ts: '2012-02-27T03:11:39.325Z',
+       hit: 3 } ] }
+Log initiated.
+Server launched.
+Listening...
+
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+{ a: 'ping',
+  uid: '7a0449f8-fe59-449f-a366-6260a2204f3d',
+  auth: 's2zg2-bPUhXPSvBth+@UUfG8VzmGXg%0NFlDl5+FNOdujXwI+HwpfmFVReRJTX4llU/fVhZaEvlHo5wiBQTJubpy4ey9mvP4Mm5tKCIeimsNY8/XfVCEUg==',
+  lat: '40.7433',
+  lng: '-74.03101',
+  radius: '1',
+  scores: '["19c1d8c1-57f6-43f9-bc22-0b75617609d8"]',
+  ip: '174.252.26.24' }
+
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+{ a: 'shout',
+  uid: '7a0449f8-fe59-449f-a366-6260a2204f3d',
+  auth: 's2zg2-bPUhXPSvBth+@UUfG8VzmGXg%0NFlDl5+FNOdujXwI+HwpfmFVReRJTX4llU/fVhZaEvlHo5wiBQTJubpy4ey9mvP4Mm5tKCIeimsNY8/XfVCEUg==',
+  lat: '40.7433',
+  lng: '-74.03101',
+  txt: 'Hi john',
+  shoutreach: '0',
+  re: '19c1d8c1-57f6-43f9-bc22-0b75617609d8',
+  ip: '174.252.26.24' }
+shout re = 19c1d8c1-57f6-43f9-bc22-0b75617609d8
+this is a reply
+'{"ConsumedCapacityUnits":1.0}'
+RESPONSE = 
+{ code: 'shout_sent' }
+User requested radius.
+userCanRequestRadius Count = 3
+userCanRequestRadiusResult = true
+recursiveCallback on iteration 1
+COUNT = 0, SHOUTREACH = 5, selectEntirePlanet = false
+recursiveCallback on iteration 2
+COUNT = 4, SHOUTREACH = 5, selectEntirePlanet = true
+fullGetCallback
+row = 13079162, 10214143
+nearby.push(322.35814756026485, f6292a18-4915-49de-b1a3-fe3f9017d626)
+row = 13074330, 10596899
+nearby.push(7.900874738066842e-13, 8cc212c3-d463-4dd5-ac5b-bd5b0bcf2dcb)
+row = 13074330, 10596899
+nearby.push(7.900874738066842e-13, 44a665db-d31a-4237-ad12-28c351de945b)
+nearby = 
+[ [ 322.35814756026485, 'f6292a18-4915-49de-b1a3-fe3f9017d626' ],
+  [ 7.900874738066842e-13,
+    '8cc212c3-d463-4dd5-ac5b-bd5b0bcf2dcb' ],
+  [ 7.900874738066842e-13,
+    '44a665db-d31a-4237-ad12-28c351de945b' ] ]
+buildShoutFromJson
+{ shoutId: 'cab1ffab-0726-4e4d-aac1-629a42d440f8',
+  userId: '7a0449f8-fe59-449f-a366-6260a2204f3d',
+  time: '2012-02-27T03:16:48.509Z',
+  lastActivityTime: '2012-02-27T03:16:48.509Z',
+  text: 'Hi john',
+  open: 1,
+  re: '19c1d8c1-57f6-43f9-bc22-0b75617609d8',
+  hit: 3,
+  power: 0,
+  ups: 0,
+  downs: 0,
+  lat: '13074330',
+  lng: '10596899',
+  outbox: null,
+  senderIp: '174.252.26.24' }
+RESPONSE = 
+{ code: 'ping_ok',
+  pts: 71,
+  radius: 6000000,
+  shouts: 
+   [ { shout_id: 'cab1ffab-0726-4e4d-aac1-629a42d440f8',
+       txt: 'Hi john',
+       ts: '2012-02-27T03:16:48.509Z',
+       hit: 3,
+       outbox: 1,
+       re: '19c1d8c1-57f6-43f9-bc22-0b75617609d8' } ],
+  scores: 
+   [ { shout_id: '19c1d8c1-57f6-43f9-bc22-0b75617609d8',
+       ups: 0,
+       downs: 0,
+       hit: 3,
+       open: 1,
+       pts: 0 } ] }
+
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+{ a: 'ping',
+  uid: '7a0449f8-fe59-449f-a366-6260a2204f3d',
+  auth: 's2zg2-bPUhXPSvBth+@UUfG8VzmGXg%0NFlDl5+FNOdujXwI+HwpfmFVReRJTX4llU/fVhZaEvlHo5wiBQTJubpy4ey9mvP4Mm5tKCIeimsNY8/XfVCEUg==',
+  lat: '40.7433',
+  lng: '-74.03101',
+  radius: '1',
+  scores: '["19c1d8c1-57f6-43f9-bc22-0b75617609d8"]',
+  ip: '174.252.26.24' }
+User requested radius.
+userCanRequestRadius Count = 4
+userCanRequestRadiusResult = true
+recursiveCallback on iteration 1
+COUNT = 0, SHOUTREACH = 5, selectEntirePlanet = false
+recursiveCallback on iteration 2
+COUNT = 4, SHOUTREACH = 5, selectEntirePlanet = true
+fullGetCallback
+row = 13079162, 10214143
+nearby.push(322.35814756026485, f6292a18-4915-49de-b1a3-fe3f9017d626)
+row = 13074330, 10596899
+nearby.push(7.900874738066842e-13, 8cc212c3-d463-4dd5-ac5b-bd5b0bcf2dcb)
+row = 13074330, 10596899
+nearby.push(7.900874738066842e-13, 44a665db-d31a-4237-ad12-28c351de945b)
+nearby = 
+[ [ 322.35814756026485, 'f6292a18-4915-49de-b1a3-fe3f9017d626' ],
+  [ 7.900874738066842e-13,
+    '8cc212c3-d463-4dd5-ac5b-bd5b0bcf2dcb' ],
+  [ 7.900874738066842e-13,
+    '44a665db-d31a-4237-ad12-28c351de945b' ] ]
+RESPONSE = 
+{ code: 'ping_ok',
+  pts: 71,
+  radius: 6000000,
+  scores: 
+   [ { shout_id: '19c1d8c1-57f6-43f9-bc22-0b75617609d8',
+       ups: 0,
+       downs: 0,
+       hit: 3,
+       open: 1,
+       pts: 0 } ] }
+
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+{ a: 'vote',
+  uid: '7a0449f8-fe59-449f-a366-6260a2204f3d',
+  auth: 's2zg2-bPUhXPSvBth+@UUfG8VzmGXg%0NFlDl5+FNOdujXwI+HwpfmFVReRJTX4llU/fVhZaEvlHo5wiBQTJubpy4ey9mvP4Mm5tKCIeimsNY8/XfVCEUg==',
+  shout_id: '19c1d8c1-57f6-43f9-bc22-0b75617609d8',
+  vote: '1',
+  ip: '174.252.26.24' }
+'{"ConsumedCapacityUnits":1.0}'
+updateUser database result:
+'{"ConsumedCapacityUnits":1.0}'
+updateUser database result:
+'{"ConsumedCapacityUnits":1.0}'
+RESPONSE = 
+{ code: 'vote_ok' }
+
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+{ a: 'vote',
+  uid: '7a0449f8-fe59-449f-a366-6260a2204f3d',
+  auth: 's2zg2-bPUhXPSvBth+@UUfG8VzmGXg%0NFlDl5+FNOdujXwI+HwpfmFVReRJTX4llU/fVhZaEvlHo5wiBQTJubpy4ey9mvP4Mm5tKCIeimsNY8/XfVCEUg==',
+  shout_id: 'cab1ffab-0726-4e4d-aac1-629a42d440f8',
+  vote: '1',
+  ip: '174.252.26.24' }
+
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+{ a: 'ping',
+  uid: '7a0449f8-fe59-449f-a366-6260a2204f3d',
+  auth: 's2zg2-bPUhXPSvBth+@UUfG8VzmGXg%0NFlDl5+FNOdujXwI+HwpfmFVReRJTX4llU/fVhZaEvlHo5wiBQTJubpy4ey9mvP4Mm5tKCIeimsNY8/XfVCEUg==',
+  lat: '40.7433',
+  lng: '-74.03101',
+  scores: '["cab1ffab-0726-4e4d-aac1-629a42d440f8", "19c1d8c1-57f6-43f9-bc22-0b75617609d8"]',
+  ip: '174.252.26.24' }
+RESPONSE = 
+{ code: 'ping_ok',
+  pts: 72,
+  scores: 
+   [ { shout_id: 'cab1ffab-0726-4e4d-aac1-629a42d440f8',
+       ups: 1,
+       downs: 0,
+       hit: 3,
+       open: 1,
+       pts: 1 },
+     { shout_id: '19c1d8c1-57f6-43f9-bc22-0b75617609d8',
+       ups: 1,
+       downs: 0,
+       hit: 3,
+       open: 1,
+       pts: 1 } ] }
+'{"ConsumedCapacityUnits":1.0}'
+updateUser database result:
+'{"ConsumedCapacityUnits":1.0}'
+updateUser database result:
+'{"ConsumedCapacityUnits":1.0}'
+RESPONSE = 
+{ code: 'vote_ok' }
+
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+{ a: 'shout',
+  uid: '7a0449f8-fe59-449f-a366-6260a2204f3d',
+  auth: 's2zg2-bPUhXPSvBth+@UUfG8VzmGXg%0NFlDl5+FNOdujXwI+HwpfmFVReRJTX4llU/fVhZaEvlHo5wiBQTJubpy4ey9mvP4Mm5tKCIeimsNY8/XfVCEUg==',
+  lat: '40.7433',
+  lng: '-74.03101',
+  txt: 'Pretty cool eh?',
+  shoutreach: '5',
+  hint: '6000000',
+  ip: '174.252.26.24' }
+shout re = undefined
+this is not a reply
+recursiveCallback on iteration 1
+COUNT = 0, SHOUTREACH = 5, selectEntirePlanet = false
+recursiveCallback on iteration 2
+COUNT = 4, SHOUTREACH = 5, selectEntirePlanet = true
+fullGetCallback
+row = 13079162, 10214143
+nearby.push(322.35814756026485, f6292a18-4915-49de-b1a3-fe3f9017d626)
+row = 13074330, 10596899
+nearby.push(7.900874738066842e-13, 8cc212c3-d463-4dd5-ac5b-bd5b0bcf2dcb)
+row = 13074330, 10596899
+nearby.push(7.900874738066842e-13, 44a665db-d31a-4237-ad12-28c351de945b)
+'{"ConsumedCapacityUnits":1.0}'
+'{"ConsumedCapacityUnits":1.0}'
+RESPONSE = 
+{ code: 'shout_sent' }
+
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+{ a: 'ping',
+  uid: '7a0449f8-fe59-449f-a366-6260a2204f3d',
+  auth: 's2zg2-bPUhXPSvBth+@UUfG8VzmGXg%0NFlDl5+FNOdujXwI+HwpfmFVReRJTX4llU/fVhZaEvlHo5wiBQTJubpy4ey9mvP4Mm5tKCIeimsNY8/XfVCEUg==',
+  lat: '40.7433',
+  lng: '-74.03101',
+  scores: '["cab1ffab-0726-4e4d-aac1-629a42d440f8", "19c1d8c1-57f6-43f9-bc22-0b75617609d8"]',
+  ip: '174.252.26.24' }
+buildShoutFromJson
+{ shoutId: '3262c28e-9abe-434b-b5b2-6a624746fafc',
+  userId: '7a0449f8-fe59-449f-a366-6260a2204f3d',
+  time: '2012-02-27T03:17:25.043Z',
+  lastActivityTime: '2012-02-27T03:17:25.043Z',
+  text: 'Pretty cool eh?',
+  open: 1,
+  re: 0,
+  hit: 3,
+  power: 5,
+  ups: 0,
+  downs: 0,
+  lat: '13074330',
+  lng: '10596899',
+  outbox: null,
+  senderIp: '174.252.26.24' }
+RESPONSE = 
+{ code: 'ping_ok',
+  pts: 74,
+  shouts: 
+   [ { shout_id: '3262c28e-9abe-434b-b5b2-6a624746fafc',
+       txt: 'Pretty cool eh?',
+       ts: '2012-02-27T03:17:25.043Z',
+       hit: 3,
+       outbox: 1 } ],
+  scores: 
+   [ { shout_id: 'cab1ffab-0726-4e4d-aac1-629a42d440f8',
+       ups: 1,
+       downs: 0,
+       hit: 3,
+       open: 1,
+       pts: 1 },
+     { shout_id: '19c1d8c1-57f6-43f9-bc22-0b75617609d8',
+       ups: 1,
+       downs: 0,
+       hit: 3,
+       open: 1,
+       pts: 1 } ] }
+
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+{ a: 'ping',
+  uid: 'f6292a18-4915-49de-b1a3-fe3f9017d626',
+  auth: '9pa*AnhwQDBSG6/dHyBh*5(8gjsz2QtNNtvAdWwMZKqbJU2PK9I7A+copcTOqOo59mwMrypFUgg9AuvAXvueNqTF6z+juaEwzcZeKapvK/jJNeiWp1d8cQ==',
+  lat: '40.79122',
+  lng: '-77.85786',
+  radius: '1',
+  scores: '["19c1d8c1-57f6-43f9-bc22-0b75617609d8"]',
+  ip: '174.231.68.172' }
+User requested radius.
+userCanRequestRadius Count = 3
+userCanRequestRadiusResult = true
+recursiveCallback on iteration 1
+COUNT = 4, SHOUTREACH = 5, selectEntirePlanet = false
+recursiveCallback on iteration 2
+COUNT = 4, SHOUTREACH = 5, selectEntirePlanet = true
+fullGetCallback
+row = 13074330, 10596899
+nearby.push(322.2986092863382, 8cc212c3-d463-4dd5-ac5b-bd5b0bcf2dcb)
+row = 13074330, 10596899
+nearby.push(322.2986092863382, 44a665db-d31a-4237-ad12-28c351de945b)
+row = 13074330, 10596899
+nearby.push(322.2986092863382, 7a0449f8-fe59-449f-a366-6260a2204f3d)
+nearby = 
+[ [ 322.2986092863382, '8cc212c3-d463-4dd5-ac5b-bd5b0bcf2dcb' ],
+  [ 322.2986092863382, '44a665db-d31a-4237-ad12-28c351de945b' ],
+  [ 322.2986092863382, '7a0449f8-fe59-449f-a366-6260a2204f3d' ] ]
+buildShoutFromJson
+{ shoutId: 'cab1ffab-0726-4e4d-aac1-629a42d440f8',
+  userId: '7a0449f8-fe59-449f-a366-6260a2204f3d',
+  time: '2012-02-27T03:16:48.509Z',
+  lastActivityTime: '2012-02-27T03:16:48.509Z',
+  text: 'Hi john',
+  open: 1,
+  re: '19c1d8c1-57f6-43f9-bc22-0b75617609d8',
+  hit: 3,
+  power: 0,
+  ups: 1,
+  downs: 0,
+  lat: '13074330',
+  lng: '10596899',
+  outbox: null,
+  senderIp: '174.252.26.24' }
+buildShoutFromJson
+{ shoutId: '3262c28e-9abe-434b-b5b2-6a624746fafc',
+  userId: '7a0449f8-fe59-449f-a366-6260a2204f3d',
+  time: '2012-02-27T03:17:25.043Z',
+  lastActivityTime: '2012-02-27T03:17:25.043Z',
+  text: 'Pretty cool eh?',
+  open: 1,
+  re: 0,
+  hit: 3,
+  power: 5,
+  ups: 0,
+  downs: 0,
+  lat: '13074330',
+  lng: '10596899',
+  outbox: null,
+  senderIp: '174.252.26.24' }
+RESPONSE = 
+{ code: 'ping_ok',
+  pts: 72,
+  radius: 6000000,
+  shouts: 
+   [ { shout_id: 'cab1ffab-0726-4e4d-aac1-629a42d440f8',
+       txt: 'Hi john',
+       ts: '2012-02-27T03:16:48.509Z',
+       hit: 3,
+       re: '19c1d8c1-57f6-43f9-bc22-0b75617609d8' },
+     { shout_id: '3262c28e-9abe-434b-b5b2-6a624746fafc',
+       txt: 'Pretty cool eh?',
+       ts: '2012-02-27T03:17:25.043Z',
+       hit: 3 } ],
+  scores: 
+   [ { shout_id: '19c1d8c1-57f6-43f9-bc22-0b75617609d8',
+       ups: 1,
+       downs: 0,
+       hit: 3,
+       open: 1,
+       pts: 1 } ] }
+
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+{ a: 'vote',
+  uid: 'f6292a18-4915-49de-b1a3-fe3f9017d626',
+  auth: '9pa*AnhwQDBSG6/dHyBh*5(8gjsz2QtNNtvAdWwMZKqbJU2PK9I7A+copcTOqOo59mwMrypFUgg9AuvAXvueNqTF6z+juaEwzcZeKapvK/jJNeiWp1d8cQ==',
+  shout_id: 'cab1ffab-0726-4e4d-aac1-629a42d440f8',
+  vote: '1',
+  ip: '174.231.68.172' }
+'{"ConsumedCapacityUnits":1.0}'
+updateUser database result:
+'{"ConsumedCapacityUnits":1.0}'
+updateUser database result:
+'{"ConsumedCapacityUnits":1.0}'
+RESPONSE = 
+{ code: 'vote_ok' }
+
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+{ a: 'shout',
+  uid: '7a0449f8-fe59-449f-a366-6260a2204f3d',
+  auth: 's2zg2-bPUhXPSvBth+@UUfG8VzmGXg%0NFlDl5+FNOdujXwI+HwpfmFVReRJTX4llU/fVhZaEvlHo5wiBQTJubpy4ey9mvP4Mm5tKCIeimsNY8/XfVCEUg==',
+  lat: '40.7433',
+  lng: '-74.03101',
+  txt: 'Test',
+  shoutreach: '0',
+  re: '3262c28e-9abe-434b-b5b2-6a624746fafc',
+  hint: '6000000',
+  ip: '174.252.26.24' }
+shout re = 3262c28e-9abe-434b-b5b2-6a624746fafc
+this is a reply
+'{"ConsumedCapacityUnits":1.0}'
+RESPONSE = 
+{ code: 'shout_sent' }
+
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+{ a: 'ping',
+  uid: '7a0449f8-fe59-449f-a366-6260a2204f3d',
+  auth: 's2zg2-bPUhXPSvBth+@UUfG8VzmGXg%0NFlDl5+FNOdujXwI+HwpfmFVReRJTX4llU/fVhZaEvlHo5wiBQTJubpy4ey9mvP4Mm5tKCIeimsNY8/XfVCEUg==',
+  lat: '40.7433',
+  lng: '-74.03101',
+  scores: '["3262c28e-9abe-434b-b5b2-6a624746fafc", "cab1ffab-0726-4e4d-aac1-629a42d440f8", "19c1d8c1-57f6-43f9-bc22-0b75617609d8"]',
+  ip: '174.252.26.24' }
+buildShoutFromJson
+{ shoutId: '6da6e9c6-dcbb-4565-af1c-541e16bc40f8',
+  userId: '7a0449f8-fe59-449f-a366-6260a2204f3d',
+  time: '2012-02-27T03:17:43.146Z',
+  lastActivityTime: '2012-02-27T03:17:43.146Z',
+  text: 'Test',
+  open: 1,
+  re: '3262c28e-9abe-434b-b5b2-6a624746fafc',
+  hit: 3,
+  power: 0,
+  ups: 0,
+  downs: 0,
+  lat: '13074330',
+  lng: '10596899',
+  outbox: null,
+  senderIp: '174.252.26.24' }
+RESPONSE = 
+{ code: 'ping_ok',
+  pts: 75,
+  shouts: 
+   [ { shout_id: '6da6e9c6-dcbb-4565-af1c-541e16bc40f8',
+       txt: 'Test',
+       ts: '2012-02-27T03:17:43.146Z',
+       hit: 3,
+       outbox: 1,
+       re: '3262c28e-9abe-434b-b5b2-6a624746fafc' } ],
+  scores: 
+   [ { shout_id: '3262c28e-9abe-434b-b5b2-6a624746fafc',
+       ups: 0,
+       downs: 0,
+       hit: 3,
+       open: 1,
+       pts: 0 },
+     { shout_id: 'cab1ffab-0726-4e4d-aac1-629a42d440f8',
+       ups: 2,
+       downs: 0,
+       hit: 3,
+       open: 1,
+       pts: 2 },
+     { shout_id: '19c1d8c1-57f6-43f9-bc22-0b75617609d8',
+       ups: 1,
+       downs: 0,
+       hit: 3,
+       open: 1,
+       pts: 1 } ] }
+
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+{ a: 'ping',
+  uid: 'f6292a18-4915-49de-b1a3-fe3f9017d626',
+  auth: '9pa*AnhwQDBSG6/dHyBh*5(8gjsz2QtNNtvAdWwMZKqbJU2PK9I7A+copcTOqOo59mwMrypFUgg9AuvAXvueNqTF6z+juaEwzcZeKapvK/jJNeiWp1d8cQ==',
+  lat: '40.79004',
+  lng: '-77.8355',
+  scores: '["3262c28e-9abe-434b-b5b2-6a624746fafc", "cab1ffab-0726-4e4d-aac1-629a42d440f8", "19c1d8c1-57f6-43f9-bc22-0b75617609d8"]',
+  ip: '174.231.68.172' }
+buildShoutFromJson
+{ shoutId: '6da6e9c6-dcbb-4565-af1c-541e16bc40f8',
+  userId: '7a0449f8-fe59-449f-a366-6260a2204f3d',
+  time: '2012-02-27T03:17:43.146Z',
+  lastActivityTime: '2012-02-27T03:17:43.146Z',
+  text: 'Test',
+  open: 1,
+  re: '3262c28e-9abe-434b-b5b2-6a624746fafc',
+  hit: 3,
+  power: 0,
+  ups: 0,
+  downs: 0,
+  lat: '13074330',
+  lng: '10596899',
+  outbox: null,
+  senderIp: '174.252.26.24' }
+RESPONSE = 
+{ code: 'ping_ok',
+  pts: 73,
+  shouts: 
+   [ { shout_id: '6da6e9c6-dcbb-4565-af1c-541e16bc40f8',
+       txt: 'Test',
+       ts: '2012-02-27T03:17:43.146Z',
+       hit: 3,
+       re: '3262c28e-9abe-434b-b5b2-6a624746fafc' } ],
+  scores: 
+   [ { shout_id: '3262c28e-9abe-434b-b5b2-6a624746fafc',
+       ups: 0,
+       downs: 0,
+       hit: 3,
+       open: 1,
+       pts: 0 },
+     { shout_id: 'cab1ffab-0726-4e4d-aac1-629a42d440f8',
+       ups: 2,
+       downs: 0,
+       hit: 3,
+       open: 1,
+       pts: 2 },
+     { shout_id: '19c1d8c1-57f6-43f9-bc22-0b75617609d8',
+       ups: 1,
+       downs: 0,
+       hit: 3,
+       open: 1,
+       pts: 1 } ] }
+
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+{ a: 'vote',
+  uid: 'f6292a18-4915-49de-b1a3-fe3f9017d626',
+  auth: '9pa*AnhwQDBSG6/dHyBh*5(8gjsz2QtNNtvAdWwMZKqbJU2PK9I7A+copcTOqOo59mwMrypFUgg9AuvAXvueNqTF6z+juaEwzcZeKapvK/jJNeiWp1d8cQ==',
+  shout_id: '6da6e9c6-dcbb-4565-af1c-541e16bc40f8',
+  vote: '1',
+  ip: '174.231.68.172' }
+'{"ConsumedCapacityUnits":1.0}'
+updateUser database result:
+'{"ConsumedCapacityUnits":1.0}'
+updateUser database result:
+'{"ConsumedCapacityUnits":1.0}'
+RESPONSE = 
+{ code: 'vote_ok' }
+
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+{ a: 'ping',
+  uid: '7a0449f8-fe59-449f-a366-6260a2204f3d',
+  auth: 's2zg2-bPUhXPSvBth+@UUfG8VzmGXg%0NFlDl5+FNOdujXwI+HwpfmFVReRJTX4llU/fVhZaEvlHo5wiBQTJubpy4ey9mvP4Mm5tKCIeimsNY8/XfVCEUg==',
+  lat: '40.7433',
+  lng: '-74.03101',
+  ip: '174.252.26.24' }
+RESPONSE = 
+{ code: 'ping_ok', pts: 76 }
+
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+{ a: 'ping',
+  uid: 'f6292a18-4915-49de-b1a3-fe3f9017d626',
+  auth: '9pa*AnhwQDBSG6/dHyBh*5(8gjsz2QtNNtvAdWwMZKqbJU2PK9I7A+copcTOqOo59mwMrypFUgg9AuvAXvueNqTF6z+juaEwzcZeKapvK/jJNeiWp1d8cQ==',
+  lat: '40.79004',
+  lng: '-77.8355',
+  scores: '["6da6e9c6-dcbb-4565-af1c-541e16bc40f8", "3262c28e-9abe-434b-b5b2-6a624746fafc", "cab1ffab-0726-4e4d-aac1-629a42d440f8", "19c1d8c1-57f6-43f9-bc22-0b75617609d8"]',
+  ip: '174.231.68.172' }
+RESPONSE = 
+{ code: 'ping_ok',
+  pts: 74,
+  scores: 
+   [ { shout_id: '6da6e9c6-dcbb-4565-af1c-541e16bc40f8',
+       ups: 1,
+       downs: 0,
+       hit: 3,
+       open: 1,
+       pts: 1 },
+     { shout_id: '3262c28e-9abe-434b-b5b2-6a624746fafc',
+       ups: 0,
+       downs: 0,
+       hit: 3,
+       open: 1,
+       pts: 0 },
+     { shout_id: 'cab1ffab-0726-4e4d-aac1-629a42d440f8',
+       ups: 2,
+       downs: 0,
+       hit: 3,
+       open: 1,
+       pts: 2 },
+     { shout_id: '19c1d8c1-57f6-43f9-bc22-0b75617609d8',
+       ups: 1,
+       downs: 0,
+       hit: 3,
+       open: 1,
+       pts: 1 } ] }
+
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+{ a: 'shout',
+  uid: 'f6292a18-4915-49de-b1a3-fe3f9017d626',
+  auth: '9pa*AnhwQDBSG6/dHyBh*5(8gjsz2QtNNtvAdWwMZKqbJU2PK9I7A+copcTOqOo59mwMrypFUgg9AuvAXvueNqTF6z+juaEwzcZeKapvK/jJNeiWp1d8cQ==',
+  lat: '40.79004',
+  lng: '-77.8355',
+  txt: 'woot',
+  shoutreach: '5',
+  hint: '6000000',
+  ip: '174.231.68.172' }
+shout re = undefined
+this is not a reply
+recursiveCallback on iteration 1
+COUNT = 4, SHOUTREACH = 5, selectEntirePlanet = false
+recursiveCallback on iteration 2
+COUNT = 4, SHOUTREACH = 5, selectEntirePlanet = true
+fullGetCallback
+row = 13074330, 10596899
+nearby.push(320.41694556910494, 8cc212c3-d463-4dd5-ac5b-bd5b0bcf2dcb)
+row = 13074330, 10596899
+nearby.push(320.41694556910494, 44a665db-d31a-4237-ad12-28c351de945b)
+row = 13074330, 10596899
+nearby.push(320.41694556910494, 7a0449f8-fe59-449f-a366-6260a2204f3d)
+'{"ConsumedCapacityUnits":1.0}'
+'{"ConsumedCapacityUnits":1.0}'
+RESPONSE = 
+{ code: 'shout_sent' }
+
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+{ a: 'ping',
+  uid: 'f6292a18-4915-49de-b1a3-fe3f9017d626',
+  auth: '9pa*AnhwQDBSG6/dHyBh*5(8gjsz2QtNNtvAdWwMZKqbJU2PK9I7A+copcTOqOo59mwMrypFUgg9AuvAXvueNqTF6z+juaEwzcZeKapvK/jJNeiWp1d8cQ==',
+  lat: '40.79004',
+  lng: '-77.8355',
+  scores: '["6da6e9c6-dcbb-4565-af1c-541e16bc40f8", "3262c28e-9abe-434b-b5b2-6a624746fafc", "cab1ffab-0726-4e4d-aac1-629a42d440f8", "19c1d8c1-57f6-43f9-bc22-0b75617609d8"]',
+  ip: '174.231.68.172' }
+buildShoutFromJson
+{ shoutId: '03e0c3ec-3f6d-45c7-b5d9-fda92e5e3a06',
+  userId: 'f6292a18-4915-49de-b1a3-fe3f9017d626',
+  time: '2012-02-27T03:18:17.614Z',
+  lastActivityTime: '2012-02-27T03:18:17.614Z',
+  text: 'woot',
+  open: 1,
+  re: 0,
+  hit: 3,
+  power: 5,
+  ups: 0,
+  downs: 0,
+  lat: '13079004',
+  lng: '10216450',
+  outbox: null,
+  senderIp: '174.231.68.172' }
+RESPONSE = 
+{ code: 'ping_ok',
+  pts: 74,
+  shouts: 
+   [ { shout_id: '03e0c3ec-3f6d-45c7-b5d9-fda92e5e3a06',
+       txt: 'woot',
+       ts: '2012-02-27T03:18:17.614Z',
+       hit: 3,
+       outbox: 1 } ],
+  scores: 
+   [ { shout_id: '6da6e9c6-dcbb-4565-af1c-541e16bc40f8',
+       ups: 1,
+       downs: 0,
+       hit: 3,
+       open: 1,
+       pts: 1 },
+     { shout_id: '3262c28e-9abe-434b-b5b2-6a624746fafc',
+       ups: 0,
+       downs: 0,
+       hit: 3,
+       open: 1,
+       pts: 0 },
+     { shout_id: 'cab1ffab-0726-4e4d-aac1-629a42d440f8',
+       ups: 2,
+       downs: 0,
+       hit: 3,
+       open: 1,
+       pts: 2 },
+     { shout_id: '19c1d8c1-57f6-43f9-bc22-0b75617609d8',
+       ups: 1,
+       downs: 0,
+       hit: 3,
+       open: 1,
+       pts: 1 } ] }
+
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+{ a: 'ping',
+  uid: 'f6292a18-4915-49de-b1a3-fe3f9017d626',
+  auth: '9pa*AnhwQDBSG6/dHyBh*5(8gjsz2QtNNtvAdWwMZKqbJU2PK9I7A+copcTOqOo59mwMrypFUgg9AuvAXvueNqTF6z+juaEwzcZeKapvK/jJNeiWp1d8cQ==',
+  lat: '40.79004',
+  lng: '-77.8355',
+  ip: '174.231.68.172' }
+RESPONSE = 
+{ code: 'ping_ok', pts: 74 }
+
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+{ a: 'ping',
+  uid: '7a0449f8-fe59-449f-a366-6260a2204f3d',
+  auth: 's2zg2-bPUhXPSvBth+@UUfG8VzmGXg%0NFlDl5+FNOdujXwI+HwpfmFVReRJTX4llU/fVhZaEvlHo5wiBQTJubpy4ey9mvP4Mm5tKCIeimsNY8/XfVCEUg==',
+  lat: '40.74832',
+  lng: '-74.03178',
+  ip: '174.252.26.24' }
+buildShoutFromJson
+{ shoutId: '03e0c3ec-3f6d-45c7-b5d9-fda92e5e3a06',
+  userId: 'f6292a18-4915-49de-b1a3-fe3f9017d626',
+  time: '2012-02-27T03:18:17.614Z',
+  lastActivityTime: '2012-02-27T03:18:17.614Z',
+  text: 'woot',
+  open: 1,
+  re: 0,
+  hit: 3,
+  power: 5,
+  ups: 0,
+  downs: 0,
+  lat: '13079004',
+  lng: '10216450',
+  outbox: null,
+  senderIp: '174.231.68.172' }
+RESPONSE = 
+{ code: 'ping_ok',
+  pts: 76,
+  shouts: 
+   [ { shout_id: '03e0c3ec-3f6d-45c7-b5d9-fda92e5e3a06',
+       txt: 'woot',
+       ts: '2012-02-27T03:18:17.614Z',
+       hit: 3 } ] }
+
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+{ a: 'ping',
+  uid: '7a0449f8-fe59-449f-a366-6260a2204f3d',
+  auth: 's2zg2-bPUhXPSvBth+@UUfG8VzmGXg%0NFlDl5+FNOdujXwI+HwpfmFVReRJTX4llU/fVhZaEvlHo5wiBQTJubpy4ey9mvP4Mm5tKCIeimsNY8/XfVCEUg==',
+  lat: '40.74832',
+  lng: '-74.03178',
+  ip: '174.252.26.24' }
+RESPONSE = 
+{ code: 'ping_ok', pts: 76 }
+
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+{ a: 'ping',
+  uid: '7a0449f8-fe59-449f-a366-6260a2204f3d',
+  auth: 's2zg2-bPUhXPSvBth+@UUfG8VzmGXg%0NFlDl5+FNOdujXwI+HwpfmFVReRJTX4llU/fVhZaEvlHo5wiBQTJubpy4ey9mvP4Mm5tKCIeimsNY8/XfVCEUg==',
+  lat: '40.74832',
+  lng: '-74.03178',
+  radius: '1',
+  scores: '["03e0c3ec-3f6d-45c7-b5d9-fda92e5e3a06", "6da6e9c6-dcbb-4565-af1c-541e16bc40f8", "3262c28e-9abe-434b-b5b2-6a624746fafc", "cab1ffab-0726-4e4d-aac1-629a42d440f8", "19c1d8c1-57f6-43f9-bc22-0b75617609d8"]',
+  ip: '174.252.26.24' }
+User requested radius.
+userCanRequestRadius Count = 5
+userCanRequestRadiusResult = true
+recursiveCallback on iteration 1
+COUNT = 0, SHOUTREACH = 5, selectEntirePlanet = false
+recursiveCallback on iteration 2
+COUNT = 4, SHOUTREACH = 5, selectEntirePlanet = true
+fullGetCallback
+row = 13079004, 10216450
+nearby.push(320.33145938943744, f6292a18-4915-49de-b1a3-fe3f9017d626)
+row = 13074330, 10596899
+nearby.push(0.5619549020159756, 8cc212c3-d463-4dd5-ac5b-bd5b0bcf2dcb)
+row = 13074330, 10596899
+nearby.push(0.5619549020159756, 44a665db-d31a-4237-ad12-28c351de945b)
+nearby = 
+[ [ 320.33145938943744, 'f6292a18-4915-49de-b1a3-fe3f9017d626' ],
+  [ 0.5619549020159756, '8cc212c3-d463-4dd5-ac5b-bd5b0bcf2dcb' ],
+  [ 0.5619549020159756, '44a665db-d31a-4237-ad12-28c351de945b' ] ]
+RESPONSE = 
+{ code: 'ping_ok',
+  pts: 76,
+  radius: 6000000,
+  scores: 
+   [ { shout_id: '03e0c3ec-3f6d-45c7-b5d9-fda92e5e3a06',
+       ups: 0,
+       downs: 0,
+       hit: 3,
+       open: 1,
+       pts: 0 },
+     { shout_id: '6da6e9c6-dcbb-4565-af1c-541e16bc40f8',
+       ups: 1,
+       downs: 0,
+       hit: 3,
+       open: 1,
+       pts: 1 },
+     { shout_id: '3262c28e-9abe-434b-b5b2-6a624746fafc',
+       ups: 0,
+       downs: 0,
+       hit: 3,
+       open: 1,
+       pts: 0 },
+     { shout_id: 'cab1ffab-0726-4e4d-aac1-629a42d440f8',
+       ups: 2,
+       downs: 0,
+       hit: 3,
+       open: 1,
+       pts: 2 },
+     { shout_id: '19c1d8c1-57f6-43f9-bc22-0b75617609d8',
+       ups: 1,
+       downs: 0,
+       hit: 3,
+       open: 0,
+       pts: 1 } ] }
+
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+{ a: 'vote',
+  uid: '7a0449f8-fe59-449f-a366-6260a2204f3d',
+  auth: 's2zg2-bPUhXPSvBth+@UUfG8VzmGXg%0NFlDl5+FNOdujXwI+HwpfmFVReRJTX4llU/fVhZaEvlHo5wiBQTJubpy4ey9mvP4Mm5tKCIeimsNY8/XfVCEUg==',
+  shout_id: '03e0c3ec-3f6d-45c7-b5d9-fda92e5e3a06',
+  vote: '1',
+  ip: '174.252.26.24' }
+'{"ConsumedCapacityUnits":1.0}'
+updateUser database result:
+'{"ConsumedCapacityUnits":1.0}'
+updateUser database result:
+'{"ConsumedCapacityUnits":1.0}'
+RESPONSE = 
+{ code: 'vote_ok' }
+
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+{ a: 'ping',
+  uid: '7a0449f8-fe59-449f-a366-6260a2204f3d',
+  auth: 's2zg2-bPUhXPSvBth+@UUfG8VzmGXg%0NFlDl5+FNOdujXwI+HwpfmFVReRJTX4llU/fVhZaEvlHo5wiBQTJubpy4ey9mvP4Mm5tKCIeimsNY8/XfVCEUg==',
+  lat: '40.7433',
+  lng: '-74.03101',
+  scores: '["03e0c3ec-3f6d-45c7-b5d9-fda92e5e3a06", "6da6e9c6-dcbb-4565-af1c-541e16bc40f8", "3262c28e-9abe-434b-b5b2-6a624746fafc", "cab1ffab-0726-4e4d-aac1-629a42d440f8"]',
+  ip: '174.252.26.24' }
+RESPONSE = 
+{ code: 'ping_ok',
+  pts: 77,
+  scores: 
+   [ { shout_id: '03e0c3ec-3f6d-45c7-b5d9-fda92e5e3a06',
+       ups: 1,
+       downs: 0,
+       hit: 3,
+       open: 1,
+       pts: 1 },
+     { shout_id: '6da6e9c6-dcbb-4565-af1c-541e16bc40f8',
+       ups: 1,
+       downs: 0,
+       hit: 3,
+       open: 1,
+       pts: 1 },
+     { shout_id: '3262c28e-9abe-434b-b5b2-6a624746fafc',
+       ups: 0,
+       downs: 0,
+       hit: 3,
+       open: 1,
+       pts: 0 },
+     { shout_id: 'cab1ffab-0726-4e4d-aac1-629a42d440f8',
+       ups: 2,
+       downs: 0,
+       hit: 3,
+       open: 1,
+       pts: 2 } ] }
+
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+{ a: 'ping',
+  uid: 'f6292a18-4915-49de-b1a3-fe3f9017d626',
+  auth: '9pa*AnhwQDBSG6/dHyBh*5(8gjsz2QtNNtvAdWwMZKqbJU2PK9I7A+copcTOqOo59mwMrypFUgg9AuvAXvueNqTF6z+juaEwzcZeKapvK/jJNeiWp1d8cQ==',
+  lat: '40.79004',
+  lng: '-77.8355',
+  ip: '174.231.68.172' }
+RESPONSE = 
+{ code: 'ping_ok', pts: 75 }
+
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+{ a: 'ping',
+  uid: '7a0449f8-fe59-449f-a366-6260a2204f3d',
+  auth: 's2zg2-bPUhXPSvBth+@UUfG8VzmGXg%0NFlDl5+FNOdujXwI+HwpfmFVReRJTX4llU/fVhZaEvlHo5wiBQTJubpy4ey9mvP4Mm5tKCIeimsNY8/XfVCEUg==',
+  lat: '40.7433',
+  lng: '-74.03101',
+  scores: '["03e0c3ec-3f6d-45c7-b5d9-fda92e5e3a06", "6da6e9c6-dcbb-4565-af1c-541e16bc40f8", "3262c28e-9abe-434b-b5b2-6a624746fafc", "cab1ffab-0726-4e4d-aac1-629a42d440f8"]',
+  ip: '174.252.26.24' }
+RESPONSE = 
+{ code: 'ping_ok',
+  pts: 77,
+  scores: 
+   [ { shout_id: '03e0c3ec-3f6d-45c7-b5d9-fda92e5e3a06',
+       ups: 1,
+       downs: 0,
+       hit: 3,
+       open: 1,
+       pts: 1 },
+     { shout_id: '6da6e9c6-dcbb-4565-af1c-541e16bc40f8',
+       ups: 1,
+       downs: 0,
+       hit: 3,
+       open: 1,
+       pts: 1 },
+     { shout_id: '3262c28e-9abe-434b-b5b2-6a624746fafc',
+       ups: 0,
+       downs: 0,
+       hit: 3,
+       open: 1,
+       pts: 0 },
+     { shout_id: 'cab1ffab-0726-4e4d-aac1-629a42d440f8',
+       ups: 2,
+       downs: 0,
+       hit: 3,
+       open: 1,
+       pts: 2 } ] }
+
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+{ a: 'ping',
+  uid: '7a0449f8-fe59-449f-a366-6260a2204f3d',
+  auth: 's2zg2-bPUhXPSvBth+@UUfG8VzmGXg%0NFlDl5+FNOdujXwI+HwpfmFVReRJTX4llU/fVhZaEvlHo5wiBQTJubpy4ey9mvP4Mm5tKCIeimsNY8/XfVCEUg==',
+  lat: '40.74832',
+  lng: '-74.03178',
+  radius: '1',
+  scores: '["03e0c3ec-3f6d-45c7-b5d9-fda92e5e3a06", "6da6e9c6-dcbb-4565-af1c-541e16bc40f8", "3262c28e-9abe-434b-b5b2-6a624746fafc", "cab1ffab-0726-4e4d-aac1-629a42d440f8"]',
+  ip: '174.252.26.24' }
+User requested radius.
+userCanRequestRadius Count = 6
+userCanRequestRadiusResult = true
+recursiveCallback on iteration 1
+COUNT = 0, SHOUTREACH = 5, selectEntirePlanet = false
+recursiveCallback on iteration 2
+COUNT = 4, SHOUTREACH = 5, selectEntirePlanet = true
+fullGetCallback
+row = 13079004, 10216450
+nearby.push(320.33145938943744, f6292a18-4915-49de-b1a3-fe3f9017d626)
+row = 13074330, 10596899
+nearby.push(0.5619549020159756, 8cc212c3-d463-4dd5-ac5b-bd5b0bcf2dcb)
+row = 13074330, 10596899
+nearby.push(0.5619549020159756, 44a665db-d31a-4237-ad12-28c351de945b)
+nearby = 
+[ [ 320.33145938943744, 'f6292a18-4915-49de-b1a3-fe3f9017d626' ],
+  [ 0.5619549020159756, '8cc212c3-d463-4dd5-ac5b-bd5b0bcf2dcb' ],
+  [ 0.5619549020159756, '44a665db-d31a-4237-ad12-28c351de945b' ] ]
+RESPONSE = 
+{ code: 'ping_ok',
+  pts: 77,
+  radius: 6000000,
+  scores: 
+   [ { shout_id: '03e0c3ec-3f6d-45c7-b5d9-fda92e5e3a06',
+       ups: 1,
+       downs: 0,
+       hit: 3,
+       open: 1,
+       pts: 1 },
+     { shout_id: '6da6e9c6-dcbb-4565-af1c-541e16bc40f8',
+       ups: 1,
+       downs: 0,
+       hit: 3,
+       open: 1,
+       pts: 1 },
+     { shout_id: '3262c28e-9abe-434b-b5b2-6a624746fafc',
+       ups: 0,
+       downs: 0,
+       hit: 3,
+       open: 1,
+       pts: 0 },
+     { shout_id: 'cab1ffab-0726-4e4d-aac1-629a42d440f8',
+       ups: 2,
+       downs: 0,
+       hit: 3,
+       open: 1,
+       pts: 2 } ] }
+Log initiated.
+Server launched.
+Listening...
+
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+{ a: 'ping',
+  uid: '7a0449f8-fe59-449f-a366-6260a2204f3d',
+  auth: 's2zg2-bPUhXPSvBth+@UUfG8VzmGXg%0NFlDl5+FNOdujXwI+HwpfmFVReRJTX4llU/fVhZaEvlHo5wiBQTJubpy4ey9mvP4Mm5tKCIeimsNY8/XfVCEUg==',
+  lat: '40.74832',
+  lng: '-74.03178',
+  ip: '174.252.26.24' }
+RESPONSE = 
+{ code: 'ping_ok', pts: 77 }
