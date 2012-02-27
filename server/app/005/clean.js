@@ -137,6 +137,10 @@ exports.validate = function(dirty, response, testCallback, callback) {
 	// phone_num
 	param = 'phone_num';
 	if (param in dirty) {
+		// AT&T not giving us phone number
+		if (dirty[param] == '') {
+			dirty[param] = 0;
+		}
 		if (Validator(dirty[param]).isNumeric() &&
 		Validator(dirty[param]).min(0) && 
 		Validator(dirty[param]).max(9999999999)) {

@@ -10,6 +10,7 @@
     <!-- android:debuggable = false -->
     <!-- update maps key -->
     <!-- check C.DB_VERSION -->
+    <!-- check versionCode & versionName above -->
     <!-- remove below permission -->
     <!-- <uses-permission android:name="android.permission.SET_DEBUG_APP" /> -->
     <!-- //////////////////////////////////////////////////////////// -->

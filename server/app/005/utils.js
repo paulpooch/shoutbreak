@@ -19,7 +19,7 @@ module.exports = (function() {
 			'', // Level 0 undefined. 
 			'0123456789abcdfghjkmnpqrstvwxyz',
 			'0123456789abcdfghjkmnpqrstvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ',
-			'0123456789_!@#$%*()-=+/abcdfghjkmnpqrstvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
+			'0123456789_!@#$%*()-=+abcdfghjkmnpqrstvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
 		];
 		var password = '';
 		var counter = 0;
