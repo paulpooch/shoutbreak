@@ -28,6 +28,7 @@ module.exports = (function() {
 	this.RADIUS_FOR_INSUFFICIENT_USERS_ONLINE = 6000000; // earth is 6378000, let's not push it tho.
 	this.LIVE_USERS_TIMEOUT = 1260000; // 21 minutes
 	this.AUTH_ATTEMPT_FAIL_LIMIT = 30; // consider lowering this once not debugging (relaunching a million times).
+	this.CRON_INTERVAL_CULL_LIVE_USERS = 1800000; // 30 minutes
 	 
 	// AWS
 	this.CACHE_URL = 'cache-001.ardkb4.0001.use1.cache.amazonaws.com:11211',

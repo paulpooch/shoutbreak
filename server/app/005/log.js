@@ -9,12 +9,40 @@ module.exports = (function() {
 		Logger = require('log'),
 		Util = require('util');
 
-	var logFile = false;
+	var now = new Date();
+	var logName = now.getFullYear() + '-' + (now.getMonth() + 1) + '-' + now.getDate() + '.log';
+	var logFile = new Logger('debug', FileSystem.createWriteStream('../logs/' + logName));;
+	var errorLog = new Logger('debug', FileSystem.createWriteStream('../logs/exceptions.log'));
+	var cronLog = new Logger('debug', FileSystem.createWriteStream('../logs/cron.log'));
 
-	this.init = function(logName) {
-		logFile = new Logger('debug', FileSystem.createWriteStream('../logs/' + logName ));
-		this.l('Log initiated.');
-		// Not Utils, native util.
+	this.l = function(text) {
+		if (typeof(text) != 'string') {
+			console.dir(text);
+			logFile.debug(Util.inspect(text));
+		} else {
+			console.log(text);
+			logFile.debug(text);
+		}
+	};
+
+	this.logError = function(text) {
+		if (typeof(text) != 'string') {
+			console.dir(text);
+			errorLog.debug(Util.inspect(text));
+		} else {
+			console.log(text);
+			errorLog.debug(text);
+		}
+	};
+
+	this.logCron = function(text) {
+		if (typeof(text) != 'string') {
+			console.dir(text);
+			cronLog.debug(Util.inspect(text));
+		} else {
+			console.log(text);
+			cronLog.debug(text);
+		}
 	};
 
 	this.e = function(text) { 
@@ -23,19 +51,6 @@ module.exports = (function() {
 
 	this.i = function(text) { 
 		console.info(text); 
-	};
-	
-	this.l = function(text) {
-		if (logFile === false) {
-			logFile = new Logger('debug', FileSystem.createWriteStream('../logs/log.txt'));
-		}
-		if (typeof(text) != 'string') {
-			console.dir(text);
-			logFile.debug(Util.inspect(text));
-		} else {
-			console.log(text);
-			logFile.debug(text);
-		}
 	};
 	
 	this.w = function(text) { 

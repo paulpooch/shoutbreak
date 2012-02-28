@@ -81,6 +81,11 @@ exports.sanitize = function(dirty, response, testCallback, callback) {
 	// trusted params
 	clean['ip'] = dirty['ip'];
 
+	// manual tweaks
+	if (typeof(clean['phone_num']) != 'undefined' && isNaN(clean['phone_num'])) {
+		clean['phone_num'] = 0;
+	}
+
 	var routingObject = {
 		'post': clean,
 		'response': response,
@@ -137,10 +142,6 @@ exports.validate = function(dirty, response, testCallback, callback) {
 	// phone_num
 	param = 'phone_num';
 	if (param in dirty) {
-		// AT&T not giving us phone number
-		if (dirty[param] == '') {
-			dirty[param] = 0;
-		}
 		if (Validator(dirty[param]).isNumeric() &&
 		Validator(dirty[param]).min(0) && 
 		Validator(dirty[param]).max(9999999999)) {
@@ -275,7 +276,7 @@ exports.validate = function(dirty, response, testCallback, callback) {
 
 	// trusted params
 	clean['ip'] = dirty['ip'];
-	
+
 	var routingObject = {
 		'post': clean,
 		'response': response,

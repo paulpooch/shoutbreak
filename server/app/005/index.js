@@ -15,6 +15,8 @@
 // http://docs.amazonwebservices.com/AWSRubySDK/latest/AWS/DynamoDB/AttributeCollection.html
 // http://docs.amazonwebservices.com/amazondynamodb/latest/developerguide/API_GetItem.html
 // http://www.paperplanes.de/2012/1/30/a-tour-of-amazons-dynamodb.html
+// https://github.com/nodejitsu/forever
+// http://stackoverflow.com/questions/8276132/how-come-node-js-doesnt-catch-my-errors
 ////////////////////////////////////////////////////////////////////////////////
 
 // Includes ////////////////////////////////////////////////////////////////////
@@ -26,7 +28,8 @@ var Log = 			require('./log'),
 	User =			require('./user'),
 	Shout =			require('./shout'),
 	Storage =		require('./storage'),
-	Clean =			require('./clean');
+	Clean =			require('./clean'),
+	Cron = 			require('./cron');
 
 // External (Modules)
 var Http = 			require('http'),
@@ -37,13 +40,19 @@ var Http = 			require('http'),
 
 // Entry Methods ///////////////////////////////////////////////////////////////
 
+// Uncaught Exceptions
+process.on('uncaughtException', function (error) {
+	Log.logError(error);
+	Log.logError(error.stack);
+});
+
 // Front door.
-var init = function(request, response) {
-	process(request, response);
+var init = function(request, response) {	
+	processRequest(request, response);	
 };
 
 // Parse POST variables.
-var process = function(request, response) {
+var processRequest = function(request, response) {
 	if (request.method == 'POST') {
 		var body = '';
 		request.on('data', function(data) {
@@ -682,7 +691,7 @@ var Tests = (function() {
 				'uid': json['uid'],
 				'android_id': '0123456789abcdef',
 				'device_id': '0123456789ABCD',
-				'phone_num': 1234567890,
+				'phone_num': '', // 1234567890
 				'carrier': 'Test Wireless'
 			};
 			Log.l('***********POST**************');
@@ -826,15 +835,11 @@ var Tests = (function() {
 
 // Bootstrap //////////////////////////////////////////////////////////////////
 
-var now = new Date();
-var logName = now.getFullYear() + '-' + (now.getMonth() + 1) + '-' + now.getDate() + '.log';
-Log.init(logName);
 Log.l('Server launched.');
 Http.createServer(init).listen(80);
 Log.l('Listening...');
 
 //Tests.run();
-
 
 /*
 var makeTable = function() {
