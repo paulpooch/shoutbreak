@@ -21,6 +21,7 @@ module.exports = (function() {
 		);
 	};
 
+	cullLiveUsers();
 	setInterval(cullLiveUsers, Config.CRON_INTERVAL_CULL_LIVE_USERS);
 
 	/* OLD CODE
@@ -41,5 +42,6 @@ module.exports = (function() {
 		}
 	}
 	*/
-
+	
+	return this;
 })();

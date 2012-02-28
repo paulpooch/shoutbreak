@@ -10,10 +10,11 @@ module.exports = (function() {
 		Util = require('util');
 
 	var now = new Date();
+	var writeFlags = { flags: 'a' };
 	var logName = now.getFullYear() + '-' + (now.getMonth() + 1) + '-' + now.getDate() + '.log';
-	var logFile = new Logger('debug', FileSystem.createWriteStream('../logs/' + logName));;
-	var errorLog = new Logger('debug', FileSystem.createWriteStream('../logs/exceptions.log'));
-	var cronLog = new Logger('debug', FileSystem.createWriteStream('../logs/cron.log'));
+	var logFile = new Logger('debug', FileSystem.createWriteStream('../logs/' + logName, writeFlags));
+	var errorLog = new Logger('debug', FileSystem.createWriteStream('../logs/exceptions.log', writeFlags));
+	var cronLog = new Logger('debug', FileSystem.createWriteStream('../logs/cron.log', writeFlags));
 
 	this.l = function(text) {
 		if (typeof(text) != 'string') {

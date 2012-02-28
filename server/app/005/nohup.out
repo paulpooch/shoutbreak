@@ -6911,3 +6911,111 @@ RESPONSE =
        hit: 1,
        open: 1,
        pts: 0 } ] }
+CULL LIVE USERS
+Server launched.
+Listening...
+Culling 0 users.
+Culled 0 users from LIVE
+
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+{ a: 'ping',
+  uid: 'f96adb25-9a9d-4722-a937-e0770bd7e421',
+  auth: 'hnO!$jq@c7)SQFmSPsUYDyw9qAYzzckMPtZ7Acb8oUlNPE8L5e/P4x0i4mUw/eS4cyReNwP00zv+4EdzZnbHTKd3H+Fzwwy5m32YJ05zSbzN6mmlai8gYg==',
+  lat: '40.74833',
+  lng: '-74.03175',
+  radius: '1',
+  scores: '["4ed6d94e-6fd3-4c87-aa47-8d08990b0237"]',
+  ip: '174.252.0.81' }
+User requested radius.
+userCanRequestRadiusResult = true
+recursiveCallback on iteration 1
+COUNT = 0, SHOUTREACH = 5, selectEntirePlanet = false
+recursiveCallback on iteration 2
+COUNT = 2, SHOUTREACH = 5, selectEntirePlanet = true
+fullGetCallback
+row = 13079122, 10214214
+nearby.push(322.2153606958163, 8b125b50-1fee-4fa9-9d54-241684202ece)
+nearby = 
+[ [ 322.2153606958163, '8b125b50-1fee-4fa9-9d54-241684202ece' ] ]
+'makeShoutFromDynamoItem'
+{ shoutId: '4ed6d94e-6fd3-4c87-aa47-8d08990b0237',
+  userId: '03cfdc35-7ef4-4e7f-82f9-1cb3729686f7',
+  time: '2012-02-28T00:23:21.715Z',
+  lastActivityTime: '2012-02-28T00:23:21.715Z',
+  text: 'This is a test shout.',
+  open: 1,
+  re: '0',
+  hit: 5,
+  power: 5,
+  ups: 0,
+  downs: 0,
+  lat: 13000000,
+  lng: 11000000,
+  outbox: null,
+  senderIp: null }
+addToCache
+{ shoutId: '4ed6d94e-6fd3-4c87-aa47-8d08990b0237',
+  userId: '03cfdc35-7ef4-4e7f-82f9-1cb3729686f7',
+  time: '2012-02-28T00:23:21.715Z',
+  lastActivityTime: '2012-02-28T00:23:21.715Z',
+  text: 'This is a test shout.',
+  open: 1,
+  re: '0',
+  hit: 5,
+  power: 5,
+  ups: 0,
+  downs: 0,
+  lat: 13000000,
+  lng: 11000000,
+  outbox: null,
+  senderIp: null }
+Returning Shout from getShout
+{ shoutId: '4ed6d94e-6fd3-4c87-aa47-8d08990b0237',
+  userId: '03cfdc35-7ef4-4e7f-82f9-1cb3729686f7',
+  time: '2012-02-28T00:23:21.715Z',
+  lastActivityTime: '2012-02-28T00:23:21.715Z',
+  text: 'This is a test shout.',
+  open: 1,
+  re: '0',
+  hit: 5,
+  power: 5,
+  ups: 0,
+  downs: 0,
+  lat: 13000000,
+  lng: 11000000,
+  outbox: null,
+  senderIp: null }
+RESPONSE = 
+{ code: 'ping_ok',
+  pts: 80,
+  radius: 6000000,
+  scores: 
+   [ { shout_id: '4ed6d94e-6fd3-4c87-aa47-8d08990b0237',
+       ups: 0,
+       downs: 0,
+       hit: 5,
+       open: 0,
+       pts: 0 } ] }
+warn: Forever detected script exited with code: 1
+warn: Forever restarting script for 1 time
+CULL LIVE USERS
+Server launched.
+Listening...
+Culling 0 users.
+Culled 0 users from LIVE
+warn: Forever detected script exited with code: 1
+warn: Forever restarting script for 2 time
+CULL LIVE USERS
+Server launched.
+Listening...
+Culling 0 users.
+Culled 0 users from LIVE
+warn: Forever detected script exited with code: 1
+warn: Forever restarting script for 3 time
+CULL LIVE USERS
+Server launched.
+Listening...
+Culling 0 users.
+Culled 0 users from LIVE
