@@ -30,7 +30,7 @@ exports.sanitize = function(dirty, response, testCallback, callback) {
 		if (param in dirty) {
 			clean[param] = Sanitizer(dirty[param]).trim();
 			clean[param] = Sanitizer(clean[param]).xss();
-			clean[param] = Sanitizer(clean[param]).entityEncode();
+			//clean[param] = Sanitizer(clean[param]).entityEncode();
 		}
 	}
 		
@@ -144,7 +144,7 @@ exports.validate = function(dirty, response, testCallback, callback) {
 	if (param in dirty) {
 		if (Validator(dirty[param]).isNumeric() &&
 		Validator(dirty[param]).min(0) && 
-		Validator(dirty[param]).max(9999999999)) {
+		Validator(dirty[param]).max(99999999999)) {
 			clean[param] = dirty[param];
 		}
 	}

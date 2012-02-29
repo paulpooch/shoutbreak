@@ -1167,9 +1167,6 @@ public class Mediator {
 		public void scrollInboxToPosition(int position) {
 			_ui.inboxListView.requestFocusFromTouch();
 			_ui.inboxListView.setSelection(position);
-			InboxViewHolder holder = (InboxViewHolder) _ui.inboxListView.getSelectedView().getTag();
-			holder.collapsed.setVisibility(View.GONE);
-			holder.expanded.setVisibility(View.VISIBLE);			
 		}
 
 		@Override

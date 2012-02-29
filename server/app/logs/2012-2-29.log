@@ -1,0 +1,3603 @@
+[Wed Feb 29 2012 00:20:31 GMT+0000 (UTC)] DEBUG Server launched.
+[Wed Feb 29 2012 00:20:31 GMT+0000 (UTC)] DEBUG Listening...
+[Wed Feb 29 2012 00:20:31 GMT+0000 (UTC)] DEBUG Culling 3 users.
+[Wed Feb 29 2012 00:20:37 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 00:20:37 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'c5450388-9bfa-4cf4-bc80-e33fc708fabd',
+  auth: 'mjQVqtpn%hvzSK!*=-m-(Q@HxtA9jMMnqWuLhZVppMeGfKUgC2c3/0OcdjM6w1KivyE7GXqtvEryMNcCi9oUaOCosPr44WOV3eb3eWVY9KPXgY+nX4aG4A==',
+  lat: '40.74833',
+  lng: '-74.03175',
+  radius: '1',
+  scores: '["cc9f2876-f333-468c-8115-f9667297f393"]',
+  ip: '174.226.198.25' }
+[Wed Feb 29 2012 00:20:38 GMT+0000 (UTC)] DEBUG Failed auth count = 1
+[Wed Feb 29 2012 00:20:38 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 00:20:38 GMT+0000 (UTC)] DEBUG { code: 'expired_auth',
+  nonce: 'sqE7CZOq#hzD6BjJIDDY5$d#6srQaWyQbYrjacXw' }
+[Wed Feb 29 2012 00:20:38 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 00:20:38 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'c5450388-9bfa-4cf4-bc80-e33fc708fabd',
+  auth: 'mjQVqtpn%hvzSK!*=-m-(Q@HxtA9jMMntws8aOkh7/4/h0CZbsDysTDOMIHtb/fGyoW6WVvslmC9L4CxFwe0VWy/bODu8sk3V98nVXq17YFS0WBYhsB/zg==',
+  lat: '40.74833',
+  lng: '-74.03175',
+  radius: '1',
+  scores: '["cc9f2876-f333-468c-8115-f9667297f393"]',
+  ip: '174.226.198.25' }
+[Wed Feb 29 2012 00:20:38 GMT+0000 (UTC)] DEBUG User requested radius.
+[Wed Feb 29 2012 00:20:38 GMT+0000 (UTC)] DEBUG userCanRequestRadiusResult = true
+[Wed Feb 29 2012 00:20:38 GMT+0000 (UTC)] DEBUG fullGetCallback
+[Wed Feb 29 2012 00:20:38 GMT+0000 (UTC)] DEBUG nearby = 
+[Wed Feb 29 2012 00:20:38 GMT+0000 (UTC)] DEBUG []
+[Wed Feb 29 2012 00:21:34 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 00:21:34 GMT+0000 (UTC)] DEBUG { a: 'create_account', ip: '32.141.244.245' }
+[Wed Feb 29 2012 00:21:34 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 00:21:34 GMT+0000 (UTC)] DEBUG { code: 'create_account_0',
+  uid: '00e5053a-5e17-47cc-b93a-92c97691758f' }
+[Wed Feb 29 2012 00:21:35 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 00:21:35 GMT+0000 (UTC)] DEBUG { a: 'create_account',
+  uid: '00e5053a-5e17-47cc-b93a-92c97691758f',
+  android_id: '3beda9aab9708a18',
+  device_id: '357814049420550',
+  phone_num: '',
+  carrier: 'AT&T',
+  ip: '32.141.244.245' }
+[Wed Feb 29 2012 00:21:35 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 00:21:35 GMT+0000 (UTC)] DEBUG { code: 'create_account_1',
+  pw: 'f%=ycD9pgcgg5S#QE+)5FQIMVs*aRCkN' }
+[Wed Feb 29 2012 00:21:36 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 00:21:36 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: '00e5053a-5e17-47cc-b93a-92c97691758f',
+  auth: 'default',
+  lat: '40.52316',
+  lng: '-74.45793',
+  ip: '32.141.244.245' }
+[Wed Feb 29 2012 00:21:36 GMT+0000 (UTC)] DEBUG Failed auth count = 1
+[Wed Feb 29 2012 00:21:36 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 00:21:36 GMT+0000 (UTC)] DEBUG { code: 'expired_auth',
+  nonce: '2DR$qdOsKsa_ILQjWp8FKvq811UDJPr@kkVT*NpH' }
+[Wed Feb 29 2012 00:21:37 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 00:21:37 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: '00e5053a-5e17-47cc-b93a-92c97691758f',
+  auth: 'f%=ycD9pgcgg5S#QE+)5FQIMVs*aRCkNm0OE3Y/QtDVk4JTdRsd5PY7SyLgY9rBDgGSkFWun0nzkSJ0zYcMpDGIlRojwn5UzKdrH9OjS+LW1ur7Q9FGVsQ==',
+  lat: '40.52316',
+  lng: '-74.45793',
+  ip: '32.141.244.245' }
+[Wed Feb 29 2012 00:21:37 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 00:21:37 GMT+0000 (UTC)] DEBUG { code: 'ping_ok',
+  pts: 71,
+  lvl_change: { lvl: 5, lvl_at: 71, next_lvl_at: 92 } }
+[Wed Feb 29 2012 00:21:38 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 00:21:38 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: '00e5053a-5e17-47cc-b93a-92c97691758f',
+  auth: 'f%=ycD9pgcgg5S#QE+)5FQIMVs*aRCkNm0OE3Y/QtDVk4JTdRsd5PY7SyLgY9rBDgGSkFWun0nzkSJ0zYcMpDGIlRojwn5UzKdrH9OjS+LW1ur7Q9FGVsQ==',
+  lat: '40.52316',
+  lng: '-74.45793',
+  lvl: '5',
+  ip: '32.141.244.245' }
+[Wed Feb 29 2012 00:21:38 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 00:21:38 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 71 }
+[Wed Feb 29 2012 00:22:00 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 00:22:00 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'c5450388-9bfa-4cf4-bc80-e33fc708fabd',
+  auth: 'mjQVqtpn%hvzSK!*=-m-(Q@HxtA9jMMntws8aOkh7/4/h0CZbsDysTDOMIHtb/fGyoW6WVvslmC9L4CxFwe0VWy/bODu8sk3V98nVXq17YFS0WBYhsB/zg==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  radius: '1',
+  scores: '["cc9f2876-f333-468c-8115-f9667297f393"]',
+  ip: '174.226.198.25' }
+[Wed Feb 29 2012 00:22:00 GMT+0000 (UTC)] DEBUG User requested radius.
+[Wed Feb 29 2012 00:22:00 GMT+0000 (UTC)] DEBUG userCanRequestRadius Count = 2
+[Wed Feb 29 2012 00:22:00 GMT+0000 (UTC)] DEBUG userCanRequestRadiusResult = true
+[Wed Feb 29 2012 00:22:00 GMT+0000 (UTC)] DEBUG fullGetCallback
+[Wed Feb 29 2012 00:22:00 GMT+0000 (UTC)] DEBUG row = 13052316, 10554207
+[Wed Feb 29 2012 00:22:00 GMT+0000 (UTC)] DEBUG nearby.push(43.50585545323057, 00e5053a-5e17-47cc-b93a-92c97691758f)
+[Wed Feb 29 2012 00:22:00 GMT+0000 (UTC)] DEBUG nearby = 
+[Wed Feb 29 2012 00:22:00 GMT+0000 (UTC)] DEBUG [ [ 43.50585545323057, '00e5053a-5e17-47cc-b93a-92c97691758f' ] ]
+[Wed Feb 29 2012 00:22:09 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 00:22:09 GMT+0000 (UTC)] DEBUG { a: 'shout',
+  uid: 'c5450388-9bfa-4cf4-bc80-e33fc708fabd',
+  auth: 'mjQVqtpn%hvzSK!*=-m-(Q@HxtA9jMMntws8aOkh7/4/h0CZbsDysTDOMIHtb/fGyoW6WVvslmC9L4CxFwe0VWy/bODu8sk3V98nVXq17YFS0WBYhsB/zg==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  txt: 'Hi',
+  shoutreach: '5',
+  ip: '174.226.198.25' }
+[Wed Feb 29 2012 00:22:09 GMT+0000 (UTC)] DEBUG shout re = undefined
+[Wed Feb 29 2012 00:22:09 GMT+0000 (UTC)] DEBUG this is not a reply
+[Wed Feb 29 2012 00:22:09 GMT+0000 (UTC)] DEBUG fullGetCallback
+[Wed Feb 29 2012 00:22:09 GMT+0000 (UTC)] DEBUG row = 13052316, 10554207
+[Wed Feb 29 2012 00:22:09 GMT+0000 (UTC)] DEBUG nearby.push(43.50585545323057, 00e5053a-5e17-47cc-b93a-92c97691758f)
+[Wed Feb 29 2012 00:22:09 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 00:22:09 GMT+0000 (UTC)] DEBUG { code: 'shout_sent' }
+[Wed Feb 29 2012 00:22:10 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 00:22:10 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'c5450388-9bfa-4cf4-bc80-e33fc708fabd',
+  auth: 'mjQVqtpn%hvzSK!*=-m-(Q@HxtA9jMMntws8aOkh7/4/h0CZbsDysTDOMIHtb/fGyoW6WVvslmC9L4CxFwe0VWy/bODu8sk3V98nVXq17YFS0WBYhsB/zg==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  radius: '1',
+  scores: '["cc9f2876-f333-468c-8115-f9667297f393"]',
+  ip: '174.226.198.25' }
+[Wed Feb 29 2012 00:22:10 GMT+0000 (UTC)] DEBUG User requested radius.
+[Wed Feb 29 2012 00:22:10 GMT+0000 (UTC)] DEBUG userCanRequestRadius Count = 3
+[Wed Feb 29 2012 00:22:10 GMT+0000 (UTC)] DEBUG userCanRequestRadiusResult = true
+[Wed Feb 29 2012 00:22:10 GMT+0000 (UTC)] DEBUG fullGetCallback
+[Wed Feb 29 2012 00:22:10 GMT+0000 (UTC)] DEBUG row = 13052316, 10554207
+[Wed Feb 29 2012 00:22:10 GMT+0000 (UTC)] DEBUG nearby.push(43.50585545323057, 00e5053a-5e17-47cc-b93a-92c97691758f)
+[Wed Feb 29 2012 00:22:10 GMT+0000 (UTC)] DEBUG nearby = 
+[Wed Feb 29 2012 00:22:10 GMT+0000 (UTC)] DEBUG [ [ 43.50585545323057, '00e5053a-5e17-47cc-b93a-92c97691758f' ] ]
+[Wed Feb 29 2012 00:22:10 GMT+0000 (UTC)] DEBUG buildShoutFromJson
+[Wed Feb 29 2012 00:22:10 GMT+0000 (UTC)] DEBUG { shoutId: 'dc17e289-1353-44c6-86bb-15d741e843fe',
+  userId: 'c5450388-9bfa-4cf4-bc80-e33fc708fabd',
+  time: '2012-02-29T00:22:09.483Z',
+  lastActivityTime: '2012-02-29T00:22:09.483Z',
+  text: 'Hi',
+  open: 1,
+  re: 0,
+  hit: 1,
+  power: 5,
+  ups: 0,
+  downs: 0,
+  lat: '13074306',
+  lng: '10596850',
+  outbox: null,
+  senderIp: '174.226.198.25' }
+[Wed Feb 29 2012 00:22:28 GMT+0000 (UTC)] DEBUG Server launched.
+[Wed Feb 29 2012 00:22:28 GMT+0000 (UTC)] DEBUG Listening...
+[Wed Feb 29 2012 00:22:28 GMT+0000 (UTC)] DEBUG Culling 0 users.
+[Wed Feb 29 2012 00:22:37 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 00:22:37 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'c5450388-9bfa-4cf4-bc80-e33fc708fabd',
+  auth: 'mjQVqtpn%hvzSK!*=-m-(Q@HxtA9jMMntws8aOkh7/4/h0CZbsDysTDOMIHtb/fGyoW6WVvslmC9L4CxFwe0VWy/bODu8sk3V98nVXq17YFS0WBYhsB/zg==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  radius: '1',
+  scores: '["cc9f2876-f333-468c-8115-f9667297f393"]',
+  ip: '174.226.198.25' }
+[Wed Feb 29 2012 00:22:37 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 00:22:37 GMT+0000 (UTC)] DEBUG { a: 'shout',
+  uid: 'c5450388-9bfa-4cf4-bc80-e33fc708fabd',
+  auth: 'mjQVqtpn%hvzSK!*=-m-(Q@HxtA9jMMntws8aOkh7/4/h0CZbsDysTDOMIHtb/fGyoW6WVvslmC9L4CxFwe0VWy/bODu8sk3V98nVXq17YFS0WBYhsB/zg==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  txt: 'Hi',
+  shoutreach: '5',
+  ip: '174.226.198.25' }
+[Wed Feb 29 2012 00:22:37 GMT+0000 (UTC)] DEBUG shout re = undefined
+[Wed Feb 29 2012 00:22:37 GMT+0000 (UTC)] DEBUG this is not a reply
+[Wed Feb 29 2012 00:22:37 GMT+0000 (UTC)] DEBUG User requested radius.
+[Wed Feb 29 2012 00:22:37 GMT+0000 (UTC)] DEBUG userCanRequestRadius Count = 4
+[Wed Feb 29 2012 00:22:37 GMT+0000 (UTC)] DEBUG userCanRequestRadiusResult = true
+[Wed Feb 29 2012 00:22:37 GMT+0000 (UTC)] DEBUG fullGetCallback
+[Wed Feb 29 2012 00:22:37 GMT+0000 (UTC)] DEBUG row = 13052316, 10554207
+[Wed Feb 29 2012 00:22:37 GMT+0000 (UTC)] DEBUG nearby.push(43.50585545323057, 00e5053a-5e17-47cc-b93a-92c97691758f)
+[Wed Feb 29 2012 00:22:37 GMT+0000 (UTC)] DEBUG fullGetCallback
+[Wed Feb 29 2012 00:22:37 GMT+0000 (UTC)] DEBUG row = 13052316, 10554207
+[Wed Feb 29 2012 00:22:37 GMT+0000 (UTC)] DEBUG nearby.push(43.50585545323057, 00e5053a-5e17-47cc-b93a-92c97691758f)
+[Wed Feb 29 2012 00:22:37 GMT+0000 (UTC)] DEBUG nearby = 
+[Wed Feb 29 2012 00:22:37 GMT+0000 (UTC)] DEBUG [ [ 43.50585545323057, '00e5053a-5e17-47cc-b93a-92c97691758f' ] ]
+[Wed Feb 29 2012 00:26:35 GMT+0000 (UTC)] DEBUG Server launched.
+[Wed Feb 29 2012 00:26:35 GMT+0000 (UTC)] DEBUG Listening...
+[Wed Feb 29 2012 00:26:35 GMT+0000 (UTC)] DEBUG Culling 0 users.
+[Wed Feb 29 2012 00:26:52 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 00:26:52 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'c5450388-9bfa-4cf4-bc80-e33fc708fabd',
+  auth: 'mjQVqtpn%hvzSK!*=-m-(Q@HxtA9jMMntws8aOkh7/4/h0CZbsDysTDOMIHtb/fGyoW6WVvslmC9L4CxFwe0VWy/bODu8sk3V98nVXq17YFS0WBYhsB/zg==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  radius: '1',
+  scores: '["cc9f2876-f333-468c-8115-f9667297f393"]',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 00:26:52 GMT+0000 (UTC)] DEBUG User requested radius.
+[Wed Feb 29 2012 00:26:52 GMT+0000 (UTC)] DEBUG userCanRequestRadius Count = 5
+[Wed Feb 29 2012 00:26:52 GMT+0000 (UTC)] DEBUG userCanRequestRadiusResult = true
+[Wed Feb 29 2012 00:26:52 GMT+0000 (UTC)] DEBUG fullGetCallback
+[Wed Feb 29 2012 00:26:52 GMT+0000 (UTC)] DEBUG row = 13052316, 10554207
+[Wed Feb 29 2012 00:26:52 GMT+0000 (UTC)] DEBUG nearby.push(43.50585545323057, 00e5053a-5e17-47cc-b93a-92c97691758f)
+[Wed Feb 29 2012 00:26:52 GMT+0000 (UTC)] DEBUG nearby = 
+[Wed Feb 29 2012 00:26:52 GMT+0000 (UTC)] DEBUG [ [ 43.50585545323057, '00e5053a-5e17-47cc-b93a-92c97691758f' ] ]
+[Wed Feb 29 2012 00:28:21 GMT+0000 (UTC)] DEBUG Server launched.
+[Wed Feb 29 2012 00:28:21 GMT+0000 (UTC)] DEBUG Listening...
+[Wed Feb 29 2012 00:28:21 GMT+0000 (UTC)] DEBUG Culling 0 users.
+[Wed Feb 29 2012 00:28:32 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 00:28:32 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'c5450388-9bfa-4cf4-bc80-e33fc708fabd',
+  auth: 'mjQVqtpn%hvzSK!*=-m-(Q@HxtA9jMMntws8aOkh7/4/h0CZbsDysTDOMIHtb/fGyoW6WVvslmC9L4CxFwe0VWy/bODu8sk3V98nVXq17YFS0WBYhsB/zg==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  radius: '1',
+  scores: '["cc9f2876-f333-468c-8115-f9667297f393"]',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 00:28:33 GMT+0000 (UTC)] DEBUG User requested radius.
+[Wed Feb 29 2012 00:28:33 GMT+0000 (UTC)] DEBUG userCanRequestRadius Count = 6
+[Wed Feb 29 2012 00:28:33 GMT+0000 (UTC)] DEBUG userCanRequestRadiusResult = true
+[Wed Feb 29 2012 00:28:33 GMT+0000 (UTC)] DEBUG fullGetCallback
+[Wed Feb 29 2012 00:28:33 GMT+0000 (UTC)] DEBUG row = 13052316, 10554207
+[Wed Feb 29 2012 00:28:33 GMT+0000 (UTC)] DEBUG nearby.push(43.50585545323057, 00e5053a-5e17-47cc-b93a-92c97691758f)
+[Wed Feb 29 2012 00:28:33 GMT+0000 (UTC)] DEBUG nearby = 
+[Wed Feb 29 2012 00:28:33 GMT+0000 (UTC)] DEBUG [ [ 43.50585545323057, '00e5053a-5e17-47cc-b93a-92c97691758f' ] ]
+[Wed Feb 29 2012 00:28:33 GMT+0000 (UTC)] DEBUG callback8
+[Wed Feb 29 2012 00:28:33 GMT+0000 (UTC)] DEBUG undefined
+[Wed Feb 29 2012 00:29:44 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 00:29:44 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'c5450388-9bfa-4cf4-bc80-e33fc708fabd',
+  auth: 'mjQVqtpn%hvzSK!*=-m-(Q@HxtA9jMMntws8aOkh7/4/h0CZbsDysTDOMIHtb/fGyoW6WVvslmC9L4CxFwe0VWy/bODu8sk3V98nVXq17YFS0WBYhsB/zg==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  radius: '1',
+  scores: '["cc9f2876-f333-468c-8115-f9667297f393"]',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 00:29:45 GMT+0000 (UTC)] DEBUG User requested radius.
+[Wed Feb 29 2012 00:29:45 GMT+0000 (UTC)] DEBUG userCanRequestRadius Count = 7
+[Wed Feb 29 2012 00:29:45 GMT+0000 (UTC)] DEBUG userCanRequestRadiusResult = true
+[Wed Feb 29 2012 00:29:45 GMT+0000 (UTC)] DEBUG fullGetCallback
+[Wed Feb 29 2012 00:29:45 GMT+0000 (UTC)] DEBUG row = 13052316, 10554207
+[Wed Feb 29 2012 00:29:45 GMT+0000 (UTC)] DEBUG nearby.push(43.50585545323057, 00e5053a-5e17-47cc-b93a-92c97691758f)
+[Wed Feb 29 2012 00:29:45 GMT+0000 (UTC)] DEBUG nearby = 
+[Wed Feb 29 2012 00:29:45 GMT+0000 (UTC)] DEBUG [ [ 43.50585545323057, '00e5053a-5e17-47cc-b93a-92c97691758f' ] ]
+[Wed Feb 29 2012 00:29:45 GMT+0000 (UTC)] DEBUG callback8
+[Wed Feb 29 2012 00:29:45 GMT+0000 (UTC)] DEBUG undefined
+[Wed Feb 29 2012 00:30:23 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 00:30:23 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'c5450388-9bfa-4cf4-bc80-e33fc708fabd',
+  auth: 'mjQVqtpn%hvzSK!*=-m-(Q@HxtA9jMMntws8aOkh7/4/h0CZbsDysTDOMIHtb/fGyoW6WVvslmC9L4CxFwe0VWy/bODu8sk3V98nVXq17YFS0WBYhsB/zg==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  radius: '1',
+  scores: '["cc9f2876-f333-468c-8115-f9667297f393"]',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 00:30:23 GMT+0000 (UTC)] DEBUG User requested radius.
+[Wed Feb 29 2012 00:30:23 GMT+0000 (UTC)] DEBUG userCanRequestRadius Count = 8
+[Wed Feb 29 2012 00:30:23 GMT+0000 (UTC)] DEBUG userCanRequestRadiusResult = true
+[Wed Feb 29 2012 00:30:23 GMT+0000 (UTC)] DEBUG fullGetCallback
+[Wed Feb 29 2012 00:30:23 GMT+0000 (UTC)] DEBUG row = 13052316, 10554207
+[Wed Feb 29 2012 00:30:23 GMT+0000 (UTC)] DEBUG nearby.push(43.50585545323057, 00e5053a-5e17-47cc-b93a-92c97691758f)
+[Wed Feb 29 2012 00:30:23 GMT+0000 (UTC)] DEBUG nearby = 
+[Wed Feb 29 2012 00:30:23 GMT+0000 (UTC)] DEBUG [ [ 43.50585545323057, '00e5053a-5e17-47cc-b93a-92c97691758f' ] ]
+[Wed Feb 29 2012 00:30:23 GMT+0000 (UTC)] DEBUG callback8
+[Wed Feb 29 2012 00:30:23 GMT+0000 (UTC)] DEBUG undefined
+[Wed Feb 29 2012 00:30:37 GMT+0000 (UTC)] DEBUG Server launched.
+[Wed Feb 29 2012 00:30:37 GMT+0000 (UTC)] DEBUG Listening...
+[Wed Feb 29 2012 00:30:37 GMT+0000 (UTC)] DEBUG Culling 0 users.
+[Wed Feb 29 2012 00:31:09 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 00:31:09 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'c5450388-9bfa-4cf4-bc80-e33fc708fabd',
+  auth: 'mjQVqtpn%hvzSK!*=-m-(Q@HxtA9jMMntws8aOkh7/4/h0CZbsDysTDOMIHtb/fGyoW6WVvslmC9L4CxFwe0VWy/bODu8sk3V98nVXq17YFS0WBYhsB/zg==',
+  lat: '40.74833',
+  lng: '-74.03175',
+  radius: '1',
+  scores: '["cc9f2876-f333-468c-8115-f9667297f393"]',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 00:31:09 GMT+0000 (UTC)] DEBUG User requested radius.
+[Wed Feb 29 2012 00:31:09 GMT+0000 (UTC)] DEBUG userCanRequestRadius Count = 9
+[Wed Feb 29 2012 00:31:10 GMT+0000 (UTC)] DEBUG userCanRequestRadiusResult = true
+[Wed Feb 29 2012 00:31:10 GMT+0000 (UTC)] DEBUG fullGetCallback
+[Wed Feb 29 2012 00:31:10 GMT+0000 (UTC)] DEBUG row = 13052316, 10554207
+[Wed Feb 29 2012 00:31:10 GMT+0000 (UTC)] DEBUG nearby.push(43.8194024915345, 00e5053a-5e17-47cc-b93a-92c97691758f)
+[Wed Feb 29 2012 00:31:10 GMT+0000 (UTC)] DEBUG nearby = 
+[Wed Feb 29 2012 00:31:10 GMT+0000 (UTC)] DEBUG [ [ 43.8194024915345, '00e5053a-5e17-47cc-b93a-92c97691758f' ] ]
+[Wed Feb 29 2012 00:31:10 GMT+0000 (UTC)] DEBUG callback8
+[Wed Feb 29 2012 00:31:10 GMT+0000 (UTC)] DEBUG undefined
+[Wed Feb 29 2012 00:31:57 GMT+0000 (UTC)] DEBUG Server launched.
+[Wed Feb 29 2012 00:31:57 GMT+0000 (UTC)] DEBUG Listening...
+[Wed Feb 29 2012 00:31:57 GMT+0000 (UTC)] DEBUG Culling 0 users.
+[Wed Feb 29 2012 00:32:18 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 00:32:18 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'c5450388-9bfa-4cf4-bc80-e33fc708fabd',
+  auth: 'mjQVqtpn%hvzSK!*=-m-(Q@HxtA9jMMntws8aOkh7/4/h0CZbsDysTDOMIHtb/fGyoW6WVvslmC9L4CxFwe0VWy/bODu8sk3V98nVXq17YFS0WBYhsB/zg==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  radius: '1',
+  scores: '["cc9f2876-f333-468c-8115-f9667297f393"]',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 00:32:18 GMT+0000 (UTC)] DEBUG User requested radius.
+[Wed Feb 29 2012 00:32:18 GMT+0000 (UTC)] DEBUG userCanRequestRadius Count = 10
+[Wed Feb 29 2012 00:32:18 GMT+0000 (UTC)] DEBUG userCanRequestRadiusResult = true
+[Wed Feb 29 2012 00:32:18 GMT+0000 (UTC)] DEBUG fullGetCallback
+[Wed Feb 29 2012 00:32:18 GMT+0000 (UTC)] DEBUG row = 13052316, 10554207
+[Wed Feb 29 2012 00:32:18 GMT+0000 (UTC)] DEBUG nearby.push(43.50585545323057, 00e5053a-5e17-47cc-b93a-92c97691758f)
+[Wed Feb 29 2012 00:32:18 GMT+0000 (UTC)] DEBUG nearby = 
+[Wed Feb 29 2012 00:32:18 GMT+0000 (UTC)] DEBUG [ [ 43.50585545323057, '00e5053a-5e17-47cc-b93a-92c97691758f' ] ]
+[Wed Feb 29 2012 00:32:18 GMT+0000 (UTC)] DEBUG callback6
+[Wed Feb 29 2012 00:32:18 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 82, radius: 6000000 }
+[Wed Feb 29 2012 00:32:18 GMT+0000 (UTC)] DEBUG callback7
+[Wed Feb 29 2012 00:32:18 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 82, radius: 6000000 }
+[Wed Feb 29 2012 00:32:18 GMT+0000 (UTC)] DEBUG callback8
+[Wed Feb 29 2012 00:32:18 GMT+0000 (UTC)] DEBUG undefined
+[Wed Feb 29 2012 00:33:25 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 00:33:25 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'c5450388-9bfa-4cf4-bc80-e33fc708fabd',
+  auth: 'mjQVqtpn%hvzSK!*=-m-(Q@HxtA9jMMntws8aOkh7/4/h0CZbsDysTDOMIHtb/fGyoW6WVvslmC9L4CxFwe0VWy/bODu8sk3V98nVXq17YFS0WBYhsB/zg==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 00:33:26 GMT+0000 (UTC)] DEBUG callback6
+[Wed Feb 29 2012 00:33:26 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 82 }
+[Wed Feb 29 2012 00:33:26 GMT+0000 (UTC)] DEBUG callback7
+[Wed Feb 29 2012 00:33:26 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 82 }
+[Wed Feb 29 2012 00:33:26 GMT+0000 (UTC)] DEBUG callback8
+[Wed Feb 29 2012 00:33:26 GMT+0000 (UTC)] DEBUG undefined
+[Wed Feb 29 2012 00:33:26 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 00:33:26 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 82 }
+[Wed Feb 29 2012 00:34:33 GMT+0000 (UTC)] DEBUG Server launched.
+[Wed Feb 29 2012 00:34:33 GMT+0000 (UTC)] DEBUG Listening...
+[Wed Feb 29 2012 00:34:33 GMT+0000 (UTC)] DEBUG Culling 0 users.
+[Wed Feb 29 2012 00:34:38 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 00:34:38 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'c5450388-9bfa-4cf4-bc80-e33fc708fabd',
+  auth: 'mjQVqtpn%hvzSK!*=-m-(Q@HxtA9jMMntws8aOkh7/4/h0CZbsDysTDOMIHtb/fGyoW6WVvslmC9L4CxFwe0VWy/bODu8sk3V98nVXq17YFS0WBYhsB/zg==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  radius: '1',
+  scores: '["cc9f2876-f333-468c-8115-f9667297f393"]',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 00:34:40 GMT+0000 (UTC)] DEBUG User requested radius.
+[Wed Feb 29 2012 00:34:40 GMT+0000 (UTC)] DEBUG userCanRequestRadius Count = 11
+[Wed Feb 29 2012 00:34:40 GMT+0000 (UTC)] DEBUG userCanRequestRadiusResult = false
+[Wed Feb 29 2012 00:34:40 GMT+0000 (UTC)] DEBUG callback6
+[Wed Feb 29 2012 00:34:40 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 82 }
+[Wed Feb 29 2012 00:34:40 GMT+0000 (UTC)] DEBUG callback7
+[Wed Feb 29 2012 00:34:40 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 82 }
+[Wed Feb 29 2012 00:34:40 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 82 }
+[Wed Feb 29 2012 00:34:40 GMT+0000 (UTC)] DEBUG callback8
+[Wed Feb 29 2012 00:34:40 GMT+0000 (UTC)] DEBUG undefined
+[Wed Feb 29 2012 00:37:59 GMT+0000 (UTC)] DEBUG Server launched.
+[Wed Feb 29 2012 00:37:59 GMT+0000 (UTC)] DEBUG Listening...
+[Wed Feb 29 2012 00:37:59 GMT+0000 (UTC)] DEBUG Culling 0 users.
+[Wed Feb 29 2012 00:38:02 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 00:38:02 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'c5450388-9bfa-4cf4-bc80-e33fc708fabd',
+  auth: 'mjQVqtpn%hvzSK!*=-m-(Q@HxtA9jMMntws8aOkh7/4/h0CZbsDysTDOMIHtb/fGyoW6WVvslmC9L4CxFwe0VWy/bODu8sk3V98nVXq17YFS0WBYhsB/zg==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  radius: '1',
+  scores: '["cc9f2876-f333-468c-8115-f9667297f393"]',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 00:38:02 GMT+0000 (UTC)] DEBUG User requested radius.
+[Wed Feb 29 2012 00:38:02 GMT+0000 (UTC)] DEBUG userCanRequestRadius Count = 12
+[Wed Feb 29 2012 00:38:02 GMT+0000 (UTC)] DEBUG userCanRequestRadiusResult = false
+[Wed Feb 29 2012 00:38:02 GMT+0000 (UTC)] DEBUG callback6
+[Wed Feb 29 2012 00:38:02 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 82 }
+[Wed Feb 29 2012 00:38:02 GMT+0000 (UTC)] DEBUG callback7
+[Wed Feb 29 2012 00:38:02 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 82 }
+[Wed Feb 29 2012 00:38:02 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 82 }
+[Wed Feb 29 2012 00:38:02 GMT+0000 (UTC)] DEBUG callback8
+[Wed Feb 29 2012 00:38:02 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 82 }
+[Wed Feb 29 2012 00:38:02 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 00:38:02 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 82, scores: [] }
+[Wed Feb 29 2012 00:38:23 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 00:38:23 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'c5450388-9bfa-4cf4-bc80-e33fc708fabd',
+  auth: 'mjQVqtpn%hvzSK!*=-m-(Q@HxtA9jMMntws8aOkh7/4/h0CZbsDysTDOMIHtb/fGyoW6WVvslmC9L4CxFwe0VWy/bODu8sk3V98nVXq17YFS0WBYhsB/zg==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  radius: '1',
+  scores: '["cc9f2876-f333-468c-8115-f9667297f393"]',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 00:38:23 GMT+0000 (UTC)] DEBUG User requested radius.
+[Wed Feb 29 2012 00:38:23 GMT+0000 (UTC)] DEBUG userCanRequestRadius Count = 13
+[Wed Feb 29 2012 00:38:23 GMT+0000 (UTC)] DEBUG userCanRequestRadiusResult = false
+[Wed Feb 29 2012 00:38:23 GMT+0000 (UTC)] DEBUG callback6
+[Wed Feb 29 2012 00:38:23 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 82 }
+[Wed Feb 29 2012 00:38:23 GMT+0000 (UTC)] DEBUG callback7
+[Wed Feb 29 2012 00:38:23 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 82 }
+[Wed Feb 29 2012 00:38:23 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 82 }
+[Wed Feb 29 2012 00:38:23 GMT+0000 (UTC)] DEBUG callback8
+[Wed Feb 29 2012 00:38:23 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 82 }
+[Wed Feb 29 2012 00:38:23 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 00:38:23 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 82, scores: [] }
+[Wed Feb 29 2012 00:38:47 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 00:38:47 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'c5450388-9bfa-4cf4-bc80-e33fc708fabd',
+  auth: 'mjQVqtpn%hvzSK!*=-m-(Q@HxtA9jMMntws8aOkh7/4/h0CZbsDysTDOMIHtb/fGyoW6WVvslmC9L4CxFwe0VWy/bODu8sk3V98nVXq17YFS0WBYhsB/zg==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  radius: '1',
+  scores: '["cc9f2876-f333-468c-8115-f9667297f393"]',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 00:38:48 GMT+0000 (UTC)] DEBUG User requested radius.
+[Wed Feb 29 2012 00:38:48 GMT+0000 (UTC)] DEBUG userCanRequestRadius Count = 14
+[Wed Feb 29 2012 00:38:48 GMT+0000 (UTC)] DEBUG userCanRequestRadiusResult = false
+[Wed Feb 29 2012 00:38:48 GMT+0000 (UTC)] DEBUG callback6
+[Wed Feb 29 2012 00:38:48 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 82 }
+[Wed Feb 29 2012 00:38:48 GMT+0000 (UTC)] DEBUG callback7
+[Wed Feb 29 2012 00:38:48 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 82 }
+[Wed Feb 29 2012 00:38:48 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 82 }
+[Wed Feb 29 2012 00:38:48 GMT+0000 (UTC)] DEBUG callback8
+[Wed Feb 29 2012 00:38:48 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 82 }
+[Wed Feb 29 2012 00:38:48 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 00:38:48 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 82, scores: [] }
+[Wed Feb 29 2012 00:39:09 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 00:39:09 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'c5450388-9bfa-4cf4-bc80-e33fc708fabd',
+  auth: 'mjQVqtpn%hvzSK!*=-m-(Q@HxtA9jMMntws8aOkh7/4/h0CZbsDysTDOMIHtb/fGyoW6WVvslmC9L4CxFwe0VWy/bODu8sk3V98nVXq17YFS0WBYhsB/zg==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 00:39:09 GMT+0000 (UTC)] DEBUG callback6
+[Wed Feb 29 2012 00:39:09 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 82 }
+[Wed Feb 29 2012 00:39:09 GMT+0000 (UTC)] DEBUG callback7
+[Wed Feb 29 2012 00:39:09 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 82 }
+[Wed Feb 29 2012 00:39:09 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 82 }
+[Wed Feb 29 2012 00:39:09 GMT+0000 (UTC)] DEBUG callback8
+[Wed Feb 29 2012 00:39:09 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 82 }
+[Wed Feb 29 2012 00:39:09 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 00:39:09 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 82 }
+[Wed Feb 29 2012 00:39:14 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 00:39:14 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'c5450388-9bfa-4cf4-bc80-e33fc708fabd',
+  auth: 'mjQVqtpn%hvzSK!*=-m-(Q@HxtA9jMMntws8aOkh7/4/h0CZbsDysTDOMIHtb/fGyoW6WVvslmC9L4CxFwe0VWy/bODu8sk3V98nVXq17YFS0WBYhsB/zg==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  radius: '1',
+  scores: '["cc9f2876-f333-468c-8115-f9667297f393"]',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 00:39:14 GMT+0000 (UTC)] DEBUG User requested radius.
+[Wed Feb 29 2012 00:39:14 GMT+0000 (UTC)] DEBUG userCanRequestRadius Count = 15
+[Wed Feb 29 2012 00:39:14 GMT+0000 (UTC)] DEBUG userCanRequestRadiusResult = false
+[Wed Feb 29 2012 00:39:14 GMT+0000 (UTC)] DEBUG callback6
+[Wed Feb 29 2012 00:39:14 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 82 }
+[Wed Feb 29 2012 00:39:14 GMT+0000 (UTC)] DEBUG callback7
+[Wed Feb 29 2012 00:39:14 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 82 }
+[Wed Feb 29 2012 00:39:14 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 82 }
+[Wed Feb 29 2012 00:39:14 GMT+0000 (UTC)] DEBUG callback8
+[Wed Feb 29 2012 00:39:14 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 82 }
+[Wed Feb 29 2012 00:39:14 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 00:39:14 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 82, scores: [] }
+[Wed Feb 29 2012 00:39:34 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 00:39:34 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'c5450388-9bfa-4cf4-bc80-e33fc708fabd',
+  auth: 'mjQVqtpn%hvzSK!*=-m-(Q@HxtA9jMMntws8aOkh7/4/h0CZbsDysTDOMIHtb/fGyoW6WVvslmC9L4CxFwe0VWy/bODu8sk3V98nVXq17YFS0WBYhsB/zg==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 00:39:34 GMT+0000 (UTC)] DEBUG callback6
+[Wed Feb 29 2012 00:39:34 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 82 }
+[Wed Feb 29 2012 00:39:34 GMT+0000 (UTC)] DEBUG callback7
+[Wed Feb 29 2012 00:39:34 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 82 }
+[Wed Feb 29 2012 00:39:34 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 82 }
+[Wed Feb 29 2012 00:39:34 GMT+0000 (UTC)] DEBUG callback8
+[Wed Feb 29 2012 00:39:34 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 82 }
+[Wed Feb 29 2012 00:39:34 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 00:39:34 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 82 }
+[Wed Feb 29 2012 00:40:01 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 00:40:01 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'c5450388-9bfa-4cf4-bc80-e33fc708fabd',
+  auth: 'mjQVqtpn%hvzSK!*=-m-(Q@HxtA9jMMntws8aOkh7/4/h0CZbsDysTDOMIHtb/fGyoW6WVvslmC9L4CxFwe0VWy/bODu8sk3V98nVXq17YFS0WBYhsB/zg==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 00:40:01 GMT+0000 (UTC)] DEBUG callback6
+[Wed Feb 29 2012 00:40:01 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 82 }
+[Wed Feb 29 2012 00:40:01 GMT+0000 (UTC)] DEBUG callback7
+[Wed Feb 29 2012 00:40:01 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 82 }
+[Wed Feb 29 2012 00:40:01 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 82 }
+[Wed Feb 29 2012 00:40:01 GMT+0000 (UTC)] DEBUG callback8
+[Wed Feb 29 2012 00:40:01 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 82 }
+[Wed Feb 29 2012 00:40:01 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 00:40:01 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 82 }
+[Wed Feb 29 2012 00:41:20 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 00:41:20 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'c5450388-9bfa-4cf4-bc80-e33fc708fabd',
+  auth: 'mjQVqtpn%hvzSK!*=-m-(Q@HxtA9jMMntws8aOkh7/4/h0CZbsDysTDOMIHtb/fGyoW6WVvslmC9L4CxFwe0VWy/bODu8sk3V98nVXq17YFS0WBYhsB/zg==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 00:41:21 GMT+0000 (UTC)] DEBUG callback6
+[Wed Feb 29 2012 00:41:21 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 82 }
+[Wed Feb 29 2012 00:41:21 GMT+0000 (UTC)] DEBUG callback7
+[Wed Feb 29 2012 00:41:21 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 82 }
+[Wed Feb 29 2012 00:41:21 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 82 }
+[Wed Feb 29 2012 00:41:21 GMT+0000 (UTC)] DEBUG callback8
+[Wed Feb 29 2012 00:41:21 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 82 }
+[Wed Feb 29 2012 00:41:21 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 00:41:21 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 82 }
+[Wed Feb 29 2012 00:45:18 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 00:45:18 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'c5450388-9bfa-4cf4-bc80-e33fc708fabd',
+  auth: 'mjQVqtpn%hvzSK!*=-m-(Q@HxtA9jMMntws8aOkh7/4/h0CZbsDysTDOMIHtb/fGyoW6WVvslmC9L4CxFwe0VWy/bODu8sk3V98nVXq17YFS0WBYhsB/zg==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 00:45:18 GMT+0000 (UTC)] DEBUG callback6
+[Wed Feb 29 2012 00:45:18 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 82 }
+[Wed Feb 29 2012 00:45:18 GMT+0000 (UTC)] DEBUG callback7
+[Wed Feb 29 2012 00:45:18 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 82 }
+[Wed Feb 29 2012 00:45:18 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 82 }
+[Wed Feb 29 2012 00:45:18 GMT+0000 (UTC)] DEBUG callback8
+[Wed Feb 29 2012 00:45:18 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 82 }
+[Wed Feb 29 2012 00:45:18 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 00:45:18 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 82 }
+[Wed Feb 29 2012 00:45:23 GMT+0000 (UTC)] DEBUG Server launched.
+[Wed Feb 29 2012 00:45:23 GMT+0000 (UTC)] DEBUG Listening...
+[Wed Feb 29 2012 00:45:23 GMT+0000 (UTC)] DEBUG Culling 1 users.
+[Wed Feb 29 2012 00:45:25 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 00:45:25 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'c5450388-9bfa-4cf4-bc80-e33fc708fabd',
+  auth: 'mjQVqtpn%hvzSK!*=-m-(Q@HxtA9jMMntws8aOkh7/4/h0CZbsDysTDOMIHtb/fGyoW6WVvslmC9L4CxFwe0VWy/bODu8sk3V98nVXq17YFS0WBYhsB/zg==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  radius: '1',
+  scores: '["cc9f2876-f333-468c-8115-f9667297f393"]',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 00:45:25 GMT+0000 (UTC)] DEBUG User requested radius.
+[Wed Feb 29 2012 00:45:25 GMT+0000 (UTC)] DEBUG userCanRequestRadius Count = 16
+[Wed Feb 29 2012 00:45:25 GMT+0000 (UTC)] DEBUG userCanRequestRadiusResult = false
+[Wed Feb 29 2012 00:45:25 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 00:45:25 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 82, scores: [] }
+[Wed Feb 29 2012 00:45:47 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 00:45:47 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'c5450388-9bfa-4cf4-bc80-e33fc708fabd',
+  auth: 'mjQVqtpn%hvzSK!*=-m-(Q@HxtA9jMMntws8aOkh7/4/h0CZbsDysTDOMIHtb/fGyoW6WVvslmC9L4CxFwe0VWy/bODu8sk3V98nVXq17YFS0WBYhsB/zg==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  radius: '1',
+  scores: '["cc9f2876-f333-468c-8115-f9667297f393"]',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 00:45:47 GMT+0000 (UTC)] DEBUG User requested radius.
+[Wed Feb 29 2012 00:45:47 GMT+0000 (UTC)] DEBUG userCanRequestRadius Count = 17
+[Wed Feb 29 2012 00:45:47 GMT+0000 (UTC)] DEBUG userCanRequestRadiusResult = false
+[Wed Feb 29 2012 00:45:47 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 00:45:47 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 82, scores: [] }
+[Wed Feb 29 2012 00:46:08 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 00:46:08 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'c5450388-9bfa-4cf4-bc80-e33fc708fabd',
+  auth: 'mjQVqtpn%hvzSK!*=-m-(Q@HxtA9jMMntws8aOkh7/4/h0CZbsDysTDOMIHtb/fGyoW6WVvslmC9L4CxFwe0VWy/bODu8sk3V98nVXq17YFS0WBYhsB/zg==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  radius: '1',
+  scores: '["cc9f2876-f333-468c-8115-f9667297f393"]',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 00:46:08 GMT+0000 (UTC)] DEBUG User requested radius.
+[Wed Feb 29 2012 00:46:08 GMT+0000 (UTC)] DEBUG userCanRequestRadius Count = 18
+[Wed Feb 29 2012 00:46:08 GMT+0000 (UTC)] DEBUG userCanRequestRadiusResult = false
+[Wed Feb 29 2012 00:46:08 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 00:46:08 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 82, scores: [] }
+[Wed Feb 29 2012 00:46:29 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 00:46:29 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'c5450388-9bfa-4cf4-bc80-e33fc708fabd',
+  auth: 'mjQVqtpn%hvzSK!*=-m-(Q@HxtA9jMMntws8aOkh7/4/h0CZbsDysTDOMIHtb/fGyoW6WVvslmC9L4CxFwe0VWy/bODu8sk3V98nVXq17YFS0WBYhsB/zg==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 00:46:29 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 00:46:29 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 82 }
+[Wed Feb 29 2012 00:48:55 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 00:48:55 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'c5450388-9bfa-4cf4-bc80-e33fc708fabd',
+  auth: 'mjQVqtpn%hvzSK!*=-m-(Q@HxtA9jMMntws8aOkh7/4/h0CZbsDysTDOMIHtb/fGyoW6WVvslmC9L4CxFwe0VWy/bODu8sk3V98nVXq17YFS0WBYhsB/zg==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 00:48:56 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 00:48:56 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 82 }
+[Wed Feb 29 2012 00:49:10 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 00:49:10 GMT+0000 (UTC)] DEBUG { a: 'user_ping',
+  uid: '64604565-8828-f043-f00f-1af967c28774',
+  auth: 'default',
+  lat: '40.79757',
+  long: '-77.85627',
+  rho: '1',
+  ip: '174.252.5.184' }
+[Wed Feb 29 2012 00:49:22 GMT+0000 (UTC)] DEBUG Server launched.
+[Wed Feb 29 2012 00:49:22 GMT+0000 (UTC)] DEBUG Listening...
+[Wed Feb 29 2012 00:49:22 GMT+0000 (UTC)] DEBUG Culling 0 users.
+[Wed Feb 29 2012 00:49:25 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 00:49:25 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'c5450388-9bfa-4cf4-bc80-e33fc708fabd',
+  auth: 'mjQVqtpn%hvzSK!*=-m-(Q@HxtA9jMMntws8aOkh7/4/h0CZbsDysTDOMIHtb/fGyoW6WVvslmC9L4CxFwe0VWy/bODu8sk3V98nVXq17YFS0WBYhsB/zg==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  radius: '1',
+  scores: '["cc9f2876-f333-468c-8115-f9667297f393"]',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 00:49:25 GMT+0000 (UTC)] DEBUG User requested radius.
+[Wed Feb 29 2012 00:49:25 GMT+0000 (UTC)] DEBUG userCanRequestRadius Count = 19
+[Wed Feb 29 2012 00:49:25 GMT+0000 (UTC)] DEBUG userCanRequestRadiusResult = false
+[Wed Feb 29 2012 00:49:25 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 00:49:25 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 82, scores: [] }
+[Wed Feb 29 2012 00:49:47 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 00:49:47 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'c5450388-9bfa-4cf4-bc80-e33fc708fabd',
+  auth: 'mjQVqtpn%hvzSK!*=-m-(Q@HxtA9jMMntws8aOkh7/4/h0CZbsDysTDOMIHtb/fGyoW6WVvslmC9L4CxFwe0VWy/bODu8sk3V98nVXq17YFS0WBYhsB/zg==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  radius: '1',
+  scores: '["cc9f2876-f333-468c-8115-f9667297f393"]',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 00:49:47 GMT+0000 (UTC)] DEBUG User requested radius.
+[Wed Feb 29 2012 00:49:47 GMT+0000 (UTC)] DEBUG userCanRequestRadius Count = 20
+[Wed Feb 29 2012 00:49:47 GMT+0000 (UTC)] DEBUG userCanRequestRadiusResult = false
+[Wed Feb 29 2012 00:49:47 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 00:49:47 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 82, scores: [] }
+[Wed Feb 29 2012 00:49:51 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 00:49:51 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'c5450388-9bfa-4cf4-bc80-e33fc708fabd',
+  auth: 'mjQVqtpn%hvzSK!*=-m-(Q@HxtA9jMMntws8aOkh7/4/h0CZbsDysTDOMIHtb/fGyoW6WVvslmC9L4CxFwe0VWy/bODu8sk3V98nVXq17YFS0WBYhsB/zg==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  radius: '1',
+  scores: '["cc9f2876-f333-468c-8115-f9667297f393"]',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 00:49:51 GMT+0000 (UTC)] DEBUG User requested radius.
+[Wed Feb 29 2012 00:49:51 GMT+0000 (UTC)] DEBUG userCanRequestRadius Count = 21
+[Wed Feb 29 2012 00:49:51 GMT+0000 (UTC)] DEBUG userCanRequestRadiusResult = false
+[Wed Feb 29 2012 00:49:51 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 00:49:51 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 82, scores: [] }
+[Wed Feb 29 2012 00:50:12 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 00:50:12 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'c5450388-9bfa-4cf4-bc80-e33fc708fabd',
+  auth: 'mjQVqtpn%hvzSK!*=-m-(Q@HxtA9jMMntws8aOkh7/4/h0CZbsDysTDOMIHtb/fGyoW6WVvslmC9L4CxFwe0VWy/bODu8sk3V98nVXq17YFS0WBYhsB/zg==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  radius: '1',
+  scores: '["cc9f2876-f333-468c-8115-f9667297f393"]',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 00:50:12 GMT+0000 (UTC)] DEBUG User requested radius.
+[Wed Feb 29 2012 00:50:12 GMT+0000 (UTC)] DEBUG userCanRequestRadius Count = 22
+[Wed Feb 29 2012 00:50:12 GMT+0000 (UTC)] DEBUG userCanRequestRadiusResult = false
+[Wed Feb 29 2012 00:50:12 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 00:50:12 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 82, scores: [] }
+[Wed Feb 29 2012 00:50:33 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 00:50:33 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'c5450388-9bfa-4cf4-bc80-e33fc708fabd',
+  auth: 'mjQVqtpn%hvzSK!*=-m-(Q@HxtA9jMMntws8aOkh7/4/h0CZbsDysTDOMIHtb/fGyoW6WVvslmC9L4CxFwe0VWy/bODu8sk3V98nVXq17YFS0WBYhsB/zg==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  radius: '1',
+  scores: '["cc9f2876-f333-468c-8115-f9667297f393"]',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 00:50:33 GMT+0000 (UTC)] DEBUG User requested radius.
+[Wed Feb 29 2012 00:50:33 GMT+0000 (UTC)] DEBUG userCanRequestRadius Count = 23
+[Wed Feb 29 2012 00:50:33 GMT+0000 (UTC)] DEBUG userCanRequestRadiusResult = false
+[Wed Feb 29 2012 00:50:33 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 00:50:33 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 82, scores: [] }
+[Wed Feb 29 2012 00:50:54 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 00:50:54 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'c5450388-9bfa-4cf4-bc80-e33fc708fabd',
+  auth: 'mjQVqtpn%hvzSK!*=-m-(Q@HxtA9jMMntws8aOkh7/4/h0CZbsDysTDOMIHtb/fGyoW6WVvslmC9L4CxFwe0VWy/bODu8sk3V98nVXq17YFS0WBYhsB/zg==',
+  lat: '40.74569',
+  lng: '-74.03163',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 00:50:54 GMT+0000 (UTC)] DEBUG Failed auth count = 1
+[Wed Feb 29 2012 00:50:54 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 00:50:54 GMT+0000 (UTC)] DEBUG { code: 'expired_auth',
+  nonce: 'pZyIdI(T-TCpU2KHzG9Ig1bRgZC#8wQr!v*RPg)U' }
+[Wed Feb 29 2012 00:50:54 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 00:50:54 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'c5450388-9bfa-4cf4-bc80-e33fc708fabd',
+  auth: 'mjQVqtpn%hvzSK!*=-m-(Q@HxtA9jMMn8g0eHmam9501DIZ+mfzyoRU3XZHTMtVaIvglTuYRuxtrpAH5G1f3Utfs7JW+meucX0vVeSH6kj0LSP2RnViOgw==',
+  lat: '40.74569',
+  lng: '-74.03163',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 00:50:54 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 00:50:54 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 82 }
+[Wed Feb 29 2012 00:52:41 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 00:52:41 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'afc0d50f-6d54-405a-a227-02e666fddad9',
+  auth: 'n=bT#bJc4@gC1k_wqGjCORxv28EOY-MHJp0qjJp1twg9GyhslDnNHExWtsCrHnxEovaVW6D10AirhOhVH0oEBih2X5L5Ri+ie/Z2wXlbyjkVBquBvSLWQw==',
+  lat: '40.75034',
+  lng: '-74.02697',
+  ip: '174.252.5.232' }
+[Wed Feb 29 2012 00:52:41 GMT+0000 (UTC)] DEBUG Failed auth count = 1
+[Wed Feb 29 2012 00:52:42 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 00:52:42 GMT+0000 (UTC)] DEBUG { code: 'expired_auth',
+  nonce: 'jkwJJ0V2cx2nQPT5q8Gwk$KdNHfQQ!YPYLFMrY6M' }
+[Wed Feb 29 2012 00:52:42 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 00:52:42 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'afc0d50f-6d54-405a-a227-02e666fddad9',
+  auth: 'n=bT#bJc4@gC1k_wqGjCORxv28EOY-MHtYrqCF9vsrtenjeJBrNCek7covhQidnXOqVOu+MlZsips3zgud65WG6gacaOWTxLs3dDa1FMtrHY3CbYy6nQjg==',
+  lat: '40.75034',
+  lng: '-74.02697',
+  ip: '174.252.5.232' }
+[Wed Feb 29 2012 00:52:42 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 00:52:42 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 72 }
+[Wed Feb 29 2012 00:53:05 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 00:53:05 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'c5450388-9bfa-4cf4-bc80-e33fc708fabd',
+  auth: 'mjQVqtpn%hvzSK!*=-m-(Q@HxtA9jMMn8g0eHmam9501DIZ+mfzyoRU3XZHTMtVaIvglTuYRuxtrpAH5G1f3Utfs7JW+meucX0vVeSH6kj0LSP2RnViOgw==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  radius: '1',
+  scores: '["cc9f2876-f333-468c-8115-f9667297f393"]',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 00:53:05 GMT+0000 (UTC)] DEBUG User requested radius.
+[Wed Feb 29 2012 00:53:05 GMT+0000 (UTC)] DEBUG userCanRequestRadius Count = 24
+[Wed Feb 29 2012 00:53:05 GMT+0000 (UTC)] DEBUG userCanRequestRadiusResult = false
+[Wed Feb 29 2012 00:53:05 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 00:53:05 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 82, scores: [] }
+[Wed Feb 29 2012 00:53:35 GMT+0000 (UTC)] DEBUG Server launched.
+[Wed Feb 29 2012 00:53:35 GMT+0000 (UTC)] DEBUG Listening...
+[Wed Feb 29 2012 00:53:35 GMT+0000 (UTC)] DEBUG Culling 0 users.
+[Wed Feb 29 2012 00:53:51 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 00:53:51 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'c5450388-9bfa-4cf4-bc80-e33fc708fabd',
+  auth: 'mjQVqtpn%hvzSK!*=-m-(Q@HxtA9jMMn8g0eHmam9501DIZ+mfzyoRU3XZHTMtVaIvglTuYRuxtrpAH5G1f3Utfs7JW+meucX0vVeSH6kj0LSP2RnViOgw==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  radius: '1',
+  scores: '["cc9f2876-f333-468c-8115-f9667297f393"]',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 00:53:52 GMT+0000 (UTC)] DEBUG User requested radius.
+[Wed Feb 29 2012 00:53:52 GMT+0000 (UTC)] DEBUG userCanRequestRadius Count = 25
+[Wed Feb 29 2012 00:53:52 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 00:53:52 GMT+0000 (UTC)] DEBUG { code: 'error', txt: 'Radius request limit exceeded.' }
+[Wed Feb 29 2012 00:55:14 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 00:55:14 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'c5450388-9bfa-4cf4-bc80-e33fc708fabd',
+  auth: 'mjQVqtpn%hvzSK!*=-m-(Q@HxtA9jMMn8g0eHmam9501DIZ+mfzyoRU3XZHTMtVaIvglTuYRuxtrpAH5G1f3Utfs7JW+meucX0vVeSH6kj0LSP2RnViOgw==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  radius: '1',
+  scores: '["cc9f2876-f333-468c-8115-f9667297f393"]',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 00:55:15 GMT+0000 (UTC)] DEBUG User requested radius.
+[Wed Feb 29 2012 00:55:15 GMT+0000 (UTC)] DEBUG userCanRequestRadius Count = 25
+[Wed Feb 29 2012 00:55:15 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 00:55:15 GMT+0000 (UTC)] DEBUG { code: 'error', txt: 'Radius request limit exceeded.' }
+[Wed Feb 29 2012 00:55:44 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 00:55:44 GMT+0000 (UTC)] DEBUG { a: 'create_account', ip: '174.254.194.116' }
+[Wed Feb 29 2012 00:55:44 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 00:55:44 GMT+0000 (UTC)] DEBUG { code: 'create_account_0',
+  uid: 'dea9f8f4-7c3b-4228-9c71-8bee9f8c71c7' }
+[Wed Feb 29 2012 00:55:45 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 00:55:45 GMT+0000 (UTC)] DEBUG { a: 'create_account',
+  uid: 'dea9f8f4-7c3b-4228-9c71-8bee9f8c71c7',
+  android_id: 'e4c25ac3061c389f',
+  device_id: 'A0000022ECB30A',
+  phone_num: '2014033628',
+  carrier: 'Verizon Wireless',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 00:55:45 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 00:55:45 GMT+0000 (UTC)] DEBUG { code: 'create_account_1',
+  pw: 'IVJz+#Nz=x)Gw6OO#VCN7LFE1K5Ga=ZH' }
+[Wed Feb 29 2012 00:55:46 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 00:55:46 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'dea9f8f4-7c3b-4228-9c71-8bee9f8c71c7',
+  auth: 'default',
+  lat: '40.74306',
+  lng: '-74.0315',
+  radius: '1',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 00:55:46 GMT+0000 (UTC)] DEBUG Failed auth count = 1
+[Wed Feb 29 2012 00:55:46 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 00:55:46 GMT+0000 (UTC)] DEBUG { code: 'expired_auth',
+  nonce: '9QAa*BY$m0Y7h#NtyH@x-#yr)rBQ_)rFI7Ng7VUH' }
+[Wed Feb 29 2012 00:55:46 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 00:55:46 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'dea9f8f4-7c3b-4228-9c71-8bee9f8c71c7',
+  auth: 'IVJz+#Nz=x)Gw6OO#VCN7LFE1K5Ga=ZHHKHtOnEr5EoIwJumtdygF0nXws5oCipQhIQ/2723PcenRBp8Ok4rDyF+xe9uk15ncOhcNKA8uVIrSDTh8V8eKg==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  radius: '1',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 00:55:46 GMT+0000 (UTC)] DEBUG User requested radius.
+[Wed Feb 29 2012 00:55:46 GMT+0000 (UTC)] DEBUG userCanRequestRadiusResult = true
+[Wed Feb 29 2012 00:55:46 GMT+0000 (UTC)] DEBUG fullGetCallback
+[Wed Feb 29 2012 00:55:46 GMT+0000 (UTC)] DEBUG row = 13074306, 10596850
+[Wed Feb 29 2012 00:55:46 GMT+0000 (UTC)] DEBUG nearby.push(1.5801749476133684e-12, c5450388-9bfa-4cf4-bc80-e33fc708fabd)
+[Wed Feb 29 2012 00:55:46 GMT+0000 (UTC)] DEBUG row = 13075034, 10597303
+[Wed Feb 29 2012 00:55:46 GMT+0000 (UTC)] DEBUG nearby.push(0.8949403315164696, afc0d50f-6d54-405a-a227-02e666fddad9)
+[Wed Feb 29 2012 00:55:46 GMT+0000 (UTC)] DEBUG nearby = 
+[Wed Feb 29 2012 00:55:46 GMT+0000 (UTC)] DEBUG [ [ 0.8949403315164696, 'afc0d50f-6d54-405a-a227-02e666fddad9' ],
+  [ 1.5801749476133684e-12,
+    'c5450388-9bfa-4cf4-bc80-e33fc708fabd' ] ]
+[Wed Feb 29 2012 00:55:46 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 00:55:46 GMT+0000 (UTC)] DEBUG { code: 'ping_ok',
+  pts: 71,
+  lvl_change: { lvl: 5, lvl_at: 71, next_lvl_at: 92 },
+  radius: 6000000 }
+[Wed Feb 29 2012 00:55:49 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 00:55:49 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'dea9f8f4-7c3b-4228-9c71-8bee9f8c71c7',
+  auth: 'IVJz+#Nz=x)Gw6OO#VCN7LFE1K5Ga=ZHHKHtOnEr5EoIwJumtdygF0nXws5oCipQhIQ/2723PcenRBp8Ok4rDyF+xe9uk15ncOhcNKA8uVIrSDTh8V8eKg==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  lvl: '5',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 00:55:49 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 00:55:49 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 71 }
+[Wed Feb 29 2012 00:56:10 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 00:56:10 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'dea9f8f4-7c3b-4228-9c71-8bee9f8c71c7',
+  auth: 'IVJz+#Nz=x)Gw6OO#VCN7LFE1K5Ga=ZHHKHtOnEr5EoIwJumtdygF0nXws5oCipQhIQ/2723PcenRBp8Ok4rDyF+xe9uk15ncOhcNKA8uVIrSDTh8V8eKg==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 00:56:10 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 00:56:10 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 71 }
+[Wed Feb 29 2012 00:56:26 GMT+0000 (UTC)] DEBUG Server launched.
+[Wed Feb 29 2012 00:56:26 GMT+0000 (UTC)] DEBUG Listening...
+[Wed Feb 29 2012 00:56:26 GMT+0000 (UTC)] DEBUG Culling 0 users.
+[Wed Feb 29 2012 00:56:31 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 00:56:31 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'dea9f8f4-7c3b-4228-9c71-8bee9f8c71c7',
+  auth: 'IVJz+#Nz=x)Gw6OO#VCN7LFE1K5Ga=ZHHKHtOnEr5EoIwJumtdygF0nXws5oCipQhIQ/2723PcenRBp8Ok4rDyF+xe9uk15ncOhcNKA8uVIrSDTh8V8eKg==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 00:56:31 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 00:56:31 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 71 }
+[Wed Feb 29 2012 00:56:44 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 00:56:44 GMT+0000 (UTC)] DEBUG { a: 'shout',
+  uid: 'dea9f8f4-7c3b-4228-9c71-8bee9f8c71c7',
+  auth: 'IVJz+#Nz=x)Gw6OO#VCN7LFE1K5Ga=ZHHKHtOnEr5EoIwJumtdygF0nXws5oCipQhIQ/2723PcenRBp8Ok4rDyF+xe9uk15ncOhcNKA8uVIrSDTh8V8eKg==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  txt: 'One',
+  shoutreach: '5',
+  hint: '6000000',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 00:56:44 GMT+0000 (UTC)] DEBUG shout re = undefined
+[Wed Feb 29 2012 00:56:44 GMT+0000 (UTC)] DEBUG this is not a reply
+[Wed Feb 29 2012 00:56:44 GMT+0000 (UTC)] DEBUG fullGetCallback
+[Wed Feb 29 2012 00:56:44 GMT+0000 (UTC)] DEBUG row = 13074306, 10596850
+[Wed Feb 29 2012 00:56:44 GMT+0000 (UTC)] DEBUG nearby.push(1.5801749476133684e-12, c5450388-9bfa-4cf4-bc80-e33fc708fabd)
+[Wed Feb 29 2012 00:56:44 GMT+0000 (UTC)] DEBUG row = 13075034, 10597303
+[Wed Feb 29 2012 00:56:44 GMT+0000 (UTC)] DEBUG nearby.push(0.8949403315164696, afc0d50f-6d54-405a-a227-02e666fddad9)
+[Wed Feb 29 2012 00:56:44 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 00:56:44 GMT+0000 (UTC)] DEBUG { code: 'shout_sent' }
+[Wed Feb 29 2012 00:56:45 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 00:56:45 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'dea9f8f4-7c3b-4228-9c71-8bee9f8c71c7',
+  auth: 'IVJz+#Nz=x)Gw6OO#VCN7LFE1K5Ga=ZHHKHtOnEr5EoIwJumtdygF0nXws5oCipQhIQ/2723PcenRBp8Ok4rDyF+xe9uk15ncOhcNKA8uVIrSDTh8V8eKg==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 00:56:45 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 00:56:45 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 71, shouts: [] }
+[Wed Feb 29 2012 00:57:07 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 00:57:07 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'dea9f8f4-7c3b-4228-9c71-8bee9f8c71c7',
+  auth: 'IVJz+#Nz=x)Gw6OO#VCN7LFE1K5Ga=ZHHKHtOnEr5EoIwJumtdygF0nXws5oCipQhIQ/2723PcenRBp8Ok4rDyF+xe9uk15ncOhcNKA8uVIrSDTh8V8eKg==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 00:57:07 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 00:57:07 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 71 }
+[Wed Feb 29 2012 00:57:29 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 00:57:29 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'dea9f8f4-7c3b-4228-9c71-8bee9f8c71c7',
+  auth: 'IVJz+#Nz=x)Gw6OO#VCN7LFE1K5Ga=ZHHKHtOnEr5EoIwJumtdygF0nXws5oCipQhIQ/2723PcenRBp8Ok4rDyF+xe9uk15ncOhcNKA8uVIrSDTh8V8eKg==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 00:57:29 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 00:57:29 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 71 }
+[Wed Feb 29 2012 00:57:50 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 00:57:50 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'dea9f8f4-7c3b-4228-9c71-8bee9f8c71c7',
+  auth: 'IVJz+#Nz=x)Gw6OO#VCN7LFE1K5Ga=ZHHKHtOnEr5EoIwJumtdygF0nXws5oCipQhIQ/2723PcenRBp8Ok4rDyF+xe9uk15ncOhcNKA8uVIrSDTh8V8eKg==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 00:57:50 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 00:57:50 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 71 }
+[Wed Feb 29 2012 00:58:12 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 00:58:12 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'dea9f8f4-7c3b-4228-9c71-8bee9f8c71c7',
+  auth: 'IVJz+#Nz=x)Gw6OO#VCN7LFE1K5Ga=ZHHKHtOnEr5EoIwJumtdygF0nXws5oCipQhIQ/2723PcenRBp8Ok4rDyF+xe9uk15ncOhcNKA8uVIrSDTh8V8eKg==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 00:58:12 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 00:58:12 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 71 }
+[Wed Feb 29 2012 00:59:05 GMT+0000 (UTC)] DEBUG Server launched.
+[Wed Feb 29 2012 00:59:05 GMT+0000 (UTC)] DEBUG Listening...
+[Wed Feb 29 2012 00:59:05 GMT+0000 (UTC)] DEBUG Culling 0 users.
+[Wed Feb 29 2012 00:59:09 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 00:59:09 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'dea9f8f4-7c3b-4228-9c71-8bee9f8c71c7',
+  auth: 'IVJz+#Nz=x)Gw6OO#VCN7LFE1K5Ga=ZHHKHtOnEr5EoIwJumtdygF0nXws5oCipQhIQ/2723PcenRBp8Ok4rDyF+xe9uk15ncOhcNKA8uVIrSDTh8V8eKg==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 00:59:09 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 00:59:09 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 71 }
+[Wed Feb 29 2012 00:59:13 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 00:59:13 GMT+0000 (UTC)] DEBUG { a: 'shout',
+  uid: 'dea9f8f4-7c3b-4228-9c71-8bee9f8c71c7',
+  auth: 'IVJz+#Nz=x)Gw6OO#VCN7LFE1K5Ga=ZHHKHtOnEr5EoIwJumtdygF0nXws5oCipQhIQ/2723PcenRBp8Ok4rDyF+xe9uk15ncOhcNKA8uVIrSDTh8V8eKg==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  txt: 'Two',
+  shoutreach: '5',
+  hint: '6000000',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 00:59:13 GMT+0000 (UTC)] DEBUG shout re = undefined
+[Wed Feb 29 2012 00:59:13 GMT+0000 (UTC)] DEBUG this is not a reply
+[Wed Feb 29 2012 00:59:13 GMT+0000 (UTC)] DEBUG fullGetCallback
+[Wed Feb 29 2012 00:59:13 GMT+0000 (UTC)] DEBUG row = 13074306, 10596850
+[Wed Feb 29 2012 00:59:13 GMT+0000 (UTC)] DEBUG nearby.push(1.5801749476133684e-12, c5450388-9bfa-4cf4-bc80-e33fc708fabd)
+[Wed Feb 29 2012 00:59:13 GMT+0000 (UTC)] DEBUG row = 13075034, 10597303
+[Wed Feb 29 2012 00:59:13 GMT+0000 (UTC)] DEBUG nearby.push(0.8949403315164696, afc0d50f-6d54-405a-a227-02e666fddad9)
+[Wed Feb 29 2012 00:59:17 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 00:59:17 GMT+0000 (UTC)] DEBUG { code: 'shout_sent' }
+[Wed Feb 29 2012 00:59:18 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 00:59:18 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'dea9f8f4-7c3b-4228-9c71-8bee9f8c71c7',
+  auth: 'IVJz+#Nz=x)Gw6OO#VCN7LFE1K5Ga=ZHHKHtOnEr5EoIwJumtdygF0nXws5oCipQhIQ/2723PcenRBp8Ok4rDyF+xe9uk15ncOhcNKA8uVIrSDTh8V8eKg==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 00:59:18 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 00:59:18 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 71, shouts: [] }
+[Wed Feb 29 2012 00:59:39 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 00:59:39 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'dea9f8f4-7c3b-4228-9c71-8bee9f8c71c7',
+  auth: 'IVJz+#Nz=x)Gw6OO#VCN7LFE1K5Ga=ZHHKHtOnEr5EoIwJumtdygF0nXws5oCipQhIQ/2723PcenRBp8Ok4rDyF+xe9uk15ncOhcNKA8uVIrSDTh8V8eKg==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 00:59:39 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 00:59:39 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 71 }
+[Wed Feb 29 2012 01:00:01 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 01:00:01 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'dea9f8f4-7c3b-4228-9c71-8bee9f8c71c7',
+  auth: 'IVJz+#Nz=x)Gw6OO#VCN7LFE1K5Ga=ZHHKHtOnEr5EoIwJumtdygF0nXws5oCipQhIQ/2723PcenRBp8Ok4rDyF+xe9uk15ncOhcNKA8uVIrSDTh8V8eKg==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 01:00:01 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 01:00:01 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 71 }
+[Wed Feb 29 2012 01:00:23 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 01:00:23 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'dea9f8f4-7c3b-4228-9c71-8bee9f8c71c7',
+  auth: 'IVJz+#Nz=x)Gw6OO#VCN7LFE1K5Ga=ZHHKHtOnEr5EoIwJumtdygF0nXws5oCipQhIQ/2723PcenRBp8Ok4rDyF+xe9uk15ncOhcNKA8uVIrSDTh8V8eKg==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 01:00:23 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 01:00:23 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 71 }
+[Wed Feb 29 2012 01:02:51 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 01:02:51 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'dea9f8f4-7c3b-4228-9c71-8bee9f8c71c7',
+  auth: 'IVJz+#Nz=x)Gw6OO#VCN7LFE1K5Ga=ZHHKHtOnEr5EoIwJumtdygF0nXws5oCipQhIQ/2723PcenRBp8Ok4rDyF+xe9uk15ncOhcNKA8uVIrSDTh8V8eKg==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 01:02:51 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 01:02:51 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 71 }
+[Wed Feb 29 2012 01:06:38 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 01:06:38 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: '45167780-0dc0-47c9-8f9c-60d2786918d0',
+  auth: '!#fnwC-x9wCHFPxj+-4C!#Z4S8wVLDFddmke4y3AH1L4anp9co4PhjhuK2AoeT+5yj19BspuBNxGEa8AHdQdoCwK+wLwOfXtb9SYLexbjOLO/HwDLH/rXg==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  ip: '174.252.23.211' }
+[Wed Feb 29 2012 01:06:39 GMT+0000 (UTC)] DEBUG Server launched.
+[Wed Feb 29 2012 01:06:39 GMT+0000 (UTC)] DEBUG Listening...
+[Wed Feb 29 2012 01:06:39 GMT+0000 (UTC)] DEBUG Culling 0 users.
+[Wed Feb 29 2012 01:06:44 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 01:06:44 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'dea9f8f4-7c3b-4228-9c71-8bee9f8c71c7',
+  auth: 'IVJz+#Nz=x)Gw6OO#VCN7LFE1K5Ga=ZHHKHtOnEr5EoIwJumtdygF0nXws5oCipQhIQ/2723PcenRBp8Ok4rDyF+xe9uk15ncOhcNKA8uVIrSDTh8V8eKg==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 01:06:44 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 01:06:44 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 71 }
+[Wed Feb 29 2012 01:06:48 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 01:06:48 GMT+0000 (UTC)] DEBUG { a: 'shout',
+  uid: 'dea9f8f4-7c3b-4228-9c71-8bee9f8c71c7',
+  auth: 'IVJz+#Nz=x)Gw6OO#VCN7LFE1K5Ga=ZHHKHtOnEr5EoIwJumtdygF0nXws5oCipQhIQ/2723PcenRBp8Ok4rDyF+xe9uk15ncOhcNKA8uVIrSDTh8V8eKg==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  txt: 'Three',
+  shoutreach: '5',
+  hint: '6000000',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 01:06:48 GMT+0000 (UTC)] DEBUG shout re = undefined
+[Wed Feb 29 2012 01:06:48 GMT+0000 (UTC)] DEBUG this is not a reply
+[Wed Feb 29 2012 01:06:48 GMT+0000 (UTC)] DEBUG fullGetCallback
+[Wed Feb 29 2012 01:06:48 GMT+0000 (UTC)] DEBUG row = 13074306, 10596850
+[Wed Feb 29 2012 01:06:48 GMT+0000 (UTC)] DEBUG nearby.push(1.5801749476133684e-12, c5450388-9bfa-4cf4-bc80-e33fc708fabd)
+[Wed Feb 29 2012 01:06:48 GMT+0000 (UTC)] DEBUG row = 13075034, 10597303
+[Wed Feb 29 2012 01:06:48 GMT+0000 (UTC)] DEBUG nearby.push(0.8949403315164696, afc0d50f-6d54-405a-a227-02e666fddad9)
+[Wed Feb 29 2012 01:06:48 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 01:06:48 GMT+0000 (UTC)] DEBUG { code: 'shout_sent' }
+[Wed Feb 29 2012 01:06:49 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 01:06:49 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'dea9f8f4-7c3b-4228-9c71-8bee9f8c71c7',
+  auth: 'IVJz+#Nz=x)Gw6OO#VCN7LFE1K5Ga=ZHHKHtOnEr5EoIwJumtdygF0nXws5oCipQhIQ/2723PcenRBp8Ok4rDyF+xe9uk15ncOhcNKA8uVIrSDTh8V8eKg==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 01:06:49 GMT+0000 (UTC)] DEBUG buildShoutFromJson
+[Wed Feb 29 2012 01:06:49 GMT+0000 (UTC)] DEBUG { shoutId: '1b83676e-d71f-4945-bb63-0e3a2fb9a35a',
+  userId: 'dea9f8f4-7c3b-4228-9c71-8bee9f8c71c7',
+  time: '2012-02-29T01:06:48.240Z',
+  lastActivityTime: '2012-02-29T01:06:48.240Z',
+  text: 'Three',
+  open: 1,
+  re: 0,
+  hit: 2,
+  power: 5,
+  ups: 0,
+  downs: 0,
+  lat: '13074306',
+  lng: '10596850',
+  outbox: null,
+  senderIp: '174.254.194.116' }
+[Wed Feb 29 2012 01:06:49 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 01:06:49 GMT+0000 (UTC)] DEBUG { code: 'ping_ok',
+  pts: 71,
+  shouts: 
+   [ { shout_id: '1b83676e-d71f-4945-bb63-0e3a2fb9a35a',
+       txt: 'Three',
+       ts: '2012-02-29T01:06:48.240Z',
+       hit: 2,
+       outbox: 1 } ] }
+[Wed Feb 29 2012 01:07:10 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 01:07:10 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'dea9f8f4-7c3b-4228-9c71-8bee9f8c71c7',
+  auth: 'IVJz+#Nz=x)Gw6OO#VCN7LFE1K5Ga=ZHHKHtOnEr5EoIwJumtdygF0nXws5oCipQhIQ/2723PcenRBp8Ok4rDyF+xe9uk15ncOhcNKA8uVIrSDTh8V8eKg==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  scores: '["1b83676e-d71f-4945-bb63-0e3a2fb9a35a"]',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 01:07:10 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 01:07:10 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 71, scores: [] }
+[Wed Feb 29 2012 01:07:31 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 01:07:31 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'dea9f8f4-7c3b-4228-9c71-8bee9f8c71c7',
+  auth: 'IVJz+#Nz=x)Gw6OO#VCN7LFE1K5Ga=ZHHKHtOnEr5EoIwJumtdygF0nXws5oCipQhIQ/2723PcenRBp8Ok4rDyF+xe9uk15ncOhcNKA8uVIrSDTh8V8eKg==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  scores: '["1b83676e-d71f-4945-bb63-0e3a2fb9a35a"]',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 01:07:31 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 01:07:31 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 71, scores: [] }
+[Wed Feb 29 2012 01:07:53 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 01:07:53 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'dea9f8f4-7c3b-4228-9c71-8bee9f8c71c7',
+  auth: 'IVJz+#Nz=x)Gw6OO#VCN7LFE1K5Ga=ZHHKHtOnEr5EoIwJumtdygF0nXws5oCipQhIQ/2723PcenRBp8Ok4rDyF+xe9uk15ncOhcNKA8uVIrSDTh8V8eKg==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 01:07:53 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 01:07:53 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 71 }
+[Wed Feb 29 2012 01:07:53 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 01:07:53 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'dea9f8f4-7c3b-4228-9c71-8bee9f8c71c7',
+  auth: 'IVJz+#Nz=x)Gw6OO#VCN7LFE1K5Ga=ZHHKHtOnEr5EoIwJumtdygF0nXws5oCipQhIQ/2723PcenRBp8Ok4rDyF+xe9uk15ncOhcNKA8uVIrSDTh8V8eKg==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 01:07:53 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 01:07:53 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 71 }
+[Wed Feb 29 2012 01:08:14 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 01:08:14 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'dea9f8f4-7c3b-4228-9c71-8bee9f8c71c7',
+  auth: 'IVJz+#Nz=x)Gw6OO#VCN7LFE1K5Ga=ZHHKHtOnEr5EoIwJumtdygF0nXws5oCipQhIQ/2723PcenRBp8Ok4rDyF+xe9uk15ncOhcNKA8uVIrSDTh8V8eKg==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 01:08:14 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 01:08:14 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 71 }
+[Wed Feb 29 2012 01:08:50 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 01:08:50 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'dea9f8f4-7c3b-4228-9c71-8bee9f8c71c7',
+  auth: 'IVJz+#Nz=x)Gw6OO#VCN7LFE1K5Ga=ZHHKHtOnEr5EoIwJumtdygF0nXws5oCipQhIQ/2723PcenRBp8Ok4rDyF+xe9uk15ncOhcNKA8uVIrSDTh8V8eKg==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 01:08:50 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 01:08:50 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 71 }
+[Wed Feb 29 2012 01:10:37 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 01:10:37 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'dea9f8f4-7c3b-4228-9c71-8bee9f8c71c7',
+  auth: 'IVJz+#Nz=x)Gw6OO#VCN7LFE1K5Ga=ZHHKHtOnEr5EoIwJumtdygF0nXws5oCipQhIQ/2723PcenRBp8Ok4rDyF+xe9uk15ncOhcNKA8uVIrSDTh8V8eKg==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 01:10:37 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 01:10:37 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 71 }
+[Wed Feb 29 2012 01:12:15 GMT+0000 (UTC)] DEBUG Server launched.
+[Wed Feb 29 2012 01:12:15 GMT+0000 (UTC)] DEBUG Listening...
+[Wed Feb 29 2012 01:12:15 GMT+0000 (UTC)] DEBUG Culling 0 users.
+[Wed Feb 29 2012 01:12:19 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 01:12:19 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'dea9f8f4-7c3b-4228-9c71-8bee9f8c71c7',
+  auth: 'IVJz+#Nz=x)Gw6OO#VCN7LFE1K5Ga=ZHHKHtOnEr5EoIwJumtdygF0nXws5oCipQhIQ/2723PcenRBp8Ok4rDyF+xe9uk15ncOhcNKA8uVIrSDTh8V8eKg==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  scores: '["1b83676e-d71f-4945-bb63-0e3a2fb9a35a"]',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 01:12:19 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 01:12:19 GMT+0000 (UTC)] DEBUG { code: 'ping_ok',
+  pts: 71,
+  scores: 
+   [ { shout_id: '1b83676e-d71f-4945-bb63-0e3a2fb9a35a',
+       ups: 0,
+       downs: 0,
+       hit: 2,
+       open: 1,
+       pts: 0 } ] }
+[Wed Feb 29 2012 01:12:40 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 01:12:40 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'dea9f8f4-7c3b-4228-9c71-8bee9f8c71c7',
+  auth: 'default',
+  lat: '40.74306',
+  lng: '-74.0315',
+  radius: '1',
+  scores: '["1b83676e-d71f-4945-bb63-0e3a2fb9a35a"]',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 01:12:40 GMT+0000 (UTC)] DEBUG Failed auth count = 2
+[Wed Feb 29 2012 01:12:40 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 01:12:40 GMT+0000 (UTC)] DEBUG { code: 'expired_auth',
+  nonce: '=(YcE=AM0C4JS)c*gPpT45tq!fC6Gc4vTB1UXC_I' }
+[Wed Feb 29 2012 01:12:40 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 01:12:40 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'dea9f8f4-7c3b-4228-9c71-8bee9f8c71c7',
+  auth: 'IVJz+#Nz=x)Gw6OO#VCN7LFE1K5Ga=ZHU5OC/bPa4wxroITwK+oRINeD1XJSShHTo2UN+3xz1cWsaxpNN+hTDbhq/2RtX7rNVlH+BTcx2NxlyigWr0xOog==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  radius: '1',
+  scores: '["1b83676e-d71f-4945-bb63-0e3a2fb9a35a"]',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 01:12:42 GMT+0000 (UTC)] DEBUG User requested radius.
+[Wed Feb 29 2012 01:12:42 GMT+0000 (UTC)] DEBUG userCanRequestRadius Count = 2
+[Wed Feb 29 2012 01:12:42 GMT+0000 (UTC)] DEBUG userCanRequestRadiusResult = true
+[Wed Feb 29 2012 01:12:42 GMT+0000 (UTC)] DEBUG fullGetCallback
+[Wed Feb 29 2012 01:12:42 GMT+0000 (UTC)] DEBUG row = 13074306, 10596850
+[Wed Feb 29 2012 01:12:42 GMT+0000 (UTC)] DEBUG nearby.push(1.5801749476133684e-12, c5450388-9bfa-4cf4-bc80-e33fc708fabd)
+[Wed Feb 29 2012 01:12:42 GMT+0000 (UTC)] DEBUG row = 13075034, 10597303
+[Wed Feb 29 2012 01:12:42 GMT+0000 (UTC)] DEBUG nearby.push(0.8949403315164696, afc0d50f-6d54-405a-a227-02e666fddad9)
+[Wed Feb 29 2012 01:12:42 GMT+0000 (UTC)] DEBUG nearby = 
+[Wed Feb 29 2012 01:12:42 GMT+0000 (UTC)] DEBUG [ [ 0.8949403315164696, 'afc0d50f-6d54-405a-a227-02e666fddad9' ],
+  [ 1.5801749476133684e-12,
+    'c5450388-9bfa-4cf4-bc80-e33fc708fabd' ] ]
+[Wed Feb 29 2012 01:12:42 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 01:12:42 GMT+0000 (UTC)] DEBUG { code: 'ping_ok',
+  pts: 71,
+  radius: 6000000,
+  scores: 
+   [ { shout_id: '1b83676e-d71f-4945-bb63-0e3a2fb9a35a',
+       ups: 0,
+       downs: 0,
+       hit: 2,
+       open: 1,
+       pts: 0 } ] }
+[Wed Feb 29 2012 01:13:00 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 01:13:00 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'dea9f8f4-7c3b-4228-9c71-8bee9f8c71c7',
+  auth: 'IVJz+#Nz=x)Gw6OO#VCN7LFE1K5Ga=ZHU5OC/bPa4wxroITwK+oRINeD1XJSShHTo2UN+3xz1cWsaxpNN+hTDbhq/2RtX7rNVlH+BTcx2NxlyigWr0xOog==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  scores: '["1b83676e-d71f-4945-bb63-0e3a2fb9a35a"]',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 01:13:00 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 01:13:00 GMT+0000 (UTC)] DEBUG { a: 'shout',
+  uid: 'dea9f8f4-7c3b-4228-9c71-8bee9f8c71c7',
+  auth: 'IVJz+#Nz=x)Gw6OO#VCN7LFE1K5Ga=ZHU5OC/bPa4wxroITwK+oRINeD1XJSShHTo2UN+3xz1cWsaxpNN+hTDbhq/2RtX7rNVlH+BTcx2NxlyigWr0xOog==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  txt: 'Four',
+  shoutreach: '5',
+  hint: '6000000',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 01:13:00 GMT+0000 (UTC)] DEBUG shout re = undefined
+[Wed Feb 29 2012 01:13:00 GMT+0000 (UTC)] DEBUG this is not a reply
+[Wed Feb 29 2012 01:13:00 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 01:13:00 GMT+0000 (UTC)] DEBUG { code: 'ping_ok',
+  pts: 71,
+  scores: 
+   [ { shout_id: '1b83676e-d71f-4945-bb63-0e3a2fb9a35a',
+       ups: 0,
+       downs: 0,
+       hit: 2,
+       open: 1,
+       pts: 0 } ] }
+[Wed Feb 29 2012 01:13:00 GMT+0000 (UTC)] DEBUG fullGetCallback
+[Wed Feb 29 2012 01:13:00 GMT+0000 (UTC)] DEBUG row = 13074306, 10596850
+[Wed Feb 29 2012 01:13:00 GMT+0000 (UTC)] DEBUG nearby.push(1.5801749476133684e-12, c5450388-9bfa-4cf4-bc80-e33fc708fabd)
+[Wed Feb 29 2012 01:13:00 GMT+0000 (UTC)] DEBUG row = 13075034, 10597303
+[Wed Feb 29 2012 01:13:00 GMT+0000 (UTC)] DEBUG nearby.push(0.8949403315164696, afc0d50f-6d54-405a-a227-02e666fddad9)
+[Wed Feb 29 2012 01:13:00 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 01:13:00 GMT+0000 (UTC)] DEBUG { code: 'shout_sent' }
+[Wed Feb 29 2012 01:13:01 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 01:13:01 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'dea9f8f4-7c3b-4228-9c71-8bee9f8c71c7',
+  auth: 'IVJz+#Nz=x)Gw6OO#VCN7LFE1K5Ga=ZHU5OC/bPa4wxroITwK+oRINeD1XJSShHTo2UN+3xz1cWsaxpNN+hTDbhq/2RtX7rNVlH+BTcx2NxlyigWr0xOog==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  scores: '["1b83676e-d71f-4945-bb63-0e3a2fb9a35a"]',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 01:13:01 GMT+0000 (UTC)] DEBUG buildShoutFromJson
+[Wed Feb 29 2012 01:13:01 GMT+0000 (UTC)] DEBUG { shoutId: 'eb56e606-5b45-423f-abab-5a798097b4d6',
+  userId: 'dea9f8f4-7c3b-4228-9c71-8bee9f8c71c7',
+  time: '2012-02-29T01:13:00.624Z',
+  lastActivityTime: '2012-02-29T01:13:00.624Z',
+  text: 'Four',
+  open: 1,
+  re: 0,
+  hit: 2,
+  power: 5,
+  ups: 0,
+  downs: 0,
+  lat: '13074306',
+  lng: '10596850',
+  outbox: null,
+  senderIp: '174.254.194.116' }
+[Wed Feb 29 2012 01:13:01 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 01:13:01 GMT+0000 (UTC)] DEBUG { code: 'ping_ok',
+  pts: 71,
+  shouts: 
+   [ { shout_id: 'eb56e606-5b45-423f-abab-5a798097b4d6',
+       txt: 'Four',
+       ts: '2012-02-29T01:13:00.624Z',
+       hit: 2,
+       outbox: 1 } ],
+  scores: 
+   [ { shout_id: '1b83676e-d71f-4945-bb63-0e3a2fb9a35a',
+       ups: 0,
+       downs: 0,
+       hit: 2,
+       open: 1,
+       pts: 0 } ] }
+[Wed Feb 29 2012 01:13:10 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 01:13:10 GMT+0000 (UTC)] DEBUG { a: 'vote',
+  uid: 'dea9f8f4-7c3b-4228-9c71-8bee9f8c71c7',
+  auth: 'IVJz+#Nz=x)Gw6OO#VCN7LFE1K5Ga=ZHU5OC/bPa4wxroITwK+oRINeD1XJSShHTo2UN+3xz1cWsaxpNN+hTDbhq/2RtX7rNVlH+BTcx2NxlyigWr0xOog==',
+  shout_id: 'eb56e606-5b45-423f-abab-5a798097b4d6',
+  vote: '1',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 01:13:10 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 01:13:10 GMT+0000 (UTC)] DEBUG { code: 'vote_ok' }
+[Wed Feb 29 2012 01:13:23 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 01:13:23 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'dea9f8f4-7c3b-4228-9c71-8bee9f8c71c7',
+  auth: 'IVJz+#Nz=x)Gw6OO#VCN7LFE1K5Ga=ZHU5OC/bPa4wxroITwK+oRINeD1XJSShHTo2UN+3xz1cWsaxpNN+hTDbhq/2RtX7rNVlH+BTcx2NxlyigWr0xOog==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  scores: '["eb56e606-5b45-423f-abab-5a798097b4d6", "1b83676e-d71f-4945-bb63-0e3a2fb9a35a"]',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 01:13:23 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 01:13:23 GMT+0000 (UTC)] DEBUG { code: 'ping_ok',
+  pts: 73,
+  scores: 
+   [ { shout_id: 'eb56e606-5b45-423f-abab-5a798097b4d6',
+       ups: 1,
+       downs: 0,
+       hit: 2,
+       open: 1,
+       pts: 1 },
+     { shout_id: '1b83676e-d71f-4945-bb63-0e3a2fb9a35a',
+       ups: 0,
+       downs: 0,
+       hit: 2,
+       open: 1,
+       pts: 0 } ] }
+[Wed Feb 29 2012 01:13:28 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 01:13:28 GMT+0000 (UTC)] DEBUG { a: 'user_ping',
+  uid: '64604565-8828-f043-f00f-1af967c28774',
+  auth: 'default',
+  lat: '40.7907',
+  long: '-77.86266',
+  rho: '1',
+  ip: '174.252.5.184' }
+[Wed Feb 29 2012 01:13:45 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 01:13:45 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'dea9f8f4-7c3b-4228-9c71-8bee9f8c71c7',
+  auth: 'IVJz+#Nz=x)Gw6OO#VCN7LFE1K5Ga=ZHU5OC/bPa4wxroITwK+oRINeD1XJSShHTo2UN+3xz1cWsaxpNN+hTDbhq/2RtX7rNVlH+BTcx2NxlyigWr0xOog==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  scores: '["eb56e606-5b45-423f-abab-5a798097b4d6", "1b83676e-d71f-4945-bb63-0e3a2fb9a35a"]',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 01:13:47 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 01:13:47 GMT+0000 (UTC)] DEBUG { code: 'ping_ok',
+  pts: 73,
+  scores: 
+   [ { shout_id: 'eb56e606-5b45-423f-abab-5a798097b4d6',
+       ups: 1,
+       downs: 0,
+       hit: 2,
+       open: 1,
+       pts: 1 },
+     { shout_id: '1b83676e-d71f-4945-bb63-0e3a2fb9a35a',
+       ups: 0,
+       downs: 0,
+       hit: 2,
+       open: 1,
+       pts: 0 } ] }
+[Wed Feb 29 2012 01:14:09 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 01:14:09 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'dea9f8f4-7c3b-4228-9c71-8bee9f8c71c7',
+  auth: 'IVJz+#Nz=x)Gw6OO#VCN7LFE1K5Ga=ZHU5OC/bPa4wxroITwK+oRINeD1XJSShHTo2UN+3xz1cWsaxpNN+hTDbhq/2RtX7rNVlH+BTcx2NxlyigWr0xOog==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  scores: '["eb56e606-5b45-423f-abab-5a798097b4d6", "1b83676e-d71f-4945-bb63-0e3a2fb9a35a"]',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 01:14:09 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 01:14:09 GMT+0000 (UTC)] DEBUG { code: 'ping_ok',
+  pts: 73,
+  scores: 
+   [ { shout_id: 'eb56e606-5b45-423f-abab-5a798097b4d6',
+       ups: 1,
+       downs: 0,
+       hit: 2,
+       open: 1,
+       pts: 1 },
+     { shout_id: '1b83676e-d71f-4945-bb63-0e3a2fb9a35a',
+       ups: 0,
+       downs: 0,
+       hit: 2,
+       open: 1,
+       pts: 0 } ] }
+[Wed Feb 29 2012 01:14:41 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 01:14:41 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'dea9f8f4-7c3b-4228-9c71-8bee9f8c71c7',
+  auth: 'IVJz+#Nz=x)Gw6OO#VCN7LFE1K5Ga=ZHU5OC/bPa4wxroITwK+oRINeD1XJSShHTo2UN+3xz1cWsaxpNN+hTDbhq/2RtX7rNVlH+BTcx2NxlyigWr0xOog==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  scores: '["eb56e606-5b45-423f-abab-5a798097b4d6", "1b83676e-d71f-4945-bb63-0e3a2fb9a35a"]',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 01:14:41 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 01:14:41 GMT+0000 (UTC)] DEBUG { code: 'ping_ok',
+  pts: 73,
+  scores: 
+   [ { shout_id: 'eb56e606-5b45-423f-abab-5a798097b4d6',
+       ups: 1,
+       downs: 0,
+       hit: 2,
+       open: 1,
+       pts: 1 },
+     { shout_id: '1b83676e-d71f-4945-bb63-0e3a2fb9a35a',
+       ups: 0,
+       downs: 0,
+       hit: 2,
+       open: 1,
+       pts: 0 } ] }
+[Wed Feb 29 2012 01:14:57 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 01:14:57 GMT+0000 (UTC)] DEBUG { a: 'shout',
+  uid: 'dea9f8f4-7c3b-4228-9c71-8bee9f8c71c7',
+  auth: 'IVJz+#Nz=x)Gw6OO#VCN7LFE1K5Ga=ZHU5OC/bPa4wxroITwK+oRINeD1XJSShHTo2UN+3xz1cWsaxpNN+hTDbhq/2RtX7rNVlH+BTcx2NxlyigWr0xOog==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  txt: '< it\'s "cool" >',
+  shoutreach: '5',
+  hint: '6000000',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 01:14:57 GMT+0000 (UTC)] DEBUG shout re = undefined
+[Wed Feb 29 2012 01:14:57 GMT+0000 (UTC)] DEBUG this is not a reply
+[Wed Feb 29 2012 01:14:57 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 01:14:57 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'dea9f8f4-7c3b-4228-9c71-8bee9f8c71c7',
+  auth: 'IVJz+#Nz=x)Gw6OO#VCN7LFE1K5Ga=ZHU5OC/bPa4wxroITwK+oRINeD1XJSShHTo2UN+3xz1cWsaxpNN+hTDbhq/2RtX7rNVlH+BTcx2NxlyigWr0xOog==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  scores: '["eb56e606-5b45-423f-abab-5a798097b4d6", "1b83676e-d71f-4945-bb63-0e3a2fb9a35a"]',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 01:14:57 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 01:14:57 GMT+0000 (UTC)] DEBUG { code: 'ping_ok',
+  pts: 73,
+  scores: 
+   [ { shout_id: 'eb56e606-5b45-423f-abab-5a798097b4d6',
+       ups: 1,
+       downs: 0,
+       hit: 2,
+       open: 1,
+       pts: 1 },
+     { shout_id: '1b83676e-d71f-4945-bb63-0e3a2fb9a35a',
+       ups: 0,
+       downs: 0,
+       hit: 2,
+       open: 1,
+       pts: 0 } ] }
+[Wed Feb 29 2012 01:14:57 GMT+0000 (UTC)] DEBUG fullGetCallback
+[Wed Feb 29 2012 01:14:57 GMT+0000 (UTC)] DEBUG row = 13074306, 10596850
+[Wed Feb 29 2012 01:14:57 GMT+0000 (UTC)] DEBUG nearby.push(1.5801749476133684e-12, c5450388-9bfa-4cf4-bc80-e33fc708fabd)
+[Wed Feb 29 2012 01:14:57 GMT+0000 (UTC)] DEBUG row = 13075034, 10597303
+[Wed Feb 29 2012 01:14:57 GMT+0000 (UTC)] DEBUG nearby.push(0.8949403315164696, afc0d50f-6d54-405a-a227-02e666fddad9)
+[Wed Feb 29 2012 01:14:57 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 01:14:57 GMT+0000 (UTC)] DEBUG { code: 'shout_sent' }
+[Wed Feb 29 2012 01:14:58 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 01:14:58 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'dea9f8f4-7c3b-4228-9c71-8bee9f8c71c7',
+  auth: 'IVJz+#Nz=x)Gw6OO#VCN7LFE1K5Ga=ZHU5OC/bPa4wxroITwK+oRINeD1XJSShHTo2UN+3xz1cWsaxpNN+hTDbhq/2RtX7rNVlH+BTcx2NxlyigWr0xOog==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  scores: '["eb56e606-5b45-423f-abab-5a798097b4d6", "1b83676e-d71f-4945-bb63-0e3a2fb9a35a"]',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 01:14:58 GMT+0000 (UTC)] DEBUG buildShoutFromJson
+[Wed Feb 29 2012 01:14:58 GMT+0000 (UTC)] DEBUG { shoutId: '36d0920b-fcba-4837-9439-ca0bab9e1c88',
+  userId: 'dea9f8f4-7c3b-4228-9c71-8bee9f8c71c7',
+  time: '2012-02-29T01:14:57.534Z',
+  lastActivityTime: '2012-02-29T01:14:57.534Z',
+  text: '< it\'s "cool" >',
+  open: 1,
+  re: 0,
+  hit: 2,
+  power: 5,
+  ups: 0,
+  downs: 0,
+  lat: '13074306',
+  lng: '10596850',
+  outbox: null,
+  senderIp: '174.254.194.116' }
+[Wed Feb 29 2012 01:14:58 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 01:14:58 GMT+0000 (UTC)] DEBUG { code: 'ping_ok',
+  pts: 73,
+  shouts: 
+   [ { shout_id: '36d0920b-fcba-4837-9439-ca0bab9e1c88',
+       txt: '< it\'s "cool" >',
+       ts: '2012-02-29T01:14:57.534Z',
+       hit: 2,
+       outbox: 1 } ],
+  scores: 
+   [ { shout_id: 'eb56e606-5b45-423f-abab-5a798097b4d6',
+       ups: 1,
+       downs: 0,
+       hit: 2,
+       open: 1,
+       pts: 1 },
+     { shout_id: '1b83676e-d71f-4945-bb63-0e3a2fb9a35a',
+       ups: 0,
+       downs: 0,
+       hit: 2,
+       open: 1,
+       pts: 0 } ] }
+[Wed Feb 29 2012 01:15:20 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 01:15:20 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'dea9f8f4-7c3b-4228-9c71-8bee9f8c71c7',
+  auth: 'IVJz+#Nz=x)Gw6OO#VCN7LFE1K5Ga=ZHU5OC/bPa4wxroITwK+oRINeD1XJSShHTo2UN+3xz1cWsaxpNN+hTDbhq/2RtX7rNVlH+BTcx2NxlyigWr0xOog==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  scores: '["36d0920b-fcba-4837-9439-ca0bab9e1c88", "eb56e606-5b45-423f-abab-5a798097b4d6", "1b83676e-d71f-4945-bb63-0e3a2fb9a35a"]',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 01:15:20 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 01:15:20 GMT+0000 (UTC)] DEBUG { code: 'ping_ok',
+  pts: 73,
+  scores: 
+   [ { shout_id: '36d0920b-fcba-4837-9439-ca0bab9e1c88',
+       ups: 0,
+       downs: 0,
+       hit: 2,
+       open: 1,
+       pts: 0 },
+     { shout_id: 'eb56e606-5b45-423f-abab-5a798097b4d6',
+       ups: 1,
+       downs: 0,
+       hit: 2,
+       open: 1,
+       pts: 1 },
+     { shout_id: '1b83676e-d71f-4945-bb63-0e3a2fb9a35a',
+       ups: 0,
+       downs: 0,
+       hit: 2,
+       open: 1,
+       pts: 0 } ] }
+[Wed Feb 29 2012 01:15:43 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 01:15:43 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'dea9f8f4-7c3b-4228-9c71-8bee9f8c71c7',
+  auth: 'IVJz+#Nz=x)Gw6OO#VCN7LFE1K5Ga=ZHU5OC/bPa4wxroITwK+oRINeD1XJSShHTo2UN+3xz1cWsaxpNN+hTDbhq/2RtX7rNVlH+BTcx2NxlyigWr0xOog==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  scores: '["36d0920b-fcba-4837-9439-ca0bab9e1c88", "eb56e606-5b45-423f-abab-5a798097b4d6", "1b83676e-d71f-4945-bb63-0e3a2fb9a35a"]',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 01:15:43 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 01:15:43 GMT+0000 (UTC)] DEBUG { code: 'ping_ok',
+  pts: 73,
+  scores: 
+   [ { shout_id: '36d0920b-fcba-4837-9439-ca0bab9e1c88',
+       ups: 0,
+       downs: 0,
+       hit: 2,
+       open: 1,
+       pts: 0 },
+     { shout_id: 'eb56e606-5b45-423f-abab-5a798097b4d6',
+       ups: 1,
+       downs: 0,
+       hit: 2,
+       open: 1,
+       pts: 1 },
+     { shout_id: '1b83676e-d71f-4945-bb63-0e3a2fb9a35a',
+       ups: 0,
+       downs: 0,
+       hit: 2,
+       open: 1,
+       pts: 0 } ] }
+[Wed Feb 29 2012 01:16:05 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 01:16:05 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'dea9f8f4-7c3b-4228-9c71-8bee9f8c71c7',
+  auth: 'IVJz+#Nz=x)Gw6OO#VCN7LFE1K5Ga=ZHU5OC/bPa4wxroITwK+oRINeD1XJSShHTo2UN+3xz1cWsaxpNN+hTDbhq/2RtX7rNVlH+BTcx2NxlyigWr0xOog==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  scores: '["36d0920b-fcba-4837-9439-ca0bab9e1c88", "eb56e606-5b45-423f-abab-5a798097b4d6", "1b83676e-d71f-4945-bb63-0e3a2fb9a35a"]',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 01:16:05 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 01:16:05 GMT+0000 (UTC)] DEBUG { code: 'ping_ok',
+  pts: 73,
+  scores: 
+   [ { shout_id: '36d0920b-fcba-4837-9439-ca0bab9e1c88',
+       ups: 0,
+       downs: 0,
+       hit: 2,
+       open: 1,
+       pts: 0 },
+     { shout_id: 'eb56e606-5b45-423f-abab-5a798097b4d6',
+       ups: 1,
+       downs: 0,
+       hit: 2,
+       open: 1,
+       pts: 1 },
+     { shout_id: '1b83676e-d71f-4945-bb63-0e3a2fb9a35a',
+       ups: 0,
+       downs: 0,
+       hit: 2,
+       open: 1,
+       pts: 0 } ] }
+[Wed Feb 29 2012 01:16:27 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 01:16:27 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'dea9f8f4-7c3b-4228-9c71-8bee9f8c71c7',
+  auth: 'IVJz+#Nz=x)Gw6OO#VCN7LFE1K5Ga=ZHU5OC/bPa4wxroITwK+oRINeD1XJSShHTo2UN+3xz1cWsaxpNN+hTDbhq/2RtX7rNVlH+BTcx2NxlyigWr0xOog==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 01:16:28 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 01:16:28 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 73 }
+[Wed Feb 29 2012 01:18:28 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 01:18:28 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'dea9f8f4-7c3b-4228-9c71-8bee9f8c71c7',
+  auth: 'IVJz+#Nz=x)Gw6OO#VCN7LFE1K5Ga=ZHU5OC/bPa4wxroITwK+oRINeD1XJSShHTo2UN+3xz1cWsaxpNN+hTDbhq/2RtX7rNVlH+BTcx2NxlyigWr0xOog==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 01:18:28 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 01:18:28 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 73 }
+[Wed Feb 29 2012 01:18:51 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 01:18:51 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'dea9f8f4-7c3b-4228-9c71-8bee9f8c71c7',
+  auth: 'IVJz+#Nz=x)Gw6OO#VCN7LFE1K5Ga=ZHU5OC/bPa4wxroITwK+oRINeD1XJSShHTo2UN+3xz1cWsaxpNN+hTDbhq/2RtX7rNVlH+BTcx2NxlyigWr0xOog==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 01:18:51 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 01:18:51 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 73 }
+[Wed Feb 29 2012 01:19:49 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 01:19:49 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'dea9f8f4-7c3b-4228-9c71-8bee9f8c71c7',
+  auth: 'IVJz+#Nz=x)Gw6OO#VCN7LFE1K5Ga=ZHU5OC/bPa4wxroITwK+oRINeD1XJSShHTo2UN+3xz1cWsaxpNN+hTDbhq/2RtX7rNVlH+BTcx2NxlyigWr0xOog==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 01:19:51 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 01:19:51 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 73 }
+[Wed Feb 29 2012 01:20:20 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 01:20:20 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'dea9f8f4-7c3b-4228-9c71-8bee9f8c71c7',
+  auth: 'IVJz+#Nz=x)Gw6OO#VCN7LFE1K5Ga=ZHU5OC/bPa4wxroITwK+oRINeD1XJSShHTo2UN+3xz1cWsaxpNN+hTDbhq/2RtX7rNVlH+BTcx2NxlyigWr0xOog==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 01:20:20 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 01:20:20 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 73 }
+[Wed Feb 29 2012 01:21:43 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 01:21:43 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'dea9f8f4-7c3b-4228-9c71-8bee9f8c71c7',
+  auth: 'IVJz+#Nz=x)Gw6OO#VCN7LFE1K5Ga=ZHU5OC/bPa4wxroITwK+oRINeD1XJSShHTo2UN+3xz1cWsaxpNN+hTDbhq/2RtX7rNVlH+BTcx2NxlyigWr0xOog==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 01:21:44 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 01:21:44 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 73 }
+[Wed Feb 29 2012 01:24:13 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 01:24:13 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'dea9f8f4-7c3b-4228-9c71-8bee9f8c71c7',
+  auth: 'IVJz+#Nz=x)Gw6OO#VCN7LFE1K5Ga=ZHU5OC/bPa4wxroITwK+oRINeD1XJSShHTo2UN+3xz1cWsaxpNN+hTDbhq/2RtX7rNVlH+BTcx2NxlyigWr0xOog==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  scores: '["36d0920b-fcba-4837-9439-ca0bab9e1c88", "eb56e606-5b45-423f-abab-5a798097b4d6", "1b83676e-d71f-4945-bb63-0e3a2fb9a35a"]',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 01:24:13 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 01:24:13 GMT+0000 (UTC)] DEBUG { code: 'ping_ok',
+  pts: 73,
+  scores: 
+   [ { shout_id: '36d0920b-fcba-4837-9439-ca0bab9e1c88',
+       ups: 0,
+       downs: 0,
+       hit: 2,
+       open: 1,
+       pts: 0 },
+     { shout_id: 'eb56e606-5b45-423f-abab-5a798097b4d6',
+       ups: 1,
+       downs: 0,
+       hit: 2,
+       open: 1,
+       pts: 1 },
+     { shout_id: '1b83676e-d71f-4945-bb63-0e3a2fb9a35a',
+       ups: 0,
+       downs: 0,
+       hit: 2,
+       open: 1,
+       pts: 0 } ] }
+[Wed Feb 29 2012 01:24:39 GMT+0000 (UTC)] DEBUG Server launched.
+[Wed Feb 29 2012 01:24:39 GMT+0000 (UTC)] DEBUG Listening...
+[Wed Feb 29 2012 01:24:39 GMT+0000 (UTC)] DEBUG Culling 2 users.
+[Wed Feb 29 2012 01:25:08 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 01:25:08 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'dea9f8f4-7c3b-4228-9c71-8bee9f8c71c7',
+  auth: 'default',
+  lat: '40.74306',
+  lng: '-74.0315',
+  radius: '1',
+  scores: '["36d0920b-fcba-4837-9439-ca0bab9e1c88", "eb56e606-5b45-423f-abab-5a798097b4d6", "1b83676e-d71f-4945-bb63-0e3a2fb9a35a"]',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 01:25:08 GMT+0000 (UTC)] DEBUG Failed auth count = 3
+[Wed Feb 29 2012 01:25:08 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 01:25:08 GMT+0000 (UTC)] DEBUG { code: 'expired_auth',
+  nonce: 'd88UkjG*PZqS1$rFfHUSDRs1pw*DwN5hvFOTBpaM' }
+[Wed Feb 29 2012 01:25:08 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 01:25:08 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'dea9f8f4-7c3b-4228-9c71-8bee9f8c71c7',
+  auth: 'IVJz+#Nz=x)Gw6OO#VCN7LFE1K5Ga=ZHFZN8ApChGgWv7vlA3g3pY5Ofw6OCkZCZGQ7NRyo9Ye2MpEWG43LhW99Yw+ny6g09XPLq/CVC122Ia2Hn0Jtv3A==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  radius: '1',
+  scores: '["36d0920b-fcba-4837-9439-ca0bab9e1c88", "eb56e606-5b45-423f-abab-5a798097b4d6", "1b83676e-d71f-4945-bb63-0e3a2fb9a35a"]',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 01:25:08 GMT+0000 (UTC)] DEBUG User requested radius.
+[Wed Feb 29 2012 01:25:08 GMT+0000 (UTC)] DEBUG userCanRequestRadius Count = 3
+[Wed Feb 29 2012 01:25:08 GMT+0000 (UTC)] DEBUG userCanRequestRadiusResult = true
+[Wed Feb 29 2012 01:25:08 GMT+0000 (UTC)] DEBUG fullGetCallback
+[Wed Feb 29 2012 01:25:08 GMT+0000 (UTC)] DEBUG nearby = 
+[Wed Feb 29 2012 01:25:08 GMT+0000 (UTC)] DEBUG []
+[Wed Feb 29 2012 01:25:08 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 01:25:08 GMT+0000 (UTC)] DEBUG { code: 'ping_ok',
+  pts: 73,
+  radius: 6000000,
+  scores: 
+   [ { shout_id: '36d0920b-fcba-4837-9439-ca0bab9e1c88',
+       ups: 0,
+       downs: 0,
+       hit: 2,
+       open: 1,
+       pts: 0 },
+     { shout_id: 'eb56e606-5b45-423f-abab-5a798097b4d6',
+       ups: 1,
+       downs: 0,
+       hit: 2,
+       open: 1,
+       pts: 1 },
+     { shout_id: '1b83676e-d71f-4945-bb63-0e3a2fb9a35a',
+       ups: 0,
+       downs: 0,
+       hit: 2,
+       open: 1,
+       pts: 0 } ] }
+[Wed Feb 29 2012 01:25:22 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 01:25:22 GMT+0000 (UTC)] DEBUG { a: 'shout',
+  uid: 'dea9f8f4-7c3b-4228-9c71-8bee9f8c71c7',
+  auth: 'IVJz+#Nz=x)Gw6OO#VCN7LFE1K5Ga=ZHFZN8ApChGgWv7vlA3g3pY5Ofw6OCkZCZGQ7NRyo9Ye2MpEWG43LhW99Yw+ny6g09XPLq/CVC122Ia2Hn0Jtv3A==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  txt: 'Life',
+  shoutreach: '5',
+  hint: '6000000',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 01:25:22 GMT+0000 (UTC)] DEBUG shout re = undefined
+[Wed Feb 29 2012 01:25:22 GMT+0000 (UTC)] DEBUG this is not a reply
+[Wed Feb 29 2012 01:25:22 GMT+0000 (UTC)] DEBUG fullGetCallback
+[Wed Feb 29 2012 01:25:22 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 01:25:22 GMT+0000 (UTC)] DEBUG { code: 'shout_sent' }
+[Wed Feb 29 2012 01:25:23 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 01:25:23 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'dea9f8f4-7c3b-4228-9c71-8bee9f8c71c7',
+  auth: 'IVJz+#Nz=x)Gw6OO#VCN7LFE1K5Ga=ZHFZN8ApChGgWv7vlA3g3pY5Ofw6OCkZCZGQ7NRyo9Ye2MpEWG43LhW99Yw+ny6g09XPLq/CVC122Ia2Hn0Jtv3A==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  scores: '["36d0920b-fcba-4837-9439-ca0bab9e1c88", "eb56e606-5b45-423f-abab-5a798097b4d6", "1b83676e-d71f-4945-bb63-0e3a2fb9a35a"]',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 01:25:23 GMT+0000 (UTC)] DEBUG buildShoutFromJson
+[Wed Feb 29 2012 01:25:23 GMT+0000 (UTC)] DEBUG { shoutId: 'ae7c219d-253c-4ce0-8d33-b911ef889d5c',
+  userId: 'dea9f8f4-7c3b-4228-9c71-8bee9f8c71c7',
+  time: '2012-02-29T01:25:22.839Z',
+  lastActivityTime: '2012-02-29T01:25:22.839Z',
+  text: 'Life',
+  open: 1,
+  re: 0,
+  hit: 0,
+  power: 5,
+  ups: 0,
+  downs: 0,
+  lat: '13074306',
+  lng: '10596850',
+  outbox: null,
+  senderIp: '174.254.194.116' }
+[Wed Feb 29 2012 01:25:23 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 01:25:23 GMT+0000 (UTC)] DEBUG { code: 'ping_ok',
+  pts: 73,
+  shouts: 
+   [ { shout_id: 'ae7c219d-253c-4ce0-8d33-b911ef889d5c',
+       txt: 'Life',
+       ts: '2012-02-29T01:25:22.839Z',
+       hit: 0,
+       outbox: 1 } ],
+  scores: 
+   [ { shout_id: '36d0920b-fcba-4837-9439-ca0bab9e1c88',
+       ups: 0,
+       downs: 0,
+       hit: 2,
+       open: 1,
+       pts: 0 },
+     { shout_id: 'eb56e606-5b45-423f-abab-5a798097b4d6',
+       ups: 1,
+       downs: 0,
+       hit: 2,
+       open: 1,
+       pts: 1 },
+     { shout_id: '1b83676e-d71f-4945-bb63-0e3a2fb9a35a',
+       ups: 0,
+       downs: 0,
+       hit: 2,
+       open: 1,
+       pts: 0 } ] }
+[Wed Feb 29 2012 01:25:28 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 01:25:28 GMT+0000 (UTC)] DEBUG { a: 'shout',
+  uid: 'dea9f8f4-7c3b-4228-9c71-8bee9f8c71c7',
+  auth: 'IVJz+#Nz=x)Gw6OO#VCN7LFE1K5Ga=ZHFZN8ApChGgWv7vlA3g3pY5Ofw6OCkZCZGQ7NRyo9Ye2MpEWG43LhW99Yw+ny6g09XPLq/CVC122Ia2Hn0Jtv3A==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  txt: 'Death',
+  shoutreach: '5',
+  hint: '6000000',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 01:25:28 GMT+0000 (UTC)] DEBUG shout re = undefined
+[Wed Feb 29 2012 01:25:28 GMT+0000 (UTC)] DEBUG this is not a reply
+[Wed Feb 29 2012 01:25:28 GMT+0000 (UTC)] DEBUG fullGetCallback
+[Wed Feb 29 2012 01:25:29 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 01:25:29 GMT+0000 (UTC)] DEBUG { code: 'shout_sent' }
+[Wed Feb 29 2012 01:25:29 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 01:25:29 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'dea9f8f4-7c3b-4228-9c71-8bee9f8c71c7',
+  auth: 'IVJz+#Nz=x)Gw6OO#VCN7LFE1K5Ga=ZHFZN8ApChGgWv7vlA3g3pY5Ofw6OCkZCZGQ7NRyo9Ye2MpEWG43LhW99Yw+ny6g09XPLq/CVC122Ia2Hn0Jtv3A==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  scores: '["ae7c219d-253c-4ce0-8d33-b911ef889d5c", "36d0920b-fcba-4837-9439-ca0bab9e1c88", "eb56e606-5b45-423f-abab-5a798097b4d6", "1b83676e-d71f-4945-bb63-0e3a2fb9a35a"]',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 01:25:30 GMT+0000 (UTC)] DEBUG buildShoutFromJson
+[Wed Feb 29 2012 01:25:30 GMT+0000 (UTC)] DEBUG { shoutId: 'd053c589-cb6f-4da8-83dd-6bef8a2c2959',
+  userId: 'dea9f8f4-7c3b-4228-9c71-8bee9f8c71c7',
+  time: '2012-02-29T01:25:28.958Z',
+  lastActivityTime: '2012-02-29T01:25:28.958Z',
+  text: 'Death',
+  open: 1,
+  re: 0,
+  hit: 0,
+  power: 5,
+  ups: 0,
+  downs: 0,
+  lat: '13074306',
+  lng: '10596850',
+  outbox: null,
+  senderIp: '174.254.194.116' }
+[Wed Feb 29 2012 01:25:30 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 01:25:30 GMT+0000 (UTC)] DEBUG { code: 'ping_ok',
+  pts: 73,
+  shouts: 
+   [ { shout_id: 'd053c589-cb6f-4da8-83dd-6bef8a2c2959',
+       txt: 'Death',
+       ts: '2012-02-29T01:25:28.958Z',
+       hit: 0,
+       outbox: 1 } ],
+  scores: 
+   [ { shout_id: 'ae7c219d-253c-4ce0-8d33-b911ef889d5c',
+       ups: 0,
+       downs: 0,
+       hit: 0,
+       open: 1,
+       pts: 0 },
+     { shout_id: '36d0920b-fcba-4837-9439-ca0bab9e1c88',
+       ups: 0,
+       downs: 0,
+       hit: 2,
+       open: 1,
+       pts: 0 },
+     { shout_id: 'eb56e606-5b45-423f-abab-5a798097b4d6',
+       ups: 1,
+       downs: 0,
+       hit: 2,
+       open: 1,
+       pts: 1 },
+     { shout_id: '1b83676e-d71f-4945-bb63-0e3a2fb9a35a',
+       ups: 0,
+       downs: 0,
+       hit: 2,
+       open: 1,
+       pts: 0 } ] }
+[Wed Feb 29 2012 01:25:45 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 01:25:46 GMT+0000 (UTC)] DEBUG Server launched.
+[Wed Feb 29 2012 01:25:46 GMT+0000 (UTC)] DEBUG Listening...
+[Wed Feb 29 2012 01:25:46 GMT+0000 (UTC)] DEBUG Culling 0 users.
+[Wed Feb 29 2012 01:25:46 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 01:25:46 GMT+0000 (UTC)] DEBUG Server launched.
+[Wed Feb 29 2012 01:25:46 GMT+0000 (UTC)] DEBUG Listening...
+[Wed Feb 29 2012 01:25:46 GMT+0000 (UTC)] DEBUG Culling 0 users.
+[Wed Feb 29 2012 01:25:46 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 01:25:46 GMT+0000 (UTC)] DEBUG Server launched.
+[Wed Feb 29 2012 01:25:46 GMT+0000 (UTC)] DEBUG Listening...
+[Wed Feb 29 2012 01:25:46 GMT+0000 (UTC)] DEBUG Culling 0 users.
+[Wed Feb 29 2012 01:25:46 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 01:25:46 GMT+0000 (UTC)] DEBUG Server launched.
+[Wed Feb 29 2012 01:25:46 GMT+0000 (UTC)] DEBUG Listening...
+[Wed Feb 29 2012 01:25:46 GMT+0000 (UTC)] DEBUG Culling 0 users.
+[Wed Feb 29 2012 01:25:50 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 01:25:50 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'dea9f8f4-7c3b-4228-9c71-8bee9f8c71c7',
+  auth: 'IVJz+#Nz=x)Gw6OO#VCN7LFE1K5Ga=ZHFZN8ApChGgWv7vlA3g3pY5Ofw6OCkZCZGQ7NRyo9Ye2MpEWG43LhW99Yw+ny6g09XPLq/CVC122Ia2Hn0Jtv3A==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  scores: '["d053c589-cb6f-4da8-83dd-6bef8a2c2959", "ae7c219d-253c-4ce0-8d33-b911ef889d5c", "36d0920b-fcba-4837-9439-ca0bab9e1c88", "eb56e606-5b45-423f-abab-5a798097b4d6", "1b83676e-d71f-4945-bb63-0e3a2fb9a35a"]',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 01:25:51 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 01:25:51 GMT+0000 (UTC)] DEBUG { code: 'ping_ok',
+  pts: 73,
+  scores: 
+   [ { shout_id: 'd053c589-cb6f-4da8-83dd-6bef8a2c2959',
+       ups: 0,
+       downs: 0,
+       hit: 0,
+       open: 1,
+       pts: 0 },
+     { shout_id: 'ae7c219d-253c-4ce0-8d33-b911ef889d5c',
+       ups: 0,
+       downs: 0,
+       hit: 0,
+       open: 1,
+       pts: 0 },
+     { shout_id: '36d0920b-fcba-4837-9439-ca0bab9e1c88',
+       ups: 0,
+       downs: 0,
+       hit: 2,
+       open: 1,
+       pts: 0 },
+     { shout_id: 'eb56e606-5b45-423f-abab-5a798097b4d6',
+       ups: 1,
+       downs: 0,
+       hit: 2,
+       open: 1,
+       pts: 1 },
+     { shout_id: '1b83676e-d71f-4945-bb63-0e3a2fb9a35a',
+       ups: 0,
+       downs: 0,
+       hit: 2,
+       open: 1,
+       pts: 0 } ] }
+[Wed Feb 29 2012 01:26:00 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 01:26:00 GMT+0000 (UTC)] DEBUG { a: 'shout',
+  uid: 'dea9f8f4-7c3b-4228-9c71-8bee9f8c71c7',
+  auth: 'IVJz+#Nz=x)Gw6OO#VCN7LFE1K5Ga=ZHFZN8ApChGgWv7vlA3g3pY5Ofw6OCkZCZGQ7NRyo9Ye2MpEWG43LhW99Yw+ny6g09XPLq/CVC122Ia2Hn0Jtv3A==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  txt: 'Life',
+  shoutreach: '5',
+  hint: '6000000',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 01:26:00 GMT+0000 (UTC)] DEBUG shout re = undefined
+[Wed Feb 29 2012 01:26:00 GMT+0000 (UTC)] DEBUG this is not a reply
+[Wed Feb 29 2012 01:26:00 GMT+0000 (UTC)] DEBUG fullGetCallback
+[Wed Feb 29 2012 01:26:00 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 01:26:00 GMT+0000 (UTC)] DEBUG { code: 'shout_sent' }
+[Wed Feb 29 2012 01:26:01 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 01:26:01 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'dea9f8f4-7c3b-4228-9c71-8bee9f8c71c7',
+  auth: 'IVJz+#Nz=x)Gw6OO#VCN7LFE1K5Ga=ZHFZN8ApChGgWv7vlA3g3pY5Ofw6OCkZCZGQ7NRyo9Ye2MpEWG43LhW99Yw+ny6g09XPLq/CVC122Ia2Hn0Jtv3A==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  scores: '["d053c589-cb6f-4da8-83dd-6bef8a2c2959", "ae7c219d-253c-4ce0-8d33-b911ef889d5c", "36d0920b-fcba-4837-9439-ca0bab9e1c88", "eb56e606-5b45-423f-abab-5a798097b4d6", "1b83676e-d71f-4945-bb63-0e3a2fb9a35a"]',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 01:26:01 GMT+0000 (UTC)] DEBUG buildShoutFromJson
+[Wed Feb 29 2012 01:26:01 GMT+0000 (UTC)] DEBUG { shoutId: '6457efb4-f782-40d0-a072-f0532a36e5f6',
+  userId: 'dea9f8f4-7c3b-4228-9c71-8bee9f8c71c7',
+  time: '2012-02-29T01:26:00.158Z',
+  lastActivityTime: '2012-02-29T01:26:00.158Z',
+  text: 'Life',
+  open: 1,
+  re: 0,
+  hit: 0,
+  power: 5,
+  ups: 0,
+  downs: 0,
+  lat: '13074306',
+  lng: '10596850',
+  outbox: null,
+  senderIp: '174.254.194.116' }
+[Wed Feb 29 2012 01:26:01 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 01:26:01 GMT+0000 (UTC)] DEBUG { code: 'ping_ok',
+  pts: 73,
+  shouts: 
+   [ { shout_id: '6457efb4-f782-40d0-a072-f0532a36e5f6',
+       txt: 'Life',
+       ts: '2012-02-29T01:26:00.158Z',
+       hit: 0,
+       outbox: 1 } ],
+  scores: 
+   [ { shout_id: 'd053c589-cb6f-4da8-83dd-6bef8a2c2959',
+       ups: 0,
+       downs: 0,
+       hit: 0,
+       open: 1,
+       pts: 0 },
+     { shout_id: 'ae7c219d-253c-4ce0-8d33-b911ef889d5c',
+       ups: 0,
+       downs: 0,
+       hit: 0,
+       open: 1,
+       pts: 0 },
+     { shout_id: '36d0920b-fcba-4837-9439-ca0bab9e1c88',
+       ups: 0,
+       downs: 0,
+       hit: 2,
+       open: 1,
+       pts: 0 },
+     { shout_id: 'eb56e606-5b45-423f-abab-5a798097b4d6',
+       ups: 1,
+       downs: 0,
+       hit: 2,
+       open: 1,
+       pts: 1 },
+     { shout_id: '1b83676e-d71f-4945-bb63-0e3a2fb9a35a',
+       ups: 0,
+       downs: 0,
+       hit: 2,
+       open: 1,
+       pts: 0 } ] }
+[Wed Feb 29 2012 01:26:28 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 01:26:28 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'dea9f8f4-7c3b-4228-9c71-8bee9f8c71c7',
+  auth: 'IVJz+#Nz=x)Gw6OO#VCN7LFE1K5Ga=ZHFZN8ApChGgWv7vlA3g3pY5Ofw6OCkZCZGQ7NRyo9Ye2MpEWG43LhW99Yw+ny6g09XPLq/CVC122Ia2Hn0Jtv3A==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  scores: '["6457efb4-f782-40d0-a072-f0532a36e5f6", "d053c589-cb6f-4da8-83dd-6bef8a2c2959", "ae7c219d-253c-4ce0-8d33-b911ef889d5c", "36d0920b-fcba-4837-9439-ca0bab9e1c88", "eb56e606-5b45-423f-abab-5a798097b4d6", "1b83676e-d71f-4945-bb63-0e3a2fb9a35a"]',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 01:26:29 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 01:26:29 GMT+0000 (UTC)] DEBUG { code: 'ping_ok',
+  pts: 73,
+  scores: 
+   [ { shout_id: '6457efb4-f782-40d0-a072-f0532a36e5f6',
+       ups: 0,
+       downs: 0,
+       hit: 0,
+       open: 1,
+       pts: 0 },
+     { shout_id: 'd053c589-cb6f-4da8-83dd-6bef8a2c2959',
+       ups: 0,
+       downs: 0,
+       hit: 0,
+       open: 1,
+       pts: 0 },
+     { shout_id: 'ae7c219d-253c-4ce0-8d33-b911ef889d5c',
+       ups: 0,
+       downs: 0,
+       hit: 0,
+       open: 1,
+       pts: 0 },
+     { shout_id: '36d0920b-fcba-4837-9439-ca0bab9e1c88',
+       ups: 0,
+       downs: 0,
+       hit: 2,
+       open: 1,
+       pts: 0 },
+     { shout_id: 'eb56e606-5b45-423f-abab-5a798097b4d6',
+       ups: 1,
+       downs: 0,
+       hit: 2,
+       open: 1,
+       pts: 1 },
+     { shout_id: '1b83676e-d71f-4945-bb63-0e3a2fb9a35a',
+       ups: 0,
+       downs: 0,
+       hit: 2,
+       open: 1,
+       pts: 0 } ] }
+[Wed Feb 29 2012 01:26:51 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 01:26:51 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'dea9f8f4-7c3b-4228-9c71-8bee9f8c71c7',
+  auth: 'IVJz+#Nz=x)Gw6OO#VCN7LFE1K5Ga=ZHFZN8ApChGgWv7vlA3g3pY5Ofw6OCkZCZGQ7NRyo9Ye2MpEWG43LhW99Yw+ny6g09XPLq/CVC122Ia2Hn0Jtv3A==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  scores: '["6457efb4-f782-40d0-a072-f0532a36e5f6", "d053c589-cb6f-4da8-83dd-6bef8a2c2959", "ae7c219d-253c-4ce0-8d33-b911ef889d5c", "36d0920b-fcba-4837-9439-ca0bab9e1c88", "eb56e606-5b45-423f-abab-5a798097b4d6", "1b83676e-d71f-4945-bb63-0e3a2fb9a35a"]',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 01:26:51 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 01:26:51 GMT+0000 (UTC)] DEBUG { code: 'ping_ok',
+  pts: 73,
+  scores: 
+   [ { shout_id: '6457efb4-f782-40d0-a072-f0532a36e5f6',
+       ups: 0,
+       downs: 0,
+       hit: 0,
+       open: 1,
+       pts: 0 },
+     { shout_id: 'd053c589-cb6f-4da8-83dd-6bef8a2c2959',
+       ups: 0,
+       downs: 0,
+       hit: 0,
+       open: 1,
+       pts: 0 },
+     { shout_id: 'ae7c219d-253c-4ce0-8d33-b911ef889d5c',
+       ups: 0,
+       downs: 0,
+       hit: 0,
+       open: 1,
+       pts: 0 },
+     { shout_id: '36d0920b-fcba-4837-9439-ca0bab9e1c88',
+       ups: 0,
+       downs: 0,
+       hit: 2,
+       open: 1,
+       pts: 0 },
+     { shout_id: 'eb56e606-5b45-423f-abab-5a798097b4d6',
+       ups: 1,
+       downs: 0,
+       hit: 2,
+       open: 1,
+       pts: 1 },
+     { shout_id: '1b83676e-d71f-4945-bb63-0e3a2fb9a35a',
+       ups: 0,
+       downs: 0,
+       hit: 2,
+       open: 1,
+       pts: 0 } ] }
+[Wed Feb 29 2012 01:27:14 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 01:27:14 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'dea9f8f4-7c3b-4228-9c71-8bee9f8c71c7',
+  auth: 'IVJz+#Nz=x)Gw6OO#VCN7LFE1K5Ga=ZHFZN8ApChGgWv7vlA3g3pY5Ofw6OCkZCZGQ7NRyo9Ye2MpEWG43LhW99Yw+ny6g09XPLq/CVC122Ia2Hn0Jtv3A==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 01:27:14 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 01:27:14 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 73 }
+[Wed Feb 29 2012 01:27:16 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 01:27:16 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'dea9f8f4-7c3b-4228-9c71-8bee9f8c71c7',
+  auth: 'IVJz+#Nz=x)Gw6OO#VCN7LFE1K5Ga=ZHFZN8ApChGgWv7vlA3g3pY5Ofw6OCkZCZGQ7NRyo9Ye2MpEWG43LhW99Yw+ny6g09XPLq/CVC122Ia2Hn0Jtv3A==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 01:27:16 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 01:27:16 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 73 }
+[Wed Feb 29 2012 01:27:38 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 01:27:38 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'dea9f8f4-7c3b-4228-9c71-8bee9f8c71c7',
+  auth: 'IVJz+#Nz=x)Gw6OO#VCN7LFE1K5Ga=ZHFZN8ApChGgWv7vlA3g3pY5Ofw6OCkZCZGQ7NRyo9Ye2MpEWG43LhW99Yw+ny6g09XPLq/CVC122Ia2Hn0Jtv3A==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 01:27:39 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 01:27:39 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 73 }
+[Wed Feb 29 2012 01:28:42 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 01:28:42 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'dea9f8f4-7c3b-4228-9c71-8bee9f8c71c7',
+  auth: 'IVJz+#Nz=x)Gw6OO#VCN7LFE1K5Ga=ZHFZN8ApChGgWv7vlA3g3pY5Ofw6OCkZCZGQ7NRyo9Ye2MpEWG43LhW99Yw+ny6g09XPLq/CVC122Ia2Hn0Jtv3A==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 01:28:42 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 01:28:42 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 73 }
+[Wed Feb 29 2012 01:30:22 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 01:30:22 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'dea9f8f4-7c3b-4228-9c71-8bee9f8c71c7',
+  auth: 'IVJz+#Nz=x)Gw6OO#VCN7LFE1K5Ga=ZHFZN8ApChGgWv7vlA3g3pY5Ofw6OCkZCZGQ7NRyo9Ye2MpEWG43LhW99Yw+ny6g09XPLq/CVC122Ia2Hn0Jtv3A==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  scores: '["6457efb4-f782-40d0-a072-f0532a36e5f6", "d053c589-cb6f-4da8-83dd-6bef8a2c2959", "ae7c219d-253c-4ce0-8d33-b911ef889d5c", "36d0920b-fcba-4837-9439-ca0bab9e1c88", "eb56e606-5b45-423f-abab-5a798097b4d6", "1b83676e-d71f-4945-bb63-0e3a2fb9a35a"]',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 01:30:23 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 01:30:23 GMT+0000 (UTC)] DEBUG { code: 'ping_ok',
+  pts: 73,
+  scores: 
+   [ { shout_id: '6457efb4-f782-40d0-a072-f0532a36e5f6',
+       ups: 0,
+       downs: 0,
+       hit: 0,
+       open: 1,
+       pts: 0 },
+     { shout_id: 'd053c589-cb6f-4da8-83dd-6bef8a2c2959',
+       ups: 0,
+       downs: 0,
+       hit: 0,
+       open: 1,
+       pts: 0 },
+     { shout_id: 'ae7c219d-253c-4ce0-8d33-b911ef889d5c',
+       ups: 0,
+       downs: 0,
+       hit: 0,
+       open: 1,
+       pts: 0 },
+     { shout_id: '36d0920b-fcba-4837-9439-ca0bab9e1c88',
+       ups: 0,
+       downs: 0,
+       hit: 2,
+       open: 1,
+       pts: 0 },
+     { shout_id: 'eb56e606-5b45-423f-abab-5a798097b4d6',
+       ups: 1,
+       downs: 0,
+       hit: 2,
+       open: 1,
+       pts: 1 },
+     { shout_id: '1b83676e-d71f-4945-bb63-0e3a2fb9a35a',
+       ups: 0,
+       downs: 0,
+       hit: 2,
+       open: 1,
+       pts: 0 } ] }
+[Wed Feb 29 2012 01:30:48 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 01:30:48 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'dea9f8f4-7c3b-4228-9c71-8bee9f8c71c7',
+  auth: 'IVJz+#Nz=x)Gw6OO#VCN7LFE1K5Ga=ZHFZN8ApChGgWv7vlA3g3pY5Ofw6OCkZCZGQ7NRyo9Ye2MpEWG43LhW99Yw+ny6g09XPLq/CVC122Ia2Hn0Jtv3A==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 01:30:48 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 01:30:48 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 73 }
+[Wed Feb 29 2012 01:31:10 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 01:31:10 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'dea9f8f4-7c3b-4228-9c71-8bee9f8c71c7',
+  auth: 'IVJz+#Nz=x)Gw6OO#VCN7LFE1K5Ga=ZHFZN8ApChGgWv7vlA3g3pY5Ofw6OCkZCZGQ7NRyo9Ye2MpEWG43LhW99Yw+ny6g09XPLq/CVC122Ia2Hn0Jtv3A==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 01:31:11 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 01:31:11 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 73 }
+[Wed Feb 29 2012 01:31:21 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 01:31:21 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'dea9f8f4-7c3b-4228-9c71-8bee9f8c71c7',
+  auth: 'IVJz+#Nz=x)Gw6OO#VCN7LFE1K5Ga=ZHFZN8ApChGgWv7vlA3g3pY5Ofw6OCkZCZGQ7NRyo9Ye2MpEWG43LhW99Yw+ny6g09XPLq/CVC122Ia2Hn0Jtv3A==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 01:31:21 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 01:31:21 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 73 }
+[Wed Feb 29 2012 01:31:45 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 01:31:45 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'dea9f8f4-7c3b-4228-9c71-8bee9f8c71c7',
+  auth: 'IVJz+#Nz=x)Gw6OO#VCN7LFE1K5Ga=ZHFZN8ApChGgWv7vlA3g3pY5Ofw6OCkZCZGQ7NRyo9Ye2MpEWG43LhW99Yw+ny6g09XPLq/CVC122Ia2Hn0Jtv3A==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 01:31:45 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 01:31:45 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'dea9f8f4-7c3b-4228-9c71-8bee9f8c71c7',
+  auth: 'IVJz+#Nz=x)Gw6OO#VCN7LFE1K5Ga=ZHFZN8ApChGgWv7vlA3g3pY5Ofw6OCkZCZGQ7NRyo9Ye2MpEWG43LhW99Yw+ny6g09XPLq/CVC122Ia2Hn0Jtv3A==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  scores: '["6457efb4-f782-40d0-a072-f0532a36e5f6", "d053c589-cb6f-4da8-83dd-6bef8a2c2959", "ae7c219d-253c-4ce0-8d33-b911ef889d5c", "36d0920b-fcba-4837-9439-ca0bab9e1c88", "eb56e606-5b45-423f-abab-5a798097b4d6", "1b83676e-d71f-4945-bb63-0e3a2fb9a35a"]',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 01:31:45 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 01:31:45 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 73 }
+[Wed Feb 29 2012 01:31:45 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 01:31:45 GMT+0000 (UTC)] DEBUG { code: 'ping_ok',
+  pts: 73,
+  scores: 
+   [ { shout_id: '6457efb4-f782-40d0-a072-f0532a36e5f6',
+       ups: 0,
+       downs: 0,
+       hit: 0,
+       open: 1,
+       pts: 0 },
+     { shout_id: 'd053c589-cb6f-4da8-83dd-6bef8a2c2959',
+       ups: 0,
+       downs: 0,
+       hit: 0,
+       open: 1,
+       pts: 0 },
+     { shout_id: 'ae7c219d-253c-4ce0-8d33-b911ef889d5c',
+       ups: 0,
+       downs: 0,
+       hit: 0,
+       open: 1,
+       pts: 0 },
+     { shout_id: '36d0920b-fcba-4837-9439-ca0bab9e1c88',
+       ups: 0,
+       downs: 0,
+       hit: 2,
+       open: 1,
+       pts: 0 },
+     { shout_id: 'eb56e606-5b45-423f-abab-5a798097b4d6',
+       ups: 1,
+       downs: 0,
+       hit: 2,
+       open: 1,
+       pts: 1 },
+     { shout_id: '1b83676e-d71f-4945-bb63-0e3a2fb9a35a',
+       ups: 0,
+       downs: 0,
+       hit: 2,
+       open: 1,
+       pts: 0 } ] }
+[Wed Feb 29 2012 01:32:09 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 01:32:09 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'dea9f8f4-7c3b-4228-9c71-8bee9f8c71c7',
+  auth: 'IVJz+#Nz=x)Gw6OO#VCN7LFE1K5Ga=ZHFZN8ApChGgWv7vlA3g3pY5Ofw6OCkZCZGQ7NRyo9Ye2MpEWG43LhW99Yw+ny6g09XPLq/CVC122Ia2Hn0Jtv3A==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  scores: '["6457efb4-f782-40d0-a072-f0532a36e5f6", "d053c589-cb6f-4da8-83dd-6bef8a2c2959", "ae7c219d-253c-4ce0-8d33-b911ef889d5c", "36d0920b-fcba-4837-9439-ca0bab9e1c88", "eb56e606-5b45-423f-abab-5a798097b4d6", "1b83676e-d71f-4945-bb63-0e3a2fb9a35a"]',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 01:32:09 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 01:32:09 GMT+0000 (UTC)] DEBUG { code: 'ping_ok',
+  pts: 73,
+  scores: 
+   [ { shout_id: '6457efb4-f782-40d0-a072-f0532a36e5f6',
+       ups: 0,
+       downs: 0,
+       hit: 0,
+       open: 1,
+       pts: 0 },
+     { shout_id: 'd053c589-cb6f-4da8-83dd-6bef8a2c2959',
+       ups: 0,
+       downs: 0,
+       hit: 0,
+       open: 1,
+       pts: 0 },
+     { shout_id: 'ae7c219d-253c-4ce0-8d33-b911ef889d5c',
+       ups: 0,
+       downs: 0,
+       hit: 0,
+       open: 1,
+       pts: 0 },
+     { shout_id: '36d0920b-fcba-4837-9439-ca0bab9e1c88',
+       ups: 0,
+       downs: 0,
+       hit: 2,
+       open: 1,
+       pts: 0 },
+     { shout_id: 'eb56e606-5b45-423f-abab-5a798097b4d6',
+       ups: 1,
+       downs: 0,
+       hit: 2,
+       open: 1,
+       pts: 1 },
+     { shout_id: '1b83676e-d71f-4945-bb63-0e3a2fb9a35a',
+       ups: 0,
+       downs: 0,
+       hit: 2,
+       open: 1,
+       pts: 0 } ] }
+[Wed Feb 29 2012 01:32:30 GMT+0000 (UTC)] DEBUG Server launched.
+[Wed Feb 29 2012 01:32:30 GMT+0000 (UTC)] DEBUG Listening...
+[Wed Feb 29 2012 01:32:30 GMT+0000 (UTC)] DEBUG Culling 0 users.
+[Wed Feb 29 2012 01:32:32 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 01:32:32 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'dea9f8f4-7c3b-4228-9c71-8bee9f8c71c7',
+  auth: 'IVJz+#Nz=x)Gw6OO#VCN7LFE1K5Ga=ZHFZN8ApChGgWv7vlA3g3pY5Ofw6OCkZCZGQ7NRyo9Ye2MpEWG43LhW99Yw+ny6g09XPLq/CVC122Ia2Hn0Jtv3A==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  scores: '["6457efb4-f782-40d0-a072-f0532a36e5f6", "d053c589-cb6f-4da8-83dd-6bef8a2c2959", "ae7c219d-253c-4ce0-8d33-b911ef889d5c", "36d0920b-fcba-4837-9439-ca0bab9e1c88", "eb56e606-5b45-423f-abab-5a798097b4d6", "1b83676e-d71f-4945-bb63-0e3a2fb9a35a"]',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 01:32:32 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 01:32:32 GMT+0000 (UTC)] DEBUG { code: 'ping_ok',
+  pts: 73,
+  scores: 
+   [ { shout_id: '6457efb4-f782-40d0-a072-f0532a36e5f6',
+       ups: 0,
+       downs: 0,
+       hit: 0,
+       open: 1,
+       pts: 0 },
+     { shout_id: 'd053c589-cb6f-4da8-83dd-6bef8a2c2959',
+       ups: 0,
+       downs: 0,
+       hit: 0,
+       open: 1,
+       pts: 0 },
+     { shout_id: 'ae7c219d-253c-4ce0-8d33-b911ef889d5c',
+       ups: 0,
+       downs: 0,
+       hit: 0,
+       open: 1,
+       pts: 0 },
+     { shout_id: '36d0920b-fcba-4837-9439-ca0bab9e1c88',
+       ups: 0,
+       downs: 0,
+       hit: 2,
+       open: 1,
+       pts: 0 },
+     { shout_id: 'eb56e606-5b45-423f-abab-5a798097b4d6',
+       ups: 1,
+       downs: 0,
+       hit: 2,
+       open: 1,
+       pts: 1 },
+     { shout_id: '1b83676e-d71f-4945-bb63-0e3a2fb9a35a',
+       ups: 0,
+       downs: 0,
+       hit: 2,
+       open: 1,
+       pts: 0 } ] }
+[Wed Feb 29 2012 01:32:36 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 01:32:36 GMT+0000 (UTC)] DEBUG { a: 'shout',
+  uid: 'dea9f8f4-7c3b-4228-9c71-8bee9f8c71c7',
+  auth: 'IVJz+#Nz=x)Gw6OO#VCN7LFE1K5Ga=ZHFZN8ApChGgWv7vlA3g3pY5Ofw6OCkZCZGQ7NRyo9Ye2MpEWG43LhW99Yw+ny6g09XPLq/CVC122Ia2Hn0Jtv3A==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  txt: 'Live',
+  shoutreach: '5',
+  hint: '6000000',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 01:32:36 GMT+0000 (UTC)] DEBUG shout re = undefined
+[Wed Feb 29 2012 01:32:36 GMT+0000 (UTC)] DEBUG this is not a reply
+[Wed Feb 29 2012 01:32:36 GMT+0000 (UTC)] DEBUG fullGetCallback
+[Wed Feb 29 2012 01:32:36 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 01:32:36 GMT+0000 (UTC)] DEBUG { code: 'shout_sent' }
+[Wed Feb 29 2012 01:32:36 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 01:32:36 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'dea9f8f4-7c3b-4228-9c71-8bee9f8c71c7',
+  auth: 'IVJz+#Nz=x)Gw6OO#VCN7LFE1K5Ga=ZHFZN8ApChGgWv7vlA3g3pY5Ofw6OCkZCZGQ7NRyo9Ye2MpEWG43LhW99Yw+ny6g09XPLq/CVC122Ia2Hn0Jtv3A==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  scores: '["6457efb4-f782-40d0-a072-f0532a36e5f6", "d053c589-cb6f-4da8-83dd-6bef8a2c2959", "ae7c219d-253c-4ce0-8d33-b911ef889d5c", "36d0920b-fcba-4837-9439-ca0bab9e1c88", "eb56e606-5b45-423f-abab-5a798097b4d6", "1b83676e-d71f-4945-bb63-0e3a2fb9a35a"]',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 01:32:36 GMT+0000 (UTC)] DEBUG buildShoutFromJson
+[Wed Feb 29 2012 01:32:36 GMT+0000 (UTC)] DEBUG { shoutId: '72817b60-a0c3-4c35-b54a-41ed6dfe80c6',
+  userId: 'dea9f8f4-7c3b-4228-9c71-8bee9f8c71c7',
+  time: '2012-02-29T01:32:36.665Z',
+  lastActivityTime: '2012-02-29T01:32:36.665Z',
+  text: 'Live',
+  open: 1,
+  re: 0,
+  hit: 0,
+  power: 5,
+  ups: 0,
+  downs: 0,
+  lat: '13074306',
+  lng: '10596850',
+  outbox: null,
+  senderIp: '174.254.194.116' }
+[Wed Feb 29 2012 01:32:36 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 01:32:36 GMT+0000 (UTC)] DEBUG { code: 'ping_ok',
+  pts: 73,
+  shouts: 
+   [ { shout_id: '72817b60-a0c3-4c35-b54a-41ed6dfe80c6',
+       txt: 'Live',
+       ts: '2012-02-29T01:32:36.665Z',
+       hit: 0,
+       outbox: 1 } ],
+  scores: 
+   [ { shout_id: '6457efb4-f782-40d0-a072-f0532a36e5f6',
+       ups: 0,
+       downs: 0,
+       hit: 0,
+       open: 1,
+       pts: 0 },
+     { shout_id: 'd053c589-cb6f-4da8-83dd-6bef8a2c2959',
+       ups: 0,
+       downs: 0,
+       hit: 0,
+       open: 1,
+       pts: 0 },
+     { shout_id: 'ae7c219d-253c-4ce0-8d33-b911ef889d5c',
+       ups: 0,
+       downs: 0,
+       hit: 0,
+       open: 1,
+       pts: 0 },
+     { shout_id: '36d0920b-fcba-4837-9439-ca0bab9e1c88',
+       ups: 0,
+       downs: 0,
+       hit: 2,
+       open: 1,
+       pts: 0 },
+     { shout_id: 'eb56e606-5b45-423f-abab-5a798097b4d6',
+       ups: 1,
+       downs: 0,
+       hit: 2,
+       open: 1,
+       pts: 1 },
+     { shout_id: '1b83676e-d71f-4945-bb63-0e3a2fb9a35a',
+       ups: 0,
+       downs: 0,
+       hit: 2,
+       open: 1,
+       pts: 0 } ] }
+[Wed Feb 29 2012 01:32:38 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 01:32:38 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'dea9f8f4-7c3b-4228-9c71-8bee9f8c71c7',
+  auth: 'IVJz+#Nz=x)Gw6OO#VCN7LFE1K5Ga=ZHFZN8ApChGgWv7vlA3g3pY5Ofw6OCkZCZGQ7NRyo9Ye2MpEWG43LhW99Yw+ny6g09XPLq/CVC122Ia2Hn0Jtv3A==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  scores: '["72817b60-a0c3-4c35-b54a-41ed6dfe80c6", "6457efb4-f782-40d0-a072-f0532a36e5f6", "d053c589-cb6f-4da8-83dd-6bef8a2c2959", "ae7c219d-253c-4ce0-8d33-b911ef889d5c", "36d0920b-fcba-4837-9439-ca0bab9e1c88", "eb56e606-5b45-423f-abab-5a798097b4d6", "1b83676e-d71f-4945-bb63-0e3a2fb9a35a"]',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 01:32:38 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 01:32:38 GMT+0000 (UTC)] DEBUG { code: 'ping_ok',
+  pts: 73,
+  scores: 
+   [ { shout_id: '72817b60-a0c3-4c35-b54a-41ed6dfe80c6',
+       ups: 0,
+       downs: 0,
+       hit: 0,
+       open: 1,
+       pts: 0 },
+     { shout_id: '6457efb4-f782-40d0-a072-f0532a36e5f6',
+       ups: 0,
+       downs: 0,
+       hit: 0,
+       open: 1,
+       pts: 0 },
+     { shout_id: 'd053c589-cb6f-4da8-83dd-6bef8a2c2959',
+       ups: 0,
+       downs: 0,
+       hit: 0,
+       open: 1,
+       pts: 0 },
+     { shout_id: 'ae7c219d-253c-4ce0-8d33-b911ef889d5c',
+       ups: 0,
+       downs: 0,
+       hit: 0,
+       open: 1,
+       pts: 0 },
+     { shout_id: '36d0920b-fcba-4837-9439-ca0bab9e1c88',
+       ups: 0,
+       downs: 0,
+       hit: 2,
+       open: 1,
+       pts: 0 },
+     { shout_id: 'eb56e606-5b45-423f-abab-5a798097b4d6',
+       ups: 1,
+       downs: 0,
+       hit: 2,
+       open: 1,
+       pts: 1 },
+     { shout_id: '1b83676e-d71f-4945-bb63-0e3a2fb9a35a',
+       ups: 0,
+       downs: 0,
+       hit: 2,
+       open: 1,
+       pts: 0 } ] }
+[Wed Feb 29 2012 01:32:46 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 01:32:46 GMT+0000 (UTC)] DEBUG Server launched.
+[Wed Feb 29 2012 01:32:46 GMT+0000 (UTC)] DEBUG Listening...
+[Wed Feb 29 2012 01:32:46 GMT+0000 (UTC)] DEBUG Culling 0 users.
+[Wed Feb 29 2012 01:32:46 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 01:32:47 GMT+0000 (UTC)] DEBUG Server launched.
+[Wed Feb 29 2012 01:32:47 GMT+0000 (UTC)] DEBUG Listening...
+[Wed Feb 29 2012 01:32:47 GMT+0000 (UTC)] DEBUG Culling 0 users.
+[Wed Feb 29 2012 01:32:47 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 01:32:47 GMT+0000 (UTC)] DEBUG Server launched.
+[Wed Feb 29 2012 01:32:47 GMT+0000 (UTC)] DEBUG Listening...
+[Wed Feb 29 2012 01:32:47 GMT+0000 (UTC)] DEBUG Culling 0 users.
+[Wed Feb 29 2012 01:32:47 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 01:32:47 GMT+0000 (UTC)] DEBUG Server launched.
+[Wed Feb 29 2012 01:32:47 GMT+0000 (UTC)] DEBUG Listening...
+[Wed Feb 29 2012 01:32:47 GMT+0000 (UTC)] DEBUG Culling 0 users.
+[Wed Feb 29 2012 01:33:01 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 01:33:01 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'dea9f8f4-7c3b-4228-9c71-8bee9f8c71c7',
+  auth: 'IVJz+#Nz=x)Gw6OO#VCN7LFE1K5Ga=ZHFZN8ApChGgWv7vlA3g3pY5Ofw6OCkZCZGQ7NRyo9Ye2MpEWG43LhW99Yw+ny6g09XPLq/CVC122Ia2Hn0Jtv3A==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  scores: '["72817b60-a0c3-4c35-b54a-41ed6dfe80c6", "6457efb4-f782-40d0-a072-f0532a36e5f6", "d053c589-cb6f-4da8-83dd-6bef8a2c2959", "ae7c219d-253c-4ce0-8d33-b911ef889d5c", "36d0920b-fcba-4837-9439-ca0bab9e1c88", "eb56e606-5b45-423f-abab-5a798097b4d6", "1b83676e-d71f-4945-bb63-0e3a2fb9a35a"]',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 01:33:02 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 01:33:02 GMT+0000 (UTC)] DEBUG { code: 'ping_ok',
+  pts: 73,
+  scores: 
+   [ { shout_id: '72817b60-a0c3-4c35-b54a-41ed6dfe80c6',
+       ups: 0,
+       downs: 0,
+       hit: 0,
+       open: 1,
+       pts: 0 },
+     { shout_id: '6457efb4-f782-40d0-a072-f0532a36e5f6',
+       ups: 0,
+       downs: 0,
+       hit: 0,
+       open: 1,
+       pts: 0 },
+     { shout_id: 'd053c589-cb6f-4da8-83dd-6bef8a2c2959',
+       ups: 0,
+       downs: 0,
+       hit: 0,
+       open: 1,
+       pts: 0 },
+     { shout_id: 'ae7c219d-253c-4ce0-8d33-b911ef889d5c',
+       ups: 0,
+       downs: 0,
+       hit: 0,
+       open: 1,
+       pts: 0 },
+     { shout_id: '36d0920b-fcba-4837-9439-ca0bab9e1c88',
+       ups: 0,
+       downs: 0,
+       hit: 2,
+       open: 1,
+       pts: 0 },
+     { shout_id: 'eb56e606-5b45-423f-abab-5a798097b4d6',
+       ups: 1,
+       downs: 0,
+       hit: 2,
+       open: 1,
+       pts: 1 },
+     { shout_id: '1b83676e-d71f-4945-bb63-0e3a2fb9a35a',
+       ups: 0,
+       downs: 0,
+       hit: 2,
+       open: 1,
+       pts: 0 } ] }
+[Wed Feb 29 2012 01:33:25 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 01:33:25 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'dea9f8f4-7c3b-4228-9c71-8bee9f8c71c7',
+  auth: 'IVJz+#Nz=x)Gw6OO#VCN7LFE1K5Ga=ZHFZN8ApChGgWv7vlA3g3pY5Ofw6OCkZCZGQ7NRyo9Ye2MpEWG43LhW99Yw+ny6g09XPLq/CVC122Ia2Hn0Jtv3A==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  scores: '["72817b60-a0c3-4c35-b54a-41ed6dfe80c6", "6457efb4-f782-40d0-a072-f0532a36e5f6", "d053c589-cb6f-4da8-83dd-6bef8a2c2959", "ae7c219d-253c-4ce0-8d33-b911ef889d5c", "36d0920b-fcba-4837-9439-ca0bab9e1c88", "eb56e606-5b45-423f-abab-5a798097b4d6", "1b83676e-d71f-4945-bb63-0e3a2fb9a35a"]',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 01:33:25 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 01:33:25 GMT+0000 (UTC)] DEBUG { code: 'ping_ok',
+  pts: 73,
+  scores: 
+   [ { shout_id: '72817b60-a0c3-4c35-b54a-41ed6dfe80c6',
+       ups: 0,
+       downs: 0,
+       hit: 0,
+       open: 1,
+       pts: 0 },
+     { shout_id: '6457efb4-f782-40d0-a072-f0532a36e5f6',
+       ups: 0,
+       downs: 0,
+       hit: 0,
+       open: 1,
+       pts: 0 },
+     { shout_id: 'd053c589-cb6f-4da8-83dd-6bef8a2c2959',
+       ups: 0,
+       downs: 0,
+       hit: 0,
+       open: 1,
+       pts: 0 },
+     { shout_id: 'ae7c219d-253c-4ce0-8d33-b911ef889d5c',
+       ups: 0,
+       downs: 0,
+       hit: 0,
+       open: 1,
+       pts: 0 },
+     { shout_id: '36d0920b-fcba-4837-9439-ca0bab9e1c88',
+       ups: 0,
+       downs: 0,
+       hit: 2,
+       open: 1,
+       pts: 0 },
+     { shout_id: 'eb56e606-5b45-423f-abab-5a798097b4d6',
+       ups: 1,
+       downs: 0,
+       hit: 2,
+       open: 1,
+       pts: 1 },
+     { shout_id: '1b83676e-d71f-4945-bb63-0e3a2fb9a35a',
+       ups: 0,
+       downs: 0,
+       hit: 2,
+       open: 1,
+       pts: 0 } ] }
+[Wed Feb 29 2012 01:34:02 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 01:34:02 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'dea9f8f4-7c3b-4228-9c71-8bee9f8c71c7',
+  auth: 'IVJz+#Nz=x)Gw6OO#VCN7LFE1K5Ga=ZHFZN8ApChGgWv7vlA3g3pY5Ofw6OCkZCZGQ7NRyo9Ye2MpEWG43LhW99Yw+ny6g09XPLq/CVC122Ia2Hn0Jtv3A==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 01:34:02 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 01:34:02 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 73 }
+[Wed Feb 29 2012 01:34:32 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 01:34:32 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'dea9f8f4-7c3b-4228-9c71-8bee9f8c71c7',
+  auth: 'IVJz+#Nz=x)Gw6OO#VCN7LFE1K5Ga=ZHFZN8ApChGgWv7vlA3g3pY5Ofw6OCkZCZGQ7NRyo9Ye2MpEWG43LhW99Yw+ny6g09XPLq/CVC122Ia2Hn0Jtv3A==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 01:34:32 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 01:34:32 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 73 }
+[Wed Feb 29 2012 01:35:22 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 01:35:22 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: '7ed18a2e-0e1b-4e79-8e89-78db75a4f7c9',
+  auth: 'WhEIPP(XyXPYrU-v6$MqQzcT_5M-4M#c1VHvLtbnNtKTqxjzwcuoaOh4KZthsdY653dHI+BX6mKAy2RFs0jCY1KBnnm6U7YTiqhX+75ACtBI4Bjj91VF1g==',
+  lat: '40.79212',
+  lng: '-77.85288',
+  radius: '1',
+  ip: '174.252.197.174' }
+[Wed Feb 29 2012 01:35:23 GMT+0000 (UTC)] DEBUG Failed auth count = 1
+[Wed Feb 29 2012 01:35:23 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 01:35:23 GMT+0000 (UTC)] DEBUG { code: 'expired_auth',
+  nonce: 'sG67msWttFFNvbRHUIN)gj*QRDkHABGmRG)2hGs!' }
+[Wed Feb 29 2012 01:35:23 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 01:35:23 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: '7ed18a2e-0e1b-4e79-8e89-78db75a4f7c9',
+  auth: 'WhEIPP(XyXPYrU-v6$MqQzcT_5M-4M#c5sH8aR46SVf3c1422fJhhZsBlZVc9XOIwtz8KJ+fLVubmq+FT4ecmpxVfhJP2A7966j9tfu7BJZXI9rQdHJJeg==',
+  lat: '40.7923',
+  lng: '-77.85187',
+  radius: '1',
+  ip: '174.252.197.174' }
+[Wed Feb 29 2012 01:35:23 GMT+0000 (UTC)] DEBUG User requested radius.
+[Wed Feb 29 2012 01:35:23 GMT+0000 (UTC)] DEBUG userCanRequestRadiusResult = true
+[Wed Feb 29 2012 01:35:23 GMT+0000 (UTC)] DEBUG fullGetCallback
+[Wed Feb 29 2012 01:35:23 GMT+0000 (UTC)] DEBUG row = 13074306, 10596850
+[Wed Feb 29 2012 01:35:23 GMT+0000 (UTC)] DEBUG nearby.push(321.75352621982876, dea9f8f4-7c3b-4228-9c71-8bee9f8c71c7)
+[Wed Feb 29 2012 01:35:23 GMT+0000 (UTC)] DEBUG nearby = 
+[Wed Feb 29 2012 01:35:23 GMT+0000 (UTC)] DEBUG [ [ 321.75352621982876, 'dea9f8f4-7c3b-4228-9c71-8bee9f8c71c7' ] ]
+[Wed Feb 29 2012 01:35:23 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 01:35:23 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 72, radius: 6000000 }
+[Wed Feb 29 2012 01:35:44 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 01:35:44 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: '7ed18a2e-0e1b-4e79-8e89-78db75a4f7c9',
+  auth: 'WhEIPP(XyXPYrU-v6$MqQzcT_5M-4M#c5sH8aR46SVf3c1422fJhhZsBlZVc9XOIwtz8KJ+fLVubmq+FT4ecmpxVfhJP2A7966j9tfu7BJZXI9rQdHJJeg==',
+  lat: '40.79212',
+  lng: '-77.85288',
+  ip: '174.252.197.174' }
+[Wed Feb 29 2012 01:35:45 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 01:35:45 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 72 }
+[Wed Feb 29 2012 01:36:50 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 01:36:50 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: '7ed18a2e-0e1b-4e79-8e89-78db75a4f7c9',
+  auth: 'WhEIPP(XyXPYrU-v6$MqQzcT_5M-4M#c5sH8aR46SVf3c1422fJhhZsBlZVc9XOIwtz8KJ+fLVubmq+FT4ecmpxVfhJP2A7966j9tfu7BJZXI9rQdHJJeg==',
+  lat: '40.79124',
+  lng: '-77.85788',
+  ip: '174.252.197.174' }
+[Wed Feb 29 2012 01:36:50 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 01:36:50 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 72 }
+[Wed Feb 29 2012 01:39:01 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 01:39:01 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'dea9f8f4-7c3b-4228-9c71-8bee9f8c71c7',
+  auth: 'IVJz+#Nz=x)Gw6OO#VCN7LFE1K5Ga=ZHFZN8ApChGgWv7vlA3g3pY5Ofw6OCkZCZGQ7NRyo9Ye2MpEWG43LhW99Yw+ny6g09XPLq/CVC122Ia2Hn0Jtv3A==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 01:39:01 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 01:39:01 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 73 }
+[Wed Feb 29 2012 01:39:32 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 01:39:32 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'dea9f8f4-7c3b-4228-9c71-8bee9f8c71c7',
+  auth: 'IVJz+#Nz=x)Gw6OO#VCN7LFE1K5Ga=ZHFZN8ApChGgWv7vlA3g3pY5Ofw6OCkZCZGQ7NRyo9Ye2MpEWG43LhW99Yw+ny6g09XPLq/CVC122Ia2Hn0Jtv3A==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 01:39:32 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 01:39:32 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 73 }
+[Wed Feb 29 2012 01:40:06 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 01:40:06 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: '7ed18a2e-0e1b-4e79-8e89-78db75a4f7c9',
+  auth: 'WhEIPP(XyXPYrU-v6$MqQzcT_5M-4M#c5sH8aR46SVf3c1422fJhhZsBlZVc9XOIwtz8KJ+fLVubmq+FT4ecmpxVfhJP2A7966j9tfu7BJZXI9rQdHJJeg==',
+  lat: '40.79124',
+  lng: '-77.85788',
+  ip: '174.252.197.174' }
+[Wed Feb 29 2012 01:40:06 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 01:40:06 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 72 }
+[Wed Feb 29 2012 01:41:04 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 01:41:04 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'dea9f8f4-7c3b-4228-9c71-8bee9f8c71c7',
+  auth: 'IVJz+#Nz=x)Gw6OO#VCN7LFE1K5Ga=ZHFZN8ApChGgWv7vlA3g3pY5Ofw6OCkZCZGQ7NRyo9Ye2MpEWG43LhW99Yw+ny6g09XPLq/CVC122Ia2Hn0Jtv3A==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 01:41:04 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 01:41:04 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 73 }
+[Wed Feb 29 2012 01:44:44 GMT+0000 (UTC)] DEBUG Server launched.
+[Wed Feb 29 2012 01:44:44 GMT+0000 (UTC)] DEBUG Listening...
+[Wed Feb 29 2012 01:44:44 GMT+0000 (UTC)] DEBUG Culling 0 users.
+[Wed Feb 29 2012 01:44:51 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 01:44:51 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'dea9f8f4-7c3b-4228-9c71-8bee9f8c71c7',
+  auth: 'IVJz+#Nz=x)Gw6OO#VCN7LFE1K5Ga=ZHFZN8ApChGgWv7vlA3g3pY5Ofw6OCkZCZGQ7NRyo9Ye2MpEWG43LhW99Yw+ny6g09XPLq/CVC122Ia2Hn0Jtv3A==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  scores: '["72817b60-a0c3-4c35-b54a-41ed6dfe80c6", "6457efb4-f782-40d0-a072-f0532a36e5f6", "d053c589-cb6f-4da8-83dd-6bef8a2c2959", "ae7c219d-253c-4ce0-8d33-b911ef889d5c", "36d0920b-fcba-4837-9439-ca0bab9e1c88", "eb56e606-5b45-423f-abab-5a798097b4d6", "1b83676e-d71f-4945-bb63-0e3a2fb9a35a"]',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 01:44:53 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 01:44:53 GMT+0000 (UTC)] DEBUG { code: 'ping_ok',
+  pts: 73,
+  scores: 
+   [ { shout_id: '72817b60-a0c3-4c35-b54a-41ed6dfe80c6',
+       ups: 0,
+       downs: 0,
+       hit: 0,
+       open: 1,
+       pts: 0 },
+     { shout_id: '6457efb4-f782-40d0-a072-f0532a36e5f6',
+       ups: 0,
+       downs: 0,
+       hit: 0,
+       open: 1,
+       pts: 0 },
+     { shout_id: 'd053c589-cb6f-4da8-83dd-6bef8a2c2959',
+       ups: 0,
+       downs: 0,
+       hit: 0,
+       open: 1,
+       pts: 0 },
+     { shout_id: 'ae7c219d-253c-4ce0-8d33-b911ef889d5c',
+       ups: 0,
+       downs: 0,
+       hit: 0,
+       open: 1,
+       pts: 0 },
+     { shout_id: '36d0920b-fcba-4837-9439-ca0bab9e1c88',
+       ups: 0,
+       downs: 0,
+       hit: 2,
+       open: 1,
+       pts: 0 },
+     { shout_id: 'eb56e606-5b45-423f-abab-5a798097b4d6',
+       ups: 0,
+       downs: 0,
+       hit: 2,
+       open: 0,
+       pts: 0 },
+     { shout_id: '1b83676e-d71f-4945-bb63-0e3a2fb9a35a',
+       ups: 0,
+       downs: 0,
+       hit: 2,
+       open: 0,
+       pts: 0 } ] }
+[Wed Feb 29 2012 01:45:07 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 01:45:07 GMT+0000 (UTC)] DEBUG { a: 'shout',
+  uid: 'dea9f8f4-7c3b-4228-9c71-8bee9f8c71c7',
+  auth: 'IVJz+#Nz=x)Gw6OO#VCN7LFE1K5Ga=ZHFZN8ApChGgWv7vlA3g3pY5Ofw6OCkZCZGQ7NRyo9Ye2MpEWG43LhW99Yw+ny6g09XPLq/CVC122Ia2Hn0Jtv3A==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  txt: 'Server on',
+  shoutreach: '5',
+  hint: '6000000',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 01:45:07 GMT+0000 (UTC)] DEBUG shout re = undefined
+[Wed Feb 29 2012 01:45:07 GMT+0000 (UTC)] DEBUG this is not a reply
+[Wed Feb 29 2012 01:45:07 GMT+0000 (UTC)] DEBUG fullGetCallback
+[Wed Feb 29 2012 01:45:07 GMT+0000 (UTC)] DEBUG row = 13079124, 10214212
+[Wed Feb 29 2012 01:45:07 GMT+0000 (UTC)] DEBUG nearby.push(322.26005520914083, 7ed18a2e-0e1b-4e79-8e89-78db75a4f7c9)
+[Wed Feb 29 2012 01:45:07 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 01:45:07 GMT+0000 (UTC)] DEBUG { code: 'shout_sent' }
+[Wed Feb 29 2012 01:45:08 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 01:45:08 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'dea9f8f4-7c3b-4228-9c71-8bee9f8c71c7',
+  auth: 'IVJz+#Nz=x)Gw6OO#VCN7LFE1K5Ga=ZHFZN8ApChGgWv7vlA3g3pY5Ofw6OCkZCZGQ7NRyo9Ye2MpEWG43LhW99Yw+ny6g09XPLq/CVC122Ia2Hn0Jtv3A==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  scores: '["72817b60-a0c3-4c35-b54a-41ed6dfe80c6", "6457efb4-f782-40d0-a072-f0532a36e5f6", "d053c589-cb6f-4da8-83dd-6bef8a2c2959", "ae7c219d-253c-4ce0-8d33-b911ef889d5c", "36d0920b-fcba-4837-9439-ca0bab9e1c88"]',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 01:45:08 GMT+0000 (UTC)] DEBUG buildShoutFromJson
+[Wed Feb 29 2012 01:45:08 GMT+0000 (UTC)] DEBUG { shoutId: '4024de2b-b915-473b-8239-2aba07372b1c',
+  userId: 'dea9f8f4-7c3b-4228-9c71-8bee9f8c71c7',
+  time: '2012-02-29T01:45:07.532Z',
+  lastActivityTime: '2012-02-29T01:45:07.532Z',
+  text: 'Server on',
+  open: 1,
+  re: 0,
+  hit: 1,
+  power: 5,
+  ups: 0,
+  downs: 0,
+  lat: '13074306',
+  lng: '10596850',
+  outbox: null,
+  senderIp: '174.254.194.116' }
+[Wed Feb 29 2012 01:45:08 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 01:45:08 GMT+0000 (UTC)] DEBUG { code: 'ping_ok',
+  pts: 73,
+  shouts: 
+   [ { shout_id: '4024de2b-b915-473b-8239-2aba07372b1c',
+       txt: 'Server on',
+       ts: '2012-02-29T01:45:07.532Z',
+       hit: 1,
+       outbox: 1 } ],
+  scores: 
+   [ { shout_id: '72817b60-a0c3-4c35-b54a-41ed6dfe80c6',
+       ups: 0,
+       downs: 0,
+       hit: 0,
+       open: 1,
+       pts: 0 },
+     { shout_id: '6457efb4-f782-40d0-a072-f0532a36e5f6',
+       ups: 0,
+       downs: 0,
+       hit: 0,
+       open: 1,
+       pts: 0 },
+     { shout_id: 'd053c589-cb6f-4da8-83dd-6bef8a2c2959',
+       ups: 0,
+       downs: 0,
+       hit: 0,
+       open: 1,
+       pts: 0 },
+     { shout_id: 'ae7c219d-253c-4ce0-8d33-b911ef889d5c',
+       ups: 0,
+       downs: 0,
+       hit: 0,
+       open: 1,
+       pts: 0 },
+     { shout_id: '36d0920b-fcba-4837-9439-ca0bab9e1c88',
+       ups: 0,
+       downs: 0,
+       hit: 2,
+       open: 0,
+       pts: 0 } ] }
+[Wed Feb 29 2012 01:45:18 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 01:45:21 GMT+0000 (UTC)] DEBUG Server launched.
+[Wed Feb 29 2012 01:45:21 GMT+0000 (UTC)] DEBUG Listening...
+[Wed Feb 29 2012 01:45:21 GMT+0000 (UTC)] DEBUG Culling 0 users.
+[Wed Feb 29 2012 01:45:21 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 01:45:24 GMT+0000 (UTC)] DEBUG Server launched.
+[Wed Feb 29 2012 01:45:24 GMT+0000 (UTC)] DEBUG Listening...
+[Wed Feb 29 2012 01:45:24 GMT+0000 (UTC)] DEBUG Culling 0 users.
+[Wed Feb 29 2012 01:45:25 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 01:45:28 GMT+0000 (UTC)] DEBUG Server launched.
+[Wed Feb 29 2012 01:45:28 GMT+0000 (UTC)] DEBUG Listening...
+[Wed Feb 29 2012 01:45:28 GMT+0000 (UTC)] DEBUG Culling 0 users.
+[Wed Feb 29 2012 01:45:28 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 01:45:31 GMT+0000 (UTC)] DEBUG Server launched.
+[Wed Feb 29 2012 01:45:31 GMT+0000 (UTC)] DEBUG Listening...
+[Wed Feb 29 2012 01:45:31 GMT+0000 (UTC)] DEBUG Culling 0 users.
+[Wed Feb 29 2012 01:46:57 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 01:46:57 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'dea9f8f4-7c3b-4228-9c71-8bee9f8c71c7',
+  auth: 'IVJz+#Nz=x)Gw6OO#VCN7LFE1K5Ga=ZHFZN8ApChGgWv7vlA3g3pY5Ofw6OCkZCZGQ7NRyo9Ye2MpEWG43LhW99Yw+ny6g09XPLq/CVC122Ia2Hn0Jtv3A==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 01:46:57 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 01:46:57 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 73 }
+[Wed Feb 29 2012 01:47:24 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 01:47:24 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'dea9f8f4-7c3b-4228-9c71-8bee9f8c71c7',
+  auth: 'IVJz+#Nz=x)Gw6OO#VCN7LFE1K5Ga=ZHFZN8ApChGgWv7vlA3g3pY5Ofw6OCkZCZGQ7NRyo9Ye2MpEWG43LhW99Yw+ny6g09XPLq/CVC122Ia2Hn0Jtv3A==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 01:47:24 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 01:47:24 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 73 }
+[Wed Feb 29 2012 01:48:25 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 01:48:25 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'dea9f8f4-7c3b-4228-9c71-8bee9f8c71c7',
+  auth: 'IVJz+#Nz=x)Gw6OO#VCN7LFE1K5Ga=ZHFZN8ApChGgWv7vlA3g3pY5Ofw6OCkZCZGQ7NRyo9Ye2MpEWG43LhW99Yw+ny6g09XPLq/CVC122Ia2Hn0Jtv3A==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 01:48:26 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 01:48:26 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 73 }
+[Wed Feb 29 2012 01:49:47 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 01:49:47 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: '7ed18a2e-0e1b-4e79-8e89-78db75a4f7c9',
+  auth: 'WhEIPP(XyXPYrU-v6$MqQzcT_5M-4M#c5sH8aR46SVf3c1422fJhhZsBlZVc9XOIwtz8KJ+fLVubmq+FT4ecmpxVfhJP2A7966j9tfu7BJZXI9rQdHJJeg==',
+  lat: '40.79124',
+  lng: '-77.85788',
+  ip: '174.252.197.174' }
+[Wed Feb 29 2012 01:49:47 GMT+0000 (UTC)] DEBUG buildShoutFromJson
+[Wed Feb 29 2012 01:49:47 GMT+0000 (UTC)] DEBUG { shoutId: '4024de2b-b915-473b-8239-2aba07372b1c',
+  userId: 'dea9f8f4-7c3b-4228-9c71-8bee9f8c71c7',
+  time: '2012-02-29T01:45:07.532Z',
+  lastActivityTime: '2012-02-29T01:45:07.532Z',
+  text: 'Server on',
+  open: 1,
+  re: 0,
+  hit: 1,
+  power: 5,
+  ups: 0,
+  downs: 0,
+  lat: '13074306',
+  lng: '10596850',
+  outbox: null,
+  senderIp: '174.254.194.116' }
+[Wed Feb 29 2012 01:49:47 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 01:49:47 GMT+0000 (UTC)] DEBUG { code: 'ping_ok',
+  pts: 72,
+  shouts: 
+   [ { shout_id: '4024de2b-b915-473b-8239-2aba07372b1c',
+       txt: 'Server on',
+       ts: '2012-02-29T01:45:07.532Z',
+       hit: 1 } ] }
+[Wed Feb 29 2012 01:50:08 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 01:50:08 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: '7ed18a2e-0e1b-4e79-8e89-78db75a4f7c9',
+  auth: 'WhEIPP(XyXPYrU-v6$MqQzcT_5M-4M#c5sH8aR46SVf3c1422fJhhZsBlZVc9XOIwtz8KJ+fLVubmq+FT4ecmpxVfhJP2A7966j9tfu7BJZXI9rQdHJJeg==',
+  lat: '40.79124',
+  lng: '-77.85788',
+  ip: '174.252.197.174' }
+[Wed Feb 29 2012 01:50:08 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 01:50:08 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 72 }
+[Wed Feb 29 2012 01:51:08 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 01:51:08 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: '7ed18a2e-0e1b-4e79-8e89-78db75a4f7c9',
+  auth: 'WhEIPP(XyXPYrU-v6$MqQzcT_5M-4M#c5sH8aR46SVf3c1422fJhhZsBlZVc9XOIwtz8KJ+fLVubmq+FT4ecmpxVfhJP2A7966j9tfu7BJZXI9rQdHJJeg==',
+  lat: '40.79124',
+  lng: '-77.85788',
+  ip: '174.252.197.174' }
+[Wed Feb 29 2012 01:51:08 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 01:51:08 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 72 }
+[Wed Feb 29 2012 01:51:27 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 01:51:27 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'dea9f8f4-7c3b-4228-9c71-8bee9f8c71c7',
+  auth: 'IVJz+#Nz=x)Gw6OO#VCN7LFE1K5Ga=ZHFZN8ApChGgWv7vlA3g3pY5Ofw6OCkZCZGQ7NRyo9Ye2MpEWG43LhW99Yw+ny6g09XPLq/CVC122Ia2Hn0Jtv3A==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 01:51:27 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 01:51:27 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 73 }
+[Wed Feb 29 2012 01:54:06 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 01:54:06 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: '7ed18a2e-0e1b-4e79-8e89-78db75a4f7c9',
+  auth: 'WhEIPP(XyXPYrU-v6$MqQzcT_5M-4M#c5sH8aR46SVf3c1422fJhhZsBlZVc9XOIwtz8KJ+fLVubmq+FT4ecmpxVfhJP2A7966j9tfu7BJZXI9rQdHJJeg==',
+  lat: '40.79212',
+  lng: '-77.85288',
+  ip: '174.252.197.174' }
+[Wed Feb 29 2012 01:54:06 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 01:54:06 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 72 }
+[Wed Feb 29 2012 02:02:54 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 02:02:54 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: '7ed18a2e-0e1b-4e79-8e89-78db75a4f7c9',
+  auth: 'WhEIPP(XyXPYrU-v6$MqQzcT_5M-4M#c5sH8aR46SVf3c1422fJhhZsBlZVc9XOIwtz8KJ+fLVubmq+FT4ecmpxVfhJP2A7966j9tfu7BJZXI9rQdHJJeg==',
+  lat: '40.79212',
+  lng: '-77.85288',
+  ip: '174.252.197.174' }
+[Wed Feb 29 2012 02:02:54 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 02:02:54 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 72 }
+[Wed Feb 29 2012 02:05:56 GMT+0000 (UTC)] DEBUG Server launched.
+[Wed Feb 29 2012 02:05:56 GMT+0000 (UTC)] DEBUG Listening...
+[Wed Feb 29 2012 02:05:56 GMT+0000 (UTC)] DEBUG Culling 0 users.
+[Wed Feb 29 2012 02:08:22 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 02:08:22 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'dea9f8f4-7c3b-4228-9c71-8bee9f8c71c7',
+  auth: 'IVJz+#Nz=x)Gw6OO#VCN7LFE1K5Ga=ZHFZN8ApChGgWv7vlA3g3pY5Ofw6OCkZCZGQ7NRyo9Ye2MpEWG43LhW99Yw+ny6g09XPLq/CVC122Ia2Hn0Jtv3A==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 02:08:22 GMT+0000 (UTC)] DEBUG Failed auth count = 1
+[Wed Feb 29 2012 02:08:22 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 02:08:22 GMT+0000 (UTC)] DEBUG { code: 'expired_auth',
+  nonce: 'Tbz(Ysff-ndjk10A#rVsE+q=tfOKJhq8rjG_8w%8' }
+[Wed Feb 29 2012 02:08:22 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 02:08:22 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'dea9f8f4-7c3b-4228-9c71-8bee9f8c71c7',
+  auth: 'IVJz+#Nz=x)Gw6OO#VCN7LFE1K5Ga=ZHnfY5NpNlcE0EhNz/fRhHGA/pNcKsSHiJgqHazlSQQkQmLKgVZuqy6pIS+DuerADZd1OmiD9zotUiO3gEdbb37A==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 02:08:22 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 02:08:22 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 73 }
+[Wed Feb 29 2012 02:08:50 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 02:08:50 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'dea9f8f4-7c3b-4228-9c71-8bee9f8c71c7',
+  auth: 'IVJz+#Nz=x)Gw6OO#VCN7LFE1K5Ga=ZHnfY5NpNlcE0EhNz/fRhHGA/pNcKsSHiJgqHazlSQQkQmLKgVZuqy6pIS+DuerADZd1OmiD9zotUiO3gEdbb37A==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 02:08:50 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 02:08:50 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 73 }
+[Wed Feb 29 2012 02:09:17 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 02:09:17 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'dea9f8f4-7c3b-4228-9c71-8bee9f8c71c7',
+  auth: 'IVJz+#Nz=x)Gw6OO#VCN7LFE1K5Ga=ZHnfY5NpNlcE0EhNz/fRhHGA/pNcKsSHiJgqHazlSQQkQmLKgVZuqy6pIS+DuerADZd1OmiD9zotUiO3gEdbb37A==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 02:09:17 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 02:09:17 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 73 }
+[Wed Feb 29 2012 02:10:14 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 02:10:14 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'dea9f8f4-7c3b-4228-9c71-8bee9f8c71c7',
+  auth: 'IVJz+#Nz=x)Gw6OO#VCN7LFE1K5Ga=ZHnfY5NpNlcE0EhNz/fRhHGA/pNcKsSHiJgqHazlSQQkQmLKgVZuqy6pIS+DuerADZd1OmiD9zotUiO3gEdbb37A==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 02:10:14 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 02:10:14 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 73 }
+[Wed Feb 29 2012 02:12:03 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 02:12:03 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'dea9f8f4-7c3b-4228-9c71-8bee9f8c71c7',
+  auth: 'IVJz+#Nz=x)Gw6OO#VCN7LFE1K5Ga=ZHnfY5NpNlcE0EhNz/fRhHGA/pNcKsSHiJgqHazlSQQkQmLKgVZuqy6pIS+DuerADZd1OmiD9zotUiO3gEdbb37A==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  scores: '["4024de2b-b915-473b-8239-2aba07372b1c", "72817b60-a0c3-4c35-b54a-41ed6dfe80c6", "6457efb4-f782-40d0-a072-f0532a36e5f6", "d053c589-cb6f-4da8-83dd-6bef8a2c2959", "ae7c219d-253c-4ce0-8d33-b911ef889d5c"]',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 02:12:04 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 02:12:04 GMT+0000 (UTC)] DEBUG { code: 'ping_ok',
+  pts: 73,
+  scores: 
+   [ { shout_id: '4024de2b-b915-473b-8239-2aba07372b1c',
+       ups: 0,
+       downs: 0,
+       hit: 1,
+       open: 1,
+       pts: 0 },
+     { shout_id: '72817b60-a0c3-4c35-b54a-41ed6dfe80c6',
+       ups: 0,
+       downs: 0,
+       hit: 0,
+       open: 0,
+       pts: 0 },
+     { shout_id: '6457efb4-f782-40d0-a072-f0532a36e5f6',
+       ups: 0,
+       downs: 0,
+       hit: 0,
+       open: 0,
+       pts: 0 },
+     { shout_id: 'd053c589-cb6f-4da8-83dd-6bef8a2c2959',
+       ups: 0,
+       downs: 0,
+       hit: 0,
+       open: 0,
+       pts: 0 },
+     { shout_id: 'ae7c219d-253c-4ce0-8d33-b911ef889d5c',
+       ups: 0,
+       downs: 0,
+       hit: 0,
+       open: 0,
+       pts: 0 } ] }
+[Wed Feb 29 2012 02:12:22 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 02:12:22 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'dea9f8f4-7c3b-4228-9c71-8bee9f8c71c7',
+  auth: 'IVJz+#Nz=x)Gw6OO#VCN7LFE1K5Ga=ZHnfY5NpNlcE0EhNz/fRhHGA/pNcKsSHiJgqHazlSQQkQmLKgVZuqy6pIS+DuerADZd1OmiD9zotUiO3gEdbb37A==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  scores: '["4024de2b-b915-473b-8239-2aba07372b1c"]',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 02:12:22 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 02:12:22 GMT+0000 (UTC)] DEBUG { a: 'shout',
+  uid: 'dea9f8f4-7c3b-4228-9c71-8bee9f8c71c7',
+  auth: 'IVJz+#Nz=x)Gw6OO#VCN7LFE1K5Ga=ZHnfY5NpNlcE0EhNz/fRhHGA/pNcKsSHiJgqHazlSQQkQmLKgVZuqy6pIS+DuerADZd1OmiD9zotUiO3gEdbb37A==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  txt: 'Hi',
+  shoutreach: '5',
+  hint: '6000000',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 02:12:22 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 02:12:22 GMT+0000 (UTC)] DEBUG { code: 'ping_ok',
+  pts: 73,
+  scores: 
+   [ { shout_id: '4024de2b-b915-473b-8239-2aba07372b1c',
+       ups: 0,
+       downs: 0,
+       hit: 1,
+       open: 1,
+       pts: 0 } ] }
+[Wed Feb 29 2012 02:12:22 GMT+0000 (UTC)] DEBUG recursiveCallback on iteration 1
+[Wed Feb 29 2012 02:12:22 GMT+0000 (UTC)] DEBUG COUNT = 0, SHOUTREACH = 5, selectEntirePlanet = false
+[Wed Feb 29 2012 02:12:22 GMT+0000 (UTC)] DEBUG recursiveCallback on iteration 2
+[Wed Feb 29 2012 02:12:22 GMT+0000 (UTC)] DEBUG COUNT = 2, SHOUTREACH = 5, selectEntirePlanet = true
+[Wed Feb 29 2012 02:12:22 GMT+0000 (UTC)] DEBUG row = 13079212, 10214712
+[Wed Feb 29 2012 02:12:22 GMT+0000 (UTC)] DEBUG nearby.push(321.83864705727393, 7ed18a2e-0e1b-4e79-8e89-78db75a4f7c9)
+[Wed Feb 29 2012 02:12:23 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 02:12:23 GMT+0000 (UTC)] DEBUG { code: 'shout_sent' }
+[Wed Feb 29 2012 02:12:24 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Feb 29 2012 02:12:24 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: 'dea9f8f4-7c3b-4228-9c71-8bee9f8c71c7',
+  auth: 'IVJz+#Nz=x)Gw6OO#VCN7LFE1K5Ga=ZHnfY5NpNlcE0EhNz/fRhHGA/pNcKsSHiJgqHazlSQQkQmLKgVZuqy6pIS+DuerADZd1OmiD9zotUiO3gEdbb37A==',
+  lat: '40.74306',
+  lng: '-74.0315',
+  scores: '["4024de2b-b915-473b-8239-2aba07372b1c"]',
+  ip: '174.254.194.116' }
+[Wed Feb 29 2012 02:12:24 GMT+0000 (UTC)] DEBUG RESPONSE = 
+[Wed Feb 29 2012 02:12:24 GMT+0000 (UTC)] DEBUG { code: 'ping_ok',
+  pts: 73,
+  shouts: 
+   [ { shout_id: 'f5016234-9a6b-4f30-817f-afef87be732d',
+       txt: 'Hi',
+       ts: '2012-02-29T02:12:22.921Z',
+       hit: 1,
+       outbox: 1 } ],
+  scores: 
+   [ { shout_id: '4024de2b-b915-473b-8239-2aba07372b1c',
+       ups: 0,
+       downs: 0,
+       hit: 1,
+       open: 1,
+       pts: 0 } ] }

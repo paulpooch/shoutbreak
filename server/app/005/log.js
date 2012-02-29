@@ -26,7 +26,7 @@ module.exports = (function() {
 		}
 	};
 
-	this.logError = function(text) {
+	this.exception = function(text) {
 		if (typeof(text) != 'string') {
 			console.dir(text);
 			errorLog.debug(Util.inspect(text));
@@ -47,7 +47,13 @@ module.exports = (function() {
 	};
 
 	this.e = function(text) { 
-		console.error(text);
+		if (typeof(text) != 'string') {
+			console.error(text);
+			errorLog.debug(Util.inspect(text));
+		} else {
+			console.error(text);
+			errorLog.debug(text);
+		}
 	};
 
 	this.i = function(text) { 

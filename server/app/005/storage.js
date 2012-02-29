@@ -98,7 +98,6 @@ module.exports = (function() {
 			};
 			var callback = function(result) {
 				result.on('data', function(chunk) {
-					Log.obj(chunk + '');
 					chunk = JSON.parse(chunk);
 					if (chunk['ConsumedCapacityUnits']) {
 						cacheReplyTo();
@@ -151,8 +150,6 @@ module.exports = (function() {
     				var item = JSON.parse(chunk);
     				if (item['Item']) {
     					var recipients = item['Item'];
-    					Log.obj('recipients');
-    					Log.obj(recipients);
 						addToCache();
        				} else {
 						Log.e(chunk);
@@ -174,8 +171,6 @@ module.exports = (function() {
 			};
 			var callback3 = function(setResult) {
 				// We don't really care about the result.
-				Log.e('Returning Recipients from getRecipients');
-				Log.obj(returnRecipients);
 				successCallback(returnRecipients);
 			};	
 			Cache.get(Config.PRE_REPLY + shoutId, callback,
@@ -257,8 +252,6 @@ module.exports = (function() {
     				if (item['Item']) {
     					item = item['Item'];
     					var shout = Utils.makeShoutFromDynamoItem(item);
-    					Log.obj('makeShoutFromDynamoItem');
-    					Log.obj(shout);
 						addToCache(shout);
        				} else {
 						Log.e(chunk);
@@ -267,8 +260,6 @@ module.exports = (function() {
     			});
     		};
 			var addToCache = function(shout) {
-				Log.e('addToCache');
-				Log.obj(shout);
 				returnShout = shout;
 				Cache.set(Config.PRE_SHOUT + shout.shoutId, shout, Config.TIMEOUT_SHOUT, callback3, 
 					function() {
@@ -280,8 +271,6 @@ module.exports = (function() {
 			};
 			var callback3 = function(setResult) {
 				// We don't really care about the result.
-				Log.e('Returning Shout from getShout');
-				Log.obj(returnShout);
 				successCallback(returnShout);
 			};	
 			Cache.get(Config.PRE_SHOUT + shoutId, callback,
@@ -314,7 +303,6 @@ module.exports = (function() {
 			};
 			var callback = function(result) {
 				result.on('data', function(chunk) {
-					Log.obj(chunk + '');
 					chunk = JSON.parse(chunk);
 					if (chunk['ConsumedCapacityUnits']) {
 						cacheShout();
@@ -592,8 +580,6 @@ module.exports = (function() {
     		};
 			var addToCache = function(user) {
 				returnUser = user;
-				Log.e('addToCache');
-				Log.e(Config.PRE_USER);
 				Cache.set(Config.PRE_USER + user.userId, user, Config.TIMEOUT_USER, callback3, 
 					function() {
 						// Not a huge problem.
@@ -799,8 +785,6 @@ module.exports = (function() {
 	    			//	if (item['Attributes']) {
 	    			//		item = item['Attributes'];
 	    			// 		returnShout = Utils.makeShoutFromDynamoItem(item); }
-	    			Log.e('updateUser database result:');
-	    			Log.obj(chunk + '');
 	    			Cache.set(Config.PRE_USER + user.userId, user, Config.TIMEOUT_USER, callback2, 
 						function() {
 							Log.e('Could not save user to cache.');
@@ -832,7 +816,7 @@ module.exports = (function() {
 						function(error, result, metadata) {
 							if (result) {
 								if (error != null) {
-									Log.l('Failed to delete a user from LIVE');
+									Log.e('Failed to delete a user from LIVE');
 									failCallback();
 								} else {
 									loop(index + 1);
@@ -847,7 +831,7 @@ module.exports = (function() {
 			var callback = function(error, result, metadata) {
 				if (result) {
 					if (error != null) {
-						Log.l('Failed to select expired users from LIVE');
+						Log.e('Failed to select expired users from LIVE');
 						failCallback();
 					} else {
 						usersToCull = result;
@@ -881,12 +865,16 @@ module.exports = (function() {
 					// If we can't find it...
 					result = true;
 				}
-				Cache.set(Config.PRE_RADIUS_REQUEST + userId, reqCount, Config.TIMEOUT_RADIUS_REQUEST, callback2,
-					function() {
-						Log.e('Could not save radius request limit to cache.');
-						failCallback();
-					}
-				);
+				if (result) {
+					Cache.set(Config.PRE_RADIUS_REQUEST + userId, reqCount, Config.TIMEOUT_RADIUS_REQUEST, callback2,
+						function() {
+							Log.e('Could not save radius request limit to cache.');
+							failCallback();
+						}
+					);
+				} else {
+					failCallback();
+				}
 			};
 			var callback2 = function(setResult) {
 				successCallback(result);
@@ -1024,7 +1012,6 @@ module.exports = (function() {
 			};
 
 			var fullGetCallback = function(error, result, metadata) {
-				Log.l('fullGetCallback');
 				var nearby = [];
 				var nearbySorter = function(a, b) {
 					return b[0] - a[0];	
@@ -1111,10 +1098,10 @@ module.exports = (function() {
 			var recursiveCallback = function(error, result, metadata) {
 				// Let's not accidentally infinite loop and spend $50,000 on AWS.
 				selectCount++;
-				Log.e('recursiveCallback on iteration ' + selectCount);
+				Log.l('recursiveCallback on iteration ' + selectCount);
 				var makeNextSelect = true;
 				var count = result[0]['Count'];
-				Log.e('COUNT = ' + count + ', SHOUTREACH = ' + shoutreach + ', selectEntirePlanet = ' + selectEntirePlanet);
+				Log.l('COUNT = ' + count + ', SHOUTREACH = ' + shoutreach + ', selectEntirePlanet = ' + selectEntirePlanet);
 				if (count > shoutreach || selectEntirePlanet) {
 					if (count - shoutreach <= acceptableExtra) {
 						makeNextSelect = false;
@@ -1138,6 +1125,7 @@ module.exports = (function() {
 						performSelect(true, recursiveCallback);
 					} else {
 						// We gotta bail to avoid infinite selects.
+						Log.l('INFINITE LOOP WOULD HAVE OCCURED IN recursiveCallback');
 						Log.e('INFINITE LOOP WOULD HAVE OCCURED IN recursiveCallback');
 						performSelect(false, fullGetCallback);
 					}
@@ -1235,7 +1223,6 @@ module.exports = (function() {
 			};
 			var callback = function(result) {
 				result.on('data', function(chunk) {
-					Log.obj(chunk + '');
 					chunk = JSON.parse(chunk);
 					if (chunk['ConsumedCapacityUnits']) {
 						cacheVote();

@@ -38,12 +38,18 @@ var Http = 			require('http'),
 	Uuid = 			require('node-uuid'),
 	Assert =		require('assert');
 
+var server = null;
+
 // Entry Methods ///////////////////////////////////////////////////////////////
 
 // Uncaught Exceptions
 process.on('uncaughtException', function (error) {
-	Log.logError(error);
-	Log.logError(error.stack);
+	Log.exception(error);
+	Log.exception(error.stack);
+	if (server) {
+		server.close();
+	}
+	process.exit(0);
 });
 
 // Front door.
@@ -219,12 +225,12 @@ var ping = function(clean, response, testCallback) {
 	typeof lat != 'undefined' &&
 	typeof lng != 'undefined') {
 
-		var json = {};
+		var responseJson = {};
 		var user = false;
 
 		var callback = function(authIsValidResult) {
 			var validAuth = authIsValidResult['valid'];
-			var json = authIsValidResult['json'];
+			var authJson = authIsValidResult['json'];
 			if (validAuth) {
 				Storage.LiveUsers.putUserOnline(userId, lat, lng, callback2, 
 					function() {
@@ -233,11 +239,11 @@ var ping = function(clean, response, testCallback) {
 					}
 				);
 			} else {
-				respond(json, response, testCallback);
+				respond(authJson, response, testCallback);
 			}
 		};
 		var callback2 = function(putUserOnlineResult) {
-			json['code'] = 'ping_ok';
+			responseJson['code'] = 'ping_ok';
 			Storage.Users.getUser(userId, callback3, 
 				function() {
 					var json = { 'code': 'error', 'txt': 'Could not get user.' };
@@ -249,7 +255,7 @@ var ping = function(clean, response, testCallback) {
 			if (getUserResult) {
 				// Check level up.
 				user = getUserResult;
-				json['pts'] = user.points;
+				responseJson['pts'] = user.points;
 				var doCallback = true;
 				if (user.pendingLevelUp > 0) {
 					var skipLevelChange = false;
@@ -267,7 +273,7 @@ var ping = function(clean, response, testCallback) {
 						}
 					} 
 					if (!skipLevelChange) {
-						json['lvl_change'] = {
+						responseJson['lvl_change'] = {
 							'lvl': user.level,
 							'lvl_at': Utils.pointsRequiredForLevel(user.level),
 							'next_lvl_at': Utils.pointsRequiredForLevel(user.level + 1)
@@ -281,7 +287,6 @@ var ping = function(clean, response, testCallback) {
 		};
 		var callback4 = function() {
 			if (reqRadius == 1) {
-				Log.l('User requested radius.');
 				Storage.LiveUsers.userCanRequestRadius(userId, callback45, 
 					function() {
 						var json = { 'code': 'error', 'txt': 'Radius request limit exceeded.' };
@@ -309,7 +314,7 @@ var ping = function(clean, response, testCallback) {
 		};
 		var callback5 = function(calculateRadiusOrFindTargetsResult) {
 			if (calculateRadiusOrFindTargetsResult) {
-				json['radius'] = calculateRadiusOrFindTargetsResult;	
+				responseJson['radius'] = calculateRadiusOrFindTargetsResult;	
 			}
 			Storage.Inbox.checkInbox(userId, callback6,
 				function() {
@@ -320,12 +325,12 @@ var ping = function(clean, response, testCallback) {
 		var callback6 = function(inboxContent) {
 			if (inboxContent) {
 				var newShouts = [];
-				var loop = function(index) {
+				var getShoutRepeater = function(index) {
 					if (index < inboxContent.length) {
 						Storage.Shouts.getShout(inboxContent[index], 
-							function(shout) {
-								newShouts.push(shout);
-								loop(index + 1);
+							function(getShoutResult) {
+								newShouts.push(getShoutResult);
+								getShoutRepeater(index + 1);
 							},
 							function() {
 								var json = { 'code': 'error', 'txt': 'Could not get a shout from storage.' };
@@ -338,35 +343,35 @@ var ping = function(clean, response, testCallback) {
 							var shout = newShouts[key];
 							sArray.push(Utils.buildShoutJson(shout, userId));
 						}
-						json['shouts'] = sArray;
+						responseJson['shouts'] = sArray;
 						callback7();
 					}
-				}
-				loop(0);
+				};
+				getShoutRepeater(0);
 			} else {
 				callback7();
 			}
 		};
 		var callback7 = function() {
-			Storage.Inbox.clearInbox(userId, callback8, 
+			Storage.Inbox.clearInbox(userId, callback8,
 				function() {
 					var json = { 'code': 'error', 'txt': 'Could not clear user\'s inbox.' };
 					respond(json, response, testCallback);
 				}
-			);	
+			);
 		};
 		var callback8 = function() {
 			if (reqScores) {
 				var pulledScores = [];
-				var loop = function(index) {
-					if (index < reqScores.length) {
-						Storage.Shouts.getShout(reqScores[index], 
-							function(shout) {
-								Storage.Shouts.isExpired(shout, 
-									function(isExpiredResult) {	
-										pulledScores.push(shout);
-										loop(index + 1);		
-									},
+				var getScoreRepeater = function(index) {
+					if (index < reqScores.length && reqScores.length <= Config.SCORE_REQUEST_LIMIT) {
+						Storage.Shouts.getShout(reqScores[index],
+							function(getShoutResult) {
+								Storage.Shouts.isExpired(getShoutResult, 
+									function(isExpiredResult) {
+										pulledScores.push(getShoutResult);
+										getScoreRepeater(index + 1);
+									},							
 									function() {
 										var json = { 'code': 'error', 'txt': 'Could not check shout expiration.' };
 										respond(json, response, testCallback);			
@@ -384,22 +389,22 @@ var ping = function(clean, response, testCallback) {
 							var shout = pulledScores[key];
 							sArray.push(Utils.buildScoreJson(shout));
 						}
-						json['scores'] = sArray;
+						responseJson['scores'] = sArray;
 						callback9();
 					}
-				}
-				loop(0);
+				};
+				getScoreRepeater(0);
 			} else {
 				callback9();
 			}
 		};
 		var callback9 = function() {
-			respond(json, response, testCallback);
+			respond(responseJson, response, testCallback);
 		};
 		authIsValid(userId, auth, callback);	
 	} else {
-		Log.l('invalid ping');
-		Log.l(typeof userId + ' | ' + typeof auth + ' | ' + typeof lat  + ' | ' + typeof lng);
+		Log.e('invalid ping');
+		Log.e(typeof userId + ' | ' + typeof auth + ' | ' + typeof lat  + ' | ' + typeof lng);
 	}
 };
 
@@ -412,7 +417,6 @@ var shout = function(clean, response, testCallback) {
 	var shoutreach = clean['shoutreach'];
 	var radiusHint = clean['hint'];
 	var re = clean['re'];
-	Log.l('shout re = ' + re);
 	var user;
 	if (typeof userId != 'undefined' &&
 	typeof auth != 'undefined' &&
@@ -439,7 +443,6 @@ var shout = function(clean, response, testCallback) {
 				user = getUserResult;
 				if (user.level >= shoutreach) {
 					if (typeof(re) != 'undefined') {
-						Log.l('this is a reply');
 						// This is a reply.
 						Storage.Replies.getRecipients(re, callback3, 
 							function() {
@@ -448,7 +451,6 @@ var shout = function(clean, response, testCallback) {
 							}
 						);
 					} else {
-						Log.l('this is not a reply');
 						// This is a normal 'parent' shout.
 						Storage.LiveUsers.calculateRadiusOrFindTargetsWithRadiusHint(true, user, shoutreach, lat, lng, radiusHint, callback3, 
 							function() {
@@ -477,7 +479,7 @@ var shout = function(clean, response, testCallback) {
 		};
 		authIsValid(userId, auth, callback);	
 	} else {
-		Log.l('Invalid shout.');
+		Log.e('Invalid shout.');
 	}
 };
 
@@ -577,7 +579,7 @@ var vote = function(clean, response, testCallback) {
 		};
 		authIsValid(userId, auth, callback);
 	} else {
-		Log.l('Invalid vote.');
+		Log.e('Invalid vote.');
 	}
 };
 
@@ -836,7 +838,8 @@ var Tests = (function() {
 // Bootstrap //////////////////////////////////////////////////////////////////
 
 Log.l('Server launched.');
-Http.createServer(init).listen(80);
+server = Http.createServer(init);
+server.listen(80);
 Log.l('Listening...');
 
 //Tests.run();

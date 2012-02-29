@@ -102,8 +102,6 @@ module.exports = (function() {
   	};
 
   	this.buildShoutJson = function(shout, forUserId) {
-  		Log.l('buildShoutFromJson');
-  		Log.l(shout);
 		var sObj = {
 			'shout_id': shout.shoutId,
 			'txt': shout.text,
