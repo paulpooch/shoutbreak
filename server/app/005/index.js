@@ -36,7 +36,8 @@ var Http = 			require('http'),
 	QueryString = 	require('querystring'),
 	// https://github.com/chriso/node-validator
 	Uuid = 			require('node-uuid'),
-	Assert =		require('assert');
+	Assert =		require('assert'),
+	Async =			require('async');
 
 var server = null;
 
@@ -53,12 +54,14 @@ process.on('uncaughtException', function (error) {
 });
 
 // Front door.
-var init = function(request, response) {	
+var init = function(request, response) {
+	Log.l('init');	
 	processRequest(request, response);	
 };
 
 // Parse POST variables.
 var processRequest = function(request, response) {
+	Log.l('processRequest');
 	if (request.method == 'POST') {
 		var body = '';
 		request.on('data', function(data) {
@@ -115,6 +118,8 @@ var fakePost = function(dirty, response, testCallback) {
 };
 
 var route = function(clean, response, testCallback) {
+	Log.l('route');
+
 	var action = clean['a'];
 	switch(action) {
 		case 'create_account':
@@ -213,6 +218,8 @@ var createAccount = function(clean, response, testCallback) {
 };
 
 var ping = function(clean, response, testCallback) {
+	Log.l('ping');
+
 	var userId = clean['uid'];
 	var auth = clean['auth'];
 	var lat = clean['lat'];
@@ -229,6 +236,7 @@ var ping = function(clean, response, testCallback) {
 		var user = false;
 
 		var callback = function(authIsValidResult) {
+			Log.l('ping callback');
 			var validAuth = authIsValidResult['valid'];
 			var authJson = authIsValidResult['json'];
 			if (validAuth) {
@@ -243,6 +251,7 @@ var ping = function(clean, response, testCallback) {
 			}
 		};
 		var callback2 = function(putUserOnlineResult) {
+			Log.l('ping callback2');
 			responseJson['code'] = 'ping_ok';
 			Storage.Users.getUser(userId, callback3, 
 				function() {
@@ -252,6 +261,7 @@ var ping = function(clean, response, testCallback) {
 			);
 		};
 		var callback3 = function(getUserResult) {
+			Log.l('ping callback3');
 			if (getUserResult) {
 				// Check level up.
 				user = getUserResult;
@@ -286,6 +296,7 @@ var ping = function(clean, response, testCallback) {
 			}
 		};
 		var callback4 = function() {
+			Log.l('ping callback4');
 			if (reqRadius == 1) {
 				Storage.LiveUsers.userCanRequestRadius(userId, callback45, 
 					function() {
@@ -298,6 +309,7 @@ var ping = function(clean, response, testCallback) {
 			}
 		};
 		var callback45 = function(userCanRequestRadiusResult) {
+			Log.l('ping callback45');
 			Log.l('userCanRequestRadiusResult = ' + userCanRequestRadiusResult);
 			if (userCanRequestRadiusResult) {
 				Storage.LiveUsers.calculateRadiusOrFindTargets(false, user, null, lat, lng, callback5, 
@@ -313,6 +325,7 @@ var ping = function(clean, response, testCallback) {
 				
 		};
 		var callback5 = function(calculateRadiusOrFindTargetsResult) {
+			Log.l('ping callback5');
 			if (calculateRadiusOrFindTargetsResult) {
 				responseJson['radius'] = calculateRadiusOrFindTargetsResult;	
 			}
@@ -323,82 +336,110 @@ var ping = function(clean, response, testCallback) {
 			);
 		};
 		var callback6 = function(inboxContent) {
+			Log.l('ping callback6');
 			if (inboxContent) {
 				var newShouts = [];
-				var getShoutRepeater = function(index) {
-					if (index < inboxContent.length) {
-						Storage.Shouts.getShout(inboxContent[index], 
-							function(getShoutResult) {
-								newShouts.push(getShoutResult);
-								getShoutRepeater(index + 1);
-							},
-							function() {
-								var json = { 'code': 'error', 'txt': 'Could not get a shout from storage.' };
-								respond(json, response, testCallback);
-							}
-						);
+				var getShoutIterator = function(reqShoutId, doneCallback) {
+					Storage.Shouts.getShout(reqShoutId, 
+						function(getShoutResult) {
+							newShouts.push(getShoutResult);
+							doneCallback();
+						},
+						function() {
+							Log.e('Could not get a shout from storage.')
+							var json = { 'code': 'error', 'txt': 'Could not get a shout from storage.' };
+							respond(json, response, testCallback);
+							doneCallback();
+						}
+					);
+				};
+				var iterationDoneCallback = function(error) {
+					if (error != null) {
+						Log.e('Error in getShout forEach.');
+						var json = { 'code': 'error', 'txt': 'Error in getShout forEach.' };
+						respond(json, response, testCallback);	
 					} else {
 						var sArray = [];
-						for (var key in newShouts) {
-							var shout = newShouts[key];
+						var pLength = newShouts.length;
+						for (var i = 0; i < pLength; i++) {
+							var shout = newShouts[i];
 							sArray.push(Utils.buildShoutJson(shout, userId));
 						}
 						responseJson['shouts'] = sArray;
 						callback7();
 					}
-				};
-				getShoutRepeater(0);
+				}
+				Async.forEach(inboxContent, getShoutIterator, iterationDoneCallback);
 			} else {
 				callback7();
 			}
 		};
 		var callback7 = function() {
+			Log.l('ping callback7');
 			Storage.Inbox.clearInbox(userId, callback8,
 				function() {
+					Log.e('Could not clear user\'s inbox.');
 					var json = { 'code': 'error', 'txt': 'Could not clear user\'s inbox.' };
 					respond(json, response, testCallback);
 				}
 			);
 		};
 		var callback8 = function() {
+			Log.l('ping callback8');
 			if (reqScores) {
 				var pulledScores = [];
-				var getScoreRepeater = function(index) {
-					if (index < reqScores.length && reqScores.length <= Config.SCORE_REQUEST_LIMIT) {
-						Storage.Shouts.getShout(reqScores[index],
-							function(getShoutResult) {
-								Storage.Shouts.isExpired(getShoutResult, 
-									function(isExpiredResult) {
-										pulledScores.push(getShoutResult);
-										getScoreRepeater(index + 1);
-									},							
-									function() {
-										var json = { 'code': 'error', 'txt': 'Could not check shout expiration.' };
-										respond(json, response, testCallback);			
-									}
-								);
-							},
-							function() {
-								var json = { 'code': 'error', 'txt': 'Could not get a shout from storage for requested scores.' };
-								respond(json, response, testCallback);
-							}
-						);
+				Log.l('reqScores.length = ' + reqScores.length + ' | reqScores = ');
+				Log.l(reqScores);
+				var getScoreIterator = function(reqScoreId, doneCallback) {
+					Storage.Shouts.getShout(reqScoreId,
+						function(getShoutResult) {
+							Storage.Shouts.isExpired(getShoutResult, 
+								function(isExpiredResult) {
+									// we don't care about isExpiredResult... just forcing the check to possibly mark it closed.
+									pulledScores.push(getShoutResult);
+									doneCallback();	
+								},							
+								function() {
+									Log.e('getScoreIterator:isExpired failed for ' + reqScoreId + ' failed.')
+									var json = { 'code': 'error', 'txt': 'Could not check shout expiration.' };
+									respond(json, response, testCallback);
+									doneCallback();		
+								}
+							);
+						},
+						function() {
+							Log.e('getScoreIterator:getShout failed for ' + reqScoreId + ' failed.')
+							var json = { 'code': 'error', 'txt': 'Could not get shout for score check.' };
+							respond(json, response, testCallback);
+							doneCallback();
+						}
+					);
+				};
+				var iterationDoneCallback = function(error) {
+					if (error != null) {
+						Log.e('Error in getScore forEach.');
+						var json = { 'code': 'error', 'txt': 'Error in getScore forEach.' };
+						respond(json, response, testCallback);	
 					} else {
 						var sArray = [];
-						for (var key in pulledScores) {
-							var shout = pulledScores[key];
+						var pLength = pulledScores.length;
+						for (var i = 0; i < pLength; i++) {
+							var shout = pulledScores[i];
 							sArray.push(Utils.buildScoreJson(shout));
 						}
 						responseJson['scores'] = sArray;
 						callback9();
 					}
-				};
-				getScoreRepeater(0);
+				}
+				if (reqScores.length <= Config.SCORE_REQUEST_LIMIT) {
+					Async.forEach(reqScores, getScoreIterator, iterationDoneCallback);
+				}
 			} else {
 				callback9();
 			}
 		};
 		var callback9 = function() {
+			Log.l('ping callback9');
 			respond(responseJson, response, testCallback);
 		};
 		authIsValid(userId, auth, callback);	
@@ -465,15 +506,76 @@ var shout = function(clean, response, testCallback) {
 				}
 			}	
 		};
+		// Pasted directly from vote(). ////////////////////////////////////////
+
+		var parentShout = null;
+		var shoutTargets = null;
+
 		var callback3 = function(getTargetsResult) {
-			Storage.Shouts.sendShout(user, getTargetsResult, shoutreach, lat, lng, text, re, clean['ip'], callback4,
+			if (typeof(re) != 'undefined') {
+				// A reply - proceed to expiration logic
+				shoutTargets = getTargetsResult;
+				Storage.Shouts.getShout(re, callback4,
+					function() {
+						Log.e('Could not get parent shout to check expiration.');
+						var json = { 'code': 'error', 'txt': 'Could not get parent shout to check expiration.' };
+						respond(json, response, testCallback);	
+					}
+				);
+			} else {
+				// Not a reply
+				callback6(getTargetsResult);
+			}
+		};
+		var callback4 = function(getShoutResult) {
+			Log.l('shout callback4');
+			parentShout = getShoutResult;
+			if (parentShout.open == 0) {
+				Log.e('Cannot reply.  Parent shout is closed.');
+				var json = { 'code': 'error', 'txt': 'Cannot reply.  Parent shout is closed.'};
+				respond(json, response, testCallback);	
+			} else {
+				Storage.Shouts.isExpired(parentShout, callback5, 
+					function() {
+						Log.e('Could not check parent shout expiration.');
+						var json = { 'code': 'error', 'txt': 'Could not check parent shout expiration.' };
+						respond(json, response, testCallback);			
+					}
+				);
+			}
+		};
+		var callback5 = function(isExpiredResult) {
+			Log.l('shout callback5');
+			Log.l('isExpiredResult = ' + isExpiredResult);
+			if (isExpiredResult) {
+				Log.e('Cannot reply.  Parent shout is expired.');
+				var json = { 'code': 'error', 'txt': 'Cannot reply.  Parent shout is expired.' };
+				respond(json, response, testCallback);	
+			} else {
+				Log.l('else');
+				Storage.Shouts.updateShoutLastActivityTime(parentShout, 
+					function() {
+						callback6(shoutTargets);
+					},
+					function() {
+						Log.e('Parent shout does not exist or could not update it\'s last activity time.');
+						var json = { 'code': 'error', 'txt': 'Parent shout does not exist or could not update it\'s last activity time.' };
+						respond(json, response, testCallback);	
+					}
+				);
+			}
+		};
+
+		// End paste. //////////////////////////////////////////////////////////
+		var callback6 = function(getTargetsResult) {
+			Storage.Shouts.sendShout(user, getTargetsResult, shoutreach, lat, lng, text, re, clean['ip'], callback7,
 				function() {
 					var json = { 'code': 'error', 'txt': 'Send shout failed.' };
 					respond(json, response, testCallback);
 				}
 			);
 		};
-		var callback4 = function(sendShoutResult) {
+		var callback7 = function(sendShoutResult) {
 			var json = { 'code': 'shout_sent' };
 			respond(json, response, testCallback);		
 		};
@@ -584,8 +686,11 @@ var vote = function(clean, response, testCallback) {
 };
 
 var authIsValid = function(userId, auth, parentCallback) {
+	Log.l('authIsValid');
+
 	var validAuth = false;
 	var callback = function(getResult) {
+		Log.l('authIsValid callback');
 		if (getResult) {
 			if (auth.length > Config.PASSWORD_LENGTH) {
 				var submittedPw = auth.substr(0, Config.PASSWORD_LENGTH);
@@ -659,7 +764,7 @@ var authIsValid = function(userId, auth, parentCallback) {
 // Exit Methods ///////////////////////////////////////////////////////////////
 
 var respond = function(json, response, testCallback) {
-	Log.l('RESPONSE = ');
+	Log.l('respond');
 	Log.l(json);
 	if (response == null) {
 		if (typeof testCallback != 'undefined') {

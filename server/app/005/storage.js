@@ -15,6 +15,7 @@ module.exports = (function() {
 		Log =		require('./log'),
 		Shout =		require('./shout'),
 		Uuid = 		require('node-uuid'),
+		Async =		require('async'),
 		DynamoDB = 	require('dynamoDB').DynamoDB(Config.DYNAMODB_CREDENTIALS),
 		Memcached = require('memcached'),
 		SimpleDB =	require('simpledb').SimpleDB(Config.SIMPLEDB_CREDENTIALS, Utils.simpleDBLogger);
@@ -77,6 +78,7 @@ module.exports = (function() {
 	};
 
 	this.getAuth = function(userId, successCallback, failCallback) {
+		Log.l('Cache.getAuth');
 		Cache.get(Config.PRE_ACTIVE_AUTH + userId, successCallback, failCallback);
 	};
 
@@ -216,8 +218,10 @@ module.exports = (function() {
 	this.Shouts = (function() {
 
 		this.getShout = function(shoutId, successCallback, failCallback) {
+			Log.l('Shouts.getShout(' + shoutId + ')');
 			var returnShout;
 			var callback = function(getResult) {
+				Log.l('getShout callback');
 				if (getResult) {
 					successCallback(getResult);
 				} else {
@@ -247,6 +251,7 @@ module.exports = (function() {
 				}
 			};
 			var callback2 = function(response) {
+				Log.l('getShout callback2');
     			response.on('data', function(chunk) {
     				var item = JSON.parse(chunk);
     				if (item['Item']) {
@@ -260,6 +265,7 @@ module.exports = (function() {
     			});
     		};
 			var addToCache = function(shout) {
+				Log.l('getShout addToCache');
 				returnShout = shout;
 				Cache.set(Config.PRE_SHOUT + shout.shoutId, shout, Config.TIMEOUT_SHOUT, callback3, 
 					function() {
@@ -270,6 +276,7 @@ module.exports = (function() {
 				);
 			};
 			var callback3 = function(setResult) {
+				Log.l('getShout callback3');
 				// We don't really care about the result.
 				successCallback(returnShout);
 			};	
@@ -307,11 +314,15 @@ module.exports = (function() {
 					if (chunk['ConsumedCapacityUnits']) {
 						cacheShout();
 					} else {
-						Log.e(String(chunk));
+						Log.e('DynamoDB.putItem failed:');
+						Log.e(data);
+						Log.e(chunk + '');
 						failCallback();
 					}
 				});
 				result.on('ready', function(data) {
+					Log.e('DynamoDB.putItem failed 2:');
+					Log.e(data);
 					Log.e(data.error);
 					failCallback();
 				});
@@ -358,24 +369,28 @@ module.exports = (function() {
 				shout.hit -= 1;
 			}
 			
-			var loop = function(index) {
-				if (index < targets.length) {
-					var targetId = targets[index];
-					self.Inbox.addToInbox(targetId, shout.shoutId, 
-						function() {
-							loop(index + 1);		
-						},
-						function() {
-							Log.e('Could not put shout in target inbox.');
-							failCallback();
-						}
-					);
+			var sendShoutIterator = function(targetId, doneCallback) {
+				self.Inbox.addToInbox(targetId, shout.shoutId, 
+					function() {
+						doneCallback();
+					},
+					function() {
+						Log.e('Could not put shout in target inbox.');
+						doneCallback();
+					}
+				);
+			};
+			var iterationDoneCallback = function(error) {
+				if (error != null) {
+					Log.e('Error in sendShout forEach.');
+					var json = { 'code': 'error', 'txt': 'Error in sendShout forEach.' };
+					respond(json, response, testCallback);	
 				} else {
 					callback2();
 				}
-			}
+			};
 			var callback = function(addNewShoutResult) {
-				loop(0);
+				Async.forEach(targets, sendShoutIterator, iterationDoneCallback);
 			}
 			var callback2 = function() {
 				if (shout.re == 0) {
@@ -393,7 +408,8 @@ module.exports = (function() {
 			};
 			self.Shouts.addNewShout(shout, callback, 
 				function() {
-					Log.e('Unable to save shout.');
+					Log.e('Shouts.addNewShout: Unable to save the following shout:');
+					Log.e(shout);
 					failCallback();	
 				}
 			);
@@ -429,6 +445,22 @@ module.exports = (function() {
 			}
 		};
 
+		this.updateShoutLastActivityTime = function(shout, successCallback, failCallback) {
+			Log.l('Shouts.updateShoutLastActivityTime');
+			Log.l(shout);
+			var req = {
+				'TableName': Config.TABLE_SHOUTS,
+				'Key': {
+					'HashKeyElement': {'S': shout.shoutId}
+				},
+				'AttributeUpdates': {
+					'last_activity_time': {'S': Utils.getNowISO()}
+				},
+				'ReturnValues': 'NONE'
+			};
+			self.Shouts.updateShout(shout, req, successCallback, failCallback);
+		};
+
 		this.isExpired = function(shout, successCallback, failCallback) {
 			if (shout.open == 0) {
 				successCallback(true);
@@ -460,7 +492,9 @@ module.exports = (function() {
 		};
 
 		this.updateShout = function(shout, dynamoRequest, successCallback, failCallback) {
+			Log.l('Shouts.updateShout');
 			var callback = function(response) {
+				Log.l('updateShout callback');
 				response.on('data', function(chunk) {
 	    			//	var item = JSON.parse(chunk);
 	    			//	if (item['Attributes']) {
@@ -475,6 +509,7 @@ module.exports = (function() {
 	       		});	
 			};
 			var callback2 = function(setResult) {
+				Log.l('updateShout callback2');
 				successCallback();
 			};
 			DynamoDB.updateItem(dynamoRequest, callback);
@@ -601,6 +636,7 @@ module.exports = (function() {
 		};
 
 		this.generateNonce = function(userId, successCallback, failCallback) {
+			Log.l('Users.generateNonce');
 			var callback0 = function(getResult) {
 				var failCount = 1;
 				if (getResult) {
@@ -762,6 +798,7 @@ module.exports = (function() {
 
 		// We won't use updateUser here 
 		this.updateLastActivityTime = function(userId, time, successCallback, failCallback) {
+			Log.l('Users.updateLastActivityTime');
 			var req = {
 				'TableName': Config.TABLE_USERS,
 				'Key': {
@@ -809,25 +846,30 @@ module.exports = (function() {
 
 		this.cull = function(successCallback, failCallback) {
 			var usersToCull = false;
-			var loop = function(index) {
-				if (usersToCull.length > index) {
-					var userId = usersToCull[index]['user_id'];
-					SimpleDB.deleteItem(Config.TABLE_LIVE, userId, 
-						function(error, result, metadata) {
-							if (result) {
-								if (error != null) {
-									Log.e('Failed to delete a user from LIVE');
-									failCallback();
-								} else {
-									loop(index + 1);
-								}
+			var cullUserIterator = function(userToCull, doneCallback) {
+				var userId = userToCull['user_id'];
+				SimpleDB.deleteItem(Config.TABLE_LIVE, userId, 
+					function(error, result, metadata) {
+						if (result) {
+							if (error != null) {
+								Log.e('Failed to delete a user from LIVE');
+								doneCallback();
+							} else {
+								doneCallback();
 							}
 						}
-					);
+					}
+				);
+			};
+			var iterationDoneCallback = function(error) {
+				if (error != null) {
+					Log.e('Error in cullUser forEach.');
+					var json = { 'code': 'error', 'txt': 'Error in cullUser forEach.' };
+					respond(json, response, testCallback);	
 				} else {
 					successCallback(usersToCull.length);
 				}
-			};
+			};	
 			var callback = function(error, result, metadata) {
 				if (result) {
 					if (error != null) {
@@ -836,7 +878,7 @@ module.exports = (function() {
 					} else {
 						usersToCull = result;
 						Log.l('Culling ' + usersToCull.length + ' users.');
-						loop(0);
+						Async.forEach(usersToCull, cullUserIterator, iterationDoneCallback);
 					}
 				}
 			};
@@ -1014,7 +1056,7 @@ module.exports = (function() {
 			var fullGetCallback = function(error, result, metadata) {
 				var nearby = [];
 				var nearbySorter = function(a, b) {
-					return b[0] - a[0];	
+					return a[0] - b[0];	
 				};
 				if (!isShouting && (!selectEntirePlanet && result.length < shoutreach)) {
 					// We have a problem.

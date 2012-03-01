@@ -12,6 +12,8 @@ var Sanitizer = require('validator').sanitize,
 
 // Sanitize post vars.  Safe sex.
 exports.sanitize = function(dirty, response, testCallback, callback) {
+	Log.l('Clean.sanitize');
+
 	var clean = {};
 
 	// Strings
@@ -96,6 +98,8 @@ exports.sanitize = function(dirty, response, testCallback, callback) {
 
 // Strict whitelist validation.
 exports.validate = function(dirty, response, testCallback, callback) {
+	Log.l('validate');
+
 	var clean = {};
 	var param;
 
