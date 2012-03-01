@@ -512,7 +512,9 @@ public class Mediator {
 		if (!_isLocationEnabled.get()) {
 			SBLog.error(TAG, "location is unavailable, unable to get current cell");
 		}
-		return _location.getCurrentCell();
+		RadiusCacheCell currentCell = _location.getCurrentCell();
+		currentCell.level = _storage.getUserLevel();
+		return currentCell;
 	}
 
 	public void deleteShout(String shoutId) {

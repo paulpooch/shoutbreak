@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="co.shoutbreak"
-    android:versionCode="8"
-    android:versionName="2.2" >
+    android:versionCode="9"
+    android:versionName="2.3" >
 
     <uses-sdk android:minSdkVersion="8" />
 
     <!-- // FOR RELEASE ///////////////////////////////////////////// -->
     <!-- android:debuggable = false -->
     <!-- update maps key -->
-    <!-- check C.DB_VERSION: 11 -->
+    <!-- check C.DB_VERSION: 12 -->
     <!-- check versionCode & versionName above -->
     <!-- remove below permission -->
-    <!-- <uses-permission android:name="android.permission.SET_DEBUG_APP" /> -->
+    <!--<uses-permission android:name="android.permission.SET_DEBUG_APP" />-->
     <!-- //////////////////////////////////////////////////////////// -->
 
     <uses-permission android:name="android.permission.INTERNET" />
