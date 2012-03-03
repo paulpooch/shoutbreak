@@ -6,12 +6,12 @@ public class C {
 	// CONFIG /////////////////////////////////////////////////////////////////
 	// Match this to the $version in index.php
 	public static final boolean CONFIG_ADMIN_SUPERPOWERS = false;
-	public static final String CONFIG_SERVER_ADDRESS = "http://23.21.234.1/005/"; //http://app.shoutbreak.co/005/
+	public static final String CONFIG_SERVER_ADDRESS = "http://app.shoutbreak.co/005/"; //23.21.234.1/005
 	public static final int CONFIG_HTTP_TIMEOUT = 25000;
 	public static final int CONFIG_DROPPED_PACKET_LIMIT = 5;
 	public static final int CONFIG_NOTICES_DISPLAYED_IN_TAB = 50;
 	public static final String CONFIG_SUPPORT_ADDRESS = "http://shoutbreak.com/support";
-	public static final long CONFIG_SHOUTREACH_RADIUS_EXPIRATION = (long) 1800000; // 30 minutes
+	public static final long CONFIG_SHOUTREACH_RADIUS_EXPIRATION = (long) 7200000; // 2 hours
 	public static final int CONFIG_DENSITY_GRID_X_GRANULARITY = 129600; // 10 second cells
 	public static final int CONFIG_DENSITY_GRID_Y_GRANULARITY = 64800; // 10 second cells
 	public static final int CONFIG_GPS_MIN_UPDATE_MILLISECS = 60000; // 0 gives most frequent
@@ -148,7 +148,7 @@ public class C {
 	public static final int PURPOSE_DEATH = 62; // don't repeat this - just die
 	
 	// DATABASE ///////////////////////////////////////////////////////////////
-	public static final int DB_VERSION = 12;
+	public static final int DB_VERSION = 13;
 
 	public static final String DB_NAME = "sbdb";
 	public static final String DB_TABLE_RADIUS = "RADIUS";

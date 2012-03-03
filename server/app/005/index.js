@@ -236,7 +236,6 @@ var ping = function(clean, response, testCallback) {
 		var user = false;
 
 		var callback = function(authIsValidResult) {
-			Log.l('ping callback');
 			var validAuth = authIsValidResult['valid'];
 			var authJson = authIsValidResult['json'];
 			if (validAuth) {
@@ -251,7 +250,6 @@ var ping = function(clean, response, testCallback) {
 			}
 		};
 		var callback2 = function(putUserOnlineResult) {
-			Log.l('ping callback2');
 			responseJson['code'] = 'ping_ok';
 			Storage.Users.getUser(userId, callback3, 
 				function() {
@@ -261,7 +259,6 @@ var ping = function(clean, response, testCallback) {
 			);
 		};
 		var callback3 = function(getUserResult) {
-			Log.l('ping callback3');
 			if (getUserResult) {
 				// Check level up.
 				user = getUserResult;
@@ -296,7 +293,6 @@ var ping = function(clean, response, testCallback) {
 			}
 		};
 		var callback4 = function() {
-			Log.l('ping callback4');
 			if (reqRadius == 1) {
 				Storage.LiveUsers.userCanRequestRadius(userId, callback45, 
 					function() {
@@ -309,7 +305,6 @@ var ping = function(clean, response, testCallback) {
 			}
 		};
 		var callback45 = function(userCanRequestRadiusResult) {
-			Log.l('ping callback45');
 			Log.l('userCanRequestRadiusResult = ' + userCanRequestRadiusResult);
 			if (userCanRequestRadiusResult) {
 				Storage.LiveUsers.calculateRadiusOrFindTargets(false, user, null, lat, lng, callback5, 
@@ -325,7 +320,6 @@ var ping = function(clean, response, testCallback) {
 				
 		};
 		var callback5 = function(calculateRadiusOrFindTargetsResult) {
-			Log.l('ping callback5');
 			if (calculateRadiusOrFindTargetsResult) {
 				responseJson['radius'] = calculateRadiusOrFindTargetsResult;	
 			}
@@ -336,7 +330,6 @@ var ping = function(clean, response, testCallback) {
 			);
 		};
 		var callback6 = function(inboxContent) {
-			Log.l('ping callback6');
 			if (inboxContent) {
 				var newShouts = [];
 				var getShoutIterator = function(reqShoutId, doneCallback) {
@@ -375,7 +368,6 @@ var ping = function(clean, response, testCallback) {
 			}
 		};
 		var callback7 = function() {
-			Log.l('ping callback7');
 			Storage.Inbox.clearInbox(userId, callback8,
 				function() {
 					Log.e('Could not clear user\'s inbox.');
@@ -385,7 +377,6 @@ var ping = function(clean, response, testCallback) {
 			);
 		};
 		var callback8 = function() {
-			Log.l('ping callback8');
 			if (reqScores) {
 				var pulledScores = [];
 				Log.l('reqScores.length = ' + reqScores.length + ' | reqScores = ');
@@ -439,7 +430,6 @@ var ping = function(clean, response, testCallback) {
 			}
 		};
 		var callback9 = function() {
-			Log.l('ping callback9');
 			respond(responseJson, response, testCallback);
 		};
 		authIsValid(userId, auth, callback);	

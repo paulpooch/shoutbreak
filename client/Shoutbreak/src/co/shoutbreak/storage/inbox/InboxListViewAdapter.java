@@ -296,8 +296,8 @@ public class InboxListViewAdapter extends BaseAdapter implements Colleague {
 		}
 
 		holder.shout = entry;
-		holder.textC.setText(entry.text);
-		holder.textE.setText(entry.text);
+		holder.textC.setText("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent risus urna, consectetur vitae adipiscing vel, elementum id tellus. Praesent interdum dolor vel sem tempor sagittis sed sit amet nibh. Nam tincidunt pharetra diam, vitae mollis orci bibendum ac. Phasellus auctor tortor eu turpis elementum facilisis lobortis libero gravida. Fusce feugiat dolor a erat convallis imperdiet. Maecenas ac ipsum dolor. Ut at lorem magna. Vestibulum id leo purus. Etiam a ante at orci sagittis eleifend. Nulla tincidunt adipiscing tellus a lobortis. Mauris id odio vitae sapien varius mattis. Nulla felis justo, tempus vel aliquet nec, hendrerit at est. Ut malesuada porta pharetra. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Aliquam erat volutpat. Sed vel nisl tortor.");
+		holder.textE.setText("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent risus urna, consectetur vitae adipiscing vel, elementum id tellus. Praesent interdum dolor vel sem tempor sagittis sed sit amet nibh. Nam tincidunt pharetra diam, vitae mollis orci bibendum ac. Phasellus auctor tortor eu turpis elementum facilisis lobortis libero gravida. Fusce feugiat dolor a erat convallis imperdiet. Maecenas ac ipsum dolor. Ut at lorem magna. Vestibulum id leo purus. Etiam a ante at orci sagittis eleifend. Nulla tincidunt adipiscing tellus a lobortis. Mauris id odio vitae sapien varius mattis. Nulla felis justo, tempus vel aliquet nec, hendrerit at est. Ut malesuada porta pharetra. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Aliquam erat volutpat. Sed vel nisl tortor.");
 		holder.scoreC.setText(score);
 		holder.scoreE.setText(score);
 		// This is for score details dialog.

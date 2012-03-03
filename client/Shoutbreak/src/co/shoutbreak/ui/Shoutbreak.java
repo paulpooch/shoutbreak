@@ -291,7 +291,7 @@ public class Shoutbreak extends MapActivity implements Colleague {
 					_doesMapKnowLocation.set(true);
 					dialogBuilder.showDialog(DialogBuilder.DISMISS_DIALOG_WAIT_FOR_MAP_TO_HAVE_LOCATION, "");
 					if (showToast) {
-						Toast.makeText(Shoutbreak.this, "You are here.", Toast.LENGTH_SHORT);
+						Toast.makeText(Shoutbreak.this, "You are here.", Toast.LENGTH_SHORT).show();
 					}
 				}
 			} else {
