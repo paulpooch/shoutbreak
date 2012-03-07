@@ -401,10 +401,10 @@ public class Mediator {
 	public void onLocationEnabled() {
 		SBLog.method(TAG, "onLocationEnabled()");
 		_isLocationEnabled.set(true);
+		_storage.initializeRadiusAtCell(getCurrentCell());
 		if (_isUIAlive.get()) {
 			_uiGateway.onLocationEnabled();
 		}
-		_storage.initializeRadiusAtCell(getCurrentCell());
 		startPolling(true);
 	}
 
@@ -966,6 +966,7 @@ public class Mediator {
 		public void handleRadiusChange(boolean isRadiusSet, long newRadius, int level) {
 			SBLog.method(TAG, "handleRadiusChange()");
 			_ui.userLocationOverlay.handleShoutreachRadiusChange(isRadiusSet, newRadius, level);
+			_ui.canAppTurnOn(true, false);
 		}
 
 		public void handleLevelUp(long cellRadius, int newLevel) {

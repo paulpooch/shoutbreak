@@ -3,7 +3,9 @@
 // CONFIG
 //
 ////////////////////////////////////////////////////////////////////////////////
-module.exports = (function() {
+var Config = module.exports = {};
+
+(function() {
 
 	// Settings
 	this.USER_INITIAL_POINTS = 71;
@@ -29,6 +31,7 @@ module.exports = (function() {
 	this.LIVE_USERS_TIMEOUT = 1260000; // 21 minutes
 	this.AUTH_ATTEMPT_FAIL_LIMIT = 30; // consider lowering this once not debugging (relaunching a million times).
 	this.CRON_INTERVAL_CULL_LIVE_USERS = 1800000; // 30 minutes
+	this.INTERVAL_LOG_RENAME = 1800000; // 30 minutes
 	 
 	// AWS
 	this.CACHE_URL = 'cache-001.ardkb4.0001.use1.cache.amazonaws.com:11211',
@@ -68,5 +71,4 @@ module.exports = (function() {
 	this.TABLE_VOTES = 'VOTES';
 	this.TABLE_REPLIES = 'REPLIES';
 
-	return this;
-})();
+}).call(Config);

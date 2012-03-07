@@ -143,6 +143,9 @@ public class User {
 	public RadiusCacheCell getRadiusAtCellDb(RadiusCacheCell cell) {
 		SBLog.method(TAG, "getDensityAtCell()");
 		RadiusCacheCell result = new RadiusCacheCell();
+		result.cellX = cell.cellX;
+		result.cellY = cell.cellY;
+		result.level = cell.level;
 		result.isSet = false;
 		String sql = "SELECT radius, last_updated FROM " + C.DB_TABLE_RADIUS + " WHERE cell_x = ? AND cell_y = ? AND level = ? ORDER BY last_updated DESC";
 		Cursor cursor = null;
@@ -155,6 +158,7 @@ public class User {
 				if (diff < C.CONFIG_SHOUTREACH_RADIUS_EXPIRATION) {
 					result.radius = cursor.getLong(0);
 					result.isSet = true;
+					result.lastUpdated = lastUpdated;
 					return result;
 				}
 			}

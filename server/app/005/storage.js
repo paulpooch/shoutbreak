@@ -3,7 +3,9 @@
 // STORAGE
 //
 ////////////////////////////////////////////////////////////////////////////////
-module.exports = (function() {
+var Storage = module.exports = {};
+
+(function() {
 	var self = this;
 
 	// Includes ////////////////////////////////////////////////////////////////
@@ -22,8 +24,9 @@ module.exports = (function() {
 		Memcached = new Memcached(Config.CACHE_URL);
 
 	// Cache ///////////////////////////////////////////////////////////////////
+	this.Cache = {};
 
-	var Cache = (function() {
+	(function() {
 		Memcached.on('issue', function(issue) {
 			Log.e('Issue occured on server ' + issue.server + ', ' + issue.retries  + 
 			' attempts left untill failure');
@@ -65,30 +68,31 @@ module.exports = (function() {
 				}
 			});
 		};
-		return this;
-	})();
+
+	}).call(this.Cache);
 
 	this.setTempAccount = function(tempUid, successCallback, failCallback) {
-		Cache.set(Config.PRE_CREATE_ACCOUNT_USER_TEMP_ID + tempUid, tempUid, 
+		self.Cache.set(Config.PRE_CREATE_ACCOUNT_USER_TEMP_ID + tempUid, tempUid, 
 			Config.TIMEOUT_CREATE_ACCOUNT_USER_TEMP_ID, successCallback, failCallback);
 	};
 
 	this.getTempAccount = function(userId, successCallback, failCallback) {
-		Cache.get(Config.PRE_CREATE_ACCOUNT_USER_TEMP_ID + userId, successCallback, failCallback);	
+		self.Cache.get(Config.PRE_CREATE_ACCOUNT_USER_TEMP_ID + userId, successCallback, failCallback);	
 	};
 
 	this.getAuth = function(userId, successCallback, failCallback) {
 		Log.l('Cache.getAuth');
-		Cache.get(Config.PRE_ACTIVE_AUTH + userId, successCallback, failCallback);
+		self.Cache.get(Config.PRE_ACTIVE_AUTH + userId, successCallback, failCallback);
 	};
 
 	this.deleteAuth = function(userId, successCallback, failCallback) {
-		Cache.delete(Config.PRE_ACTIVE_AUTH + userId, successCallback, failCallback);
+		self.Cache.delete(Config.PRE_ACTIVE_AUTH + userId, successCallback, failCallback);
 	};
 
 	// Replies /////////////////////////////////////////////////////////////////
+	this.Replies = {};
 
-	this.Replies = (function() {
+	(function() {
 		
 		this.addNewParentShout = function(shoutId, targets, successCallback, failCallback) {
 			var data = {
@@ -115,7 +119,7 @@ module.exports = (function() {
 			};
 			DynamoDB.putItem(data, callback);
 			var cacheReplyTo = function() {
-				Cache.set(Config.PRE_REPLY + shoutId, targets, Config.TIMEOUT_REPLY, callback2, 
+				self.Cache.set(Config.PRE_REPLY + shoutId, targets, Config.TIMEOUT_REPLY, callback2, 
 					function() {
 						Log.e('Could not save reply targets to cache.');
 						callback2(false);
@@ -163,7 +167,7 @@ module.exports = (function() {
 				Log.e('addToCache');
 				Log.obj(shout);
 				returnRecipients = recipients;
-				Cache.set(Config.PRE_REPLY + shoutId, returnRecipients, Config.TIMEOUT_REPLY, callback3, 
+				self.Cache.set(Config.PRE_REPLY + shoutId, returnRecipients, Config.TIMEOUT_REPLY, callback3, 
 					function() {
 						// Not a huge problem.
 						Log.e('Could not save recipients to cache.');
@@ -175,7 +179,7 @@ module.exports = (function() {
 				// We don't really care about the result.
 				successCallback(returnRecipients);
 			};	
-			Cache.get(Config.PRE_REPLY + shoutId, callback,
+			self.Cache.get(Config.PRE_REPLY + shoutId, callback,
 				function() {
 					// Ok to fail this get.
 					callback(false);
@@ -183,15 +187,15 @@ module.exports = (function() {
 			);
 		};
 		
-		return this;
-	})();
+	}).call(this.Replies);
 
 	// Inbox ///////////////////////////////////////////////////////////////////
+	this.Inbox = {};
 
-	this.Inbox = (function() {
+	(function() {
 		
 		this.checkInbox = function(userId, successCallback, failCallback) {
-			Cache.get(Config.PRE_INBOX + userId, successCallback, failCallback);	
+			self.Cache.get(Config.PRE_INBOX + userId, successCallback, failCallback);	
 		};
 
 		this.addToInbox = function(userId, shoutId, successCallback, failCallback) {
@@ -201,21 +205,21 @@ module.exports = (function() {
 					targetInbox = inboxArray;
 				}
 				targetInbox.push(shoutId);
-				Cache.set(Config.PRE_INBOX + userId, targetInbox, Config.TIMEOUT_INBOX, successCallback, failCallback);
+				self.Cache.set(Config.PRE_INBOX + userId, targetInbox, Config.TIMEOUT_INBOX, successCallback, failCallback);
 			};
 			Inbox.checkInbox(userId, callback, failCallback);
 		};			
 
 		this.clearInbox = function(userId, successCallback, failCallback) {
-			Cache.delete(Config.PRE_INBOX + userId, successCallback, failCallback);
+			self.Cache.delete(Config.PRE_INBOX + userId, successCallback, failCallback);
 		};
-
-		return this;
-	})();
+	
+	}).call(this.Inbox);
 
 	// Shouts //////////////////////////////////////////////////////////////////
+	this.Shouts = {};
 
-	this.Shouts = (function() {
+	(function() {
 
 		this.getShout = function(shoutId, successCallback, failCallback) {
 			Log.l('Shouts.getShout(' + shoutId + ')');
@@ -267,7 +271,7 @@ module.exports = (function() {
 			var addToCache = function(shout) {
 				Log.l('getShout addToCache');
 				returnShout = shout;
-				Cache.set(Config.PRE_SHOUT + shout.shoutId, shout, Config.TIMEOUT_SHOUT, callback3, 
+				self.Cache.set(Config.PRE_SHOUT + shout.shoutId, shout, Config.TIMEOUT_SHOUT, callback3, 
 					function() {
 						// Not a huge problem.
 						Log.e('Could not save shout to cache.');
@@ -280,7 +284,7 @@ module.exports = (function() {
 				// We don't really care about the result.
 				successCallback(returnShout);
 			};	
-			Cache.get(Config.PRE_SHOUT + shoutId, callback,
+			self.Cache.get(Config.PRE_SHOUT + shoutId, callback,
 				function() {
 					// Ok to fail this get.
 					callback(false);
@@ -328,7 +332,7 @@ module.exports = (function() {
 				});
 			};
 			var cacheShout = function() {
-				Cache.set(Config.PRE_SHOUT + shout.shoutId, shout, Config.TIMEOUT_SHOUT, callback2, 
+				self.Cache.set(Config.PRE_SHOUT + shout.shoutId, shout, Config.TIMEOUT_SHOUT, callback2, 
 					function() {
 						Log.e('Could not save shout to cache.');
 						callback2(false);
@@ -500,7 +504,7 @@ module.exports = (function() {
 	    			//	if (item['Attributes']) {
 	    			//		item = item['Attributes'];
 	    			// 		returnShout = Utils.makeShoutFromDynamoItem(item); }
-	    			Cache.set(Config.PRE_SHOUT + shout.shoutId, shout, Config.TIMEOUT_SHOUT, callback2, 
+	    			self.Cache.set(Config.PRE_SHOUT + shout.shoutId, shout, Config.TIMEOUT_SHOUT, callback2, 
 						function() {
 							Log.e('Could not save shout to cache.');
 							failCallback();
@@ -515,12 +519,12 @@ module.exports = (function() {
 			DynamoDB.updateItem(dynamoRequest, callback);
 		};
 
-		return this;
-	})();
+	}).call(this.Shouts);
 
 	// Users ///////////////////////////////////////////////////////////////////
+	this.Users = {};
 
-	this.Users = (function() {
+	(function() {
 
 		this.addNewUser = function(user, successCallback, failCallback) {
 			var data = {
@@ -615,7 +619,7 @@ module.exports = (function() {
     		};
 			var addToCache = function(user) {
 				returnUser = user;
-				Cache.set(Config.PRE_USER + user.userId, user, Config.TIMEOUT_USER, callback3, 
+				self.Cache.set(Config.PRE_USER + user.userId, user, Config.TIMEOUT_USER, callback3, 
 					function() {
 						// Not a huge problem.
 						Log.e('Could not save user to cache.');
@@ -627,7 +631,7 @@ module.exports = (function() {
 				// We don't really care about the result.
 				successCallback(returnUser);
 			};	
-			Cache.get(Config.PRE_USER + userId, callback,
+			self.Cache.get(Config.PRE_USER + userId, callback,
 				function() {
 					// Ok to fail this get.
 					callback(false);
@@ -650,7 +654,7 @@ module.exports = (function() {
 					};
 					failCallback(json);
 				} else {
-					Cache.set(Config.PRE_AUTH_ATTEMPT_FAIL + userId, failCount, Config.TIMEOUT_AUTH_ATTEMPT_FAIL, callback01, 
+					self.Cache.set(Config.PRE_AUTH_ATTEMPT_FAIL + userId, failCount, Config.TIMEOUT_AUTH_ATTEMPT_FAIL, callback01, 
 						function() {
 							var json = { 
 								'code': 'error',
@@ -691,7 +695,7 @@ module.exports = (function() {
 								);
 							}
 						};
-						Cache.set(Config.PRE_ACTIVE_AUTH + userId, authInfo,
+						self.Cache.set(Config.PRE_ACTIVE_AUTH + userId, authInfo,
 							Config.TIMEOUT_ACTIVE_AUTH, callback2, 
 							function() {
 								var json = { 
@@ -713,7 +717,7 @@ module.exports = (function() {
 					failCallback(json);
 				}
 			};
-			Cache.get(Config.PRE_AUTH_ATTEMPT_FAIL + userId, callback0, 
+			self.Cache.get(Config.PRE_AUTH_ATTEMPT_FAIL + userId, callback0, 
 				function() {
 					callback0(false);
 				}
@@ -822,7 +826,7 @@ module.exports = (function() {
 	    			//	if (item['Attributes']) {
 	    			//		item = item['Attributes'];
 	    			// 		returnShout = Utils.makeShoutFromDynamoItem(item); }
-	    			Cache.set(Config.PRE_USER + user.userId, user, Config.TIMEOUT_USER, callback2, 
+	    			self.Cache.set(Config.PRE_USER + user.userId, user, Config.TIMEOUT_USER, callback2, 
 						function() {
 							Log.e('Could not save user to cache.');
 							failCallback();
@@ -836,12 +840,13 @@ module.exports = (function() {
 			DynamoDB.updateItem(dynamoRequest, callback);
 		};
 
-		return this;
-	})();
+	}).call(this.Users);
 
 	// Live Users //////////////////////////////////////////////////////////////
+	this.LiveUsers = {};
 
-	this.LiveUsers = (function() {
+	(function() {
+
 		var liveUsersSelf = this;
 
 		this.cull = function(successCallback, failCallback) {
@@ -908,7 +913,7 @@ module.exports = (function() {
 					result = true;
 				}
 				if (result) {
-					Cache.set(Config.PRE_RADIUS_REQUEST + userId, reqCount, Config.TIMEOUT_RADIUS_REQUEST, callback2,
+					self.Cache.set(Config.PRE_RADIUS_REQUEST + userId, reqCount, Config.TIMEOUT_RADIUS_REQUEST, callback2,
 						function() {
 							Log.e('Could not save radius request limit to cache.');
 							failCallback();
@@ -921,7 +926,7 @@ module.exports = (function() {
 			var callback2 = function(setResult) {
 				successCallback(result);
 			};
-			Cache.get(Config.PRE_RADIUS_REQUEST + userId, callback,
+			self.Cache.get(Config.PRE_RADIUS_REQUEST + userId, callback,
 				function() {
 					callback(false);
 				}
@@ -1189,11 +1194,12 @@ module.exports = (function() {
 			performSelect(true, recursiveCallback);
 		};
 
-		return this;
-	})();
+	}).call(this.LiveUsers);
 
 	// Votes ///////////////////////////////////////////////////////////////////
-	this.Votes = (function() {
+	this.Votes = {};
+
+	(function() {
 		
 		this.getVote = function(shoutId, userId, successCallback, failCallback) {
 			var returnVote;
@@ -1232,7 +1238,7 @@ module.exports = (function() {
     		};
     		var addToCache = function(vote) {
 				returnVote = vote;
-				Cache.set(Config.PRE_VOTE + userId + shoutId, vote, Config.TIMEOUT_VOTE, callback3, 
+				self.Cache.set(Config.PRE_VOTE + userId + shoutId, vote, Config.TIMEOUT_VOTE, callback3, 
 					function() {
 						// Not a huge problem.
 						Log.e('Could not save vote to cache.');
@@ -1244,7 +1250,7 @@ module.exports = (function() {
 				// We don't really care about the result.
 				successCallback(returnVote);
 			};
-			Cache.get(Config.PRE_VOTE + userId + shoutId, callback,
+			self.Cache.get(Config.PRE_VOTE + userId + shoutId, callback,
 				function() {
 					// Ok to fail this get.
 					callback(false);
@@ -1279,7 +1285,7 @@ module.exports = (function() {
 				});
 			};
 			var cacheVote = function() {
-				Cache.set(Config.PRE_VOTE + userId + shoutId, vote, Config.TIMEOUT_VOTE, callback2, 
+				self.Cache.set(Config.PRE_VOTE + userId + shoutId, vote, Config.TIMEOUT_VOTE, callback2, 
 					function() {
 						// Not a huge problem.
 						Log.e('Could not save vote to cache.');
@@ -1293,8 +1299,6 @@ module.exports = (function() {
 			DynamoDB.putItem(data, callback);
 		};
 
-		return this;
-	})();
+	}).call(this.Votes);
 
-	return this;
-})();
+}).call(Storage);

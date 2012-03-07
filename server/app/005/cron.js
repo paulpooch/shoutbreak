@@ -1,6 +1,7 @@
 // Includes ////////////////////////////////////////////////////////////////////
+var Cron = module.exports = {};
 
-module.exports = (function() {
+(function() {
 
 	// Internal
 	var Log = 			require('./log'),
@@ -24,5 +25,4 @@ module.exports = (function() {
 	cullLiveUsers();
 	setInterval(cullLiveUsers, Config.CRON_INTERVAL_CULL_LIVE_USERS);
 	
-	return this;
-})();
+}).call(Cron);

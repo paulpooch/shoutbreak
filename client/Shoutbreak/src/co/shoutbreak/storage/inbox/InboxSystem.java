@@ -335,7 +335,9 @@ public class InboxSystem {
 		shout.ups = jsonScore.optInt(C.JSON_SHOUT_UPS, C.NULL_UPS);
 		shout.downs = jsonScore.optInt(C.JSON_SHOUT_DOWNS, C.NULL_DOWNS);
 		shout.hit = jsonScore.optInt(C.JSON_SHOUT_HIT, C.NULL_HIT);
-		shout.pts = jsonScore.optInt(C.JSON_POINTS, C.NULL_PTS);
+		//shout.pts = jsonScore.optInt(C.JSON_POINTS, C.NULL_PTS);
+		shout.calculateScore();
+		
 		shout.open = jsonScore.optInt(C.JSON_SHOUT_OPEN, 0) == 1 ? true : C.NULL_OPEN;
 		dbUpdateScore(shout);
 		 
@@ -345,7 +347,7 @@ public class InboxSystem {
 		// If it is, we need to save the points.
 		if (!shout.open){
 			Shout shoutFromDB = dbGetShoutFromDb(shout.id);
-			if (shoutFromDB.is_outbox) {
+			if (shoutFromDB != null && shoutFromDB.is_outbox) {
 				_m.handlePointsForShout(C.POINTS_SHOUT, shout.pts, shout.id);
 			}
 		}
@@ -371,6 +373,10 @@ public class InboxSystem {
 			if (shout.id.equals(shoutId)) {
 				shout = dbGetShoutFromDb(shoutId);
 				
+				if (shout == null) {
+					return;
+				}
+								
 				if (shout.isReply) {
 					ArrayList<Shout> siblingReplies = _repliesByParentId.get(shout.re);
 					if (siblingReplies != null) {
@@ -380,6 +386,9 @@ public class InboxSystem {
 								siblingReplies.add(j, shout);
 							}
 						}
+					} else {
+						siblingReplies = new ArrayList<Shout>();
+						siblingReplies.add(shout);
 					}
 					_displayedShouts = buildSortedList(shout.re);
 				} else {

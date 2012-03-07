@@ -3,11 +3,14 @@
 // LOG
 //
 ////////////////////////////////////////////////////////////////////////////////
-module.exports = (function() {
+var Log = module.exports = {};
+
+(function() {
 
 	var FileSystem = require('fs'),
 		Logger = require('log'),
-		Util = require('util');
+		Util = require('util'),
+		Config = require('./config');
 
 	var now = new Date();
 	var writeFlags = { flags: 'a' };
@@ -15,6 +18,17 @@ module.exports = (function() {
 	var logFile = new Logger('debug', FileSystem.createWriteStream('../logs/' + logName, writeFlags));
 	var errorLog = new Logger('debug', FileSystem.createWriteStream('../logs/exceptions.log', writeFlags));
 	var cronLog = new Logger('debug', FileSystem.createWriteStream('../logs/cron.log', writeFlags));
+
+	// This will roll-over log name when day changes.
+	setInterval(function() {
+		var newDate = new Date();
+		if (newDate.getDate() != now.getDate()) {
+			// Re-initiate Log
+			now = new Date();
+			logName = now.getFullYear() + '-' + (now.getMonth() + 1) + '-' + now.getDate() + '.log';
+			logFile = new Logger('debug', FileSystem.createWriteStream('../logs/' + logName, writeFlags));
+		}
+	}, Config.INTERVAL_LOG_RENAME);
 
 	this.l = function(text) {
 		if (typeof(text) != 'string') {
@@ -68,5 +82,4 @@ module.exports = (function() {
 		console.dir(obj); 
 	};
 
-	return this;
-})();
+}).call(Log);

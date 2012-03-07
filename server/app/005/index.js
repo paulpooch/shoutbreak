@@ -768,8 +768,9 @@ var respond = function(json, response, testCallback) {
 };
 
 // Test Suite /////////////////////////////////////////////////////////////////
+var Tests = {};
 
-var Tests = (function() {
+(function() {
 	
 	this.run = function() {
 
@@ -927,8 +928,7 @@ var Tests = (function() {
 		fakePost(post, null, test1);
 	};
 
-	return this;
-})();
+}).call(Tests);
 
 // Bootstrap //////////////////////////////////////////////////////////////////
 

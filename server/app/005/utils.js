@@ -3,7 +3,9 @@
 // UTILS
 //
 ////////////////////////////////////////////////////////////////////////////////
-module.exports = (function() {
+var Utils = module.exports = {};
+
+(function() {
 	var self = this;
 
 	// Includes ////////////////////////////////////////////////////////////////
@@ -178,5 +180,4 @@ module.exports = (function() {
 		return 1;
 	};
 
-	return this;
-})();
+}).call(Utils);
