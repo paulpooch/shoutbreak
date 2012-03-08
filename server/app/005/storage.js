@@ -207,7 +207,7 @@ var Storage = module.exports = {};
 				targetInbox.push(shoutId);
 				self.Cache.set(Config.PRE_INBOX + userId, targetInbox, Config.TIMEOUT_INBOX, successCallback, failCallback);
 			};
-			Inbox.checkInbox(userId, callback, failCallback);
+			this.checkInbox(userId, callback, failCallback);
 		};			
 
 		this.clearInbox = function(userId, successCallback, failCallback) {

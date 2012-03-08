@@ -45,6 +45,8 @@ var server = null;
 
 // Uncaught Exceptions
 process.on('uncaughtException', function (error) {
+	console.log(error);
+	console.log(error.stack);
 	Log.exception(error);
 	Log.exception(error.stack);
 	if (server) {
