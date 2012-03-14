@@ -102,9 +102,6 @@ public class Shoutbreak extends MapActivity implements Colleague {
 	private Flag _isInboxShowing = new Flag("ui:_isInboxShowing");
 	private Flag _isProfileShowing = new Flag("ui:_isProfileShowing");
 	private Flag _isTurnedOn = new Flag("ui:_isTurnedOn");
-	private Flag _isLocationEnabled = new Flag("ui:_isLocationEnabled");
-	private Flag _isDataEnabled = new Flag("ui:_isDataEnabled");
-	private Flag _isPowerPreferenceEnabled = new Flag("ui:_isPowerPreferenceEnabled");
 	// This flag isn't critical but may be nice to have one day.
 	private Flag _doesMapKnowLocation = new Flag("ui:_doesMapKnowLocation");
 
@@ -356,28 +353,17 @@ public class Shoutbreak extends MapActivity implements Colleague {
 
 	private void refreshFlags() {
 		SBLog.method(TAG, "refreshFlags()");
-		_isDataEnabled.set(_m.isDataEnabled());
-		_isLocationEnabled.set(_m.isLocationEnabled());
-		_isPowerPreferenceEnabled.set(_m.isPowerPreferenceEnabled());
+
+
 		_isTurnedOn.set(false);
 
-		if (_isDataEnabled.get()) {
-			_m.onDataEnabled();
-		} else {
-			_m.onDataDisabled();
-		}
+		_m.refreshFlags();
+		
 
-		if (_isLocationEnabled.get()) {
-			_m.onLocationEnabled();
-		} else {
-			_m.onLocationDisabled();
-		}
 
-		if (_isPowerPreferenceEnabled.get()) {
-			_m.onPowerPreferenceEnabled(true);
-		} else {
-			_m.onPowerPreferenceDisabled(true);
-		}
+
+
+
 	}
 
 	private void hideSplash(boolean showCompose) {
@@ -432,30 +418,6 @@ public class Shoutbreak extends MapActivity implements Colleague {
 			// TutorialDialog tut = new TutorialDialog(this);
 			// tut.show();
 		}
-	}
-
-	public void onLocationEnabled() {
-		SBLog.method(TAG, "onLocationEnabled()");
-		_isLocationEnabled.set(true);
-		tryToTurnOn(true);
-	}
-
-	public void onLocationDisabled() {
-		SBLog.method(TAG, "onLocationDisabled()");
-		_isLocationEnabled.set(false);
-		turnOff(true);
-	}
-
-	public void onDataEnabled() {
-		SBLog.method(TAG, "onDataEnabled()");
-		_isDataEnabled.set(true);
-		tryToTurnOn(true);
-	}
-
-	public void onDataDisabled() {
-		SBLog.method(TAG, "onDataDisabled()");
-		_isDataEnabled.set(false);
-		turnOff(true);
 	}
 
 	private void showComposeBlanket() {
@@ -606,7 +568,7 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		boolean showBlanket = false;
 		boolean suppressPowerButtonError = false;
 
-		if (!_isDataEnabled.get()) {
+		if (!_m.isDataEnabled()) {
 			canTurnOn = false;
 			showBlanket = true;
 			suppressPowerButtonError = true;
@@ -620,7 +582,7 @@ public class Shoutbreak extends MapActivity implements Colleague {
 			}
 		}
 
-		if (!_isLocationEnabled.get()) {
+		if (!_m.isLocationEnabled()) {
 			canTurnOn = false;
 			showBlanket = true;
 			suppressPowerButtonError = true;
@@ -634,7 +596,7 @@ public class Shoutbreak extends MapActivity implements Colleague {
 			}
 		}
 
-		if (!causedByPowerButton && !_isPowerPreferenceEnabled.get()) {
+		if (!causedByPowerButton && !_m.isPowerPreferenceEnabled()) {
 			canTurnOn = false;
 			showBlanket = true;
 			if (!suppressPowerButtonError) {
@@ -682,6 +644,15 @@ public class Shoutbreak extends MapActivity implements Colleague {
 					_m.getUiGateway().enableInputs();
 				}
 			}
+		}
+		
+		// Let's double check all blankets manually
+		int blanketFlagSum = _blanketRadiusRl.getVisibility() +
+				_blanketPowerRl.getVisibility() +
+				_blanketLocationRl.getVisibility() +
+				_blanketDataRl.getVisibility();
+		if (blanketFlagSum != 4 * View.GONE) {
+			int issue = 0;
 		}
 
 		return canTurnOn;
@@ -865,7 +836,20 @@ public class Shoutbreak extends MapActivity implements Colleague {
 			// was and set button to reflect that outcome.
 			reflectPowerState();
 			if (failedToTurnOn) {
-				Toast.makeText(Shoutbreak.this, getString(R.string.cannotTurnOnError), Toast.LENGTH_LONG).show();
+				String error = "Unable to turn on.\n\n";
+				if (!_m.isDataEnabled()) {
+					error += "3G (cell network) and Wifi are both not providing data.\n\n";
+				}
+				if (!_m.isLocationEnabled()) {
+					error += "Cell towers and GPS are both not providing location.\n\n";
+				}
+				if (!_m.isPowerPreferenceEnabled()) {
+					error += "Your power button is set to Off.\n\n";
+				}
+				if (!userLocationOverlay.isShoutreachRadiusSet()) {
+					error += "Cannot get nearby users from server.\n\n";
+				}
+				Toast.makeText(Shoutbreak.this, error, Toast.LENGTH_LONG).show();
 			}
 		}
 	}
@@ -878,23 +862,22 @@ public class Shoutbreak extends MapActivity implements Colleague {
 
 	public void onPowerPreferenceEnabled(boolean onUiThread) {
 		SBLog.method(TAG, "onPowerPreferenceEnabled()");
-		_isPowerPreferenceEnabled.set(true);
 		tryToTurnOn(onUiThread);
 	}
 
 	public void onPowerPreferenceDisabled(boolean onUiThread) {
 		SBLog.method(TAG, "onPowerPreferenceDisabled()");
-		_isPowerPreferenceEnabled.set(false);
 		turnOff(onUiThread);
 	}
 
-	private boolean tryToTurnOn(boolean onUiThread) {
+	public boolean tryToTurnOn(boolean onUiThread) {
 		SBLog.method(TAG, "turnOn()");
 		if (canAppTurnOn(onUiThread, false)) {
 			_isTurnedOn.set(true);
 			if (onUiThread) {
 				refreshPowerButtonImage();
 			}
+		  _m.startPolling(onUiThread);
 			return true;
 		} else {
 			turnOff(onUiThread);
@@ -902,7 +885,7 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		}
 	}
 
-	private void turnOff(boolean onUiThread) {
+	public void turnOff(boolean onUiThread) {
 		SBLog.method(TAG, "turnOff()");
 		_isTurnedOn.set(false);
 		if (onUiThread) {

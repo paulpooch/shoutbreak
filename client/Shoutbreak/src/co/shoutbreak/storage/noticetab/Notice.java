@@ -1,10 +1,7 @@
 package co.shoutbreak.storage.noticetab;
 
-import co.shoutbreak.core.utils.SBLog;
 
 public class Notice {
-	
-	private static final String TAG = "Notice";
 	
 	public long id;
 	public int type;

@@ -173,7 +173,6 @@ public class UserLocationOverlay extends MyLocationOverlay {
 		_arePixelsCalculated = false;
 		_resizeAdjustmentPixels = 0;
 		_calibrateZoomLevelForRadiusSize = true;
-		_ui.canAppTurnOn(true, false);
 	}
 
 	@Override

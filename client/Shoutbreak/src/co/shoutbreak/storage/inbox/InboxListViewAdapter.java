@@ -3,23 +3,18 @@ package co.shoutbreak.storage.inbox;
 import java.text.ParseException;
 import java.util.HashMap;
 
-import android.content.Context;
-import android.graphics.Typeface;
 import android.graphics.PorterDuff.Mode;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.AbsListView;
+import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.RelativeLayout.LayoutParams;
 import co.shoutbreak.R;
 import co.shoutbreak.core.C;
 import co.shoutbreak.core.Colleague;
@@ -28,6 +23,7 @@ import co.shoutbreak.core.Shout;
 import co.shoutbreak.core.utils.ErrorManager;
 import co.shoutbreak.core.utils.ISO8601DateParser;
 import co.shoutbreak.core.utils.SBLog;
+
 import com.ocpsoft.pretty.time.PrettyTime;
 
 public class InboxListViewAdapter extends BaseAdapter implements Colleague {

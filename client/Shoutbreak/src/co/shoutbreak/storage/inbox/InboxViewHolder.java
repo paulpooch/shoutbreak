@@ -1,11 +1,10 @@
 package co.shoutbreak.storage.inbox;
 
-import co.shoutbreak.core.Shout;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import co.shoutbreak.core.Shout;
 
 public class InboxViewHolder {
 	TextView textC;

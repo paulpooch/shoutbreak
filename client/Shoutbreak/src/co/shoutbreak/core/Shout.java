@@ -2,8 +2,6 @@ package co.shoutbreak.core;
 
 import java.util.Date;
 
-import co.shoutbreak.core.utils.SBLog;
-
 public class Shout {	
 	public String id;
 	public String timestamp;

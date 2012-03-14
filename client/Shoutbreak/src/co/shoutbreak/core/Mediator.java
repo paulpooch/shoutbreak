@@ -8,8 +8,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.google.android.maps.GeoPoint;
-
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -24,11 +22,11 @@ import android.os.Message;
 import android.os.SystemClock;
 import android.text.InputFilter;
 import android.view.View;
-import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Toast;
 import co.shoutbreak.R;
-import co.shoutbreak.core.utils.DataChangeReceiver;
 import co.shoutbreak.core.utils.DataChangeListener;
+import co.shoutbreak.core.utils.DataChangeReceiver;
 import co.shoutbreak.core.utils.DialogBuilder;
 import co.shoutbreak.core.utils.Flag;
 import co.shoutbreak.core.utils.Notifier;
@@ -44,12 +42,13 @@ import co.shoutbreak.storage.RadiusCacheCell;
 import co.shoutbreak.storage.Storage;
 import co.shoutbreak.storage.User;
 import co.shoutbreak.storage.inbox.InboxListViewAdapter;
-import co.shoutbreak.storage.inbox.InboxViewHolder;
 import co.shoutbreak.storage.noticetab.MultiDirectionSlidingDrawer;
 import co.shoutbreak.storage.noticetab.NoticeTabListViewAdapter;
 import co.shoutbreak.ui.IUiGateway;
 import co.shoutbreak.ui.Shoutbreak;
 import co.shoutbreak.ui.UiOffGateway;
+
+import com.google.android.maps.GeoPoint;
 
 public class Mediator {
 
@@ -460,6 +459,24 @@ public class Mediator {
 		return _service.getSystemService(name);
 	}
 
+	public void refreshFlags() {
+		if (isDataEnabled()) {
+			onDataDisabled();
+		} else {
+			onDataDisabled();
+		}
+		if (isLocationEnabled()) {
+			onLocationEnabled();
+		} else {
+			onLocationDisabled();
+		}
+		if (isPowerPreferenceEnabled()) {
+			onPowerPreferenceEnabled(true);
+		} else {
+			onPowerPreferenceDisabled(true);
+		}
+	}
+	
 	
 	
 	
@@ -966,7 +983,7 @@ public class Mediator {
 		public void handleRadiusChange(boolean isRadiusSet, long newRadius, int level) {
 			SBLog.method(TAG, "handleRadiusChange()");
 			_ui.userLocationOverlay.handleShoutreachRadiusChange(isRadiusSet, newRadius, level);
-			_ui.canAppTurnOn(true, false);
+			_ui.tryToTurnOn(true);			
 		}
 
 		public void handleLevelUp(long cellRadius, int newLevel) {
@@ -1069,22 +1086,22 @@ public class Mediator {
 
 		@Override
 		public void onDataDisabled() {
-			_ui.onDataDisabled();
+			_ui.turnOff(true);
 		}
 
 		@Override
 		public void onDataEnabled() {
-			_ui.onDataEnabled();
+			_ui.tryToTurnOn(true);
 		}
 
 		@Override
 		public void onLocationDisabled() {
-			_ui.onLocationDisabled();
+			_ui.turnOff(true);
 		}
 
 		@Override
 		public void onLocationEnabled() {
-			_ui.onLocationEnabled();
+			_ui.tryToTurnOn(true);
 		}
 
 		@Override
@@ -1198,4 +1215,51 @@ public class Mediator {
 		}
 
 	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
