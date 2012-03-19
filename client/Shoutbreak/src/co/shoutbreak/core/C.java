@@ -187,5 +187,13 @@ public class C {
 	public static final String NOTIFICATION_LAUNCHED_FROM_UI = "app_launched_from_ui";
 	public static final String NOTIFICATION_LAUNCHED_FROM_ALARM = "app_launched_from_alarm";
 	public static final String NOTIFICATION_LAUNCHED_FROM_NOTIFICATION = "app_launched_from_notification";
+	
+	// C2DM /////////////////////////////////////////////////////////////////////
+	public static final String AUTH_PERMISSION_ACTION = "com.google.ctp.AUTH_PERMISSION";
+	
+  public static String makeLogTag(Class cls) {
+      String tag = cls.getSimpleName();
+      return (tag.length() > 23) ? tag.substring(0, 23) : tag;
+  }
 
 }
