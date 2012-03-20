@@ -101,7 +101,7 @@ public class Shoutbreak extends MapActivity implements Colleague {
 	private Flag _isComposeShowing = new Flag("ui:_isComposeShowing");
 	private Flag _isInboxShowing = new Flag("ui:_isInboxShowing");
 	private Flag _isProfileShowing = new Flag("ui:_isProfileShowing");
-	private Flag _isTurnedOn = new Flag("ui:_isTurnedOn");
+	//private Flag _isTurnedOn = new Flag("ui:_isTurnedOn");
 	// This flag isn't critical but may be nice to have one day.
 	private Flag _doesMapKnowLocation = new Flag("ui:_doesMapKnowLocation");
 
@@ -263,7 +263,7 @@ public class Shoutbreak extends MapActivity implements Colleague {
 	 */
 
 	public void centerMapOnUser(boolean showToast) {
-		if (_isTurnedOn.get() && _map != null && userLocationOverlay != null && _map.getOverlays().size() > 0 && userLocationOverlay.isMyLocationEnabled()) {
+		if (_map != null && userLocationOverlay != null && _map.getOverlays().size() > 0 && userLocationOverlay.isMyLocationEnabled()) {
 
 			// CenterMapTask task = new CenterMapTask();
 			// task.execute(false);
@@ -314,8 +314,8 @@ public class Shoutbreak extends MapActivity implements Colleague {
 
 			userLocationOverlay = new UserLocationOverlay(Shoutbreak.this, _map);
 			dialogBuilder = new DialogBuilder(Shoutbreak.this, _m);
-
-			refreshFlags();
+			
+			_m.refreshFlags();
 			_m.refreshUiComponents(noticeTabSd);
 
 			if (wasLaunchFromReferral()) {
@@ -349,21 +349,6 @@ public class Shoutbreak extends MapActivity implements Colleague {
 			getIntent().putExtras(extras);
 		}
 		wasLaunchFromReferral();
-	}
-
-	private void refreshFlags() {
-		SBLog.method(TAG, "refreshFlags()");
-
-
-		_isTurnedOn.set(false);
-
-		_m.refreshFlags();
-		
-
-
-
-
-
 	}
 
 	private void hideSplash(boolean showCompose) {
@@ -561,102 +546,7 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		return false;
 	}
 	
-	public boolean canAppTurnOn(boolean onUiThread, boolean causedByPowerButton) {
-		SBLog.method(TAG, "canAppTurnOn()");
-
-		boolean canTurnOn = true;
-		boolean showBlanket = false;
-		boolean suppressPowerButtonError = false;
-
-		if (!_m.isDataEnabled()) {
-			canTurnOn = false;
-			showBlanket = true;
-			suppressPowerButtonError = true;
-			if (onUiThread) {
-				_blanketDataRl.setVisibility(View.VISIBLE);
-				SBLog.logic("Data Blanket - isDataEnabled = false");
-			}
-		} else {
-			if (onUiThread) {
-				_blanketDataRl.setVisibility(View.GONE);
-			}
-		}
-
-		if (!_m.isLocationEnabled()) {
-			canTurnOn = false;
-			showBlanket = true;
-			suppressPowerButtonError = true;
-			if (onUiThread) {
-				_blanketLocationRl.setVisibility(View.VISIBLE);
-				SBLog.logic("Location Blanket - isLocationEnabled = false");
-			}
-		} else {
-			if (onUiThread) {
-				_blanketLocationRl.setVisibility(View.GONE);
-			}
-		}
-
-		if (!causedByPowerButton && !_m.isPowerPreferenceEnabled()) {
-			canTurnOn = false;
-			showBlanket = true;
-			if (!suppressPowerButtonError) {
-				if (onUiThread) {
-					_blanketPowerRl.setVisibility(View.VISIBLE);
-					SBLog.logic("Power Blanket - isPowerPreferenceEnabled = false");
-				}
-			} else {
-				if (onUiThread) {
-					_blanketPowerRl.setVisibility(View.GONE);
-				}
-			}
-		} else {
-			if (onUiThread) {
-				_blanketPowerRl.setVisibility(View.GONE);
-			}
-		}
-
-		if (canTurnOn) {
-			if (!userLocationOverlay.isShoutreachRadiusSet()) {
-				showBlanket = true;
-				if (onUiThread) {
-					_blanketRadiusRl.setVisibility(View.VISIBLE);
-				}
-			} else {
-				if (onUiThread) {
-					_blanketRadiusRl.setVisibility(View.GONE);
-				}
-			}
-		} else {
-			if (onUiThread) {
-				_blanketRadiusRl.setVisibility(View.GONE);
-			}
-		}
-
-		if (onUiThread) {
-			if (showBlanket) {
-				showComposeBlanket();
-				if (_m != null) {
-					_m.getUiGateway().disableInputs();
-				}
-			} else {
-				hideComposeBlanket();
-				if (_m != null) {
-					_m.getUiGateway().enableInputs();
-				}
-			}
-		}
-		
-		// Let's double check all blankets manually
-		int blanketFlagSum = _blanketRadiusRl.getVisibility() +
-				_blanketPowerRl.getVisibility() +
-				_blanketLocationRl.getVisibility() +
-				_blanketDataRl.getVisibility();
-		if (blanketFlagSum != 4 * View.GONE) {
-			int issue = 0;
-		}
-
-		return canTurnOn;
-	}
+	
 
 	public int getMapHeight() {
 		return _map.getMeasuredHeight();
@@ -766,9 +656,9 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		case C.ACTIVITY_RESULT_LOCATION: { // returning from location provider
 																				// activity
 			if (_m.isLocationEnabled()) { // update location status
-				_m.onLocationEnabled();
+				_m.onLocationEnabled(true);
 			} else {
-				_m.onLocationDisabled();
+				_m.onLocationDisabled(true);
 			}
 			break;
 		}
@@ -816,9 +706,9 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		protected Void doInBackground(Void... unused) {
 			SBLog.method(TAG, "PowerButtonTask.doInBackground()");
 			// only change the power preference when they press the on/off switch
-			if (!_isTurnedOn.get()) {
+			if (!_m.isPowerPreferenceEnabled()) {
 				// Turn On.
-				if (canAppTurnOn(false, true)) {
+				if (_m.attemptTurnOn()) {
 					_m.setPowerPreferenceToOn(false);
 				} else {
 					failedToTurnOn = true;
@@ -856,10 +746,11 @@ public class Shoutbreak extends MapActivity implements Colleague {
 	
 	public void reflectPowerState() {
 		SBLog.method(TAG, "reflectPowerState()");
-		canAppTurnOn(true, false);
+		refreshOnOffState(true, false);
 		refreshPowerButtonImage();
 	}
 
+	/*
 	public void onPowerPreferenceEnabled(boolean onUiThread) {
 		SBLog.method(TAG, "onPowerPreferenceEnabled()");
 		tryToTurnOn(onUiThread);
@@ -869,7 +760,106 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		SBLog.method(TAG, "onPowerPreferenceDisabled()");
 		turnOff(onUiThread);
 	}
+	*/
 
+	public boolean refreshOnOffState(boolean onUiThread, boolean causedByPowerButton) {
+			boolean canTurnOn = true;
+			boolean showBlanket = false;
+			boolean suppressPowerButtonError = false;
+
+			if (!_m.isDataEnabled()) {
+				canTurnOn = false;
+				showBlanket = true;
+				suppressPowerButtonError = true;
+				if (onUiThread) {
+					_blanketDataRl.setVisibility(View.VISIBLE);
+					SBLog.logic("Data Blanket - isDataEnabled = false");
+				}
+			} else {
+				if (onUiThread) {
+					_blanketDataRl.setVisibility(View.GONE);
+				}
+			}
+
+			if (!_m.isLocationEnabled()) {
+				canTurnOn = false;
+				showBlanket = true;
+				suppressPowerButtonError = true;
+				if (onUiThread) {
+					_blanketLocationRl.setVisibility(View.VISIBLE);
+					SBLog.logic("Location Blanket - isLocationEnabled = false");
+				}
+			} else {
+				if (onUiThread) {
+					_blanketLocationRl.setVisibility(View.GONE);
+				}
+			}
+
+			if (!causedByPowerButton && !_m.isPowerPreferenceEnabled()) {
+				canTurnOn = false;
+				showBlanket = true;
+				if (!suppressPowerButtonError) {
+					if (onUiThread) {
+						_blanketPowerRl.setVisibility(View.VISIBLE);
+						SBLog.logic("Power Blanket - isPowerPreferenceEnabled = false");
+					}
+				} else {
+					if (onUiThread) {
+						_blanketPowerRl.setVisibility(View.GONE);
+					}
+				}
+			} else {
+				if (onUiThread) {
+					_blanketPowerRl.setVisibility(View.GONE);
+				}
+			}
+
+			if (canTurnOn) {
+				if (!userLocationOverlay.isShoutreachRadiusSet()) {
+					showBlanket = true;
+					if (onUiThread) {
+						_blanketRadiusRl.setVisibility(View.VISIBLE);
+					}
+				} else {
+					if (onUiThread) {
+						_blanketRadiusRl.setVisibility(View.GONE);
+					}
+				}
+			} else {
+				if (onUiThread) {
+					_blanketRadiusRl.setVisibility(View.GONE);
+				}
+			}
+
+			if (onUiThread) {
+				if (showBlanket) {
+					showComposeBlanket();
+					if (_m != null) {
+						_m.getUiGateway().disableInputs();
+					}
+				} else {
+					hideComposeBlanket();
+					if (_m != null) {
+						_m.getUiGateway().enableInputs();
+					}
+				}
+				refreshPowerButtonImage();
+			}
+			
+			// Let's double check all blankets manually
+//			int blanketFlagSum = _blanketRadiusRl.getVisibility() +
+//					_blanketPowerRl.getVisibility() +
+//					_blanketLocationRl.getVisibility() +
+//					_blanketDataRl.getVisibility();
+//			if (blanketFlagSum != 4 * View.GONE) {
+//				int issue = 0;
+//			}
+
+			return canTurnOn;
+		
+	}
+	
+	/*
 	public boolean tryToTurnOn(boolean onUiThread) {
 		SBLog.method(TAG, "turnOn()");
 		if (canAppTurnOn(onUiThread, false)) {
@@ -893,9 +883,10 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		}
 		canAppTurnOn(onUiThread, false);
 	}
+	*/
 	
 	private void refreshPowerButtonImage() {
-		if (_isTurnedOn.get()) {
+		if (_m.isPowerPreferenceEnabled()) {
 			_powerBtn.setImageResource(R.drawable.power_button_on);
 		} else {
 			_powerBtn.setImageResource(R.drawable.power_button_off);

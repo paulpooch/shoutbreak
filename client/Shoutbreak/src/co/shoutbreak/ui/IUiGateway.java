@@ -39,12 +39,6 @@ public interface IUiGateway {
 	public void showShoutNotice(String noticeText);
 	public void unsetUiMediator();
 	public void finishUi();
-	public void onDataEnabled();
-	public void onDataDisabled();
-	public void onLocationEnabled();
-	public void onLocationDisabled();
-	public void onPowerPreferenceEnabled(boolean onUiThread);
-	public void onPowerPreferenceDisabled(boolean onUiThread);
 	public void setupNoticeTabListView(NoticeTabListViewAdapter listAdapter, boolean itemsCanFocus, OnItemClickListener listViewItemClickListener);	
 	public void setupInboxListView(InboxListViewAdapter listAdapter, boolean itemsCanFocus, OnItemClickListener inboxItemClickListener);
 	public void showTopNotice();
@@ -53,5 +47,6 @@ public interface IUiGateway {
 	public void scrollInboxToPosition(int position);
 	public void toast(String text, int duration);
 	public void jumpToProfile();
+	public void refreshOnOffState(boolean onUiThread, boolean causedByPowerButton);
 	
 }

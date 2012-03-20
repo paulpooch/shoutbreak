@@ -35,12 +35,12 @@ public class PreferenceManager {
 	
 	public void setPowerPreferenceToOn(boolean onUiThread) {
 		putBoolean(C.PREFERENCE_POWER_STATE, true);
-		_m.onPowerPreferenceEnabled(onUiThread);
+		_m.onPowerPreferenceEnabled(onUiThread, true);
 	}
 	
 	public void setPowerPreferenceToOff(boolean onUiThread) {
 		putBoolean(C.PREFERENCE_POWER_STATE, false);
-		_m.onPowerPreferenceDisabled(onUiThread);
+		_m.onPowerPreferenceDisabled(onUiThread, true);
 	}
 	
 	public boolean isPowerPreferenceSetToOn() {

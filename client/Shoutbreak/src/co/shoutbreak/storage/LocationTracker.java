@@ -207,9 +207,9 @@ public class LocationTracker implements LocationListener, Colleague {
 		//_provider = _locationManager.getBestProvider(_criteria, true);
 		//_locationManager.requestLocationUpdates(_provider, C.CONFIG_GPS_MIN_UPDATE_MILLISECS, C.CONFIG_GPS_MIN_UPDATE_METERS, LocationTracker.this);
 		if (status == LocationProvider.AVAILABLE) {
-			_m.onLocationEnabled();
+			_m.onLocationEnabled(true);
 		} else if (status == LocationProvider.OUT_OF_SERVICE) {
-			_m.onLocationDisabled();
+			_m.onLocationDisabled(true);
 		}
 	}
 }

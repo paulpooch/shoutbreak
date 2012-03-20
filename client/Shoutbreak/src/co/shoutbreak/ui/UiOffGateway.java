@@ -45,18 +45,6 @@ public class UiOffGateway implements IUiGateway {
 	public void finishUi() {}
 
 	@Override
-	public void onDataDisabled() {}
-
-	@Override
-	public void onDataEnabled() {}
-
-	@Override
-	public void onLocationDisabled() {}
-
-	@Override
-	public void onLocationEnabled() {}
-
-	@Override
 	public void unsetUiMediator() {}
 
 	@Override
@@ -94,12 +82,6 @@ public class UiOffGateway implements IUiGateway {
 	public void jumpToProfile() {}
 
 	@Override
-	public void onPowerPreferenceDisabled(boolean onUiThread) {}
-
-	@Override
-	public void onPowerPreferenceEnabled(boolean onUiThread) {}
-
-	@Override
 	public void handleServerAnnouncementCode(String text) {}
 
 	@Override
@@ -125,5 +107,8 @@ public class UiOffGateway implements IUiGateway {
 
 	@Override
 	public void createReplyDialog(Shout shout) {}
+
+	@Override
+	public void refreshOnOffState(boolean onUiThread, boolean causedByPowerButton) {}
 
 }

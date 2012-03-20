@@ -82,6 +82,7 @@ public class ThreadLauncher implements Colleague {
 		} else {
 			_uiThreadHandler.post(thread);
 		}
+		_m.setIsPollingAlive(true);
 	}
 	
 	public void startPolling() {

@@ -134,11 +134,13 @@ public class User {
 	public int getNextLevelAt() {
 		return _nextLevelAt;
 	}
-	
+
+	/*
 	public RadiusCacheCell getInitialRadiusAtCell(RadiusCacheCell currentCell) {
 		_radiusAtCell = getRadiusAtCellDb(currentCell);
 		return _radiusAtCell;
 	}
+	*/
 	
 	public RadiusCacheCell getRadiusAtCellDb(RadiusCacheCell cell) {
 		SBLog.method(TAG, "getDensityAtCell()");

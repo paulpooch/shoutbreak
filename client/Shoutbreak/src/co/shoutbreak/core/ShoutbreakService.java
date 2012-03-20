@@ -31,8 +31,7 @@ public class ShoutbreakService extends Service implements Colleague {
 	
 	@Override
 	public void onCreate() {
-    	SBLog.lifecycle(TAG, "onCreate()");
-		super.onCreate();
+    super.onCreate();
 		_m = new Mediator(ShoutbreakService.this);
 	}
 	
@@ -42,7 +41,6 @@ public class ShoutbreakService extends Service implements Colleague {
 		super.onStartCommand(intent, flags, startId);
 		if (!_isStarted) {
 			_isStarted = true;
-			_m.onServiceStart();
 		} else {
 			SBLog.error(TAG, "service already started");
 		}
@@ -50,13 +48,13 @@ public class ShoutbreakService extends Service implements Colleague {
 		if (extras != null && !extras.isEmpty()) {
 			// determine what launched the app
 			if (extras.getBoolean(C.NOTIFICATION_LAUNCHED_FROM_UI)) {
-				_m.appLaunchedFromUI();
+				_m.attemptTurnOn();
 			} else if (extras.getBoolean(C.NOTIFICATION_LAUNCHED_FROM_ALARM)) {
-				_m.appLaunchedFromAlarm();
+				_m.attemptTurnOn();
 			}
 		} else {
 			SBLog.error(TAG, "Service bundle must contain referral information");
-			_m.appLaunchedFromUI();
+			_m.attemptTurnOn();
 		}
 		return START_REDELIVER_INTENT;
 	}

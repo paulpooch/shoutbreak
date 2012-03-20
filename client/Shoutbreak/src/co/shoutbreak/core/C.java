@@ -148,7 +148,7 @@ public class C {
 	public static final int PURPOSE_DEATH = 62; // don't repeat this - just die
 	
 	// DATABASE ///////////////////////////////////////////////////////////////
-	public static final int DB_VERSION = 13;
+	public static final int DB_VERSION = 16;
 
 	public static final String DB_NAME = "sbdb";
 	public static final String DB_TABLE_RADIUS = "RADIUS";
@@ -191,9 +191,9 @@ public class C {
 	// C2DM /////////////////////////////////////////////////////////////////////
 	public static final String AUTH_PERMISSION_ACTION = "com.google.ctp.AUTH_PERMISSION";
 	
-  public static String makeLogTag(Class cls) {
-      String tag = cls.getSimpleName();
-      return (tag.length() > 23) ? tag.substring(0, 23) : tag;
-  }
+//  public static String makeLogTag(Class cls) {
+//      String tag = cls.getSimpleName();
+//      return (tag.length() > 23) ? tag.substring(0, 23) : tag;
+//  }
 
 }

@@ -40,9 +40,9 @@ public class DataChangeListener implements Colleague {
 	
 	public void checkDataStateAndPushEvents() {
 		if (isDataEnabled()) {
-			_m.onDataEnabled();
+			_m.onDataEnabled(true);
 		} else {
-			_m.onDataDisabled();
+			_m.onDataDisabled(true);
 		}
 	}
 	

@@ -72,14 +72,14 @@ public class Mediator {
 	private DataChangeReceiver _connectivityReceiver;
 	
 	// state flags
-	private Flag _isUIAlive = new Flag("m:_isUIAlive");
-	private Flag _isUiInForeground = new Flag("m:_isUIInForeground");
+	private Flag _isUiAlive = new Flag("m:_isUiAlive");
+	private Flag _isUiInForeground = new Flag("m:_isUiInForeground");
 	private Flag _isPollingAlive = new Flag("m:_isPollingAlive");
 	private Flag _isServiceConnected = new Flag("m:_isServiceConnected");
-	private Flag _isServiceStarted = new Flag("m:_isServiceStarted");
-	private Flag _isLocationEnabled = new Flag("m:_isLocationEnabled");
-	private Flag _isDataEnabled = new Flag("m:_isDataEnabled");
-	private Flag _isPowerPreferenceEnabled = new Flag("m:_isPowerPreferenceEnabled"); // is power preference set to on
+	//private Flag _isServiceStarted = new Flag("m:_isServiceStarted");
+	//private Flag _isLocationEnabled = new Flag("m:_isLocationEnabled");
+	//private Flag _isDataEnabled = new Flag("m:_isDataEnabled");
+	//private Flag _isPowerPreferenceEnabled = new Flag("m:_isPowerPreferenceEnabled"); // is power preference set to on
 
 	/* Mediator Lifecycle */
 
@@ -102,43 +102,247 @@ public class Mediator {
 		_service.registerReceiver(_connectivityReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
 		_threadLauncher = new ThreadLauncher(Mediator.this);
 		_uiGateway = new UiOffGateway();
-
-		// Initialize State.
-
-		// Polling has already been set and launched from DataListener calling
-		// onDataEnabled.
-		// Make sure we don't launch a second one.
+		
 		if (!_isPollingAlive.isInitialized()) {
 			_isPollingAlive.set(false);
 		}
-		_isUIAlive.set(false);
+		_isUiAlive.set(false);
 		_isUiInForeground.set(false);
+	
 
-		_isDataEnabled.set(isDataEnabled());
-		_isLocationEnabled.set(isLocationEnabled());
-		_isPowerPreferenceEnabled.set(isPowerPreferenceEnabled());
+	}
 
-		if (_isDataEnabled.get()) {
-			onDataEnabled();
+	// NEW LIFECYCLE ////////////////////////////////////////////////////////////
+
+	public void refreshFlags() {
+		if (isDataEnabled()) {
+			onDataEnabled(false);
 		} else {
-			onDataDisabled();
+			onDataDisabled(false);
 		}
-
-		if (_isLocationEnabled.get()) {
-			onLocationEnabled();
+		if (isLocationEnabled()) {
+			onLocationEnabled(false);
 		} else {
-			onLocationDisabled();
+			onLocationDisabled(false);
 		}
-
-		if (_isPowerPreferenceEnabled.get()) {
-			onPowerPreferenceEnabled(true);
+		if (isPowerPreferenceEnabled()) {
+			onPowerPreferenceEnabled(true, false);
 		} else {
-			onPowerPreferenceDisabled(true);
+			onPowerPreferenceDisabled(true, false);
+		}
+	}
+	
+	public void setIsPollingAlive(boolean b) {
+		_isPollingAlive.set(b);
+	}
+
+	public void onPowerPreferenceEnabled(boolean onUiThread, boolean attemptToTurnOn) {
+		enableIntervalAlarm();
+		_service.enableOnBootAlarmReceiver();
+		if (attemptToTurnOn) {
+			attemptTurnOn();
 		}
 	}
 
+	public void onPowerPreferenceDisabled(boolean onUiThread, boolean attemptToTurnOn) {
+		disableIntervalAlarm();
+		_service.disableOnBootAlarmReceiver();
+		if (attemptToTurnOn) {
+			attemptTurnOn();
+		}
+	}
+	
+	public void onLocationEnabled(boolean attemptToTurnOn) {
+		_storage.getRadiusAtCell(getCurrentCell());
+		_location.refreshBestProvider();
+		if (attemptToTurnOn) {
+			attemptTurnOn();
+		}
+	}
+
+	public void onLocationDisabled(boolean attemptToTurnOn) {
+		if (attemptToTurnOn) {
+			attemptTurnOn();
+		}
+	}
+	
+	public void onDataEnabled(boolean attemptToTurnOn) {
+		SBLog.method(TAG, "onDataEnabled()");
+		_location.refreshBestProvider();
+		if (attemptToTurnOn) {
+			attemptTurnOn();
+		}
+	}
+	
+	public void onDataDisabled(boolean attemptToTurnOn) {
+		if (attemptToTurnOn) {
+			attemptTurnOn();
+		}
+	}
+
+	public boolean attemptTurnOn() {
+		boolean canTurnOn = true;
+		
+		if (!_isPollingAlive.get()) {
+			if (!isPowerPreferenceEnabled()) {
+				canTurnOn = false;
+			} else {
+				
+				if (!isDataEnabled()) {
+					canTurnOn = false;
+				} else {
+					
+					if (!isLocationEnabled()) {
+						canTurnOn = false;
+					} else {
+						
+						_threadLauncher.startPolling();
+						_uiGateway.enableInputs();
+						return canTurnOn;
+						
+					}
+				}
+			}
+		}
+		
+		if (!canTurnOn) {
+			if (_isPollingAlive.get()) {
+				// This must be called before setPowerPreferenceToOff or infinite loop occurs.
+				_isPollingAlive.set(false);
+				_threadLauncher.stopLaunchingPollingThreads();
+			}
+		}
+		
+		_uiGateway.refreshOnOffState(true, false);
+		return canTurnOn;
+	}
+	
+	//TODO: This should call something better than stopPolling()
+	private void possiblyStopPolling(Message message) {
+		SBLog.logic("possiblyStopPolling()");
+		if (message != null && message.obj != null) {
+			CrossThreadPacket xPacket = (CrossThreadPacket) message.obj;
+			if (xPacket.purpose == C.PURPOSE_LOOP_FROM_UI || xPacket.purpose == C.PURPOSE_LOOP_FROM_UI_DELAYED) {
+				if (PollingAlgorithm.isDropCountAtLimit()) {
+					// The Polling loop just crashed.
+					_storage.handleForcedPollingStop();
+					setPowerPreferenceToOff(true);
+				}
+			}
+		} else {
+			// Something really bad happened
+			setPowerPreferenceToOff(true);
+		}
+		_uiGateway.refreshOnOffState(true, false);
+	}
+				
+	/*
+	public void startPolling(boolean onUiThread) {
+		SBLog.lifecycle(TAG, "startPolling()");
+		if (!_isPollingAlive.get()) {
+			if (_isPowerPreferenceEnabled.get() && _isLocationEnabled.get() && _isDataEnabled.get() && _isServiceStarted.get()) {
+				SBLog.logic("startPolling - app fully functional");
+				_isPollingAlive.set(true);
+				_threadLauncher.startPolling();
+				if (onUiThread) {
+					_uiGateway.enableInputs();
+				}
+			} else {
+				if (!_isPowerPreferenceEnabled.get()) {
+					SBLog.error(TAG, "unable to start service because power preference is set to off");
+				}
+				if (!_isLocationEnabled.get()) {
+					SBLog.error(TAG, "unable to start service because location is unavailable");
+				}
+				if (!_isDataEnabled.get()) {
+					SBLog.error(TAG, "unable to start service because data unavailable");
+				}
+			}
+		} else {
+			SBLog.logic("startPolling - service is already polling, unable to call startPolling()");
+		}
+	}
+	
+	public void stopPolling() {
+		SBLog.lifecycle(TAG, "stopPolling()");
+		if (_isPollingAlive.get()) {
+			// This must be called before setPowerPreferenceToOff or infinite loop occurs.
+			_isPollingAlive.set(false);
+			_threadLauncher.stopLaunchingPollingThreads();
+		} else {
+			SBLog.logic("stopPolling was called, but isPollingAlive is already false.");
+		}
+	}
+
+	public void appLaunchedFromUI() {
+		SBLog.lifecycle(TAG, "appLaunchedFromUI()");
+		_isServiceStarted.set(true);
+		startPolling(true);
+	}
+
+ 	public void appLaunchedFromAlarm() {
+		SBLog.lifecycle(TAG, "appLaunchedFromAlarm()");
+		_isServiceStarted.set(true);
+		startPolling(true);
+	}
+
+	public void onPowerPreferenceEnabled(boolean onUiThread) {
+		SBLog.method(TAG, "onPowerEnabled()");
+		_isPowerPreferenceEnabled.set(true);
+		enableIntervalAlarm();
+		_service.enableOnBootAlarmReceiver();
+		if (_isUIAlive.get()) {
+			_uiGateway.onPowerPreferenceEnabled(onUiThread);
+		}
+		startPolling(onUiThread);
+	}
+	
+	public void onServiceStart() {
+		SBLog.lifecycle(TAG, "onServiceStart()");
+		_isServiceStarted.set(true);
+	}
+	
+	public void onLocationEnabled() {
+		SBLog.method(TAG, "onLocationEnabled()");
+		_isLocationEnabled.set(true);
+		_storage.initializeRadiusAtCell(getCurrentCell());
+		if (_isUIAlive.get()) {
+			_uiGateway.onLocationEnabled();
+		}
+		startPolling(true);
+	}	
 	
 	
+	public void onLocationDisabled() {
+		SBLog.method(TAG, "onLocationDisabled()");
+		_isLocationEnabled.set(false);
+		if (_isUiAlive.get()) {
+			_uiGateway.onLocationDisabled();
+		}
+		stopPolling();
+	}
+	
+	public void onDataEnabled() {
+		SBLog.method(TAG, "onDataEnabled()");
+		_isDataEnabled.set(true);
+		if (_isUIAlive.get()) {
+			_uiGateway.onDataEnabled();
+		}
+		_location.refreshBestProvider();
+		startPolling(true);
+	}
+	
+	public void onPowerPreferenceDisabled(boolean onUiThread) {
+		SBLog.method(TAG, "onPowerDisabled()");
+		_isPowerPreferenceEnabled.set(false);
+		disableIntervalAlarm();
+		_service.disableOnBootAlarmReceiver();
+		if (_isUiAlive.get()) {
+			_uiGateway.onPowerPreferenceDisabled(onUiThread);
+		}
+		stopPolling();
+	}
+	 */
 	
 	
 	
@@ -205,7 +409,7 @@ public class Mediator {
 		// ui is created before the mediator exists
 		// it must be added once the mediator is created
 		SBLog.lifecycle(TAG, "registerUI()");
-		_isUIAlive.set(true);
+		_isUiAlive.set(true);
 		_isUiInForeground.set(true);
 		ui.setMediator(Mediator.this);
 		_uiGateway = new UiOnGateway(ui);
@@ -216,8 +420,8 @@ public class Mediator {
 	public void unregisterUI(boolean forceKillUI) {
 		// called by ui's onDestroy() method
 		SBLog.lifecycle(TAG, "unregisterUI()");
-		if (_isUIAlive.get()) {
-			_isUIAlive.set(false);
+		if (_isUiAlive.get()) {
+			_isUiAlive.set(false);
 			_uiGateway.unsetUiMediator();
 			if (forceKillUI) {
 				// forces UI to destroy itself if the mediator / service is killed off
@@ -267,23 +471,6 @@ public class Mediator {
 		_isServiceConnected.set(false);
 	}
 
-	public void onServiceStart() {
-		SBLog.lifecycle(TAG, "onServiceStart()");
-		_isServiceStarted.set(true);
-	}
-
-	public void appLaunchedFromUI() {
-		SBLog.lifecycle(TAG, "appLaunchedFromUI()");
-		_isServiceStarted.set(true);
-		startPolling(true);
-	}
-
-	public void appLaunchedFromAlarm() {
-		SBLog.lifecycle(TAG, "appLaunchedFromAlarm()");
-		_isServiceStarted.set(true);
-		startPolling(true);
-	}
-
 	public void setIsUiInForeground(boolean isUiInForeground) {
 		_isUiInForeground.set(isUiInForeground);
 	}
@@ -294,61 +481,6 @@ public class Mediator {
 	
 	public void clearNotifications() {
 		_notifier.clearNotifications();
-	}
-
-	public void startPolling(boolean onUiThread) {
-		SBLog.lifecycle(TAG, "startPolling()");
-		if (!_isPollingAlive.get()) {
-			if (_isPowerPreferenceEnabled.get() && _isLocationEnabled.get() && _isDataEnabled.get() && _isServiceStarted.get()) {
-				SBLog.logic("startPolling - app fully functional");
-				_isPollingAlive.set(true);
-				_threadLauncher.startPolling();
-				if (onUiThread) {
-					_uiGateway.enableInputs();
-				}
-			} else {
-				if (!_isPowerPreferenceEnabled.get()) {
-					SBLog.error(TAG, "unable to start service because power preference is set to off");
-				}
-				if (!_isLocationEnabled.get()) {
-					SBLog.error(TAG, "unable to start service because location is unavailable");
-				}
-				if (!_isDataEnabled.get()) {
-					SBLog.error(TAG, "unable to start service because data unavailable");
-				}
-			}
-		} else {
-			SBLog.logic("startPolling - service is already polling, unable to call startPolling()");
-		}
-	}
-
-	public void stopPolling() {
-		SBLog.lifecycle(TAG, "stopPolling()");
-		if (_isPollingAlive.get()) {
-			// This must be called before setPowerPreferenceToOff or infinite loop occurs.
-			_isPollingAlive.set(false);
-			_threadLauncher.stopLaunchingPollingThreads();
-		} else {
-			SBLog.logic("stopPolling was called, but isPollingAlive is already false.");
-		}
-	}
-
-	// TODO: This should call something better than stopPolling()
-	private void possiblyStopPolling(Message message) {
-		SBLog.logic("possiblyStopPolling()");
-		if (message != null && message.obj != null) {
-			CrossThreadPacket xPacket = (CrossThreadPacket) message.obj;
-			if (xPacket.purpose == C.PURPOSE_LOOP_FROM_UI || xPacket.purpose == C.PURPOSE_LOOP_FROM_UI_DELAYED) {
-				if (PollingAlgorithm.isDropCountAtLimit()) {
-					// The Polling loop just crashed.
-					_storage.handleForcedPollingStop();
-					setPowerPreferenceToOff(true);
-				}
-			}
-		} else {
-			// Something really bad happened
-			setPowerPreferenceToOff(true);
-		}
 	}
 
 	public void resetPollingToNow() {
@@ -371,72 +503,12 @@ public class Mediator {
 		return _preferences.isPowerPreferenceSetToOn();
 	}
 
-	public void onPowerPreferenceEnabled(boolean onUiThread) {
-		SBLog.method(TAG, "onPowerEnabled()");
-		_isPowerPreferenceEnabled.set(true);
-		enableIntervalAlarm();
-		_service.enableOnBootAlarmReceiver();
-		if (_isUIAlive.get()) {
-			_uiGateway.onPowerPreferenceEnabled(onUiThread);
-		}
-		startPolling(onUiThread);
-	}
-
-	public void onPowerPreferenceDisabled(boolean onUiThread) {
-		SBLog.method(TAG, "onPowerDisabled()");
-		_isPowerPreferenceEnabled.set(false);
-		disableIntervalAlarm();
-		_service.disableOnBootAlarmReceiver();
-		if (_isUIAlive.get()) {
-			_uiGateway.onPowerPreferenceDisabled(onUiThread);
-		}
-		stopPolling();
-	}
-
 	public boolean isLocationEnabled() {
 		return _location.isLocationEnabled();
 	}
 
-	public void onLocationEnabled() {
-		SBLog.method(TAG, "onLocationEnabled()");
-		_isLocationEnabled.set(true);
-		_storage.initializeRadiusAtCell(getCurrentCell());
-		if (_isUIAlive.get()) {
-			_uiGateway.onLocationEnabled();
-		}
-		startPolling(true);
-	}
-
-	public void onLocationDisabled() {
-		SBLog.method(TAG, "onLocationDisabled()");
-		_isLocationEnabled.set(false);
-		if (_isUIAlive.get()) {
-			_uiGateway.onLocationDisabled();
-		}
-		stopPolling();
-	}
-
 	public boolean isDataEnabled() {
 		return _dataListener.isDataEnabled();
-	}
-
-	public void onDataEnabled() {
-		SBLog.method(TAG, "onDataEnabled()");
-		_isDataEnabled.set(true);
-		if (_isUIAlive.get()) {
-			_uiGateway.onDataEnabled();
-		}
-		_location.refreshBestProvider();
-		startPolling(true);
-	}
-
-	public void onDataDisabled() {
-		SBLog.method(TAG, "onDataDisabled()");
-		_isDataEnabled.set(false);
-		if (_isUIAlive.get()) {
-			_uiGateway.onDataDisabled();
-		}
-		stopPolling();
 	}
 
 	public boolean isFirstRun() {
@@ -449,9 +521,9 @@ public class Mediator {
 	public void checkLocationProviderStatus() {
 		SBLog.method(TAG, "checkLocationProviderStatus()");
 		if (_location.isLocationEnabled()) {
-			onLocationEnabled();
+			onLocationEnabled(true);
 		} else {
-			onLocationDisabled();
+			onLocationDisabled(true);
 		}
 	}
 
@@ -459,23 +531,7 @@ public class Mediator {
 		return _service.getSystemService(name);
 	}
 
-	public void refreshFlags() {
-		if (isDataEnabled()) {
-			onDataDisabled();
-		} else {
-			onDataDisabled();
-		}
-		if (isLocationEnabled()) {
-			onLocationEnabled();
-		} else {
-			onLocationDisabled();
-		}
-		if (isPowerPreferenceEnabled()) {
-			onPowerPreferenceEnabled(true);
-		} else {
-			onPowerPreferenceDisabled(true);
-		}
-	}
+
 	
 	
 	
@@ -526,9 +582,6 @@ public class Mediator {
 	public RadiusCacheCell getCurrentCell() {
 		// TODO: should this be moved to ThreadSafeMediator?
 		SBLog.method(TAG, "getCurrentCell()");
-		if (!_isLocationEnabled.get()) {
-			SBLog.error(TAG, "location is unavailable, unable to get current cell");
-		}
 		RadiusCacheCell currentCell = _location.getCurrentCell();
 		currentCell.level = _storage.getUserLevel();
 		return currentCell;
@@ -983,7 +1036,7 @@ public class Mediator {
 		public void handleRadiusChange(boolean isRadiusSet, long newRadius, int level) {
 			SBLog.method(TAG, "handleRadiusChange()");
 			_ui.userLocationOverlay.handleShoutreachRadiusChange(isRadiusSet, newRadius, level);
-			_ui.tryToTurnOn(true);			
+			_ui.refreshOnOffState(true, false);		
 		}
 
 		public void handleLevelUp(long cellRadius, int newLevel) {
@@ -1085,36 +1138,6 @@ public class Mediator {
 		}
 
 		@Override
-		public void onDataDisabled() {
-			_ui.turnOff(true);
-		}
-
-		@Override
-		public void onDataEnabled() {
-			_ui.tryToTurnOn(true);
-		}
-
-		@Override
-		public void onLocationDisabled() {
-			_ui.turnOff(true);
-		}
-
-		@Override
-		public void onLocationEnabled() {
-			_ui.tryToTurnOn(true);
-		}
-
-		@Override
-		public void onPowerPreferenceDisabled(boolean onUiThread) {
-			_ui.onPowerPreferenceDisabled(onUiThread);
-		}
-
-		@Override
-		public void onPowerPreferenceEnabled(boolean onUiThread) {
-			_ui.onPowerPreferenceEnabled(onUiThread);
-		}
-
-		@Override
 		public void unsetUiMediator() {
 			_ui.unsetMediator();
 		}
@@ -1212,6 +1235,11 @@ public class Mediator {
 		@Override
 		public void handleServerDowntimeCode(String text) {
 			_ui.dialogBuilder.showDialog(DialogBuilder.DIALOG_SERVER_DOWNTIME, text);
+		}
+
+		@Override
+		public void refreshOnOffState(boolean onUiThread, boolean causedByPowerButton) {
+			_ui.refreshOnOffState(onUiThread, causedByPowerButton);
 		}
 
 	}

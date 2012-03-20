@@ -180,10 +180,12 @@ public class Storage implements Colleague {
 		return _user.getNextLevelAt();
 	}
 	
+	/*
 	public void initializeRadiusAtCell(RadiusCacheCell currentCell) {
 		RadiusCacheCell radiusAtCell = _user.getInitialRadiusAtCell(currentCell);
 		_m.getUiGateway().handleRadiusChange(radiusAtCell.isSet, radiusAtCell.radius, getUserLevel());
 	}
+	*/
 	
 	public RadiusCacheCell getRadiusAtCell(RadiusCacheCell currentCell) {
 		return _user.getRadiusAtCell(currentCell);
