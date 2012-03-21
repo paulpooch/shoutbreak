@@ -116,14 +116,14 @@ public class Mediator {
 
 	public void refreshFlags() {
 		if (isDataEnabled()) {
-			onDataEnabled(false);
+			onDataEnabled(true, false);
 		} else {
-			onDataDisabled(false);
+			onDataDisabled(true, false);
 		}
 		if (isLocationEnabled()) {
-			onLocationEnabled(false);
+			onLocationEnabled(true, false);
 		} else {
-			onLocationDisabled(false);
+			onLocationDisabled(true, false);
 		}
 		if (isPowerPreferenceEnabled()) {
 			onPowerPreferenceEnabled(true, false);
@@ -140,7 +140,7 @@ public class Mediator {
 		enableIntervalAlarm();
 		_service.enableOnBootAlarmReceiver();
 		if (attemptToTurnOn) {
-			attemptTurnOn();
+			attemptTurnOn(onUiThread);
 		}
 	}
 
@@ -148,41 +148,41 @@ public class Mediator {
 		disableIntervalAlarm();
 		_service.disableOnBootAlarmReceiver();
 		if (attemptToTurnOn) {
-			attemptTurnOn();
+			attemptTurnOn(onUiThread);
 		}
 	}
 	
-	public void onLocationEnabled(boolean attemptToTurnOn) {
-		_storage.getRadiusAtCell(getCurrentCell());
+	public void onLocationEnabled(boolean onUiThread, boolean attemptToTurnOn) {
+		getRadiusAtCell();
 		_location.refreshBestProvider();
 		if (attemptToTurnOn) {
-			attemptTurnOn();
+			attemptTurnOn(onUiThread);
 		}
 	}
 
-	public void onLocationDisabled(boolean attemptToTurnOn) {
+	public void onLocationDisabled(boolean onUiThread, boolean attemptToTurnOn) {
 		if (attemptToTurnOn) {
-			attemptTurnOn();
+			attemptTurnOn(onUiThread);
 		}
 	}
 	
-	public void onDataEnabled(boolean attemptToTurnOn) {
+	public void onDataEnabled(boolean onUiThread, boolean attemptToTurnOn) {
 		SBLog.method(TAG, "onDataEnabled()");
 		_location.refreshBestProvider();
 		if (attemptToTurnOn) {
-			attemptTurnOn();
+			attemptTurnOn(onUiThread);
 		}
 	}
 	
-	public void onDataDisabled(boolean attemptToTurnOn) {
+	public void onDataDisabled(boolean onUiThread, boolean attemptToTurnOn) {
 		if (attemptToTurnOn) {
-			attemptTurnOn();
+			attemptTurnOn(onUiThread);
 		}
 	}
 
-	public boolean attemptTurnOn() {
+	public boolean attemptTurnOn(boolean onUiThread) {
 		boolean canTurnOn = true;
-		
+				
 		if (!_isPollingAlive.get()) {
 			if (!isPowerPreferenceEnabled()) {
 				canTurnOn = false;
@@ -196,7 +196,13 @@ public class Mediator {
 						canTurnOn = false;
 					} else {
 						
-						_threadLauncher.startPolling();
+						if (_isPollingAlive.get()) {
+							ThreadSafeMediator threadSafeMediator = getAThreadSafeMediator();
+							threadSafeMediator.resetPollingDelay();
+						} else {
+							_threadLauncher.startPolling();
+						}
+
 						_uiGateway.enableInputs();
 						return canTurnOn;
 						
@@ -213,7 +219,7 @@ public class Mediator {
 			}
 		}
 		
-		_uiGateway.refreshOnOffState(true, false);
+		_uiGateway.refreshOnOffState(onUiThread, false);
 		return canTurnOn;
 	}
 	
@@ -521,9 +527,9 @@ public class Mediator {
 	public void checkLocationProviderStatus() {
 		SBLog.method(TAG, "checkLocationProviderStatus()");
 		if (_location.isLocationEnabled()) {
-			onLocationEnabled(true);
+			onLocationEnabled(true, true);
 		} else {
-			onLocationDisabled(true);
+			onLocationDisabled(true, true);
 		}
 	}
 
@@ -579,7 +585,11 @@ public class Mediator {
 	
 	// LOGIC STUFF /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
-	public RadiusCacheCell getCurrentCell() {
+	public RadiusCacheCell getRadiusAtCell() {
+		return getAThreadSafeMediator().getRadiusAtCell();
+	}
+	
+	private RadiusCacheCell getCurrentCell() {
 		// TODO: should this be moved to ThreadSafeMediator?
 		SBLog.method(TAG, "getCurrentCell()");
 		RadiusCacheCell currentCell = _location.getCurrentCell();
@@ -615,6 +625,8 @@ public class Mediator {
 
 	public void handleShoutStart(String text, int power, String replyingTo) {
 		SBLog.method(TAG, "shout()");
+		// We're intentionally bypassing ThreadSafeMediator.getRadiusAtCell() here.
+		// Nowhere else should behave this way.
 		_threadLauncher.handleShoutStart(text, power, _storage.getRadiusAtCell(getCurrentCell()).radius, replyingTo);
 	}
 
@@ -738,7 +750,7 @@ public class Mediator {
 		public void handleRadiusChange(long radius) {
 			SBLog.method(TAG, "densityChange()");
 			// Note: The order in these matters.
-			_storage.handleRadiusChange(radius, getCurrentCell());
+			_storage.handleRadiusChange(radius, getRadiusAtCell());
 			_uiGateway.handleRadiusChange(true, radius, _storage.getUserLevel());
 		}
 
@@ -754,7 +766,7 @@ public class Mediator {
 				int levelAt = (int) levelInfo.getLong(C.JSON_LEVEL_AT);
 				int nextLevelAt = (int) levelInfo.getLong(C.JSON_NEXT_LEVEL_AT);
 				_storage.handleLevelUp(newLevel, levelAt, nextLevelAt);
-				_uiGateway.handleLevelUp(_storage.getRadiusAtCell(getCurrentCell()).radius, _storage.getUserLevel());
+				_uiGateway.handleLevelUp(getRadiusAtCell().radius, _storage.getUserLevel());
 			} catch (JSONException e) {
 				SBLog.error(TAG, e.getMessage());
 			}
@@ -878,9 +890,12 @@ public class Mediator {
 			return _storage.getUserAuth();
 		}
 
+		// All requests for radius should come through here.
 		public RadiusCacheCell getRadiusAtCell() {
 			SBLog.method(TAG, "getCellDensity()");
-			return _storage.getRadiusAtCell(getCurrentCell());
+			RadiusCacheCell radiusAtCell = _storage.getRadiusAtCell(getCurrentCell());
+			_uiGateway.handleRadiusChange(radiusAtCell.isSet, radiusAtCell.radius, getUserLevel());
+			return radiusAtCell;			
 		}
 
 		public double getLongitude() {

@@ -188,7 +188,8 @@ public class Storage implements Colleague {
 	*/
 	
 	public RadiusCacheCell getRadiusAtCell(RadiusCacheCell currentCell) {
-		return _user.getRadiusAtCell(currentCell);
+		RadiusCacheCell radiusAtCell = _user.getRadiusAtCell(currentCell);
+		return radiusAtCell;
 	}
 	
 	public boolean getUserHasAccount() {

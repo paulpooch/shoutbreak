@@ -48,13 +48,13 @@ public class ShoutbreakService extends Service implements Colleague {
 		if (extras != null && !extras.isEmpty()) {
 			// determine what launched the app
 			if (extras.getBoolean(C.NOTIFICATION_LAUNCHED_FROM_UI)) {
-				_m.attemptTurnOn();
+				_m.attemptTurnOn(true);
 			} else if (extras.getBoolean(C.NOTIFICATION_LAUNCHED_FROM_ALARM)) {
-				_m.attemptTurnOn();
+				_m.attemptTurnOn(true);
 			}
 		} else {
 			SBLog.error(TAG, "Service bundle must contain referral information");
-			_m.attemptTurnOn();
+			_m.attemptTurnOn(true);
 		}
 		return START_REDELIVER_INTENT;
 	}

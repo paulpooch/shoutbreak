@@ -59,8 +59,10 @@ public class LocationTracker implements LocationListener, Colleague {
 	
 	public void refreshBestProvider() {
 		_provider = _locationManager.getBestProvider(_criteria, true);
-		_locationManager.requestLocationUpdates(_provider, C.CONFIG_GPS_MIN_UPDATE_MILLISECS, C.CONFIG_GPS_MIN_UPDATE_METERS, LocationTracker.this);
-		_location = _locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+		if (_provider != null) {
+			_locationManager.requestLocationUpdates(_provider, C.CONFIG_GPS_MIN_UPDATE_MILLISECS, C.CONFIG_GPS_MIN_UPDATE_METERS, LocationTracker.this);
+			_location = _locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+		}
 	}
 	
 	public boolean isLocationEnabled() {
@@ -207,9 +209,9 @@ public class LocationTracker implements LocationListener, Colleague {
 		//_provider = _locationManager.getBestProvider(_criteria, true);
 		//_locationManager.requestLocationUpdates(_provider, C.CONFIG_GPS_MIN_UPDATE_MILLISECS, C.CONFIG_GPS_MIN_UPDATE_METERS, LocationTracker.this);
 		if (status == LocationProvider.AVAILABLE) {
-			_m.onLocationEnabled(true);
+			_m.onLocationEnabled(true, true);
 		} else if (status == LocationProvider.OUT_OF_SERVICE) {
-			_m.onLocationDisabled(true);
+			_m.onLocationDisabled(true, true);
 		}
 	}
 }

@@ -217,9 +217,10 @@ public class Shoutbreak extends MapActivity implements Colleague {
 			_m.clearNotifications();
 			wasLaunchFromReferral();
 			reflectPowerState();
-
-			ThreadSafeMediator threadSafeMediator = _m.getAThreadSafeMediator();
-			threadSafeMediator.resetPollingDelay();
+			
+			_m.attemptTurnOn(true);
+			//ThreadSafeMediator threadSafeMediator = _m.getAThreadSafeMediator();
+			//threadSafeMediator.resetPollingDelay();
 		}
 		enableMapAndOverlay();
 		super.onResume();
@@ -656,9 +657,9 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		case C.ACTIVITY_RESULT_LOCATION: { // returning from location provider
 																				// activity
 			if (_m.isLocationEnabled()) { // update location status
-				_m.onLocationEnabled(true);
+				_m.onLocationEnabled(true, true);
 			} else {
-				_m.onLocationDisabled(true);
+				_m.onLocationDisabled(true, true);
 			}
 			break;
 		}
@@ -708,7 +709,7 @@ public class Shoutbreak extends MapActivity implements Colleague {
 			// only change the power preference when they press the on/off switch
 			if (!_m.isPowerPreferenceEnabled()) {
 				// Turn On.
-				if (_m.attemptTurnOn()) {
+				if (_m.attemptTurnOn(false)) {
 					_m.setPowerPreferenceToOn(false);
 				} else {
 					failedToTurnOn = true;
@@ -736,7 +737,7 @@ public class Shoutbreak extends MapActivity implements Colleague {
 				if (!_m.isPowerPreferenceEnabled()) {
 					error += "Your power button is set to Off.\n\n";
 				}
-				if (!userLocationOverlay.isShoutreachRadiusSet()) {
+				if (!_m.getRadiusAtCell().isSet) {
 					error += "Cannot get nearby users from server.\n\n";
 				}
 				Toast.makeText(Shoutbreak.this, error, Toast.LENGTH_LONG).show();
