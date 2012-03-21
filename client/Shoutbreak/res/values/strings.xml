@@ -8,6 +8,7 @@
     <string name="locationBlanket">You must enable "Google location services" to send shouts.</string>
     <string name="densityBlanket">Please wait while we determine the nearest users.</string>
     <string name="enablePower">Turn On Power Switch</string>
+    <string name="densityRetry">Retry</string>
     <string name="enableLocation">Enable Google
 Location Services</string>
     <string name="userStatsHeader">User Stats</string>

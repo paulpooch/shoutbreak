@@ -192,6 +192,10 @@ public class Storage implements Colleague {
 		return radiusAtCell;
 	}
 	
+	public void forceResetDensity() {
+		_user.forceResetDensity();		
+	}
+		
 	public boolean getUserHasAccount() {
 		return _user.hasAccount();
 	}
@@ -258,5 +262,5 @@ public class Storage implements Colleague {
 	public boolean getIsSignatureEnabled() {
 		return _user.getIsSignatureEnabled();
 	}
-	
+
 }

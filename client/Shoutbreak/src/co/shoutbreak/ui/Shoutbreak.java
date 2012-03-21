@@ -88,6 +88,7 @@ public class Shoutbreak extends MapActivity implements Colleague {
 	private ImageButton _profileTabBtn;
 	private Button _enableLocationBtn;
 	private Button _turnOnBtn;
+	private Button _densityRetryBtn;
 	private ImageButton _mapCenterBtn;
 	private LinearLayout _splashLl;
 	private LinearLayout _composeViewLl;
@@ -154,6 +155,7 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		_map = (CustomMapView) findViewById(R.id.mapCmv);
 		_enableLocationBtn = (Button) findViewById(R.id.enableLocationBtn);
 		_turnOnBtn = (Button) findViewById(R.id.turnOnBtn);
+		_densityRetryBtn = (Button) findViewById(R.id.densityRetryBtn);
 		_mapOptionsLl = (LinearLayout) findViewById(R.id.mapOptionsLl);
 		_sigClearBtn = (ImageButton) findViewById(R.id.sigClearBtn);
 		_sigSaveBtn = (ImageButton) findViewById(R.id.sigSaveBtn);
@@ -167,6 +169,8 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		_enableLocationBtn.getBackground().setColorFilter(0xAA9900FF, Mode.SRC_ATOP);
 		_turnOnBtn.setOnClickListener(_turnOnListener);
 		_turnOnBtn.getBackground().setColorFilter(0xAA9900FF, Mode.SRC_ATOP);
+		_densityRetryBtn.setOnClickListener(_densityRetryListener);
+		_densityRetryBtn.getBackground().setColorFilter(0xAA9900FF, Mode.SRC_ATOP);
 		_sigClearBtn.getBackground().setColorFilter(0xAA9900FF, Mode.SRC_ATOP);
 		_sigClearBtn.setOnClickListener(_sigClearListener);
 		_sigSaveBtn.getBackground().setColorFilter(0xAA9900FF, Mode.SRC_ATOP);
@@ -687,6 +691,15 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		}
 	};
 
+	// From power blanket.
+	private OnClickListener _densityRetryListener = new OnClickListener() {
+		public void onClick(View v) {
+			SBLog.userAction("_turnOnListener.onClick()");
+			_m.forceResetDensity();
+			_m.attemptTurnOn(true);
+		}
+	};
+	
 	// This is the call stack of how this works:
 	//
 	// _mediator.setPowerPreferenceToOn(onUiThread) ->

@@ -176,6 +176,10 @@ public class User {
 			
 	// SYNCHRONIZED WRITE METHODS /////////////////////////////////////////////
 	
+	public synchronized void forceResetDensity() {
+		_radiusAtCell.isSet = false;		
+	}
+	
 	public synchronized void savePoints(int pointsType, int pointsValue) {
 		storePoints(pointsType, pointsValue);
 		_points += pointsValue;
@@ -204,7 +208,7 @@ public class User {
 		_radiusAtCell.level = getLevel();
 		_radiusAtCell.radius = radius;
 		saveRadiusForCellToDb(_radiusAtCell);
-		_radiusAtCell.isSet = true;
+		//_radiusAtCell.isSet = true;
 		//setDensityJustChanged(true);
 	}
 	
@@ -272,15 +276,16 @@ public class User {
 	public synchronized RadiusCacheCell getRadiusAtCell(RadiusCacheCell currentCell) {
 		SBLog.method(TAG, "getRadiusAtCell()");
 		
-		if (_radiusAtCell != null && _radiusAtCell.level == _level && _radiusAtCell.cellX == currentCell.cellX && _radiusAtCell.cellY == currentCell.cellY) {
-			// Are we still in the same cell?
+		if (_radiusAtCell != null && _radiusAtCell.isSet && _radiusAtCell.level == _level && _radiusAtCell.cellX == currentCell.cellX && _radiusAtCell.cellY == currentCell.cellY) {
+			// Do we have cached value?
 			return _radiusAtCell;
 		} else {
 			// Different cell, let's make a new RadiusCacheCell object
 			_radiusAtCell = new RadiusCacheCell();
-			_radiusAtCell.cellX = _radiusAtCell.cellX;
-			_radiusAtCell.cellY = _radiusAtCell.cellY;
+			_radiusAtCell.cellX = currentCell.cellX;
+			_radiusAtCell.cellY = currentCell.cellY;
 			_radiusAtCell.level = _level;
+			_radiusAtCell.isSet = false;
 		
 			// Let's see if the database has a value for this cell
 			RadiusCacheCell tempCell = getRadiusAtCellDb(_radiusAtCell);

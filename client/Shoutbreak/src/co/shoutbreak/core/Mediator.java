@@ -589,6 +589,11 @@ public class Mediator {
 		return getAThreadSafeMediator().getRadiusAtCell();
 	}
 	
+	public void forceResetDensity() {
+		getAThreadSafeMediator().forceResetDensity();
+		getAThreadSafeMediator().getRadiusAtCell();
+	}
+	
 	private RadiusCacheCell getCurrentCell() {
 		// TODO: should this be moved to ThreadSafeMediator?
 		SBLog.method(TAG, "getCurrentCell()");
@@ -750,8 +755,8 @@ public class Mediator {
 		public void handleRadiusChange(long radius) {
 			SBLog.method(TAG, "densityChange()");
 			// Note: The order in these matters.
-			_storage.handleRadiusChange(radius, getRadiusAtCell());
-			_uiGateway.handleRadiusChange(true, radius, _storage.getUserLevel());
+			_storage.handleRadiusChange(radius, getCurrentCell());
+			getRadiusAtCell();
 		}
 
 		public void handleScoresReceived(JSONArray scores) {
@@ -898,6 +903,10 @@ public class Mediator {
 			return radiusAtCell;			
 		}
 
+		public void forceResetDensity() {
+			_storage.forceResetDensity();		
+		}
+		
 		public double getLongitude() {
 			SBLog.method(TAG, "getLongitude()");
 			return _location.getLongitude();
@@ -1258,6 +1267,50 @@ public class Mediator {
 		}
 
 	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
