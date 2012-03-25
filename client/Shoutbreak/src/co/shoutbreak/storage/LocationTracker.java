@@ -91,7 +91,8 @@ public class LocationTracker implements LocationListener, Colleague {
 		return ((double)Math.round(_location.getLongitude() * 100000)) / 100000;
 	}
 	
-	public RadiusCacheCell getCurrentCell() {
+	public RadiusCacheCell getCurrentCellXY() {
+		SBLog.method(TAG, "getCurrentCellXY()");
 		RadiusCacheCell currentCell = new RadiusCacheCell();
 		double lat;
 		double lng;

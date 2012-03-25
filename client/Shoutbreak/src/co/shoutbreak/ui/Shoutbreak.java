@@ -88,7 +88,6 @@ public class Shoutbreak extends MapActivity implements Colleague {
 	private ImageButton _profileTabBtn;
 	private Button _enableLocationBtn;
 	private Button _turnOnBtn;
-	private Button _densityRetryBtn;
 	private ImageButton _mapCenterBtn;
 	private LinearLayout _splashLl;
 	private LinearLayout _composeViewLl;
@@ -155,7 +154,6 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		_map = (CustomMapView) findViewById(R.id.mapCmv);
 		_enableLocationBtn = (Button) findViewById(R.id.enableLocationBtn);
 		_turnOnBtn = (Button) findViewById(R.id.turnOnBtn);
-		_densityRetryBtn = (Button) findViewById(R.id.densityRetryBtn);
 		_mapOptionsLl = (LinearLayout) findViewById(R.id.mapOptionsLl);
 		_sigClearBtn = (ImageButton) findViewById(R.id.sigClearBtn);
 		_sigSaveBtn = (ImageButton) findViewById(R.id.sigSaveBtn);
@@ -169,8 +167,6 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		_enableLocationBtn.getBackground().setColorFilter(0xAA9900FF, Mode.SRC_ATOP);
 		_turnOnBtn.setOnClickListener(_turnOnListener);
 		_turnOnBtn.getBackground().setColorFilter(0xAA9900FF, Mode.SRC_ATOP);
-		_densityRetryBtn.setOnClickListener(_densityRetryListener);
-		_densityRetryBtn.getBackground().setColorFilter(0xAA9900FF, Mode.SRC_ATOP);
 		_sigClearBtn.getBackground().setColorFilter(0xAA9900FF, Mode.SRC_ATOP);
 		_sigClearBtn.setOnClickListener(_sigClearListener);
 		_sigSaveBtn.getBackground().setColorFilter(0xAA9900FF, Mode.SRC_ATOP);
@@ -222,7 +218,7 @@ public class Shoutbreak extends MapActivity implements Colleague {
 			wasLaunchFromReferral();
 			reflectPowerState();
 			
-			_m.attemptTurnOn(true);
+			_m.attemptTurnOn(true, true);
 			//ThreadSafeMediator threadSafeMediator = _m.getAThreadSafeMediator();
 			//threadSafeMediator.resetPollingDelay();
 		}
@@ -690,15 +686,6 @@ public class Shoutbreak extends MapActivity implements Colleague {
 			_m.setPowerPreferenceToOn(true);
 		}
 	};
-
-	// From power blanket.
-	private OnClickListener _densityRetryListener = new OnClickListener() {
-		public void onClick(View v) {
-			SBLog.userAction("_turnOnListener.onClick()");
-			_m.forceResetDensity();
-			_m.attemptTurnOn(true);
-		}
-	};
 	
 	// This is the call stack of how this works:
 	//
@@ -750,7 +737,7 @@ public class Shoutbreak extends MapActivity implements Colleague {
 				if (!_m.isPowerPreferenceEnabled()) {
 					error += "Your power button is set to Off.\n\n";
 				}
-				if (!_m.getRadiusAtCell().isSet) {
+				if (!_m.getRadiusAtCell(false).isSet) {
 					error += "Cannot get nearby users from server.\n\n";
 				}
 				Toast.makeText(Shoutbreak.this, error, Toast.LENGTH_LONG).show();
@@ -777,11 +764,13 @@ public class Shoutbreak extends MapActivity implements Colleague {
 	*/
 
 	public boolean refreshOnOffState(boolean onUiThread, boolean causedByPowerButton) {
+			SBLog.method(TAG, "refreshOnOffState(" + onUiThread + ", " + causedByPowerButton + ")");
 			boolean canTurnOn = true;
 			boolean showBlanket = false;
 			boolean suppressPowerButtonError = false;
 
 			if (!_m.isDataEnabled()) {
+				SBLog.logic("Data Disabled");
 				canTurnOn = false;
 				showBlanket = true;
 				suppressPowerButtonError = true;
@@ -790,12 +779,14 @@ public class Shoutbreak extends MapActivity implements Colleague {
 					SBLog.logic("Data Blanket - isDataEnabled = false");
 				}
 			} else {
+				SBLog.logic("Data Enabled");
 				if (onUiThread) {
 					_blanketDataRl.setVisibility(View.GONE);
 				}
 			}
 
 			if (!_m.isLocationEnabled()) {
+				SBLog.logic("Location Disabled");
 				canTurnOn = false;
 				showBlanket = true;
 				suppressPowerButtonError = true;
@@ -804,12 +795,14 @@ public class Shoutbreak extends MapActivity implements Colleague {
 					SBLog.logic("Location Blanket - isLocationEnabled = false");
 				}
 			} else {
+				SBLog.logic("Location Enabled");
 				if (onUiThread) {
 					_blanketLocationRl.setVisibility(View.GONE);
 				}
 			}
 
 			if (!causedByPowerButton && !_m.isPowerPreferenceEnabled()) {
+				SBLog.logic("Power Disabled");
 				canTurnOn = false;
 				showBlanket = true;
 				if (!suppressPowerButtonError) {
@@ -823,13 +816,17 @@ public class Shoutbreak extends MapActivity implements Colleague {
 					}
 				}
 			} else {
+				SBLog.logic("Power Enabled");
 				if (onUiThread) {
 					_blanketPowerRl.setVisibility(View.GONE);
 				}
 			}
 
 			if (canTurnOn) {
-				if (!userLocationOverlay.isShoutreachRadiusSet()) {
+				//  userLocationOverlay.isShoutreachRadiusSet()
+				SBLog.logic("Getting Radius At Cell");
+				if (!_m.getRadiusAtCell(false).isSet) {
+					SBLog.logic("Radius at cell not set.");
 					showBlanket = true;
 					if (onUiThread) {
 						_blanketRadiusRl.setVisibility(View.VISIBLE);
@@ -840,6 +837,7 @@ public class Shoutbreak extends MapActivity implements Colleague {
 					}
 				}
 			} else {
+				SBLog.logic("Radius at cell set.");
 				if (onUiThread) {
 					_blanketRadiusRl.setVisibility(View.GONE);
 				}

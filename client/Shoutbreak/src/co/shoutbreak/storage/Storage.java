@@ -188,14 +188,11 @@ public class Storage implements Colleague {
 	*/
 	
 	public RadiusCacheCell getRadiusAtCell(RadiusCacheCell currentCell) {
+		SBLog.method(TAG, "getRadiusAtCell(currentCell)");
 		RadiusCacheCell radiusAtCell = _user.getRadiusAtCell(currentCell);
 		return radiusAtCell;
 	}
 	
-	public void forceResetDensity() {
-		_user.forceResetDensity();		
-	}
-		
 	public boolean getUserHasAccount() {
 		return _user.hasAccount();
 	}

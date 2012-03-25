@@ -45,7 +45,7 @@ public class User {
 		_level = 0;
 		_points = 0;
 		_auth = "default"; // we don't have auth yet... just give us nonce
-		_radiusAtCell = null;
+		_radiusAtCell = new RadiusCacheCell();
 		JSONObject crittercismMetadata = new JSONObject();
 		
 		HashMap<String, String> userSettings = getUserSettings();
@@ -176,10 +176,6 @@ public class User {
 			
 	// SYNCHRONIZED WRITE METHODS /////////////////////////////////////////////
 	
-	public synchronized void forceResetDensity() {
-		_radiusAtCell.isSet = false;		
-	}
-	
 	public synchronized void savePoints(int pointsType, int pointsValue) {
 		storePoints(pointsType, pointsValue);
 		_points += pointsValue;
@@ -207,8 +203,8 @@ public class User {
 		_radiusAtCell.cellY = tempCell.cellY;
 		_radiusAtCell.level = getLevel();
 		_radiusAtCell.radius = radius;
+		_radiusAtCell.isSet = true;
 		saveRadiusForCellToDb(_radiusAtCell);
-		//_radiusAtCell.isSet = true;
 		//setDensityJustChanged(true);
 	}
 	
@@ -274,19 +270,38 @@ public class User {
 //	}
 	
 	public synchronized RadiusCacheCell getRadiusAtCell(RadiusCacheCell currentCell) {
-		SBLog.method(TAG, "getRadiusAtCell()");
+		SBLog.method(TAG, "User.getRadiusAtCell()");
+		/*
+		 * I think the problem is in here.
+		 * 1. Does level or location not matching make a difference?  Like we're just checking isSet... should be checking all the booleans below instead?
+		 * 2. Are we passing in correct currentCell?  Is there a problem here?
+		 * 
+		 */
 		
-		if (_radiusAtCell != null && _radiusAtCell.isSet && _radiusAtCell.level == _level && _radiusAtCell.cellX == currentCell.cellX && _radiusAtCell.cellY == currentCell.cellY) {
+		SBLog.logic("_radiusAtCell.isSet = " + _radiusAtCell.isSet);
+		SBLog.logic("_radiusAtCell.level = " + _radiusAtCell.level);
+		SBLog.logic("_radiusAtCell.cellX = " + _radiusAtCell.cellX);
+		SBLog.logic("_radiusAtCell.cellY = " + _radiusAtCell.cellY);
+		SBLog.logic("currentCell.cellX = " + currentCell.cellX);
+		SBLog.logic("currentCell.cellY = " + currentCell.cellY);
+
+		if (_radiusAtCell.isSet && _radiusAtCell.level == _level && _radiusAtCell.cellX == currentCell.cellX && _radiusAtCell.cellY == currentCell.cellY) {
 			// Do we have cached value?
+			SBLog.logic("MATCH - RETURNING _radiusAtCell");
 			return _radiusAtCell;
 		} else {
 			// Different cell, let's make a new RadiusCacheCell object
-			_radiusAtCell = new RadiusCacheCell();
+			SBLog.logic("NO MATCH");
 			_radiusAtCell.cellX = currentCell.cellX;
 			_radiusAtCell.cellY = currentCell.cellY;
 			_radiusAtCell.level = _level;
 			_radiusAtCell.isSet = false;
 		
+			SBLog.logic("_radiusAtCell.isSet = " + _radiusAtCell.isSet);
+			SBLog.logic("_radiusAtCell.level = " + _radiusAtCell.level);
+			SBLog.logic("_radiusAtCell.cellX = " + _radiusAtCell.cellX);
+			SBLog.logic("_radiusAtCell.cellY = " + _radiusAtCell.cellY);
+			
 			// Let's see if the database has a value for this cell
 			RadiusCacheCell tempCell = getRadiusAtCellDb(_radiusAtCell);
 			if (tempCell.isSet) {

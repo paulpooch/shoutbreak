@@ -71,10 +71,12 @@ public class ThreadLauncher implements Colleague {
 	
 	// Used by one-time trips to polling thread (shout, vote, etc.)
 	public void launchDisposableThread(Message message, boolean delayed) {
+		SBLog.method(TAG, "launchDisposableThread()");
 		launchPollingThread(C.PURPOSE_DEATH, UUID.randomUUID(), delayed, message);
 	}
 	
 	public void launchPollingThread(int threadPurpose, UUID keyForLife, boolean delayed, Message message) {
+		SBLog.method(TAG, "launchPollingThread()");
 		PollingThread thread = new PollingThread(_m.getAThreadSafeMediator(), _uiThreadHandler, threadPurpose, keyForLife, message);
 		if (delayed) {
 			_loopingThread = thread;
@@ -86,12 +88,14 @@ public class ThreadLauncher implements Colleague {
 	}
 	
 	public void startPolling() {
+		SBLog.method(TAG, "startPolling()");
 		_currentKeyForLife = UUID.randomUUID();
 		Message idleMessage = _uiThreadHandler.obtainMessage(C.STATE_IDLE);
 		launchPollingThread(C.PURPOSE_LOOP_FROM_UI, _currentKeyForLife, false, idleMessage);
 	}
 	
 	public void stopLaunchingPollingThreads() {
+		SBLog.method(TAG, "stopLaunchingPollingThreads()");
 		if (_loopingThread != null) {
 			// Remove any threads that are about to be run because they were postDelayed.
 			// We no longer have all requirements to run service, so they shouldn't run.
@@ -100,6 +104,7 @@ public class ThreadLauncher implements Colleague {
 	}
 
 	public void resetPollingToNow() {
+		SBLog.method(TAG, "resetPollingToNow()");
 		// How do we do this without creating a bunch of polling threads simultaneously?
 		// Should only launch if one is postDelayed and we can kill it.
 		stopLaunchingPollingThreads();

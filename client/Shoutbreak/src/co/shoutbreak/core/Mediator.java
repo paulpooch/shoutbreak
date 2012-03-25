@@ -133,6 +133,7 @@ public class Mediator {
 	}
 	
 	public void setIsPollingAlive(boolean b) {
+		SBLog.method(TAG, "setIsPollingAlive(" + b + ")");
 		_isPollingAlive.set(b);
 	}
 
@@ -153,7 +154,7 @@ public class Mediator {
 	}
 	
 	public void onLocationEnabled(boolean onUiThread, boolean attemptToTurnOn) {
-		getRadiusAtCell();
+		getRadiusAtCell(true);
 		_location.refreshBestProvider();
 		if (attemptToTurnOn) {
 			attemptTurnOn(onUiThread);
@@ -181,36 +182,50 @@ public class Mediator {
 	}
 
 	public boolean attemptTurnOn(boolean onUiThread) {
+		return attemptTurnOn(onUiThread, false);
+	}
+	
+	public boolean attemptTurnOn(boolean onUiThread, boolean fromShoutbreakOnResume) {
+		SBLog.method(TAG, "attemptTurnOn()");
 		boolean canTurnOn = true;
-				
-		if (!_isPollingAlive.get()) {
-			if (!isPowerPreferenceEnabled()) {
+			
+		//if (!_isPollingAlive.get()) {
+						
+		SBLog.logic("attemptTurnOn: isPowerPreferenceEnabled = " + isPowerPreferenceEnabled());
+		if (!isPowerPreferenceEnabled()) {
+			canTurnOn = false;
+		} else {
+			
+			SBLog.logic("attemptTurnOn: isDataEnabled = " + isDataEnabled());
+			if (!isDataEnabled()) {
 				canTurnOn = false;
 			} else {
 				
-				if (!isDataEnabled()) {
+				SBLog.logic("attemptTurnOn: isLocationEnabled = " + isLocationEnabled());
+				if (!isLocationEnabled()) {
 					canTurnOn = false;
 				} else {
-					
-					if (!isLocationEnabled()) {
-						canTurnOn = false;
+			
+					SBLog.logic("attemptTurnOn: _isPollingAlive = " + _isPollingAlive.get());
+					if (_isPollingAlive.get()) {
+						SBLog.logic("attemptTurnOn: TurnOn via resetPollingDelay()");
+						ThreadSafeMediator threadSafeMediator = getAThreadSafeMediator();
+						threadSafeMediator.resetPollingDelay();
 					} else {
-						
-						if (_isPollingAlive.get()) {
-							ThreadSafeMediator threadSafeMediator = getAThreadSafeMediator();
-							threadSafeMediator.resetPollingDelay();
-						} else {
-							_threadLauncher.startPolling();
-						}
-
-						_uiGateway.enableInputs();
-						return canTurnOn;
-						
+						SBLog.logic("attemptTurnOn: TurnOn via startPolling()");
+						_threadLauncher.startPolling();
 					}
+
+					_uiGateway.enableInputs();
+					return canTurnOn;
+					
 				}
 			}
 		}
 		
+		//}
+		
+		SBLog.logic("attemptTurnOn: canTurnOn = " + canTurnOn);
 		if (!canTurnOn) {
 			if (_isPollingAlive.get()) {
 				// This must be called before setPowerPreferenceToOff or infinite loop occurs.
@@ -585,19 +600,15 @@ public class Mediator {
 	
 	// LOGIC STUFF /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
-	public RadiusCacheCell getRadiusAtCell() {
-		return getAThreadSafeMediator().getRadiusAtCell();
-	}
-	
-	public void forceResetDensity() {
-		getAThreadSafeMediator().forceResetDensity();
-		getAThreadSafeMediator().getRadiusAtCell();
+	public RadiusCacheCell getRadiusAtCell(boolean broadcastUpdate) {
+		SBLog.method(TAG, "getRadiusAtCell(" + broadcastUpdate + ")");
+		return getAThreadSafeMediator().getRadiusAtCell(broadcastUpdate);
 	}
 	
 	private RadiusCacheCell getCurrentCell() {
 		// TODO: should this be moved to ThreadSafeMediator?
 		SBLog.method(TAG, "getCurrentCell()");
-		RadiusCacheCell currentCell = _location.getCurrentCell();
+		RadiusCacheCell currentCell = _location.getCurrentCellXY();
 		currentCell.level = _storage.getUserLevel();
 		return currentCell;
 	}
@@ -756,7 +767,7 @@ public class Mediator {
 			SBLog.method(TAG, "densityChange()");
 			// Note: The order in these matters.
 			_storage.handleRadiusChange(radius, getCurrentCell());
-			getRadiusAtCell();
+			getRadiusAtCell(true);
 		}
 
 		public void handleScoresReceived(JSONArray scores) {
@@ -771,7 +782,7 @@ public class Mediator {
 				int levelAt = (int) levelInfo.getLong(C.JSON_LEVEL_AT);
 				int nextLevelAt = (int) levelInfo.getLong(C.JSON_NEXT_LEVEL_AT);
 				_storage.handleLevelUp(newLevel, levelAt, nextLevelAt);
-				_uiGateway.handleLevelUp(getRadiusAtCell().radius, _storage.getUserLevel());
+				_uiGateway.handleLevelUp(getRadiusAtCell(true).radius, _storage.getUserLevel());
 			} catch (JSONException e) {
 				SBLog.error(TAG, e.getMessage());
 			}
@@ -896,15 +907,13 @@ public class Mediator {
 		}
 
 		// All requests for radius should come through here.
-		public RadiusCacheCell getRadiusAtCell() {
-			SBLog.method(TAG, "getCellDensity()");
+		public RadiusCacheCell getRadiusAtCell(boolean broadcastUpdate) {
+			SBLog.method(TAG, "getRadiusAtCell(" + broadcastUpdate + ")");
 			RadiusCacheCell radiusAtCell = _storage.getRadiusAtCell(getCurrentCell());
-			_uiGateway.handleRadiusChange(radiusAtCell.isSet, radiusAtCell.radius, getUserLevel());
+			if (broadcastUpdate) {
+				_uiGateway.handleRadiusChange(radiusAtCell.isSet, radiusAtCell.radius, getUserLevel());
+			}
 			return radiusAtCell;			
-		}
-
-		public void forceResetDensity() {
-			_storage.forceResetDensity();		
 		}
 		
 		public double getLongitude() {
@@ -1267,95 +1276,5 @@ public class Mediator {
 		}
 
 	}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 }

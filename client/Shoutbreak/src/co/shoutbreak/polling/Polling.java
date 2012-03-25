@@ -123,11 +123,16 @@ public class Polling {
 		}
 
 		// Only do this stuff if UI is open.
+		SBLog.logic("In Polling - checking if we need radius.");
 		if (_safeM.isUiInForeground()) {
 			// do we need to pull a density?
-			if (! _safeM.getRadiusAtCell().isSet) {	
+			SBLog.logic("In Polling - UI is in foreground.");
+			if (! _safeM.getRadiusAtCell(true).isSet) {	
+				SBLog.logic("In Polling - radius is NOT set.");
 				postData.add(C.JSON_RADIUS, "1");
 				//Toast.makeText(_context, "Requesting Density: " + tempCellDensity.cellX + " , " + tempCellDensity.cellY, Toast.LENGTH_SHORT).show();
+			} else {
+				SBLog.logic("In Polling - radius is set.");
 			}
 			
 			ArrayList<String> scoresToRequest = _safeM.getScoreRequestIds();

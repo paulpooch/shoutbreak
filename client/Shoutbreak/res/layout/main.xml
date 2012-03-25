@@ -103,7 +103,7 @@
                     <RelativeLayout
                         android:id="@+id/blanketDensityRl"
                         android:layout_width="match_parent"
-                        android:layout_height="110dp"
+                        android:layout_height="40dp"
                         android:layout_marginLeft="20dp"
                         android:layout_marginRight="20dp"
                         android:layout_marginTop="40dp"
@@ -125,21 +125,6 @@
                             android:layout_marginRight="20dp"
                             android:layout_toRightOf="@id/warning2"
                             android:text="@string/densityBlanket" />
-                        
-                       <Button
-                            android:id="@+id/densityRetryBtn"
-                            android:layout_width="220dp"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentBottom="true"
-                            android:layout_centerHorizontal="true"
-                            android:shadowColor="#1e003c"
-                            android:shadowDx="2"
-                            android:shadowDy="2"
-                            android:shadowRadius="2"
-                            android:text="@string/densityRetry"
-                            android:textColor="#ffffffff"
-                            android:textSize="18dp"
-                            android:textStyle="bold" />
                     </RelativeLayout>
 
                     <RelativeLayout

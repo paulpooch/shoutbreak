@@ -12,7 +12,7 @@
     <!-- check C.DB_VERSION: 13 -->
     <!-- check versionCode & versionName above -->
     <!-- remove below permission -->
-    <uses-permission android:name="android.permission.SET_DEBUG_APP" />
+    <!-- <uses-permission android:name="android.permission.SET_DEBUG_APP" /> -->
     <!-- //////////////////////////////////////////////////////////// -->
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -31,7 +31,7 @@
     <uses-permission android:name="android.permission.GET_TASKS" />
 
     <application
-        android:debuggable="true"
+        android:debuggable="false"
         android:icon="@drawable/icon"
         android:label="Shoutbreak" >
 

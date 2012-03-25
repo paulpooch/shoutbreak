@@ -33,7 +33,7 @@ public class UserLocationOverlay extends MyLocationOverlay {
 	private Shoutbreak _ui;
 	private CustomMapView _map;
 	private int _maxShoutreach;
-	private boolean _isShoutreachRadiusSet;
+//	private boolean _isShoutreachRadiusSet;
 	private long _shoutreachRadiusOfCurrentLocation ;
 	private float _maxRadiusMeters;
 	private float _maxRadiusPixels;
@@ -72,7 +72,7 @@ public class UserLocationOverlay extends MyLocationOverlay {
 		_map = null;
 		_maxShoutreach = -1;
 		_shoutreachRadiusOfCurrentLocation = -1;
-		_isShoutreachRadiusSet = false;
+//		_isShoutreachRadiusSet = false;
 		_maxRadiusMeters = 0;
 		_maxRadiusPixels = C.MIN_RADIUS_PX;
 		_maxAreaPixels = C.MIN_RADIUS_PX * C.MIN_RADIUS_PX * Math.PI;
@@ -165,7 +165,7 @@ public class UserLocationOverlay extends MyLocationOverlay {
 	}
 	
 	public void handleShoutreachRadiusChange(boolean isShoutreachRadiusSet, long newShoutreachRadius, int newLevel) {
-		_isShoutreachRadiusSet = isShoutreachRadiusSet;
+//		_isShoutreachRadiusSet = isShoutreachRadiusSet;
 		_shoutreachRadiusOfCurrentLocation = newShoutreachRadius;
 		_maxShoutreach = newLevel;
 		_maxRadiusMeters = _shoutreachRadiusOfCurrentLocation;
@@ -248,9 +248,9 @@ public class UserLocationOverlay extends MyLocationOverlay {
 		_arePixelsCalculated = false;
 	}
 
-	public boolean isShoutreachRadiusSet() {
-		return _isShoutreachRadiusSet;
-	}
+//	public boolean isShoutreachRadiusSet() {
+//		return _isShoutreachRadiusSet;
+//	}
 
 	public int getPeopleCount() {
 		return _peopleCount;
