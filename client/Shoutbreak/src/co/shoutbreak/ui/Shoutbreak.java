@@ -44,6 +44,7 @@ import co.shoutbreak.core.utils.SBLog;
 import co.shoutbreak.storage.noticetab.MultiDirectionSlidingDrawer;
 
 import com.crittercism.app.Crittercism;
+import com.google.android.c2dm.C2DMessaging;
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapController;
@@ -205,6 +206,8 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		// bind to service, initializes mediator
 		_serviceIntent = new Intent(Shoutbreak.this, ShoutbreakService.class);
 		bindService(_serviceIntent, _serviceConnection, Context.BIND_AUTO_CREATE);
+		
+		C2DMessaging.register(this, C.CONFIG_C2DM_ACCOUNT);
 		
 	}
 

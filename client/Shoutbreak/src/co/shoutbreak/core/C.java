@@ -7,6 +7,7 @@ public class C {
 	// Match this to the $version in index.php
 	public static final boolean CONFIG_ADMIN_SUPERPOWERS = false;
 	public static final String CONFIG_SERVER_ADDRESS = "http://app.shoutbreak.co/005/"; //23.21.234.1/005
+	public static final String CONFIG_C2DM_ACCOUNT = "virtuability@gmail.com";
 	public static final int CONFIG_HTTP_TIMEOUT = 25000;
 	public static final int CONFIG_DROPPED_PACKET_LIMIT = 5;
 	public static final int CONFIG_NOTICES_DISPLAYED_IN_TAB = 50;
