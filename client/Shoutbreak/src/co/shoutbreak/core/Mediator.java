@@ -48,6 +48,7 @@ import co.shoutbreak.ui.IUiGateway;
 import co.shoutbreak.ui.Shoutbreak;
 import co.shoutbreak.ui.UiOffGateway;
 
+import com.google.android.c2dm.C2DMessaging;
 import com.google.android.maps.GeoPoint;
 
 public class Mediator {
@@ -257,6 +258,13 @@ public class Mediator {
 		_uiGateway.refreshOnOffState(true, false);
 	}
 				
+	public void registerC2DM() {
+		// C2DM Hook
+		if (_storage.getUserC2dmId() == null) {
+			C2DMessaging.register(_service, C.CONFIG_C2DM_ACCOUNT);
+		}
+	}
+	
 	/*
 	public void startPolling(boolean onUiThread) {
 		SBLog.lifecycle(TAG, "startPolling()");
@@ -968,6 +976,18 @@ public class Mediator {
 		public final String getNetworkOperator() {
 			SBLog.method(TAG, "getNetworkOperator()");
 			return _device.getNetworkOperator();
+		}
+
+		public boolean getUserC2dmChangedFlag() {
+			return _storage.getUserC2dmChangedFlag();
+		}
+
+		public String getUserC2dmId() {
+			return _storage.getUserC2dmId();
+		}
+
+		public void resetUserC2dmChangedFlag() {
+			_storage.resetUserC2dmChangedFlag();
 		}
 
 	}

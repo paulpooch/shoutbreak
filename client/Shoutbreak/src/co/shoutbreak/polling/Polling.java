@@ -121,6 +121,12 @@ public class Polling {
 			postData.add(C.JSON_LEVEL, Integer.toString(_safeM.getUserLevel()));
 			_safeM.setUserLevelUpOccured(false);
 		}
+		
+		if (_safeM.getUserC2dmChangedFlag()) {
+			// include new C2dm registration id here.
+			postData.add(C.JSON_C2DM_ID, _safeM.getUserC2dmId());
+			_safeM.resetUserC2dmChangedFlag();
+		}
 
 		// Only do this stuff if UI is open.
 		SBLog.logic("In Polling - checking if we need radius.");

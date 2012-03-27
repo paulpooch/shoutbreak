@@ -1,5 +1,5 @@
 
-package co.shoutbreak.polling.c2dm;
+package co.shoutbreak;
 
 import android.content.Context;
 import android.content.Intent;
@@ -17,6 +17,8 @@ public class C2DMReceiver extends C2DMBaseReceiver {
 	@Override
 	public void onRegistrered(Context context, String registrationId) {
 		Log.w("C2DMReceiver-onRegistered", registrationId);
+		String c2dmRegId = registrationId;
+		// TODO: Send this over to storage somehow...
 	}
 
 	@Override

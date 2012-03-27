@@ -29,6 +29,8 @@ public class User {
 	private boolean _levelUpOccured;
 	private String _uid;
 	private String _auth;
+	private String _c2dmId;
+	private boolean _c2dmIdChangedFlag;
 	private int _level;
 	private int _points;
 	private int _levelAt;
@@ -42,6 +44,7 @@ public class User {
 		_db = db;
 		_passwordExists = false;
 		_userSettingsAreStale = true;
+		_c2dmIdChangedFlag = false;
 		_level = 0;
 		_points = 0;
 		_auth = "default"; // we don't have auth yet... just give us nonce
@@ -75,6 +78,9 @@ public class User {
 		}
 		if (userSettings.containsKey(C.KEY_USER_POINTS)) {
 			_points = Integer.parseInt(userSettings.get(C.KEY_USER_POINTS));
+		}
+		if (userSettings.containsKey(C.KEY_USER_C2DM_ID)) {
+			_c2dmId = userSettings.get(C.KEY_USER_C2DM_ID);
 		}
 		
 		// send metadata to crittercism (asynchronously)
@@ -113,6 +119,14 @@ public class User {
 	
 	public String getUserId() {
 		return _uid;
+	}
+	
+	public String getC2dmId() {
+		return _c2dmId;
+	}
+		
+	public boolean getC2dmChangedFlag() {
+		return _c2dmIdChangedFlag;
 	}
 	
 	public String getAuth() {
@@ -415,7 +429,17 @@ public class User {
 		saveUserSetting(C.KEY_USER_ID, uid);
 		_uid = uid;
 	}
+	
+	public synchronized void setC2dmId(String c2dmId) {
+		saveUserSetting(C.KEY_USER_C2DM_ID, c2dmId);
+		_c2dmId = c2dmId;
+		_c2dmIdChangedFlag = true;
+	}
 
+	public synchronized void resetUserC2dmChangedFlag() {
+		_c2dmIdChangedFlag = false;
+	}
+	
 	public void setSignature(String signature, boolean isSignatureEnabled) {
 		_signature = signature;
 		_isSignatureEnabled = isSignatureEnabled;

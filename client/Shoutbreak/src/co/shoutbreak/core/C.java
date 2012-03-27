@@ -85,6 +85,7 @@ public class C {
 	
 	public static final String JSON_ANDROID_ID = "android_id";
 	public static final String JSON_AUTH = "auth";
+	public static final String JSON_C2DM_ID = "c2dm_id";
 	public static final String JSON_CARRIER_NAME = "carrier";
 	public static final String JSON_RADIUS = "radius";
 	public static final String JSON_RADIUS_HINT = "hint";
@@ -149,7 +150,7 @@ public class C {
 	public static final int PURPOSE_DEATH = 62; // don't repeat this - just die
 	
 	// DATABASE ///////////////////////////////////////////////////////////////
-	public static final int DB_VERSION = 14;
+	public static final int DB_VERSION = 15;
 
 	public static final String DB_NAME = "sbdb";
 	public static final String DB_TABLE_RADIUS = "RADIUS";
@@ -164,6 +165,7 @@ public class C {
 	public static final String KEY_USER_NEXT_LEVEL_AT = "user_next_level_at";
 	public static final String KEY_USER_POINTS = "user_points"; 
 	public static final String KEY_USER_PW = "user_pw";
+	public static final String KEY_USER_C2DM_ID = "user_c2dm_reg";
 	
 	// POINTS TYPES ///////////////////////////////////////////////////////////
 	// 70 - 79
@@ -191,6 +193,7 @@ public class C {
 	
 	// C2DM /////////////////////////////////////////////////////////////////////
 	public static final String AUTH_PERMISSION_ACTION = "com.google.ctp.AUTH_PERMISSION";
+
 	
 //  public static String makeLogTag(Class cls) {
 //      String tag = cls.getSimpleName();

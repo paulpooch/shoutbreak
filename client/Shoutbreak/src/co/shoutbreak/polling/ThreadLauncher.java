@@ -92,6 +92,7 @@ public class ThreadLauncher implements Colleague {
 		_currentKeyForLife = UUID.randomUUID();
 		Message idleMessage = _uiThreadHandler.obtainMessage(C.STATE_IDLE);
 		launchPollingThread(C.PURPOSE_LOOP_FROM_UI, _currentKeyForLife, false, idleMessage);
+		_m.registerC2DM();
 	}
 	
 	public void stopLaunchingPollingThreads() {

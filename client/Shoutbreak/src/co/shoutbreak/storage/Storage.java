@@ -205,6 +205,18 @@ public class Storage implements Colleague {
 		return _user.getAuth();
 	}
 	
+	public String getUserC2dmId() {
+		return _user.getC2dmId();
+	}
+	
+	public boolean getUserC2dmChangedFlag() {
+		return _user.getC2dmChangedFlag();
+	}
+		
+	public void resetUserC2dmChangedFlag() {
+		_user.resetUserC2dmChangedFlag();
+	}
+	
 	public boolean getLevelUpOccured() {
 		return _user.getLevelUpOccured();
 	}	

@@ -18,6 +18,7 @@ var Log = module.exports = {};
 	var logFile = new Logger('debug', FileSystem.createWriteStream('../logs/' + logName, writeFlags));
 	var errorLog = new Logger('debug', FileSystem.createWriteStream('../logs/exceptions.log', writeFlags));
 	var cronLog = new Logger('debug', FileSystem.createWriteStream('../logs/cron.log', writeFlags));
+	var c2dmLog = new Logger('debug', FileSystem.createWriteStream('../logs/c2dm.log', writeFlags));
 
 	// This will roll-over log name when day changes.
 	setInterval(function() {
@@ -57,6 +58,16 @@ var Log = module.exports = {};
 		} else {
 			console.log(text);
 			cronLog.debug(text);
+		}
+	};
+
+	this.logC2dm = function(text) {
+		if (typeof(text) != 'string') {
+			console.dir(text);
+			c2dmLog.debug(Util.inspect(text));
+		} else {
+			console.log(text);
+			c2dmLog.debug(text);
 		}
 	};
 
