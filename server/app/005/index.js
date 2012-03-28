@@ -171,6 +171,7 @@ var createAccount = function(clean, response, testCallback) {
 				user.points = Config.USER_INITIAL_POINTS;
 				user.level = Config.USER_INITIAL_LEVEL;
 				user.pendingLevelUp = Config.USER_INITIAL_PENDING_LEVEL_UP;
+				user.c2dmId = Config.USER_INITIAL_C2DM_ID;
 				Storage.Users.addNewUser(user, callback2, 
 					function() {
 						var json = { 'code': 'error', 'txt': 'Could not add user to database.' };
@@ -229,6 +230,7 @@ var ping = function(clean, response, testCallback) {
 	var reqScores = clean['scores'];
 	var reqRadius = clean['radius'];
 	var level = clean['lvl'];
+	var c2dmId = clean['c2dm_id'];
 	if (typeof userId != 'undefined' &&
 	typeof auth != 'undefined' &&
 	typeof lat != 'undefined' &&
@@ -432,6 +434,23 @@ var ping = function(clean, response, testCallback) {
 			}
 		};
 		var callback9 = function() {
+			if (c2dmId) {
+				Storage.Users.saveC2dmId(user, c2dmId, callback10,
+					function() {
+						Log.e('Could not save C2DM Id.');
+						var json = { 'code': 'error', 'txt': 'Could not save C2DM Id.' };
+						respond(json, response, testCallback);	
+					}
+				);
+			} else {
+				callback11();
+			}
+		};
+		var callback10 = function(saveC2dmIdResult) {
+			responseJson['c2dm_id'] = c2dmId;
+			callback11();
+		};
+		var callback11 = function() {
 			respond(responseJson, response, testCallback);
 		};
 		authIsValid(userId, auth, callback);	

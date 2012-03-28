@@ -318,7 +318,10 @@ public class Shoutbreak extends MapActivity implements Colleague {
 			
 			_m.refreshFlags();
 			_m.refreshUiComponents(noticeTabSd);
-
+			
+			// C2DM Check.
+			_m.registerC2DM();
+			
 			if (wasLaunchFromReferral()) {
 				hideSplash(false);
 			} else {

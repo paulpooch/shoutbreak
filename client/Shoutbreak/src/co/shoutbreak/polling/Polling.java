@@ -122,10 +122,10 @@ public class Polling {
 			_safeM.setUserLevelUpOccured(false);
 		}
 		
-		if (_safeM.getUserC2dmChangedFlag()) {
+		// TODO REMOVE THIS
+		if (_safeM.getUserC2dmId() != null && !_safeM.getUserC2dmId().equals(_safeM.getUserC2dmIdAtServer())) {
 			// include new C2dm registration id here.
 			postData.add(C.JSON_C2DM_ID, _safeM.getUserC2dmId());
-			_safeM.resetUserC2dmChangedFlag();
 		}
 
 		// Only do this stuff if UI is open.
@@ -186,6 +186,10 @@ public class Polling {
 			if (xPacket.json.has(C.JSON_RADIUS)) {
 				long radius = (long) xPacket.json.optLong(C.JSON_RADIUS);
 				_safeM.handleRadiusChange(radius);
+			}
+			if (xPacket.json.has(C.JSON_C2DM_ID)) {
+				String c2dmIdAtServer = xPacket.json.optString(C.JSON_C2DM_ID);
+				_safeM.handleC2dmIdFromServer(c2dmIdAtServer);
 			}
 			// If normal ping, introduce delay
 			if (_threadPurpose == C.PURPOSE_LOOP_FROM_UI) {

@@ -541,7 +541,8 @@ var Storage = module.exports = {};
 					'creation_time': 		{'S': user.creationTime},
 					'points': 				{'N': String(user.points)},
 					'level': 				{'N': String(user.level)},
-					'pending_level_up': 	{'N': String(user.pendingLevelUp)}
+					'pending_level_up': 	{'N': String(user.pendingLevelUp)},
+					'c2dm_id': 				{'S': String(user.c2dmId)}
 				}					
 			};
 			var callback = function(result) {
@@ -585,7 +586,8 @@ var Storage = module.exports = {};
 							'creation_time',
 							'points',
 							'level',
-							'pending_level_up'
+							'pending_level_up',
+							'c2dm_id'
 						],
 						'ConsistentRead': true
 					};
@@ -610,6 +612,9 @@ var Storage = module.exports = {};
 						user.points = parseInt(item['points']['N']);
 						user.level = parseInt(item['level']['N']);
 						user.pendingLevelUp = parseInt(item['pending_level_up']['N']);
+						if ('c2dm_id' in item) {
+							user.c2dmId = item['c2dm_id']['S'];
+						}
        					addToCache(user);
        				} else {
 						Log.e(chunk);
@@ -806,10 +811,10 @@ var Storage = module.exports = {};
 			var req = {
 				'TableName': Config.TABLE_USERS,
 				'Key': {
-					'HashKeyElement': {'S': userId}
+					'HashKeyElement': { 'S': userId }
 				},
 				'AttributeUpdates': {
-					'last_activity_time': {'S': time}
+					'last_activity_time': { 'S': time }
 				},
 				'ReturnValues': 'NONE'
 			};
@@ -838,6 +843,25 @@ var Storage = module.exports = {};
 				successCallback();
 			};
 			DynamoDB.updateItem(dynamoRequest, callback);
+		};
+
+		this.saveC2dmId = function(user, c2dmId, successCallback, failCallback) {
+			Log.l('Users.saveC2dmId');
+			user.c2dmId = c2dmId;
+			var req = {
+				'TableName': Config.TABLE_USERS,
+				'Key': {
+					'HashKeyElement': { 'S': user.userId }
+				},
+				'AttributeUpdates': {
+					'c2dm_id': { 
+						'Value': { 'S': c2dmId },
+						'Action': 'PUT'
+					}
+				},
+				'ReturnValues': 'NONE'
+			};
+			self.Users.updateUser(user, req, successCallback, failCallback);
 		};
 
 	}).call(this.Users);

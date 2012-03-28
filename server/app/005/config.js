@@ -11,6 +11,7 @@ var Config = module.exports = {};
 	this.USER_INITIAL_POINTS = 71;
 	this.USER_INITIAL_LEVEL = 5;
 	this.USER_INITIAL_PENDING_LEVEL_UP = 5;
+	this.USER_INITIAL_C2DM_ID = '0';
 	this.PASSWORD_LENGTH = 32;
 	this.PAD_COORDS = 8;
 	this.MULTIPLY_COORDS = 100000;
@@ -19,6 +20,7 @@ var Config = module.exports = {};
 	this.SHOUTREACH_BUFFER_METERS = 200;
 	this.SHOUTREACH_LIMIT = 500;
 	this.SHOUT_LENGTH_LIMIT = 256;
+	this.C2DM_ID_LENGTH_LIMIT = 200;
 	this.SHOUT_IDLE_TIMEOUT = 30; // minutes
 	this.SIMPLEDB_MAX_NUMBER_OF_ITEMS = 2500;
 	this.SHOUTBREAK_SCORING_WORK_AT_LEVEL_1 = 10;

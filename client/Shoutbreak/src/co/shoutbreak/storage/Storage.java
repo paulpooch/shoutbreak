@@ -209,12 +209,8 @@ public class Storage implements Colleague {
 		return _user.getC2dmId();
 	}
 	
-	public boolean getUserC2dmChangedFlag() {
-		return _user.getC2dmChangedFlag();
-	}
-		
-	public void resetUserC2dmChangedFlag() {
-		_user.resetUserC2dmChangedFlag();
+	public String getUserC2dmIdAtServer() {
+		return _user.getC2dmIdAtServer();
 	}
 	
 	public boolean getLevelUpOccured() {
@@ -270,6 +266,14 @@ public class Storage implements Colleague {
 	
 	public boolean getIsSignatureEnabled() {
 		return _user.getIsSignatureEnabled();
+	}
+
+	public void setUserC2dmId(String c2dmRegId) {
+		_user.setC2dmId(c2dmRegId);
+	}
+
+	public void setUserC2dmIdAtServer(String c2dmIdAtServer) {
+		_user.setC2dmIdAtServer(c2dmIdAtServer);
 	}
 
 }

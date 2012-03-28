@@ -16,4 +16,5 @@ module.exports = function() {
 	this.points = null;
 	this.level = null;
 	this.pendingLevelUp = null;
+	this.c2dmId = null;
 };

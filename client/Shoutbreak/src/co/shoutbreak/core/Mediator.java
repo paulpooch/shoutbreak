@@ -978,16 +978,20 @@ public class Mediator {
 			return _device.getNetworkOperator();
 		}
 
-		public boolean getUserC2dmChangedFlag() {
-			return _storage.getUserC2dmChangedFlag();
-		}
-
 		public String getUserC2dmId() {
 			return _storage.getUserC2dmId();
 		}
+		
+		public String getUserC2dmIdAtServer() {
+			return _storage.getUserC2dmIdAtServer();
+		}
+		
+		public void handleC2dmRegistration(String c2dmRegId) {
+			_storage.setUserC2dmId(c2dmRegId);
+		}
 
-		public void resetUserC2dmChangedFlag() {
-			_storage.resetUserC2dmChangedFlag();
+		public void handleC2dmIdFromServer(String c2dmIdAtServer) {
+			_storage.setUserC2dmIdAtServer(c2dmIdAtServer);			
 		}
 
 	}

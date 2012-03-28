@@ -26,7 +26,8 @@ exports.sanitize = function(dirty, response, testCallback, callback) {
 		'auth': 1,
 		'txt': 1,
 		'shout_id': 1,
-		're': 1
+		're': 1,
+		'c2dm_id': 1
 	};
 	for (var param in allowedStrings) {
 		if (param in dirty) {
@@ -275,6 +276,14 @@ exports.validate = function(dirty, response, testCallback, callback) {
 			if (Validator(dirty[param]).isUUID()) {
 				clean[param] = dirty[param];
 			}
+		}
+	}
+
+	// c2dm_id
+	param = 'c2dm_id';
+	if (param in dirty) {
+		if (dirty[param].length <= Config.C2DM_ID_LENGTH_LIMIT) {
+			clean[param] = dirty[param];
 		}
 	}
 
