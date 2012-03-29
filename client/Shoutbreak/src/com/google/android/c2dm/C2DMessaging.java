@@ -16,6 +16,7 @@
 
 package com.google.android.c2dm;
 
+import co.shoutbreak.core.C;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -36,7 +37,6 @@ public class C2DMessaging {
 		public static final String BACKOFF = "backoff";
 		public static final String GSF_PACKAGE = "com.google.android.gsf";
 
-
 		// package
 		static final String PREFERENCE = "com.google.android.c2dm";
 		
@@ -45,12 +45,10 @@ public class C2DMessaging {
 		/**
 		 * Initiate c2d messaging registration for the current application
 		 */
-		public static void register(Context context,
-						String senderId) {
+		public static void register(Context context, String senderId) {
 				Intent registrationIntent = new Intent(REQUEST_REGISTRATION_INTENT);
 				registrationIntent.setPackage(GSF_PACKAGE);
-				registrationIntent.putExtra(EXTRA_APPLICATION_PENDING_INTENT,
-								PendingIntent.getBroadcast(context, 0, new Intent(), 0));
+				registrationIntent.putExtra(EXTRA_APPLICATION_PENDING_INTENT,	PendingIntent.getBroadcast(context, 0, new Intent(), 0));
 				registrationIntent.putExtra(EXTRA_SENDER, senderId);
 				context.startService(registrationIntent);
 				// TODO: if intent not found, notification on need to have GSF
@@ -62,8 +60,7 @@ public class C2DMessaging {
 		public static void unregister(Context context) {
 				Intent regIntent = new Intent(REQUEST_UNREGISTRATION_INTENT);
 				regIntent.setPackage(GSF_PACKAGE);
-				regIntent.putExtra(EXTRA_APPLICATION_PENDING_INTENT, PendingIntent.getBroadcast(context,
-								0, new Intent(), 0));
+				regIntent.putExtra(EXTRA_APPLICATION_PENDING_INTENT, PendingIntent.getBroadcast(context, 0, new Intent(), 0));
 				context.startService(regIntent);
 		}
 
@@ -75,44 +72,33 @@ public class C2DMessaging {
 		 * @return registration id, or empty string if the registration is not complete.
 		 */
 		public static String getRegistrationId(Context context) {
-				final SharedPreferences prefs = context.getSharedPreferences(
-								PREFERENCE,
-								Context.MODE_PRIVATE);
-				String registrationId = prefs.getString("dm_registration", "");
+				final SharedPreferences prefs = context.getSharedPreferences(PREFERENCE, Context.MODE_PRIVATE);
+				String registrationId = prefs.getString(C.KEY_USER_C2DM_ID, C.NULL_C2DM_ID);
 				return registrationId;
 		}
 
 		public static long getLastRegistrationChange(Context context) {
-				final SharedPreferences prefs = context.getSharedPreferences(
-								PREFERENCE,
-								Context.MODE_PRIVATE);
+				final SharedPreferences prefs = context.getSharedPreferences(PREFERENCE, Context.MODE_PRIVATE);
 				return prefs.getLong(LAST_REGISTRATION_CHANGE, 0);
 		}
 		
 		static long getBackoff(Context context) {
-				final SharedPreferences prefs = context.getSharedPreferences(
-								PREFERENCE,
-								Context.MODE_PRIVATE);
+				final SharedPreferences prefs = context.getSharedPreferences(PREFERENCE, Context.MODE_PRIVATE);
 				return prefs.getLong(BACKOFF, DEFAULT_BACKOFF);
 		}
 		
 		static void setBackoff(Context context, long backoff) {
-				final SharedPreferences prefs = context.getSharedPreferences(
-								PREFERENCE,
-								Context.MODE_PRIVATE);
+				final SharedPreferences prefs = context.getSharedPreferences(PREFERENCE, Context.MODE_PRIVATE);
 				Editor editor = prefs.edit();
 				editor.putLong(BACKOFF, backoff);
 				editor.commit();
-
 		}
 
 		// package
 		static void clearRegistrationId(Context context) {
-				final SharedPreferences prefs = context.getSharedPreferences(
-								PREFERENCE,
-								Context.MODE_PRIVATE);
+				final SharedPreferences prefs = context.getSharedPreferences(PREFERENCE, Context.MODE_PRIVATE);
 				Editor editor = prefs.edit();
-				editor.putString("dm_registration", "");
+				editor.putString(C.KEY_USER_C2DM_ID, C.NULL_C2DM_ID);
 				editor.putLong(LAST_REGISTRATION_CHANGE, System.currentTimeMillis());
 				editor.commit();
 
@@ -120,12 +106,10 @@ public class C2DMessaging {
 
 		// package
 		static void setRegistrationId(Context context, String registrationId) {
-				final SharedPreferences prefs = context.getSharedPreferences(
-								PREFERENCE,
-								Context.MODE_PRIVATE);
+				final SharedPreferences prefs = context.getSharedPreferences(PREFERENCE, Context.MODE_PRIVATE);
 				Editor editor = prefs.edit();
-				editor.putString("dm_registration", registrationId);
+				editor.putString(C.KEY_USER_C2DM_ID, registrationId);
 				editor.commit();
-
 		}
+		
 }

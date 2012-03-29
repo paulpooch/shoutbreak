@@ -11,17 +11,18 @@ var Storage = module.exports = {};
 	// Includes ////////////////////////////////////////////////////////////////
 	// https://github.com/xiepeng/dynamoDB
 	// https://github.com/rjrodger/simpledb
-	var	Config =	require('./config'),
-		Utils = 	require('./utils'),
-		User =		require('./user'),
-		Log =		require('./log'),
-		Shout =		require('./shout'),
-		Uuid = 		require('node-uuid'),
-		Async =		require('async'),
-		DynamoDB = 	require('dynamoDB').DynamoDB(Config.DYNAMODB_CREDENTIALS),
-		Memcached = require('memcached'),
-		SimpleDB =	require('simpledb').SimpleDB(Config.SIMPLEDB_CREDENTIALS, Utils.simpleDBLogger);
-		Memcached = new Memcached(Config.CACHE_URL);
+	var	Config =		require('./config'),
+		Utils = 		require('./utils'),
+		User =			require('./user'),
+		Log =			require('./log'),
+		Shout =			require('./shout'),
+		C2DMSender =	require('./c2dm_sender'),
+		Uuid = 			require('node-uuid'),
+		Async =			require('async'),
+		DynamoDB = 		require('dynamoDB').DynamoDB(Config.DYNAMODB_CREDENTIALS),
+		Memcached = 	require('memcached'),
+		SimpleDB =		require('simpledb').SimpleDB(Config.SIMPLEDB_CREDENTIALS, Utils.simpleDBLogger);
+		Memcached = 	new Memcached(Config.CACHE_URL);
 
 	// Cache ///////////////////////////////////////////////////////////////////
 	this.Cache = {};
@@ -198,20 +199,37 @@ var Storage = module.exports = {};
 			self.Cache.get(Config.PRE_INBOX + userId, successCallback, failCallback);	
 		};
 
-		this.addToInbox = function(userId, shoutId, successCallback, failCallback) {
+		this.addToInbox = function(targetId, shout, successCallback, failCallback) {
+			var targetInbox = [];
 			var callback = function(inboxArray) {
-				var targetInbox = [];
 				if (inboxArray) {
 					targetInbox = inboxArray;
 				}
-				targetInbox.push(shoutId);
-				self.Cache.set(Config.PRE_INBOX + userId, targetInbox, Config.TIMEOUT_INBOX, successCallback, failCallback);
+				targetInbox.push(shout.shoutId);
+				self.Cache.set(Config.PRE_INBOX + targetId, targetInbox, Config.TIMEOUT_INBOX, callback2, failCallback);
 			};
-			this.checkInbox(userId, callback, failCallback);
+			var callback2 = function(setResult) {
+				self.Users.getUser(targetId, callback3, failCallback);
+			};
+			var callback3 = function(getUserResult) {
+				successCallback();
+				/*
+				if (getUserResult.c2dmId != null && getUserResult.c2dmId != '' && getUserResult.c2dmId != Config.USER_INITIAL_C2DM_ID) {
+					// Don't C2DM the original sender.
+					//if (user != shout.userId) {
+						C2DMSender.setupPushTimer(Config.PRE_INBOX + targetId, targetInbox[targetInbox.length - 1], getUserResult, successCallback, failCallback);
+					//}
+				} else {
+					// User doesn't have C2DM setup.
+					successCallback();
+				}
+				*/
+			};
+			this.checkInbox(targetId, callback, failCallback);
 		};			
 
-		this.clearInbox = function(userId, successCallback, failCallback) {
-			self.Cache.delete(Config.PRE_INBOX + userId, successCallback, failCallback);
+		this.clearInbox = function(targetId, successCallback, failCallback) {
+			self.Cache.delete(Config.PRE_INBOX + targetId, successCallback, failCallback);
 		};
 	
 	}).call(this.Inbox);
@@ -374,7 +392,7 @@ var Storage = module.exports = {};
 			}
 			
 			var sendShoutIterator = function(targetId, doneCallback) {
-				self.Inbox.addToInbox(targetId, shout.shoutId, 
+				self.Inbox.addToInbox(targetId, shout,
 					function() {
 						doneCallback();
 					},

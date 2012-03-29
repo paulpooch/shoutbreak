@@ -126,6 +126,7 @@ public class C {
 	public static final int NULL_VOTE = 0;
 	public static final int NULL_OUTBOX = 0;
 	public static final String NULL_REPLY = "";	
+	public static final String NULL_C2DM_ID = "";	
 	
 	// STATES /////////////////////////////////////////////////////////////////
 	// 30 - 39
@@ -150,7 +151,7 @@ public class C {
 	public static final int PURPOSE_DEATH = 62; // don't repeat this - just die
 	
 	// DATABASE ///////////////////////////////////////////////////////////////
-	public static final int DB_VERSION = 5;
+	public static final int DB_VERSION = 6;
 
 	public static final String DB_NAME = "sbdb";
 	public static final String DB_TABLE_RADIUS = "RADIUS";
@@ -194,8 +195,8 @@ public class C {
 	
 	// C2DM /////////////////////////////////////////////////////////////////////
 	public static final String AUTH_PERMISSION_ACTION = "com.google.ctp.AUTH_PERMISSION";
-	public static final String INTENT_LAUNCHED_FROM_C2DM_REGISTRATION = "app_launched_from_c2dm_reg";
-	public static final String EXTRA_C2DM_REGISTRATION_ID = "extra_c2dm_reg_id";
+	//public static final String INTENT_LAUNCHED_FROM_C2DM_REGISTRATION = "app_launched_from_c2dm_reg";
+	//public static final String EXTRA_C2DM_REGISTRATION_ID = "extra_c2dm_reg_id";
 	
 //  public static String makeLogTag(Class cls) {
 //      String tag = cls.getSimpleName();

@@ -205,9 +205,9 @@ public class Storage implements Colleague {
 		return _user.getAuth();
 	}
 	
-	public String getUserC2dmId() {
-		return _user.getC2dmId();
-	}
+//	public String getUserC2dmId() {
+//		return _user.getC2dmId();
+//	}
 	
 	public String getUserC2dmIdAtServer() {
 		return _user.getC2dmIdAtServer();
@@ -268,9 +268,9 @@ public class Storage implements Colleague {
 		return _user.getIsSignatureEnabled();
 	}
 
-	public void setUserC2dmId(String c2dmRegId) {
-		_user.setC2dmId(c2dmRegId);
-	}
+//	public void setUserC2dmId(String c2dmRegId) {
+//		_user.setC2dmId(c2dmRegId);
+//	}
 
 	public void setUserC2dmIdAtServer(String c2dmIdAtServer) {
 		_user.setC2dmIdAtServer(c2dmIdAtServer);

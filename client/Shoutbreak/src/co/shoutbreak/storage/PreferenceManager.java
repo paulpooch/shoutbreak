@@ -24,9 +24,9 @@ public class PreferenceManager {
 	
 	public void putBoolean(String key, boolean value) {
 		SBLog.method(TAG, "putBoolean()");
-		SharedPreferences.Editor _Editor = _preferences.edit();
-		_Editor.putBoolean(key, value);
-		_Editor.commit();
+		SharedPreferences.Editor _editor = _preferences.edit();
+		_editor.putBoolean(key, value);
+		_editor.commit();
 	}
 	
 	public boolean getBoolean(String key, boolean defaultValue) {

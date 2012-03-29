@@ -32,18 +32,15 @@ import android.util.Log;
  */
 public abstract class C2DMBaseReceiver extends IntentService {
 		private static final String C2DM_RETRY = "com.google.android.c2dm.intent.RETRY";
-
 		public static final String REGISTRATION_CALLBACK_INTENT = "com.google.android.c2dm.intent.REGISTRATION";
 		private static final String C2DM_INTENT = "com.google.android.c2dm.intent.RECEIVE";
 
 		// Logging tag
 		private static final String TAG = "C2DM";
-
+ 
 		// Extras in the registration callback intents.
 		public static final String EXTRA_UNREGISTERED = "unregistered";
-
 		public static final String EXTRA_ERROR = "error";
-
 		public static final String EXTRA_REGISTRATION_ID = "registration_id";
 
 		public static final String ERR_SERVICE_NOT_AVAILABLE = "SERVICE_NOT_AVAILABLE";

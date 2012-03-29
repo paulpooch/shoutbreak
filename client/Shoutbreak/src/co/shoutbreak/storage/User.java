@@ -29,7 +29,7 @@ public class User {
 	private boolean _levelUpOccured;
 	private String _uid;
 	private String _auth;
-	private String _c2dmId;
+	//private String _c2dmId;
 	private String _c2dmIdAtServer;
 	private int _level;
 	private int _points;
@@ -78,9 +78,9 @@ public class User {
 		if (userSettings.containsKey(C.KEY_USER_POINTS)) {
 			_points = Integer.parseInt(userSettings.get(C.KEY_USER_POINTS));
 		}
-		if (userSettings.containsKey(C.KEY_USER_C2DM_ID)) {
-			_c2dmId = userSettings.get(C.KEY_USER_C2DM_ID);
-		}
+//		if (userSettings.containsKey(C.KEY_USER_C2DM_ID)) {
+//			_c2dmId = userSettings.get(C.KEY_USER_C2DM_ID);
+//		}
 		if (userSettings.containsKey(C.KEY_USER_C2DM_ID_AT_SERVER)) {
 			_c2dmIdAtServer = userSettings.get(C.KEY_USER_C2DM_ID_AT_SERVER);
 		}
@@ -123,9 +123,9 @@ public class User {
 		return _uid;
 	}
 	
-	public String getC2dmId() {
-		return _c2dmId;
-	}
+//	public String getC2dmId() {
+//		return _c2dmId;
+//	}
 		
 	public String getC2dmIdAtServer() {
 		return _c2dmIdAtServer;
@@ -432,10 +432,10 @@ public class User {
 		_uid = uid;
 	}
 	
-	public synchronized void setC2dmId(String c2dmId) {
-		saveUserSetting(C.KEY_USER_C2DM_ID, c2dmId);
-		_c2dmId = c2dmId;
-	}
+//	public synchronized void setC2dmId(String c2dmId) {
+//		saveUserSetting(C.KEY_USER_C2DM_ID, c2dmId);
+//		_c2dmId = c2dmId;
+//	}
 
 	public synchronized void setC2dmIdAtServer(String c2dmIdAtServer) {
 		saveUserSetting(C.KEY_USER_C2DM_ID_AT_SERVER, c2dmIdAtServer);

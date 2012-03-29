@@ -18,12 +18,11 @@ public class C2DMReceiver extends C2DMBaseReceiver {
 	@Override
 	public void onRegistrered(Context context, String registrationId) {
 		Log.w("C2DMReceiver-onRegistered", registrationId);
-		
-		Intent intent = new Intent(context, ShoutbreakService.class);
-		intent.putExtra(C.INTENT_LAUNCHED_FROM_C2DM_REGISTRATION, true);
-		intent.putExtra(C.EXTRA_C2DM_REGISTRATION_ID, registrationId);
-		intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-		context.startService(intent);
+//		Intent intent = new Intent(context, ShoutbreakService.class);
+//		intent.putExtra(C.INTENT_LAUNCHED_FROM_C2DM_REGISTRATION, true);
+//		intent.putExtra(C.EXTRA_C2DM_REGISTRATION_ID, registrationId);
+//		intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+//		context.startService(intent);
 	}
 	
 	@Override
