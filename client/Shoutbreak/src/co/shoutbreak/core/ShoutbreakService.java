@@ -51,9 +51,8 @@ public class ShoutbreakService extends Service implements Colleague {
 				_m.attemptTurnOn(true);
 			} else if (extras.getBoolean(C.NOTIFICATION_LAUNCHED_FROM_ALARM)) {
 				_m.attemptTurnOn(true);
-			//} else if (extras.getBoolean(C.INTENT_LAUNCHED_FROM_C2DM_REGISTRATION)) {
-			//	String c2dmRegId = extras.getString(C.EXTRA_C2DM_REGISTRATION_ID);
-			//	_m.getAThreadSafeMediator().handleC2dmRegistration(c2dmRegId);
+			} else if (extras.getBoolean(C.INTENT_C2DM_UNREGISTERED)) {
+				_m.registerC2DM();
 			}
 		} else {
 			SBLog.error(TAG, "Service bundle must contain referral information");

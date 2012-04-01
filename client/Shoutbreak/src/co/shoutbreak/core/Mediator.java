@@ -260,8 +260,7 @@ public class Mediator {
 				
 	public void registerC2DM() {
 		// C2DM Hook
-		//_storage.getUserC2dmId() == null
-		if (C2DMessaging.getRegistrationId(_service).equals(C.NULL_C2DM_ID)) {
+		if (C2DMessaging.getRegistrationIdClient(_service).equals(C.NULL_C2DM_ID)) {
 			C2DMessaging.register(_service, C.CONFIG_C2DM_ACCOUNT);
 		}
 	}
@@ -979,23 +978,8 @@ public class Mediator {
 			return _device.getNetworkOperator();
 		}
 
-		public String getUserC2dmId() {
-			return C2DMessaging.getRegistrationId(_service);
-			//return _storage.getUserC2dmId();
-		}
-		
-		public String getUserC2dmIdAtServer() {
-			return _storage.getUserC2dmIdAtServer();
-		}
-		
-//		public void handleC2dmRegistration(String c2dmRegId) {
-//			_storage.setUserC2dmId(c2dmRegId);
-//		}
-
-		// TODO: Set in C2DMessaging.
-		int x = "break";
-		public void handleC2dmIdFromServer(String c2dmIdAtServer) {
-			_storage.setUserC2dmIdAtServer(c2dmIdAtServer);			
+		public Context getContext() {
+			return _service;
 		}
 
 	}

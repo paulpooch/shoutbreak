@@ -28,6 +28,10 @@ public class C2DMReceiver extends C2DMBaseReceiver {
 	@Override
 	public void onUnregistered(Context context) {
 		Log.w("C2DMReceiver-onUnregistered", "got here!");
+		Intent intent = new Intent(context, ShoutbreakService.class);
+		intent.putExtra(C.INTENT_C2DM_UNREGISTERED, true);
+		intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+		context.startService(intent);
 	}
 
 	@Override
@@ -38,5 +42,7 @@ public class C2DMReceiver extends C2DMBaseReceiver {
 	@Override
 	protected void onMessage(Context context, Intent intent) {
 		Log.w("C2DMReceiver", intent.getStringExtra("payload"));
+		String s = "this is cool";
+		int i = 11;
 	}
 }

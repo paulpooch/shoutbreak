@@ -31,9 +31,9 @@ import android.util.Log;
  * strings used in the protocol.
  */
 public abstract class C2DMBaseReceiver extends IntentService {
-		private static final String C2DM_RETRY = "com.google.android.c2dm.intent.RETRY";
+		private static final String C2DM_RETRY = 									"com.google.android.c2dm.intent.RETRY";
 		public static final String REGISTRATION_CALLBACK_INTENT = "com.google.android.c2dm.intent.REGISTRATION";
-		private static final String C2DM_INTENT = "com.google.android.c2dm.intent.RECEIVE";
+		private static final String C2DM_INTENT = 								"com.google.android.c2dm.intent.RECEIVE";
 
 		// Logging tag
 		private static final String TAG = "C2DM";
@@ -155,12 +155,12 @@ public abstract class C2DMBaseReceiver extends IntentService {
 
 				if (removed != null) {
 						// Remember we are unregistered
-						C2DMessaging.clearRegistrationId(context);
+						C2DMessaging.clearRegistrationIdClient(context);
 						onUnregistered(context);
 						return;
 				} else if (error != null) {
 						// we are not registered, can try again
-						C2DMessaging.clearRegistrationId(context);
+						C2DMessaging.clearRegistrationIdClient(context);
 						// Registration failed
 						Log.e(TAG, "Registration error " + error);
 						onError(context, error);
@@ -183,7 +183,7 @@ public abstract class C2DMBaseReceiver extends IntentService {
 				} else {
 						try {
 								onRegistrered(context, registrationId);
-								C2DMessaging.setRegistrationId(context, registrationId);
+								C2DMessaging.setRegistrationIdClient(context, registrationId);
 						} catch (IOException ex) {
 								Log.e(TAG, "Registration error " + ex.getMessage());
 						}

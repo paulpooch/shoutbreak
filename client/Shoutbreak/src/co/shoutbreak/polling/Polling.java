@@ -7,6 +7,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.google.android.c2dm.C2DMessaging;
+
 import co.shoutbreak.core.C;
 import co.shoutbreak.core.Mediator.ThreadSafeMediator;
 import co.shoutbreak.core.utils.ErrorManager;
@@ -122,12 +124,14 @@ public class Polling {
 			_safeM.setUserLevelUpOccured(false);
 		}
 		
-		// TODO REMOVE THIS
-		if (_safeM.getUserC2dmId() != null && !_safeM.getUserC2dmId().equals(_safeM.getUserC2dmIdAtServer())) {
-			// include new C2dm registration id here.
-			postData.add(C.JSON_C2DM_ID, _safeM.getUserC2dmId());
+		String c2dmIdClient = C2DMessaging.getRegistrationIdClient(_safeM.getContext());
+		String c2dmIdServer = C2DMessaging.getRegistrationIdServer(_safeM.getContext());
+		// If we have an id and it doesn't match what the server has.
+		if (!c2dmIdClient.equals(C.NULL_C2DM_ID) && !c2dmIdClient.equals(c2dmIdServer)) {
+			// Include new C2dm registration id here.
+			postData.add(C.JSON_C2DM_ID, c2dmIdClient);
 		}
-
+		
 		// Only do this stuff if UI is open.
 		SBLog.logic("In Polling - checking if we need radius.");
 		if (_safeM.isUiInForeground()) {
@@ -189,7 +193,7 @@ public class Polling {
 			}
 			if (xPacket.json.has(C.JSON_C2DM_ID)) {
 				String c2dmIdAtServer = xPacket.json.optString(C.JSON_C2DM_ID);
-				_safeM.handleC2dmIdFromServer(c2dmIdAtServer);
+				C2DMessaging.setRegistrationIdServer(_safeM.getContext(), c2dmIdAtServer);
 			}
 			// If normal ping, introduce delay
 			if (_threadPurpose == C.PURPOSE_LOOP_FROM_UI) {

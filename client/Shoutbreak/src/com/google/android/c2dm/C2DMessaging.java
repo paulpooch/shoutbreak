@@ -25,91 +25,97 @@ import android.content.SharedPreferences.Editor;
 
 /**
  * Utilities for device registration.
- *
+ * 
  * Will keep track of the registration token in a private preference.
  */
 public class C2DMessaging {
-		public static final String EXTRA_SENDER = "sender";
-		public static final String EXTRA_APPLICATION_PENDING_INTENT = "app";
-		public static final String REQUEST_UNREGISTRATION_INTENT = "com.google.android.c2dm.intent.UNREGISTER";
-		public static final String REQUEST_REGISTRATION_INTENT = "com.google.android.c2dm.intent.REGISTER";
-		public static final String LAST_REGISTRATION_CHANGE = "last_registration_change";
-		public static final String BACKOFF = "backoff";
-		public static final String GSF_PACKAGE = "com.google.android.gsf";
+	public static final String EXTRA_SENDER = "sender";
+	public static final String EXTRA_APPLICATION_PENDING_INTENT = "app";
+	public static final String REQUEST_UNREGISTRATION_INTENT = "com.google.android.c2dm.intent.UNREGISTER";
+	public static final String REQUEST_REGISTRATION_INTENT = "com.google.android.c2dm.intent.REGISTER";
+	public static final String LAST_REGISTRATION_CHANGE = "last_registration_change";
+	public static final String BACKOFF = "backoff";
+	public static final String GSF_PACKAGE = "com.google.android.gsf";
 
-		// package
-		static final String PREFERENCE = "com.google.android.c2dm";
-		
-		private static final long DEFAULT_BACKOFF = 30000;
+	// package
+	static final String PREFERENCE = "com.google.android.c2dm";
 
-		/**
-		 * Initiate c2d messaging registration for the current application
-		 */
-		public static void register(Context context, String senderId) {
-				Intent registrationIntent = new Intent(REQUEST_REGISTRATION_INTENT);
-				registrationIntent.setPackage(GSF_PACKAGE);
-				registrationIntent.putExtra(EXTRA_APPLICATION_PENDING_INTENT,	PendingIntent.getBroadcast(context, 0, new Intent(), 0));
-				registrationIntent.putExtra(EXTRA_SENDER, senderId);
-				context.startService(registrationIntent);
-				// TODO: if intent not found, notification on need to have GSF
-		}
+	private static final long DEFAULT_BACKOFF = 30000;
 
-		/**
-		 * Unregister the application. New messages will be blocked by server.
-		 */
-		public static void unregister(Context context) {
-				Intent regIntent = new Intent(REQUEST_UNREGISTRATION_INTENT);
-				regIntent.setPackage(GSF_PACKAGE);
-				regIntent.putExtra(EXTRA_APPLICATION_PENDING_INTENT, PendingIntent.getBroadcast(context, 0, new Intent(), 0));
-				context.startService(regIntent);
-		}
+	/**
+	 * Initiate c2d messaging registration for the current application
+	 */
+	public static void register(Context context, String senderId) {
+		Intent registrationIntent = new Intent(REQUEST_REGISTRATION_INTENT);
+		registrationIntent.setPackage(GSF_PACKAGE);
+		registrationIntent.putExtra(EXTRA_APPLICATION_PENDING_INTENT, PendingIntent.getBroadcast(context, 0, new Intent(), 0));
+		registrationIntent.putExtra(EXTRA_SENDER, senderId);
+		context.startService(registrationIntent);
+		// TODO: if intent not found, notification on need to have GSF
+	}
 
-		/**
-		 * Return the current registration id.
-		 *
-		 * If result is empty, the registration has failed.
-		 *
-		 * @return registration id, or empty string if the registration is not complete.
-		 */
-		public static String getRegistrationId(Context context) {
-				final SharedPreferences prefs = context.getSharedPreferences(PREFERENCE, Context.MODE_PRIVATE);
-				String registrationId = prefs.getString(C.KEY_USER_C2DM_ID, C.NULL_C2DM_ID);
-				return registrationId;
-		}
+	/**
+	 * Unregister the application. New messages will be blocked by server.
+	 */
+	public static void unregister(Context context) {
+		Intent regIntent = new Intent(REQUEST_UNREGISTRATION_INTENT);
+		regIntent.setPackage(GSF_PACKAGE);
+		regIntent.putExtra(EXTRA_APPLICATION_PENDING_INTENT, PendingIntent.getBroadcast(context, 0, new Intent(), 0));
+		context.startService(regIntent);
+	}
 
-		public static long getLastRegistrationChange(Context context) {
-				final SharedPreferences prefs = context.getSharedPreferences(PREFERENCE, Context.MODE_PRIVATE);
-				return prefs.getLong(LAST_REGISTRATION_CHANGE, 0);
-		}
-		
-		static long getBackoff(Context context) {
-				final SharedPreferences prefs = context.getSharedPreferences(PREFERENCE, Context.MODE_PRIVATE);
-				return prefs.getLong(BACKOFF, DEFAULT_BACKOFF);
-		}
-		
-		static void setBackoff(Context context, long backoff) {
-				final SharedPreferences prefs = context.getSharedPreferences(PREFERENCE, Context.MODE_PRIVATE);
-				Editor editor = prefs.edit();
-				editor.putLong(BACKOFF, backoff);
-				editor.commit();
-		}
+	public static long getLastRegistrationChange(Context context) {
+		final SharedPreferences prefs = context.getSharedPreferences(PREFERENCE, Context.MODE_PRIVATE);
+		return prefs.getLong(LAST_REGISTRATION_CHANGE, 0);
+	}
 
-		// package
-		static void clearRegistrationId(Context context) {
-				final SharedPreferences prefs = context.getSharedPreferences(PREFERENCE, Context.MODE_PRIVATE);
-				Editor editor = prefs.edit();
-				editor.putString(C.KEY_USER_C2DM_ID, C.NULL_C2DM_ID);
-				editor.putLong(LAST_REGISTRATION_CHANGE, System.currentTimeMillis());
-				editor.commit();
+	static long getBackoff(Context context) {
+		final SharedPreferences prefs = context.getSharedPreferences(PREFERENCE, Context.MODE_PRIVATE);
+		return prefs.getLong(BACKOFF, DEFAULT_BACKOFF);
+	}
 
-		}
+	static void setBackoff(Context context, long backoff) {
+		final SharedPreferences prefs = context.getSharedPreferences(PREFERENCE, Context.MODE_PRIVATE);
+		Editor editor = prefs.edit();
+		editor.putLong(BACKOFF, backoff);
+		editor.commit();
+	}
 
-		// package
-		static void setRegistrationId(Context context, String registrationId) {
-				final SharedPreferences prefs = context.getSharedPreferences(PREFERENCE, Context.MODE_PRIVATE);
-				Editor editor = prefs.edit();
-				editor.putString(C.KEY_USER_C2DM_ID, registrationId);
-				editor.commit();
-		}
-		
+	public static String getRegistrationIdClient(Context context) {
+		final SharedPreferences prefs = context.getSharedPreferences(PREFERENCE, Context.MODE_PRIVATE);
+		String registrationId = prefs.getString(C.KEY_USER_C2DM_ID_CLIENT, C.NULL_C2DM_ID);
+		return registrationId;
+	}
+	
+	public static String getRegistrationIdServer(Context context) {
+		final SharedPreferences prefs = context.getSharedPreferences(PREFERENCE, Context.MODE_PRIVATE);
+		String registrationId = prefs.getString(C.KEY_USER_C2DM_ID_SERVER, C.NULL_C2DM_ID);
+		return registrationId;
+	}
+	
+	// package
+	static void clearRegistrationIdClient(Context context) {
+		final SharedPreferences prefs = context.getSharedPreferences(PREFERENCE, Context.MODE_PRIVATE);
+		Editor editor = prefs.edit();
+		editor.putString(C.KEY_USER_C2DM_ID_CLIENT, C.NULL_C2DM_ID);
+		editor.putLong(LAST_REGISTRATION_CHANGE, System.currentTimeMillis());
+		editor.commit();
+	}
+
+	// package
+	static void setRegistrationIdClient(Context context, String registrationId) {
+		final SharedPreferences prefs = context.getSharedPreferences(PREFERENCE, Context.MODE_PRIVATE);
+		Editor editor = prefs.edit();
+		editor.putString(C.KEY_USER_C2DM_ID_CLIENT, registrationId);
+		editor.commit();
+	}
+
+	// package
+	public static void setRegistrationIdServer(Context context, String registrationId) {
+		final SharedPreferences prefs = context.getSharedPreferences(PREFERENCE, Context.MODE_PRIVATE);
+		Editor editor = prefs.edit();
+		editor.putString(C.KEY_USER_C2DM_ID_SERVER, registrationId);
+		editor.commit();
+	}
+
 }

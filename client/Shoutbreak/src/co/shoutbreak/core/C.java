@@ -6,7 +6,7 @@ public class C {
 	// CONFIG /////////////////////////////////////////////////////////////////
 	// Match this to the $version in index.php
 	public static final boolean CONFIG_ADMIN_SUPERPOWERS = false;
-	public static final String CONFIG_SERVER_ADDRESS = "http://app.shoutbreak.co/005/"; //23.21.234.1/005
+	public static final String CONFIG_SERVER_ADDRESS = "http://app.shoutbreak.co:8006/"; // 8 + $SERVER_VERSION
 	public static final String CONFIG_C2DM_ACCOUNT = "virtuability@gmail.com";
 	public static final int CONFIG_HTTP_TIMEOUT = 25000;
 	public static final int CONFIG_DROPPED_PACKET_LIMIT = 5;
@@ -31,8 +31,6 @@ public class C {
 	// STRINGS ////////////////////////////////////////////////////////////////
 	public static final String STRING_NO_ACCOUNT = "Welcome to Shoutbreak!\nNo account detected, creating one now...";
 	public static final String STRING_ACCOUNT_CREATED = "Account created successfully.\nYou can now send and receive shouts!";
-	public static final String STRING_LEVEL_UP_1 = "You leveled up! You're now level ";
-	public static final String STRING_LEVEL_UP_2 = "Your shouts will reach ";
 	public static final String STRING_SHOUT_SENT = "Shout complete.";
 	public static final String STRING_SHOUT_FAILED = "Shout failed.";
 	public static final String STRING_VOTE_FAILED = "Vote failed.  Shout is too old.";
@@ -151,7 +149,7 @@ public class C {
 	public static final int PURPOSE_DEATH = 62; // don't repeat this - just die
 	
 	// DATABASE ///////////////////////////////////////////////////////////////
-	public static final int DB_VERSION = 6;
+	public static final int DB_VERSION = 2;
 
 	public static final String DB_NAME = "sbdb";
 	public static final String DB_TABLE_RADIUS = "RADIUS";
@@ -166,14 +164,13 @@ public class C {
 	public static final String KEY_USER_NEXT_LEVEL_AT = "user_next_level_at";
 	public static final String KEY_USER_POINTS = "user_points"; 
 	public static final String KEY_USER_PW = "user_pw";
-	public static final String KEY_USER_C2DM_ID = "user_c2dm_id";
-	public static final String KEY_USER_C2DM_ID_AT_SERVER = "user_c2dm_id_serever";
+	public static final String KEY_USER_C2DM_ID_CLIENT = "c2dm_id_client";
+	public static final String KEY_USER_C2DM_ID_SERVER = "c2dm_id_server";
 	
 	// POINTS TYPES ///////////////////////////////////////////////////////////
 	// 70 - 79
-	public static final int POINTS_LEVEL_CHANGE = 70;
-	public static final int POINTS_SHOUT = 71;
-	public static final int POINTS_VOTE = 72;
+	public static final int POINTS_SHOUT = 70;
+	public static final int POINTS_VOTE = 71;
 	
 	// PREFERENCES ////////////////////////////////////////////////////////////
 	public static final String PREFERENCE_FILE = "preferences";
@@ -192,15 +189,6 @@ public class C {
 	public static final String NOTIFICATION_LAUNCHED_FROM_UI = "app_launched_from_ui";
 	public static final String NOTIFICATION_LAUNCHED_FROM_ALARM = "app_launched_from_alarm";
 	public static final String NOTIFICATION_LAUNCHED_FROM_NOTIFICATION = "app_launched_from_notification";
+	public static final String INTENT_C2DM_UNREGISTERED = "intent_c2dm_unregistered";
 	
-	// C2DM /////////////////////////////////////////////////////////////////////
-	public static final String AUTH_PERMISSION_ACTION = "com.google.ctp.AUTH_PERMISSION";
-	//public static final String INTENT_LAUNCHED_FROM_C2DM_REGISTRATION = "app_launched_from_c2dm_reg";
-	//public static final String EXTRA_C2DM_REGISTRATION_ID = "extra_c2dm_reg_id";
-	
-//  public static String makeLogTag(Class cls) {
-//      String tag = cls.getSimpleName();
-//      return (tag.length() > 23) ? tag.substring(0, 23) : tag;
-//  }
-
 }
