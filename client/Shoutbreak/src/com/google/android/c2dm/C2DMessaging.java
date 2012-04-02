@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *	 http://www.apache.org/licenses/LICENSE-2.0
+ *   http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -64,6 +64,15 @@ public class C2DMessaging {
 		context.startService(regIntent);
 	}
 
+	/**
+	 * Return the current registration id.
+	 * 
+	 * If result is empty, the registration has failed.
+	 * 
+	 * @return registration id, or empty string if the registration is not
+	 *         complete.
+	 */
+
 	public static long getLastRegistrationChange(Context context) {
 		final SharedPreferences prefs = context.getSharedPreferences(PREFERENCE, Context.MODE_PRIVATE);
 		return prefs.getLong(LAST_REGISTRATION_CHANGE, 0);
@@ -79,20 +88,9 @@ public class C2DMessaging {
 		Editor editor = prefs.edit();
 		editor.putLong(BACKOFF, backoff);
 		editor.commit();
+
 	}
 
-	public static String getRegistrationIdClient(Context context) {
-		final SharedPreferences prefs = context.getSharedPreferences(PREFERENCE, Context.MODE_PRIVATE);
-		String registrationId = prefs.getString(C.KEY_USER_C2DM_ID_CLIENT, C.NULL_C2DM_ID);
-		return registrationId;
-	}
-	
-	public static String getRegistrationIdServer(Context context) {
-		final SharedPreferences prefs = context.getSharedPreferences(PREFERENCE, Context.MODE_PRIVATE);
-		String registrationId = prefs.getString(C.KEY_USER_C2DM_ID_SERVER, C.NULL_C2DM_ID);
-		return registrationId;
-	}
-	
 	// package
 	static void clearRegistrationIdClient(Context context) {
 		final SharedPreferences prefs = context.getSharedPreferences(PREFERENCE, Context.MODE_PRIVATE);
@@ -100,6 +98,13 @@ public class C2DMessaging {
 		editor.putString(C.KEY_USER_C2DM_ID_CLIENT, C.NULL_C2DM_ID);
 		editor.putLong(LAST_REGISTRATION_CHANGE, System.currentTimeMillis());
 		editor.commit();
+
+	}
+
+	public static String getRegistrationIdClient(Context context) {
+		final SharedPreferences prefs = context.getSharedPreferences(PREFERENCE, Context.MODE_PRIVATE);
+		String registrationId = prefs.getString(C.KEY_USER_C2DM_ID_CLIENT, C.NULL_C2DM_ID);
+		return registrationId;
 	}
 
 	// package
@@ -108,6 +113,12 @@ public class C2DMessaging {
 		Editor editor = prefs.edit();
 		editor.putString(C.KEY_USER_C2DM_ID_CLIENT, registrationId);
 		editor.commit();
+	}
+
+	public static String getRegistrationIdServer(Context context) {
+		final SharedPreferences prefs = context.getSharedPreferences(PREFERENCE, Context.MODE_PRIVATE);
+		String registrationId = prefs.getString(C.KEY_USER_C2DM_ID_SERVER, C.NULL_C2DM_ID);
+		return registrationId;
 	}
 
 	// package

@@ -237,6 +237,17 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		super.onPause();
 	}
 
+	@Override
+	public void onDestroy() {
+		SBLog.lifecycle(TAG, "onDestroy()");
+		if (_m != null) {
+			_m.unregisterUI(false);
+			_m = null;
+		}
+		unbindService(_serviceConnection);
+		super.onDestroy();
+	}
+	
 	public void setMediator(Mediator mediator) {
 		SBLog.lifecycle(TAG, "setMediator()");
 		_m = mediator;
@@ -532,17 +543,6 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		default:
 			return super.onOptionsItemSelected(item);
 		}
-	}
-
-	@Override
-	public void onDestroy() {
-		SBLog.lifecycle(TAG, "onDestroy()");
-		if (_m != null) {
-			_m.unregisterUI(false);
-			;
-			_m = null;
-		}
-		super.onDestroy();
 	}
 
 	@Override
