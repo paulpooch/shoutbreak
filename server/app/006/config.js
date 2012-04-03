@@ -9,6 +9,8 @@ var Config = module.exports = {};
 
 	// Settings
 	this.VERSION = '006';
+	this.C2DM_ACCOUNT = 'shoutbreakcloud@gmail.com';
+	this.C2DM_PASSWORD = 'echogolf7r33f0r7=^';
 	this.USER_INITIAL_POINTS = 71;
 	this.USER_INITIAL_LEVEL = 5;
 	this.USER_INITIAL_PENDING_LEVEL_UP = 5;

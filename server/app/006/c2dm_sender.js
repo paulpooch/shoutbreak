@@ -16,9 +16,9 @@ var C2DM = module.exports = {};
 
 	var config = {
 		//token: 'Auth=DQAAAMIAAADBN5dXXfszWmLCoHH1BbbFK8gJiK-kWMZ0C-LKFgltkWhRM1vFXJpgbv4oFWf_54ao0WTuj8bSRTEu4-SvAdTZ39hPx0sUJ_SJoSswaiN9Z82x4y1h9h7CHTLACDEaxYRvF9Rys3dnWZ8Fr6caorisI7sz3QU_Brav3PlGvfFVpHT6dKlVJPzJUzRSKOOE_Cue4T-0uZelaQnuUKDK1VN3xCGB-tKjmEyN9pu90k8Nw7v0UIOokvkQQbfeJ0uR63zR_2ObF2X_nnL9udS2TLgo',
-		user: 'Virtuability@gmail.com',
-	    password: 'echogolf7r33f0r7=^',
-	    source: 'ProjectLoud-Shoutbreak-3.0', 
+		user: Config.C2DM_ACCOUNT,
+	    password: Config.C2DM_PASSWORD,
+	    source: 'co.shoutbreak', // does this matter? 
 		keepAlive: true
 	};
 
