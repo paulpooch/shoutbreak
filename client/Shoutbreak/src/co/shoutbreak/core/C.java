@@ -190,5 +190,6 @@ public class C {
 	public static final String NOTIFICATION_LAUNCHED_FROM_ALARM = "app_launched_from_alarm";
 	public static final String NOTIFICATION_LAUNCHED_FROM_NOTIFICATION = "app_launched_from_notification";
 	public static final String INTENT_C2DM_UNREGISTERED = "intent_c2dm_unregistered";
+	public static final String INTENT_C2DM_MESSAGE = "c2dm_message";
 	
 }

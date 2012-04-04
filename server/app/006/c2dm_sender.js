@@ -39,45 +39,61 @@ var C2DM = module.exports = {};
   	});
 
 	// TODO: Add exponential backoff on quota errors.
-  	this.setupPushTimer = function(inboxCacheId, expectedLastItemId, user, successCallback, failCallback) {
+  	this.setupPushTimer = function(targetUser, expectedLastItemId, successCallback, failCallback) {
   		setTimeout(
   			function() {
-  				// TODO: Add if we should really send check - based on expectedLastItemId.
-  				if (ready) {
-  					Log.logC2dm('Attempting C2DM to ' + user.userId + ' | c2dmId = ' + user.c2dmId);
-	  				var message = {
-			    		registration_id: user.c2dmId,
-			    		collapse_key: 'replace-exsting', // this doesn't matter
-					    'data.key1': 'value1',
-					    'data.key2': 'value2',
-					    // If included, waits until device screen is on.
-					    // delay_while_idle: '1'
-					};
-					c2dm.send(message, function(err, messageId) {
-						Log.logC2dm('C2DM Send messageId: ' + messageId);
-						if (err != null) {
-							if (err == 'Error=QuotaExceeded') {
-							} else if (err == 'Error=DeviceQuotaExceeded') {
-							} else if (err == 'Error=MissingRegistration') {
-							} else if (err == 'Error=InvalidRegistration') {
-							} else if (err == 'Error=MismatchSenderId') {
-							} else if (err == 'Error=NotRegistered ') {
-								// Wipe c2dm id from users table.
-								// We should resend c2dm id on every sign in?
-							} else if (err == 'Error=MessageTooBig') {
-							} else if (err == 'Error=MissingCollapseKey') {
+  				Log.logC2dm('Running C2DM push event.');
+  				var callback = function(checkInboxResult) {
+  					Log.logC2dm('checkInboxResult = ' + checkInboxResult);
+  					if (checkInboxResult.length > 0) {
+  						Log.logC2dm('inboxLastItemId = ' + checkInboxResult[checkInboxResult.length - 1] + ' | expectedLastItemId = ' + expectedLastItemId);
+  						if (checkInboxResult[checkInboxResult.length - 1] == expectedLastItemId) {
+  							// User has not picked up shout since it was sent...
+	  						if (ready) {
+			  					Log.logC2dm('Attempting C2DM to ' + targetUser.userId + ' | c2dmId = ' + targetUser.c2dmId);
+				  				var message = {
+						    		registration_id: targetUser.c2dmId,
+						    		collapse_key: 'replace-exsting', // this doesn't matter
+								    'data.action': 'ping'
+								    // If included, waits until device screen is on.
+								    // delay_while_idle: '1'
+								};
+								c2dm.send(message, function(err, messageId) {
+									if (err != null) {
+										if (err == 'Error=QuotaExceeded') {
+										} else if (err == 'Error=DeviceQuotaExceeded') {
+										} else if (err == 'Error=MissingRegistration') {
+										} else if (err == 'Error=InvalidRegistration') {
+										} else if (err == 'Error=MismatchSenderId') {
+										} else if (err == 'Error=NotRegistered ') {
+											Storage.Users.saveC2dmId(targetUser, Config.USER_INITIAL_C2DM_ID, 
+												function() {
+													Log.logC2dm(targetUser.userId + ' had their c2dmId wiped.  c2dmId = ' + targetUser.c2dmId);
+												},
+												function() {
+													Log.logC2dm('Could not wipe c2dmId for user = ' + targetUser.userId + ' | c2dmId = ' + targetUser.c2dmId);
+												}
+											);
+										} else if (err == 'Error=MessageTooBig') {
+										} else if (err == 'Error=MissingCollapseKey') {
+										}
+										Log.logC2dm('C2DM Send Error: ' + err + '\n' +
+											'c2dmId = ' + targetUser.c2dmId +  '\n' +
+											'userId = ' + targetUser.userId) ;
+									} else {
+										Log.logC2dm('C2DM Send Success.' + '\n' +
+											'messageId = ' + messageId + '\n' +
+											'c2dmId = ' + targetUser.c2dmId + '\n' +
+											'userId = ' + targetUser.userId) ;
+									}
+								});
 							}
-							Log.logC2dm('C2DM Send Error: ' + err + '\n' +
-								'c2dmId = ' + user.c2dmId +  '\n' +
-								'userId = ' + user.userId) ;
-						} else {
-							Log.logC2dm('C2DM Send Success.' + '\n' +
-								'messageId = ' + messageId + '\n' +
-								'c2dmId = ' + user.c2dmId + '\n' +
-								'userId = ' + user.userId) ;
 						}
-					});
-				}
+  					}
+  				};
+  				Storage.Inbox.checkInbox(targetUser.userId, callback, failCallback);
+
+  				
   			},
   			Config.C2DM_UNTOUCHED_INBOX_TIMEOUT
   		);

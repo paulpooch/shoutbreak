@@ -51,6 +51,8 @@ public class ShoutbreakService extends Service implements Colleague {
 				_m.attemptTurnOn(true);
 			} else if (extras.getBoolean(C.NOTIFICATION_LAUNCHED_FROM_ALARM)) {
 				_m.attemptTurnOn(true);
+			} else if (extras.getBoolean(C.INTENT_C2DM_MESSAGE)) {
+				_m.attemptTurnOn(true);
 			} else if (extras.getBoolean(C.INTENT_C2DM_UNREGISTERED)) {
 				_m.registerC2DM();
 			}

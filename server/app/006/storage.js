@@ -218,7 +218,7 @@ var Storage = module.exports = {};
 				if (getUserResult.c2dmId != null && getUserResult.c2dmId != '' && getUserResult.c2dmId != Config.USER_INITIAL_C2DM_ID) {
 					// Don't C2DM the original sender.
 					//if (getUserResult.userId != shout.userId) {
-						C2DMSender.setupPushTimer(Config.PRE_INBOX + targetId, targetInbox[targetInbox.length - 1], getUserResult, successCallback, failCallback);
+						C2DMSender.setupPushTimer(getUserResult, targetInbox[targetInbox.length - 1], successCallback, failCallback);
 					//}
 				} else {
 					// User doesn't have C2DM setup.

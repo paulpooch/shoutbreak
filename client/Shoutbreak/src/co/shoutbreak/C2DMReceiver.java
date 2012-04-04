@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import co.shoutbreak.core.C;
+import co.shoutbreak.core.ShoutbreakService;
 
 import com.google.android.c2dm.C2DMBaseReceiver;
 
@@ -26,10 +27,10 @@ public class C2DMReceiver extends C2DMBaseReceiver {
 	@Override
 	public void onUnregistered(Context context) {
 		Log.w("C2DMReceiver-onUnregistered", "got here!");
-		// Intent intent = new Intent(context, ShoutbreakService.class);
-		// intent.putExtra(C.INTENT_C2DM_UNREGISTERED, true);
-		// intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-		// context.startService(intent);
+		Intent intent = new Intent(context, ShoutbreakService.class);
+		intent.putExtra(C.INTENT_C2DM_UNREGISTERED, true);
+		intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+		context.startService(intent);
 	}
 
 	@Override
@@ -39,8 +40,10 @@ public class C2DMReceiver extends C2DMBaseReceiver {
 
 	@Override
 	protected void onMessage(Context context, Intent intent) {
-		Log.w("C2DMReceiver", intent.getStringExtra("payload"));
-		String s = "this is cool";
-		int i = 11;
+		//Log.w("C2DMReceiver", intent.getStringExtra("payload"));
+		Intent newIntent = new Intent(context, ShoutbreakService.class);
+		newIntent.putExtra(C.INTENT_C2DM_MESSAGE, true);
+		newIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+		context.startService(intent);
 	}
 }
