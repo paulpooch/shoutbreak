@@ -8,6 +8,8 @@ public class C {
 	public static final boolean CONFIG_ADMIN_SUPERPOWERS = false;
 	public static final String CONFIG_SERVER_ADDRESS = "http://app.shoutbreak.co:8006/"; // 8 + $SERVER_VERSION
 	public static final String CONFIG_C2DM_ACCOUNT = "shoutbreakcloud@gmail.com";
+	public static final long[] CONFIG_C2DM_VIBRATE_PATTERN = { 0, 100, 500, 100, 500, 100 };
+	public static final int CONFIG_C2DM_LED_COLOR = 0xffbe00ff;
 	public static final int CONFIG_HTTP_TIMEOUT = 25000;
 	public static final int CONFIG_DROPPED_PACKET_LIMIT = 5;
 	public static final int CONFIG_NOTICES_DISPLAYED_IN_TAB = 50;
@@ -175,9 +177,14 @@ public class C {
 	// PREFERENCES ////////////////////////////////////////////////////////////
 	public static final String PREFERENCE_FILE = "preferences";
 	public static final String PREFERENCE_POWER_STATE = "power_state_pref";
+	public static final boolean PREFERENCE_POWER_STATE_DEFAULT = true;
 	public static final String PREFERENCE_IS_FIRST_RUN = "is_first_run";
 	public static final String PREFERENCE_SIGNATURE_ENABLED = "sig_enabled";
 	public static final String PREFERENCE_SIGNATURE_TEXT = "sig_text";
+	public static final String PREFERENCE_VIBRATE = "vibrate";
+	public static final boolean PREFERENCE_VIBRATE_DEFAULT = true;
+	public static final String PREFERENCE_LED = "led";
+	public static final boolean PREFERENCE_LED_DEFAULT = true;
 	
 	// ACTIVITY RESULTS ///////////////////////////////////////////////////////
 	// 80 - 89

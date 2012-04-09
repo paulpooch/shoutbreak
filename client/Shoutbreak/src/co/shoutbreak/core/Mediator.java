@@ -529,7 +529,7 @@ public class Mediator {
 	}
 
 	public boolean isPowerPreferenceEnabled() {
-		return _preferences.isPowerPreferenceSetToOn();
+		return _preferences.getBoolean(C.PREFERENCE_POWER_STATE, C.PREFERENCE_POWER_STATE_DEFAULT);
 	}
 
 	public boolean isLocationEnabled() {
@@ -681,6 +681,11 @@ public class Mediator {
 		_uiGateway.refreshSignature(sigText, sigEnabled);
 		_uiGateway.toast(_service.getString(R.string.sigSaved), Toast.LENGTH_LONG);
 	}
+
+	public void toggleCheckboxPref(String whichPref, boolean isChecked) {
+		_preferences.putBoolean(whichPref, isChecked);
+		_uiGateway.toast(_service.getString(R.string.prefSaved), Toast.LENGTH_LONG);
+	}
 	
 	public void refreshUiComponents(MultiDirectionSlidingDrawer noticeTabSlidingDrawer) {
 		noticeTabSlidingDrawer.setMediator(Mediator.this);
@@ -693,6 +698,10 @@ public class Mediator {
 
 	public void createReplyDialog(Shout shout) {
 		_uiGateway.createReplyDialog(shout);
+	}
+	
+	public boolean getBooleanPref(String pref, boolean defaultValue) {
+		return _preferences.getBoolean(pref, defaultValue);
 	}
 	
 	
@@ -1122,7 +1131,7 @@ public class Mediator {
 			// TODO: make inbox & profile more like noticeTabSystem
 			_storage.refreshUiComponents();
 			refreshProfile(_storage.getUserLevel(), _storage.getUserLevelAt(), _storage.getUserPoints(), _storage.getUserNextLevelAt());
-			loadUserSignature();	
+			loadUserPreferencesToUi();	
 		}
 
 		public void refreshProfile(int level, int levelBeginPoints, int currentPoints, int levelEndPoints) {
@@ -1150,7 +1159,7 @@ public class Mediator {
 		}
 		
 		@Override
-		public void loadUserSignature() {
+		public void loadUserPreferencesToUi() {
 			// Signature preference setup
 			boolean sigEnabled = _preferences.getBoolean(C.PREFERENCE_SIGNATURE_ENABLED, false);
 			String sigText = _preferences.getString(C.PREFERENCE_SIGNATURE_TEXT);
@@ -1161,6 +1170,9 @@ public class Mediator {
 			}
 			_ui.sigInputEt.setText(sigText);
 			refreshSignature(sigText, sigEnabled);
+		
+			_ui.vibrateCb.setChecked(_preferences.getBoolean(C.PREFERENCE_VIBRATE, C.PREFERENCE_VIBRATE_DEFAULT));
+			_ui.ledCb.setChecked(_preferences.getBoolean(C.PREFERENCE_LED, C.PREFERENCE_LED_DEFAULT));
 		}
 
 		public void enableInputs() {
@@ -1288,5 +1300,51 @@ public class Mediator {
 		}
 
 	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 }

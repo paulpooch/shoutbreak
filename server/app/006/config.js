@@ -9,8 +9,10 @@ var Config = module.exports = {};
 
 	// Settings
 	this.VERSION = '006';
-	this.C2DM_ACCOUNT = 'shoutbreakcloud@gmail.com';
-	this.C2DM_PASSWORD = 'echogolf7r33f0r7=^';
+	this.C2DM_SERVER_PORT = 8000;
+	this.C2DM_SERVER_ADDRESS = '127.0.0.1';
+	this.C2DM_ID_LENGTH_LIMIT = 200;
+	this.C2DM_UNTOUCHED_INBOX_TIMEOUT = 600000; // 10 minutes
 	this.USER_INITIAL_POINTS = 71;
 	this.USER_INITIAL_LEVEL = 5;
 	this.USER_INITIAL_PENDING_LEVEL_UP = 5;
@@ -23,8 +25,6 @@ var Config = module.exports = {};
 	this.SHOUTREACH_BUFFER_METERS = 200;
 	this.SHOUTREACH_LIMIT = 500;
 	this.SHOUT_LENGTH_LIMIT = 256;
-	this.C2DM_ID_LENGTH_LIMIT = 200;
-	this.C2DM_UNTOUCHED_INBOX_TIMEOUT = 60000; // 60 seconds
 	this.SHOUT_IDLE_TIMEOUT = 30; // minutes
 	this.SIMPLEDB_MAX_NUMBER_OF_ITEMS = 2500;
 	this.SHOUTBREAK_SCORING_WORK_AT_LEVEL_1 = 10;
@@ -34,7 +34,7 @@ var Config = module.exports = {};
 	this.SCORE_REQUEST_LIMIT = 20;
 	this.RADIUS_REQUEST_LIMIT = 10;
 	this.RADIUS_FOR_INSUFFICIENT_USERS_ONLINE = 6000000; // earth is 6378000, let's not push it tho.
-	this.LIVE_USERS_TIMEOUT = 1260000; // 21 minutes
+	this.LIVE_USERS_TIMEOUT = 2400000; // 40 minutes
 	this.AUTH_ATTEMPT_FAIL_LIMIT = 30; // consider lowering this once not debugging (relaunching a million times).
 	this.CRON_INTERVAL_CULL_LIVE_USERS = 1800000; // 30 minutes
 	this.INTERVAL_LOG_RENAME = 1800000; // 30 minutes

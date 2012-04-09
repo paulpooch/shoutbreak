@@ -97,7 +97,7 @@ public class UiOffGateway implements IUiGateway {
 	public void refreshSignature(String signature, boolean isSignatureEnabled) {}
 	
 	@Override
-	public void loadUserSignature() {}
+	public void loadUserPreferencesToUi() {}
 
 	@Override
 	public void handleRadiusChange(boolean isRadiusSet, long newRadius, int level) {}

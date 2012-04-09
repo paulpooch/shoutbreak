@@ -4070,3 +4070,1289 @@ REQUEST =
 [Wed Apr 04 2012 00:49:01 GMT+0000 (UTC)] DEBUG authIsValid callback
 [Wed Apr 04 2012 00:49:01 GMT+0000 (UTC)] DEBUG respond
 [Wed Apr 04 2012 00:49:01 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 71 }
+[Wed Apr 04 2012 00:58:29 GMT+0000 (UTC)] DEBUG Server launched.
+[Wed Apr 04 2012 00:58:29 GMT+0000 (UTC)] DEBUG Listening on port 8006
+[Wed Apr 04 2012 00:58:29 GMT+0000 (UTC)] DEBUG Culling 0 users.
+[Wed Apr 04 2012 00:58:39 GMT+0000 (UTC)] DEBUG Server launched.
+[Wed Apr 04 2012 00:58:39 GMT+0000 (UTC)] DEBUG Listening on port 8006
+[Wed Apr 04 2012 00:58:39 GMT+0000 (UTC)] DEBUG Culling 0 users.
+[Wed Apr 04 2012 01:15:07 GMT+0000 (UTC)] DEBUG init
+[Wed Apr 04 2012 01:15:07 GMT+0000 (UTC)] DEBUG processRequest
+[Wed Apr 04 2012 01:15:07 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Apr 04 2012 01:15:07 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: '1113b642-80ed-4b67-bde7-38b8b9d08107',
+  auth: 'sg2QqXGW_S6D4SFOQcs9cy(zqrEh1TCrJW6E8PFEiJXa2I/eTm5fojwmdWL7lKDDqlg+fjcL2O2yLZHS4o97dbRe0xoEq9JfMQk+kXGcmpTGQuhCMZkOmg==',
+  lat: '40.74369',
+  lng: '-74.01322',
+  ip: '174.226.207.119' }
+[Wed Apr 04 2012 01:15:07 GMT+0000 (UTC)] DEBUG Clean.sanitize
+[Wed Apr 04 2012 01:15:07 GMT+0000 (UTC)] DEBUG validate
+[Wed Apr 04 2012 01:15:07 GMT+0000 (UTC)] DEBUG route
+[Wed Apr 04 2012 01:15:07 GMT+0000 (UTC)] DEBUG ping
+[Wed Apr 04 2012 01:15:07 GMT+0000 (UTC)] DEBUG authIsValid
+[Wed Apr 04 2012 01:15:07 GMT+0000 (UTC)] DEBUG Cache.getAuth
+[Wed Apr 04 2012 01:15:07 GMT+0000 (UTC)] DEBUG authIsValid callback
+[Wed Apr 04 2012 01:15:07 GMT+0000 (UTC)] DEBUG Users.generateNonce
+[Wed Apr 04 2012 01:15:07 GMT+0000 (UTC)] DEBUG Failed auth count = 1
+[Wed Apr 04 2012 01:15:07 GMT+0000 (UTC)] DEBUG Users.updateLastActivityTime
+[Wed Apr 04 2012 01:15:07 GMT+0000 (UTC)] DEBUG respond
+[Wed Apr 04 2012 01:15:07 GMT+0000 (UTC)] DEBUG { code: 'expired_auth',
+  nonce: '2EkI+O1NggW6XQvv*XQm)I*5)E#w_L#NDvAw!JFp' }
+[Wed Apr 04 2012 01:15:08 GMT+0000 (UTC)] DEBUG init
+[Wed Apr 04 2012 01:15:08 GMT+0000 (UTC)] DEBUG processRequest
+[Wed Apr 04 2012 01:15:08 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Apr 04 2012 01:15:08 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: '1113b642-80ed-4b67-bde7-38b8b9d08107',
+  auth: 'sg2QqXGW_S6D4SFOQcs9cy(zqrEh1TCrBb80n//yauMMy2UcH/tvP3dxgHZx34in6JDOO/dTan8x22Lf0aLoMMLQIksiSX8SbXktIXlzt44lRkSVvTcVPQ==',
+  lat: '40.74369',
+  lng: '-74.01322',
+  ip: '174.226.207.119' }
+[Wed Apr 04 2012 01:15:08 GMT+0000 (UTC)] DEBUG Clean.sanitize
+[Wed Apr 04 2012 01:15:08 GMT+0000 (UTC)] DEBUG validate
+[Wed Apr 04 2012 01:15:08 GMT+0000 (UTC)] DEBUG route
+[Wed Apr 04 2012 01:15:08 GMT+0000 (UTC)] DEBUG ping
+[Wed Apr 04 2012 01:15:08 GMT+0000 (UTC)] DEBUG authIsValid
+[Wed Apr 04 2012 01:15:08 GMT+0000 (UTC)] DEBUG Cache.getAuth
+[Wed Apr 04 2012 01:15:08 GMT+0000 (UTC)] DEBUG authIsValid callback
+[Wed Apr 04 2012 01:15:08 GMT+0000 (UTC)] DEBUG respond
+[Wed Apr 04 2012 01:15:08 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 71 }
+[Wed Apr 04 2012 01:26:47 GMT+0000 (UTC)] DEBUG init
+[Wed Apr 04 2012 01:26:47 GMT+0000 (UTC)] DEBUG processRequest
+[Wed Apr 04 2012 01:26:47 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Apr 04 2012 01:26:47 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: '1113b642-80ed-4b67-bde7-38b8b9d08107',
+  auth: 'sg2QqXGW_S6D4SFOQcs9cy(zqrEh1TCrBb80n//yauMMy2UcH/tvP3dxgHZx34in6JDOO/dTan8x22Lf0aLoMMLQIksiSX8SbXktIXlzt44lRkSVvTcVPQ==',
+  lat: '40.74301',
+  lng: '-74.03143',
+  ip: '174.226.207.119' }
+[Wed Apr 04 2012 01:26:47 GMT+0000 (UTC)] DEBUG Clean.sanitize
+[Wed Apr 04 2012 01:26:47 GMT+0000 (UTC)] DEBUG validate
+[Wed Apr 04 2012 01:26:47 GMT+0000 (UTC)] DEBUG route
+[Wed Apr 04 2012 01:26:47 GMT+0000 (UTC)] DEBUG ping
+[Wed Apr 04 2012 01:26:47 GMT+0000 (UTC)] DEBUG authIsValid
+[Wed Apr 04 2012 01:26:47 GMT+0000 (UTC)] DEBUG Cache.getAuth
+[Wed Apr 04 2012 01:26:47 GMT+0000 (UTC)] DEBUG authIsValid callback
+[Wed Apr 04 2012 01:26:47 GMT+0000 (UTC)] DEBUG respond
+[Wed Apr 04 2012 01:26:47 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 71 }
+[Wed Apr 04 2012 01:27:11 GMT+0000 (UTC)] DEBUG init
+[Wed Apr 04 2012 01:27:11 GMT+0000 (UTC)] DEBUG processRequest
+[Wed Apr 04 2012 01:27:11 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Apr 04 2012 01:27:11 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: '1113b642-80ed-4b67-bde7-38b8b9d08107',
+  auth: 'sg2QqXGW_S6D4SFOQcs9cy(zqrEh1TCrBb80n//yauMMy2UcH/tvP3dxgHZx34in6JDOO/dTan8x22Lf0aLoMMLQIksiSX8SbXktIXlzt44lRkSVvTcVPQ==',
+  lat: '40.74301',
+  lng: '-74.03143',
+  ip: '174.226.207.119' }
+[Wed Apr 04 2012 01:27:11 GMT+0000 (UTC)] DEBUG Clean.sanitize
+[Wed Apr 04 2012 01:27:11 GMT+0000 (UTC)] DEBUG validate
+[Wed Apr 04 2012 01:27:11 GMT+0000 (UTC)] DEBUG route
+[Wed Apr 04 2012 01:27:11 GMT+0000 (UTC)] DEBUG ping
+[Wed Apr 04 2012 01:27:11 GMT+0000 (UTC)] DEBUG authIsValid
+[Wed Apr 04 2012 01:27:11 GMT+0000 (UTC)] DEBUG Cache.getAuth
+[Wed Apr 04 2012 01:27:11 GMT+0000 (UTC)] DEBUG authIsValid callback
+[Wed Apr 04 2012 01:27:11 GMT+0000 (UTC)] DEBUG respond
+[Wed Apr 04 2012 01:27:11 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 71 }
+[Wed Apr 04 2012 01:28:39 GMT+0000 (UTC)] DEBUG Culling 0 users.
+[Wed Apr 04 2012 01:35:18 GMT+0000 (UTC)] DEBUG init
+[Wed Apr 04 2012 01:35:18 GMT+0000 (UTC)] DEBUG processRequest
+[Wed Apr 04 2012 01:35:18 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Apr 04 2012 01:35:18 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: '1113b642-80ed-4b67-bde7-38b8b9d08107',
+  auth: 'sg2QqXGW_S6D4SFOQcs9cy(zqrEh1TCrBb80n//yauMMy2UcH/tvP3dxgHZx34in6JDOO/dTan8x22Lf0aLoMMLQIksiSX8SbXktIXlzt44lRkSVvTcVPQ==',
+  lat: '40.74301',
+  lng: '-74.03143',
+  ip: '174.226.207.119' }
+[Wed Apr 04 2012 01:35:18 GMT+0000 (UTC)] DEBUG Clean.sanitize
+[Wed Apr 04 2012 01:35:18 GMT+0000 (UTC)] DEBUG validate
+[Wed Apr 04 2012 01:35:18 GMT+0000 (UTC)] DEBUG route
+[Wed Apr 04 2012 01:35:18 GMT+0000 (UTC)] DEBUG ping
+[Wed Apr 04 2012 01:35:18 GMT+0000 (UTC)] DEBUG authIsValid
+[Wed Apr 04 2012 01:35:18 GMT+0000 (UTC)] DEBUG Cache.getAuth
+[Wed Apr 04 2012 01:35:18 GMT+0000 (UTC)] DEBUG authIsValid callback
+[Wed Apr 04 2012 01:35:18 GMT+0000 (UTC)] DEBUG respond
+[Wed Apr 04 2012 01:35:18 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 71 }
+[Wed Apr 04 2012 01:55:38 GMT+0000 (UTC)] DEBUG init
+[Wed Apr 04 2012 01:55:38 GMT+0000 (UTC)] DEBUG processRequest
+[Wed Apr 04 2012 01:55:38 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Apr 04 2012 01:55:38 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: '1113b642-80ed-4b67-bde7-38b8b9d08107',
+  auth: 'sg2QqXGW_S6D4SFOQcs9cy(zqrEh1TCrBb80n//yauMMy2UcH/tvP3dxgHZx34in6JDOO/dTan8x22Lf0aLoMMLQIksiSX8SbXktIXlzt44lRkSVvTcVPQ==',
+  lat: '40.74301',
+  lng: '-74.03143',
+  ip: '174.226.207.119' }
+[Wed Apr 04 2012 01:55:38 GMT+0000 (UTC)] DEBUG Clean.sanitize
+[Wed Apr 04 2012 01:55:38 GMT+0000 (UTC)] DEBUG validate
+[Wed Apr 04 2012 01:55:38 GMT+0000 (UTC)] DEBUG route
+[Wed Apr 04 2012 01:55:38 GMT+0000 (UTC)] DEBUG ping
+[Wed Apr 04 2012 01:55:38 GMT+0000 (UTC)] DEBUG authIsValid
+[Wed Apr 04 2012 01:55:38 GMT+0000 (UTC)] DEBUG Cache.getAuth
+[Wed Apr 04 2012 01:55:38 GMT+0000 (UTC)] DEBUG authIsValid callback
+[Wed Apr 04 2012 01:55:38 GMT+0000 (UTC)] DEBUG Users.generateNonce
+[Wed Apr 04 2012 01:55:38 GMT+0000 (UTC)] DEBUG Failed auth count = 1
+[Wed Apr 04 2012 01:55:38 GMT+0000 (UTC)] DEBUG Users.updateLastActivityTime
+[Wed Apr 04 2012 01:55:38 GMT+0000 (UTC)] DEBUG respond
+[Wed Apr 04 2012 01:55:38 GMT+0000 (UTC)] DEBUG { code: 'expired_auth',
+  nonce: 'T0_(k!1W+*--v0ET-4XfWMjRS3w*hHcV%YVUqpSK' }
+[Wed Apr 04 2012 01:55:38 GMT+0000 (UTC)] DEBUG init
+[Wed Apr 04 2012 01:55:38 GMT+0000 (UTC)] DEBUG processRequest
+[Wed Apr 04 2012 01:55:38 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Apr 04 2012 01:55:38 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: '1113b642-80ed-4b67-bde7-38b8b9d08107',
+  auth: 'sg2QqXGW_S6D4SFOQcs9cy(zqrEh1TCrx/fO63P6056zoggD9XEmq6GQx/sqhzo/OMuTOZIARKKwVsfLQZZNWGvUt8fJDw7HV5PEosN7bLMR+uY2RfJCEQ==',
+  lat: '40.74301',
+  lng: '-74.03143',
+  ip: '174.226.207.119' }
+[Wed Apr 04 2012 01:55:38 GMT+0000 (UTC)] DEBUG Clean.sanitize
+[Wed Apr 04 2012 01:55:38 GMT+0000 (UTC)] DEBUG validate
+[Wed Apr 04 2012 01:55:38 GMT+0000 (UTC)] DEBUG route
+[Wed Apr 04 2012 01:55:38 GMT+0000 (UTC)] DEBUG ping
+[Wed Apr 04 2012 01:55:38 GMT+0000 (UTC)] DEBUG authIsValid
+[Wed Apr 04 2012 01:55:38 GMT+0000 (UTC)] DEBUG Cache.getAuth
+[Wed Apr 04 2012 01:55:38 GMT+0000 (UTC)] DEBUG authIsValid callback
+[Wed Apr 04 2012 01:55:38 GMT+0000 (UTC)] DEBUG respond
+[Wed Apr 04 2012 01:55:38 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 71 }
+[Wed Apr 04 2012 01:57:21 GMT+0000 (UTC)] DEBUG init
+[Wed Apr 04 2012 01:57:21 GMT+0000 (UTC)] DEBUG processRequest
+[Wed Apr 04 2012 01:57:21 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Apr 04 2012 01:57:21 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: '1113b642-80ed-4b67-bde7-38b8b9d08107',
+  auth: 'sg2QqXGW_S6D4SFOQcs9cy(zqrEh1TCrx/fO63P6056zoggD9XEmq6GQx/sqhzo/OMuTOZIARKKwVsfLQZZNWGvUt8fJDw7HV5PEosN7bLMR+uY2RfJCEQ==',
+  lat: '40.74301',
+  lng: '-74.03143',
+  ip: '174.226.207.119' }
+[Wed Apr 04 2012 01:57:21 GMT+0000 (UTC)] DEBUG Clean.sanitize
+[Wed Apr 04 2012 01:57:21 GMT+0000 (UTC)] DEBUG validate
+[Wed Apr 04 2012 01:57:21 GMT+0000 (UTC)] DEBUG route
+[Wed Apr 04 2012 01:57:21 GMT+0000 (UTC)] DEBUG ping
+[Wed Apr 04 2012 01:57:21 GMT+0000 (UTC)] DEBUG authIsValid
+[Wed Apr 04 2012 01:57:21 GMT+0000 (UTC)] DEBUG Cache.getAuth
+[Wed Apr 04 2012 01:57:21 GMT+0000 (UTC)] DEBUG authIsValid callback
+[Wed Apr 04 2012 01:57:21 GMT+0000 (UTC)] DEBUG respond
+[Wed Apr 04 2012 01:57:21 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 71 }
+[Wed Apr 04 2012 01:58:39 GMT+0000 (UTC)] DEBUG Culling 0 users.
+[Wed Apr 04 2012 02:28:39 GMT+0000 (UTC)] DEBUG Culling 0 users.
+[Wed Apr 04 2012 02:58:39 GMT+0000 (UTC)] DEBUG Culling 1 users.
+[Wed Apr 04 2012 03:21:51 GMT+0000 (UTC)] DEBUG init
+[Wed Apr 04 2012 03:21:51 GMT+0000 (UTC)] DEBUG processRequest
+[Wed Apr 04 2012 03:21:51 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Apr 04 2012 03:21:51 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: '1113b642-80ed-4b67-bde7-38b8b9d08107',
+  auth: 'sg2QqXGW_S6D4SFOQcs9cy(zqrEh1TCrx/fO63P6056zoggD9XEmq6GQx/sqhzo/OMuTOZIARKKwVsfLQZZNWGvUt8fJDw7HV5PEosN7bLMR+uY2RfJCEQ==',
+  lat: '40.74301',
+  lng: '-74.03143',
+  ip: '174.252.7.169' }
+[Wed Apr 04 2012 03:21:51 GMT+0000 (UTC)] DEBUG Clean.sanitize
+[Wed Apr 04 2012 03:21:51 GMT+0000 (UTC)] DEBUG validate
+[Wed Apr 04 2012 03:21:51 GMT+0000 (UTC)] DEBUG route
+[Wed Apr 04 2012 03:21:51 GMT+0000 (UTC)] DEBUG ping
+[Wed Apr 04 2012 03:21:51 GMT+0000 (UTC)] DEBUG authIsValid
+[Wed Apr 04 2012 03:21:51 GMT+0000 (UTC)] DEBUG Cache.getAuth
+[Wed Apr 04 2012 03:21:51 GMT+0000 (UTC)] DEBUG authIsValid callback
+[Wed Apr 04 2012 03:21:51 GMT+0000 (UTC)] DEBUG Users.generateNonce
+[Wed Apr 04 2012 03:21:51 GMT+0000 (UTC)] DEBUG Failed auth count = 1
+[Wed Apr 04 2012 03:21:51 GMT+0000 (UTC)] DEBUG Users.updateLastActivityTime
+[Wed Apr 04 2012 03:21:51 GMT+0000 (UTC)] DEBUG respond
+[Wed Apr 04 2012 03:21:51 GMT+0000 (UTC)] DEBUG { code: 'expired_auth',
+  nonce: 'My#)B2jU3H2JYMtW!HwMcxz7Sk)dU94XQkAm%y5a' }
+[Wed Apr 04 2012 03:21:53 GMT+0000 (UTC)] DEBUG init
+[Wed Apr 04 2012 03:21:53 GMT+0000 (UTC)] DEBUG processRequest
+[Wed Apr 04 2012 03:21:53 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Apr 04 2012 03:21:53 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: '1113b642-80ed-4b67-bde7-38b8b9d08107',
+  auth: 'sg2QqXGW_S6D4SFOQcs9cy(zqrEh1TCrffSNIObuGpc66nwk18nyDX90XtM6DH5VbuJZwBwINNGgfgFKEY5r6k6eRqltcgRemfm/n28rW/gXyq7yAf3nfw==',
+  lat: '40.74301',
+  lng: '-74.03143',
+  ip: '174.252.7.169' }
+[Wed Apr 04 2012 03:21:53 GMT+0000 (UTC)] DEBUG Clean.sanitize
+[Wed Apr 04 2012 03:21:53 GMT+0000 (UTC)] DEBUG validate
+[Wed Apr 04 2012 03:21:53 GMT+0000 (UTC)] DEBUG route
+[Wed Apr 04 2012 03:21:53 GMT+0000 (UTC)] DEBUG ping
+[Wed Apr 04 2012 03:21:53 GMT+0000 (UTC)] DEBUG authIsValid
+[Wed Apr 04 2012 03:21:53 GMT+0000 (UTC)] DEBUG Cache.getAuth
+[Wed Apr 04 2012 03:21:53 GMT+0000 (UTC)] DEBUG authIsValid callback
+[Wed Apr 04 2012 03:21:53 GMT+0000 (UTC)] DEBUG respond
+[Wed Apr 04 2012 03:21:53 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 71 }
+[Wed Apr 04 2012 03:22:17 GMT+0000 (UTC)] DEBUG init
+[Wed Apr 04 2012 03:22:17 GMT+0000 (UTC)] DEBUG processRequest
+[Wed Apr 04 2012 03:22:17 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Apr 04 2012 03:22:17 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: '1113b642-80ed-4b67-bde7-38b8b9d08107',
+  auth: 'sg2QqXGW_S6D4SFOQcs9cy(zqrEh1TCrffSNIObuGpc66nwk18nyDX90XtM6DH5VbuJZwBwINNGgfgFKEY5r6k6eRqltcgRemfm/n28rW/gXyq7yAf3nfw==',
+  lat: '40.74301',
+  lng: '-74.03143',
+  ip: '174.252.7.169' }
+[Wed Apr 04 2012 03:22:17 GMT+0000 (UTC)] DEBUG Clean.sanitize
+[Wed Apr 04 2012 03:22:17 GMT+0000 (UTC)] DEBUG validate
+[Wed Apr 04 2012 03:22:17 GMT+0000 (UTC)] DEBUG route
+[Wed Apr 04 2012 03:22:17 GMT+0000 (UTC)] DEBUG ping
+[Wed Apr 04 2012 03:22:17 GMT+0000 (UTC)] DEBUG authIsValid
+[Wed Apr 04 2012 03:22:17 GMT+0000 (UTC)] DEBUG Cache.getAuth
+[Wed Apr 04 2012 03:22:17 GMT+0000 (UTC)] DEBUG authIsValid callback
+[Wed Apr 04 2012 03:22:17 GMT+0000 (UTC)] DEBUG respond
+[Wed Apr 04 2012 03:22:17 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 71 }
+[Wed Apr 04 2012 03:23:28 GMT+0000 (UTC)] DEBUG init
+[Wed Apr 04 2012 03:23:28 GMT+0000 (UTC)] DEBUG processRequest
+[Wed Apr 04 2012 03:23:28 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Apr 04 2012 03:23:28 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: '1113b642-80ed-4b67-bde7-38b8b9d08107',
+  auth: 'sg2QqXGW_S6D4SFOQcs9cy(zqrEh1TCrffSNIObuGpc66nwk18nyDX90XtM6DH5VbuJZwBwINNGgfgFKEY5r6k6eRqltcgRemfm/n28rW/gXyq7yAf3nfw==',
+  lat: '40.74301',
+  lng: '-74.03143',
+  ip: '174.252.7.169' }
+[Wed Apr 04 2012 03:23:28 GMT+0000 (UTC)] DEBUG Clean.sanitize
+[Wed Apr 04 2012 03:23:28 GMT+0000 (UTC)] DEBUG validate
+[Wed Apr 04 2012 03:23:28 GMT+0000 (UTC)] DEBUG route
+[Wed Apr 04 2012 03:23:28 GMT+0000 (UTC)] DEBUG ping
+[Wed Apr 04 2012 03:23:28 GMT+0000 (UTC)] DEBUG authIsValid
+[Wed Apr 04 2012 03:23:28 GMT+0000 (UTC)] DEBUG Cache.getAuth
+[Wed Apr 04 2012 03:23:28 GMT+0000 (UTC)] DEBUG authIsValid callback
+[Wed Apr 04 2012 03:23:28 GMT+0000 (UTC)] DEBUG respond
+[Wed Apr 04 2012 03:23:28 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 71 }
+[Wed Apr 04 2012 03:23:47 GMT+0000 (UTC)] DEBUG Server launched.
+[Wed Apr 04 2012 03:23:47 GMT+0000 (UTC)] DEBUG Listening on port 8006
+[Wed Apr 04 2012 03:23:47 GMT+0000 (UTC)] DEBUG Culling 0 users.
+[Wed Apr 04 2012 03:24:30 GMT+0000 (UTC)] DEBUG init
+[Wed Apr 04 2012 03:24:30 GMT+0000 (UTC)] DEBUG processRequest
+[Wed Apr 04 2012 03:24:30 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Apr 04 2012 03:24:30 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: '1113b642-80ed-4b67-bde7-38b8b9d08107',
+  auth: 'default',
+  lat: '40.74301',
+  lng: '-74.03143',
+  radius: '1',
+  scores: '["f50ac259-1ceb-4fca-b34c-a9cc52df59cb", "0feb9e97-35c7-4b94-abb3-9b80e0020ef0", "a11f1a13-c7e4-43de-a86a-951d4e84684e", "a11f1a13-c7e4-43de-a86a-951d4e84684e", "c40c9f02-f6c1-49ed-9d87-5a20163f0d9b", "00130332-c283-4e16-8e29-f771731b80fd", "f50ac259-1ceb-4fca-b34c-a9cc52df59cb", "0feb9e97-35c7-4b94-abb3-9b80e0020ef0", "a11f1a13-c7e4-43de-a86a-951d4e84684e", "a11f1a13-c7e4-43de-a86a-951d4e84684e", "c40c9f02-f6c1-49ed-9d87-5a20163f0d9b", "00130332-c283-4e16-8e29-f771731b80fd", "f50ac259-1ceb-4fca-b34c-a9cc52df59cb", "0feb9e97-35c7-4b94-abb3-9b80e0020ef0", "a11f1a13-c7e4-43de-a86a-951d4e84684e", "a11f1a13-c7e4-43de-a86a-951d4e84684e", "c40c9f02-f6c1-49ed-9d87-5a20163f0d9b", "00130332-c283-4e16-8e29-f771731b80fd", "f50ac259-1ceb-4fca-b34c-a9cc52df59cb", "0feb9e97-35c7-4b94-abb3-9b80e0020ef0", "a11f1a13-c7e4-43de-a86a-951d4e84684e", "a11f1a13-c7e4-43de-a86a-951d4e84684e", "c40c9f02-f6c1-49ed-9d87-5a20163f0d9b", "00130332-c283-4e16-8e29-f771731b80fd", "f50ac259-1ceb-4fca-b34c-a9cc52df59cb", "0feb9e97-35c7-4b94-abb3-9b80e0020ef0", "a11f1a13-c7e4-43de-a86a-951d4e84684e", "a11f1a13-c7e4-43de-a86a-951d4e84684e", "c40c9f02-f6c1-49ed-9d87-5a20163f0d9b", "00130332-c283-4e16-8e29-f771731b80fd"]',
+  ip: '174.252.7.169' }
+[Wed Apr 04 2012 03:24:30 GMT+0000 (UTC)] DEBUG Clean.sanitize
+[Wed Apr 04 2012 03:24:30 GMT+0000 (UTC)] DEBUG validate
+[Wed Apr 04 2012 03:24:30 GMT+0000 (UTC)] DEBUG route
+[Wed Apr 04 2012 03:24:30 GMT+0000 (UTC)] DEBUG ping
+[Wed Apr 04 2012 03:24:30 GMT+0000 (UTC)] DEBUG authIsValid
+[Wed Apr 04 2012 03:24:30 GMT+0000 (UTC)] DEBUG Cache.getAuth
+[Wed Apr 04 2012 03:24:30 GMT+0000 (UTC)] DEBUG authIsValid callback
+[Wed Apr 04 2012 03:24:30 GMT+0000 (UTC)] DEBUG Users.generateNonce
+[Wed Apr 04 2012 03:24:30 GMT+0000 (UTC)] DEBUG Failed auth count = 2
+[Wed Apr 04 2012 03:24:30 GMT+0000 (UTC)] DEBUG Users.updateLastActivityTime
+[Wed Apr 04 2012 03:24:30 GMT+0000 (UTC)] DEBUG respond
+[Wed Apr 04 2012 03:24:30 GMT+0000 (UTC)] DEBUG { code: 'expired_auth',
+  nonce: '3Wc5*IIN3F=7F+hXn$D!+3JFf+HUR0L4OF8dELTI' }
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG init
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG processRequest
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: '1113b642-80ed-4b67-bde7-38b8b9d08107',
+  auth: 'sg2QqXGW_S6D4SFOQcs9cy(zqrEh1TCrGk4EyzmaDny6PidlZ5WKgRwhdHcE4d3zjiDqmDkZEDNMG9dzilPesTT5pMit1WEIzj+g+quK+NIFH8EbbwtXKQ==',
+  lat: '40.74301',
+  lng: '-74.03143',
+  radius: '1',
+  scores: '["f50ac259-1ceb-4fca-b34c-a9cc52df59cb", "0feb9e97-35c7-4b94-abb3-9b80e0020ef0", "a11f1a13-c7e4-43de-a86a-951d4e84684e", "a11f1a13-c7e4-43de-a86a-951d4e84684e", "c40c9f02-f6c1-49ed-9d87-5a20163f0d9b", "00130332-c283-4e16-8e29-f771731b80fd", "f50ac259-1ceb-4fca-b34c-a9cc52df59cb", "0feb9e97-35c7-4b94-abb3-9b80e0020ef0", "a11f1a13-c7e4-43de-a86a-951d4e84684e", "a11f1a13-c7e4-43de-a86a-951d4e84684e", "c40c9f02-f6c1-49ed-9d87-5a20163f0d9b", "00130332-c283-4e16-8e29-f771731b80fd", "f50ac259-1ceb-4fca-b34c-a9cc52df59cb", "0feb9e97-35c7-4b94-abb3-9b80e0020ef0", "a11f1a13-c7e4-43de-a86a-951d4e84684e", "a11f1a13-c7e4-43de-a86a-951d4e84684e", "c40c9f02-f6c1-49ed-9d87-5a20163f0d9b", "00130332-c283-4e16-8e29-f771731b80fd", "f50ac259-1ceb-4fca-b34c-a9cc52df59cb", "0feb9e97-35c7-4b94-abb3-9b80e0020ef0", "a11f1a13-c7e4-43de-a86a-951d4e84684e", "a11f1a13-c7e4-43de-a86a-951d4e84684e", "c40c9f02-f6c1-49ed-9d87-5a20163f0d9b", "00130332-c283-4e16-8e29-f771731b80fd", "f50ac259-1ceb-4fca-b34c-a9cc52df59cb", "0feb9e97-35c7-4b94-abb3-9b80e0020ef0", "a11f1a13-c7e4-43de-a86a-951d4e84684e", "a11f1a13-c7e4-43de-a86a-951d4e84684e", "c40c9f02-f6c1-49ed-9d87-5a20163f0d9b", "00130332-c283-4e16-8e29-f771731b80fd"]',
+  ip: '174.252.7.169' }
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG Clean.sanitize
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG validate
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG route
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG ping
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG authIsValid
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG Cache.getAuth
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG authIsValid callback
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG userCanRequestRadiusResult = true
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG recursiveCallback on iteration 1
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG COUNT = 0, SHOUTREACH = 5, selectEntirePlanet = false
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG recursiveCallback on iteration 2
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG COUNT = 3, SHOUTREACH = 5, selectEntirePlanet = true
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG row = 13073564, 10596156
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG nearby.push(1.0101475503364927, 45167780-0dc0-47c9-8f9c-60d2786918d0)
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG row = 13075033, 10597119
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG nearby.push(0.843340810056396, 291ed015-93b2-4f1d-87f4-9c9c1e8f45e6)
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG nearby = 
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG [ [ 0.843340810056396, '291ed015-93b2-4f1d-87f4-9c9c1e8f45e6' ],
+  [ 1.0101475503364927, '45167780-0dc0-47c9-8f9c-60d2786918d0' ] ]
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG reqScores.length = 20 | reqScores = 
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG [ 'f50ac259-1ceb-4fca-b34c-a9cc52df59cb',
+  '0feb9e97-35c7-4b94-abb3-9b80e0020ef0',
+  'a11f1a13-c7e4-43de-a86a-951d4e84684e',
+  'a11f1a13-c7e4-43de-a86a-951d4e84684e',
+  'c40c9f02-f6c1-49ed-9d87-5a20163f0d9b',
+  '00130332-c283-4e16-8e29-f771731b80fd',
+  'f50ac259-1ceb-4fca-b34c-a9cc52df59cb',
+  '0feb9e97-35c7-4b94-abb3-9b80e0020ef0',
+  'a11f1a13-c7e4-43de-a86a-951d4e84684e',
+  'a11f1a13-c7e4-43de-a86a-951d4e84684e',
+  'c40c9f02-f6c1-49ed-9d87-5a20163f0d9b',
+  '00130332-c283-4e16-8e29-f771731b80fd',
+  'f50ac259-1ceb-4fca-b34c-a9cc52df59cb',
+  '0feb9e97-35c7-4b94-abb3-9b80e0020ef0',
+  'a11f1a13-c7e4-43de-a86a-951d4e84684e',
+  'a11f1a13-c7e4-43de-a86a-951d4e84684e',
+  'c40c9f02-f6c1-49ed-9d87-5a20163f0d9b',
+  '00130332-c283-4e16-8e29-f771731b80fd',
+  'f50ac259-1ceb-4fca-b34c-a9cc52df59cb',
+  '0feb9e97-35c7-4b94-abb3-9b80e0020ef0' ]
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG Shouts.getShout(f50ac259-1ceb-4fca-b34c-a9cc52df59cb)
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG Shouts.getShout(0feb9e97-35c7-4b94-abb3-9b80e0020ef0)
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG Shouts.getShout(a11f1a13-c7e4-43de-a86a-951d4e84684e)
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG Shouts.getShout(a11f1a13-c7e4-43de-a86a-951d4e84684e)
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG Shouts.getShout(c40c9f02-f6c1-49ed-9d87-5a20163f0d9b)
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG Shouts.getShout(00130332-c283-4e16-8e29-f771731b80fd)
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG Shouts.getShout(f50ac259-1ceb-4fca-b34c-a9cc52df59cb)
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG Shouts.getShout(0feb9e97-35c7-4b94-abb3-9b80e0020ef0)
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG Shouts.getShout(a11f1a13-c7e4-43de-a86a-951d4e84684e)
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG Shouts.getShout(a11f1a13-c7e4-43de-a86a-951d4e84684e)
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG Shouts.getShout(c40c9f02-f6c1-49ed-9d87-5a20163f0d9b)
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG Shouts.getShout(00130332-c283-4e16-8e29-f771731b80fd)
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG Shouts.getShout(f50ac259-1ceb-4fca-b34c-a9cc52df59cb)
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG Shouts.getShout(0feb9e97-35c7-4b94-abb3-9b80e0020ef0)
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG Shouts.getShout(a11f1a13-c7e4-43de-a86a-951d4e84684e)
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG Shouts.getShout(a11f1a13-c7e4-43de-a86a-951d4e84684e)
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG Shouts.getShout(c40c9f02-f6c1-49ed-9d87-5a20163f0d9b)
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG Shouts.getShout(00130332-c283-4e16-8e29-f771731b80fd)
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG Shouts.getShout(f50ac259-1ceb-4fca-b34c-a9cc52df59cb)
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG Shouts.getShout(0feb9e97-35c7-4b94-abb3-9b80e0020ef0)
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG getShout callback
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG getShout callback
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG getShout callback
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG getShout callback
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG getShout callback
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG getShout callback
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG getShout callback
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG getShout callback
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG getShout callback
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG getShout callback
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG getShout callback
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG getShout callback
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG getShout callback
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG getShout callback
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG getShout callback
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG getShout callback
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG getShout callback
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG getShout callback
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG getShout callback
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG getShout callback
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG getShout callback2
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG getShout addToCache
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG getShout callback3
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG Shouts.updateShout
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG getShout callback2
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG getShout addToCache
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG getShout callback2
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG getShout addToCache
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG getShout callback3
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG Shouts.updateShout
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG getShout callback3
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG Shouts.updateShout
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG getShout callback2
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG getShout addToCache
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG getShout callback2
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG getShout addToCache
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG getShout callback3
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG Shouts.updateShout
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG getShout callback3
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG Shouts.updateShout
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG getShout callback2
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG getShout addToCache
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG getShout callback2
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG getShout addToCache
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG getShout callback3
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG Shouts.updateShout
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG getShout callback3
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG Shouts.updateShout
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG getShout callback2
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG getShout addToCache
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG getShout callback3
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG Shouts.updateShout
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG getShout callback2
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG getShout addToCache
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG getShout callback2
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG getShout addToCache
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG getShout callback3
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG Shouts.updateShout
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG getShout callback3
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG Shouts.updateShout
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG getShout callback2
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG respond
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG { code: 'error', txt: 'Could not get shout for score check.' }
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG getShout callback2
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG respond
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG { code: 'error', txt: 'Could not get shout for score check.' }
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG getShout callback2
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG respond
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG { code: 'error', txt: 'Could not get shout for score check.' }
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG getShout callback2
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG respond
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG { code: 'error', txt: 'Could not get shout for score check.' }
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG getShout callback2
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG respond
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG { code: 'error', txt: 'Could not get shout for score check.' }
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG getShout callback2
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG respond
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG { code: 'error', txt: 'Could not get shout for score check.' }
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG getShout callback2
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG respond
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG { code: 'error', txt: 'Could not get shout for score check.' }
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG getShout callback2
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG respond
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG { code: 'error', txt: 'Could not get shout for score check.' }
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG getShout callback2
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG respond
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG { code: 'error', txt: 'Could not get shout for score check.' }
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG getShout callback2
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG respond
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG { code: 'error', txt: 'Could not get shout for score check.' }
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG updateShout callback
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG updateShout callback2
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG updateShout callback
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG updateShout callback
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG updateShout callback2
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG updateShout callback2
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG updateShout callback
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG updateShout callback
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG updateShout callback
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG updateShout callback2
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG updateShout callback2
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG updateShout callback2
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG updateShout callback
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG updateShout callback2
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG updateShout callback
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG updateShout callback
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG updateShout callback2
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG updateShout callback
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG updateShout callback2
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG updateShout callback2
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG respond
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG { code: 'ping_ok',
+  pts: 71,
+  radius: 6000000,
+  scores: 
+   [ { shout_id: '0feb9e97-35c7-4b94-abb3-9b80e0020ef0',
+       ups: 0,
+       downs: 0,
+       hit: 1,
+       open: 0,
+       pts: 0 },
+     { shout_id: 'a11f1a13-c7e4-43de-a86a-951d4e84684e',
+       ups: 0,
+       downs: 0,
+       hit: 1,
+       open: 0,
+       pts: 0 },
+     { shout_id: '0feb9e97-35c7-4b94-abb3-9b80e0020ef0',
+       ups: 0,
+       downs: 0,
+       hit: 1,
+       open: 0,
+       pts: 0 },
+     { shout_id: 'c40c9f02-f6c1-49ed-9d87-5a20163f0d9b',
+       ups: 0,
+       downs: 0,
+       hit: 1,
+       open: 0,
+       pts: 0 },
+     { shout_id: 'f50ac259-1ceb-4fca-b34c-a9cc52df59cb',
+       ups: 0,
+       downs: 0,
+       hit: 1,
+       open: 0,
+       pts: 0 },
+     { shout_id: 'a11f1a13-c7e4-43de-a86a-951d4e84684e',
+       ups: 0,
+       downs: 0,
+       hit: 1,
+       open: 0,
+       pts: 0 },
+     { shout_id: 'a11f1a13-c7e4-43de-a86a-951d4e84684e',
+       ups: 0,
+       downs: 0,
+       hit: 1,
+       open: 0,
+       pts: 0 },
+     { shout_id: 'a11f1a13-c7e4-43de-a86a-951d4e84684e',
+       ups: 0,
+       downs: 0,
+       hit: 1,
+       open: 0,
+       pts: 0 },
+     { shout_id: '00130332-c283-4e16-8e29-f771731b80fd',
+       ups: 0,
+       downs: 0,
+       hit: 1,
+       open: 0,
+       pts: 0 },
+     { shout_id: 'f50ac259-1ceb-4fca-b34c-a9cc52df59cb',
+       ups: 0,
+       downs: 0,
+       hit: 1,
+       open: 0,
+       pts: 0 } ] }
+[Wed Apr 04 2012 03:25:02 GMT+0000 (UTC)] DEBUG Server launched.
+[Wed Apr 04 2012 03:25:02 GMT+0000 (UTC)] DEBUG Listening on port 8006
+[Wed Apr 04 2012 03:25:02 GMT+0000 (UTC)] DEBUG Culling 0 users.
+[Wed Apr 04 2012 03:26:44 GMT+0000 (UTC)] DEBUG init
+[Wed Apr 04 2012 03:26:44 GMT+0000 (UTC)] DEBUG processRequest
+[Wed Apr 04 2012 03:26:44 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Apr 04 2012 03:26:44 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: '1113b642-80ed-4b67-bde7-38b8b9d08107',
+  auth: 'sg2QqXGW_S6D4SFOQcs9cy(zqrEh1TCrGk4EyzmaDny6PidlZ5WKgRwhdHcE4d3zjiDqmDkZEDNMG9dzilPesTT5pMit1WEIzj+g+quK+NIFH8EbbwtXKQ==',
+  lat: '40.74301',
+  lng: '-74.03143',
+  radius: '1',
+  scores: '["f50ac259-1ceb-4fca-b34c-a9cc52df59cb", "0feb9e97-35c7-4b94-abb3-9b80e0020ef0", "a11f1a13-c7e4-43de-a86a-951d4e84684e", "a11f1a13-c7e4-43de-a86a-951d4e84684e", "c40c9f02-f6c1-49ed-9d87-5a20163f0d9b", "00130332-c283-4e16-8e29-f771731b80fd", "f50ac259-1ceb-4fca-b34c-a9cc52df59cb", "0feb9e97-35c7-4b94-abb3-9b80e0020ef0", "a11f1a13-c7e4-43de-a86a-951d4e84684e", "a11f1a13-c7e4-43de-a86a-951d4e84684e", "c40c9f02-f6c1-49ed-9d87-5a20163f0d9b", "00130332-c283-4e16-8e29-f771731b80fd", "f50ac259-1ceb-4fca-b34c-a9cc52df59cb", "0feb9e97-35c7-4b94-abb3-9b80e0020ef0", "a11f1a13-c7e4-43de-a86a-951d4e84684e", "a11f1a13-c7e4-43de-a86a-951d4e84684e", "c40c9f02-f6c1-49ed-9d87-5a20163f0d9b", "00130332-c283-4e16-8e29-f771731b80fd", "f50ac259-1ceb-4fca-b34c-a9cc52df59cb", "0feb9e97-35c7-4b94-abb3-9b80e0020ef0", "a11f1a13-c7e4-43de-a86a-951d4e84684e", "a11f1a13-c7e4-43de-a86a-951d4e84684e", "c40c9f02-f6c1-49ed-9d87-5a20163f0d9b", "00130332-c283-4e16-8e29-f771731b80fd", "f50ac259-1ceb-4fca-b34c-a9cc52df59cb", "0feb9e97-35c7-4b94-abb3-9b80e0020ef0", "a11f1a13-c7e4-43de-a86a-951d4e84684e", "a11f1a13-c7e4-43de-a86a-951d4e84684e", "c40c9f02-f6c1-49ed-9d87-5a20163f0d9b", "00130332-c283-4e16-8e29-f771731b80fd"]',
+  ip: '174.252.7.169' }
+[Wed Apr 04 2012 03:26:44 GMT+0000 (UTC)] DEBUG Clean.sanitize
+[Wed Apr 04 2012 03:26:44 GMT+0000 (UTC)] DEBUG validate
+[Wed Apr 04 2012 03:26:44 GMT+0000 (UTC)] DEBUG route
+[Wed Apr 04 2012 03:26:44 GMT+0000 (UTC)] DEBUG ping
+[Wed Apr 04 2012 03:26:44 GMT+0000 (UTC)] DEBUG authIsValid
+[Wed Apr 04 2012 03:26:44 GMT+0000 (UTC)] DEBUG Cache.getAuth
+[Wed Apr 04 2012 03:26:44 GMT+0000 (UTC)] DEBUG authIsValid callback
+[Wed Apr 04 2012 03:26:44 GMT+0000 (UTC)] DEBUG userCanRequestRadius Count = 2
+[Wed Apr 04 2012 03:26:44 GMT+0000 (UTC)] DEBUG userCanRequestRadiusResult = true
+[Wed Apr 04 2012 03:26:44 GMT+0000 (UTC)] DEBUG recursiveCallback on iteration 1
+[Wed Apr 04 2012 03:26:44 GMT+0000 (UTC)] DEBUG COUNT = 0, SHOUTREACH = 5, selectEntirePlanet = false
+[Wed Apr 04 2012 03:26:44 GMT+0000 (UTC)] DEBUG recursiveCallback on iteration 2
+[Wed Apr 04 2012 03:26:44 GMT+0000 (UTC)] DEBUG COUNT = 3, SHOUTREACH = 5, selectEntirePlanet = true
+[Wed Apr 04 2012 03:26:44 GMT+0000 (UTC)] DEBUG row = 13073564, 10596156
+[Wed Apr 04 2012 03:26:44 GMT+0000 (UTC)] DEBUG nearby.push(1.0101475503364927, 45167780-0dc0-47c9-8f9c-60d2786918d0)
+[Wed Apr 04 2012 03:26:44 GMT+0000 (UTC)] DEBUG row = 13075033, 10597119
+[Wed Apr 04 2012 03:26:44 GMT+0000 (UTC)] DEBUG nearby.push(0.843340810056396, 291ed015-93b2-4f1d-87f4-9c9c1e8f45e6)
+[Wed Apr 04 2012 03:26:44 GMT+0000 (UTC)] DEBUG nearby = 
+[Wed Apr 04 2012 03:26:44 GMT+0000 (UTC)] DEBUG [ [ 0.843340810056396, '291ed015-93b2-4f1d-87f4-9c9c1e8f45e6' ],
+  [ 1.0101475503364927, '45167780-0dc0-47c9-8f9c-60d2786918d0' ] ]
+[Wed Apr 04 2012 03:26:44 GMT+0000 (UTC)] DEBUG reqScores.length = 20 | reqScores = 
+[Wed Apr 04 2012 03:26:44 GMT+0000 (UTC)] DEBUG [ 'f50ac259-1ceb-4fca-b34c-a9cc52df59cb',
+  '0feb9e97-35c7-4b94-abb3-9b80e0020ef0',
+  'a11f1a13-c7e4-43de-a86a-951d4e84684e',
+  'a11f1a13-c7e4-43de-a86a-951d4e84684e',
+  'c40c9f02-f6c1-49ed-9d87-5a20163f0d9b',
+  '00130332-c283-4e16-8e29-f771731b80fd',
+  'f50ac259-1ceb-4fca-b34c-a9cc52df59cb',
+  '0feb9e97-35c7-4b94-abb3-9b80e0020ef0',
+  'a11f1a13-c7e4-43de-a86a-951d4e84684e',
+  'a11f1a13-c7e4-43de-a86a-951d4e84684e',
+  'c40c9f02-f6c1-49ed-9d87-5a20163f0d9b',
+  '00130332-c283-4e16-8e29-f771731b80fd',
+  'f50ac259-1ceb-4fca-b34c-a9cc52df59cb',
+  '0feb9e97-35c7-4b94-abb3-9b80e0020ef0',
+  'a11f1a13-c7e4-43de-a86a-951d4e84684e',
+  'a11f1a13-c7e4-43de-a86a-951d4e84684e',
+  'c40c9f02-f6c1-49ed-9d87-5a20163f0d9b',
+  '00130332-c283-4e16-8e29-f771731b80fd',
+  'f50ac259-1ceb-4fca-b34c-a9cc52df59cb',
+  '0feb9e97-35c7-4b94-abb3-9b80e0020ef0' ]
+[Wed Apr 04 2012 03:26:44 GMT+0000 (UTC)] DEBUG Shouts.getShout(f50ac259-1ceb-4fca-b34c-a9cc52df59cb)
+[Wed Apr 04 2012 03:26:44 GMT+0000 (UTC)] DEBUG Shouts.getShout(0feb9e97-35c7-4b94-abb3-9b80e0020ef0)
+[Wed Apr 04 2012 03:26:44 GMT+0000 (UTC)] DEBUG Shouts.getShout(a11f1a13-c7e4-43de-a86a-951d4e84684e)
+[Wed Apr 04 2012 03:26:44 GMT+0000 (UTC)] DEBUG Shouts.getShout(a11f1a13-c7e4-43de-a86a-951d4e84684e)
+[Wed Apr 04 2012 03:26:44 GMT+0000 (UTC)] DEBUG Shouts.getShout(c40c9f02-f6c1-49ed-9d87-5a20163f0d9b)
+[Wed Apr 04 2012 03:26:44 GMT+0000 (UTC)] DEBUG Shouts.getShout(00130332-c283-4e16-8e29-f771731b80fd)
+[Wed Apr 04 2012 03:26:44 GMT+0000 (UTC)] DEBUG Shouts.getShout(f50ac259-1ceb-4fca-b34c-a9cc52df59cb)
+[Wed Apr 04 2012 03:26:44 GMT+0000 (UTC)] DEBUG Shouts.getShout(0feb9e97-35c7-4b94-abb3-9b80e0020ef0)
+[Wed Apr 04 2012 03:26:44 GMT+0000 (UTC)] DEBUG Shouts.getShout(a11f1a13-c7e4-43de-a86a-951d4e84684e)
+[Wed Apr 04 2012 03:26:44 GMT+0000 (UTC)] DEBUG Shouts.getShout(a11f1a13-c7e4-43de-a86a-951d4e84684e)
+[Wed Apr 04 2012 03:26:44 GMT+0000 (UTC)] DEBUG Shouts.getShout(c40c9f02-f6c1-49ed-9d87-5a20163f0d9b)
+[Wed Apr 04 2012 03:26:44 GMT+0000 (UTC)] DEBUG Shouts.getShout(00130332-c283-4e16-8e29-f771731b80fd)
+[Wed Apr 04 2012 03:26:44 GMT+0000 (UTC)] DEBUG Shouts.getShout(f50ac259-1ceb-4fca-b34c-a9cc52df59cb)
+[Wed Apr 04 2012 03:26:44 GMT+0000 (UTC)] DEBUG Shouts.getShout(0feb9e97-35c7-4b94-abb3-9b80e0020ef0)
+[Wed Apr 04 2012 03:26:44 GMT+0000 (UTC)] DEBUG Shouts.getShout(a11f1a13-c7e4-43de-a86a-951d4e84684e)
+[Wed Apr 04 2012 03:26:44 GMT+0000 (UTC)] DEBUG Shouts.getShout(a11f1a13-c7e4-43de-a86a-951d4e84684e)
+[Wed Apr 04 2012 03:26:44 GMT+0000 (UTC)] DEBUG Shouts.getShout(c40c9f02-f6c1-49ed-9d87-5a20163f0d9b)
+[Wed Apr 04 2012 03:26:44 GMT+0000 (UTC)] DEBUG Shouts.getShout(00130332-c283-4e16-8e29-f771731b80fd)
+[Wed Apr 04 2012 03:26:44 GMT+0000 (UTC)] DEBUG Shouts.getShout(f50ac259-1ceb-4fca-b34c-a9cc52df59cb)
+[Wed Apr 04 2012 03:26:44 GMT+0000 (UTC)] DEBUG Shouts.getShout(0feb9e97-35c7-4b94-abb3-9b80e0020ef0)
+[Wed Apr 04 2012 03:26:44 GMT+0000 (UTC)] DEBUG getShout callback
+[Wed Apr 04 2012 03:26:44 GMT+0000 (UTC)] DEBUG Shouts.updateShout
+[Wed Apr 04 2012 03:26:44 GMT+0000 (UTC)] DEBUG getShout callback
+[Wed Apr 04 2012 03:26:44 GMT+0000 (UTC)] DEBUG Shouts.updateShout
+[Wed Apr 04 2012 03:26:44 GMT+0000 (UTC)] DEBUG getShout callback
+[Wed Apr 04 2012 03:26:44 GMT+0000 (UTC)] DEBUG Shouts.updateShout
+[Wed Apr 04 2012 03:26:44 GMT+0000 (UTC)] DEBUG getShout callback
+[Wed Apr 04 2012 03:26:44 GMT+0000 (UTC)] DEBUG Shouts.updateShout
+[Wed Apr 04 2012 03:26:44 GMT+0000 (UTC)] DEBUG getShout callback
+[Wed Apr 04 2012 03:26:44 GMT+0000 (UTC)] DEBUG Shouts.updateShout
+[Wed Apr 04 2012 03:26:44 GMT+0000 (UTC)] DEBUG getShout callback
+[Wed Apr 04 2012 03:26:44 GMT+0000 (UTC)] DEBUG Shouts.updateShout
+[Wed Apr 04 2012 03:26:44 GMT+0000 (UTC)] DEBUG getShout callback
+[Wed Apr 04 2012 03:26:44 GMT+0000 (UTC)] DEBUG Shouts.updateShout
+[Wed Apr 04 2012 03:26:44 GMT+0000 (UTC)] DEBUG getShout callback
+[Wed Apr 04 2012 03:26:44 GMT+0000 (UTC)] DEBUG Shouts.updateShout
+[Wed Apr 04 2012 03:26:44 GMT+0000 (UTC)] DEBUG getShout callback
+[Wed Apr 04 2012 03:26:44 GMT+0000 (UTC)] DEBUG Shouts.updateShout
+[Wed Apr 04 2012 03:26:44 GMT+0000 (UTC)] DEBUG getShout callback
+[Wed Apr 04 2012 03:26:44 GMT+0000 (UTC)] DEBUG Shouts.updateShout
+[Wed Apr 04 2012 03:26:44 GMT+0000 (UTC)] DEBUG getShout callback
+[Wed Apr 04 2012 03:26:44 GMT+0000 (UTC)] DEBUG Shouts.updateShout
+[Wed Apr 04 2012 03:26:44 GMT+0000 (UTC)] DEBUG getShout callback
+[Wed Apr 04 2012 03:26:44 GMT+0000 (UTC)] DEBUG Shouts.updateShout
+[Wed Apr 04 2012 03:26:44 GMT+0000 (UTC)] DEBUG getShout callback
+[Wed Apr 04 2012 03:26:44 GMT+0000 (UTC)] DEBUG Shouts.updateShout
+[Wed Apr 04 2012 03:26:44 GMT+0000 (UTC)] DEBUG getShout callback
+[Wed Apr 04 2012 03:26:44 GMT+0000 (UTC)] DEBUG Shouts.updateShout
+[Wed Apr 04 2012 03:26:44 GMT+0000 (UTC)] DEBUG getShout callback
+[Wed Apr 04 2012 03:26:44 GMT+0000 (UTC)] DEBUG Shouts.updateShout
+[Wed Apr 04 2012 03:26:44 GMT+0000 (UTC)] DEBUG getShout callback
+[Wed Apr 04 2012 03:26:44 GMT+0000 (UTC)] DEBUG Shouts.updateShout
+[Wed Apr 04 2012 03:26:44 GMT+0000 (UTC)] DEBUG getShout callback
+[Wed Apr 04 2012 03:26:44 GMT+0000 (UTC)] DEBUG Shouts.updateShout
+[Wed Apr 04 2012 03:26:44 GMT+0000 (UTC)] DEBUG getShout callback
+[Wed Apr 04 2012 03:26:44 GMT+0000 (UTC)] DEBUG Shouts.updateShout
+[Wed Apr 04 2012 03:26:44 GMT+0000 (UTC)] DEBUG getShout callback
+[Wed Apr 04 2012 03:26:44 GMT+0000 (UTC)] DEBUG Shouts.updateShout
+[Wed Apr 04 2012 03:26:44 GMT+0000 (UTC)] DEBUG getShout callback
+[Wed Apr 04 2012 03:26:44 GMT+0000 (UTC)] DEBUG respond
+[Wed Apr 04 2012 03:26:44 GMT+0000 (UTC)] DEBUG { code: 'ping_ok',
+  pts: 71,
+  radius: 6000000,
+  scores: 
+   [ { shout_id: 'f50ac259-1ceb-4fca-b34c-a9cc52df59cb',
+       ups: 0,
+       downs: 0,
+       hit: 1,
+       open: 0,
+       pts: 0 },
+     { shout_id: '0feb9e97-35c7-4b94-abb3-9b80e0020ef0',
+       ups: 0,
+       downs: 0,
+       hit: 1,
+       open: 0,
+       pts: 0 },
+     { shout_id: 'a11f1a13-c7e4-43de-a86a-951d4e84684e',
+       ups: 0,
+       downs: 0,
+       hit: 1,
+       open: 0,
+       pts: 0 },
+     { shout_id: 'a11f1a13-c7e4-43de-a86a-951d4e84684e',
+       ups: 0,
+       downs: 0,
+       hit: 1,
+       open: 0,
+       pts: 0 },
+     { shout_id: 'c40c9f02-f6c1-49ed-9d87-5a20163f0d9b',
+       ups: 0,
+       downs: 0,
+       hit: 1,
+       open: 0,
+       pts: 0 },
+     { shout_id: '00130332-c283-4e16-8e29-f771731b80fd',
+       ups: 0,
+       downs: 0,
+       hit: 1,
+       open: 0,
+       pts: 0 },
+     { shout_id: 'f50ac259-1ceb-4fca-b34c-a9cc52df59cb',
+       ups: 0,
+       downs: 0,
+       hit: 1,
+       open: 0,
+       pts: 0 },
+     { shout_id: '0feb9e97-35c7-4b94-abb3-9b80e0020ef0',
+       ups: 0,
+       downs: 0,
+       hit: 1,
+       open: 0,
+       pts: 0 },
+     { shout_id: 'a11f1a13-c7e4-43de-a86a-951d4e84684e',
+       ups: 0,
+       downs: 0,
+       hit: 1,
+       open: 0,
+       pts: 0 },
+     { shout_id: 'a11f1a13-c7e4-43de-a86a-951d4e84684e',
+       ups: 0,
+       downs: 0,
+       hit: 1,
+       open: 0,
+       pts: 0 },
+     { shout_id: 'c40c9f02-f6c1-49ed-9d87-5a20163f0d9b',
+       ups: 0,
+       downs: 0,
+       hit: 1,
+       open: 0,
+       pts: 0 },
+     { shout_id: '00130332-c283-4e16-8e29-f771731b80fd',
+       ups: 0,
+       downs: 0,
+       hit: 1,
+       open: 0,
+       pts: 0 },
+     { shout_id: 'f50ac259-1ceb-4fca-b34c-a9cc52df59cb',
+       ups: 0,
+       downs: 0,
+       hit: 1,
+       open: 0,
+       pts: 0 },
+     { shout_id: '0feb9e97-35c7-4b94-abb3-9b80e0020ef0',
+       ups: 0,
+       downs: 0,
+       hit: 1,
+       open: 0,
+       pts: 0 },
+     { shout_id: 'a11f1a13-c7e4-43de-a86a-951d4e84684e',
+       ups: 0,
+       downs: 0,
+       hit: 1,
+       open: 0,
+       pts: 0 },
+     { shout_id: 'a11f1a13-c7e4-43de-a86a-951d4e84684e',
+       ups: 0,
+       downs: 0,
+       hit: 1,
+       open: 0,
+       pts: 0 },
+     { shout_id: 'c40c9f02-f6c1-49ed-9d87-5a20163f0d9b',
+       ups: 0,
+       downs: 0,
+       hit: 1,
+       open: 0,
+       pts: 0 },
+     { shout_id: '00130332-c283-4e16-8e29-f771731b80fd',
+       ups: 0,
+       downs: 0,
+       hit: 1,
+       open: 0,
+       pts: 0 },
+     { shout_id: 'f50ac259-1ceb-4fca-b34c-a9cc52df59cb',
+       ups: 0,
+       downs: 0,
+       hit: 1,
+       open: 0,
+       pts: 0 },
+     { shout_id: '0feb9e97-35c7-4b94-abb3-9b80e0020ef0',
+       ups: 0,
+       downs: 0,
+       hit: 1,
+       open: 0,
+       pts: 0 } ] }
+[Wed Apr 04 2012 03:26:44 GMT+0000 (UTC)] DEBUG Shouts.updateShout
+[Wed Apr 04 2012 03:26:45 GMT+0000 (UTC)] DEBUG updateShout callback
+[Wed Apr 04 2012 03:26:45 GMT+0000 (UTC)] DEBUG updateShout callback
+[Wed Apr 04 2012 03:26:45 GMT+0000 (UTC)] DEBUG updateShout callback2
+[Wed Apr 04 2012 03:26:45 GMT+0000 (UTC)] DEBUG updateShout callback
+[Wed Apr 04 2012 03:26:45 GMT+0000 (UTC)] DEBUG updateShout callback
+[Wed Apr 04 2012 03:26:45 GMT+0000 (UTC)] DEBUG updateShout callback
+[Wed Apr 04 2012 03:26:45 GMT+0000 (UTC)] DEBUG updateShout callback2
+[Wed Apr 04 2012 03:26:45 GMT+0000 (UTC)] DEBUG updateShout callback2
+[Wed Apr 04 2012 03:26:45 GMT+0000 (UTC)] DEBUG updateShout callback2
+[Wed Apr 04 2012 03:26:45 GMT+0000 (UTC)] DEBUG updateShout callback2
+[Wed Apr 04 2012 03:26:45 GMT+0000 (UTC)] DEBUG updateShout callback
+[Wed Apr 04 2012 03:26:45 GMT+0000 (UTC)] DEBUG updateShout callback
+[Wed Apr 04 2012 03:26:45 GMT+0000 (UTC)] DEBUG updateShout callback
+[Wed Apr 04 2012 03:26:45 GMT+0000 (UTC)] DEBUG updateShout callback
+[Wed Apr 04 2012 03:26:45 GMT+0000 (UTC)] DEBUG updateShout callback
+[Wed Apr 04 2012 03:26:45 GMT+0000 (UTC)] DEBUG updateShout callback2
+[Wed Apr 04 2012 03:26:45 GMT+0000 (UTC)] DEBUG updateShout callback2
+[Wed Apr 04 2012 03:26:45 GMT+0000 (UTC)] DEBUG updateShout callback2
+[Wed Apr 04 2012 03:26:45 GMT+0000 (UTC)] DEBUG updateShout callback2
+[Wed Apr 04 2012 03:26:45 GMT+0000 (UTC)] DEBUG updateShout callback2
+[Wed Apr 04 2012 03:26:45 GMT+0000 (UTC)] DEBUG updateShout callback
+[Wed Apr 04 2012 03:26:45 GMT+0000 (UTC)] DEBUG updateShout callback
+[Wed Apr 04 2012 03:26:45 GMT+0000 (UTC)] DEBUG updateShout callback2
+[Wed Apr 04 2012 03:26:45 GMT+0000 (UTC)] DEBUG updateShout callback2
+[Wed Apr 04 2012 03:26:45 GMT+0000 (UTC)] DEBUG updateShout callback
+[Wed Apr 04 2012 03:26:45 GMT+0000 (UTC)] DEBUG updateShout callback2
+[Wed Apr 04 2012 03:26:45 GMT+0000 (UTC)] DEBUG updateShout callback
+[Wed Apr 04 2012 03:26:45 GMT+0000 (UTC)] DEBUG updateShout callback
+[Wed Apr 04 2012 03:26:45 GMT+0000 (UTC)] DEBUG updateShout callback2
+[Wed Apr 04 2012 03:26:45 GMT+0000 (UTC)] DEBUG updateShout callback2
+[Wed Apr 04 2012 03:26:45 GMT+0000 (UTC)] DEBUG updateShout callback
+[Wed Apr 04 2012 03:26:45 GMT+0000 (UTC)] DEBUG updateShout callback2
+[Wed Apr 04 2012 03:26:45 GMT+0000 (UTC)] DEBUG updateShout callback
+[Wed Apr 04 2012 03:26:45 GMT+0000 (UTC)] DEBUG updateShout callback2
+[Wed Apr 04 2012 03:26:45 GMT+0000 (UTC)] DEBUG updateShout callback
+[Wed Apr 04 2012 03:26:45 GMT+0000 (UTC)] DEBUG updateShout callback2
+[Wed Apr 04 2012 03:26:45 GMT+0000 (UTC)] DEBUG updateShout callback
+[Wed Apr 04 2012 03:26:45 GMT+0000 (UTC)] DEBUG updateShout callback2
+[Wed Apr 04 2012 03:26:45 GMT+0000 (UTC)] DEBUG updateShout callback
+[Wed Apr 04 2012 03:26:45 GMT+0000 (UTC)] DEBUG updateShout callback2
+[Wed Apr 04 2012 03:27:20 GMT+0000 (UTC)] DEBUG init
+[Wed Apr 04 2012 03:27:20 GMT+0000 (UTC)] DEBUG processRequest
+[Wed Apr 04 2012 03:27:20 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Apr 04 2012 03:27:20 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: '1113b642-80ed-4b67-bde7-38b8b9d08107',
+  auth: 'default',
+  lat: '40.74301',
+  lng: '-74.03143',
+  radius: '1',
+  scores: '["504416a1-2fc2-44d5-8127-59678fd7d923"]',
+  ip: '174.252.7.169' }
+[Wed Apr 04 2012 03:27:20 GMT+0000 (UTC)] DEBUG Clean.sanitize
+[Wed Apr 04 2012 03:27:20 GMT+0000 (UTC)] DEBUG validate
+[Wed Apr 04 2012 03:27:20 GMT+0000 (UTC)] DEBUG route
+[Wed Apr 04 2012 03:27:20 GMT+0000 (UTC)] DEBUG ping
+[Wed Apr 04 2012 03:27:20 GMT+0000 (UTC)] DEBUG authIsValid
+[Wed Apr 04 2012 03:27:20 GMT+0000 (UTC)] DEBUG Cache.getAuth
+[Wed Apr 04 2012 03:27:20 GMT+0000 (UTC)] DEBUG authIsValid callback
+[Wed Apr 04 2012 03:27:20 GMT+0000 (UTC)] DEBUG Users.generateNonce
+[Wed Apr 04 2012 03:27:20 GMT+0000 (UTC)] DEBUG Failed auth count = 3
+[Wed Apr 04 2012 03:27:20 GMT+0000 (UTC)] DEBUG Users.updateLastActivityTime
+[Wed Apr 04 2012 03:27:20 GMT+0000 (UTC)] DEBUG respond
+[Wed Apr 04 2012 03:27:20 GMT+0000 (UTC)] DEBUG { code: 'expired_auth',
+  nonce: 'G2*DzQtTX=PDSwMD(xWX+@_kW2fZ#zO7ELCVOCjy' }
+[Wed Apr 04 2012 03:27:24 GMT+0000 (UTC)] DEBUG init
+[Wed Apr 04 2012 03:27:24 GMT+0000 (UTC)] DEBUG processRequest
+[Wed Apr 04 2012 03:27:24 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Apr 04 2012 03:27:24 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: '1113b642-80ed-4b67-bde7-38b8b9d08107',
+  auth: 'sg2QqXGW_S6D4SFOQcs9cy(zqrEh1TCrG0eGP3Wx/CZK0Tkz0vDmTqmMfJddsp7djXtpxtbHonWa1xGrLzQaNRlvn9npasOKIonichZj+Ah8pc9ehBU5ow==',
+  lat: '40.74301',
+  lng: '-74.03143',
+  radius: '1',
+  scores: '["504416a1-2fc2-44d5-8127-59678fd7d923"]',
+  ip: '174.252.7.169' }
+[Wed Apr 04 2012 03:27:24 GMT+0000 (UTC)] DEBUG Clean.sanitize
+[Wed Apr 04 2012 03:27:24 GMT+0000 (UTC)] DEBUG validate
+[Wed Apr 04 2012 03:27:24 GMT+0000 (UTC)] DEBUG route
+[Wed Apr 04 2012 03:27:24 GMT+0000 (UTC)] DEBUG ping
+[Wed Apr 04 2012 03:27:24 GMT+0000 (UTC)] DEBUG authIsValid
+[Wed Apr 04 2012 03:27:24 GMT+0000 (UTC)] DEBUG Cache.getAuth
+[Wed Apr 04 2012 03:27:24 GMT+0000 (UTC)] DEBUG authIsValid callback
+[Wed Apr 04 2012 03:27:24 GMT+0000 (UTC)] DEBUG userCanRequestRadius Count = 3
+[Wed Apr 04 2012 03:27:24 GMT+0000 (UTC)] DEBUG userCanRequestRadiusResult = true
+[Wed Apr 04 2012 03:27:24 GMT+0000 (UTC)] DEBUG recursiveCallback on iteration 1
+[Wed Apr 04 2012 03:27:24 GMT+0000 (UTC)] DEBUG COUNT = 0, SHOUTREACH = 5, selectEntirePlanet = false
+[Wed Apr 04 2012 03:27:24 GMT+0000 (UTC)] DEBUG recursiveCallback on iteration 2
+[Wed Apr 04 2012 03:27:24 GMT+0000 (UTC)] DEBUG COUNT = 3, SHOUTREACH = 5, selectEntirePlanet = true
+[Wed Apr 04 2012 03:27:24 GMT+0000 (UTC)] DEBUG row = 13073564, 10596156
+[Wed Apr 04 2012 03:27:24 GMT+0000 (UTC)] DEBUG nearby.push(1.0101475503364927, 45167780-0dc0-47c9-8f9c-60d2786918d0)
+[Wed Apr 04 2012 03:27:24 GMT+0000 (UTC)] DEBUG row = 13075033, 10597119
+[Wed Apr 04 2012 03:27:24 GMT+0000 (UTC)] DEBUG nearby.push(0.843340810056396, 291ed015-93b2-4f1d-87f4-9c9c1e8f45e6)
+[Wed Apr 04 2012 03:27:24 GMT+0000 (UTC)] DEBUG nearby = 
+[Wed Apr 04 2012 03:27:24 GMT+0000 (UTC)] DEBUG [ [ 0.843340810056396, '291ed015-93b2-4f1d-87f4-9c9c1e8f45e6' ],
+  [ 1.0101475503364927, '45167780-0dc0-47c9-8f9c-60d2786918d0' ] ]
+[Wed Apr 04 2012 03:27:24 GMT+0000 (UTC)] DEBUG reqScores.length = 1 | reqScores = 
+[Wed Apr 04 2012 03:27:24 GMT+0000 (UTC)] DEBUG [ '504416a1-2fc2-44d5-8127-59678fd7d923' ]
+[Wed Apr 04 2012 03:27:24 GMT+0000 (UTC)] DEBUG Shouts.getShout(504416a1-2fc2-44d5-8127-59678fd7d923)
+[Wed Apr 04 2012 03:27:24 GMT+0000 (UTC)] DEBUG getShout callback
+[Wed Apr 04 2012 03:27:24 GMT+0000 (UTC)] DEBUG getShout callback2
+[Wed Apr 04 2012 03:27:24 GMT+0000 (UTC)] DEBUG getShout addToCache
+[Wed Apr 04 2012 03:27:24 GMT+0000 (UTC)] DEBUG getShout callback3
+[Wed Apr 04 2012 03:27:24 GMT+0000 (UTC)] DEBUG Shouts.updateShout
+[Wed Apr 04 2012 03:27:24 GMT+0000 (UTC)] DEBUG updateShout callback
+[Wed Apr 04 2012 03:27:24 GMT+0000 (UTC)] DEBUG updateShout callback2
+[Wed Apr 04 2012 03:27:24 GMT+0000 (UTC)] DEBUG respond
+[Wed Apr 04 2012 03:27:24 GMT+0000 (UTC)] DEBUG { code: 'ping_ok',
+  pts: 71,
+  radius: 6000000,
+  scores: 
+   [ { shout_id: '504416a1-2fc2-44d5-8127-59678fd7d923',
+       ups: 0,
+       downs: 0,
+       hit: 1,
+       open: 0,
+       pts: 0 } ] }
+[Wed Apr 04 2012 03:27:37 GMT+0000 (UTC)] DEBUG init
+[Wed Apr 04 2012 03:27:37 GMT+0000 (UTC)] DEBUG processRequest
+[Wed Apr 04 2012 03:27:37 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Apr 04 2012 03:27:37 GMT+0000 (UTC)] DEBUG { a: 'shout',
+  uid: '1113b642-80ed-4b67-bde7-38b8b9d08107',
+  auth: 'sg2QqXGW_S6D4SFOQcs9cy(zqrEh1TCrG0eGP3Wx/CZK0Tkz0vDmTqmMfJddsp7djXtpxtbHonWa1xGrLzQaNRlvn9npasOKIonichZj+Ah8pc9ehBU5ow==',
+  lat: '40.74301',
+  lng: '-74.03143',
+  txt: 'Dg',
+  shoutreach: '5',
+  hint: '6000000',
+  ip: '174.252.7.169' }
+[Wed Apr 04 2012 03:27:37 GMT+0000 (UTC)] DEBUG Clean.sanitize
+[Wed Apr 04 2012 03:27:37 GMT+0000 (UTC)] DEBUG validate
+[Wed Apr 04 2012 03:27:37 GMT+0000 (UTC)] DEBUG route
+[Wed Apr 04 2012 03:27:37 GMT+0000 (UTC)] DEBUG authIsValid
+[Wed Apr 04 2012 03:27:37 GMT+0000 (UTC)] DEBUG Cache.getAuth
+[Wed Apr 04 2012 03:27:37 GMT+0000 (UTC)] DEBUG authIsValid callback
+[Wed Apr 04 2012 03:27:37 GMT+0000 (UTC)] DEBUG recursiveCallback on iteration 1
+[Wed Apr 04 2012 03:27:37 GMT+0000 (UTC)] DEBUG COUNT = 0, SHOUTREACH = 5, selectEntirePlanet = false
+[Wed Apr 04 2012 03:27:37 GMT+0000 (UTC)] DEBUG recursiveCallback on iteration 2
+[Wed Apr 04 2012 03:27:37 GMT+0000 (UTC)] DEBUG COUNT = 3, SHOUTREACH = 5, selectEntirePlanet = true
+[Wed Apr 04 2012 03:27:37 GMT+0000 (UTC)] DEBUG row = 13073564, 10596156
+[Wed Apr 04 2012 03:27:37 GMT+0000 (UTC)] DEBUG nearby.push(1.0101475503364927, 45167780-0dc0-47c9-8f9c-60d2786918d0)
+[Wed Apr 04 2012 03:27:37 GMT+0000 (UTC)] DEBUG row = 13075033, 10597119
+[Wed Apr 04 2012 03:27:37 GMT+0000 (UTC)] DEBUG nearby.push(0.843340810056396, 291ed015-93b2-4f1d-87f4-9c9c1e8f45e6)
+[Wed Apr 04 2012 03:27:37 GMT+0000 (UTC)] DEBUG respond
+[Wed Apr 04 2012 03:27:37 GMT+0000 (UTC)] DEBUG { code: 'shout_sent' }
+[Wed Apr 04 2012 03:27:38 GMT+0000 (UTC)] DEBUG init
+[Wed Apr 04 2012 03:27:38 GMT+0000 (UTC)] DEBUG processRequest
+[Wed Apr 04 2012 03:27:38 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Apr 04 2012 03:27:38 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: '1113b642-80ed-4b67-bde7-38b8b9d08107',
+  auth: 'sg2QqXGW_S6D4SFOQcs9cy(zqrEh1TCrG0eGP3Wx/CZK0Tkz0vDmTqmMfJddsp7djXtpxtbHonWa1xGrLzQaNRlvn9npasOKIonichZj+Ah8pc9ehBU5ow==',
+  lat: '40.74301',
+  lng: '-74.03143',
+  ip: '174.252.7.169' }
+[Wed Apr 04 2012 03:27:38 GMT+0000 (UTC)] DEBUG Clean.sanitize
+[Wed Apr 04 2012 03:27:38 GMT+0000 (UTC)] DEBUG validate
+[Wed Apr 04 2012 03:27:38 GMT+0000 (UTC)] DEBUG route
+[Wed Apr 04 2012 03:27:38 GMT+0000 (UTC)] DEBUG ping
+[Wed Apr 04 2012 03:27:38 GMT+0000 (UTC)] DEBUG authIsValid
+[Wed Apr 04 2012 03:27:38 GMT+0000 (UTC)] DEBUG Cache.getAuth
+[Wed Apr 04 2012 03:27:38 GMT+0000 (UTC)] DEBUG authIsValid callback
+[Wed Apr 04 2012 03:27:38 GMT+0000 (UTC)] DEBUG Shouts.getShout(e05804aa-08a9-409e-9d26-de696f27a281)
+[Wed Apr 04 2012 03:27:38 GMT+0000 (UTC)] DEBUG getShout callback
+[Wed Apr 04 2012 03:27:38 GMT+0000 (UTC)] DEBUG respond
+[Wed Apr 04 2012 03:27:38 GMT+0000 (UTC)] DEBUG { code: 'ping_ok',
+  pts: 71,
+  shouts: 
+   [ { shout_id: 'e05804aa-08a9-409e-9d26-de696f27a281',
+       txt: 'Dg',
+       ts: '2012-04-04T03:27:37.348Z',
+       hit: 2,
+       outbox: 1 } ] }
+[Wed Apr 04 2012 03:28:00 GMT+0000 (UTC)] DEBUG init
+[Wed Apr 04 2012 03:28:00 GMT+0000 (UTC)] DEBUG processRequest
+[Wed Apr 04 2012 03:28:00 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Apr 04 2012 03:28:00 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: '1113b642-80ed-4b67-bde7-38b8b9d08107',
+  auth: 'sg2QqXGW_S6D4SFOQcs9cy(zqrEh1TCrG0eGP3Wx/CZK0Tkz0vDmTqmMfJddsp7djXtpxtbHonWa1xGrLzQaNRlvn9npasOKIonichZj+Ah8pc9ehBU5ow==',
+  lat: '40.74301',
+  lng: '-74.03143',
+  ip: '174.252.7.169' }
+[Wed Apr 04 2012 03:28:00 GMT+0000 (UTC)] DEBUG Clean.sanitize
+[Wed Apr 04 2012 03:28:00 GMT+0000 (UTC)] DEBUG validate
+[Wed Apr 04 2012 03:28:00 GMT+0000 (UTC)] DEBUG route
+[Wed Apr 04 2012 03:28:00 GMT+0000 (UTC)] DEBUG ping
+[Wed Apr 04 2012 03:28:00 GMT+0000 (UTC)] DEBUG authIsValid
+[Wed Apr 04 2012 03:28:00 GMT+0000 (UTC)] DEBUG Cache.getAuth
+[Wed Apr 04 2012 03:28:00 GMT+0000 (UTC)] DEBUG authIsValid callback
+[Wed Apr 04 2012 03:28:00 GMT+0000 (UTC)] DEBUG respond
+[Wed Apr 04 2012 03:28:00 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 71 }
+[Wed Apr 04 2012 03:32:27 GMT+0000 (UTC)] DEBUG Server launched.
+[Wed Apr 04 2012 03:32:27 GMT+0000 (UTC)] DEBUG Listening on port 8006
+[Wed Apr 04 2012 03:32:27 GMT+0000 (UTC)] DEBUG Culling 0 users.
+[Wed Apr 04 2012 04:02:27 GMT+0000 (UTC)] DEBUG Culling 0 users.
+[Wed Apr 04 2012 04:32:27 GMT+0000 (UTC)] DEBUG Culling 0 users.
+[Wed Apr 04 2012 05:02:27 GMT+0000 (UTC)] DEBUG Culling 0 users.
+[Wed Apr 04 2012 05:32:27 GMT+0000 (UTC)] DEBUG Culling 0 users.
+[Wed Apr 04 2012 06:02:27 GMT+0000 (UTC)] DEBUG Culling 0 users.
+[Wed Apr 04 2012 06:32:32 GMT+0000 (UTC)] DEBUG Culling 1 users.
+[Wed Apr 04 2012 07:02:27 GMT+0000 (UTC)] DEBUG Culling 0 users.
+[Wed Apr 04 2012 07:32:27 GMT+0000 (UTC)] DEBUG Culling 0 users.
+[Wed Apr 04 2012 08:02:27 GMT+0000 (UTC)] DEBUG Culling 0 users.
+[Wed Apr 04 2012 08:32:27 GMT+0000 (UTC)] DEBUG Culling 0 users.
+[Wed Apr 04 2012 09:02:27 GMT+0000 (UTC)] DEBUG Culling 0 users.
+[Wed Apr 04 2012 09:32:27 GMT+0000 (UTC)] DEBUG Culling 0 users.
+[Wed Apr 04 2012 10:02:27 GMT+0000 (UTC)] DEBUG Culling 0 users.
+[Wed Apr 04 2012 10:32:27 GMT+0000 (UTC)] DEBUG Culling 2 users.
+[Wed Apr 04 2012 11:02:27 GMT+0000 (UTC)] DEBUG Culling 0 users.
+[Wed Apr 04 2012 11:32:27 GMT+0000 (UTC)] DEBUG Culling 0 users.
+[Wed Apr 04 2012 12:02:27 GMT+0000 (UTC)] DEBUG Culling 2 users.
+[Wed Apr 04 2012 12:32:27 GMT+0000 (UTC)] DEBUG Culling 0 users.
+[Wed Apr 04 2012 13:02:27 GMT+0000 (UTC)] DEBUG Culling 0 users.
+[Wed Apr 04 2012 13:32:27 GMT+0000 (UTC)] DEBUG Culling 0 users.
+[Wed Apr 04 2012 14:02:27 GMT+0000 (UTC)] DEBUG Culling 0 users.
+[Wed Apr 04 2012 14:32:27 GMT+0000 (UTC)] DEBUG Culling 0 users.
+[Wed Apr 04 2012 15:02:29 GMT+0000 (UTC)] DEBUG Culling 0 users.
+[Wed Apr 04 2012 15:32:27 GMT+0000 (UTC)] DEBUG Culling 0 users.
+[Wed Apr 04 2012 16:02:27 GMT+0000 (UTC)] DEBUG Culling 0 users.
+[Wed Apr 04 2012 16:20:02 GMT+0000 (UTC)] DEBUG init
+[Wed Apr 04 2012 16:20:02 GMT+0000 (UTC)] DEBUG processRequest
+[Wed Apr 04 2012 16:20:02 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Apr 04 2012 16:20:02 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: '03da81e9-52c5-4658-beaf-5825deb7d96d',
+  auth: 'default',
+  lat: '40.7934',
+  lng: '-77.86411',
+  ip: '174.231.69.52' }
+[Wed Apr 04 2012 16:20:02 GMT+0000 (UTC)] DEBUG Clean.sanitize
+[Wed Apr 04 2012 16:20:02 GMT+0000 (UTC)] DEBUG validate
+[Wed Apr 04 2012 16:20:02 GMT+0000 (UTC)] DEBUG route
+[Wed Apr 04 2012 16:20:02 GMT+0000 (UTC)] DEBUG ping
+[Wed Apr 04 2012 16:20:02 GMT+0000 (UTC)] DEBUG authIsValid
+[Wed Apr 04 2012 16:20:02 GMT+0000 (UTC)] DEBUG Cache.getAuth
+[Wed Apr 04 2012 16:20:02 GMT+0000 (UTC)] DEBUG authIsValid callback
+[Wed Apr 04 2012 16:20:02 GMT+0000 (UTC)] DEBUG Users.generateNonce
+[Wed Apr 04 2012 16:20:02 GMT+0000 (UTC)] DEBUG Failed auth count = 1
+[Wed Apr 04 2012 16:20:02 GMT+0000 (UTC)] DEBUG Users.updateLastActivityTime
+[Wed Apr 04 2012 16:20:02 GMT+0000 (UTC)] DEBUG respond
+[Wed Apr 04 2012 16:20:02 GMT+0000 (UTC)] DEBUG { code: 'expired_auth',
+  nonce: '(UpV4nQaa8f85+r8J5bAf=9KZMmfjH!PsPZUA3hh' }
+[Wed Apr 04 2012 16:20:04 GMT+0000 (UTC)] DEBUG init
+[Wed Apr 04 2012 16:20:04 GMT+0000 (UTC)] DEBUG processRequest
+[Wed Apr 04 2012 16:20:04 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Apr 04 2012 16:20:04 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: '03da81e9-52c5-4658-beaf-5825deb7d96d',
+  auth: 'Y5b2Bb(DdOU@X#pGKV5O5y7Fqx5sUpX$AZXlmImLxVsQUB8pASixDKsr2xEpxmvbOp230gV0PfyYOcQrRQRoxGGZzzLIo5pJI+515bbLMzuh2AWgme2iXQ==',
+  lat: '40.7934',
+  lng: '-77.86411',
+  ip: '174.231.69.52' }
+[Wed Apr 04 2012 16:20:04 GMT+0000 (UTC)] DEBUG Clean.sanitize
+[Wed Apr 04 2012 16:20:04 GMT+0000 (UTC)] DEBUG validate
+[Wed Apr 04 2012 16:20:04 GMT+0000 (UTC)] DEBUG route
+[Wed Apr 04 2012 16:20:04 GMT+0000 (UTC)] DEBUG ping
+[Wed Apr 04 2012 16:20:04 GMT+0000 (UTC)] DEBUG authIsValid
+[Wed Apr 04 2012 16:20:04 GMT+0000 (UTC)] DEBUG Cache.getAuth
+[Wed Apr 04 2012 16:20:04 GMT+0000 (UTC)] DEBUG authIsValid callback
+[Wed Apr 04 2012 16:20:04 GMT+0000 (UTC)] DEBUG respond
+[Wed Apr 04 2012 16:20:04 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 71 }
+[Wed Apr 04 2012 16:20:32 GMT+0000 (UTC)] DEBUG init
+[Wed Apr 04 2012 16:20:32 GMT+0000 (UTC)] DEBUG processRequest
+[Wed Apr 04 2012 16:20:32 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Apr 04 2012 16:20:32 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: '03da81e9-52c5-4658-beaf-5825deb7d96d',
+  auth: 'Y5b2Bb(DdOU@X#pGKV5O5y7Fqx5sUpX$AZXlmImLxVsQUB8pASixDKsr2xEpxmvbOp230gV0PfyYOcQrRQRoxGGZzzLIo5pJI+515bbLMzuh2AWgme2iXQ==',
+  lat: '40.7934',
+  lng: '-77.86411',
+  ip: '174.231.69.52' }
+[Wed Apr 04 2012 16:20:32 GMT+0000 (UTC)] DEBUG Clean.sanitize
+[Wed Apr 04 2012 16:20:32 GMT+0000 (UTC)] DEBUG validate
+[Wed Apr 04 2012 16:20:32 GMT+0000 (UTC)] DEBUG route
+[Wed Apr 04 2012 16:20:32 GMT+0000 (UTC)] DEBUG ping
+[Wed Apr 04 2012 16:20:32 GMT+0000 (UTC)] DEBUG authIsValid
+[Wed Apr 04 2012 16:20:32 GMT+0000 (UTC)] DEBUG Cache.getAuth
+[Wed Apr 04 2012 16:20:32 GMT+0000 (UTC)] DEBUG authIsValid callback
+[Wed Apr 04 2012 16:20:32 GMT+0000 (UTC)] DEBUG respond
+[Wed Apr 04 2012 16:20:32 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 71 }
+[Wed Apr 04 2012 16:28:46 GMT+0000 (UTC)] DEBUG init
+[Wed Apr 04 2012 16:28:46 GMT+0000 (UTC)] DEBUG processRequest
+[Wed Apr 04 2012 16:28:46 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Apr 04 2012 16:28:46 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: '03da81e9-52c5-4658-beaf-5825deb7d96d',
+  auth: 'Y5b2Bb(DdOU@X#pGKV5O5y7Fqx5sUpX$AZXlmImLxVsQUB8pASixDKsr2xEpxmvbOp230gV0PfyYOcQrRQRoxGGZzzLIo5pJI+515bbLMzuh2AWgme2iXQ==',
+  lat: '40.79678',
+  lng: '-77.86084',
+  ip: '174.231.69.52' }
+[Wed Apr 04 2012 16:28:46 GMT+0000 (UTC)] DEBUG Clean.sanitize
+[Wed Apr 04 2012 16:28:46 GMT+0000 (UTC)] DEBUG validate
+[Wed Apr 04 2012 16:28:46 GMT+0000 (UTC)] DEBUG route
+[Wed Apr 04 2012 16:28:46 GMT+0000 (UTC)] DEBUG ping
+[Wed Apr 04 2012 16:28:46 GMT+0000 (UTC)] DEBUG authIsValid
+[Wed Apr 04 2012 16:28:46 GMT+0000 (UTC)] DEBUG Cache.getAuth
+[Wed Apr 04 2012 16:28:46 GMT+0000 (UTC)] DEBUG authIsValid callback
+[Wed Apr 04 2012 16:28:46 GMT+0000 (UTC)] DEBUG respond
+[Wed Apr 04 2012 16:28:46 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 71 }
+[Wed Apr 04 2012 16:32:27 GMT+0000 (UTC)] DEBUG Culling 0 users.
+[Wed Apr 04 2012 17:02:27 GMT+0000 (UTC)] DEBUG Culling 0 users.
+[Wed Apr 04 2012 17:32:27 GMT+0000 (UTC)] DEBUG Culling 0 users.
+[Wed Apr 04 2012 18:02:27 GMT+0000 (UTC)] DEBUG Culling 0 users.
+[Wed Apr 04 2012 18:28:12 GMT+0000 (UTC)] DEBUG init
+[Wed Apr 04 2012 18:28:12 GMT+0000 (UTC)] DEBUG processRequest
+[Wed Apr 04 2012 18:28:12 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Apr 04 2012 18:28:12 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: '03da81e9-52c5-4658-beaf-5825deb7d96d',
+  auth: 'Y5b2Bb(DdOU@X#pGKV5O5y7Fqx5sUpX$AZXlmImLxVsQUB8pASixDKsr2xEpxmvbOp230gV0PfyYOcQrRQRoxGGZzzLIo5pJI+515bbLMzuh2AWgme2iXQ==',
+  lat: '40.79235',
+  lng: '-77.86634',
+  ip: '174.231.69.52' }
+[Wed Apr 04 2012 18:28:12 GMT+0000 (UTC)] DEBUG Clean.sanitize
+[Wed Apr 04 2012 18:28:12 GMT+0000 (UTC)] DEBUG validate
+[Wed Apr 04 2012 18:28:12 GMT+0000 (UTC)] DEBUG route
+[Wed Apr 04 2012 18:28:12 GMT+0000 (UTC)] DEBUG ping
+[Wed Apr 04 2012 18:28:12 GMT+0000 (UTC)] DEBUG authIsValid
+[Wed Apr 04 2012 18:28:12 GMT+0000 (UTC)] DEBUG Cache.getAuth
+[Wed Apr 04 2012 18:28:12 GMT+0000 (UTC)] DEBUG authIsValid callback
+[Wed Apr 04 2012 18:28:12 GMT+0000 (UTC)] DEBUG Users.generateNonce
+[Wed Apr 04 2012 18:28:12 GMT+0000 (UTC)] DEBUG Failed auth count = 1
+[Wed Apr 04 2012 18:28:12 GMT+0000 (UTC)] DEBUG Users.updateLastActivityTime
+[Wed Apr 04 2012 18:28:12 GMT+0000 (UTC)] DEBUG respond
+[Wed Apr 04 2012 18:28:12 GMT+0000 (UTC)] DEBUG { code: 'expired_auth',
+  nonce: 'mq_y9dUprs7gy-3b5a@22_v9GcxzG-btHOw*-jv-' }
+[Wed Apr 04 2012 18:28:12 GMT+0000 (UTC)] DEBUG init
+[Wed Apr 04 2012 18:28:12 GMT+0000 (UTC)] DEBUG processRequest
+[Wed Apr 04 2012 18:28:12 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Apr 04 2012 18:28:12 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: '03da81e9-52c5-4658-beaf-5825deb7d96d',
+  auth: 'Y5b2Bb(DdOU@X#pGKV5O5y7Fqx5sUpX$Idc8oDKgO38PdVKRaeKbE9VtKwLZYhOBJikSr38MGhWp7YBPxbGEgOVhQNKLjElvrLR+X8ysP87kwR9qhrUsyA==',
+  lat: '40.79235',
+  lng: '-77.86634',
+  ip: '174.231.69.52' }
+[Wed Apr 04 2012 18:28:12 GMT+0000 (UTC)] DEBUG Clean.sanitize
+[Wed Apr 04 2012 18:28:12 GMT+0000 (UTC)] DEBUG validate
+[Wed Apr 04 2012 18:28:12 GMT+0000 (UTC)] DEBUG route
+[Wed Apr 04 2012 18:28:12 GMT+0000 (UTC)] DEBUG ping
+[Wed Apr 04 2012 18:28:12 GMT+0000 (UTC)] DEBUG authIsValid
+[Wed Apr 04 2012 18:28:12 GMT+0000 (UTC)] DEBUG Cache.getAuth
+[Wed Apr 04 2012 18:28:12 GMT+0000 (UTC)] DEBUG authIsValid callback
+[Wed Apr 04 2012 18:28:12 GMT+0000 (UTC)] DEBUG respond
+[Wed Apr 04 2012 18:28:12 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 71 }
+[Wed Apr 04 2012 18:32:27 GMT+0000 (UTC)] DEBUG Culling 0 users.
+[Wed Apr 04 2012 18:43:15 GMT+0000 (UTC)] DEBUG init
+[Wed Apr 04 2012 18:43:15 GMT+0000 (UTC)] DEBUG processRequest
+[Wed Apr 04 2012 18:43:15 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Apr 04 2012 18:43:15 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: '03da81e9-52c5-4658-beaf-5825deb7d96d',
+  auth: 'Y5b2Bb(DdOU@X#pGKV5O5y7Fqx5sUpX$Idc8oDKgO38PdVKRaeKbE9VtKwLZYhOBJikSr38MGhWp7YBPxbGEgOVhQNKLjElvrLR+X8ysP87kwR9qhrUsyA==',
+  lat: '40.79131',
+  lng: '-77.86858',
+  ip: '174.231.69.52' }
+[Wed Apr 04 2012 18:43:15 GMT+0000 (UTC)] DEBUG Clean.sanitize
+[Wed Apr 04 2012 18:43:15 GMT+0000 (UTC)] DEBUG validate
+[Wed Apr 04 2012 18:43:15 GMT+0000 (UTC)] DEBUG route
+[Wed Apr 04 2012 18:43:15 GMT+0000 (UTC)] DEBUG ping
+[Wed Apr 04 2012 18:43:15 GMT+0000 (UTC)] DEBUG authIsValid
+[Wed Apr 04 2012 18:43:15 GMT+0000 (UTC)] DEBUG Cache.getAuth
+[Wed Apr 04 2012 18:43:15 GMT+0000 (UTC)] DEBUG authIsValid callback
+[Wed Apr 04 2012 18:43:15 GMT+0000 (UTC)] DEBUG respond
+[Wed Apr 04 2012 18:43:15 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 71 }
+[Wed Apr 04 2012 18:43:36 GMT+0000 (UTC)] DEBUG init
+[Wed Apr 04 2012 18:43:36 GMT+0000 (UTC)] DEBUG processRequest
+[Wed Apr 04 2012 18:43:36 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Apr 04 2012 18:43:36 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: '03da81e9-52c5-4658-beaf-5825deb7d96d',
+  auth: 'Y5b2Bb(DdOU@X#pGKV5O5y7Fqx5sUpX$Idc8oDKgO38PdVKRaeKbE9VtKwLZYhOBJikSr38MGhWp7YBPxbGEgOVhQNKLjElvrLR+X8ysP87kwR9qhrUsyA==',
+  lat: '40.79131',
+  lng: '-77.86858',
+  ip: '174.231.69.52' }
+[Wed Apr 04 2012 18:43:36 GMT+0000 (UTC)] DEBUG Clean.sanitize
+[Wed Apr 04 2012 18:43:36 GMT+0000 (UTC)] DEBUG validate
+[Wed Apr 04 2012 18:43:36 GMT+0000 (UTC)] DEBUG route
+[Wed Apr 04 2012 18:43:36 GMT+0000 (UTC)] DEBUG ping
+[Wed Apr 04 2012 18:43:36 GMT+0000 (UTC)] DEBUG authIsValid
+[Wed Apr 04 2012 18:43:36 GMT+0000 (UTC)] DEBUG Cache.getAuth
+[Wed Apr 04 2012 18:43:36 GMT+0000 (UTC)] DEBUG authIsValid callback
+[Wed Apr 04 2012 18:43:36 GMT+0000 (UTC)] DEBUG respond
+[Wed Apr 04 2012 18:43:36 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 71 }
+[Wed Apr 04 2012 18:50:57 GMT+0000 (UTC)] DEBUG init
+[Wed Apr 04 2012 18:50:57 GMT+0000 (UTC)] DEBUG processRequest
+[Wed Apr 04 2012 18:50:57 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Apr 04 2012 18:50:57 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: '03da81e9-52c5-4658-beaf-5825deb7d96d',
+  auth: 'Y5b2Bb(DdOU@X#pGKV5O5y7Fqx5sUpX$Idc8oDKgO38PdVKRaeKbE9VtKwLZYhOBJikSr38MGhWp7YBPxbGEgOVhQNKLjElvrLR+X8ysP87kwR9qhrUsyA==',
+  lat: '40.79131',
+  lng: '-77.86858',
+  ip: '174.231.69.52' }
+[Wed Apr 04 2012 18:50:57 GMT+0000 (UTC)] DEBUG Clean.sanitize
+[Wed Apr 04 2012 18:50:57 GMT+0000 (UTC)] DEBUG validate
+[Wed Apr 04 2012 18:50:57 GMT+0000 (UTC)] DEBUG route
+[Wed Apr 04 2012 18:50:57 GMT+0000 (UTC)] DEBUG ping
+[Wed Apr 04 2012 18:50:57 GMT+0000 (UTC)] DEBUG authIsValid
+[Wed Apr 04 2012 18:50:57 GMT+0000 (UTC)] DEBUG Cache.getAuth
+[Wed Apr 04 2012 18:50:57 GMT+0000 (UTC)] DEBUG authIsValid callback
+[Wed Apr 04 2012 18:50:58 GMT+0000 (UTC)] DEBUG respond
+[Wed Apr 04 2012 18:50:58 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 71 }
+[Wed Apr 04 2012 19:02:32 GMT+0000 (UTC)] DEBUG Culling 0 users.
+[Wed Apr 04 2012 19:32:27 GMT+0000 (UTC)] DEBUG Culling 1 users.
+[Wed Apr 04 2012 20:02:27 GMT+0000 (UTC)] DEBUG Culling 0 users.
+[Wed Apr 04 2012 20:32:27 GMT+0000 (UTC)] DEBUG Culling 0 users.
+[Wed Apr 04 2012 20:35:56 GMT+0000 (UTC)] DEBUG init
+[Wed Apr 04 2012 20:35:56 GMT+0000 (UTC)] DEBUG processRequest
+[Wed Apr 04 2012 20:35:56 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Apr 04 2012 20:35:56 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: '03da81e9-52c5-4658-beaf-5825deb7d96d',
+  auth: 'Y5b2Bb(DdOU@X#pGKV5O5y7Fqx5sUpX$Idc8oDKgO38PdVKRaeKbE9VtKwLZYhOBJikSr38MGhWp7YBPxbGEgOVhQNKLjElvrLR+X8ysP87kwR9qhrUsyA==',
+  lat: '40.79678',
+  lng: '-77.86084',
+  ip: '174.231.69.52' }
+[Wed Apr 04 2012 20:35:56 GMT+0000 (UTC)] DEBUG Clean.sanitize
+[Wed Apr 04 2012 20:35:56 GMT+0000 (UTC)] DEBUG validate
+[Wed Apr 04 2012 20:35:56 GMT+0000 (UTC)] DEBUG route
+[Wed Apr 04 2012 20:35:56 GMT+0000 (UTC)] DEBUG ping
+[Wed Apr 04 2012 20:35:56 GMT+0000 (UTC)] DEBUG authIsValid
+[Wed Apr 04 2012 20:35:56 GMT+0000 (UTC)] DEBUG Cache.getAuth
+[Wed Apr 04 2012 20:35:56 GMT+0000 (UTC)] DEBUG authIsValid callback
+[Wed Apr 04 2012 20:35:56 GMT+0000 (UTC)] DEBUG Users.generateNonce
+[Wed Apr 04 2012 20:35:56 GMT+0000 (UTC)] DEBUG Failed auth count = 1
+[Wed Apr 04 2012 20:35:56 GMT+0000 (UTC)] DEBUG Users.updateLastActivityTime
+[Wed Apr 04 2012 20:35:56 GMT+0000 (UTC)] DEBUG respond
+[Wed Apr 04 2012 20:35:56 GMT+0000 (UTC)] DEBUG { code: 'expired_auth',
+  nonce: 'JLD*haQfkd1m=F#%NbJ#4dSLcAY9H9LORRmk0NFO' }
+[Wed Apr 04 2012 20:35:57 GMT+0000 (UTC)] DEBUG init
+[Wed Apr 04 2012 20:35:57 GMT+0000 (UTC)] DEBUG processRequest
+[Wed Apr 04 2012 20:35:57 GMT+0000 (UTC)] DEBUG 
+
+///////////////////////////////////////////////////////////////////////////
+REQUEST = 
+[Wed Apr 04 2012 20:35:57 GMT+0000 (UTC)] DEBUG { a: 'ping',
+  uid: '03da81e9-52c5-4658-beaf-5825deb7d96d',
+  auth: 'Y5b2Bb(DdOU@X#pGKV5O5y7Fqx5sUpX$0H7ews/Ha/gfS9lUozbYn+K2ODkCJechYRenMqcykrUUsSNqr8plmsxtBvmYd3EWatpEwOIqYntzQPq+TXwJ0Q==',
+  lat: '40.79678',
+  lng: '-77.86084',
+  ip: '174.231.69.52' }
+[Wed Apr 04 2012 20:35:57 GMT+0000 (UTC)] DEBUG Clean.sanitize
+[Wed Apr 04 2012 20:35:57 GMT+0000 (UTC)] DEBUG validate
+[Wed Apr 04 2012 20:35:57 GMT+0000 (UTC)] DEBUG route
+[Wed Apr 04 2012 20:35:57 GMT+0000 (UTC)] DEBUG ping
+[Wed Apr 04 2012 20:35:57 GMT+0000 (UTC)] DEBUG authIsValid
+[Wed Apr 04 2012 20:35:57 GMT+0000 (UTC)] DEBUG Cache.getAuth
+[Wed Apr 04 2012 20:35:57 GMT+0000 (UTC)] DEBUG authIsValid callback
+[Wed Apr 04 2012 20:35:57 GMT+0000 (UTC)] DEBUG respond
+[Wed Apr 04 2012 20:35:57 GMT+0000 (UTC)] DEBUG { code: 'ping_ok', pts: 71 }
+[Wed Apr 04 2012 21:02:27 GMT+0000 (UTC)] DEBUG Culling 1 users.
+[Wed Apr 04 2012 21:32:27 GMT+0000 (UTC)] DEBUG Culling 0 users.
+[Wed Apr 04 2012 22:02:27 GMT+0000 (UTC)] DEBUG Culling 0 users.
+[Wed Apr 04 2012 22:32:27 GMT+0000 (UTC)] DEBUG Culling 1 users.
+[Wed Apr 04 2012 23:02:27 GMT+0000 (UTC)] DEBUG Culling 0 users.
+[Wed Apr 04 2012 23:32:27 GMT+0000 (UTC)] DEBUG Culling 0 users.

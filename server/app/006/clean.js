@@ -107,7 +107,7 @@ exports.validate = function(dirty, response, testCallback, callback) {
 	// a
 	param = 'a';
 	if (param in dirty) {
-		var validActions = {'create_account':1, 'ping':1, 'shout':1, 'vote':1};
+		var validActions = { 'create_account' : 1, 'ping' : 1, 'shout' : 1, 'vote' : 1, 'testshout' : 1 };
 		if (dirty[param] in validActions) {
 			clean[param] = dirty[param];
 		}

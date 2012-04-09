@@ -21,9 +21,11 @@ public class Notifier {
 	// It is also not unacknowledged noticeTab shout notices.
 	private int _newShoutsSinceLastOpen;
 	private NotificationManager _notificationManager;
+	private Mediator _m;
 
 	public Notifier(Mediator mediator, ShoutbreakService service) {
-    	SBLog.constructor(TAG);
+    SBLog.constructor(TAG);
+    _m = mediator;
 		_service = service;
 		_newShoutsSinceLastOpen = 0;
 		_notificationManager = (NotificationManager) _service.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -46,7 +48,21 @@ public class Notifier {
 	    Notification notification = new Notification(R.drawable.notification_icon, tickerText, System.currentTimeMillis());
 	    notification.setLatestEventInfo(_service, title, message, PendingIntent.getActivity(_service, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT));
 	    notification.flags |= Notification.FLAG_AUTO_CANCEL;
-	    _notificationManager.notify(C.APP_NOTIFICATION_ID, notification);
+	   	
+	    // vibrate  
+	    if (_m.getBooleanPref(C.PREFERENCE_VIBRATE, C.PREFERENCE_VIBRATE_DEFAULT)) {
+	    	notification.vibrate = C.CONFIG_C2DM_VIBRATE_PATTERN;
+	    	_notificationManager.notify(C.APP_NOTIFICATION_ID, notification);
+	    }
+	    
+	    // LED
+	    if (_m.getBooleanPref(C.PREFERENCE_LED, C.PREFERENCE_LED_DEFAULT)) {
+		    notification.ledARGB = C.CONFIG_C2DM_LED_COLOR;
+		    notification.ledOnMS = 300;
+		    notification.ledOffMS = 1000;
+		    notification.flags |= Notification.FLAG_SHOW_LIGHTS;
+	    }
+	    
 	}
 	
 	public void handleShoutsReceived(int newShouts) {

@@ -73,6 +73,8 @@ public class Shoutbreak extends MapActivity implements Colleague {
 	public TextView userNextShoutreachTv;
 	public RoundProgress userLevelUpProgessRp;
 	public CheckBox sigCheckboxCb;
+	public CheckBox vibrateCb;
+	public CheckBox ledCb;
 	public EditText sigInputEt;
 	
 	private RelativeLayout _inputLayoutRl;
@@ -92,7 +94,7 @@ public class Shoutbreak extends MapActivity implements Colleague {
 	private LinearLayout _splashLl;
 	private LinearLayout _composeViewLl;
 	private LinearLayout _inboxViewLl;
-	private LinearLayout _profileViewLl;
+	private RelativeLayout _profileViewRl;
 	private CustomMapView _map;
 	private LinearLayout _mapOptionsLl;
 	private ImageButton _sigClearBtn;
@@ -134,6 +136,10 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		sigInputEt = (EditText) findViewById(R.id.sigInputEt);
 		sigCheckboxCb = (CheckBox) findViewById(R.id.sigCheckboxCb);
 		sigCheckboxCb.setOnCheckedChangeListener(_sigCheckboxListener);
+		vibrateCb = (CheckBox) findViewById(R.id.prefVibrateCb);
+		vibrateCb.setOnCheckedChangeListener(_vibrateCheckboxListener);
+		ledCb = (CheckBox) findViewById(R.id.prefLedCb);
+		ledCb.setOnCheckedChangeListener(_ledCheckboxListener);
 		
 		_inputLayoutRl = (RelativeLayout) findViewById(R.id.inputRl);
 		_composeBlanketLl = (LinearLayout) findViewById(R.id.composeBlanketLl);
@@ -150,7 +156,7 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		_splashLl = (LinearLayout) findViewById(R.id.splashLl);
 		_composeViewLl = (LinearLayout) findViewById(R.id.composeViewLl);
 		_inboxViewLl = (LinearLayout) findViewById(R.id.inboxViewLl);
-		_profileViewLl = (LinearLayout) findViewById(R.id.profileViewLl);
+		_profileViewRl = (RelativeLayout) findViewById(R.id.profileViewLl);
 		_map = (CustomMapView) findViewById(R.id.mapCmv);
 		_enableLocationBtn = (Button) findViewById(R.id.enableLocationBtn);
 		_turnOnBtn = (Button) findViewById(R.id.turnOnBtn);
@@ -448,7 +454,7 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		_profileTabBtn.setImageResource(R.drawable.tab_user);
 		_composeViewLl.setVisibility(View.VISIBLE);
 		_inboxViewLl.setVisibility(View.GONE);
-		_profileViewLl.setVisibility(View.GONE);
+		_profileViewRl.setVisibility(View.GONE);
 	}
 
 	public void showInbox() {
@@ -461,7 +467,7 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		_profileTabBtn.setImageResource(R.drawable.tab_user);
 		_composeViewLl.setVisibility(View.GONE);
 		_inboxViewLl.setVisibility(View.VISIBLE);
-		_profileViewLl.setVisibility(View.GONE);
+		_profileViewRl.setVisibility(View.GONE);
 		clearShoutsNotice();
 	}
 
@@ -475,7 +481,7 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		_profileTabBtn.setImageResource(R.drawable.tab_user_on);
 		_composeViewLl.setVisibility(View.GONE);
 		_inboxViewLl.setVisibility(View.GONE);
-		_profileViewLl.setVisibility(View.VISIBLE);
+		_profileViewRl.setVisibility(View.VISIBLE);
 		clearPointsNotice();
 	}
 
@@ -625,6 +631,22 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 			if (_m != null) {
 				_m.saveUserSignature(sigInputEt.getText().toString(), isChecked);				
+			}
+		}
+	};
+	
+	private OnCheckedChangeListener _vibrateCheckboxListener = new OnCheckedChangeListener() {
+		public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+			if (_m != null) {
+				_m.toggleCheckboxPref(C.PREFERENCE_VIBRATE, isChecked);				
+			}
+		}
+	};
+	
+	private OnCheckedChangeListener _ledCheckboxListener = new OnCheckedChangeListener() {
+		public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+			if (_m != null) {
+				_m.toggleCheckboxPref(C.PREFERENCE_LED, isChecked);				
 			}
 		}
 	};

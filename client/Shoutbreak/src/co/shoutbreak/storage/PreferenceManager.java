@@ -42,10 +42,6 @@ public class PreferenceManager {
 		putBoolean(C.PREFERENCE_POWER_STATE, false);
 		_m.onPowerPreferenceDisabled(onUiThread, true);
 	}
-	
-	public boolean isPowerPreferenceSetToOn() {
-		return getBoolean(C.PREFERENCE_POWER_STATE, true);
-	}
 
 	public String getString(String key) {
 		return _preferences.getString(key, "");

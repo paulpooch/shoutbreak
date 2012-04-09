@@ -31,7 +31,7 @@ public interface IUiGateway {
 	public void refreshUiComponents();
 	public void refreshProfile(int level, int levelBeginPoints, int currentPoints, int levelEndPoints);
 	public void refreshSignature(String signature, boolean isSignatureEnabled);
-	public void loadUserSignature();
+	public void loadUserPreferencesToUi();
 	public void enableInputs();
 	public void disableInputs();
 	public void clearNoticeTab();

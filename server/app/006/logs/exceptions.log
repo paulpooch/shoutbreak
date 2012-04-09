@@ -1,1 +1,26 @@
 [Sun Apr 01 2012 19:53:04 GMT+0000 (UTC)] DEBUG [ReferenceError: user is not defined]
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG <Buffer 7b 22 5f 5f 74 79 70 65 22 3a 22 63 6f 6d 2e 61 6d 61 7a 6f 6e 61 77 73 2e 64 79 6e 61 6d 6f 64 62 2e 76 32 30 31 31 31 32 30 35 23 50 72 6f 76 69 73 69 ...>
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG getScoreIterator:getShout failed for 00130332-c283-4e16-8e29-f771731b80fd failed.
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG <Buffer 7b 22 5f 5f 74 79 70 65 22 3a 22 63 6f 6d 2e 61 6d 61 7a 6f 6e 61 77 73 2e 64 79 6e 61 6d 6f 64 62 2e 76 32 30 31 31 31 32 30 35 23 50 72 6f 76 69 73 69 ...>
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG getScoreIterator:getShout failed for c40c9f02-f6c1-49ed-9d87-5a20163f0d9b failed.
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG <Buffer 7b 22 5f 5f 74 79 70 65 22 3a 22 63 6f 6d 2e 61 6d 61 7a 6f 6e 61 77 73 2e 64 79 6e 61 6d 6f 64 62 2e 76 32 30 31 31 31 32 30 35 23 50 72 6f 76 69 73 69 ...>
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG getScoreIterator:getShout failed for f50ac259-1ceb-4fca-b34c-a9cc52df59cb failed.
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG <Buffer 7b 22 5f 5f 74 79 70 65 22 3a 22 63 6f 6d 2e 61 6d 61 7a 6f 6e 61 77 73 2e 64 79 6e 61 6d 6f 64 62 2e 76 32 30 31 31 31 32 30 35 23 50 72 6f 76 69 73 69 ...>
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG getScoreIterator:getShout failed for a11f1a13-c7e4-43de-a86a-951d4e84684e failed.
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG <Buffer 7b 22 5f 5f 74 79 70 65 22 3a 22 63 6f 6d 2e 61 6d 61 7a 6f 6e 61 77 73 2e 64 79 6e 61 6d 6f 64 62 2e 76 32 30 31 31 31 32 30 35 23 50 72 6f 76 69 73 69 ...>
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG getScoreIterator:getShout failed for 0feb9e97-35c7-4b94-abb3-9b80e0020ef0 failed.
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG <Buffer 7b 22 5f 5f 74 79 70 65 22 3a 22 63 6f 6d 2e 61 6d 61 7a 6f 6e 61 77 73 2e 64 79 6e 61 6d 6f 64 62 2e 76 32 30 31 31 31 32 30 35 23 50 72 6f 76 69 73 69 ...>
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG getScoreIterator:getShout failed for f50ac259-1ceb-4fca-b34c-a9cc52df59cb failed.
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG <Buffer 7b 22 5f 5f 74 79 70 65 22 3a 22 63 6f 6d 2e 61 6d 61 7a 6f 6e 61 77 73 2e 64 79 6e 61 6d 6f 64 62 2e 76 32 30 31 31 31 32 30 35 23 50 72 6f 76 69 73 69 ...>
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG getScoreIterator:getShout failed for c40c9f02-f6c1-49ed-9d87-5a20163f0d9b failed.
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG <Buffer 7b 22 5f 5f 74 79 70 65 22 3a 22 63 6f 6d 2e 61 6d 61 7a 6f 6e 61 77 73 2e 64 79 6e 61 6d 6f 64 62 2e 76 32 30 31 31 31 32 30 35 23 50 72 6f 76 69 73 69 ...>
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG getScoreIterator:getShout failed for a11f1a13-c7e4-43de-a86a-951d4e84684e failed.
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG <Buffer 7b 22 5f 5f 74 79 70 65 22 3a 22 63 6f 6d 2e 61 6d 61 7a 6f 6e 61 77 73 2e 64 79 6e 61 6d 6f 64 62 2e 76 32 30 31 31 31 32 30 35 23 50 72 6f 76 69 73 69 ...>
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG getScoreIterator:getShout failed for 00130332-c283-4e16-8e29-f771731b80fd failed.
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG <Buffer 7b 22 5f 5f 74 79 70 65 22 3a 22 63 6f 6d 2e 61 6d 61 7a 6f 6e 61 77 73 2e 64 79 6e 61 6d 6f 64 62 2e 76 32 30 31 31 31 32 30 35 23 50 72 6f 76 69 73 69 ...>
+[Wed Apr 04 2012 03:24:34 GMT+0000 (UTC)] DEBUG getScoreIterator:getShout failed for 0feb9e97-35c7-4b94-abb3-9b80e0020ef0 failed.
+[Sun Apr 08 2012 21:11:10 GMT+0000 (UTC)] DEBUG [ReferenceError: socket is not defined]
+[Sun Apr 08 2012 21:23:52 GMT+0000 (UTC)] DEBUG [ReferenceError: Dgram is not defined]
+[Mon Apr 09 2012 00:52:56 GMT+0000 (UTC)] DEBUG [ReferenceError: url is not defined]
+[Mon Apr 09 2012 00:57:36 GMT+0000 (UTC)] DEBUG [ReferenceError: POST is not defined]
+[Mon Apr 09 2012 00:59:26 GMT+0000 (UTC)] DEBUG fakePost test7 go

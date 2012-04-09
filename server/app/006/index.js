@@ -37,7 +37,8 @@ var Http = 			require('http'),
 	// https://github.com/chriso/node-validator
 	Uuid = 			require('node-uuid'),
 	Assert =		require('assert'),
-	Async =			require('async');
+	Async =			require('async'),
+	Url = 			require('url');
 
 var server = null;
 
@@ -93,10 +94,32 @@ var processRequest = function(request, response) {
 			Clean.sanitize(POST, response, null, callback);
         });
     } else {
-    	var json = { 'status': 'online'};
-    	response.writeHead(200, {'Content-Type': 'application/json'});
-		response.write(JSON.stringify(json));
-		response.end();	
+    	// TODO:
+    	// Consider disabling GET requests in PROD.
+    	var params = Url.parse(request.url, true).query;
+        if ('a' in params) {
+        	var callback = function(routingObject) {
+				var objPost = routingObject['post'];
+				var objResponse = routingObject['response'];
+				var objTestCallback = routingObject['testCallback'];
+				Clean.validate(objPost, objResponse, objTestCallback, callback2);
+			};
+			var callback2 = function(routingObject) {
+				var objPost = routingObject['post'];
+				var objResponse = routingObject['response'];
+				var objTestCallback = routingObject['testCallback'];
+				route(objPost, objResponse, objTestCallback);
+			};
+			Log.l('\n\n///////////////////////////////////////////////////////////////////////////\nGET REQUEST = ');
+			params['ip'] = request.connection.remoteAddress;
+			Log.l(params);
+			Clean.sanitize(params, response, null, callback);
+        } else {
+	    	var json = { 'status': 'online'};
+	    	response.writeHead(200, {'Content-Type': 'application/json'});
+			response.write(JSON.stringify(json));
+			response.end();
+		}
     }
 };
 
@@ -135,6 +158,9 @@ var route = function(clean, response, testCallback) {
 			break;
 		case 'vote':
 			vote(clean, response, testCallback);
+			break;
+		case 'testshout':
+			TestShout.run();
 			break;
 		default:
 			break;
@@ -788,7 +814,122 @@ var respond = function(json, response, testCallback) {
 	}
 };
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////
 // Test Suite /////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+
+var TestShout = {};
+
+(function() {
+	
+	this.run = function() {
+
+		var userId = '916c3709-a575-49c3-99e2-67f34766ee33';
+		var pw = '7yL-%WVYLxXD4qJvY@t@C$Ln%7S3BT(v';
+		var auth = null;
+		var newShouts = null;
+		var sentShoutId = null;
+
+		var test1 = function(json) {
+			Log.l(json);
+			var nonce = json['nonce'];
+			auth = pw + Utils.hashSha512(pw + nonce + userId);
+			var post = {
+				'a': 'ping',
+				'uid': userId,
+				'auth': auth,
+				'lat': 40.00000,
+				'lng': -70.00000,
+				'radius': 1
+			};
+			Log.l('***********POST**************');
+			Log.obj(post);
+			fakePost(post, null, test2);
+		};
+
+		// Send a shout.
+		var test2 = function(json) {
+			Log.l(json);
+			var post = {
+				'a': 'shout',
+				'uid': userId,
+				'auth': auth,
+				'lat': 40.00000,
+				'lng': -70.00000,
+				'txt': 'This is a test shout.',
+				'shoutreach': 5
+			};
+			Log.l('***********POST**************');
+			Log.obj(post);
+			fakePost(post, null, test3);
+		};
+
+		// Go receive the shout.
+		var test3 = function(json) {
+			Log.l(json);
+		};
+
+		// Trigger first test...
+		var post = { 
+			'a': 'ping',
+			'uid': userId,
+			'auth': 'default',
+			'lat': 40.00000,
+			'lng': -70.00000,
+		};
+		fakePost(post, null, test1);
+		
+	};
+
+}).call(TestShout);
+
+///////////////////////////////////////////////////////////////////////////////
+
 var Tests = {};
 
 (function() {
@@ -951,7 +1092,45 @@ var Tests = {};
 
 }).call(Tests);
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////
 // Bootstrap //////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
 
 Log.l('Server launched.');
 server = Http.createServer(init);

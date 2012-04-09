@@ -12,31 +12,9 @@ var C2DM = module.exports = {};
 	var Log = 		require('./log'),
 		Storage =	require('./storage'),
 		Config =	require('./config'),
-		C2DM =		require('c2dm').C2DM;
+		DGram = 	require('dgram');
 
-	var config = {
-		//token: 'Auth=DQAAAMIAAADBN5dXXfszWmLCoHH1BbbFK8gJiK-kWMZ0C-LKFgltkWhRM1vFXJpgbv4oFWf_54ao0WTuj8bSRTEu4-SvAdTZ39hPx0sUJ_SJoSswaiN9Z82x4y1h9h7CHTLACDEaxYRvF9Rys3dnWZ8Fr6caorisI7sz3QU_Brav3PlGvfFVpHT6dKlVJPzJUzRSKOOE_Cue4T-0uZelaQnuUKDK1VN3xCGB-tKjmEyN9pu90k8Nw7v0UIOokvkQQbfeJ0uR63zR_2ObF2X_nnL9udS2TLgo',
-		user: Config.C2DM_ACCOUNT,
-	    password: Config.C2DM_PASSWORD,
-	    source: 'co.shoutbreak', // does this matter? 
-		keepAlive: true
-	};
-
-	var c2dm = new C2DM(config);
-	var ready = false;
-
-	c2dm.login(function(err, token){
-		// err - error, received from Google ClientLogin api
-	    // token - Auth token
-		if (err != null) {
-			Log.logC2dm('C2DM Auth Error: ' + err);
-		} else {
-			// We don't use token.
-			//var authToken = token;
-			ready = true;
-			Log.logC2dm('C2DM Auth Success');
-		}
-  	});
+	var ready = true;
 
 	// TODO: Add exponential backoff on quota errors.
   	this.setupPushTimer = function(targetUser, expectedLastItemId, successCallback, failCallback) {
@@ -51,6 +29,24 @@ var C2DM = module.exports = {};
   							// User has not picked up shout since it was sent...
 	  						if (ready) {
 			  					Log.logC2dm('Attempting C2DM to ' + targetUser.userId + ' | c2dmId = ' + targetUser.c2dmId);
+				  				
+				  				var payload = { key1: 'val1' };
+			  					var packet = [
+			  						targetUser.c2dmId,
+			  						'replace-exsting',
+			  						JSON.stringify(payload)
+			  					];
+			  					var message = new Buffer(packet.join(':'));
+			  					var client = DGram.createSocket('udp4');
+								client.send(message, 0, message.length, Config.C2DM_SERVER_PORT, Config.C2DM_SERVER_ADDRESS, function(err, bytes) {
+  									client.close();
+								});
+				  				
+
+								// TODO: Can C2DM server respond to us via callack port?
+								// Especially important for NotRegistered error.
+
+			  					/*
 				  				var message = {
 						    		registration_id: targetUser.c2dmId,
 						    		collapse_key: 'replace-exsting', // this doesn't matter
@@ -87,6 +83,8 @@ var C2DM = module.exports = {};
 											'userId = ' + targetUser.userId) ;
 									}
 								});
+								*/
+
 							}
 						}
   					}
@@ -99,5 +97,6 @@ var C2DM = module.exports = {};
   		);
 		successCallback();
   	};
+  	
 	
 }).call(C2DM);

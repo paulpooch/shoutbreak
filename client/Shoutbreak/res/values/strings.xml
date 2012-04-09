@@ -12,6 +12,7 @@
 Location Services</string>
     <string name="userStatsHeader">User Stats</string>
     <string name="userSigHeader">Shout Signature</string>
+    <string name="userPreferencesHeader">Preferences</string>
     <string name="slash"> / </string>
     <string name="back">Back</string>
     <string name="next">Next</string>
@@ -21,7 +22,10 @@ Location Services</string>
     <string name="serverHttpError">Sorry, our server is not responding.
 Want to check our site for a downtime notice?</string>
     <string name="sigExplanation">Add this signature to shouts</string>
+    <string name="vibrateExplanation">Vibrate when shouts are heard</string>
+    <string name="ledExplanation">Light up LED when shouts are heard</string>
     <string name="sigSaved">Signature settings saved.</string>
+    <string name="prefSaved">Preference saved.</string>
     <string name="holdWhileFinding">Hold on while we find you...
 	this only happens on your first use.</string>
 

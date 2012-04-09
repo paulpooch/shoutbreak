@@ -325,7 +325,7 @@
             <!-- PROFILE -->
             <!-- ////////////////////////////////////////////////////////////////// -->
 
-            <LinearLayout
+            <RelativeLayout
                 android:id="@+id/profileViewLl"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -333,261 +333,343 @@
                 android:orientation="vertical"
                 android:visibility="invisible" >
 
-                <RelativeLayout
+                <!-- Level up meter -->
+
+                <LinearLayout
+                    android:id="@+id/levelLl"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:background="@drawable/shout_input_bg"
+                    android:orientation="vertical" >
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal" >
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="12dp"
+                            android:layout_weight="0"
+                            android:background="@drawable/shoutreach_transparent" >
+
+                            <TextView
+                                android:id="@+id/userCurrentShoutreachTv"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="22dp"
+                                android:shadowColor="#1e003c"
+                                android:shadowDx="2"
+                                android:shadowDy="2"
+                                android:shadowRadius="2"
+                                android:textColor="#ffffffff"
+                                android:textSize="25dp" />
+                        </LinearLayout>
+
+                        <!-- Approved use of pixels. -->
+
+                        <co.shoutbreak.ui.RoundProgress
+                            android:id="@+id/userLevelUpProgressRp"
+                            android:layout_width="match_parent"
+                            android:layout_height="30px"
+                            android:layout_marginTop="12dp"
+                            android:layout_weight="1"
+                            sb:max="100"
+                            sb:progress="35"
+                            sb:progressDrawable="@drawable/progress_clip"
+                            sb:track="@drawable/progress_bar_bg" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="12dp"
+                            android:layout_weight="0"
+                            android:background="@drawable/shoutreach_transparent" >
+
+                            <TextView
+                                android:id="@+id/userNextShoutreachTv"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="22dp"
+                                android:shadowColor="#1e003c"
+                                android:shadowDx="2"
+                                android:shadowDy="2"
+                                android:shadowRadius="2"
+                                android:textColor="#ffffffff"
+                                android:textSize="25dp" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" >
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentTop="true"
+                            android:layout_centerHorizontal="true" >
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="26dp"
+                                android:layout_marginRight="3dp"
+                                android:layout_marginTop="6dp"
+                                android:src="@drawable/notice_icon_points" />
+
+                            <TextView
+                                android:id="@+id/userPointsTv"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="-4dp"
+                                android:shadowColor="#1e003c"
+                                android:shadowDx="2"
+                                android:shadowDy="2"
+                                android:shadowRadius="2"
+                                android:textColor="#ffffffff"
+                                android:textSize="30dp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="-4dp"
+                                android:shadowColor="#1e003c"
+                                android:shadowDx="2"
+                                android:shadowDy="2"
+                                android:shadowRadius="2"
+                                android:text="@string/slash"
+                                android:textColor="#ffd75edc"
+                                android:textSize="30dp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/userNextLevelAtTv"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="-4dp"
+                                android:shadowColor="#1e003c"
+                                android:shadowDx="2"
+                                android:shadowDy="2"
+                                android:shadowRadius="2"
+                                android:textColor="#ffffffff"
+                                android:textSize="30dp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+                    </RelativeLayout>
+                </LinearLayout>
+
+                <ScrollView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_above="@id/levelLl"
                     android:background="#000000" >
 
                     <RelativeLayout
-                        android:id="@+id/userStatsHeaderRl"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentTop="true"
-                        android:layout_marginTop="10dp" >
+                        android:layout_height="match_parent"
+                        android:background="#000000" >
 
-                        <TextView
-                            android:id="@+id/userStatsHeaderTv"
+                        <RelativeLayout
+                            android:id="@+id/userStatsHeaderRl"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_alignParentTop="true"
-                            android:shadowColor="#1e003c"
-                            android:shadowDx="2"
-                            android:shadowDy="2"
-                            android:shadowRadius="2"
-                            android:text="@string/userStatsHeader"
-                            android:textColor="#ffffffff"
-                            android:textSize="18dp"
-                            android:textStyle="bold" />
+                            android:layout_marginTop="10dp" >
 
-                        <!-- Approved use of pixels. -->
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="10dp"
-                            android:layout_below="@id/userStatsHeaderTv"
-                            android:background="@drawable/user_stats_bg" />
-                    </RelativeLayout>
-
-                    <TextView
-                        android:id="@+id/userStatsParagraphTv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/userStatsHeaderRl"
-                        android:textColor="#ffffffff"
-                        android:textSize="14dp" />
-
-                    <RelativeLayout
-                        android:id="@+id/userSigHeaderRl"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/userStatsParagraphTv"
-                        android:layout_marginTop="15dp" >
-
-                        <TextView
-                            android:id="@+id/userSigHeaderTv"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentTop="true"
-                            android:shadowColor="#1e003c"
-                            android:shadowDx="2"
-                            android:shadowDy="2"
-                            android:shadowRadius="2"
-                            android:text="@string/userSigHeader"
-                            android:textColor="#ffffffff"
-                            android:textSize="18dp"
-                            android:textStyle="bold" />
-
-                        <!-- Approved use of pixels. -->
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="10dp"
-                            android:layout_below="@+id/userSigHeaderTv"
-                            android:background="@drawable/user_stats_bg" />
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="100dp"
-                        android:layout_below="@id/userSigHeaderRl" >
-
-                        <CheckBox
-                            android:id="@+id/sigCheckboxCb"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentLeft="true"
-                            android:checked="false"
-                            android:layout_alignParentTop="true" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentTop="true"
-                            android:layout_marginTop="14dp"
-                            android:layout_toRightOf="@id/sigCheckboxCb"
-                            android:text="@string/sigExplanation"
-                            android:textColor="#ffffffff"
-                            android:textSize="14dp" />
-
-                        <ImageButton
-                            android:id="@+id/sigClearBtn"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:layout_below="@id/sigCheckboxCb"
-                            android:src="@drawable/inbox_delete" />
-
-                        <ImageButton
-                            android:id="@+id/sigSaveBtn"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@id/sigCheckboxCb"
-                            android:layout_toLeftOf="@id/sigClearBtn"
-                            android:src="@drawable/sig_save" />
-
-                        <EditText
-                            android:id="@+id/sigInputEt"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_alignBottom="@id/sigClearBtn"
-                            android:layout_below="@id/sigCheckboxCb"
-                            android:layout_toLeftOf="@id/sigSaveBtn"
-                            android:background="@drawable/textbox"
-                            android:imeOptions="actionDone"
-                            android:inputType="text"
-                            android:maxLength="25"
-                            android:padding="4dp" />
-                    </RelativeLayout>
-
-                    <!-- Level up meter -->
-
-                    <LinearLayout
-                        android:id="@+id/levelRl"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentBottom="true"
-                        android:background="@drawable/shout_input_bg"
-                        android:orientation="vertical" >
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal" >
-
-                            <LinearLayout
-                                android:layout_width="wrap_content"
+                            <TextView
+                                android:id="@+id/userStatsHeaderTv"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginLeft="12dp"
-                                android:layout_weight="0"
-                                android:background="@drawable/shoutreach_transparent" >
-
-                                <TextView
-                                    android:id="@+id/userCurrentShoutreachTv"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginLeft="22dp"
-                                    android:shadowColor="#1e003c"
-                                    android:shadowDx="2"
-                                    android:shadowDy="2"
-                                    android:shadowRadius="2"
-                                    android:textColor="#ffffffff"
-                                    android:textSize="25dp" />
-                            </LinearLayout>
+                                android:layout_alignParentTop="true"
+                                android:shadowColor="#1e003c"
+                                android:shadowDx="2"
+                                android:shadowDy="2"
+                                android:shadowRadius="2"
+                                android:text="@string/userStatsHeader"
+                                android:textColor="#ffffffff"
+                                android:textSize="18dp"
+                                android:textStyle="bold" />
 
                             <!-- Approved use of pixels. -->
 
-                            <co.shoutbreak.ui.RoundProgress
-                                android:id="@+id/userLevelUpProgressRp"
-                                android:layout_width="match_parent"
-                                android:layout_height="30px"
-                                android:layout_marginTop="12dp"
-                                android:layout_weight="1"
-                                sb:max="100"
-                                sb:progress="35"
-                                sb:progressDrawable="@drawable/progress_clip"
-                                sb:track="@drawable/progress_bar_bg" />
-
                             <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="12dp"
-                                android:layout_weight="0"
-                                android:background="@drawable/shoutreach_transparent" >
+                                android:layout_width="match_parent"
+                                android:layout_height="10dp"
+                                android:layout_below="@id/userStatsHeaderTv"
+                                android:background="@drawable/user_stats_bg" />
+                        </RelativeLayout>
 
-                                <TextView
-                                    android:id="@+id/userNextShoutreachTv"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginLeft="22dp"
-                                    android:shadowColor="#1e003c"
-                                    android:shadowDx="2"
-                                    android:shadowDy="2"
-                                    android:shadowRadius="2"
-                                    android:textColor="#ffffffff"
-                                    android:textSize="25dp" />
-                            </LinearLayout>
-                        </LinearLayout>
+                        <TextView
+                            android:id="@+id/userStatsParagraphTv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/userStatsHeaderRl"
+                            android:textColor="#ffffffff"
+                            android:textSize="14dp" />
 
                         <RelativeLayout
+                            android:id="@+id/userSigHeaderRl"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content" >
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/userStatsParagraphTv"
+                            android:layout_marginTop="20dp" >
+
+                            <TextView
+                                android:id="@+id/userSigHeaderTv"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentTop="true"
+                                android:shadowColor="#1e003c"
+                                android:shadowDx="2"
+                                android:shadowDy="2"
+                                android:shadowRadius="2"
+                                android:text="@string/userSigHeader"
+                                android:textColor="#ffffffff"
+                                android:textSize="18dp"
+                                android:textStyle="bold" />
 
                             <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="10dp"
+                                android:layout_below="@id/userSigHeaderTv"
+                                android:background="@drawable/user_stats_bg" />
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:id="@+id/sigSettingsRl"
+                            android:layout_width="match_parent"
+                            android:layout_height="100dp"
+                            android:layout_below="@id/userSigHeaderRl" >
+
+                            <CheckBox
+                                android:id="@+id/sigCheckboxCb"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentLeft="true"
+                                android:layout_alignParentTop="true"
+                                android:checked="false" />
+
+                            <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentTop="true"
-                                android:layout_centerHorizontal="true" >
+                                android:layout_marginTop="14dp"
+                                android:layout_toRightOf="@id/sigCheckboxCb"
+                                android:text="@string/sigExplanation"
+                                android:textColor="#ffffffff"
+                                android:textSize="14dp" />
 
-                                <ImageView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="26dp"
-                                    android:layout_marginRight="3dp"
-                                    android:layout_marginTop="6dp"
-                                    android:src="@drawable/notice_icon_points" />
+                            <ImageButton
+                                android:id="@+id/sigClearBtn"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:layout_below="@id/sigCheckboxCb"
+                                android:src="@drawable/inbox_delete" />
 
-                                <TextView
-                                    android:id="@+id/userPointsTv"
-                                    android:layout_width="wrap_content"
+                            <ImageButton
+                                android:id="@+id/sigSaveBtn"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/sigCheckboxCb"
+                                android:layout_toLeftOf="@id/sigClearBtn"
+                                android:src="@drawable/sig_save" />
+
+                            <EditText
+                                android:id="@+id/sigInputEt"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_alignBottom="@id/sigClearBtn"
+                                android:layout_below="@id/sigCheckboxCb"
+                                android:layout_toLeftOf="@id/sigSaveBtn"
+                                android:background="@drawable/textbox"
+                                android:imeOptions="actionDone"
+                                android:inputType="text"
+                                android:maxLength="25"
+                                android:padding="4dp" />
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:id="@+id/userPreferencesRl"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/sigSettingsRl"
+                            android:layout_marginTop="20dp" >
+
+                            <TextView
+                                android:id="@+id/userPreferencesHeaderTv"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentTop="true"
+                                android:shadowColor="#1e003c"
+                                android:shadowDx="2"
+                                android:shadowDy="2"
+                                android:shadowRadius="2"
+                                android:text="@string/userPreferencesHeader"
+                                android:textColor="#ffffffff"
+                                android:textSize="18dp"
+                                android:textStyle="bold" />
+
+                            <LinearLayout
+                                android:id="@+id/userPreferencesBarLl"
+                                android:layout_width="match_parent"
+                                android:layout_height="10dp"
+                                android:layout_below="@id/userPreferencesHeaderTv"
+                                android:background="@drawable/user_stats_bg" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="100dp"
+                                android:layout_below="@id/userPreferencesBarLl"
+                                android:orientation="vertical" >
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginTop="-4dp"
-                                    android:shadowColor="#1e003c"
-                                    android:shadowDx="2"
-                                    android:shadowDy="2"
-                                    android:shadowRadius="2"
-                                    android:textColor="#ffffffff"
-                                    android:textSize="30dp"
-                                    android:textStyle="bold" />
+                                    android:orientation="horizontal" >
 
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="-4dp"
-                                    android:shadowColor="#1e003c"
-                                    android:shadowDx="2"
-                                    android:shadowDy="2"
-                                    android:shadowRadius="2"
-                                    android:text="@string/slash"
-                                    android:textColor="#ffd75edc"
-                                    android:textSize="30dp"
-                                    android:textStyle="bold" />
+                                    <CheckBox
+                                        android:id="@+id/prefVibrateCb"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:checked="false" />
 
-                                <TextView
-                                    android:id="@+id/userNextLevelAtTv"
-                                    android:layout_width="wrap_content"
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:gravity="center_vertical"
+                                        android:text="@string/vibrateExplanation"
+                                        android:textColor="#ffffffff"
+                                        android:textSize="14dp" />
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginTop="-4dp"
-                                    android:shadowColor="#1e003c"
-                                    android:shadowDx="2"
-                                    android:shadowDy="2"
-                                    android:shadowRadius="2"
-                                    android:textColor="#ffffffff"
-                                    android:textSize="30dp"
-                                    android:textStyle="bold" />
+                                    android:orientation="horizontal" >
+
+                                    <CheckBox
+                                        android:id="@+id/prefLedCb"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:checked="false" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:gravity="center_vertical"
+                                        android:text="@string/ledExplanation"
+                                        android:textColor="#ffffffff"
+                                        android:textSize="14dp" />
+                                </LinearLayout>
                             </LinearLayout>
                         </RelativeLayout>
-                    </LinearLayout>
-                </RelativeLayout>
-            </LinearLayout>
+                    </RelativeLayout>
+                </ScrollView>
+            </RelativeLayout>
         </RelativeLayout>
 
         <!-- ////////////////////////////////////////////////////////////// -->

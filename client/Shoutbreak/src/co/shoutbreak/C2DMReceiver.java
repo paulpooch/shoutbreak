@@ -40,10 +40,10 @@ public class C2DMReceiver extends C2DMBaseReceiver {
 
 	@Override
 	protected void onMessage(Context context, Intent intent) {
-		//Log.w("C2DMReceiver", intent.getStringExtra("payload"));
 		Intent newIntent = new Intent(context, ShoutbreakService.class);
 		newIntent.putExtra(C.INTENT_C2DM_MESSAGE, true);
 		newIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-		context.startService(intent);
+		context.startService(newIntent);
 	}
+	
 }
