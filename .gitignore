@@ -19,8 +19,5 @@ local.properties
 .loadpath
 .cache
 client/Shoutbreak/bin
-server/shoutbreak/logs
-server/shoutbreak/cron/cronlogs
-server/shoutbreak/crash_reports
-logs/*
+logs/
 *.log
