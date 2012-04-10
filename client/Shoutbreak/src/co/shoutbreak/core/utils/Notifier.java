@@ -52,7 +52,6 @@ public class Notifier {
 	    // vibrate  
 	    if (_m.getBooleanPref(C.PREFERENCE_VIBRATE, C.PREFERENCE_VIBRATE_DEFAULT)) {
 	    	notification.vibrate = C.CONFIG_C2DM_VIBRATE_PATTERN;
-	    	_notificationManager.notify(C.APP_NOTIFICATION_ID, notification);
 	    }
 	    
 	    // LED
@@ -62,6 +61,8 @@ public class Notifier {
 		    notification.ledOffMS = 1000;
 		    notification.flags |= Notification.FLAG_SHOW_LIGHTS;
 	    }
+	    
+    	_notificationManager.notify(C.APP_NOTIFICATION_ID, notification);
 	    
 	}
 	

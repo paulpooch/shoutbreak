@@ -420,9 +420,8 @@ public class Shoutbreak extends MapActivity implements Colleague {
 	private void handleFirstRun() {
 		SBLog.method(TAG, "handleFirstRun()");
 		if (_m != null && _m.isFirstRun()) {
-			// TODO: tutorial goes here
-			// TutorialDialog tut = new TutorialDialog(this);
-			// tut.show();
+			TutorialDialog tut = new TutorialDialog(this);
+			tut.show();
 		}
 	}
 
@@ -526,13 +525,14 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		SBLog.method(TAG, "onPrepareOptionsMenu()");
 		menu.clear();
 		MenuInflater inflater = getMenuInflater();
-		if (_isComposeShowing.get()) {
-			inflater.inflate(R.menu.compose_menu, menu);
-		} else if (_isInboxShowing.get()) {
-			inflater.inflate(R.menu.inbox_menu, menu);
-		} else if (_isProfileShowing.get()) {
-			inflater.inflate(R.menu.profile_menu, menu);
-		}
+		inflater.inflate(R.menu.solo_menu, menu);
+//		if (_isComposeShowing.get()) {
+//			inflater.inflate(R.menu.compose_menu, menu);
+//		} else if (_isInboxShowing.get()) {
+//			inflater.inflate(R.menu.inbox_menu, menu);
+//		} else if (_isProfileShowing.get()) {
+//			inflater.inflate(R.menu.profile_menu, menu);
+//		}
 		return super.onPrepareOptionsMenu(menu);
 	}
 
@@ -540,12 +540,13 @@ public class Shoutbreak extends MapActivity implements Colleague {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		SBLog.method(TAG, "onOptionsItemSelected()");
 		switch (item.getItemId()) {
-		case R.id.clear_notices:
-			// TODO: clear notices
+		case R.id.menu_profile_link:
+			showProfile();
 			return true;
-		case R.id.empty_inbox:
-			// TODO: empty inbox
-			return true;
+//		case R.id.clear_notices:
+//			return true;
+//		case R.id.empty_inbox:
+//			return true;
 		default:
 			return super.onOptionsItemSelected(item);
 		}
@@ -636,17 +637,23 @@ public class Shoutbreak extends MapActivity implements Colleague {
 	};
 	
 	private OnCheckedChangeListener _vibrateCheckboxListener = new OnCheckedChangeListener() {
+		private boolean startupDone = false;
 		public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-			if (_m != null) {
+			if (_m != null && startupDone) {
 				_m.toggleCheckboxPref(C.PREFERENCE_VIBRATE, isChecked);				
+			} else {
+				startupDone = true;
 			}
 		}
 	};
 	
 	private OnCheckedChangeListener _ledCheckboxListener = new OnCheckedChangeListener() {
+		private boolean startupDone = false;
 		public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-			if (_m != null) {
+			if (_m != null && startupDone) {
 				_m.toggleCheckboxPref(C.PREFERENCE_LED, isChecked);				
+			} else {
+				startupDone = true;
 			}
 		}
 	};

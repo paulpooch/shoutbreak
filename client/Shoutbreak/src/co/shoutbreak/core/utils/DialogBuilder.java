@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -93,13 +95,18 @@ public class DialogBuilder implements Colleague {
 	}
 
 	public void handleReplySent() {
-		AnimationDrawable shoutButtonAnimation = (AnimationDrawable) _replyBtn.getDrawable();
-		shoutButtonAnimation.stop();
-		_replyBtn.setImageResource(R.drawable.shout_button_up);
-		_replyEt.setText("");
-		if (_replyDialog != null && _replyDialog.isShowing()) {
-			_isDialogAlreadyShowing = false;
-			_replyDialog.cancel();
+		Drawable d =  _replyBtn.getDrawable();
+		if (d.getClass().equals(AnimationDrawable.class)) {			
+			AnimationDrawable shoutButtonAnimation = (AnimationDrawable) _replyBtn.getDrawable();
+			shoutButtonAnimation.stop();
+			_replyBtn.setImageResource(R.drawable.shout_button_up);
+			_replyEt.setText("");
+			if (_replyDialog != null && _replyDialog.isShowing()) {
+				_isDialogAlreadyShowing = false;
+				_replyDialog.cancel();
+			}
+		} else {
+			SBLog.error(TAG, "This should never happen.  Reply Button is not an animation.");
 		}
 	}
 
@@ -249,7 +256,7 @@ public class DialogBuilder implements Colleague {
 		}
 
 		case DISMISS_DIALOG_WAIT_FOR_MAP_TO_HAVE_LOCATION: {
-			if (_waitForMapToHaveLocationDialog != null) {
+			if (_waitForMapToHaveLocationDialog != null && !_ui.isFinishing()) {
 				_waitForMapToHaveLocationDialog.dismiss();
 				_waitForMapToHaveLocationDialog = null;
 			}

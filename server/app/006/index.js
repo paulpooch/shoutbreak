@@ -109,6 +109,11 @@ var processRequest = function(request, response) {
 				var objResponse = routingObject['response'];
 				var objTestCallback = routingObject['testCallback'];
 				route(objPost, objResponse, objTestCallback);
+
+				var json = { 'status': 'complete'};
+		    	response.writeHead(200, {'Content-Type': 'application/json'});
+				response.write(JSON.stringify(json));
+				response.end();
 			};
 			Log.l('\n\n///////////////////////////////////////////////////////////////////////////\nGET REQUEST = ');
 			params['ip'] = request.connection.remoteAddress;
@@ -160,7 +165,7 @@ var route = function(clean, response, testCallback) {
 			vote(clean, response, testCallback);
 			break;
 		case 'testshout':
-			TestShout.run();
+			TestShout.run(testCallback);
 			break;
 		default:
 			break;
