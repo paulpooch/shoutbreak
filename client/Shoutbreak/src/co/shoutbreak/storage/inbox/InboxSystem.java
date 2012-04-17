@@ -69,11 +69,6 @@ public class InboxSystem {
 	
 	// NON-WRITE METHODS //////////////////////////////////////////////////////
 	
-	public void refreshSignature(String signature, int maxLength) {
-		// TODO Auto-generated method stub
-		
-	}
-	
 	public List<Shout> getDisplayedShouts() {
 		return _displayedShouts;
 	}
@@ -571,7 +566,7 @@ public class InboxSystem {
 							}
 							_repliesByParentId.remove(shout.id);
 						}
-						_parentShouts.remove(shout.id);
+						_parentShouts.remove(shout);
 					}
 					break;
 				}

@@ -93,20 +93,20 @@ public class DialogBuilder implements Colleague {
 			alert.show();
 		}
 	}
-
+	
 	public void handleReplySent() {
-		Drawable d =  _replyBtn.getDrawable();
-		if (d.getClass().equals(AnimationDrawable.class)) {			
-			AnimationDrawable shoutButtonAnimation = (AnimationDrawable) _replyBtn.getDrawable();
-			shoutButtonAnimation.stop();
-			_replyBtn.setImageResource(R.drawable.shout_button_up);
-			_replyEt.setText("");
-			if (_replyDialog != null && _replyDialog.isShowing()) {
+		if (_isDialogAlreadyShowing && _replyDialog != null && _replyDialog.isShowing()) {
+			Drawable d =  _replyBtn.getDrawable();
+			if (d.getClass().equals(AnimationDrawable.class)) {			
+				AnimationDrawable shoutButtonAnimation = (AnimationDrawable) _replyBtn.getDrawable();
+				shoutButtonAnimation.stop();
+				_replyBtn.setImageResource(R.drawable.shout_button_up);
+				_replyEt.setText("");
 				_isDialogAlreadyShowing = false;
 				_replyDialog.cancel();
+			} else {
+				SBLog.error(TAG, "This should never happen.  Reply Button is not an animation.");
 			}
-		} else {
-			SBLog.error(TAG, "This should never happen.  Reply Button is not an animation.");
 		}
 	}
 
@@ -128,8 +128,8 @@ public class DialogBuilder implements Colleague {
 		if (text.length() == 0) {
 			_m.getUiGateway().toast("Cannot shout blanks.", Toast.LENGTH_LONG);
 		} else {
-			String signature = _m.getSignature();
-			if (_m.getIsSignatureEnabled() && signature.length() > 0) {
+			String signature = _m.getStringPref(C.PREFERENCE_SIGNATURE_TEXT);
+			if (_m.getBooleanPref(C.PREFERENCE_SIGNATURE_ENABLED, C.PREFERENCE_SIGNATURE_ENABLED_DEFAULT) && signature.length() > 0) {
 				text += "     [" + signature + "]";
 				text.trim();
 			}
@@ -169,10 +169,34 @@ public class DialogBuilder implements Colleague {
 					dialog.cancel();
 				}
 			});
+			
+			// Make sure animation is reset.
+			Drawable d =  _replyBtn.getDrawable();
+			if (d.getClass().equals(AnimationDrawable.class)) {			
+				AnimationDrawable shoutButtonAnimation = (AnimationDrawable) _replyBtn.getDrawable();
+				shoutButtonAnimation.stop();
+				_replyBtn.setImageResource(R.drawable.shout_button_up);
+			}
+			
 			_replyDialog = builder.create();
 			_replyDialog.show();
+			_replyEt.setText("");
 			_replyEt.requestFocus();
+			
 			showReplyKeyboard(_replyEt);
+		}
+	}
+	
+	public void handleReplyFailed() {
+		if (_isDialogAlreadyShowing && _replyDialog != null && _replyDialog.isShowing()) {
+			// Stop animation.			
+			Drawable d =  _replyBtn.getDrawable();
+			if (d.getClass().equals(AnimationDrawable.class)) {			
+				AnimationDrawable shoutButtonAnimation = (AnimationDrawable) _replyBtn.getDrawable();
+				shoutButtonAnimation.stop();
+				_replyBtn.setImageResource(R.drawable.shout_button_up);
+			}
+			_m.getUiGateway().toast(C.STRING_REPLY_FAILED, Toast.LENGTH_LONG);
 		}
 	}
 
@@ -256,7 +280,7 @@ public class DialogBuilder implements Colleague {
 		}
 
 		case DISMISS_DIALOG_WAIT_FOR_MAP_TO_HAVE_LOCATION: {
-			if (_waitForMapToHaveLocationDialog != null && !_ui.isFinishing()) {
+			if (_waitForMapToHaveLocationDialog != null && _waitForMapToHaveLocationDialog.isShowing() && !_ui.isFinishing()) {
 				_waitForMapToHaveLocationDialog.dismiss();
 				_waitForMapToHaveLocationDialog = null;
 			}

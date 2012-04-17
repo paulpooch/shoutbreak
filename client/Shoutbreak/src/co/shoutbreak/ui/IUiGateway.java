@@ -30,7 +30,7 @@ public interface IUiGateway {
 	public void createReplyDialog(Shout shout);
 	public void refreshUiComponents();
 	public void refreshProfile(int level, int levelBeginPoints, int currentPoints, int levelEndPoints);
-	public void refreshSignature(String signature, boolean isSignatureEnabled);
+	public void refreshSignature(String signature);
 	public void loadUserPreferencesToUi();
 	public void enableInputs();
 	public void disableInputs();

@@ -510,8 +510,10 @@
                             android:textColor="#ffffffff"
                             android:textSize="14dp" />
 
+                        <!-- Signature -->
+
                         <RelativeLayout
-                            android:id="@+id/userSigHeaderRl"
+                            android:id="@+id/sigSettingsRl"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_below="@id/userStatsParagraphTv"
@@ -532,65 +534,53 @@
                                 android:textStyle="bold" />
 
                             <LinearLayout
+                                android:id="@+id/userSigBarLl"
                                 android:layout_width="match_parent"
                                 android:layout_height="10dp"
-                                android:layout_below="@id/userSigHeaderTv"
+                                android:layout_below="@+id/userSigHeaderTv"
                                 android:background="@drawable/user_stats_bg" />
-                        </RelativeLayout>
 
-                        <RelativeLayout
-                            android:id="@+id/sigSettingsRl"
-                            android:layout_width="match_parent"
-                            android:layout_height="100dp"
-                            android:layout_below="@id/userSigHeaderRl" >
-
-                            <CheckBox
-                                android:id="@+id/sigCheckboxCb"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentLeft="true"
-                                android:layout_alignParentTop="true"
-                                android:checked="false" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentTop="true"
-                                android:layout_marginTop="14dp"
-                                android:layout_toRightOf="@id/sigCheckboxCb"
-                                android:text="@string/sigExplanation"
-                                android:textColor="#ffffffff"
-                                android:textSize="14dp" />
-
-                            <ImageButton
-                                android:id="@+id/sigClearBtn"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentRight="true"
-                                android:layout_below="@id/sigCheckboxCb"
-                                android:src="@drawable/inbox_delete" />
-
-                            <ImageButton
-                                android:id="@+id/sigSaveBtn"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_below="@id/sigCheckboxCb"
-                                android:layout_toLeftOf="@id/sigClearBtn"
-                                android:src="@drawable/sig_save" />
-
-                            <EditText
-                                android:id="@+id/sigInputEt"
+                            <LinearLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_alignBottom="@id/sigClearBtn"
-                                android:layout_below="@id/sigCheckboxCb"
-                                android:layout_toLeftOf="@id/sigSaveBtn"
-                                android:background="@drawable/textbox"
-                                android:imeOptions="actionDone"
-                                android:inputType="text"
-                                android:maxLength="25"
-                                android:padding="4dp" />
+                                android:layout_height="100dp"
+                                android:layout_below="@+id/userSigBarLl"
+                                android:orientation="vertical" >
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal" >
+
+                                    <CheckBox
+                                        android:id="@+id/prefSigCb"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:checked="false" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:gravity="center_vertical"
+                                        android:text="@string/sigExplanation"
+                                        android:textColor="#ffffffff"
+                                        android:textSize="14dp" />
+                                </LinearLayout>
+
+                                <EditText
+                                    android:id="@+id/sigInputEt"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/textbox"
+                                    android:imeOptions="actionDone"
+                                    android:inputType="text"
+                                    android:maxLength="25"
+                                    android:padding="4dp" />
+                            </LinearLayout>
                         </RelativeLayout>
+                        <!-- End Signature -->
+
+
+                        <!-- User Preferences -->
 
                         <RelativeLayout
                             android:id="@+id/userPreferencesRl"
@@ -667,6 +657,8 @@
                                 </LinearLayout>
                             </LinearLayout>
                         </RelativeLayout>
+                        <!-- End User Preferences -->
+
                     </RelativeLayout>
                 </ScrollView>
             </RelativeLayout>

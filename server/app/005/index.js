@@ -63,6 +63,17 @@ var init = function(request, response) {
 
 // Parse POST variables.
 var processRequest = function(request, response) {
+
+
+
+    	var json = { code: 'error', txt: 'This version is no longer supported.  Please upgrade to 3.0+' };
+    	response.writeHead(200, {'Content-Type': 'application/json'});
+		response.write(JSON.stringify(json));
+		response.end();	
+
+
+
+	/*
 	Log.l('processRequest');
 	if (request.method == 'POST') {
 		var body = '';
@@ -98,6 +109,7 @@ var processRequest = function(request, response) {
 		response.write(JSON.stringify(json));
 		response.end();	
     }
+    */
 };
 
 // Used by tests to skip front door.

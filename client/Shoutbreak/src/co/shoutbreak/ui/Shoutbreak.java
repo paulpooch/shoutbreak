@@ -72,7 +72,7 @@ public class Shoutbreak extends MapActivity implements Colleague {
 	public TextView userNextLevelAtTv;
 	public TextView userNextShoutreachTv;
 	public RoundProgress userLevelUpProgessRp;
-	public CheckBox sigCheckboxCb;
+	public CheckBox sigCb;
 	public CheckBox vibrateCb;
 	public CheckBox ledCb;
 	public EditText sigInputEt;
@@ -97,8 +97,6 @@ public class Shoutbreak extends MapActivity implements Colleague {
 	private RelativeLayout _profileViewRl;
 	private CustomMapView _map;
 	private LinearLayout _mapOptionsLl;
-	private ImageButton _sigClearBtn;
-	private ImageButton _sigSaveBtn;
 
 	private Flag _isComposeShowing = new Flag("ui:_isComposeShowing");
 	private Flag _isInboxShowing = new Flag("ui:_isInboxShowing");
@@ -133,9 +131,10 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		userNextLevelAtTv = (TextView) findViewById(R.id.userNextLevelAtTv);
 		userNextShoutreachTv = (TextView) findViewById(R.id.userNextShoutreachTv);
 		userLevelUpProgessRp = (RoundProgress) findViewById(R.id.userLevelUpProgressRp);
+		sigCb = (CheckBox) findViewById(R.id.prefSigCb);
+		sigCb.setOnCheckedChangeListener(_sigCheckboxListener);
 		sigInputEt = (EditText) findViewById(R.id.sigInputEt);
-		sigCheckboxCb = (CheckBox) findViewById(R.id.sigCheckboxCb);
-		sigCheckboxCb.setOnCheckedChangeListener(_sigCheckboxListener);
+		sigInputEt.setOnFocusChangeListener(_sigEditTextListener);
 		vibrateCb = (CheckBox) findViewById(R.id.prefVibrateCb);
 		vibrateCb.setOnCheckedChangeListener(_vibrateCheckboxListener);
 		ledCb = (CheckBox) findViewById(R.id.prefLedCb);
@@ -161,8 +160,6 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		_enableLocationBtn = (Button) findViewById(R.id.enableLocationBtn);
 		_turnOnBtn = (Button) findViewById(R.id.turnOnBtn);
 		_mapOptionsLl = (LinearLayout) findViewById(R.id.mapOptionsLl);
-		_sigClearBtn = (ImageButton) findViewById(R.id.sigClearBtn);
-		_sigSaveBtn = (ImageButton) findViewById(R.id.sigSaveBtn);
 		
 		shoutBtn.setOnClickListener(_shoutButtonListener);
 		_composeTabBtn.setOnClickListener(_composeTabListener);
@@ -173,10 +170,6 @@ public class Shoutbreak extends MapActivity implements Colleague {
 		_enableLocationBtn.getBackground().setColorFilter(0xAA9900FF, Mode.SRC_ATOP);
 		_turnOnBtn.setOnClickListener(_turnOnListener);
 		_turnOnBtn.getBackground().setColorFilter(0xAA9900FF, Mode.SRC_ATOP);
-		_sigClearBtn.getBackground().setColorFilter(0xAA9900FF, Mode.SRC_ATOP);
-		_sigClearBtn.setOnClickListener(_sigClearListener);
-		_sigSaveBtn.getBackground().setColorFilter(0xAA9900FF, Mode.SRC_ATOP);
-		_sigSaveBtn.setOnClickListener(_sigSaveListener);
 
 		//noticeTabShoutsIv.setVisibility(View.INVISIBLE);
 		//noticeTabPointsIv.setVisibility(View.INVISIBLE);
@@ -602,7 +595,7 @@ public class Shoutbreak extends MapActivity implements Colleague {
 				// TODO: filter all text going to server
 				
 				String signature = sigInputEt.getText().toString();
-				if (sigCheckboxCb.isChecked() && signature.length() > 0) {
+				if (sigCb.isChecked() && signature.length() > 0) {
 					text += "     [" + sigInputEt.getText().toString() + "]";
 					text.trim();
 				}
@@ -629,9 +622,26 @@ public class Shoutbreak extends MapActivity implements Colleague {
 	};
 
 	private OnCheckedChangeListener _sigCheckboxListener = new OnCheckedChangeListener() {
+		private boolean startupDone = false;
 		public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-			if (_m != null) {
+			if (_m != null && startupDone) {
 				_m.saveUserSignature(sigInputEt.getText().toString(), isChecked);				
+			} else {
+				startupDone = true;
+			}
+			hideKeyboard();
+		}
+	};
+	
+	private OnFocusChangeListener _sigEditTextListener = new OnFocusChangeListener() {
+		@Override
+		public void onFocusChange(View v, boolean hasFocus) {
+			if (!hasFocus) {
+				String sigBefore = _m.getStringPref(C.PREFERENCE_SIGNATURE_TEXT);
+				String sigAfter = sigInputEt.getText().toString().trim();
+				if (!sigBefore.equals(sigAfter)) {
+					_m.saveUserSignature(sigInputEt.getText().toString(), sigCb.isChecked());
+				}
 			}
 		}
 	};
@@ -655,29 +665,6 @@ public class Shoutbreak extends MapActivity implements Colleague {
 			} else {
 				startupDone = true;
 			}
-		}
-	};
-	
-	private OnClickListener _sigClearListener = new OnClickListener() {
-		@Override
-		public void onClick(View v) {
-			if (_m != null) {
-				sigInputEt.setText("");
-				sigCheckboxCb.setChecked(false);
-				_m.saveUserSignature(sigInputEt.getText().toString(), sigCheckboxCb.isChecked());
-			}
-			hideKeyboard();			
-		}
-	};
-
-	private OnClickListener _sigSaveListener = new OnClickListener() {
-		@Override
-		public void onClick(View v) {
-			if (_m != null) {
-				sigCheckboxCb.setChecked(true);
-				_m.saveUserSignature(sigInputEt.getText().toString(), sigCheckboxCb.isChecked());
-			}
-			hideKeyboard();
 		}
 	};
 

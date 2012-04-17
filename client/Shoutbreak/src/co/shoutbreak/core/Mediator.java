@@ -77,12 +77,6 @@ public class Mediator {
 	private Flag _isUiInForeground = new Flag("m:_isUiInForeground");
 	private Flag _isPollingAlive = new Flag("m:_isPollingAlive");
 	private Flag _isServiceConnected = new Flag("m:_isServiceConnected");
-	//private Flag _isServiceStarted = new Flag("m:_isServiceStarted");
-	//private Flag _isLocationEnabled = new Flag("m:_isLocationEnabled");
-	//private Flag _isDataEnabled = new Flag("m:_isDataEnabled");
-	//private Flag _isPowerPreferenceEnabled = new Flag("m:_isPowerPreferenceEnabled"); // is power preference set to on
-
-	/* Mediator Lifecycle */
 
 	public Mediator(ShoutbreakService service) {
 		SBLog.lifecycle(TAG, "Mediator()");
@@ -265,157 +259,6 @@ public class Mediator {
 		}
 	}
 	
-	/*
-	public void startPolling(boolean onUiThread) {
-		SBLog.lifecycle(TAG, "startPolling()");
-		if (!_isPollingAlive.get()) {
-			if (_isPowerPreferenceEnabled.get() && _isLocationEnabled.get() && _isDataEnabled.get() && _isServiceStarted.get()) {
-				SBLog.logic("startPolling - app fully functional");
-				_isPollingAlive.set(true);
-				_threadLauncher.startPolling();
-				if (onUiThread) {
-					_uiGateway.enableInputs();
-				}
-			} else {
-				if (!_isPowerPreferenceEnabled.get()) {
-					SBLog.error(TAG, "unable to start service because power preference is set to off");
-				}
-				if (!_isLocationEnabled.get()) {
-					SBLog.error(TAG, "unable to start service because location is unavailable");
-				}
-				if (!_isDataEnabled.get()) {
-					SBLog.error(TAG, "unable to start service because data unavailable");
-				}
-			}
-		} else {
-			SBLog.logic("startPolling - service is already polling, unable to call startPolling()");
-		}
-	}
-	
-	public void stopPolling() {
-		SBLog.lifecycle(TAG, "stopPolling()");
-		if (_isPollingAlive.get()) {
-			// This must be called before setPowerPreferenceToOff or infinite loop occurs.
-			_isPollingAlive.set(false);
-			_threadLauncher.stopLaunchingPollingThreads();
-		} else {
-			SBLog.logic("stopPolling was called, but isPollingAlive is already false.");
-		}
-	}
-
-	public void appLaunchedFromUI() {
-		SBLog.lifecycle(TAG, "appLaunchedFromUI()");
-		_isServiceStarted.set(true);
-		startPolling(true);
-	}
-
- 	public void appLaunchedFromAlarm() {
-		SBLog.lifecycle(TAG, "appLaunchedFromAlarm()");
-		_isServiceStarted.set(true);
-		startPolling(true);
-	}
-
-	public void onPowerPreferenceEnabled(boolean onUiThread) {
-		SBLog.method(TAG, "onPowerEnabled()");
-		_isPowerPreferenceEnabled.set(true);
-		enableIntervalAlarm();
-		_service.enableOnBootAlarmReceiver();
-		if (_isUIAlive.get()) {
-			_uiGateway.onPowerPreferenceEnabled(onUiThread);
-		}
-		startPolling(onUiThread);
-	}
-	
-	public void onServiceStart() {
-		SBLog.lifecycle(TAG, "onServiceStart()");
-		_isServiceStarted.set(true);
-	}
-	
-	public void onLocationEnabled() {
-		SBLog.method(TAG, "onLocationEnabled()");
-		_isLocationEnabled.set(true);
-		_storage.initializeRadiusAtCell(getCurrentCell());
-		if (_isUIAlive.get()) {
-			_uiGateway.onLocationEnabled();
-		}
-		startPolling(true);
-	}	
-	
-	
-	public void onLocationDisabled() {
-		SBLog.method(TAG, "onLocationDisabled()");
-		_isLocationEnabled.set(false);
-		if (_isUiAlive.get()) {
-			_uiGateway.onLocationDisabled();
-		}
-		stopPolling();
-	}
-	
-	public void onDataEnabled() {
-		SBLog.method(TAG, "onDataEnabled()");
-		_isDataEnabled.set(true);
-		if (_isUIAlive.get()) {
-			_uiGateway.onDataEnabled();
-		}
-		_location.refreshBestProvider();
-		startPolling(true);
-	}
-	
-	public void onPowerPreferenceDisabled(boolean onUiThread) {
-		SBLog.method(TAG, "onPowerDisabled()");
-		_isPowerPreferenceEnabled.set(false);
-		disableIntervalAlarm();
-		_service.disableOnBootAlarmReceiver();
-		if (_isUiAlive.get()) {
-			_uiGateway.onPowerPreferenceDisabled(onUiThread);
-		}
-		stopPolling();
-	}
-	 */
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	// LIFECYCLE ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	
 	private void enableIntervalAlarm() {
 		Intent alarmIntent = new Intent(_service, ShoutbreakService.class);
 		alarmIntent.putExtra(C.NOTIFICATION_LAUNCHED_FROM_ALARM, true);
@@ -542,7 +385,7 @@ public class Mediator {
 
 	public boolean isFirstRun() {
 		SBLog.method(TAG, "isFirstRun()");
-		boolean isFirstRun = _preferences.getBoolean(C.PREFERENCE_IS_FIRST_RUN, true);
+		boolean isFirstRun = _preferences.getBoolean(C.PREFERENCE_IS_FIRST_RUN, C.PREFERENCE_IS_FIRST_RUN_DEFAULT);
 		_preferences.putBoolean(C.PREFERENCE_IS_FIRST_RUN, false);
 		return isFirstRun;
 	}
@@ -665,20 +508,12 @@ public class Mediator {
 		SBLog.method(TAG, "voteStart()");
 		_threadLauncher.handleVoteStart(shoutId, vote);
 	}
-	
-	public String getSignature() {
-		return _storage.getSignature();
-	}
-	
-	public boolean getIsSignatureEnabled() {
-		return _storage.getIsSignatureEnabled();
-	}
 
 	public void saveUserSignature(String sigText, boolean sigEnabled) {
 		// Don't change checkbox here or event loop will occur.
 		_preferences.putBoolean(C.PREFERENCE_SIGNATURE_ENABLED, sigEnabled);
 		_preferences.setString(C.PREFERENCE_SIGNATURE_TEXT, sigText);
-		_uiGateway.refreshSignature(sigText, sigEnabled);
+		_uiGateway.refreshSignature(sigText);
 		_uiGateway.toast(_service.getString(R.string.sigSaved), Toast.LENGTH_LONG);
 	}
 
@@ -702,6 +537,10 @@ public class Mediator {
 	
 	public boolean getBooleanPref(String pref, boolean defaultValue) {
 		return _preferences.getBoolean(pref, defaultValue);
+	}
+	
+	public String getStringPref(String pref) {
+		return _preferences.getString(pref);
 	}
 	
 	
@@ -1076,7 +915,7 @@ public class Mediator {
 			Drawable d = _ui.shoutBtn.getDrawable();
 			if (d.getClass().equals(BitmapDrawable.class)) {
 				// Shout was a reply
-				
+				_ui.dialogBuilder.handleReplyFailed();
 			} else if (d.getClass().equals(AnimationDrawable.class)) {
 				// Shout was a normal shout
 				AnimationDrawable shoutButtonAnimation = (AnimationDrawable) _ui.shoutBtn.getDrawable();
@@ -1151,28 +990,20 @@ public class Mediator {
 		}
 
 		@Override
-		public void refreshSignature(String signature, boolean isSignatureEnabled) {
+		public void refreshSignature(String signature) {
 			// Signature preference setup
 			int maxLength = _ui.getResources().getInteger(R.integer.shoutMaxLength) - signature.length();
-			_storage.setSignature(signature, isSignatureEnabled);
 			_ui.shoutInputEt.setFilters(new InputFilter[] { new InputFilter.LengthFilter(maxLength) });
 		}
 		
 		@Override
 		public void loadUserPreferencesToUi() {
 			// Signature preference setup
-			boolean sigEnabled = _preferences.getBoolean(C.PREFERENCE_SIGNATURE_ENABLED, false);
-			String sigText = _preferences.getString(C.PREFERENCE_SIGNATURE_TEXT);
-			if (sigText.length() > 0) {
-				_ui.sigCheckboxCb.setChecked(sigEnabled);
-			} else {
-				_ui.sigCheckboxCb.setChecked(false);
-			}
-			_ui.sigInputEt.setText(sigText);
-			refreshSignature(sigText, sigEnabled);
-		
+			_ui.sigCb.setChecked(_preferences.getBoolean(C.PREFERENCE_SIGNATURE_ENABLED, C.PREFERENCE_SIGNATURE_ENABLED_DEFAULT));
 			_ui.vibrateCb.setChecked(_preferences.getBoolean(C.PREFERENCE_VIBRATE, C.PREFERENCE_VIBRATE_DEFAULT));
 			_ui.ledCb.setChecked(_preferences.getBoolean(C.PREFERENCE_LED, C.PREFERENCE_LED_DEFAULT));
+			String sigText = _preferences.getString(C.PREFERENCE_SIGNATURE_TEXT);
+			refreshSignature(sigText);
 		}
 
 		public void enableInputs() {

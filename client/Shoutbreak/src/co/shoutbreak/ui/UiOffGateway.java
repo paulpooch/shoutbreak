@@ -94,7 +94,7 @@ public class UiOffGateway implements IUiGateway {
 	public void handleScoreDetailsRequest(int ups, int downs, int score) {}
 
 	@Override
-	public void refreshSignature(String signature, boolean isSignatureEnabled) {}
+	public void refreshSignature(String signature) {}
 	
 	@Override
 	public void loadUserPreferencesToUi() {}

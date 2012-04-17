@@ -414,18 +414,5 @@ public class User {
 		saveUserSetting(C.KEY_USER_ID, uid);
 		_uid = uid;
 	}
-
-	public void setSignature(String signature, boolean isSignatureEnabled) {
-		_signature = signature;
-		_isSignatureEnabled = isSignatureEnabled;
-	}
-	
-	public String getSignature() {
-		return _signature;
-	}
-	
-	public boolean getIsSignatureEnabled() {
-		return _isSignatureEnabled;
-	}
 	
 }

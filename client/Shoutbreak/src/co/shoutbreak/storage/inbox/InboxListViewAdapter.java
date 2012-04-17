@@ -15,6 +15,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import co.shoutbreak.R;
 import co.shoutbreak.core.C;
 import co.shoutbreak.core.Colleague;
@@ -67,27 +68,35 @@ public class InboxListViewAdapter extends BaseAdapter implements Colleague {
 
 		onVoteUpClickListener = new OnClickListener() {
 			public void onClick(View view) {
-				InboxViewHolder holder = (InboxViewHolder) view.getTag();
-				holder.btnVoteUp.setEnabled(false);
-				holder.btnVoteDown.setEnabled(false);
-				holder.btnVoteUp.setImageResource(R.drawable.vote_up_button);
-				view.invalidate();
-
-				VoteTask task = new VoteTask();
-				task.execute(view.getTag(), C.SHOUT_VOTE_UP);
+				if (_isInputAllowed) {
+					InboxViewHolder holder = (InboxViewHolder) view.getTag();
+					holder.btnVoteUp.setEnabled(false);
+					holder.btnVoteDown.setEnabled(false);
+					holder.btnVoteUp.setImageResource(R.drawable.vote_up_button);
+					view.invalidate();
+	
+					VoteTask task = new VoteTask();
+					task.execute(view.getTag(), C.SHOUT_VOTE_UP);
+				} else {
+					_m.getUiGateway().toast(C.STRING_BUTTON_DISABLED, Toast.LENGTH_LONG);
+				}
 			}
 		};
 
 		onVoteDownClickListener = new OnClickListener() {
 			public void onClick(View view) {
-				InboxViewHolder holder = (InboxViewHolder) view.getTag();
-				holder.btnVoteUp.setEnabled(false);
-				holder.btnVoteDown.setEnabled(false);
-				holder.btnVoteDown.setImageResource(R.drawable.vote_down_button);
-				view.invalidate();
-
-				VoteTask task = new VoteTask();
-				task.execute(view.getTag(), C.SHOUT_VOTE_DOWN);
+				if (_isInputAllowed) {
+					InboxViewHolder holder = (InboxViewHolder) view.getTag();
+					holder.btnVoteUp.setEnabled(false);
+					holder.btnVoteDown.setEnabled(false);
+					holder.btnVoteDown.setImageResource(R.drawable.vote_down_button);
+					view.invalidate();
+	
+					VoteTask task = new VoteTask();
+					task.execute(view.getTag(), C.SHOUT_VOTE_DOWN);
+				} else {
+					_m.getUiGateway().toast(C.STRING_BUTTON_DISABLED, Toast.LENGTH_LONG);
+				}
 			}
 		};
 
@@ -108,8 +117,12 @@ public class InboxListViewAdapter extends BaseAdapter implements Colleague {
 
 		onReplyClickListener = new OnClickListener() {
 			public void onClick(View view) {
-				InboxViewHolder holder = (InboxViewHolder) view.getTag();
-				_m.createReplyDialog(holder.shout);
+				if (_isInputAllowed) {
+					InboxViewHolder holder = (InboxViewHolder) view.getTag();
+					_m.createReplyDialog(holder.shout);
+				} else {
+					_m.getUiGateway().toast(C.STRING_BUTTON_DISABLED, Toast.LENGTH_LONG);
+				}
 			}
 		};
 

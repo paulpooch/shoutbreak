@@ -16,7 +16,7 @@
 
 module.exports = {
 	username: 'shoutbreakcloud@gmail.com',
-    password: 'echogolf7r33f0r7=^',
+    password: 'z6PaG4K5Xxww27U7mWXwzzgX',
     source: 'co.shoutbreak',
     port: 8000,
     address: '127.0.0.1',

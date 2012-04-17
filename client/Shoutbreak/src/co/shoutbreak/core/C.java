@@ -35,9 +35,11 @@ public class C {
 	public static final String STRING_ACCOUNT_CREATED = "Account created successfully.\nYou can now send and receive shouts!";
 	public static final String STRING_SHOUT_SENT = "Shout complete.";
 	public static final String STRING_SHOUT_FAILED = "Shout failed.";
+	public static final String STRING_REPLY_FAILED = "Reply failed.";
 	public static final String STRING_VOTE_FAILED = "Vote failed.  Shout is too old.";
 	public static final String STRING_CREATE_ACCOUNT_FAILED = "Unable to create an account.";
 	public static final String STRING_FORCED_POLLING_STOP = "App turning off.  Dropped too many consecutive packets.";
+	public static final String STRING_BUTTON_DISABLED = "Sorry, you can't do this unless Shoutbreak is fully on.";
 	
 	// NOTICES ////////////////////////////////////////////////////////////////
 	// 0 - 19
@@ -151,7 +153,7 @@ public class C {
 	public static final int PURPOSE_DEATH = 62; // don't repeat this - just die
 	
 	// DATABASE ///////////////////////////////////////////////////////////////
-	public static final int DB_VERSION = 7;
+	public static final int DB_VERSION = 15;
 
 	public static final String DB_NAME = "sbdb";
 	public static final String DB_TABLE_RADIUS = "RADIUS";
@@ -178,8 +180,10 @@ public class C {
 	public static final String PREFERENCE_FILE = "preferences";
 	public static final String PREFERENCE_POWER_STATE = "power_state_pref";
 	public static final boolean PREFERENCE_POWER_STATE_DEFAULT = true;
-	public static final String PREFERENCE_IS_FIRST_RUN = "is_first_run";
+	public static final String PREFERENCE_IS_FIRST_RUN = "first_run";
+	public static final boolean PREFERENCE_IS_FIRST_RUN_DEFAULT = true;
 	public static final String PREFERENCE_SIGNATURE_ENABLED = "sig_enabled";
+	public static final boolean PREFERENCE_SIGNATURE_ENABLED_DEFAULT = false;
 	public static final String PREFERENCE_SIGNATURE_TEXT = "sig_text";
 	public static final String PREFERENCE_VIBRATE = "vibrate";
 	public static final boolean PREFERENCE_VIBRATE_DEFAULT = true;

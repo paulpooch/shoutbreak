@@ -11,7 +11,7 @@ public class PollingAlgorithm {
 	private static final String TAG = "PollingAlgorithm";
 	
 	private static final long DELAY_MIN_SECS = 20; // 20 secs
-	private static final long DELAY_MAX_SECS = 1200; // 20 mins
+	private static final long DELAY_MAX_SECS = 600; // 10 mins
 	private static final long SECONDS_TILL_MAX_DELAY = 600; // 10 mins
 	private static final long RESET_POLLING_DELAY_TO_IMMEDIATELY_TOLERANCE_MILLISEC = DELAY_MIN_SECS * 1000; // 20 seconds
 	
