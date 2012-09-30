@@ -755,6 +755,8 @@
             android:handle="@+id/drawerHandleRl"
             sb:handle="@+id/drawerHandleRl"
             sb:topOffset="48px" >
+						<!-- Should this be 52? -->
+				
 
             <RelativeLayout
                 android:id="@+id/drawerHandleRl"

@@ -40,7 +40,10 @@ var Config = module.exports = {};
 	this.INTERVAL_LOG_RENAME = 1800000; // 30 minutes
 	 
 	// AWS
-	this.CACHE_URL = 'cache-001.ardkb4.0001.use1.cache.amazonaws.com:11211',
+	// For Elasticache:
+	//this.CACHE_URL = 'cache-001.ardkb4.0001.use1.cache.amazonaws.com:11211',
+	// For local:
+	this.CACHE_URL = 'localhost:11211',
 	this.DYNAMODB_CREDENTIALS = {
 		AccessKeyId:'AKIAINHDEIZ3QVSHQ3PA', 
 		SecretKey: 	'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'
