@@ -1,7 +1,6 @@
 # shoutbreak
 
 ![](https://raw.githubusercontent.com/paulpooch/shoutbreak/master/art/art_branding/logo_development/shoutbreak.png)
-![](https://raw.githubusercontent.com/paulpooch/shoutbreak/master/art/art_branding/shoutbreak_1.png)
 
 This was an android 2.x application that supported localized messaging.
 
